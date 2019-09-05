@@ -59,12 +59,12 @@ Yu may wish to review the config/app.php file and its documentation. It contains
 ### Common Composer Commands
 Just a few that you may want know if you are new... lots of others so you may want to go do some reading.
 
-####install
+#### install
 install command first create a composer.lock if not exists composer.lock file. composer lock file contains composer.json all package with version. then install those packages.
 ```composer install```
 
-####update command updates all outdated commands
+#### update command updates all outdated commands
 ```composer update```
 
-####update specific package
+#### update specific package
 ```omposer update vendor-name/package-name```
