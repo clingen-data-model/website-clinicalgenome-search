@@ -34,7 +34,7 @@ After installing, you should configure your web server's document / web root to 
 All of the configuration files for the framework are stored in the config directory. 
 
 #### Environment Configuration .ENV
-Laravel utilizes the DotEnv PHP library by Vance Lucas. The root directory the application contains a .env.example file so you can see where you can add your environment variables. 
+Laravel utilizes the DotEnv PHP library by Vance Lucas. The root directory the application contains a .env.example file so you can see where you see the defaults.  Make sure you create your own .env and don't commit it... right now it's excluded and lets keep it that way. 
 
 #### Directory Permissions
 After installing, you may need to configure some permissions. Directories within the storage and the bootstrap/cache directories should be writable by your web server or Laravel will not run.
