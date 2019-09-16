@@ -48,15 +48,15 @@ The next thing you should do after installing Laravel is set your application ke
 Yu may wish to review the config/app.php file and its documentation. It contains several options such as timezone and locale that you may wish to change according to your application.
 
 ### Helpful Reading
-- Architecture Concepts 
--- Request Lifecycle [https://laravel.com/docs/6.0/lifecycle]
--- Service Container [https://laravel.com/docs/6.0/container]
--- Service Providers [https://laravel.com/docs/6.0/providers]
--- Facades [https://laravel.com/docs/6.0/facades]
--- Contracts [https://laravel.com/docs/6.0/contracts]
--- Routing [https://laravel.com/docs/6.0/routing]
--- Templates [https://laravel.com/docs/6.0/blade]
--- Compiling Assets [https://laravel.com/docs/6.0/mix]
+Architecture Concepts 
+- Request Lifecycle [https://laravel.com/docs/6.0/lifecycle]
+- Service Container [https://laravel.com/docs/6.0/container]
+- Service Providers [https://laravel.com/docs/6.0/providers]
+- Facades [https://laravel.com/docs/6.0/facades]
+- Contracts [https://laravel.com/docs/6.0/contracts]
+- Routing [https://laravel.com/docs/6.0/routing]
+- Templates [https://laravel.com/docs/6.0/blade]
+- Compiling Assets [https://laravel.com/docs/6.0/mix]
 
 ### Common Composer Commands
 Just a few that you may want know if you are new... lots of others so you may want to go do some reading.
