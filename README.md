@@ -24,6 +24,8 @@ Currently this project is using Laravel 5.8.  Keep that in mind if you are readi
 ### Installation and Configuration
 Laravel provides a few options when installing.  You can start right from this repo or you can install fresh. Read more at https://laravel.com/docs/6.0#installing-laravel  When you get started make sure don't forget to run ```composer install``` This is what goes and grabs all of the dependencies you need.  Also, after you have things running make sure you compile the assets.
 
+If you don't start from the repo and simply want to start clean then remember this website is running Laravel 5.8.  If you want to grab 5.8 then consider the following command ```composer create-project laravel/laravel="5.8.*" PROJECT_NAME_HERE```
+
 #### Composer - A Dependency Manager for PHP
 Laravel utilizes Composer to manage its dependencies. So, before using Laravel, make sure you have Composer installed on your machine.
 
