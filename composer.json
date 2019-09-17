@@ -11,7 +11,10 @@
         "php": "^7.1.3",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "ahsanabrar/laravel-neo4j": "^0.2.0",
+        "anlutro/l4-settings": "^0.8.3",
+        "webpatser/laravel-uuid": "^3.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
