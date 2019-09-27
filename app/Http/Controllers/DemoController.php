@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Ahsan\Neo4j\Facade\Cypher;
+
+
 
 
 class DemoController extends Controller
@@ -16,6 +19,37 @@ class DemoController extends Controller
      */
     public function index()
     {
+        $query = '
+            MATCH (n:Gene) 
+            RETURN n,
+            n.iri as iri,
+            n.symbol as symbol
+            LIMIT 100';
+
+       $items = Cypher::run($query);
+
+       //dd($items);
+       $collection = collect();
+       
+       //echo "<pre>";
+        foreach($items->records() as $item) {
+
+            $collect = (object)[
+                    'iri'           => $item->value('iri'),
+                    'symbol'        => $item->value('symbol')
+            ];
+
+            //$collect = $item
+            //$collect = collect($collect);
+            $collection->push($collect);
+            //print_r($items);
+            //print_r($item);
+             //echo ."<br/>";
+         }
+         $collection->all();
+         //print_r($collection);
+         
+
     		$display_tabs = collect([
     				'active'							=> "home",
                     'query'                             => "",
@@ -26,7 +60,9 @@ class DemoController extends Controller
     		    	'variant_path'			=> "300"]
     		]);
 
-        return view('home', compact('display_tabs'));
+         //print_r($display_tabs);
+         //exit();
+        return view('home', compact('display_tabs', 'collection', 'items'));
     }
 
     // Gene START

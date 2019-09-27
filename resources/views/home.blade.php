@@ -7,7 +7,9 @@
             <div class="card">
 
                 <div class="card-body">
-                    Coming soon
+                    @foreach($collection as $item)
+                        {{ $item->symbol }} <br />
+                    @endforeach
                 </div>
             </div>
         </div>
