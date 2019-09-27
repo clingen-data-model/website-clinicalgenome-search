@@ -13,3 +13,5 @@ yarn-error.log
 /.phpintel/index
 /.phpintel/*
 .phpintel/index
+.phpintel/*
+.editorconfig
