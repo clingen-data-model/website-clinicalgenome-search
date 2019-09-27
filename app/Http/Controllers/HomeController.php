@@ -23,6 +23,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $display_tabs = collect([
+                    'active'                            => "home",
+                    'query'                             => "",
+                    'counts'    => [
+                        'dosage'                        => "1434",
+                    'gene_disease'          => "500",
+                    'actionability'         => "270",
+                    'variant_path'          => "300"]
+            ]);
+        return view('home', compact('display_tabs'));
     }
 }

@@ -7,9 +7,11 @@
             <div class="card">
 
                 <div class="card-body">
-                    @foreach($collection as $item)
-                        {{ $item->symbol }} <br />
-                    @endforeach
+                    @isset($collection)
+                        @foreach($collection as $item)
+                            {{ $item->symbol }} <br />
+                        @endforeach
+                    @endisset
                 </div>
             </div>
         </div>
