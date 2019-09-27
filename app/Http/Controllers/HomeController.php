@@ -28,10 +28,10 @@ class HomeController extends Controller
                     'query'                             => "",
                     'counts'    => [
                         'dosage'                        => "1434",
-                    'gene_disease'          => "500",
-                    'actionability'         => "270",
-                    'variant_path'          => "300"]
-            ]);
+                        'gene_disease'                  => "500",
+                        'actionability'                 => "270",
+                        'variant_path'                  => "300"]
+                    ]);
         return view('home', compact('display_tabs'));
     }
 }
