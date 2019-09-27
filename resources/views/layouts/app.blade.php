@@ -38,7 +38,12 @@
 
              @livewire('header-search-bar')
 
-          @yield('heading')
+          @hasSection ('heading')
+            @yield('heading')
+          @else
+            <div class="mb-3"></div>
+          @endif
+          @isset($display_tabs['active'])
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-3">
             <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
               <a class="nav-link" href="{{ route('home') }}">
@@ -116,6 +121,7 @@
               </a>
             </li>
           </ul>
+          @endisset
           </div>
         </section>
         <section id='section_content' class="container">
