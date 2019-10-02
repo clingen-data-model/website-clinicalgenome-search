@@ -21,7 +21,7 @@
 				</li>
 				@guest
 				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href='{{ route('login') }}'><i class="fas fa-lock"></i> Login</a>
+					<a class=' text-white' href='{{ route('login') }}'><i class="fas fa-user-circle"></i> Login</a>
 				</li>
 				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
 					<a class=' text-white' href='{{ route('register') }}'><i class="fas fa-sign-in-alt"></i> Register</a>
