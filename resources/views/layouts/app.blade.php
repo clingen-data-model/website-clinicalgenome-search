@@ -16,7 +16,6 @@
   <!-- Fonts -->
   <link rel="dns-prefetch" href="//fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.11.1/css/all.css" integrity="sha384-sr3GDThhNP8BxHFoTK4zKFgOjcrT8vzaiLwnwU+yB31BCaNj3QMX6YVXcv8AeBAy" crossorigin="anonymous">
 
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -83,9 +82,9 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Genomic Browser</a></li>
-                  <li><a href="{{ route('gene-index') }}">Curated Genes</a></li>
-                  <li><a href="#">Curated Diseases</a></li>
-                  <li><a href="#">Publications Utilized</a></li>
+                  <li><a href="{{ route('gene-curations') }}">Curated Genes</a></li>
+                  <li><a href="{{ route('condition-curations') }}">Curated Conditions</a></li>
+                  <li><a href="{{ route('publication-index') }}">Publications Utilized</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#">APIs and Downloads</a></li>
                 </ul>
@@ -149,7 +148,6 @@
   <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 
 
     @yield('script_js')

@@ -48,6 +48,7 @@ class HeaderSearchBar extends Component
 	          // Using (?i) makes sure it is case intensive
 	          // The UNION makes sure the duplicates are removed.
 	          case 'gene':
+	          	$href_prefix = "/gene/show/";
 	            $query = "
 	            MATCH               (n:Gene) 
 	            WHERE               n.symbol =~ '(?i){$term}.*'
@@ -61,7 +62,7 @@ class HeaderSearchBar extends Component
 	            n.hgnc_id           AS ref,
 	            n.hgnc_id           AS href,
 	            a.uuid              AS assertionUuid
-	            ORDER BY            n.label
+	            ORDER BY            n.label, a.uuid
 	            SKIP                0
 	            LIMIT               25
 
@@ -79,7 +80,7 @@ class HeaderSearchBar extends Component
 	            n.hgnc_id           AS ref,
 	            n.hgnc_id           AS href,
 	            a.uuid              AS assertionUuid
-	            ORDER BY            n.label
+	            ORDER BY            n.label, a.uuid
 	            SKIP                0
 	            LIMIT               25
 	            ";
@@ -91,6 +92,7 @@ class HeaderSearchBar extends Component
 	          // Using (?i) makes sure it is case intensive
 	          // The UNION makes sure the duplicates are removed.
 	          case 'disease':
+	          	$href_prefix = "/disease/show/";
 	            $query = "
 	            MATCH               (n:Disease) 
 	            WHERE               n.label =~ '(?i){$term}.*'
@@ -134,6 +136,7 @@ class HeaderSearchBar extends Component
 	          // Using (?i) makes sure it is case intensive
 	          // The UNION makes sure the duplicates are removed.
 	          case 'drug':
+	          	$href_prefix = "/drug/show/";
 	            $query = "
 	            MATCH               (n:Drug) 
 	            WHERE               n.label =~ '(?i){$term}.*'
@@ -187,7 +190,7 @@ class HeaderSearchBar extends Component
 		          $collect = (object)[
 		                       //'iri'              => $item->value('iri'),
 		            'label'             => $item->value('label'),
-		            'href'              => $item->value('href'),
+		            'href'              => $href_prefix."".$item->value('href'),
 		            'curated'           => $curated
 		          ];
 
@@ -199,7 +202,11 @@ class HeaderSearchBar extends Component
 	      }
         $collection->all();
 
-        $this->queryResults  = $collection->toArray();
+        $unique = $collection->unique('href');
+
+				$unique->values()->all();
+
+        $this->queryResults  = $unique->toArray();
 
         //dd($collection);
         return view('livewire.header-search-bar');

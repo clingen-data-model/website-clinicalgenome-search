@@ -25,10 +25,11 @@
 
 
 		@if(count($queryResults))
-	        
-	        <div class="list-group ml-4 mr-4">
+	        <div class="" style="position: absolute; z-index: 10000;" >
+	        	<div class="container">
+	        <div class="row  ml-1 mr-5" style="box-shadow: 0px 5px 5px rgba(0, 0, 0, .5);">
 	        	@foreach($queryResults as $result)
-	          <a href='#{{$result['href']}}' class="list-group-item d-flex justify-content-between align-items-center">
+	          <a href='{{$result['href']}}' class="list-group-item d-flex justify-content-between align-items-center">
 	            {{$result['label']}}
 	            @if($result['curated'])
 	            	<span class="badge badge-success badge-pill"><i class="fas fa-check"></i> ClinGen Curations</span>
@@ -37,7 +38,9 @@
 	            @endif
 	          </a>
 	          @endforeach
+	          </div>
 	        </div>
+	      </div>
 	  
 	  @endif
 

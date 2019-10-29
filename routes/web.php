@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/demo', 'DemoController@index')->name('home');
+
+Route::get('/', 'HomeController@index')->name('home');
 
 
 // ************************************************************************************************
@@ -20,30 +21,40 @@ Route::get('/demo', 'DemoController@index')->name('home');
 
 
 		// Gene demo route
-		Route::get('/demo/gene/list/', 'DemoController@geneIndex')->name('gene-index');
-		Route::get('/demo/gene/show/', 'DemoController@geneShow')->name('gene-show');
+		Route::get('/gene/all/', 'GeneController@index')->name('gene-index');
+		Route::get('/gene/show/{id?}', 'GeneController@show')->name('gene-show');
+		Route::get('/gene/curations/', 'GeneController@curated')->name('gene-curations');
+
+		// Condition demo route
+		Route::get('/condition/all/', 'ConditionController@index')->name('condition-index');
+		Route::get('/condition/show/', 'ConditionController@show')->name('condition-show');
+		Route::get('/condition/curations/', 'ConditionController@curated')->name('condition-curations');
 
 		// Dosage demo route
-		Route::get('/demo/dosage/list/', 'DemoController@dosageIndex')->name('dosage-index');
-		Route::get('/demo/dosage/detail/', 'DemoController@dosageShow')->name('dosage-show');
-		Route::get('/demo/dosage/stats/', 'DemoController@dosageStats')->name('dosage-stats');
-		Route::get('/demo/dosage/reports/', 'DemoController@dosageReports')->name('dosage-reports');
-		Route::get('/demo/dosage/download/', 'DemoController@dosageDownload')->name('dosage-download');
+		Route::get('/dosage/all/', 'DosageController@index')->name('dosage-index');
+		Route::get('/dosage/detail/', 'DosageController@show')->name('dosage-show');
+		Route::get('/dosage/stats/', 'DosageController@stats')->name('dosage-stats');
+		Route::get('/dosage/reports/', 'DosageController@reports')->name('dosage-reports');
+		Route::get('/dosage/download/', 'DosageController@download')->name('dosage-download');
 
 
 		// Gene Validity demo route
-		Route::get('/demo/gene-disease-validity/list/', 'DemoController@geneValidityIndex')->name('gene-disease-validity-index');
-		Route::get('/demo/gene-disease-validity/detail/', 'DemoController@geneValidityShow')->name('gene-disease-validity-show');
+		Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
+		Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
 
 
 		// Actionability demo route
-		Route::get('/demo/actionability/list/', 'DemoController@actionabilityIndex')->name('actionability-index');
-		Route::get('/demo/actionability/detail/', 'DemoController@actionabilityShow')->name('actionability-show');
+		Route::get('/actionability/all/', 'ActionabilityController@index')->name('actionability-index');
+		Route::get('/actionability/detail/', 'ActionabilityController@show')->name('actionability-show');
 
 
 		// Variant Path demo route
-		Route::get('/demo/variant-path/list/', 'DemoController@varaintPathIndex')->name('variant-path-index');
-		Route::get('/demo/variant-path/detail/', 'DemoController@varaintPathShow')->name('variant-path-show');
+		Route::get('/variant-path/all/', 'VariantPathController@index')->name('variant-path-index');
+		Route::get('/variant-path/detail/', 'VariantPathController@show')->name('variant-path-show');
+
+		// Variant Path demo route
+		Route::get('/publication/all/', 'PublicationController@index')->name('publication-index');
+		Route::get('/publication/detail/', 'PublicationController@show')->name('publication-show');
 
 // ************************************************************************************************
 // DEMO ROUTES END 
@@ -51,4 +62,4 @@ Route::get('/demo', 'DemoController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('dashboard');
+Route::get('/me', 'HomeController@index')->name('dashboard');
