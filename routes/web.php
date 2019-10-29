@@ -14,6 +14,8 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::get('/test/test', 'TestController@test')->name('test-test');
+
 
 // ************************************************************************************************
 // DEMO ROUTES START 
