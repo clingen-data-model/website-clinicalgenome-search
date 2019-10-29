@@ -1,14 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "79600c1493c9b240d6ea3119ab98335e",
-=======
-    "content-hash": "0118e9b21bede804eb69832173521308",
->>>>>>> 0c10d2d680c3dd07cb1d759eab0a8714e7351439
+    "content-hash": "31f5fb500aa8b34de3f73f498a0f7b35",
     "packages": [
         {
             "name": "ahsanabrar/laravel-neo4j",
@@ -1560,18 +1556,6 @@
         },
         {
             "name": "nesbot/carbon",
-<<<<<<< HEAD
-            "version": "2.25.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1",
-                "reference": "d59c6cea9c4a3547bb6c0dfec451319abdaa4fb1",
-=======
             "version": "2.25.3",
             "source": {
                 "type": "git",
@@ -1582,7 +1566,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/d07636581795383e2fea2d711212d30f941f2039",
                 "reference": "d07636581795383e2fea2d711212d30f941f2039",
->>>>>>> 0c10d2d680c3dd07cb1d759eab0a8714e7351439
                 "shasum": ""
             },
             "require": {
@@ -1636,11 +1619,7 @@
                 "datetime",
                 "time"
             ],
-<<<<<<< HEAD
-            "time": "2019-10-05T15:52:23+00:00"
-=======
             "time": "2019-10-20T11:05:44+00:00"
->>>>>>> 0c10d2d680c3dd07cb1d759eab0a8714e7351439
         },
         {
             "name": "nikic/php-parser",
