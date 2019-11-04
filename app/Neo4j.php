@@ -516,6 +516,7 @@ GeneDosageAssertion#interpretation
 		$query = '
 			MATCH (n:Agent)
 			OPTIONAL MATCH (n)--(m)
+			NOT((m)-[:wasInvalidatedBy]->())
 			RETURN n.iri as agent, n.label as label, count(m) as count
 			ORDER BY agent'; 
 
@@ -555,6 +556,7 @@ GeneDosageAssertion#interpretation
 			MATCH (n:Agent {iri: "' . $url . '"})
 			OPTIONAL MATCH (n)--(m)
 			WITH {agent:n.iri, label:n.label, curations:collect(m)} as data
+			NOT((m)-[:wasInvalidatedBy]->())
 			RETURN data'; 
 
 		try {
