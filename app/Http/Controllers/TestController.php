@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Alexaandrov\GraphQL\Facades\Client as Genegraph;
+use App\GeneLib;
 
 class TestController extends Controller
 {
@@ -34,23 +34,7 @@ class TestController extends Controller
 	 */
 	public function test(Request $request)
 	{
-		$query = <<<QUERY
-{
-	gene(iri: "HGNC:6407") {
-		label
-		conditions {
-			iri
-			label
-			actionability_curations {
-				report_date
-				source
-			}
-		}     
-	}
-}
-QUERY;
-
-		$queryResponse = Genegraph::fetch($query);
+		$queryResponse = GeneLib::actionabilityList(['iri' => "HGNC:6407"]);
 		
 		dd($queryResponse);
 		

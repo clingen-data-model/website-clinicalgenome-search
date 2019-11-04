@@ -19,3 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
+
+
+/*
+** Provide an api interface between processwire and various databases
+*/
+
+// affiliates
+//Route::middleware('auth:api')->resource('affiliate', 'Api\AffiliateController');
+Route::resource('affiliates', 'Api\AffiliateController');

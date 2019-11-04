@@ -48,7 +48,7 @@ class HeaderSearchBar extends Component
 	          // Using (?i) makes sure it is case intensive
 	          // The UNION makes sure the duplicates are removed.
 	          case 'gene':
-	          	$href_prefix = "/gene/show/";
+	          	$href_prefix = "/genes/";
 	            $query = "
 	            MATCH               (n:Gene) 
 	            WHERE               n.symbol =~ '(?i){$term}.*'

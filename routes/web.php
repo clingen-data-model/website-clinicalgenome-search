@@ -14,18 +14,46 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
+/*
+ * Test route - remove for production
+ */
 Route::get('/test/test', 'TestController@test')->name('test-test');
 
 
-// ************************************************************************************************
-// DEMO ROUTES START 
-// ************************************************************************************************\
+/*
+ * Gene display routes
+ */
+Route::group(['prefix' => 'genes'], function () {
+	
+		Route::get('/', 'GeneController@index')->name('gene-index');
+		
+		Route::get('/page/{page}', 'GeneController@index');
+		
+		Route::get('/page/{page}/view/{psize}', 'GeneController@index');
+		
+		Route::get('/{id?}', 'GeneController@show')->name('gene-show');
+		
+		Route::get('/curations/', 'GeneController@curated')->name('gene-curations');
+		
+});
+
+/*
+ * Gene Validity display routes
+ */
+Route::group(['prefix' => 'validity'], function () {
+	
+		Route::get('/', 'ValidityController@index')->name('validity-index');
+		
+		Route::get('/page/{page}', 'ValidityController@index');
+		
+		Route::get('/page/{page}/view/{psize}', 'ValidityController@index');
+		
+		Route::get('/{id?}', 'ValidityController@show')->name('validity-show');
+				
+});
 
 
-		// Gene demo route
-		Route::get('/gene/all/', 'GeneController@index')->name('gene-index');
-		Route::get('/gene/show/{id?}', 'GeneController@show')->name('gene-show');
-		Route::get('/gene/curations/', 'GeneController@curated')->name('gene-curations');
+		// Scotts stuff :)
 
 		// Condition demo route
 		Route::get('/condition/all/', 'ConditionController@index')->name('condition-index');

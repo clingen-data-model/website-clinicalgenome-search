@@ -16,60 +16,48 @@
                 <table class="table table-striped table-hover">
                     <tr class="small">
                         <th>Gene</th>
-                        <th>Location</th>
-                        <th>Gene Validity</th>
-                        <th>Actionability</th>
-                        <th>Variant Path.</th>
-                        <th>HI <i class="fas fa-info-circle text-info"></i></th>
-                        <th>TI <i class="fas fa-info-circle text-info"></i></th>
-                        <th>pLI <i class="fas fa-info-circle text-info"></i></th>
-                        <th>Reviewed</th>
+                        <th>HGNC</th>
+                        <th>Name</th>
+                        <th>Curations</th>
+                        <th>Date</th>
+               
                     </tr>
+                    @foreach($records as $record)
                     <tr>
-                        <td><a href="{{ route('dosage-show') }}"><strong>BRCA1</strong></a></td>
-                        <td>
-                            <table>
-                                <tr>
-                                    <td class="pr-2 text-22px text-normal" rowspan="2">11</td>
-                                    <td class="text-10px">1234567</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-10px ">5342343</td>
-                                </tr>
-                            </table>
+                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->symbol }}</strong></a></td>
+                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->hgnc_id }}</strong></a>
+							<span class='badge text-xs'>Gene</span>
                         </td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">3 Reports <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">2 Reports <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">15 Reports <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">Sufficient Evidence <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="No evidence for dosage pathogenicity">No Evidence <i class="far fa-chevron-circle-down"></i></td>
-                        <td>0.00 </td>
-                        <td>09/11/2017</td>
-                    </tr>
-                    <tr>
-                        <td><a href="{{ route('dosage-show') }}"><strong>BRCA2</strong></a></td>
+                        <td>{{ $record->name }}</td>
                         <td>
-                            <table>
-                                <tr>
-                                    <td class="pr-2 text-22px text-normal" rowspan="2">11</td>
-                                    <td class="text-10px">1234567</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-10px ">5342343</td>
-                                </tr>
-                            </table>
-                        </td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">5 Reports <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2"> </td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">9 Reports <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Phenotype: BREAST-OVARIAN CANCER, FAMILIAL, SUSCEPTIBILITY TO, 2; BROVCA2">Sufficient Evidence <i class="far fa-chevron-circle-down"></i></td>
-                        <td class="pointer" data-container="body" data-toggle="popover" data-placement="bottom" data-content="No evidence for dosage pathogenicity">No Evidence <i class="far fa-chevron-circle-down"></i></td>
-                        <td>0.00 </td>
-                        <td>09/11/2017</td>
+							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+								@if ($record->hasActionability ?? false)
+									<img class="img-responsive" src="/images/clinicalActionability-on.png">
+								@else
+									<img class="img-responsive" src="/images/clinicalActionability-off.png">
+								@endif
+							</a>
+							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+								@if ($record->hasValidity ?? false)
+									<img class="img-responsive" src="/images/clinicalValidity-on.png">
+								@else
+									<img class="img-responsive" src="/images/clinicalValidity-off.png">
+								@endif
+                            </a>
+                            <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+								@if ($record->hasDosage ?? false)
+									<img class="img-responsive" src="/images/dosageSensitivity-on.png">
+								@else
+									<img class="img-responsive" src="/images/dosageSensitivity-off.png">
+								@endif
+                            </a>
+						</td>
+                        <td>{{ $record->last_curated }}</td>
                     </tr>
-                </table>
-
+                    @endforeach
+				</table>
             </div>
+            
             <nav class="text-center" aria-label="Page navigation">
               <ul class="pagination">
                 <li>
@@ -77,11 +65,11 @@
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
-                <li class="active"><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">5</a></li>
+                <li class="active"><a href="{{ route('gene-index') }}/page/1">1</a></li>
+                <li><a href="{{ route('gene-index') }}/page/2">2</a></li>
+                <li><a href="{{ route('gene-index') }}/page/3">3</a></li>
+                <li><a href="{{ route('gene-index') }}/page/4">4</a></li>
+                <li><a href="{{ route('gene-index') }}/page/5">5</a></li>
                 <li>
                   <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
