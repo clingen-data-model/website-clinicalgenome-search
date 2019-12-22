@@ -10,7 +10,7 @@ use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
 
 /**
- * 
+ *
  * @category   Web
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
@@ -21,8 +21,8 @@ use App\GeneLib;
  * @link       http://pear.php.net/package/PackageName
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      Class available since Release 1.2.0
- * @deprecated 
- * 
+ * @deprecated
+ *
  * */
 class GeneController extends Controller
 {
@@ -32,20 +32,20 @@ class GeneController extends Controller
      * @return void
      */
     public function __construct()
-    {		
+    {
         //$this->middleware('auth');
     }
-    
-    
+
+
     /**
      * Display a listing of all curated genes.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $psize = 20)
+    public function index(Request $request, $page = 0, $psize = 1000)
     {
 		//if (is_int($page)) // don't forget to check the parms
-			
+
 		$display_tabs = collect([
 				'active' => "gene",
 				'query' => "",
@@ -56,15 +56,15 @@ class GeneController extends Controller
 					'variant_path' => "300"
 				]
 		]);
-		
-		$records = GeneLib::geneList([	'page' => $page, 
+
+		$records = GeneLib::geneList([	'page' => $page,
 										'pagesize' => $psize,
 										'curated' => false ]);
-		
+
 		//dd($records);
 		if ($records === null)
 			die("thow an error");
-								
+
         return view('gene.index', compact('display_tabs', 'records'));
     }
 
@@ -85,7 +85,7 @@ class GeneController extends Controller
     //   dosage: [(g)<-[:has_subject]-(a:GeneDosageAssertion)-[:has_predicate]->(i:Interpretation) | i {.iri, .short_label}]}
     // ORDER BY           g.symbol
     // LIMIT 2000';
-    //       
+    //
      $query = '
          MATCH (g:Gene)
          WHERE (g)<-[:has_subject]-(:Assertion)
@@ -103,14 +103,14 @@ class GeneController extends Controller
     //print_r($items->records());
     //die();
     $collection = collect();
-    
+
     //echo "<pre>";
      foreach($items->records() as $item) {
 
          //print_r($item->value('g')['dosage'][0]);
          //echo "<br/>";
          //die();
-         
+
          $collect = (object)[
                  'label'            => $item->value('g')['symbol'],
                  'href'             => $item->value('g')['hgnc_id'],
@@ -130,7 +130,7 @@ class GeneController extends Controller
       //die();
       $collection->all();
       //dd($collection);
-      
+
 
     $display_tabs = collect([
             'active'                            => "gene",
@@ -144,7 +144,7 @@ class GeneController extends Controller
         return view('gene.curated', compact('display_tabs', 'collection'));
 
     }
-    
+
 
     /**
      * Display the specified gene.
@@ -156,7 +156,7 @@ class GeneController extends Controller
     {
 		if ($id === null)
 			die("display some error about needing a gene");
-					
+
 		$display_tabs = collect([
 				'active' => "gene",
 				'query' => "BRCA2",
@@ -167,19 +167,19 @@ class GeneController extends Controller
 					'variant_path' => "300"
 				]
 		]);
-    
-		$record = GeneLib::geneDetail(['page' => 0, 
-										'pagesize' => 20,
+
+		$record = GeneLib::geneDetail(['page' => 0,
+										'pagesize' => 200,
 										'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
 										'validity' => true,
 										'dosage' => true ]);
-							
+
 		//dd($record);
 		if ($record === null)
 			die("thow an error");
-			
+
         return view('gene.show', compact('display_tabs', 'record'));
     }
 }
