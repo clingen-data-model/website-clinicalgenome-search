@@ -56,33 +56,36 @@ Route::group(['prefix' => 'validity'], function () {
 		// Scotts stuff :)
 
 		// Condition demo route
+		// STATIC PAGES FOR REFERENCE
 		Route::get('/disease/all/', 'DiseaseController@index')->name('disease-index');
 		Route::get('/disease/show/', 'DiseaseController@show')->name('disease-show');
-		Route::get('/disease/curations/', 'DiseaseController@curated')->name('disease-curations');
 
 		// Dosage demo route
-		Route::get('/dosage/all/', 'DosageController@index')->name('dosage-index');
+		// STATIC PAGES FOR REFERENCE
+		Route::get('/dosage/', 'DosageController@index')->name('dosage-index');
+
+		// SHOW ISN"T NEEDED - MVP IS A REDIRECT
 		Route::get('/dosage/detail/', 'DosageController@show')->name('dosage-show');
-		Route::get('/dosage/stats/', 'DosageController@stats')->name('dosage-stats');
-		Route::get('/dosage/reports/', 'DosageController@reports')->name('dosage-reports');
-		Route::get('/dosage/download/', 'DosageController@download')->name('dosage-download');
 
 
 		// Gene Validity demo route
+		// STATIC PAGES FOR REFERENCE
 		 Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
 		 Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
 
 
 		// Actionability demo route
-		Route::get('/actionability/all/', 'ActionabilityController@index')->name('actionability-index');
+		Route::get('/actionability/', 'ActionabilityController@index')->name('actionability-index');
 		Route::get('/actionability/detail/', 'ActionabilityController@show')->name('actionability-show');
 
 
 		// Variant Path demo route
+		// NOT FOR MVP
 		Route::get('/variant-path/all/', 'VariantPathController@index')->name('variant-path-index');
 		Route::get('/variant-path/detail/', 'VariantPathController@show')->name('variant-path-show');
 
 		// Variant Path demo route
+		// NOT FOR MVP
 		Route::get('/publication/all/', 'PublicationController@index')->name('publication-index');
 		Route::get('/publication/detail/', 'PublicationController@show')->name('publication-show');
 

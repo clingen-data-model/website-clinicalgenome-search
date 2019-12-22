@@ -51,22 +51,27 @@
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "gene_disease") active @endif ">
               <a class="nav-link" href="{{ route('gene-disease-validity-index') }}">
-                Gene-Disease Validity <small class="badge-sm badge badge-info">{!! $display_tabs['counts']['gene_disease'] !!}</small>
+                Gene-Disease Validity (STATIC)
+              </a>
+            </li>
+            <li class="nav-item @if ($display_tabs['active'] == "gene_disease") active @endif ">
+              <a class="nav-link" href="{{ route('validity-index') }}">
+                Gene-Disease Validity (MVP)
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "dosage") active @endif ">
               <a class="nav-link" href="{{ route('dosage-index') }}">
-                Dosage Sensitivity <small class="badge-sm badge badge-info">{{ $display_tabs['counts']['dosage'] }}</small>
+                Dosage Sensitivity
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
               <a class="nav-link" href="{{ route('actionability-index') }}">
-                Clinical Actionability <small class="badge-sm badge badge-info">{{ $display_tabs['counts']['actionability'] }}</small>
+                Clinical Actionability
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
               <a class="nav-link" href="{{ route('variant-path-index') }}">
-                Variant Pathogenicity <small class="badge-sm badge badge-info">{{ $display_tabs['counts']['variant_path'] }}</small>
+                Variant Pathogenicity
               </a>
             </li>
             @if ($display_tabs['active'] == "gene")
@@ -81,12 +86,13 @@
                 <i class="fas fa-ellipsis-v"></i> More
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Genomic Browser</a></li>
+                  {{-- <li><a href="#">Genomic Browser</a></li> --}}
                   <li><a href="{{ route('gene-curations') }}">Curated Genes</a></li>
-                  <li><a href="{{ route('disease-curations') }}">Curated Diseases</a></li>
-                  <li><a href="{{ route('publication-index') }}">Publications Utilized</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#">APIs and Downloads</a></li>
+                  <li><a href="{{ route('gene-index') }}">All Genes</a></li>
+                  <li><a href="{{ route('disease-index') }}">All Disease</a></li>
+                  {{-- <li role="separator" class="divider"></li>
+                  <li><a href="#">APIs and Downloads</a></li> --}}
                 </ul>
               </li>
 
