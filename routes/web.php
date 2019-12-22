@@ -60,6 +60,11 @@ Route::group(['prefix' => 'validity'], function () {
 		Route::get('/disease/all/', 'DiseaseController@index')->name('disease-index');
 		Route::get('/disease/show/', 'DiseaseController@show')->name('disease-show');
 
+		// Drugs demo route
+		// STATIC PAGES FOR REFERENCE
+		Route::get('/drug/', 'DrugController@index')->name('drug-index');
+		Route::get('/drug/show/', 'DrugController@show')->name('drug-show');
+
 		// Dosage demo route
 		// STATIC PAGES FOR REFERENCE
 		Route::get('/dosage/', 'DosageController@index')->name('dosage-index');

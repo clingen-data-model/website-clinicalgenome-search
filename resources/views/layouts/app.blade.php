@@ -69,14 +69,21 @@
                 Clinical Actionability
               </a>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
+            {{-- <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
               <a class="nav-link" href="{{ route('variant-path-index') }}">
                 Variant Pathogenicity
               </a>
-            </li>
+            </li> --}}
             @if ($display_tabs['active'] == "gene")
             <li class="nav-item active  ">
-              <a class="nav-link" href="{{ route('variant-path-index') }}">
+              <a class="nav-link" href="{{ route('gene-index') }}">
+                Gene
+              </a>
+            </li>
+            @endif
+            @if ($display_tabs['active'] == "disease")
+            <li class="nav-item active  ">
+              <a class="nav-link" href="{{ route('disease-index') }}">
                 Gene
               </a>
             </li>
@@ -91,6 +98,7 @@
                   <li role="separator" class="divider"></li>
                   <li><a href="{{ route('gene-index') }}">All Genes</a></li>
                   <li><a href="{{ route('disease-index') }}">All Disease</a></li>
+                  <li><a href="{{ route('drug-index') }}">All Drugs & Medcations</a></li>
                   {{-- <li role="separator" class="divider"></li>
                   <li><a href="#">APIs and Downloads</a></li> --}}
                 </ul>
