@@ -8,7 +8,7 @@ use App\Traits\Display;
 
 
 /**
- * 
+ *
  * @category   Library
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
@@ -20,12 +20,12 @@ use App\Traits\Display;
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      Class available since Release 1.2.0
  * @deprecated Class deprecated in Release 2.0.0
- * 
+ *
  * */
 class Nodal extends Model
-{    
+{
 	use Display;
-	
+
     /**
      * The attributes that should be validity checked.
      *
@@ -33,7 +33,7 @@ class Nodal extends Model
      */
     public static $rules = [
 	];
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -49,13 +49,13 @@ class Nodal extends Model
      */
     //protected $appends = ['display_location', 'display_date',
 	//					  'list_date', 'display_status'];
-    
-    
+
+
     public const STATUS_ACTIVE = 1;
-    
+
     /*
      * Status strings for display methods
-     * 
+     *
      * */
      protected $status_strings = [
 	 		0 => 'Initialized',
@@ -63,8 +63,8 @@ class Nodal extends Model
 	 		2 => 'Discontinued',
 	 		9 => 'Aborted'
 	];
-	 		 
-	 
+
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -75,8 +75,8 @@ class Nodal extends Model
     {
 		parent::__construct($attributes);
     }
-    
-    
+
+
     /*
      * Find all validity record in the interps matching the mondo id
      *
@@ -86,9 +86,9 @@ class Nodal extends Model
     public function findValidity($mondo)
     {
 		$records = [];
-		
+
 		$mondo = str_replace(':', '_', $mondo);
-		
+
 		// scan through gene validity interps items
 		if (!empty($this->gene_validity_interps))
 			foreach ($this->gene_validity_interps as $item)
@@ -104,18 +104,18 @@ class Nodal extends Model
 							}
 						}
 					}
-							
+
 					$records[] = ['date' => $item['date'],
 								  'classification' => $item['significance']['label'],
-								  'report' => '/gene-validity/' . $permid ?? 0];
+								  'report' => '/validity/' . $permid ?? 0];
 				}
-				
+
 		//dd($records);
-		 
+
 		return $records;
 	}
-	
-	
+
+
 	/*
      * Find all actionability records in the actionability report matching the mondo id
      *
@@ -126,9 +126,9 @@ class Nodal extends Model
     {
 		$records = [];
 		$prefix = "http://purl.obolibrary.org/obo/";
-		
+
 		$mondo = str_replace(':', '_', $mondo);
-		 
+
 		// scan through gene actionability interps items
 		if (!empty($this->actionability_report))
 			foreach ($this->actionability_report as $item)
@@ -140,18 +140,18 @@ class Nodal extends Model
 						$type = 'PEDIATRIC';
 					else
 						$type = 'UNCLASSIFIED';
-						
+
 					$records[] = ['date' => $item['date'],
 								  'report' => $item['report'],
 								  'type' => $type];
 				}
-				
+
 		//dd($records);
-		 
+
 		return $records;
 	}
-	
-	
+
+
 	/*
      * Find all dosage record in the interps matching the mondo id
      *
@@ -161,18 +161,18 @@ class Nodal extends Model
     public function findDosage($mondo)
     {
 		$records = [];
-		
+
 		$mondo = str_replace(':', '_', $mondo);
-		 
+
 		// scan through gene dosage interps items
 		if (!empty($this->gene_dosage_interps))
 			if (basename($this->gene_dosage_interps['condition']['iri']) == $mondo)
 				$records[] = ['date' => $this->gene_dosage_interps['date'],
 							  'classification' => $this->gene_dosage_interps['significance'][0]['label'],
 							  'report' => 'https://www.ncbi.nlm.nih.gov/projects/dbvar/clingen/clingen_gene.cgi?sym=' . $this->symbol . '&subject'];
-				
+
 		//dd($records);
-		 
+
 		return $records;
 	}
 }
