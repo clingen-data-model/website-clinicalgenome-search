@@ -6,7 +6,7 @@ namespace App;
 
 
 /**
- * 
+ *
  * @category   Library
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
@@ -18,27 +18,27 @@ namespace App;
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      Class available since Release 1.2.0
  * @deprecated Class deprecated in Release 2.0.0
- * 
+ *
  * */
- 
+
  /*
   * Temporary static model to transistion the helpers.
   * */
-  
+
 class Helper
-{    
+{
 	//use Display;
-	
-    
-    /*
-     * 
+
+
+		/*
+     *
      *
      * @param	string	$mondo
      * @return 	array
      */
-    static function PrintWrapperPmidSop5($data = null)
+    static function PrintWrapperPmidSop5Gci($data = null)
     {
-		
+
 		  // "<div class=\"WrapperPmid\" >"
 		  // "<div class=\"form-group\">"
 		  // "<div class=\"WrapperPmidResults\">"
@@ -50,7 +50,7 @@ class Helper
 			  $note = "(" . $data->notes->note . ")";
 			else
 			  $note = "";
-			
+
 			if (isset($data->publications))
 			{
 				foreach ($data->publications as $pubs)
@@ -58,18 +58,18 @@ class Helper
 					// ##varInner += pubs.last.inspect
 					if (!isset($pubs->last))
 					{
-						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); "; 
+						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
 					}
 					else
 					{
 						dd($pubs);
-						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); "; 
+						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
 					}
 				}
-			  
-			  // ##varInner += pubs.inspect 
+
+			  // ##varInner += pubs.inspect
 			}
-		  
+
 			$varEnd = $note . "</div>";
 
 			return $varStart . $varInner . $varEnd;
@@ -77,10 +77,59 @@ class Helper
 		else
 			return '';
 	}
-	
-	
+
+
 	/*
-     * 
+     *
+     *
+     * @param	string	$mondo
+     * @return 	array
+     */
+    static function PrintWrapperPmidSop5($data = null)
+    {
+
+		  // "<div class=\"WrapperPmid\" >"
+		  // "<div class=\"form-group\">"
+		  // "<div class=\"WrapperPmidResults\">"
+		$varInner = "";
+		if ($data !== null)
+		{
+			$varStart = "<div class=\"GeneticEvidencePmidData\">";
+			if (!empty($data->notes->note))
+			  $note = "(" . $data->notes->note . ")";
+			else
+			  $note = "";
+
+			if (isset($data->publications))
+			{
+				foreach ($data->publications as $pubs)
+				{
+					// ##varInner += pubs.last.inspect
+					if (!isset($pubs->last))
+					{
+						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
+					}
+					else
+					{
+						dd($pubs);
+						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
+					}
+				}
+
+			  // ##varInner += pubs.inspect
+			}
+
+			$varEnd = $note . "</div>";
+
+			return $varStart . $varInner . $varEnd;
+		}
+		else
+			return '';
+	}
+
+
+	/*
+     *
      *
      * @param	string	$mondo
      * @return 	array
@@ -98,14 +147,14 @@ class Helper
 				$note = "(" . $data->notes->note . ")";
 			else
 				$note = "";
-        
+
 			if (!empty($data->publications))
 			{
 				foreach ($data->publications as $pub)
 				  $varInner .= $pubs["author"] . " et al. " . $pubs["pubdate"] . " (PMID:" . $pubs["uid"] . "); ";
-				//##varInner += pubs.inspect 
+				//##varInner += pubs.inspect
 			}
-	  
+
 			$varEnd = $note . "</div>";
 
 			return $varStart . $varInner . $varEnd;
@@ -113,6 +162,6 @@ class Helper
 		else
 			return "";
 	}
-	
-	
+
+
 }
