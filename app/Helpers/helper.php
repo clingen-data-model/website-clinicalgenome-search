@@ -22,20 +22,20 @@
 			  $note = "(" . $data->notes->note . ")";
 			else
 			  $note = "";
-
-			if (isset($data->publications))
+			//dd($data->Publications);
+			if (isset($data->Publications))
 			{
-				foreach ($data->publications as $pubs)
+				foreach ($data->Publications as $pubs)
 				{
 					// ##varInner += pubs.last.inspect
 					if (!isset($pubs->last))
 					{
-						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
+						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->pmid . "); ";
 					}
 					else
 					{
 						dd($pubs);
-						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
+						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["pmid"] . "); ";
 					}
 				}
 
@@ -71,20 +71,20 @@
 			  $note = "(" . $data->notes->note . ")";
 			else
 			  $note = "";
-
-			if (isset($data->publications))
+			//dd($data->Publications);
+			if (isset($data->Publications))
 			{
-				foreach ($data->publications as $pubs)
+				foreach ($data->Publications as $pubs)
 				{
 					// ##varInner += pubs.last.inspect
 					if (!isset($pubs->last))
 					{
-						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
+						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->pmid . "); ";
 					}
 					else
 					{
 						dd($pubs);
-						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
+						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["pmid"] . "); ";
 					}
 				}
 

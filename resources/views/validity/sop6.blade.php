@@ -93,7 +93,7 @@
 				{{ $score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->PointsCounted ?? null }}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
-				{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) !!}
 			</span></td>
 		</tr>
 		<tr>
@@ -109,7 +109,7 @@
 			<td class="points-tally-bg">
 				{{ $score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->PointsCounted ?? null }}
 			<td class="input-width-pmid ">
-				{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Evidence ?? null ) !!}
 		  </td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@
 								{{ $score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->PointsCounted ?? null }}
 
 			<td class="input-width-pmid table-border-thin">
-								{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Evidence ?? null ) }}
+								{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Evidence ?? null ) !!}
 
 
 			  </td>
@@ -149,7 +149,7 @@
 					{{ $score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->PointsCounted ?? null }}
 			</td>
 			<td class="input-width-pmid">
-								{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Evidence ?? null ) }}
+								{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -161,7 +161,7 @@
 				{{ $score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->TotalPoints ?? null }}
 			</div></td>
 			<td class="input-width-pmid  table-border-thin">
-				{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Evidence ?? null ) !!}
 
 			</td>
 		</tr>
@@ -178,13 +178,13 @@
 		  <td colspan="2" class='table-border-thin'>Candidate gene sequencing</td>
 		  <td colspan="2" class='table-border-thin'>{{ $score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->SummedLod ?? null}}</td>
 		  <td class=' input-width-numbers table-border-thin'>{{ $score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->FamilyCount ?? null}}</td>
-		  <td class="input-width-pmid  table-border-thin">{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->Evidence ?? null) }}</td>
+		  <td class="input-width-pmid  table-border-thin">{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->Evidence ?? null) !!}</td>
 	  </tr>
 		<tr>
 		  <td colspan="2" class='table-border-thin'>Exome/genome or all genes sequenced in linkage region</td>
 		  <td colspan="2" class='table-border-thin'>{{ $score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->ExomeSequencingMethod->SummedLod ?? null}}</td>
 		  <td class=' input-width-numbers table-border-thin'>{{ $score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->ExomeSequencingMethod->FamilyCount ?? null}}</td>
-		  <td class="input-width-pmid  table-border-thin">{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->ExomeSequencingMethod->Evidence ?? null) }}</td>
+		  <td class="input-width-pmid  table-border-thin">{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseLevelData->SegregationEvidence->ExomeSequencingMethod->Evidence ?? null) !!}</td>
 	  </tr>
 		<tr>
 		  <td colspan="2" class='table-heading-line-normal'>Total Summed LOD Score</td>
@@ -232,7 +232,7 @@
 
 			</td>
 			<td class="input-width-pmid">
-						  			  	{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Evidence ?? null ) }}
+						  			  	{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Evidence ?? null ) !!}
 
 			</td>
 		</tr>
@@ -247,7 +247,7 @@
 				</div>
 			</td>
 			<td class="input-width-pmid">
-						  			  	{{ PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Evidence ?? null ) }}
+						  			  	{!! PrintWrapperPmidSop5Gci($score_json->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -299,7 +299,7 @@
 						{{ $score_json->ExperimentalEvidence->Function->PointsCounted ?? null }}
 			</td>
 			<td class="input-width-pmid">
-						  			  	{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->BiochemicalFunction->Evidence ?? null ) }}
+						  			  	{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->BiochemicalFunction->Evidence ?? null ) !!}
 
 			</td>
 		</tr>
@@ -312,7 +312,7 @@
 				{{ $score_json->ExperimentalEvidence->Function->ProteinInteraction->TotalPoints ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->ProteinInteraction->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->ProteinInteraction->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -324,7 +324,7 @@
 						{{ $score_json->ExperimentalEvidence->Function->Expression->TotalPoints ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-				{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->Expression->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Function->Expression->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -343,7 +343,7 @@
 						{{ $score_json->ExperimentalEvidence->FunctionalAlteration->PointsCounted ?? null }}
 			</td>
 			<td class="input-width-pmid">
-			  {{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->FunctionalAlteration->PatientCells->Evidence ?? null ) }}
+			  {!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->FunctionalAlteration->PatientCells->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -355,7 +355,7 @@
 						{{ $score_json->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->TotalPoints ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-			  {{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Evidence ?? null ) }}
+			  {!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -372,7 +372,7 @@
 						{{ $score_json->ExperimentalEvidence->ModelsRescue->PointsCounted ?? null }}
 		  </td>
 		  <td class="input-width-pmid">
-		  	{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->Evidence ?? null ) }}
+		  	{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->Evidence ?? null ) !!}
 			</td>
 	  </tr>
 		<tr>
@@ -384,7 +384,7 @@
 						{{ $score_json->ExperimentalEvidence->Models->CellCultureModel->TotalPoints ?? null }}
 		  </span></td>
 		  <td class="input-width-pmid  table-border-thin">
-						  	{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Models->CellCultureModel->Evidence ?? null ) }}
+						  	{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Models->CellCultureModel->Evidence ?? null ) !!}
 
 		  </td>
 	  </tr>
@@ -400,7 +400,7 @@
 				</div>
 			</td>
 			<td class="input-width-pmid">
-						  	{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInHuman->Evidence ?? null ) }}
+						  	{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInHuman->Evidence ?? null ) !!}
 
 			</td>
 		</tr>
@@ -413,7 +413,7 @@
 						{{ $score_json->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->TotalPoints ?? null }}
 				</div></td>
 			<td class="input-width-pmid">
-				{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -425,7 +425,7 @@
 						{{ $score_json->ExperimentalEvidence->Rescue->RescueInCellCultureModel->TotalPoints ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -437,7 +437,7 @@
 						{{ $score_json->ExperimentalEvidence->Rescue->RescueInPatientCell->TotalPoints ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInPatientCell->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ExperimentalEvidence->Rescue->RescueInPatientCell->Evidence ?? null ) !!}
 			</td>
 		</tr>
 		<tr>
@@ -491,7 +491,7 @@
 				{{ $score_json->summary->EvidencePointsTotal ?? null }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-total table-total-border">
-				@if (($score_json->ReplicationOverTime->Value ?? null) == "YES")
+				@if (($score_json->ReplicationOverTime ?? null) == "YES")
 					YES
 				@else
 					NO
@@ -533,7 +533,7 @@
 				@endif
 								</td>
 								<td class="col-sm-10">
-				{{ PrintWrapperPmidSop5Gci($score_json->ValidContradictoryEvidence->Evidence ?? null ) }}
+				{!! PrintWrapperPmidSop5Gci($score_json->ValidContradictoryEvidence->Evidence ?? null ) !!}
 								</td>
 							</tr>
 						</table>
