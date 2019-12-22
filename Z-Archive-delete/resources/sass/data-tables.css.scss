@@ -1,0 +1,69 @@
+/* CSS Document */
+
+.hideDataTableFilters .dataTables_filter {
+  display: none;
+}
+
+
+a.info-popover {
+  color: #000
+}
+.info-popover:hover {
+  cursor: help;
+}
+
+.info-popover-template .popover-title {
+    margin: 0;
+    padding: 3px 14px 11px 14px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 10px;
+    background-color: #fff;
+    border-bottom: none;
+    border-radius: 5px 5px 0 0;
+    display: block;
+}
+
+#interactive_curations_table_filter {
+  display: none;
+ } 
+#interactive_curations_form .input-group-addon {
+    background-color: #fff !important;
+    border: 1px solid #ccc;
+    border-right: 0px none;
+    padding-right: 0px;
+}
+.table-interactive {
+    border: 1px solid #ddd;
+    border-top:none !important;
+    border:none !important;
+}
+.heading-border-left {
+  border-left: 1px solid #ddd !important;
+}
+table.table-interactive thead th.heading-border {
+  border-left: none !important;
+  border-right: none !important;
+  border: 1px solid #ddd;
+  padding-bottom: 5px !important;
+
+}
+#interactive_curations_form .form-control {
+  border-left: 0px none;
+}
+table.table-interactive thead th, table.table-interactive thead td {
+    padding: 5px 15px 5px 15px !important;
+}
+table.table-interactive {
+    clear: both;
+    margin-top: 10px !important;
+    margin-bottom: 6px !important;
+    max-width: none !important;
+}
+table.table-bordered.table-interactive {
+    border-collapse: separate !important;
+}
+table.table-interactive thead .sorting:after, table.table-interactive thead .sorting_asc:after, table.table-interactive thead .sorting_desc:after {
+    top: auto !important;
+    bottom: 4px !important;
+}

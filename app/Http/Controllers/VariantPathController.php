@@ -4,6 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/*
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    +++++++++++++++++++++++++++++++++++++++++++++++
+        This feature is not required for the 4.0 release
+        Controller available for testing and tinkering only
+        WISHLIST would be to pull data from the e-repo
+    +++++++++++++++++++++++++++++++++++++++++++++++
+*/
+
 class VariantPathController extends Controller
 {
     /**
@@ -25,7 +39,7 @@ class VariantPathController extends Controller
         return view('variant-path.index', compact('display_tabs'));
     }
 
-            
+
 
     /**
      * Display the specified resource.

@@ -1,0 +1,175 @@
+/* CSS Document */
+
+
+table#dataplatform td.pending-effort {
+  background-color: #f5f5f5;
+  border-left: 2px solid #fff;
+  
+}
+table#dataplatform h4 {
+  font-weight: bold !important;
+}
+
+table#dataplatform .border-left-bold {
+  border-left: 5px solid #CDCDCD;
+}
+
+table#dataplatform .area-d, table#dataplatform .area-v{
+  border-left: 2px solid #e8e8e8;
+}
+table#dataplatform .area-d, table#dataplatform .area-v, table#dataplatform .area-g{
+  text-align: center;
+}
+
+table#dataplatform .area-d{
+  background-color: #f5f5f5;
+}
+table#dataplatform .area-v{
+  background-color: #EEEEEE;
+}
+table#dataplatform .area-g{
+  background-color: #f5f5f5;
+}
+
+table#dataplatform .label {
+  white-space: normal;
+  display: block;
+  text-align: left;
+  margin-bottom: 4px;
+/*
+  border-radius: 10px;
+  padding: 5px 6px;
+*/
+  
+  border-radius: 0px;
+  padding: 5px 3px;
+  font-size: 80%;
+}
+table#dataplatform .popover-title {
+  font-size: 13px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  font-weight: bold !important;
+}
+
+
+.label-stanford{
+  border-left: 5px solid #990000;
+  background-color: #fbdede;
+  color: #333 !important;
+}
+.label-{
+  border-left: 5px solid #ccc;
+  background-color: #ebebeb;
+  color: #333 !important;
+}
+.label-baylor{
+  border-left: 5px solid #0099cc;
+  background-color: #d4f4ff;
+  color: #333 !important;
+}
+.label-u41{
+  border-left: 5px solid #006600;
+  background-color: #dcffdc;
+  color: #333 !important;
+}
+.label-external{
+  border-left: 5px solid #666;
+  background-color: #f1f1f1;
+  color: #333 !important;
+}
+.label-unc{
+  border-left: 5px solid #ffcc00;
+  background-color: #fff7d6;
+  color: #333 !important;
+}
+
+.label-major{
+  border-left: 5px solid #CC00FF;
+  background-color: #FEEBFF;
+  color: #333 !important;
+}
+
+.label-stanford-input{
+  border: 1px solid #990000;
+  border-left: 10px solid #990000;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.label-baylor-input{
+  border: 1px solid #0099cc;
+  border-left: 10px solid #0099cc;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.label-u41-input{
+  border: 1px solid #006600;
+  border-left: 10px solid #006600;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.label-external-input{
+  border: 1px solid #666;
+  border-left: 10px solid #666;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+.label-unc-input{
+  border: 1px solid #ffcc00;
+  border-left: 10px solid #ffcc00;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.label-icon-input{
+  border: 1px solid #CC00FF;
+  border-left: 10px solid #CC00FF;
+  background-color: #fff;
+  color: #333 !important;
+  font-size: 12px;
+  padding-left: 3px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+
+.label-major i{
+  float: right;
+}
+
+.label-icon-input i{
+}
+
+
+
+td.rotate {
+  /* Something you can count on */
+  
+  white-space: nowrap;
+  background-color: #ddd !important;
+  font-size: 9px;
+  line-height: normal;
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  font-weight: bold;
+}

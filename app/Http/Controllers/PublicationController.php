@@ -4,6 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/*
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    +++++++++++++++++++++++++++++++++++++++++++++++
+        This feature is not required for the 4.0 release
+        Controller available for testing and tinkering only
+    +++++++++++++++++++++++++++++++++++++++++++++++
+*/
+
 class PublicationController extends Controller
 {
     /**

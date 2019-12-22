@@ -1,0 +1,292 @@
+/* CSS Document */
+
+
+/* curation_dashboard */
+#curation_dashboard .panel-heading {
+  padding-bottom: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom: none;
+}
+#curation_dashboard .panel-heading .nav-tabs {
+    padding-left: 15px;
+}
+
+/* CURATION RESULTS*/
+.results_curation_summary dl {
+  margin-bottom: 0px;
+}
+#results_curation_summary_heading {
+  padding-top: 0px;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+#knowledge_search_results .nav-tabs {
+  border: none;
+}
+#knowledge_search_results .nav-tabs>li {
+  margin-bottom: 0px;
+}
+#knowledge_search_results .nav-tabs>li>a {
+    margin-right: 9px !important;
+    background-color: #a7ccf3 !important;
+  font-weight: 500;
+  border: none;
+}
+
+#knowledge_search_results .nav-tabs>li.active>a {
+    background-color: #fff !important;
+}
+#results_curation_summary_heading .border-left {
+  border-left: solid 5px #ddd !important;
+  display: block;
+  padding-left: 6px;
+}
+.results_curation_summary_details table.table {
+  margin-bottom: 5px;
+}
+.results_curation_summary_details hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: 4px solid #f4f4f4;
+}
+.results_curation_summary_details hr.results_curation_summary_details_spacer {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-top: 4px solid #f4f4f4;
+}
+.results_curation_summary_details .border-left {
+  border-left: solid 5px #ddd !important;
+}
+#results_curation_summary_heading .row {
+  padding-top: 0px;
+/*  background-color: #ddd !important;*/
+  color: #828282 !important;
+  font-size: 12px;
+}
+.thead-labels th {
+  margin: 0px !important;
+    padding: 0px 5px !important;
+    font-size: 10px !important;
+    color: #828282;
+    background-color: #ddd !important;
+}
+.panel-group-curated .thead-labels th {
+    margin: 0px !important;
+    padding: 2px 5px !important;
+    font-size: 11px !important;
+    color: #cee3f5 !important;
+    background-color: #1863a3 !important;
+}
+.panel-group-curated .panel-primary>.panel-heading {
+    background-color: #1863a3 !important;
+  border-radius: 0px;
+}
+.panel-group-curated .panel-primary>.panel-heading+.panel-collapse>.panel-body {
+    border:none !important;
+}
+.panel-group-curated .panel {
+  margin: 0px !important;
+  padding: 0px !important;
+  border-radius: 0px;
+}
+.results_curation_summary .nav-tabs {
+  border-bottom: 6px solid #428bca;
+}
+.results_curation_summary .nav-tabs .active a, .results_curation_summary .nav-tabs .active a:hover {
+  background-color: #428bca; 
+  color: #fff
+}
+.panel-group-curated .panel>.table, .panel-group-curated .panel>.table-responsive>.table, .panel-group-curated .panel>.panel-collapse>.table {
+    margin-bottom: 26px;
+}
+
+
+
+.geneValidityScoresWrapper .points-given-bg {
+	background-color: #dbeaff;
+}
+.geneValidityScoresWrapper .CalculatedClassificationsActive, .geneValidityScoresWrapper .AssignedPoints {
+	background-color: #dbeaff !important;
+	
+}
+
+.geneValidityScoresWrapper .CalculatedClassificationsActive-2 {
+	background-color: #aaccff !important;
+	
+}
+
+.geneValidityScoresWrapper .CalculatedClassificationsActive-3 {
+	background-color: #7fb2ff !important;
+	
+}
+
+
+
+.geneValidityScoresWrapper .GeneticEvidencePmidData {
+	display: inline;
+}
+.geneValidityScoresWrapper .WrapperPmidResults {
+	text-align: left;
+}
+.geneValidityScoresWrapper .badge.superscript {
+	font-size: 9px !important;
+	font-weight: normal !important;
+    min-width: 8px;
+    padding: 1px;
+    color: #666;
+    text-align: center;
+    background-color: #fff;
+    bottom: 4px;
+    position: relative;
+}
+.geneValidityScoresWrapper .points-tally-bg {
+	background-color: #c6ddff;
+}
+.geneValidityScoresWrapper .points-tally-bg input {
+	padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+.geneValidityScoresWrapper .text-tight {
+	line-height: normal;
+}
+.geneValidityScoresWrapper .table-heading-tight {
+	padding-top: 1px !important;
+	padding-bottom: 1px !important;
+	line-height: normal !important;
+}
+
+.geneValidityScoresWrapper .table-heading.points-given-bg {
+	background-color: #c6ddff;
+}
+.geneValidityScoresWrapper .table-heading.points-tally-bg {
+	background-color: #c6ddff;
+}
+.geneValidityScoresWrapper .table-total.points-given-bg {
+	background-color: #c6ddff;
+}
+.geneValidityScoresWrapper .table-total.points-tally-bg {
+	background-color: #c6ddff;
+}
+
+
+.geneValidityScoresWrapper .table > thead > tr > th, .geneValidityScoresWrapper .table > tbody > tr > th, .geneValidityScoresWrapper .table > tfoot > tr > th, .geneValidityScoresWrapper .table > thead > tr > td, .geneValidityScoresWrapper .table > tbody > tr > td, .geneValidityScoresWrapper .table > tfoot > tr > td {
+	vertical-align: middle;
+}
+
+.geneValidityScoresWrapper .table-heading {
+	line-height: normal;
+	font-weight: bold;
+	font-size: 125%;
+}
+
+.geneValidityScoresWrapper .total-notes {
+	margin-bottom: 0px;
+}
+.geneValidityScoresWrapper .input-width-numbers .form-group {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+.geneValidityScoresWrapper .input-width-pmid table {
+	width: 100%;
+}
+.geneValidityScoresWrapper .input-width-pmid input.pmid {
+	width: 99%;
+	text-align: center;
+	padding-left: 4px !important;
+	margin-right: 1%;
+	padding-right: 4px !important;
+	padding-top: 2px !important;
+	padding-bottom: 2px !important;
+	display: inline-block !important;
+	height: 28px;
+}
+.geneValidityScoresWrapper .input-width-pmid .form-group {
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+.geneValidityScoresWrapper .table-total {
+	line-height: normal;
+	font-weight: bold;
+	font-size: 125%;
+}
+.geneValidityScoresWrapper .table-total, .table-heading-bg.table-total-border {
+	border-left: 2px solid #000 !important
+}
+.geneValidityScoresWrapper .table-heading-bg {
+	background-color: #e3e3e3;
+	border: none !important;
+}
+
+.geneValidityScoresWrapper .table-title-vertical {
+	font-size: 125% !important;
+}
+.geneValidityScoresWrapper .table-title-text {
+	display: inline-block;
+	overflow: hidden;
+	width: 1.5em;
+}
+.geneValidityScoresWrapper .table-title-text-inner {
+	display: inline-block;
+	white-space: nowrap;
+	line-height: 1.5;
+	transform: translate(0,100%) rotate(-90deg);
+	transform-origin: 0 0;
+}
+
+/* This element stretches the parent to be square
+   by using the mechanics of vertical margins  */
+   
+.geneValidityScoresWrapper .table-title-text-inner:after {
+	content: "";
+	display: block;
+	margin: -1.5em 0 100%;
+}
+
+.geneValidityScoresWrapper .table-border-thin {
+	border-bottom:2px solid #999 !important;
+}
+.geneValidityScoresWrapper .table-border-thick {
+	border:12px solid #000 !important;
+}
+.geneValidityScoresWrapper .table-border-normal {
+	border:6px solid #000 !important;
+}
+
+.geneValidityScoresWrapper .table-heading-line-thick {
+	border-bottom:12px solid #000 !important;
+}
+
+.geneValidityScoresWrapper .table-heading-line-normal {
+	border-bottom: 6px solid #000 !important;
+}
+
+.geneValidityScoresWrapper .table-heading-line-thin {
+	border-bottom: 3px solid #666 !important;
+}
+
+tr.LIMITED td.LIMITED, tr.MODERATE td.MODERATE, tr.STRONG td.STRONG, tr.DEFINITIVE td.DEFINITIVE {
+	background-color: #dbeaff !important;
+}
+
+.geneValidityScoresWrapper .table-title {
+	font-weight: bold;
+	font-size: 115%;
+}
+.geneValidityScoresWrapper .table {
+	text-align: center;
+	font-size: 11px;
+}
+.geneValidityScoresWrapper .table-text {
+	font-weight: normal;
+}
+
+
+
+.geneValidityScoresWrapper .WrapperPmid .form-group {
+	padding-bottom: 5px;
+}

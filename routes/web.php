@@ -24,41 +24,41 @@ Route::get('/test/test', 'TestController@test')->name('test-test');
  * Gene display routes
  */
 Route::group(['prefix' => 'genes'], function () {
-	
+
 		Route::get('/', 'GeneController@index')->name('gene-index');
-		
+
 		Route::get('/page/{page}', 'GeneController@index');
-		
+
 		Route::get('/page/{page}/view/{psize}', 'GeneController@index');
-		
+
 		Route::get('/{id?}', 'GeneController@show')->name('gene-show');
-		
+
 		Route::get('/curations/', 'GeneController@curated')->name('gene-curations');
-		
+
 });
 
 /*
  * Gene Validity display routes
  */
 Route::group(['prefix' => 'validity'], function () {
-	
+
 		Route::get('/', 'ValidityController@index')->name('validity-index');
-		
+
 		Route::get('/page/{page}', 'ValidityController@index');
-		
+
 		Route::get('/page/{page}/view/{psize}', 'ValidityController@index');
-		
+
 		Route::get('/{id?}', 'ValidityController@show')->name('validity-show');
-				
+
 });
 
 
 		// Scotts stuff :)
 
 		// Condition demo route
-		Route::get('/condition/all/', 'ConditionController@index')->name('condition-index');
-		Route::get('/condition/show/', 'ConditionController@show')->name('condition-show');
-		Route::get('/condition/curations/', 'ConditionController@curated')->name('condition-curations');
+		Route::get('/disease/all/', 'DiseaseController@index')->name('disease-index');
+		Route::get('/disease/show/', 'DiseaseController@show')->name('disease-show');
+		Route::get('/disease/curations/', 'DiseaseController@curated')->name('disease-curations');
 
 		// Dosage demo route
 		Route::get('/dosage/all/', 'DosageController@index')->name('dosage-index');
@@ -69,8 +69,8 @@ Route::group(['prefix' => 'validity'], function () {
 
 
 		// Gene Validity demo route
-		Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
-		Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
+		 Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
+		 Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
 
 
 		// Actionability demo route
@@ -87,7 +87,7 @@ Route::group(['prefix' => 'validity'], function () {
 		Route::get('/publication/detail/', 'PublicationController@show')->name('publication-show');
 
 // ************************************************************************************************
-// DEMO ROUTES END 
+// DEMO ROUTES END
 // ************************************************************************************************
 
 Auth::routes();

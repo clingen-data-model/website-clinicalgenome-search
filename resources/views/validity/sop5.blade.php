@@ -226,9 +226,9 @@
 	  </tr>
 		<tr>
 			<td colspan="2" class="table-title">Single Variant Analysis</td>
-			<td colspan="3" rowspan="2" class="text-left">1. Variant Detection Methodology<br> 
-				2. Power<br> 
-				3. Bias and confounding<br> 
+			<td colspan="3" rowspan="2" class="text-left">1. Variant Detection Methodology<br>
+				2. Power<br>
+				3. Bias and confounding<br>
 				4. Statistical Significance</td>
 			<td colspan="2">0-6</td>
 			<td rowspan="2" id="GeneticEvidence6Max">12</td>
@@ -447,7 +447,7 @@
 			<div class="form-group total-notes">
 				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->TotalExperimentalEvidencePoints->notes }}
         </div>
-			
+
 			</td>
 		</tr>
 	</tbody>
@@ -521,7 +521,7 @@
 				<br>
 			</td>
 			<td colspan="4" class="table-heading-line-thick text-left">
-				
+
 				<div class="input-width-pmid">
 					<div class="form-group">
 						<table>
@@ -539,13 +539,13 @@
 							</tr>
 						</table>
 					</div>
-					
+
 				</div>
 			</td>
 		</tr>
-		
-		
-		
+
+
+
 		<tr>
 			<td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION (DATE)</td>
 			<td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive">
@@ -578,12 +578,12 @@
 			</td>
 			<td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive">
 				<div class='col-sm-8'>
-          
+
           {{ $score_string_sop5->scoreJson->summary->CuratorClassification }}
-          
+
 				</div>
 				<div class='col-sm-4'>
-					
+
           {{ $score_string_sop5->scoreJson->summary->CuratorClassificationDate }}
 				</div>
 				<div class='col-sm-12'>
@@ -606,7 +606,7 @@
           {{ $score_string_sop5->scoreJson->summary->FinalClassificationNotes }}</div>
 
 					</td>
-			
+
 		</tr>
 		@endif
 	</tbody>

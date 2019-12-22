@@ -83,7 +83,7 @@
                 <ul class="dropdown-menu">
                   <li><a href="#">Genomic Browser</a></li>
                   <li><a href="{{ route('gene-curations') }}">Curated Genes</a></li>
-                  <li><a href="{{ route('condition-curations') }}">Curated Conditions</a></li>
+                  <li><a href="{{ route('disease-curations') }}">Curated Diseases</a></li>
                   <li><a href="{{ route('publication-index') }}">Publications Utilized</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#">APIs and Downloads</a></li>
@@ -152,7 +152,7 @@
 
     @yield('script_js')
     <script>
-      
+
     </script>
 
   </body>
