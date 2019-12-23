@@ -42,7 +42,7 @@ class GeneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $psize = 1000)
+    public function index(Request $request, $page = 0, $psize = 6000)
     {
 		//if (is_int($page)) // don't forget to check the parms
 

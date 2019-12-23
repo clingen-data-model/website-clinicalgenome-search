@@ -38,7 +38,7 @@
   <tr style="">
     <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">SOP:</td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      <a href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/">Gene Clinical Validity Standard Operating Procedures (SOP), Version 6</a>
+      <a href="{{ env('CG_URL_VALIDITY_SOP', 'http://www.clinicalgenome.org') }}">Gene Clinical Validity Standard Operating Procedures (SOP), Version 6</a>
       </strong></td>
   </tr>
 </table>

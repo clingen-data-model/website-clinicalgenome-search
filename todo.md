@@ -1,4 +1,4 @@
-# Open Items
+# Open Items (so big, small, who cares)
 Quick tracking of items that need to be worked on...
 - test and correct SOP5 display from GCI
 - test and correct SOP5 display from Express
@@ -19,3 +19,4 @@ Quick tracking of items that need to be worked on...
 - Remove all gene graph
 - Reminder - Display MOI date on gene and disease page
 - Reminder - Make sure not to hide duplicate curations on gene and disease pages
+- Page count finalization

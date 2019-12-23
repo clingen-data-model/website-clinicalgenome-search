@@ -27,16 +27,8 @@ class VariantPathController extends Controller
      */
     public function index()
     {
-    $display_tabs = collect([
-            'active'                            => "variant_path",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('variant-path.index', compact('display_tabs'));
+        $url = env('CG_URL_CURATIONS_VARANTS', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 
 
@@ -49,15 +41,7 @@ class VariantPathController extends Controller
      */
     public function show($id)
     {
-    $display_tabs = collect([
-            'active'                            => "variant_path",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('variant-path.show', compact('display_tabs'));
+        $url = env('CG_URL_CURATIONS_VARANTS', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 }

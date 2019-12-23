@@ -26,7 +26,8 @@ class ActionabilityController extends Controller
     public function index()
     {
         // redirect to ACI
-        // https://actionability.clinicalgenome.org/ac/
+        $url = env('CG_URL_CURATIONS_ACTIONABILITY', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 
 
@@ -40,7 +41,8 @@ class ActionabilityController extends Controller
     {
 
         // redirect to ACI
-        // https://actionability.clinicalgenome.org/ac/
+        $url = env('CG_URL_CURATIONS_ACTIONABILITY', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 
 
