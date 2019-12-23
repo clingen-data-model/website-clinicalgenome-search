@@ -31,9 +31,10 @@ Route::group(['prefix' => 'genes'], function () {
 
 		Route::get('/page/{page}/view/{psize}', 'GeneController@index');
 
+		Route::get('/curations/', 'GeneController@curated')->name('gene-curations');
+
 		Route::get('/{id?}', 'GeneController@show')->name('gene-show');
 
-		Route::get('/curations/', 'GeneController@curated')->name('gene-curations');
 
 });
 
