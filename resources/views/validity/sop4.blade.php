@@ -76,7 +76,7 @@
     <td class="input-width-pmid">
       <?=PrintWrapperPmid("GeneticEvidence2", $GeneticEvidence2Pmid) ?>
       <%= PrintWrapperPmid('0', (@assertionScoreJson.dig "GeneticEvidence","CaseLevelData","VariantEvidence","AutosomalDominantDisease","ProbandWithLOF","pmid")).html_safe %>
-      
+
       </td>
   </tr>
   <tr>
@@ -102,7 +102,7 @@
     <td class="input-width-pmid table-border-thin"><span class="input-width-pmid">
       <?=PrintWrapperPmid("GeneticEvidence1", $GeneticEvidence1Pmid) ?>
       <%= PrintWrapperPmid('0', (@assertionScoreJson.dig "GeneticEvidence","CaseLevelData","VariantEvidence","AutosomalDominantDisease","ProbandWithNon-LOF","pmid")).html_safe %>
-      
+
       </span></td>
   </tr>
   <tr>

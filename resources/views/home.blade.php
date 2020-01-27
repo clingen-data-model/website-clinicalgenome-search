@@ -7,11 +7,7 @@
             <div class="card">
 
                 <div class="card-body">
-                    @isset($collection)
-                        @foreach($collection as $item)
-                            {{ $item->symbol }} <br />
-                        @endforeach
-                    @endisset
+                    Placeholder content. Current site redirects but don't implement as makes testing tricky
                 </div>
             </div>
         </div>

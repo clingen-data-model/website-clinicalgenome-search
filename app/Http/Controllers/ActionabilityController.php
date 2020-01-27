@@ -4,6 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/*
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    +++++++++++++++++++++++++++++++++++++++++++++++
+        Actionability will redirect to ACI pages and reports
+    +++++++++++++++++++++++++++++++++++++++++++++++
+*/
+
 class ActionabilityController extends Controller
 {
     /**
@@ -13,19 +25,12 @@ class ActionabilityController extends Controller
      */
     public function index()
     {
-    $display_tabs = collect([
-            'active'                            => "actionability",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('clinical-actionability.index', compact('display_tabs'));
+        // redirect to ACI
+        $url = env('CG_URL_CURATIONS_ACTIONABILITY', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 
-     
+
     /**
      * Display the specified resource.
      *
@@ -34,17 +39,11 @@ class ActionabilityController extends Controller
      */
     public function show($id)
     {
-    $display_tabs = collect([
-            'active'                            => "actionability",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('clinical-actionability.show', compact('display_tabs'));
+
+        // redirect to ACI
+        $url = env('CG_URL_CURATIONS_ACTIONABILITY', 'http://www.clinicalgenome.org');
+        return redirect()->away($url);
     }
 
-    
+
 }

@@ -8,7 +8,7 @@ use App\GeneLib;
 use App\Helper;
 
 /**
- * 
+ *
  * @category   Web
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
@@ -19,7 +19,7 @@ use App\Helper;
  * @link       http://pear.php.net/package/PackageName
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      Class available since Release 1.0.0
- * 
+ *
  * */
 class ValidityController extends Controller
 {
@@ -29,11 +29,11 @@ class ValidityController extends Controller
      * @return void
      */
     public function __construct()
-    {		
+    {
         //$this->middleware('auth');
     }
-    
-    
+
+
     /**
      * Display a listing of all gene validity assertions.
      *
@@ -42,7 +42,7 @@ class ValidityController extends Controller
     public function index(Request $request, $page = 0, $psize = 20)
     {
 		//if (is_int($page)) // don't forget to check the parms
-			
+
 		$display_tabs = collect([
 				'active' => "gene",
 				'query' => "",
@@ -53,15 +53,15 @@ class ValidityController extends Controller
 					'variant_path' => "300"
 				]
 		]);
-		
-		$records = GeneLib::validityList([	'page' => $page, 
+
+		$records = GeneLib::validityList([	'page' => $page,
 											'pagesize' => $psize
 										]);
-		
+
 		dd($records);
 		if ($records === null)
 			die("thow an error");
-								
+
         return view('validity.index', compact('display_tabs', 'records'));
     }
 
@@ -76,7 +76,7 @@ class ValidityController extends Controller
     {
 		if ($id === null)
 			die("display some error about needing an id");
-					
+
 		$display_tabs = collect([
 				'active' => "gene",
 				'query' => "BRCA2",
@@ -87,41 +87,55 @@ class ValidityController extends Controller
 					'variant_path' => "300"
 				]
 		]);
-    
-		$record = GeneLib::validityDetail(['page' => 0, 
+
+		$record = GeneLib::validityDetail(['page' => 0,
 										'pagesize' => 20,
 										'perm' => $id
 										 ]);
-		
-		// what the old views use, just trying to understand whats needed for now
-		if (empty($record->n->score_string))
-			$score_string_sop5 = json_decode($record->n->score_string_sop5);
-		else
-			$score_string = json_decode($record->n->score_string);
-					
+
 		$assertion = $record->n;
-		
+
+		if (empty($assertion->score_string_gci)){
+			$score_json = json_decode($assertion->score_string_gci);
+			if ($assertion->jsonMessageVersion == "GCI.7") {
+				$score_sop = "SOP7";
+			} elseif ($assertion->jsonMessageVersion == "GCI.6") {
+				$score_sop = "SOP6";
+			} elseif ($assertion->jsonMessageVersion == "GCI.5") {
+				$score_sop = "SOP5";
+			}
+		} elseif (empty($assertion->score_string_sop5)) {
+			$score_json = json_decode($assertion->score_string_sop5);
+			$score_sop = "SOP5-sop5";
+		} else {
+			$score_json = json_decode($assertion->score_string);
+			$score_sop = "SOP4";
+		}
+
+
 		$geneSymbol = $record->gene_symbol->value('result_genes')->value('symbol');
-				
+		$geneCurie = $record->gene_symbol->value('result_genes')->value('symbol');
+
 		$diseaseName = $record->disease_name->value('result_diseases')->value('label');
-		
+
 		//$geneCurie = $record->gene_curie->value('result_genes')->value('curie');
-		
+
 		$diseaseCurie = $record->disease_curie->value('result_diseases')->value('curie');
-		
+
 		$animalmode = false;
-		
+
 		//dd($score_string_sop5->condition);
-		
-		
+
+
 		if ($record === null)
 			die("thow an error");
-			
-		
-			
-		// dd($record);
+
+
+
+		 //dd($assertion);
+		 //dd($score_json);
+		 //dd($score_sop);
         return view('validity.show', compact('display_tabs', 'record',
-			'score_string_sop5', 'score_string', 'assertion', 'geneSymbol',
-			'diseaseName', 'geneCurie', 'diseaseCurie', 'animalmode' ));
+			'score_json', 'score_sop', 'assertion', 'geneSymbol','diseaseName', 'geneCurie', 'diseaseCurie', 'animalmode' ));
     }
 }

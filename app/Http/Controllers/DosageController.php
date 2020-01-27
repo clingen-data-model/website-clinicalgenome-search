@@ -4,6 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+/*
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    ATTENTION
+    +++++++++++++++++++++++++++++++++++++++++++++++
+        This feature for dosage is designed to link out to NCBI reports
+    +++++++++++++++++++++++++++++++++++++++++++++++
+*/
+
 class DosageController extends Controller
 {
     /**
@@ -45,48 +57,6 @@ class DosageController extends Controller
             ]
     ]);
         return view('gene-dosage.show', compact('display_tabs'));
-    }
-
-    public function stats()
-    {
-    $display_tabs = collect([
-            'active'                            => "dosage",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('gene-dosage.stats', compact('display_tabs'));
-    }
-
-    public function reports()
-    {
-    $display_tabs = collect([
-            'active'                            => "dosage",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('gene-dosage.reports', compact('display_tabs'));
-    }
-
-    public function download()
-    {
-    $display_tabs = collect([
-            'active'                            => "dosage",
-            'query'                             => "",
-            'counts'    => [
-                'dosage'                        => "1434",
-            'gene_disease'          => "500",
-            'actionability'         => "270",
-            'variant_path'          => "300"]
-    ]);
-        return view('gene-dosage.download', compact('display_tabs'));
     }
 
 }
