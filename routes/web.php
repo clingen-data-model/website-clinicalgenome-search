@@ -38,6 +38,23 @@ Route::group(['prefix' => 'genes'], function () {
 
 });
 
+
+/*
+ * Drug display routes
+ */
+Route::group(['prefix' => 'drugs'], function () {
+
+		Route::get('/', 'DrugController@index')->name('drug-index');
+
+		Route::get('/page/{page}', 'DrugController@index');
+
+		Route::get('/page/{page}/view/{psize}', 'DrugController@index');
+
+		Route::get('/{id?}', 'DrugController@show')->name('drug-show');
+
+});
+
+
 /*
  * Gene Validity display routes
  */
@@ -54,6 +71,22 @@ Route::group(['prefix' => 'validity'], function () {
 });
 
 
+/*
+ * Conditions display routes
+ */
+Route::group(['prefix' => 'conditions'], function () {
+
+		Route::get('/', 'ConditionController@index')->name('condition-index');
+
+		Route::get('/page/{page}', 'ConditionController@index');
+
+		Route::get('/page/{page}/view/{psize}', 'ConditionController@index');
+
+		Route::get('/{id?}', 'ConditionController@show')->name('condition-show');
+
+});
+
+
 		// Scotts stuff :)
 
 		// Condition demo route
@@ -61,10 +94,6 @@ Route::group(['prefix' => 'validity'], function () {
 		Route::get('/disease/all/', 'DiseaseController@index')->name('disease-index');
 		Route::get('/disease/show/', 'DiseaseController@show')->name('disease-show');
 
-		// Drugs demo route
-		// STATIC PAGES FOR REFERENCE
-		Route::get('/drug/', 'DrugController@index')->name('drug-index');
-		Route::get('/drug/show/', 'DrugController@show')->name('drug-show');
 
 		// Dosage demo route
 		// STATIC PAGES FOR REFERENCE

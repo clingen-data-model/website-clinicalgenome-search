@@ -45,10 +45,15 @@ class GeneController extends Controller
 	{
 		//if (is_int($page)) // don't forget to check the parms
 
+		/* build cqching of these values with cross-section updates 
+		 * total counts for gene and diseases on relevant pages 
+		 * category would be for setting default select of dropdown */
 		$display_tabs = collect([
 			'active' => "gene",
 			'query' => "",
+			'category' => "",
 			'counts' => [
+				'total' => 'something',
 				'dosage' => "1434",
 				'gene_disease' => "500",
 				'actionability' => "270",
@@ -57,8 +62,8 @@ class GeneController extends Controller
 		]);
 
 		$records = GeneLib::geneList([	'page' => $page,
-		'pagesize' => $psize,
-		'curated' => false ]);
+			'pagesize' => $psize,
+			'curated' => false ]);
 
 		//dd($records);
 		if ($records === null)
@@ -179,8 +184,13 @@ class GeneController extends Controller
 
 			//dd($record);
 			if ($record === null)
-			die("thow an error");
-
+			{
+				GeneLib::errorDetail();
+				// do something
+				// return view
+				die("thow an error");
+			}
+			
 			return view('gene.show', compact('display_tabs', 'record'));
 		}
 	}

@@ -52,7 +52,7 @@
 								@endif
                             </a>
 						</td>
-                        <td>{{ $record->last_curated }}</td>
+                        <td>{{ $record->displayDate($record->last_curated) }}</td>
                     </tr>
                     @endforeach
 				</table>

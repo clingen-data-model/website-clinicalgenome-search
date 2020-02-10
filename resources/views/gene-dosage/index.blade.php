@@ -14,9 +14,9 @@
 															<td>
 																Gene
 															</td>
-															<td>
+															<!-- <td>
 																Disease (New/Optional)
-															</td>
+															</td> -->
 															<td>
 																Haploinsufficiency
 															</td>
@@ -32,14 +32,17 @@
 													</tr>
 											</thead>
 											<tbody>
+												@foreach($records as $record)
 													<tr>
 															<td>
-																<a href="#genepage">A2ML1</a>
+																<a href="{{ route('gene-show', $record->hgnc_id) }}">{{ $record->symbol }}<br \>
+																<span class="text-muted small">{{ $record->hgnc_id }}</span>
+																</a>
 															</td>
-															<td>
+															<!--<td>
 																<a href="#genepage">Noonan syndrome with multiple lentigines</a>
 																<div class="small">MONDO:0007893</div>
-															</td>
+															</td>-->
 															<td>
 																Sufficient Evidence for Haploinsufficiency
 																{{--  Once data is available in model or controller it will be configured to be standardized  --}}
@@ -49,12 +52,13 @@
 																{{--  Once data is available in model or controller it will be configured to be standardized  --}}
 															</td>
 															<td>
-																<a href="#report-link-at-ncbi">View Detail</a>
+																<a href="{{ env('GENE_DOSAGE_PAGES', '#') }}/clingen_gene.cgi?sym={{ $record->symbol }}&subject=">View Detail</a>
 															</td>
 															<td>
-																XX/XX/XXXX
+																{{ $record->displayDate($record->last_curated) }}
 															</td>
 													</tr>
+												@endforeach
 												</tbody>
 										</table>
 								</div>

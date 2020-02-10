@@ -1,0 +1,14 @@
+
+  <tbody>
+    <% dosage.interpretation.each do |i| %>
+      <tr>
+        <td><%= info_popover("gene-dosage", "help", "" ,"logo-inline") %></td>
+        <td><%= info_popover("gene-dosage", "score", i.label , "strong") %></td>
+        <td class="text-center"><%= dosage.mdy_date %></td>
+        <td class=" text-center">
+          <a id="external_gene_dosage_sensitivity" target="_blank" class="btn btn-xs btn-success" href="<%= gene_dosage_sensitivity("url", dosage.genes.first.symbol) %>">View report</a>
+          
+        </td>
+      </tr>
+    <% end %>
+  </tbody>

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          <h1 class=" display-4 ">Genes
+          <h1 class=" display-4 ">Conditions
           </h1>
         </div>
         <div class="col-md-12">
@@ -15,8 +15,6 @@
                 </div>
                 <table class="table table-striped table-hover">
                     <tr class="small">
-                        <th>Gene</th>
-                        <th>HGNC</th>
                         <th>Name</th>
                         <th>Curations</th>
                         <th>Date</th>
@@ -24,27 +22,25 @@
                     </tr>
                     @foreach($records as $record)
                     <tr>
-                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->symbol }}</strong></a></td>
-                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->hgnc_id }}</strong></a>
-							<span class='badge text-xs'>Gene</span>
+                        <td><a href="{{ route('condition-show', $record->curie) }}"><strong>{{ $record->label ?? $record->curie }}</strong></a>
+                        <div class="small text-muted">{{ $record->curie }}</div>
                         </td>
-                        <td>{{ $record->name }}</td>
                         <td>
-							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+							<a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
 								@if ($record->hasActionability ?? false)
 									<img class="img-responsive" src="/images/clinicalActionability-on.png" style="width:10px">
 								@else
 									<img class="img-responsive" src="/images/clinicalActionability-off.png" style="width:10px">
 								@endif
 							</a>
-							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+							<a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
 								@if ($record->hasValidity ?? false)
 									<img class="img-responsive" src="/images/clinicalValidity-on.png" style="width:10px">
 								@else
 									<img class="img-responsive" src="/images/clinicalValidity-off.png" style="width:10px">
 								@endif
                             </a>
-                            <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+                            <a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
 								@if ($record->hasDosage ?? false)
 									<img class="img-responsive" src="/images/dosageSensitivity-on.png" style="width:10px">
 								@else
@@ -52,7 +48,7 @@
 								@endif
                             </a>
 						</td>
-                        <td>{{ $record->last_curated }}</td>
+                        <td>{{ $record->displayDate($record->last_curated) }}</td>
                     </tr>
                     @endforeach
 				</table>

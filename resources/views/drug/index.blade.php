@@ -1,5 +1,3 @@
-WIP
-
 @extends('layouts.app')
 
 @section('content')
@@ -17,36 +15,32 @@ WIP
                 </div>
                 <table class="table table-striped table-hover">
                     <tr class="small">
-                        <th>Gene</th>
-                        <th>HGNC</th>
                         <th>Name</th>
                         <th>Curations</th>
-                        <th>Date</th>
-
                     </tr>
                     @foreach($records as $record)
                     <tr>
-                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->symbol }}</strong></a></td>
-                        <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->hgnc_id }}</strong></a>
-							<span class='badge text-xs'>Gene</span>
-                        </td>
-                        <td>{{ $record->name }}</td>
+                        <td><a href="{{ route('drug-show', $record->curie) }}"><strong>{{ $record->label }}</strong></a>
+							<br />RXNORM:{{ $record->curie }}
+								<span class='badge text-xs'>Drug</span>
+							</td>
+              
                         <td>
-							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+							<a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
 								@if ($record->hasActionability ?? false)
 									<img class="img-responsive" src="/images/clinicalActionability-on.png" style="width:10px">
 								@else
 									<img class="img-responsive" src="/images/clinicalActionability-off.png" style="width:10px">
 								@endif
 							</a>
-							<a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+							<a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
 								@if ($record->hasValidity ?? false)
 									<img class="img-responsive" src="/images/clinicalValidity-on.png" style="width:10px">
 								@else
 									<img class="img-responsive" src="/images/clinicalValidity-off.png" style="width:10px">
 								@endif
                             </a>
-                            <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
+                            <a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
 								@if ($record->hasDosage ?? false)
 									<img class="img-responsive" src="/images/dosageSensitivity-on.png" style="width:10px">
 								@else
@@ -54,7 +48,6 @@ WIP
 								@endif
                             </a>
 						</td>
-                        <td>{{ $record->last_curated }}</td>
                     </tr>
                     @endforeach
 				</table>
@@ -67,11 +60,11 @@ WIP
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
-                <li class="active"><a href="{{ route('gene-index') }}/page/1">1</a></li>
-                <li><a href="{{ route('gene-index') }}/page/2">2</a></li>
-                <li><a href="{{ route('gene-index') }}/page/3">3</a></li>
-                <li><a href="{{ route('gene-index') }}/page/4">4</a></li>
-                <li><a href="{{ route('gene-index') }}/page/5">5</a></li>
+                <li class="active"><a href="{{ route('drug-index') }}/page/1">1</a></li>
+                <li><a href="{{ route('drug-index') }}/page/2">2</a></li>
+                <li><a href="{{ route('drug-index') }}/page/3">3</a></li>
+                <li><a href="{{ route('drug-index') }}/page/4">4</a></li>
+                <li><a href="{{ route('drug-index') }}/page/5">5</a></li>
                 <li>
                   <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>

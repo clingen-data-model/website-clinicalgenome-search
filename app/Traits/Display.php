@@ -79,12 +79,12 @@ trait Display
 	}
 	
 	/**
-     * Return a displayable string of update
+     * Return a displayable string of date parameter
      * 
      * @param
      * @return string
      */
-	public function displayDate($date)
+	public function displayDate($date, $long = false)
 	{
 		if (empty($date))
 			return '';
@@ -93,7 +93,7 @@ trait Display
 
 		if ($time === false)
 			return '';
-			
-		return date("m/d/Y", $time);
+		
+		return ($long ? date("m/d/Y", $time) : date("m/d/Y", $time));
 	}
 }

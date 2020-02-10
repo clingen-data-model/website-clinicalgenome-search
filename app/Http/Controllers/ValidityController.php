@@ -58,7 +58,7 @@ class ValidityController extends Controller
 											'pagesize' => $psize
 										]);
 
-		dd($records);
+		//dd($records);
 		if ($records === null)
 			die("thow an error");
 

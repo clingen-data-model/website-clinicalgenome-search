@@ -87,10 +87,9 @@ class GeneLib
 						$node->hasDosage = true;
 				}
 			}
-					
 			$records[] = $node;
 		}
-		
+
 		return collect($records);
 	}
 	
@@ -189,28 +188,38 @@ class GeneLib
 			return null;
 		
 		// morph the graphware structure to a collection
-		/*foreach($response->getRecords() as $record)
+		foreach($response->getRecords() as $record)
 		{
-			$node = new Nodal(array_combine($record->keys(), $record->values()));
+			$node = new Nodal($record->value('a'));
 			
 			// set some shortcuts for the views
-			if (!empty($node->assertions_collection))
+			$node->disease = $node->diseases[0]['label'];
+			$node->mondo = $node->diseases[0]['curie'];
+			$node->classification = $node->interpretation[0]['label'];
+			$node->gene_symbol = $node->genes[0]['symbol'];
+			$node->gene_hgnc = $node->genes[0]['hgnc_id'];
+			
+			switch ($node->jsonMessageVersion)
 			{
-				foreach($node->assertions_collection as $assertion)
-				{
-					if ($assertion->hasLabel('ActionabilityAssertion'))
-						$node->hasActionability = true;
-					if ($assertion->hasLabel('GeneDiseaseAssertion'))
-						$node->hasValidity = true;
-					if ($assertion->hasLabel('GeneDosageAssertion'))
-						$node->hasDosage = true;
-				}
+				case 'GCI.5':
+					$node->sop = "SOP5";
+					break;
+				case 'GCI.6':
+					$node->sop = "SOP6";
+					break;
+				case 'GCI.7':
+					$node->sop = "SOP7";
+					break;
+				default:
+					$node->sop = "SOP4";
 			}
+				
+			//dd($node);
 					
 			$records[] = $node;
-		}*/
+		}
 		
-		dd($records);
+		//dd($records);
 		return collect($records);
 	}
 	
@@ -234,6 +243,206 @@ class GeneLib
 		
 		// morph the graphware structure to a collection
 		//TODO, make this into a better structure.
+		$record = new Nodal($response);
+		
+		return $record;
+	}
+	
+	
+	/**
+     * Get a list of all the genes with dosage sensitivitiy
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageList($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Gene data is currently in neo4j
+		$response = Neo4j::dosageList($args);
+
+		// TODO:  error return?
+		if ($response === null)
+			return null;
+		
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			//dd($record);
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
+
+			//dd($node);
+			$records[] = $node;
+		}
+		
+		return collect($records);
+	}
+	
+	
+	/**
+     * Get details of a particular gene with dosage sensitivitiy
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageDetail($args)
+    {
+		/*
+		// not needed this will redirect
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Most of the gene and curation data is currently in neo4j...
+		$response = Neo4j::geneDetail($args);
+		
+		//...but actionability is now in genegraph
+		//$actionability = Genegraph::actionabilityList($args);
+		
+		// null means no records found
+		if ($response === null)
+			return null;
+		
+		// morph the graphware structure to a collection
+		$record = new Nodal($response);
+		
+		return $record;
+		* */
+		return null;
+	}
+	
+	
+	/**
+     * Get a list of all the drugs
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugList($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Drug data is currently in neo4j
+		$response = Neo4j::drugList($args);
+
+		// TODO:  error return?
+		if ($response === null)
+			return null;
+		
+
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
+			
+			// set some shortcuts for the views when curations are added
+			/*if (!empty($node->assertions_collection))
+			{
+				foreach($node->assertions_collection as $assertion)
+				{
+					if ($assertion->hasLabel('ActionabilityAssertion'))
+						$node->hasActionability = true;
+					if ($assertion->hasLabel('GeneDiseaseAssertion'))
+						$node->hasValidity = true;
+					if ($assertion->hasLabel('GeneDosageAssertion'))
+						$node->hasDosage = true;
+				}
+			}*/
+			$records[] = $node;
+		}
+
+		return collect($records);
+	}
+	
+	
+	/**
+     * Get details of a particular drug
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugDetail($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Drug details are currently in neo4j
+		$response = Neo4j::drugDetail($args);
+		
+		// null means no records found
+		if ($response === null)
+			return null;
+		
+		// morph the graphware structure to a collection
+		//$record = new Nodal($response);
+		$record = new Nodal(array_combine($response->keys(), $response->values()));
+		
+		return $record;
+	}
+	
+	
+	/**
+     * Get a list of all the conditions
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function conditionList($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Gene data is currently in neo4j
+		$response = Neo4j::conditionList($args);
+
+		// TODO:  error return?
+		if ($response === null)
+			return null;
+		
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
+
+			// set some shortcuts for the views
+			if (!empty($node->assertions_collection))
+			{
+				foreach($node->assertions_collection as $assertion)
+				{
+					if ($assertion->hasLabel('ActionabilityAssertion'))
+						$node->hasActionability = true;
+					if ($assertion->hasLabel('GeneDiseaseAssertion'))
+						$node->hasValidity = true;
+					if ($assertion->hasLabel('GeneDosageAssertion'))
+						$node->hasDosage = true;
+				}
+			}
+			
+			$records[] = $node;
+		}
+
+		return collect($records);
+	}
+	
+	
+	/**
+     * Get details of a particular gene
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function conditionDetail($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+			
+		// Most of the gene and curation data is currently in neo4j...
+		$response = Neo4j::geneDetail($args);
+		
+		//...but actionability is now in genegraph
+		//$actionability = Genegraph::actionabilityList($args);
+		
+		// null means no records found
+		if ($response === null)
+			return null;
+		
+		// morph the graphware structure to a collection
 		$record = new Nodal($response);
 		
 		return $record;

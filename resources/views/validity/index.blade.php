@@ -32,29 +32,30 @@
 													</tr>
 											</thead>
 											<tbody>
+												@foreach ($records as $record)
 													<tr>
 															<td>
-																<a href="#genepage">A2ML1</a>
+																<a href="{{ route('gene-show', $record->gene_hgnc) }}">{{ $record->gene_symbol }}</a>
 															</td>
 															<td>
-																<a href="#genepage">Noonan syndrome with multiple lentigines</a>
-																<div class="small">MONDO:0007893</div>
+																<a href="{{ route('condition-show', $record->mondo) }}">{{ $record->disease }}</a>
+																<div class="small">{{ $record->mondo }}</div>
 															</td>
 															<td>
-																AR
+																*AR*
 																{{--  Once data is available in model or controller it will be configured to be standardized  --}}
 															</td>
 															<td>
-																SOP6
-																{{--  Once data is available in model or controller it will be configured to be standardized  --}}
+																{{ $record->sop }}
 															</td>
 															<td>
-																<a href="#report-link">Definitive</a>
+																<a href="{{ route('validity-show', $record->perm_id) }}">{{ $record->classification }}</a>
 															</td>
 															<td>
-																XX/XX/XXXX
+																{{ $record->displayDate($record->date) }}
 															</td>
 													</tr>
+												@endforeach
 												</tbody>
 										</table>
 								</div>

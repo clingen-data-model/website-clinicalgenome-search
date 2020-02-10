@@ -242,7 +242,7 @@ class Neo4j
 		}
 		
 		$response = Cypher::run($query);
-		dd($response);	
+		//dd($response);	
 
 
 		// these don't seem to be in the controllers.  Views?
@@ -255,7 +255,7 @@ class Neo4j
 			LIMIT 1';
 
 		$response = Cypher::run($query);
-		dd($response);
+		//dd($response);
 
 /*
 	// these don't seem to be in the controllers.  Views?
@@ -525,7 +525,7 @@ GeneDosageAssertion#interpretation
 			$response = Cypher::run($query);
 			
 		} catch (Exception $exception) {
-			
+			// set up geneError();
 			// TODO - more comprehensive error recovery
 			die("error found");
 			
@@ -589,14 +589,30 @@ GeneDosageAssertion#interpretation
 		foreach ($args as $key => $value)
 			$$key = $value;
 			
-		// first call appears to get the conditions
+		// Get the condition and all its assertions
 		$query = '
-			MATCH (result_condition:Condition:RDFClass)
-			RETURN result_condition
+			MATCH (n:Condition:RDFClass)
+			WITH n
 			SKIP ' . ($page * $pagesize) . '
 			LIMIT ' . $pagesize . '
-			RETURN result_condition';
+			OPTIONAL MATCH (n:Condition:RDFClass)<-[rel1:has_object]-(assertions:Assertion:Entity)
+			WITH n, collect(assertions) AS assertions_collection
+			RETURN ID(n) as identity, n.curie as curie, n.num_curations as num_curations, n.last_curated as last_curated, n.label as label, assertions_collection';
+		
+		try {
+			
+			$response = Cypher::run($query);
+			
+		} catch (Exception $exception) {
+			
+			// TODO - more comprehensive error recovery
+			die("error found");
+			
+		};
+		
+		//dd($response);
 
+		/*
 		// this one seems to get the assertions for the previously matched conditions
 		$query = '
 			MATCH (previous:Condition:RDFClass)
@@ -615,7 +631,7 @@ GeneDosageAssertion#interpretation
 			// TODO - more comprehensive error recovery
 			die("error found");
 			
-		};
+		};*/
 		
 		// if no records found, return null
 		if ($response->size() == 0)
@@ -639,6 +655,134 @@ GeneDosageAssertion#interpretation
 		// first call appears to get the conditions
 		$query = '
 			';
+			
+			/*
+		MATCH (n:`RDFClass`)
+		WHERE (n.curie = {n_curie})
+		RETURN n
+		LIMIT {limit_1} | {:n_curie=>"MONDO_0012690", :limit_1=>1}
+  
+  query ConditionsController__ConditionQuery($iri: String!) {
+  condition(iri: $iri) {
+    label
+    gene {
+      label
+      hgnc_id
+    }
+    actionability_curations {
+      report_date
+      source
+    }
+    genetic_conditions {
+      gene {
+        label
+        hgnc_id
+      }
+      actionability_curations {
+        report_date
+        source
+      }
+     }
+    }
+   }
+   
+		MATCH (condition2751)
+		WHERE (ID(condition2751) = {ID_condition2751})
+		MATCH (condition2751)<-[rel1:`has_object`]-(a:`Assertion`:`Entity`)
+		WHERE (a:ActionabilityAssertion)
+		RETURN a {.uuid, .report, .date, .file,
+			gene: [(a)-[:has_subject]->(g:Gene) | g.uuid],
+		  interventions: [(a)                             <-[:was_generated_by]-(a2:ActionabilityInterventionAssertion)-[:has_object]->(i:Intervention) | a2 {label: i.label,
+		  scores: [(a2)<-[:was_generated_by]-(a3:ActionabilityScore) |
+					a3 {score: [(a3)-[:has_predicate]->(s) | s.iri ],
+							strength: [(a3)-[:has_evidence_strength]->(s) | s.iri] } ]      }]} | {:ID_condition2751=>2751}
+
+		MATCH (condition2751)
+		WHERE (ID(condition2751) = {ID_condition2751})
+		MATCH (condition2751)<-[rel1:`has_object`]-(n:`Assertion`:`Entity`)
+		WHERE (n:GeneDiseaseAssertion)
+		WITH n
+		OPTIONAL MATCH (n)-[:`has_predicate`]->(interpretation)
+		WHERE (interpretation:`Interpretation`)
+		WITH
+		n,
+		collect(interpretation) AS interpretation_collection
+		OPTIONAL MATCH (n)-[:`has_subject`]->(genes)
+		WHERE (genes:`Gene`)
+		WITH
+		n,
+		collect(genes) AS genes_collection,
+		interpretation_collection
+		RETURN
+		n,
+		[interpretation_collection,genes_collection] | {:ID_condition2751=>2751}
+
+		MATCH (condition2751)
+		WHERE (ID(condition2751) = {ID_condition2751})
+		MATCH (condition2751)<-[rel1:`has_object`]-(a:`Assertion`:`Entity`)
+		WHERE (a:GeneDosageAssertion)
+		WITH a
+		OPTIONAL MATCH (a)-[:`has_predicate`]->(interpretation)
+		WHERE (interpretation:`Interpretation`)
+		WITH
+		a,
+		collect(interpretation) AS interpretation_collection
+		OPTIONAL MATCH (a)-[:`has_subject`]->(genes)
+		WHERE (genes:`Gene`)
+		WITH
+		a,
+		collect(genes) AS genes_collection,
+		interpretation_collection
+		RETURN
+		a,
+    
+
+		MATCH (c:`Condition`:`RDFClass`)
+		WHERE (ID(c) = {ID_c})
+		MATCH (c)<-[rel1:`has_object`]-(node3:`Assertion`:`Entity`)
+		MATCH (node3)-[rel2:`has_subject`]->(g:`Gene`)
+		WHERE ((c)<-[:has_related_phenotype]-(g) or (c)<-[:has_object]-(:GeneDiseaseAssertion) or not (g)-[:has_related_phenotype]->(:DiseaseConcept))
+		RETURN ID(g) AS proof_of_life LIMIT 1 | {:ID_c=>2751}
+
+MATCH (c:`Condition`:`RDFClass`)
+  WHERE (ID(c) = {ID_c})
+  MATCH (c)<-[rel1:`has_object`]-(node3:`Assertion`:`Entity`)
+  MATCH (node3)-[rel2:`has_subject`]->(g:`Gene`)
+  WHERE ((c)<-[:has_related_phenotype]-(g) or (c)<-[:has_object]-(:GeneDiseaseAssertion) or not (g)-[:has_related_phenotype]->(:DiseaseConcept))
+  RETURN DISTINCT(g) | {:ID_c=>2751}
+
+		MATCH (condition2751)
+		WHERE (ID(condition2751) = {ID_condition2751})
+		MATCH (condition2751)<-[rel1:`has_object`]-(n:`Assertion`:`Entity`)
+		WHERE (n:GeneDiseaseAssertion)
+		WITH n
+		OPTIONAL MATCH (n)-[:`has_predicate`]->(interpretation)
+		WHERE (interpretation:`Interpretation`)
+		WITH
+		n,
+		collect(interpretation) AS interpretation_collection
+		OPTIONAL MATCH (n)-[:`has_subject`]->(genes)
+		WHERE (genes:`Gene`)
+		WITH
+		n,
+		collect(genes) AS genes_collection,
+		interpretation_collection
+		RETURN
+		n,
+		[interpretation_collection,genes_collection] | {:ID_condition2751=>2751}
+D, 
+  MATCH (genediseaseassertion234482)
+  WHERE (ID(genediseaseassertion234482) = {ID_genediseaseassertion234482})
+  MATCH (genediseaseassertion234482)-[rel1:`has_object`]->(result_diseases:`RDFClass`)
+  RETURN result_diseases
+  ORDER BY result_diseases.iri
+  LIMIT {limit_1} | {:limit_1=>1, :ID_genediseaseassertion234482=>234482}
+
+	*/
+
+
+
+
 
 		try {
 			
@@ -671,10 +815,12 @@ GeneDosageAssertion#interpretation
 			$$key = $value;
 			
 		$query = '
-			MATCH (n:Drug:RDFClass)
+			MATCH (n:Drug:RDFClass) ' . 
+			(isset($term) ? 'WHERE (n.search_label contains ' . $term . ') ' : '') . '
+			WITH n
 			SKIP ' . ($page * $pagesize) . '
 			LIMIT ' . $pagesize . '
-			RETURN n';
+			RETURN n.label as label, n.curie as curie';
 
 		try {
 			
@@ -686,7 +832,7 @@ GeneDosageAssertion#interpretation
 			die("error found");
 			
 		};
-		
+		//dd($response);
 		// if no records found, return null
 		if ($response->size() == 0)
 			return null;
@@ -705,13 +851,14 @@ GeneDosageAssertion#interpretation
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
-			
+
 		// first call appears to get the conditions
 		$query = ' 
 			MATCH (n:Drug:RDFClass)
-			WHERE (n.curie = ' . $id . ')
-			LIMIT 1
-			RETURN n';
+			WHERE (n.curie = "' . $drug . '")
+			WITH n
+			RETURN n.label as label, n.curie as curie
+			LIMIT 1';
 
 		try {
 			
@@ -728,6 +875,45 @@ GeneDosageAssertion#interpretation
 		if ($response->size() == 0)
 			return null;
 		
+		return $response->firstRecord();
+	}
+	
+	
+	/**
+     * Get list of a validity curations
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function validityList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+		
+		$query = ' 
+				MATCH (a:GeneDiseaseAssertion:Assertion:Entity)
+				WHERE (NOT((a)-[:wasInvalidatedBy]->()))
+				RETURN a {.date, .perm_id, .score_string, .jsonMessageVersion, .score_string_gci, .score_string_sop5,
+					genes: [(g:Gene)<-[:has_subject]-(a) | g {.symbol, .hgnc_id}],
+					diseases: [(d:DiseaseConcept)-[:has_object|:equivalentClass*1..2]-(a) | d {.curie, .label}],
+					interpretation: [(i:Interpretation)<-[:has_predicate]-(a) | i {.label}],
+					agent: [(ag:Agent)<-[:wasAttributedto]-(a) | ag {.label}]}';
+	
+		try {
+			
+			$response = Cypher::run($query);
+			
+		} catch (Exception $exception) {
+			
+			// TODO - more comprehensive error recovery
+			die("error found");
+			
+		};
+		
+		// if no records found, return null
+		if ($response->size() == 0)
+			return null;
+		//dd($response);
 		return $response;
 	}
 	
@@ -853,8 +1039,91 @@ GeneDosageAssertion#interpretation
 		$details['disease_curie'] = $response->firstRecord();
 		
 		//CHECKPOINT 9
-		
+		dd($details);
 		return $details;
+	}
+	
+	
+	/**
+     * Get listing of all genes with dosage sensitivity.
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+						
+		//@query = Gene.all(:g).where("(g)<-[:has_subject]-(:GeneDosageAssertion)").order('g.symbol')
+		//@genes = @query.page(page).per(100)
+		/* <% if a = g.dosage_assertions.select {|i| i.haplo_assertion?}.first %>
+              <%= a.interpretation.first.label %>
+            <% end %>
+          </td>
+          <td>
+            <% if a = g.dosage_assertions.select {|i| i.triplo_assertion?}.first %>
+              <%= a.interpretation.first.label %>
+            <% end %>
+          </td>
+          <td>
+            <a href="https://www.ncbi.nlm.nih.gov/projects/dbvar/clingen/clingen_gene.cgi?sym=<%= g.label %>&subject=" target="ncbi" class='btn btn-default btn-xs'><i class="glyphicon glyphicon-new-window"></i> <strong>View Details</strong></a></td>
+          <td>
+            <%= mdy_date(g.dosage_assertions.first.date) %></td>
+           
+           WITH n, collect(assertions) AS assertions_collection
+           * 
+           * 
+           * 
+			MATCH (genedosageassertion234635)
+			WHERE (ID(genedosageassertion234635) = {ID_genedosageassertion234635})
+			MATCH (genedosageassertion234635)-[rel1:`has_predicate`]->(result_interpretation:`Interpretation`:`RDFClass`)
+			RETURN result_interpretation
+			ORDER BY result_interpretation.iri
+			LIMIT {limit_1} | {:limit_1=>1, :ID_genedosageassertion234635=>234635}
+
+			OPTIONAL MATCH (n)<-[:has_subject]-(assertions)
+			WHERE (assertions:Assertion)
+			WITH n, collect(assertions) AS assertions_collection
+			RETURN n.hgnc_id as hgnc_id, n.symbol as symbol, n.name as name, 
+				n.last_curated as last_curated, assertions_collection'; 
+				* 
+			MATCH (n:Gene) 
+			WITH n
+			SKIP ' . ($page * $pagesize) . '
+			LIMIT ' . $pagesize . '
+			OPTIONAL MATCH (n)<-[:has_subject]-(assertions)
+			WHERE (assertions:GeneDosageAssertion)
+			WITH n, collect(assertions) AS assertions_collection
+			RETURN n.hgnc_id as hgnc_id, n.symbol as symbol,
+				   n.last_curated as last_curated, assertions_collection'; 
+        */
+    
+		$query = '
+			MATCH (n:Gene)<-[:has_subject]-(assertions)
+			WHERE (assertions:GeneDosageAssertion)
+			WITH n, collect(assertions) AS assertions_collection
+			SKIP ' . ($page * $pagesize) . '
+			LIMIT ' . $pagesize . '
+			RETURN n.hgnc_id as hgnc_id, n.symbol as symbol,
+				   n.last_curated as last_curated, assertions_collection'; 
+
+		try {
+			
+			$response = Cypher::run($query);
+			
+		} catch (Exception $exception) {
+			
+			// TODO - more comprehensive error recovery
+			die("error found");
+			
+		};
+		
+		// if no records found, return null
+		if ($response->size() == 0)
+			return null;
+				
+		return $response;
 	}
 
 }

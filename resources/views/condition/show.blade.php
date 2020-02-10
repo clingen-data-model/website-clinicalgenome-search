@@ -5,12 +5,12 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 		  <h1 class=" display-4 ">{{-- $record->symbol --}}Disease name
-				@include("_partials.facts.gene-button")
+				@include("_partials.facts.condition-button")
 		  </h1>
 		</div>
 		<div class="col-md-12">
 
-			@include("_partials.facts.gene-panel")
+			@include("_partials.facts.condition-panel")
 
 			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
 
