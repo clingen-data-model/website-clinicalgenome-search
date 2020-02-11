@@ -67,8 +67,8 @@ class GeneController extends Controller
 
 		$records = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
-										'sort' => $sort,
-										'direction' => $direction,
+										'sort' => $sort ?? 'symbol',
+										'direction' => $direction ?? 'asc',
 										'curated' => false ]);
 
 		//dd($records);
