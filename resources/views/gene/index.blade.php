@@ -15,7 +15,7 @@
                 </div>
                 <table class="table table-striped table-hover">
                     <tr class="small">
-                        <th>Gene</th>
+                        <th> @sortablelink('symbol','Gene')</th>
                         <th>HGNC</th>
                         <th>Name</th>
                         <th>Curations</th>
@@ -58,6 +58,7 @@
 				</table>
             </div>
 
+<!--
             <nav class="text-center" aria-label="Page navigation">
               <ul class="pagination">
                 <li>
@@ -77,6 +78,10 @@
                 </li>
               </ul>
             </nav>
+            
+-->
+			{!! $records->appends(\Request::except('page'))->render() !!}
+
         </div>
     </div>
 </div>

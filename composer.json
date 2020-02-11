@@ -14,6 +14,7 @@
         "anlutro/l4-settings": "^0.8.3",
         "fideloper/proxy": "^4.0",
         "jenssegers/model": "^1.2",
+        "kyslik/column-sortable": "^6.2",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
         "livewire/livewire": "^0.3.6",

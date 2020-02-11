@@ -44,14 +44,18 @@ class Neo4j
 			MATCH (n:Gene) ' .
 			(isset($term) ? 'WHERE (n.search_label contains ' . $term . ') ' : '') . '
 			WITH n
-			SKIP ' . ($page * $pagesize) . '
-			LIMIT ' . $pagesize . '
 			OPTIONAL MATCH (n)<-[:has_subject]-(assertions)
 			WHERE (assertions:Assertion)
 			WITH n, collect(assertions) AS assertions_collection
 			RETURN n.hgnc_id as hgnc_id, n.symbol as symbol, n.name as name, 
-				n.last_curated as last_curated, assertions_collection'; 
-
+				n.last_curated as last_curated, assertions_collection ' . 
+			(!empty($sort) ? 'ORDER BY n.' . $sort . ' ' . $direction : '')  . '
+			SKIP ' . ($page * $pagesize) . '
+			LIMIT ' . $pagesize . '
+			'; 
+			
+			
+//dd($query);
 		try {
 			
 			$response = Cypher::run($query);
@@ -654,14 +658,14 @@ GeneDosageAssertion#interpretation
 			
 		// first call appears to get the conditions
 		$query = '
-			';
-			
-			/*
-		MATCH (n:`RDFClass`)
-		WHERE (n.curie = {n_curie})
-		RETURN n
-		LIMIT {limit_1} | {:n_curie=>"MONDO_0012690", :limit_1=>1}
+			MATCH (n:RDFClass)
+			WHERE (n.curie = "' . $condition . '")
+			RETURN n
+			LIMIT 1;
+		';
   
+  /*
+   * // this is getting genegraph stuff
   query ConditionsController__ConditionQuery($iri: String!) {
   condition(iri: $iri) {
     label
@@ -685,7 +689,7 @@ GeneDosageAssertion#interpretation
      }
     }
    }
-   
+		# get actionability stuff
 		MATCH (condition2751)
 		WHERE (ID(condition2751) = {ID_condition2751})
 		MATCH (condition2751)<-[rel1:`has_object`]-(a:`Assertion`:`Entity`)
@@ -697,6 +701,7 @@ GeneDosageAssertion#interpretation
 					a3 {score: [(a3)-[:has_predicate]->(s) | s.iri ],
 							strength: [(a3)-[:has_evidence_strength]->(s) | s.iri] } ]      }]} | {:ID_condition2751=>2751}
 
+		#get genedisease assertion
 		MATCH (condition2751)
 		WHERE (ID(condition2751) = {ID_condition2751})
 		MATCH (condition2751)<-[rel1:`has_object`]-(n:`Assertion`:`Entity`)
@@ -717,6 +722,7 @@ GeneDosageAssertion#interpretation
 		n,
 		[interpretation_collection,genes_collection] | {:ID_condition2751=>2751}
 
+		# get genedosage stuff
 		MATCH (condition2751)
 		WHERE (ID(condition2751) = {ID_condition2751})
 		MATCH (condition2751)<-[rel1:`has_object`]-(a:`Assertion`:`Entity`)
@@ -736,7 +742,7 @@ GeneDosageAssertion#interpretation
 		RETURN
 		a,
     
-
+		# get proof of life?
 		MATCH (c:`Condition`:`RDFClass`)
 		WHERE (ID(c) = {ID_c})
 		MATCH (c)<-[rel1:`has_object`]-(node3:`Assertion`:`Entity`)
@@ -744,12 +750,13 @@ GeneDosageAssertion#interpretation
 		WHERE ((c)<-[:has_related_phenotype]-(g) or (c)<-[:has_object]-(:GeneDiseaseAssertion) or not (g)-[:has_related_phenotype]->(:DiseaseConcept))
 		RETURN ID(g) AS proof_of_life LIMIT 1 | {:ID_c=>2751}
 
-MATCH (c:`Condition`:`RDFClass`)
-  WHERE (ID(c) = {ID_c})
-  MATCH (c)<-[rel1:`has_object`]-(node3:`Assertion`:`Entity`)
-  MATCH (node3)-[rel2:`has_subject`]->(g:`Gene`)
-  WHERE ((c)<-[:has_related_phenotype]-(g) or (c)<-[:has_object]-(:GeneDiseaseAssertion) or not (g)-[:has_related_phenotype]->(:DiseaseConcept))
-  RETURN DISTINCT(g) | {:ID_c=>2751}
+		## no idea!
+		MATCH (c:`Condition`:`RDFClass`)
+		WHERE (ID(c) = {ID_c})
+		MATCH (c)<-[rel1:`has_object`]-(node3:`Assertion`:`Entity`)
+		MATCH (node3)-[rel2:`has_subject`]->(g:`Gene`)
+		WHERE ((c)<-[:has_related_phenotype]-(g) or (c)<-[:has_object]-(:GeneDiseaseAssertion) or not (g)-[:has_related_phenotype]->(:DiseaseConcept))
+		RETURN DISTINCT(g) | {:ID_c=>2751}
 
 		MATCH (condition2751)
 		WHERE (ID(condition2751) = {ID_condition2751})

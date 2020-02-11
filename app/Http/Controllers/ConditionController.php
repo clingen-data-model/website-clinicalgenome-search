@@ -64,5 +64,48 @@ class ConditionController extends Controller
 
         return view('condition.index', compact('display_tabs', 'records'));
     }
+    
+    
+    /**
+	* Display the specified condition.
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
+	public function show(Request $request, $id = null)
+	{
+		if ($id === null)
+		die("display some error about needing a gene");
 
+		$display_tabs = collect([
+			'active' => "condition",
+			'query' => "BRCA2",
+			'counts' => [
+				'dosage' => "1434",
+				'gene_disease' => "500",
+				'actionability' => "270",
+				'variant_path' => "300"
+				]
+			]);
+
+		$record = GeneLib::conditionDetail([ 'page' => 0,
+										'pagesize' => 200,
+										'condition' => $id,
+										'curations' => true,
+										'action_scores' => true,
+										'validity' => true,
+										'dosage' => true
+										]);
+
+		dd($record);
+		if ($record === null)
+		{
+			GeneLib::errorDetail();
+			// do something
+			// return view
+			die("thow an error");
+		}
+		
+		return view('condition.show', compact('display_tabs', 'record'));
+	}
 }

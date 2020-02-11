@@ -433,8 +433,9 @@ class GeneLib
 			return collect([]);
 			
 		// Most of the gene and curation data is currently in neo4j...
-		$response = Neo4j::geneDetail($args);
+		$response = Neo4j::conditionDetail($args);
 		
+		dd($response);
 		//...but actionability is now in genegraph
 		//$actionability = Genegraph::actionabilityList($args);
 		

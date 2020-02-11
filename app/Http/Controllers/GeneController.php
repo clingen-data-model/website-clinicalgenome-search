@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
 
@@ -41,10 +43,12 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Request $request, $page = 0, $psize = 6000)
+	public function index(Request $request, $page = 1, $psize = 20)
 	{
-		//if (is_int($page)) // don't forget to check the parms
-
+		// process request args
+		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
+			$$key = $value;
+		
 		/* build cqching of these values with cross-section updates 
 		 * total counts for gene and diseases on relevant pages 
 		 * category would be for setting default select of dropdown */
@@ -61,14 +65,20 @@ class GeneController extends Controller
 			]
 		]);
 
-		$records = GeneLib::geneList([	'page' => $page,
-			'pagesize' => $psize,
-			'curated' => false ]);
+		$records = GeneLib::geneList([	'page' => $page - 1,
+										'pagesize' => $psize,
+										'sort' => $sort,
+										'direction' => $direction,
+										'curated' => false ]);
 
 		//dd($records);
 		if ($records === null)
-		die("thow an error");
+			die("thow an error");
 
+		// customize the pagination.
+		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		$records->withPath('genes');
+		
 		return view('gene.index', compact('display_tabs', 'records'));
 	}
 
