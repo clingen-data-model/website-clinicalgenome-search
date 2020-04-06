@@ -8,12 +8,16 @@
 			<div class="content-space content-border">
 				{{ $animalmode ?? '' }}
 				@if($record->sop == "SOP7")
+					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop7')
 				@elseif ($record->sop == "SOP6")
+					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop6')
 				@elseif ($record->sop == "SOP5")
+					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop5-legacy')
 				@elseif ($record->sop == "SOP4")
+					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop4-legacy')
 				@else
 					ERROR - NO SOP SET

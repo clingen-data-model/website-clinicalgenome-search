@@ -260,7 +260,7 @@ class GeneLib
 		//TODO, make this into a better structure.
 		$node = new Nodal($response->firstRecord()->value('a'));
 
-		//dd($node);
+
 		//$node = new Nodal($record->value('a'));
 
 		// set some shortcuts for the views
@@ -269,6 +269,8 @@ class GeneLib
 		$node->classification 	= $node->interpretation[0]['label'];
 		$node->symbol 					= $node->genes[0]['symbol'];
 		$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
+		$node->attributions 					= $node->agent[0];
+		$node->attributions 					= $node->agent[0];
 		//dd($node);
 		// Grab the JSON data and set it to common variable
 		// The order is important in case the record has more than one set of JSON data

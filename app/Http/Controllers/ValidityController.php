@@ -132,7 +132,7 @@ class ValidityController extends Controller
 
 
 
-		 //dd($assertion);
+		 //dd($record);
 		 //dd($score_json);
 		 //dd($score_sop);
         return view('gene-validity.show', compact('display_tabs', 'record'));

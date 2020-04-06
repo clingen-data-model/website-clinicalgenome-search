@@ -1,38 +1,3 @@
-<div class="form-group">
-<table style="width:100%;" >
-  <tr style="">
-    <td style="width:15%; padding-top:5px; padding-bottom:5px; padding-right:1%;" valign="top"  nowrap class="text-right text-muted">Gene/Disease Pair:</td>
-    <td style="width:85%; padding-bottom:5px"><h3 style="padding:0; margin:0"><strong style="color:#000"><i>
-      {{ $record->genes[0]['symbol'] }}
-      </i>:
-      {{ $record->diseases[0]['label'] }}
-      </strong></h3></td>
-  </tr>
-  <tr style="">
-    <td style="width:15%; padding-right:1%;" nowrap class="text-right text-muted"></td>
-    <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      @foreach ($record->diseases as $disease)
-					 {{ $disease['curie'] }}
-			@endforeach
-      </strong></td>
-  </tr>
-      @if ($record->score_data->ModeOfInheritance ?? null)
-  <tr style="">
-    <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">Mode of Inheritance:</td>
-    <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $record->score_data->ModeOfInheritance ?? null }}
-      </strong></td>
-  </tr>
-  @endif
-  <tr style="">
-    <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">SOP:</td>
-    <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-		<a href="{{ env('CG_URL_VALIDITY_SOP', 'http://www.clinicalgenome.org') }}">Gene Clinical Validity Standard Operating Procedures (SOP), Version 7</a>
-      </strong></td>
-  </tr>
-</table>
-</div>
-<hr />
 <table class="table table-compact table-bordered table-border-normal">
 	<tbody>
 		<tr>
@@ -612,7 +577,7 @@
 					<td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EVIDENCE SUMMARY</td>
 					<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
 						<div class='col-sm-12'>
-		          {{ $record->score_data->summary->FinalClassificationNotes }}</div>
+		          {{ $record->score_data->summary->FinalClassificationNotes ?? null }}</div>
 
 							</td>
 				</tr>
