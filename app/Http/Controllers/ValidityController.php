@@ -93,6 +93,7 @@ class ValidityController extends Controller
 										'perm' => $id
 										 ]);
 
+		//dd($record->score_data->ExperimentalEvidence->ModelsRescue->PointsCounted);
 		//$assertion = $record->n;
 		//dd($record->score_data->GeneticEvidence);
 		// if (empty($assertion->score_string_gci)){

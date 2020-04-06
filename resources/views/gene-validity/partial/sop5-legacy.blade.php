@@ -178,7 +178,6 @@
 		  <td class="input-width-pmid">
 		  	{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX1->evidence ?? null) }}
 
-			{{-- App\Helper::PrintWrapperPmid($inputThisData["scoreJson"]["GeneticEvidence"]["CaseLevelData"]["SegregationEvidence"]["EvidenceOfSegregationInOneOrMoreFamilies"][1], "scoreJson[GeneticEvidence][CaseLevelData][SegregationEvidence][EvidenceOfSegregationInOneOrMoreFamilies][1]") --}}
 		  </td>
 	  </tr>
 		<tr>
