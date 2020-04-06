@@ -94,7 +94,7 @@ class ValidityController extends Controller
 										 ]);
 
 		//$assertion = $record->n;
-		//dd($record);
+		//dd($record->score_data->GeneticEvidence);
 		// if (empty($assertion->score_string_gci)){
 		// 	$score_json = json_decode($assertion->score_string_gci);
 		// 	if ($assertion->jsonMessageVersion == "GCI.7") {

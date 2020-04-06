@@ -210,25 +210,25 @@ class GeneLib
 			// The order is important in case the record has more than one set of JSON data
 			// First check for GCI data, then SOP5 legacy data, then fall back to everything else
 			if(!empty($node->score_string_gci)) {
-				$node->jsonData 	= json_decode($node->score_string_gci);
+				$node->score_data 	= json_decode($node->score_string_gci);
 				if (!empty($node->jsonMessageVersion)) {
 					$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 				} else {
 					$node->sop 			= "SOP5";
 				}
-				$node->moi 				= $node->jsonData->ModeOfInheritance;
+				$node->moi 				= $node->score_data->ModeOfInheritance;
 			} elseif(!empty($node->score_string_sop5)) {
-				$node->jsonData 	= json_decode($node->score_string_sop5);
+				$node->score_data 	= json_decode($node->score_string_sop5);
 				if (!empty($node->jsonMessageVersion)) {
 					$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 				} else {
 					$node->sop 			= "SOP5";
 				}
-					$node->moi 			= $node->jsonData->scoreJson->ModeOfInheritance;
+					$node->moi 			= $node->score_data->scoreJson->ModeOfInheritance;
 			} else {
-				$node->jsonData 	= json_decode($node->score_string);
+				$node->score_data 	= json_decode($node->score_string);
 				$node->sop = "SOP4";
-				$node->moi 				= $node->jsonData->data->ModeOfInheritance;
+				$node->moi 				= $node->score_data->data->ModeOfInheritance;
 			}
 
 			$records[] = $node;
@@ -274,25 +274,26 @@ class GeneLib
 		// The order is important in case the record has more than one set of JSON data
 		// First check for GCI data, then SOP5 legacy data, then fall back to everything else
 		if (!empty($node->score_string_gci)) {
-			$node->jsonData 	= json_decode($node->score_string_gci);
+			$node->score_data 	= json_decode($node->score_string_gci);
 			if (!empty($node->jsonMessageVersion)) {
 				$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 			} else {
 				$node->sop 			= "SOP5";
 			}
-			$node->moi 				= $node->jsonData->ModeOfInheritance;
+			$node->moi 				= $node->score_data->ModeOfInheritance;
 		} elseif (!empty($node->score_string_sop5)) {
-			$node->jsonData 	= json_decode($node->score_string_sop5);
+			$node->score_data 	= json_decode($node->score_string_sop5);
 			if (!empty($node->jsonMessageVersion)) {
 				$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 			} else {
 				$node->sop 			= "SOP5";
 			}
-			$node->moi 			= $node->jsonData->scoreJson->ModeOfInheritance;
+			$node->moi 			= $node->score_data->scoreJson->ModeOfInheritance;
 		} else {
-			$node->jsonData 	= json_decode($node->score_string);
+			$node->score_data 	= json_decode($node->score_string);
+			$node->score_data_array 	= json_decode($node->score_string, true);
 			$node->sop = "SOP4";
-			$node->moi 				= $node->jsonData->data->ModeOfInheritance;
+			$node->moi 				= $node->score_data->data->ModeOfInheritance;
 		}
 
 		$record = $node;

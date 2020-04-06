@@ -3,31 +3,24 @@
   <tr style="">
     <td style="width:15%; padding-top:5px; padding-bottom:5px; padding-right:1%;" valign="top"  nowrap class="text-right text-muted">Gene/Disease Pair:</td>
     <td style="width:85%; padding-bottom:5px"><h3 style="padding:0; margin:0"><strong style="color:#000"><i>
-      {{ $score_string_sop5->genes->symbol }}
+      {{ $record->genes[0]['symbol'] }}
       </i>:
-      {{ $score_string_sop5->condition->name }}
+      {{ $record->diseases[0]['label'] }}
       </strong></h3></td>
   </tr>
   <tr style="">
     <td style="width:15%; padding-right:1%;" nowrap class="text-right text-muted"></td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $score_string_sop5->condition->curie ?? 'XXX_MISSING_XXX' }}
-      @if (isset($score_string_sop5->condition->MONDO->curie))
-      {{ $score_string_sop5->condition->MONDO->curie }} |
-      @endif
-      @if (isset($score_string_sop5->condition->OrphaNet->curie))
-      {{ $score_string_sop5->condition->OrphaNet->curie }} |
-      @endif
-      @if (isset($score_string_sop5->condition->OMIM->curie))
-      {{ $score_string_sop5->condition->OMIM->curie }}
-      @endif
+      @foreach ($record->diseases as $disease)
+					 {{ $disease['curie'] }}
+			@endforeach
       </strong></td>
   </tr>
-      @if (isset($score_string_sop5->scoreJson->ModeOfInheritance))
+      @if ($record->score_data->ModeOfInheritance ?? null)
   <tr style="">
     <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">Mode of Inheritance:</td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $score_string_sop5->scoreJson->ModeOfInheritance }}
+      {{ $record->score_data->ModeOfInheritance ?? null }}
       </strong></td>
   </tr>
   @endif
@@ -79,14 +72,14 @@
 			<td>12</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-						{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Value }}
+						{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Value ?? ''}}
 				</div>
 			</td>
 			<td class="points-tally-bg">
-				{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? '' }}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? null}}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->evidence ?? null) }}
 			</span></td>
 		</tr>
 		<tr>
@@ -96,12 +89,12 @@
 			<td id="GeneticEvidence3Max">10</td>
 			<td class="input-width-numbers points-given-bg">
 				<span class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value ?? null}}
 			</span>								</td>
 			<td class="points-tally-bg">
-				{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Tally ?? ''}}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Tally ?? null}}
 			<td class="input-width-pmid ">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->evidence ?? null) }}
 		  </td>
 		</tr>
 		<tr>
@@ -111,15 +104,15 @@
 			<td id="GeneticEvidence1Max" class='table-border-thin'>7</td>
 			<td class="input-width-numbers points-given-bg table-border-thin">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Value ?? null }}
 
 				</div>
 			</td>
 			<td class=" points-tally-bg table-border-thin">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Tally ?? '' }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Tally ?? null }}
 
 			<td class="input-width-pmid table-border-thin">
-					{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->evidence ?? null) }}
+					{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->evidence ?? null) }}
 
 
 			  </td>
@@ -132,14 +125,14 @@
 			<td rowspan="2" id="GeneticEvidence4Max" class=' table-border-thin'>12</td>
 			<td class="input-width-numbers  points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Value ?? null }}
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg table-border-thin">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Tally ?? null }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Tally ?? null }}
 			</td>
 			<td class="input-width-pmid">
-					{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->evidence ?? null) }}
+					{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -147,10 +140,10 @@
 		  <td class='table-border-thin'>1</td>
 		  <td class='table-border-thin'>0-1.5</td>
 			<td class=' input-width-numbers  points-given-bg table-border-thin'><div class="form-group">
-				{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Value ?? null }}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Value ?? null }}
 			</div></td>
 			<td class="input-width-pmid  table-border-thin">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->evidence ?? null) }}
 
 			</td>
 		</tr>
@@ -163,11 +156,11 @@
 		  <td rowspan="5" class="table-heading-line-normal" id="GeneticEvidence5Max2">3</td>
 		  <td rowspan="5" class="table-heading-line-normal input-width-numbers  points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Value ?? null}}
 
 				</div></td>
 		  <td rowspan="5" class="table-heading-line-normal points-tally-bg">
-				{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Tally ?? ''}}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Tally ?? ''}}
 
 		  </td>
 		  <td class="" style="border-style: none">&nbsp;</td>
@@ -183,7 +176,7 @@
 		  <td>0.5</td>
 		  <td>1</td>
 		  <td class="input-width-pmid">
-		  	{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX1->evidence ?? null) }}
+		  	{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX1->evidence ?? null) }}
 
 			{{-- App\Helper::PrintWrapperPmid($inputThisData["scoreJson"]["GeneticEvidence"]["CaseLevelData"]["SegregationEvidence"]["EvidenceOfSegregationInOneOrMoreFamilies"][1], "scoreJson[GeneticEvidence][CaseLevelData][SegregationEvidence][EvidenceOfSegregationInOneOrMoreFamilies][1]") --}}
 		  </td>
@@ -193,7 +186,7 @@
 		  <td>1</td>
 		  <td>2</td>
 		  <td class="input-width-pmid">
-		  	{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX2->evidence ?? null) }}
+		  	{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX2->evidence ?? null) }}
 
 		  </td>
 	  </tr>
@@ -202,7 +195,7 @@
 		  <td class="table-heading-line-normal">1.5</td>
 		  <td class="table-heading-line-normal">3</td>
 		  <td class="input-width-pmid table-heading-line-normal ">
-		  	{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX3->evidence ?? null) }}
+		  	{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX3->evidence ?? null) }}
 
 		  </td>
 	  </tr>
@@ -234,16 +227,16 @@
 			<td rowspan="2" id="GeneticEvidence6Max">12</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Value ?? null}}
 
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Tally ?? '' }}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Tally ?? null}}
 
 			</td>
 			<td class="input-width-pmid">
-					{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseControlData->SingleVariantAnalysis->evidence ?? null) }}
+					{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->evidence ?? null) }}
 
 			</td>
 		</tr>
@@ -252,22 +245,22 @@
 			<td colspan="2">0-6</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Value }}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Value ?? null}}
 
 				</div>
 			</td>
 			<td class="input-width-pmid">
-					{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->evidence ?? null) }}
+					{{ App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
 			<td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Genetic Evidence Points (Maximum <span id="GeneticEvidenceMax">12</span>)</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->TotalGeneticEvidencePoints->Tally ?? '' }}
+					{{ $record->score_data->GeneticEvidence->TotalGeneticEvidencePoints->Tally ?? null}}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total">
 			<div class="form-group total-notes">
-					{{ $score_string_sop5->scoreJson->GeneticEvidence->TotalGeneticEvidencePoints->notes }}
+					{{ $record->score_data->GeneticEvidence->TotalGeneticEvidencePoints->notes ?? null }}
         </div>
 			</td>
 		</tr>
@@ -298,16 +291,15 @@
 			<td rowspan="3" class='table-border-thin' id="ExperimentalEvidence1Max">2</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Function->BiochemicalFunction->Value }}
+					{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Value ?? null}}
 
 				</div>
 			</td>
 			<td rowspan="3" class=" points-tally-bg table-border-thin">
-					{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Function->Tally ?? ''}}
+					{{ $record->score_data->ExperimentalEvidence->Function->Tally ?? ''}}
 			</td>
 			<td class="input-width-pmid">
-			  {{-- App\Helper::PrintWrapperPmid($inputThisData["scoreJson"]["ExperimentalEvidence"]["Function"]["BiochemicalFunction"], "scoreJson[ExperimentalEvidence][Function][BiochemicalFunction]") --}}
-			  {{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Function->BiochemicalFunction->evidence ?? null) }}
+			  {{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->evidence ?? null) }}
 
 			</td>
 		</tr>
@@ -316,10 +308,10 @@
 			<td>0.5</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Function->ProteinInteraction->Value }}
+				{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Value ?? null}}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Function->ProteinInteraction->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -327,10 +319,10 @@
 			<td class=' table-border-thin'>0.5</td>
 			<td class=' table-border-thin'>0 - 2</td>
 			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Function->Expression->Value }}
+				{{ $record->score_data->ExperimentalEvidence->Function->Expression->Value ?? null}}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Function->Expression->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->Expression->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -341,14 +333,14 @@
 			<td rowspan="2" class=' table-border-thin' id="ExperimentalEvidence2Max">2</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->ExperimentalEvidence->FunctionalAlteration->PatientCells->Value }}
+					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Value ?? null}}
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg table-border-thin">
-					{{ $score_string_sop5->scoreJson->ExperimentalEvidence->FunctionalAlteration->Tally ?? '' }}
+					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->Tally ?? null}}
 			</td>
 			<td class="input-width-pmid">
-			  {{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->FunctionalAlteration->PatientCells->evidence ?? null) }}
+			  {{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -356,10 +348,10 @@
 			<td class='table-border-thin'>0.5</td>
 			<td class='table-border-thin'>0 - 1</td>
 			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-						{{ $score_string_sop5->scoreJson->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Value }}
+						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Value ?? null}}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-			  {{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->evidence ?? null) }}
+			  {{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -369,13 +361,13 @@
 		  <td class=''>0 - 4</td>
 		  <td rowspan="6" class='' id="">4</td>
 		  <td class="input-width-numbers points-given-bg"><span class="form-group">
-						{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->Value }}
+						{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->Value ?? null}}
 		  </span></td>
 		  <td rowspan="6" class=" points-tally-bg">
-						{{ $score_string_sop5->scoreJson->ExperimentalEvidence->ModelsRescue->Tally ?? ''}}
+						{{ $record->score_data->ExperimentalEvidence->ModelsRescue->Tally ?? ''}}
 		  </td>
 		  <td class="input-width-pmid">
-		  	{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->evidence ?? null) }}
+		  	{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->evidence ?? null) }}
 			</td>
 	  </tr>
 		<tr>
@@ -383,10 +375,10 @@
 		  <td class='table-border-thin'>1</td>
 		  <td class='table-border-thin'>0 - 2</td>
 		  <td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Models->CellCultureModel->Value }}
+				{{ $record->score_data->ExperimentalEvidence->Models->CellCultureModel->Value ?? null}}
 		  </span></td>
 		  <td class="input-width-pmid  table-border-thin">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Models->CellCultureModel->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Models->CellCultureModel->evidence ?? null) }}
 
 		  </td>
 	  </tr>
@@ -397,11 +389,11 @@
 			<td>0 - 4</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInHuman->Value }}
+					{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->Value ?? null}}
 				</div>
 			</td>
 			<td class="input-width-pmid">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInHuman->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->evidence ?? null) }}
 
 			</td>
 		</tr>
@@ -410,10 +402,10 @@
 			<td>2</td>
 			<td>0 - 4</td>
 			<td class="input-width-numbers points-given-bg"><div class="form-group">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Value }}
+				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Value ?? null}}
 				</div></td>
 			<td class="input-width-pmid">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -421,10 +413,10 @@
 			<td>1</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Value }}
+				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Value ?? null}}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInCellCultureModel->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
@@ -432,20 +424,20 @@
 			<td>1</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-						{{ $score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInPatientCell->Value }}
+						{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Value ?? null}}
 			</span></td>
 			<td class="input-width-pmid">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ExperimentalEvidence->Rescue->RescueInPatientCell->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->evidence ?? null) }}
 			</td>
 		</tr>
 		<tr>
 			<td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Experimental Evidence Points (Maximum <span id="ExperimentalEvidenceMax">6</span>)</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->TotalExperimentalEvidencePoints->Tally ?? '' }}
+				{{ $record->score_data->ExperimentalEvidence->TotalExperimentalEvidencePoints->Tally ?? null}}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total">
 			<div class="form-group total-notes">
-				{{ $score_string_sop5->scoreJson->ExperimentalEvidence->TotalExperimentalEvidencePoints->notes }}
+				{{ $record->score_data->ExperimentalEvidence->TotalExperimentalEvidencePoints->notes ?? null }}
         </div>
 
 			</td>
@@ -480,19 +472,16 @@
 		<tr>
 			<td class="table-heading-line-thick table-heading-bg table-heading">Assigned Points</td>
 			<td class="table-heading-line-thick table-heading-bg table-total table-total-border">
-				{{-- $inputThisData["scoreJson"]["summary"]["GeneticEvidenceTotal"] --}}
-				{{ $score_string_sop5->scoreJson->summary->GeneticEvidenceTotal }}
+				{{ $record->score_data->summary->GeneticEvidenceTotal ?? null }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-total table-total-border">
-				{{-- $inputThisData["scoreJson"]["summary"]["ExperimentalEvidenceTotal"] --}}
-				{{ $score_string_sop5->scoreJson->summary->ExperimentalEvidenceTotal }}
+				{{ $record->score_data->summary->ExperimentalEvidenceTotal ?? null }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-total table-total-border">
-				{{-- $inputThisData["scoreJson"]["summary"]["EvidencePointsTotal"] --}}
-				{{ $score_string_sop5->scoreJson->summary->EvidencePointsTotal }}
+				{{ $record->score_data->summary->EvidencePointsTotal ?? null }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-total table-total-border">
-				@if ($score_string_sop5->scoreJson->ReplicationOverTime == "YES")
+				@if (($record->score_data->ReplicationOverTime ?? null) == "YES")
 					YES
 				@else
 					NO
@@ -527,14 +516,14 @@
 						<table>
 							<tr>
 								<td class="col-sm-2">
-				@if ($score_string_sop5->scoreJson->ValidContradictoryEvidence->value == "YES")
+				@if (($record->score_data->ValidContradictoryEvidence->value ?? null) == "YES")
 					YES
 				@else
 					NO
 				@endif
 								</td>
 								<td class="col-sm-10">
-				{{ App\Helper::PrintWrapperPmidSop5($score_string_sop5->scoreJson->ValidContradictoryEvidence->evidence ?? null) }}
+				{{ App\Helper::PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->evidence ?? null) }}
 								</td>
 							</tr>
 						</table>
@@ -550,21 +539,21 @@
 			<td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION (DATE)</td>
 			<td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive">
 				<div class='col-sm-8'>
-					{{ $score_string_sop5->scoreJson->summary->CalculatedClassification }}
+					{{ $record->score_data->summary->CalculatedClassification ?? null }}
 				</div>
 				<div class='col-sm-4'>
-					{{ $score_string_sop5->scoreJson->summary->CalculatedClassificationDate }}
+					{{ $record->score_data->summary->CalculatedClassificationDate ?? null }}
 				</div>
 					</td>
 		</tr>
-		@if (($score_string_sop5->scoreJson->summary->CuratorModifyCalculation ?? null) == "YES")
+		@if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES")
 		<tr>
 			<td colspan="2" class="table-heading-bg table-heading text-right">
 				MODIFY CALCULATED CLASSIFICATION
 			</td>
 			<td colspan="3" class="table-heading-bg table-heading text-left CalculatedClassificationsActive">
 				<div class='col-sm-12'>
-          @if (($score_string_sop5->scoreJson->summary->CuratorModifyCalculation ?? null) == "YES")
+          @if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES")
 					YES
 				@else
 					NO
@@ -579,31 +568,31 @@
 			<td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive">
 				<div class='col-sm-8'>
 
-          {{ $score_string_sop5->scoreJson->summary->CuratorClassification }}
+          {{ $record->score_data->summary->CuratorClassification ?? null }}
 
 				</div>
 				<div class='col-sm-4'>
 
-          {{ $score_string_sop5->scoreJson->summary->CuratorClassificationDate }}
+          {{ $record->score_data->summary->CuratorClassificationDate ?? null }}
 				</div>
 				<div class='col-sm-12'>
-          {{ $score_string_sop5->scoreJson->summary->CuratorClassificationNotes }}</div>
+          {{ $record->score_data->summary->CuratorClassificationNotes ?? null }}</div>
 					</td>
 		</tr>
 		@endif
 
-		@if ($score_string_sop5->scoreJson->summary->FinalClassification)
+		@if (($record->score_data->summary->FinalClassification ?? null))
 		<tr>
 			<td colspan="2" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
 			<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
 				<div class='col-sm-8'><span style="font-size: 145%;">
-          {{ $score_string_sop5->scoreJson->summary->FinalClassification }}</span>
+          {{ $record->score_data->summary->FinalClassification ?? null }}</span>
 				</div>
 				<div class='col-sm-4'>
-          {{ $score_string_sop5->scoreJson->summary->FinalClassificationDate }}
+          {{ $record->score_data->summary->FinalClassificationDate ?? null }}
 				</div>
 				<div class='col-sm-12'>
-          {{ $score_string_sop5->scoreJson->summary->FinalClassificationNotes }}</div>
+          {{ $record->score_data->summary->FinalClassificationNotes ?? null }}</div>
 
 					</td>
 

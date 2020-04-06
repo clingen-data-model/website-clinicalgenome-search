@@ -52,7 +52,7 @@
 																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{$record->hgnc_id}}"><i class="fas fa-info-circle text-muted hidden-sm hidden-xs"></i></span>&nbsp;<strong>{{ $record->symbol }}</strong>
 																</a>
 															</td>
-															<td nowrap data-search="{{ $record->disease }} {{ $record->displayReplaceCharacter($record->mondo) }}">
+															<td data-search="{{ $record->disease }} {{ $record->displayReplaceCharacter($record->mondo) }}">
 																<a href="{{ route('condition-show', $record->mondo) }}">
 																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $record->displayReplaceCharacter($record->mondo) }}"><i class="fas fa-info-circle text-muted hidden-sm hidden-xs"></i></span> {{ $record->disease }}
 																</a>

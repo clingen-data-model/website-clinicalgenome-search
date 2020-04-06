@@ -3,42 +3,31 @@
   <tr style="">
     <td style="width:15%; padding-top:5px; padding-bottom:5px; padding-right:1%;" valign="top"  nowrap class="text-right text-muted">Gene/Disease Pair:</td>
     <td style="width:85%; padding-bottom:5px"><h3 style="padding:0; margin:0"><strong style="color:#000"><i>
-      {{ $geneSymbol ?? '' }}
+      {{ $record->genes[0]['symbol'] }}
       </i>:
-      {{ $diseaseName ?? '' }}
+      {{ $record->diseases[0]['label'] }}
       </strong></h3></td>
   </tr>
   <tr style="">
     <td style="width:15%; padding-right:1%;" nowrap class="text-right text-muted"></td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $geneCurie ?? '' }}
-|
-      {{ $diseaseCurie ?? '' }}
-      <!-- TODO - Print out equivalents -->
-
+      @foreach ($record->diseases as $disease)
+					 {{ $disease['curie'] }}
+			@endforeach
       </strong></td>
   </tr>
-  @if (isset($score_string->ModeOfInheritance))
+      @if ($record->score_data->ModeOfInheritance ?? null)
   <tr style="">
     <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">Mode of Inheritance:</td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $score_json->ModeOfInheritance }}
+      {{ $record->score_data->ModeOfInheritance ?? null }}
       </strong></td>
   </tr>
-	@endif
-
-  @if (isset($assertion->attributions))
-  <tr style="">
-    <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">Expert Panel:</td>
-    <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      {{ $assertion->attributions->first->label ?? '' }}
-      </strong></td>
-	</tr>
-	@endif
+  @endif
   <tr style="">
     <td style="width:15%; padding-right:1%; padding-bottom:5px" nowrap class="text-right text-muted">SOP:</td>
     <td style="width:85%; padding-bottom:5px"><strong style="color:#000">
-      <a href="{{ env('CG_URL_VALIDITY_SOP', 'http://www.clinicalgenome.org') }}">Gene Clinical Validity Standard Operating Procedures (SOP), Version 6</a>
+		<a href="{{ env('CG_URL_VALIDITY_SOP', 'http://www.clinicalgenome.org') }}">Gene Clinical Validity Standard Operating Procedures (SOP), Version 6</a>
       </strong></td>
   </tr>
 </table>
@@ -593,7 +582,7 @@
 				</div>
 				</td>
 		</tr>
-				@if ($score_json->summary->CuratorClassificationNotes)
+				@if ($score_json->summary->CuratorClassificationNotes ?? null)
 				<tr>
 					<td colspan="2" valign="top" class="table-heading-bg table-heading text-right table-border-thin">
 						REASON(S) FOR CHANGE
@@ -607,18 +596,18 @@
 				@endif
 		@endif
 
-		@if ($score_json->summary->FinalClassification)
+		@if ($score_json->summary->FinalClassification ?? null)
 		<tr>
 			<td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
 			<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
 				<div class='col-sm-8'><span style="font-size: 145%;">
-          {{ $score_json->summary->FinalClassification }}</span>
+          {{ $score_json->summary->FinalClassification ?? null }}</span>
 				</div>
 				<div class='col-sm-4'>
           {{ PrintDate($score_json->summary->FinalClassificationDate ?? null ) }}
 				</div>
 		</tr>
-			@if ($score_json->summary->FinalClassificationNotes)
+			@if ($score_json->summary->FinalClassificationNotes ?? null)
 			<tr>
 					<td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EVIDENCE SUMMARY</td>
 					<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
