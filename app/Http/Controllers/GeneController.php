@@ -43,14 +43,14 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Request $request, $page = 1, $psize = 20)
+	public function index(Request $request, $page = 1, $psize = 250)
 	{
 		// process request args
 		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
 			$$key = $value;
-		
-		/* build cqching of these values with cross-section updates 
-		 * total counts for gene and diseases on relevant pages 
+
+		/* build cqching of these values with cross-section updates
+		 * total counts for gene and diseases on relevant pages
 		 * category would be for setting default select of dropdown */
 		$display_tabs = collect([
 			'active' => "gene",
@@ -78,7 +78,7 @@ class GeneController extends Controller
 		// customize the pagination.
 		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
 		$records->withPath('genes');
-		
+
 		return view('gene.index', compact('display_tabs', 'records'));
 	}
 
@@ -127,6 +127,7 @@ class GeneController extends Controller
 
 			$collect = (object)[
 				'label'            => $item->value('g')['symbol'],
+				'hgnc_id'          => $item->value('g')['hgnc_id'],
 				'href'             => $item->value('g')['hgnc_id'],
 				'actionability'    => $item->value('g')['actionability'],
 				'validity'         => $item->value('g')['validity'],
@@ -147,7 +148,7 @@ class GeneController extends Controller
 
 
 		$display_tabs = collect([
-			'active'                            => "gene",
+			'active'                            => "gene-curations",
 			'query'                             => "",
 			'counts'    => [
 				'dosage'                        => "1434",
@@ -200,7 +201,7 @@ class GeneController extends Controller
 				// return view
 				die("thow an error");
 			}
-			
+
 			return view('gene.show', compact('display_tabs', 'record'));
 		}
 	}

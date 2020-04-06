@@ -11,17 +11,14 @@
 
   <!-- Scripts -->
 
-  <script src="{{ asset('js/app.js') }}" defer></script>
+  <script src="{{ asset('js/app.js') }}"></script>
 
   <!-- Fonts -->
-  <link rel="dns-prefetch" href="//fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
   <!-- Styles -->
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
-  @livewireAssets
+  @livewireStyles
 </head>
 <body>
   <div id="app">
@@ -51,14 +48,9 @@
                 Overview
               </a>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "gene_disease") active @endif ">
-              <a class="nav-link" href="{{ route('gene-disease-validity-index') }}">
-                Gene-Disease Validity (STATIC)
-              </a>
-            </li>
-            <li class="nav-item @if ($display_tabs['active'] == "gene_disease") active @endif ">
+            <li class="nav-item @if ($display_tabs['active'] == "validity") active @endif ">
               <a class="nav-link" href="{{ route('validity-index') }}">
-                Gene-Disease Validity (MVP)
+                Gene-Disease Validity
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "dosage") active @endif ">
@@ -67,15 +59,25 @@
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
-              <a class="nav-link" href="{{ route('actionability-index') }}">
-                Clinical Actionability
+              <a class="nav-link" target="external-actionability" href="{{ route('actionability-index') }}">
+                Clinical Actionability <i class="fas fa-external-link-alt small text-light"></i>
+              </a>
+            </li>
+            <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
+              <a class="nav-link" href="{{ route('gene-curations') }}">
+                Curated Genes
+              </a>
+            </li>
+            <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
+              <a class="nav-link" target="external-erepo" href="{{ route('variant-path-index') }}">
+                Curated Variants <i class="fas fa-external-link-alt small text-light"></i>
               </a>
             </li>
             {{-- <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
               <a class="nav-link" href="{{ route('variant-path-index') }}">
                 Variant Pathogenicity
               </a>
-            </li> --}}
+            </li>
             @if ($display_tabs['active'] == "gene")
             <li class="nav-item active  ">
               <a class="nav-link" href="{{ route('gene-index') }}">
@@ -90,30 +92,31 @@
               </a>
             </li>
             @endif
-            <li role="presentation" class="nav-item dropdown">
+             --}}
+            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "affiliate") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "disease")) active @endif">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i> More
                 </a>
                 <ul class="dropdown-menu">
                   {{-- <li><a href="#">Genomic Browser</a></li> --}}
-                  <li><a href="{{ route('gene-curations') }}">Curated Genes</a></li>
+                  <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="{{ route('gene-index') }}">All Genes</a></li>
-                  <li><a href="{{ route('disease-index') }}">All Disease</a></li>
-                  <li><a href="{{ route('drug-index') }}">All Drugs & Medcations</a></li>
+                  <li><a class="@if ($display_tabs['active'] == "gene") font-weight-bold @endif" href="{{ route('gene-index') }}">All Genes</a></li>
+                  <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('disease-index') }}">All Disease</a></li>
+                  <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medcations</a></li>
                   {{-- <li role="separator" class="divider"></li>
                   <li><a href="#">APIs and Downloads</a></li> --}}
                 </ul>
               </li>
 
-            <li role="presentation" class="nav-item dropdown pull-right">
+            {{--<li role="presentation" class="nav-item dropdown pull-right">
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-cog"></i>
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Coming soon...</a></li>
                 </ul>
-              </li>
+              </li>--}}
             <li role="presentation" class="nav-item dropdown pull-right">
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-share-square"></i>
@@ -124,17 +127,17 @@
                   <li><a href="#"><i class="fas fa-quote-left"></i> How to cite...</a></li>
                 </ul>
               </li>
-            <li class="nav-item  pull-right ">
+            {{--<li class="nav-item  pull-right ">
               <a class="nav-link" href="#">
                 <i class="fas fa-download"></i>
               </a>
-            </li>
+            </li>--}}
 
-            <li class="nav-item  pull-right ">
+            {{--<li class="nav-item  pull-right ">
               <a class="nav-link" href="#">
                 <i class="fas fa-print"></i>
               </a>
-            </li>
+            </li>--}}
           </ul>
           @endisset
           </div>
@@ -170,6 +173,6 @@
     <script>
 
     </script>
-
+    @livewireScripts
   </body>
   </html>

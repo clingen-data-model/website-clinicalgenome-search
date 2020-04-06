@@ -958,10 +958,11 @@ D,
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
 		// first call appears to get the gene disease info
 		$query = '
 			MATCH (a:`GeneDiseaseAssertion`:`Assertion`:`Entity`)
-			WHERE (a.perm_id = "' . $value . '")
+			WHERE (a.perm_id = "' . $perm . '")
 			RETURN a {.date, .perm_id, .score_string, .jsonMessageVersion, .score_string_gci, .score_string_sop5,
 					genes: [(g:Gene)<-[:has_subject]-(a) | g {.symbol, .hgnc_id}],
 					diseases: [(d:DiseaseConcept)-[:has_object|:equivalentClass*1..2]-(a) | d {.curie, .label}],
@@ -970,7 +971,7 @@ D,
 		//try {
 
 			$response = Cypher::run($query);
-			//dd($response);
+			dd($response);
 		/*} catch (Exception $exception) {
 
 			// TODO - more comprehensive error recovery
@@ -978,100 +979,100 @@ D,
 
 		};*/
 
-		// $ident = $response->firstRecord()->value('identity');
-		// $details['n'] = $response->firstRecord()->value('n');
+		$ident = $response->firstRecord()->value('identity');
+		$details['n'] = $response->firstRecord()->value('n');
 
-		// // this call gets the first gene symbol
-		// $query = '
-		// 	MATCH (g)
-		// 	WHERE (ID(g)  = ' . $ident . ')
-		// 	MATCH (g)-[rel1:has_subject]->(result_genes:Gene)
-		// 	RETURN result_genes
-		// 	ORDER BY result_genes.uuid
-		// 	LIMIT 1';
+		// this call gets the first gene symbol
+		$query = '
+			MATCH (g)
+			WHERE (ID(g)  = ' . $ident . ')
+			MATCH (g)-[rel1:has_subject]->(result_genes:Gene)
+			RETURN result_genes
+			ORDER BY result_genes.uuid
+			LIMIT 1';
 
-		// //try {
+		//try {
 
-		// 	$response = Cypher::run($query);
+			$response = Cypher::run($query);
 
-		// /*} catch (Exception $exception) {
+		/*} catch (Exception $exception) {
 
-		// 	// TODO - more comprehensive error recovery
-		// 	die("error found");
+			// TODO - more comprehensive error recovery
+			die("error found");
 
-		// };*/
-		// //dd($response->firstRecord());
-		// $details['symbol'] = $response->firstRecord();
+		};*/
+		//dd($response->firstRecord());
+		$details['symbol'] = $response->firstRecord();
 
-		// // this call gets the first disease name
-		// $query = '
-		// 	MATCH (g)
-		// 	WHERE (ID(g)  = ' . $ident . ')
-		// 	MATCH (g)-[rel1:has_object]->(result_diseases:RDFClass)
-		// 	RETURN result_diseases
-		// 	ORDER BY result_diseases.iri
-		// 	LIMIT 1';
+		// this call gets the first disease name
+		$query = '
+			MATCH (g)
+			WHERE (ID(g)  = ' . $ident . ')
+			MATCH (g)-[rel1:has_object]->(result_diseases:RDFClass)
+			RETURN result_diseases
+			ORDER BY result_diseases.iri
+			LIMIT 1';
 
-		// //try {
+		//try {
 
-		// 	$response = Cypher::run($query);
+			$response = Cypher::run($query);
 
-		// /*} catch (Exception $exception) {
+		/*} catch (Exception $exception) {
 
-		// 	// TODO - more comprehensive error recovery
-		// 	die("error found");
+			// TODO - more comprehensive error recovery
+			die("error found");
 
-		// };*/
+		};*/
 
-		// $details['disease_name'] = $response->firstRecord();
+		$details['disease_name'] = $response->firstRecord();
 
-		// // this call gets the curie
-		// $query = '
-		// 	MATCH (g)
-		// 	WHERE (ID(g)  = ' . $ident . ')
-		// 	MATCH (g)-[rel1:has_subject]->(result_genes:Gene)
-		// 	RETURN result_genes
-		// 	ORDER BY result_genes.uuid
-		// 	LIMIT 1';
+		// this call gets the curie
+		$query = '
+			MATCH (g)
+			WHERE (ID(g)  = ' . $ident . ')
+			MATCH (g)-[rel1:has_subject]->(result_genes:Gene)
+			RETURN result_genes
+			ORDER BY result_genes.uuid
+			LIMIT 1';
 
-		// //try {
+		//try {
 
-		// 	$response = Cypher::run($query);
+			$response = Cypher::run($query);
 
-		// /*} catch (Exception $exception) {
+		/*} catch (Exception $exception) {
 
-		// 	// TODO - more comprehensive error recovery
-		// 	die("error found");
+			// TODO - more comprehensive error recovery
+			die("error found");
 
-		// };*/
+		};*/
 
-		// $details['gene_curie'] = $response->firstRecord();
+		$details['gene_curie'] = $response->firstRecord();
 
-		// // this call gets the disease curie
-		// $query = '
-		// 	MATCH (g)
-		// 	WHERE (ID(g)  = ' . $ident . ')
-		// 	MATCH (g)-[rel1:has_object]->(result_diseases:RDFClass)
-		// 	RETURN result_diseases
-		// 	ORDER BY result_diseases.iri
-		// 	LIMIT 1';
+		// this call gets the disease curie
+		$query = '
+			MATCH (g)
+			WHERE (ID(g)  = ' . $ident . ')
+			MATCH (g)-[rel1:has_object]->(result_diseases:RDFClass)
+			RETURN result_diseases
+			ORDER BY result_diseases.iri
+			LIMIT 1';
 
-		// //try {
+		//try {
 
-		// 	$response = Cypher::run($query);
+			$response = Cypher::run($query);
 
-		// /*} catch (Exception $exception) {
+		/*} catch (Exception $exception) {
 
-		// 	// TODO - more comprehensive error recovery
-		// 	die("error found");
+			// TODO - more comprehensive error recovery
+			die("error found");
 
-		// };*/
+		};*/
 
-		// $details['disease_curie'] = $response->firstRecord();
+		$details['disease_curie'] = $response->firstRecord();
 
 		//CHECKPOINT 9
 		//dd($details);
-		return $response;
+		return $details;
 	}
 
 

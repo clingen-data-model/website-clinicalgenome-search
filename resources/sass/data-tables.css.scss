@@ -24,9 +24,13 @@ a.info-popover {
     display: block;
 }
 
-#interactive_curations_table_filter {
+.fixedHeader-floating .floating-hide {
   display: none;
- } 
+}
+
+#interactive_curations_table_filter, #interactive_table_filter {
+  display: none;
+ }
 #interactive_curations_form .input-group-addon {
     background-color: #fff !important;
     border: 1px solid #ccc;
@@ -66,4 +70,40 @@ table.table-bordered.table-interactive {
 table.table-interactive thead .sorting:after, table.table-interactive thead .sorting_asc:after, table.table-interactive thead .sorting_desc:after {
     top: auto !important;
     bottom: 4px !important;
+}
+
+
+
+
+table.fixedHeader-floating{position:fixed !important;background-color:white}table.fixedHeader-floating.no-footer{border-bottom-width:0}table.fixedHeader-locked{position:absolute !important;background-color:white}@media print{table.fixedHeader-floating{display:none}}
+
+
+
+
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important;
+}
+
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    bottom: 10px;
+    right: 8px;
+    display: block;
+    font-family: "Font Awesome 5 Free";
+}
+
+table.dataTable thead th.sorting:after {
+    content: "\f0dc";
+    color: #ddd;
+    font-size: 0.8em;
+    padding-top: 0.12em;
+}
+table.dataTable thead th.sorting_asc:after {
+    content: "\f0de";
+}
+table.dataTable thead th.sorting_desc:after {
+    content: "\f0dd";
 }

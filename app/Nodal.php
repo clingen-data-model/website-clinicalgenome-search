@@ -169,7 +169,7 @@ class Nodal extends Model
 			if (basename($this->gene_dosage_interps['condition']['iri']) == $mondo)
 				$records[] = ['date' => $this->gene_dosage_interps['date'],
 							  'classification' => $this->gene_dosage_interps['significance'][0]['label'],
-							  'report' => 'https://www.ncbi.nlm.nih.gov/projects/dbvar/clingen/clingen_gene.cgi?sym=' . $this->symbol . '&subject'];
+							  'report' => env('CG_URL_CURATIONS_DOSAGE') . $this->symbol . '&subject'];
 
 		//dd($records);
 

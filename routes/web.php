@@ -58,7 +58,7 @@ Route::group(['prefix' => 'drugs'], function () {
 /*
  * Gene Validity display routes
  */
-Route::group(['prefix' => 'validity'], function () {
+Route::group(['prefix' => 'gene-validity'], function () {
 
 		Route::get('/', 'ValidityController@index')->name('validity-index');
 
@@ -86,6 +86,16 @@ Route::group(['prefix' => 'conditions'], function () {
 
 });
 
+/*
+ * Gene display routes
+ */
+Route::group(['prefix' => 'affiliate'], function () {
+
+	Route::get('/', 'AffiliateController@index')->name('affiliate-index');
+
+	Route::get('/{id?}', 'AffiliateController@show')->name('affiliate-show');
+});
+
 
 		// Scotts stuff :)
 
@@ -97,16 +107,16 @@ Route::group(['prefix' => 'conditions'], function () {
 
 		// Dosage demo route
 		// STATIC PAGES FOR REFERENCE
-		Route::get('/dosage/', 'DosageController@index')->name('dosage-index');
+		Route::get('/gene-dosage/', 'DosageController@index')->name('dosage-index');
 
 		// SHOW ISN"T NEEDED - MVP IS A REDIRECT
-		Route::get('/dosage/detail/', 'DosageController@show')->name('dosage-show');
+		Route::get('/gene-dosage/detail/', 'DosageController@show')->name('dosage-show');
 
 
 		// Gene Validity demo route
 		// STATIC PAGES FOR REFERENCE
-		 Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
-		 Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
+		// Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
+		// Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
 
 
 		// Actionability demo route
@@ -116,8 +126,8 @@ Route::group(['prefix' => 'conditions'], function () {
 
 		// Variant Path demo route
 		// NOT FOR MVP
-		Route::get('/variant-path/all/', 'VariantPathController@index')->name('variant-path-index');
-		Route::get('/variant-path/detail/', 'VariantPathController@show')->name('variant-path-show');
+		Route::get('/variant-pathogenicity/all/', 'VariantPathController@index')->name('variant-path-index');
+		Route::get('/variant-pathogenicity/detail/', 'VariantPathController@show')->name('variant-path-show');
 
 		// Variant Path demo route
 		// NOT FOR MVP

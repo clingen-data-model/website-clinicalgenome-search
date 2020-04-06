@@ -17,7 +17,7 @@
         "kyslik/column-sortable": "^6.2",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "livewire/livewire": "^0.3.6",
+        "livewire/livewire": "^1.0",
         "renatomarinho/laravel-page-speed": "^1.8",
         "webpatser/laravel-uuid": "^3.0"
     },

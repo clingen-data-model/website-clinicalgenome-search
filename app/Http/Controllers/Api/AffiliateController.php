@@ -19,10 +19,10 @@ class AffiliateController extends Controller
     public function index(Request $request)
     {
 		$records = GeneLib::AffiliateList([	]);
-		
+		dd($records);
 		if ($records === null)
 			die("throw an error");
-		
+
 		return AffiliateResource::collection($records);
     }
 
@@ -56,10 +56,10 @@ class AffiliateController extends Controller
     public function show($id)
     {
         $record = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
-        
+
         if ($record === null)
 			die("throw an error");
-        
+
         return new AffiliateResource($record);
     }
 

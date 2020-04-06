@@ -44,7 +44,7 @@ class ValidityController extends Controller
 		//if (is_int($page)) // don't forget to check the parms
 
 		$display_tabs = collect([
-				'active' => "gene",
+				'active' => "validity",
 				'query' => "",
 				'counts' => [
 					'dosage' => "1434",
@@ -62,7 +62,7 @@ class ValidityController extends Controller
 		if ($records === null)
 			die("thow an error");
 
-        return view('validity.index', compact('display_tabs', 'records'));
+        return view('gene-validity.index', compact('display_tabs', 'records'));
     }
 
 
@@ -78,7 +78,7 @@ class ValidityController extends Controller
 			die("display some error about needing an id");
 
 		$display_tabs = collect([
-				'active' => "gene",
+				'active' => "validity",
 				'query' => "BRCA2",
 				'counts' => [
 					'dosage' => "1434",
@@ -93,36 +93,35 @@ class ValidityController extends Controller
 										'perm' => $id
 										 ]);
 
-		$assertion = $record->n;
+		//$assertion = $record->n;
+		//dd($record);
+		// if (empty($assertion->score_string_gci)){
+		// 	$score_json = json_decode($assertion->score_string_gci);
+		// 	if ($assertion->jsonMessageVersion == "GCI.7") {
+		// 	} elseif ($assertion->jsonMessageVersion == "GCI.6") {
+		// 		$score_sop = "SOP6";
+		// 	} elseif ($assertion->jsonMessageVersion == "GCI.5") {
+		// 		$score_sop = "SOP5";
+		// 	}
+		// } elseif (empty($assertion->score_string_sop5)) {
+		// 	$score_json = json_decode($assertion->score_string_sop5);
+		// 	$score_sop = "SOP5-sop5";
+		// } else {
+		// 	$score_json = json_decode($assertion->score_string);
+		// 	$score_sop = "SOP4";
+		// }
 
-		if (empty($assertion->score_string_gci)){
-			$score_json = json_decode($assertion->score_string_gci);
-			if ($assertion->jsonMessageVersion == "GCI.7") {
-				$score_sop = "SOP7";
-			} elseif ($assertion->jsonMessageVersion == "GCI.6") {
-				$score_sop = "SOP6";
-			} elseif ($assertion->jsonMessageVersion == "GCI.5") {
-				$score_sop = "SOP5";
-			}
-		} elseif (empty($assertion->score_string_sop5)) {
-			$score_json = json_decode($assertion->score_string_sop5);
-			$score_sop = "SOP5-sop5";
-		} else {
-			$score_json = json_decode($assertion->score_string);
-			$score_sop = "SOP4";
-		}
 
+		// $geneSymbol = $record->symbol->value('result_genes')->value('symbol');
+		// $geneCurie = $record->symbol->value('result_genes')->value('symbol');
 
-		$geneSymbol = $record->gene_symbol->value('result_genes')->value('symbol');
-		$geneCurie = $record->gene_symbol->value('result_genes')->value('symbol');
+		// $diseaseName = $record->disease_name->value('result_diseases')->value('label');
 
-		$diseaseName = $record->disease_name->value('result_diseases')->value('label');
+		// //$geneCurie = $record->gene_curie->value('result_genes')->value('curie');
 
-		//$geneCurie = $record->gene_curie->value('result_genes')->value('curie');
+		// $diseaseCurie = $record->disease_curie->value('result_diseases')->value('curie');
 
-		$diseaseCurie = $record->disease_curie->value('result_diseases')->value('curie');
-
-		$animalmode = false;
+		//$animalmode = false;
 
 		//dd($score_string_sop5->condition);
 
@@ -135,7 +134,6 @@ class ValidityController extends Controller
 		 //dd($assertion);
 		 //dd($score_json);
 		 //dd($score_sop);
-        return view('validity.show', compact('display_tabs', 'record',
-			'score_json', 'score_sop', 'assertion', 'geneSymbol','diseaseName', 'geneCurie', 'diseaseCurie', 'animalmode' ));
+        return view('gene-validity.show', compact('display_tabs', 'record'));
     }
 }

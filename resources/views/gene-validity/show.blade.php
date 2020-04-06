@@ -7,14 +7,14 @@
 		<div class="col-sm-12">
 			<div class="content-space content-border">
 				{{ $animalmode ?? '' }}
-				@if($score_sop == "SOP7")
-					@include('validity.sop7')
-				@elseif ($score_sop == "SOP6")
-					@include('validity.sop6')
-				@elseif ($score_sop == "SOP5")
-					@include('validity.sop5')
-				@elseif ($score_sop == "SOP4")
-					@include('validity.sop4')
+				@if($record->sop == "SOP7")
+					@include('gene-validity.partial.sop7')
+				@elseif ($record->sop == "SOP6")
+					@include('gene-validity.partial.sop6')
+				@elseif ($record->sop == "SOP5")
+					@include('gene-validity.partial.sop5-legacy')
+				@elseif ($record->sop == "SOP4")
+					@include('gene-validity.partial.sop4-legacy')
 				@else
 					ERROR - NO SOP SET
 				@endif

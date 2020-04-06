@@ -5,18 +5,33 @@
 
 					<dl class="dl-horizontal">
 						<dt>HGNC Symbol</dt>
-						<dd>{{ $record->symbol }} ({{ $record->hgnc_id }})</dd>
+						<dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
+							<a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer">HGNC <i class="fas fa-external-link-alt"></i></a>
+							@if($record->entrez_id)
+							<a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">NCBI <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+						</dd>
+						@if($record->locus_group)
 						<dt>HGNC Name</dt>
 						<dd>{{ $record->name }}</dd>
+						@endif
+						@if($record->locus_group)
 						<dt>Gene type</dt>
 						<dd>{{ $record->locus_group }}</dd>
+						@endif
+						@if($record->locus_type)
 						<dt>Locus type</dt>
 						<dd>{{ $record->locus_type }}</dd>
+						@endif
+						@if($record->prev_symbols_string)
 						<dt>Previous symbols</dt>
 						<dd>{{ $record->prev_symbols_string }}</dd>
+						@endif
+						@if($record->alias_symbols_string)
 						<dt>Alias symbols</dt>
 						<dd>{{ $record->alias_symbols_string }}</dd>
-						<dt>Genomic Coordinate</dt>
+						@endif
+						{{-- <dt>Genomic Coordinate</dt>
 						<dd>
 							<table>
 									<tr>
@@ -35,10 +50,13 @@
 									</tr>
 							</table>
 						</dd>
+					--}}
+						@if($record->location)
 						<dt>Chromosomal location</dt>
-						<dd>{{ $record->location }} <a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a> </dd>
-						<dt>Function</dt>
-						<dd>Involved in double-strand break repair and/or homologous recombination. Binds RAD51 and potentiates recombinational DNA repair by promoting assembly of RAD51 onto single-stranded DNA (ssDNA). Acts by targeting RAD51 to ssDNA over double-stranded DNA, enabling RAD51 to displace … Source: UniProt</dd>
+						<dd>{{ $record->location }}</dd>
+						@endif
+						{{-- <dt>Function</dt>
+						<dd>Involved in double-strand break repair and/or homologous recombination. Binds RAD51 and potentiates recombinational DNA repair by promoting assembly of RAD51 onto single-stranded DNA (ssDNA). Acts by targeting RAD51 to ssDNA over double-stranded DNA, enabling RAD51 to displace … Source: UniProt</dd> --}}
 					</dl>
 			</div>
 	</div>

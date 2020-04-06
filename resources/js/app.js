@@ -6,8 +6,12 @@
 
 
 window.Vue = require('vue');
- 
+
 require('./bootstrap');
+require('datatables.net-bs');
+require('datatables.net-fixedheader-bs');
+require('datatables.net-responsive-bs');
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -32,9 +36,19 @@ require('./bootstrap');
 //     el: '#app',
 // });
 
-
-$(function () { 
-  $('[data-toggle="popover"]').popover()
+$(function () {
+    $('[data-toggle="popover"]').popover()
+})
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+$('.th-sort').on('click', function (e) {
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 });
 $('body').on('click', function (e) {
     $('[data-toggle="popover"]').each(function () {

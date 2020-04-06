@@ -14,7 +14,7 @@
         "bootstrap": "^4.1.0",
         "cross-env": "^5.1",
         "jquery": "^3.2",
-        "laravel-mix": "^4.0.7",
+        "laravel-mix": "^5.0.1",
         "lodash": "^4.17.13",
         "popper.js": "^1.16.0",
         "resolve-url-loader": "^2.3.1",
@@ -24,6 +24,10 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "bootstrap-sass": "^3.4.1"
+        "@fortawesome/fontawesome-free": "^5.13.0",
+        "bootstrap-sass": "^3.4.1",
+        "datatables.net-bs": "^1.10.20",
+        "datatables.net-fixedheader-bs": "^3.1.6",
+        "datatables.net-responsive-bs": "^2.2.3"
     }
 }
