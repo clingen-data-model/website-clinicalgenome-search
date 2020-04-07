@@ -132,7 +132,7 @@ class ValidityController extends Controller
 
 
 
-		 //dd($record);
+		 //dd($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid']);
 		 //dd($score_json);
 		 //dd($score_sop);
         return view('gene-validity.show', compact('display_tabs', 'record'));

@@ -100,6 +100,25 @@
 	}
 
 
+		/**
+     * Return a displayable string of date parameter
+     *
+     * @param
+     * @return string
+     */
+	function displayDate($date, $long = false)
+	{
+		if (empty($date))
+			return '';
+
+		$time = strtotime($date);
+
+		if ($time === false)
+			return '';
+
+		return ($long ? date("m/d/Y", $time) : date("m/d/Y", $time));
+	}
+
 
      function PrintDate($data = null)
     {
@@ -111,8 +130,9 @@
      * @param	string	$mondo
      * @return 	array
      */
-     function PrintWrapperPmid($id = '', $data = null)
+     function PrintWrapperPmid($data = null)
     {
+			//return "asdasd";
 		//	# "<div class=\"WrapperPmid\" >"
   		// # "<div class=\"form-group\">"
   		// # "<div class=\"WrapperPmidResults\">"
@@ -120,15 +140,15 @@
 		if (!empty($data))
 		{
 			$varStart = "<div class=\"GeneticEvidencePmidData\">";
-			if (!empty($data->notes->note))
-				$note = "(" . $data->notes->note . ")";
+			if (!empty($data['notes']['note']))
+				$note = "(" . $data['notes']['note'] . ")";
 			else
 				$note = "";
 
-			if (!empty($data->publications))
+			if (!empty($data['publications']))
 			{
-				foreach ($data->publications as $pub)
-				  $varInner .= $pubs["author"] . " et al. " . $pubs["pubdate"] . " (PMID:" . $pubs["uid"] . "); ";
+				foreach ($data['publications'] as $pub)
+				  $varInner .= $pub["author"] . " et al. " . $pub["pubdate"] . " (PMID:" . $pub["uid"] . "); ";
 				//##varInner += pubs.inspect
 			}
 

@@ -506,7 +506,7 @@
 					{{ $record->score_data->summary->CalculatedClassification ?? null }}
 				</div>
 				<div class='col-sm-4'>
-					{{ PrintDate($record->score_data->summary->CalculatedClassificationDate ?? null ) }}
+					{{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null ) }}
 				</div>
 					</td>
 		</tr>
@@ -543,7 +543,7 @@
           {{ $record->score_data->summary->CuratorClassification ?? null }}
 				</div>
 				<div class='col-sm-4'>
-					{{ PrintDate($record->score_data->summary->CuratorClassificationDate ?? null ) }}
+					{{ displayDate($record->score_data->summary->CuratorClassificationDate ?? null ) }}
 				</div>
 				</td>
 		</tr>
@@ -569,7 +569,7 @@
           {{ $record->score_data->summary->FinalClassification ?? null }}</span>
 				</div>
 				<div class='col-sm-4'>
-          {{ PrintDate($record->score_data->summary->FinalClassificationDate ?? null ) }}
+          {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null ) }}
 				</div>
 		</tr>
 			@if ($record->score_data->summary->FinalClassificationNotes ?? null)

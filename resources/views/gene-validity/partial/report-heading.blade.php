@@ -1,4 +1,5 @@
 <h3>{{ $record->genes[0]['symbol'] }} - {{ $record->diseases[0]['label'] }}</h3>
+{{ $record->interface }}
 <div class="form-group">
 <table class='table table-striped text-left' style="width:100%;" >
 <tr style="font-size:14px">
@@ -8,7 +9,7 @@
     <div class='badge badge-primary' style="font-size: 20px; padding:15px;">
       <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ $record->score_data->summary->FinalClassification ?? null }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
     </div>
-    <div>Classification - {{ $record->score_data->summary->FinalClassificationDate ?? null }}</div></td>
+    <div>Classification - {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null) }}</div></td>
   </tr>
   <tr style="font-size:14px">
     <td style="" nowrap class="text-left">Disease:</td>

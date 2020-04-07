@@ -14,8 +14,13 @@
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop6')
 				@elseif ($record->sop == "SOP5")
-					@include('gene-validity.partial.report-heading')
-					@include('gene-validity.partial.sop5-legacy')
+					@if($record->interface == "GCI")
+						@include('gene-validity.partial.report-heading')
+						@include('gene-validity.partial.sop5')
+					@else
+						@include('gene-validity.partial.report-heading')
+						@include('gene-validity.partial.sop5-legacy')
+					@endif
 				@elseif ($record->sop == "SOP4")
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop4-legacy')

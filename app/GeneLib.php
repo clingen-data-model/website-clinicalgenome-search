@@ -209,26 +209,32 @@ class GeneLib
 			// Grab the JSON data and set it to common variable
 			// The order is important in case the record has more than one set of JSON data
 			// First check for GCI data, then SOP5 legacy data, then fall back to everything else
-			if(!empty($node->score_string_gci)) {
+			if (!empty($node->score_string_gci)) {
 				$node->score_data 	= json_decode($node->score_string_gci);
 				if (!empty($node->jsonMessageVersion)) {
-					$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+					$node->interface 					= "GCI";
+					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 				} else {
-					$node->sop 			= "SOP5";
+					$node->interface 					= "GCI";
+					$node->sop 								= "SOP5";
 				}
-				$node->moi 				= $node->score_data->ModeOfInheritance;
-			} elseif(!empty($node->score_string_sop5)) {
-				$node->score_data 	= json_decode($node->score_string_sop5);
+				$node->moi 									= $node->score_data->ModeOfInheritance;
+			} elseif (!empty($node->score_string_sop5)) {
+				$node->score_data 					= json_decode($node->score_string_sop5);
+				$node->score_data 					= $node->score_data->scoreJson;
+				$node->interface 						= "GCXpress";
 				if (!empty($node->jsonMessageVersion)) {
-					$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 				} else {
-					$node->sop 			= "SOP5";
+					$node->sop 								= "SOP5";
 				}
-					$node->moi 			= $node->score_data->scoreJson->ModeOfInheritance;
+				$node->moi 									= $node->score_data->ModeOfInheritance;
 			} else {
-				$node->score_data 	= json_decode($node->score_string);
-				$node->sop = "SOP4";
-				$node->moi 				= $node->score_data->data->ModeOfInheritance;
+				$node->score_data 					= json_decode($node->score_string);
+				$node->score_data_array 		= json_decode($node->score_string, true);
+				$node->interface 						= "GCXpress";
+				$node->sop 									= "SOP4";
+				$node->moi 									= $node->score_data->data->ModeOfInheritance;
 			}
 
 			$records[] = $node;
@@ -278,24 +284,29 @@ class GeneLib
 		if (!empty($node->score_string_gci)) {
 			$node->score_data 	= json_decode($node->score_string_gci);
 			if (!empty($node->jsonMessageVersion)) {
-				$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+				$node->interface 					= "GCI";
+				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 			} else {
-				$node->sop 			= "SOP5";
+				$node->interface 					= "GCI";
+				$node->sop 								= "SOP5";
 			}
-			$node->moi 				= $node->score_data->ModeOfInheritance;
+			$node->moi 									= $node->score_data->ModeOfInheritance;
 		} elseif (!empty($node->score_string_sop5)) {
-			$node->score_data 	= json_decode($node->score_string_sop5);
+			$node->score_data 					= json_decode($node->score_string_sop5);
+			$node->score_data 					= $node->score_data->scoreJson;
+			$node->interface 						= "GCXpress";
 			if (!empty($node->jsonMessageVersion)) {
-				$node->sop 			= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
 			} else {
-				$node->sop 			= "SOP5";
+				$node->sop 								= "SOP5";
 			}
-			$node->moi 			= $node->score_data->scoreJson->ModeOfInheritance;
+			$node->moi 									= $node->score_data->ModeOfInheritance;
 		} else {
-			$node->score_data 	= json_decode($node->score_string);
-			$node->score_data_array 	= json_decode($node->score_string, true);
-			$node->sop = "SOP4";
-			$node->moi 				= $node->score_data->data->ModeOfInheritance;
+			$node->score_data 					= json_decode($node->score_string);
+			$node->score_data_array 		= json_decode($node->score_string, true);
+			$node->interface 						= "GCXpress";
+			$node->sop 									= "SOP4";
+			$node->moi 									= $node->score_data->data->ModeOfInheritance;
 		}
 
 		$record = $node;

@@ -1,5 +1,8 @@
 <?php
 
+/// CONSIDER DELETING NOT YET
+
+
 namespace App;
 
 //use App\Traits\Display;
@@ -125,7 +128,7 @@ class Helper
     //	# "<div class=\"WrapperPmid\" >"
     // # "<div class=\"form-group\">"
     // # "<div class=\"WrapperPmidResults\">"
-    $varInner = "";
+    $varInner = "ddfsdfdsfdf";
     if (!empty($data)) {
       $varStart = "<div class=\"GeneticEvidencePmidData\">";
       if (!empty($data->notes->note))

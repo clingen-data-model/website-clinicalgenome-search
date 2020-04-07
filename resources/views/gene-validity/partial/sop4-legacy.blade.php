@@ -41,7 +41,7 @@
     <td class="points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
 
-      {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['pmid'] ?? null) }}
+      {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['pmid'] ?? null) !!}
 
 
       </td>
@@ -54,7 +54,7 @@
     <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['value'] ?? null }}</td>
     <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['pmid'] ?? null) }}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -67,7 +67,7 @@
       {{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['tally'] ?? null }}
       </span></td>
     <td class="input-width-pmid table-border-thin"><span class="input-width-pmid">
-      {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid'] ?? null) }}
+      {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid'] ?? null) !!}
 
       </span></td>
   </tr>
@@ -80,7 +80,7 @@
     <td class="input-width-numbers  points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNariantsInTransAndAtLeastOneIsLOFOrDeNovo']['value'] ?? null }}</td>
     <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['tally'] ?? null }}</td>
     <td rowspan="2" class="input-width-pmid  table-border-thin">
-    	{{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['pmid'] ?? null) }}
+    	{!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -100,7 +100,7 @@
     <td rowspan="5" class="table-heading-line-normal input-width-numbers  points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['value'] ?? null }}</td>
     <td rowspan="5" class="table-heading-line-normal points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['tally'] ?? null }}</td>
     <td rowspan="5" class="table-heading-line-normal input-width-pmid">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['pmid'] ?? null) }}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -146,7 +146,7 @@
     <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['value'] ?? null }}</td>
     <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['pmid'] ?? null) }}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -156,7 +156,7 @@
     <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['value'] ?? null }}</td>
     <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['pmid'] ?? null) }}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -192,7 +192,7 @@
     <td rowspan="3" class="input-width-numbers points-given-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['Function']['value'] ?? null }}</td>
     <td rowspan="3" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['Function']['tally'] ?? null }}</td>
     <td rowspan="3" class="input-width-pmid table-border-thin">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['Function']['pmid'] ?? null) }}</td>
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['Function']['pmid'] ?? null) !!}</td>
   </tr>
   <tr>
     <td colspan="3">Protein Interaction</td>
@@ -213,7 +213,7 @@
     <td rowspan="2" class="input-width-numbers points-given-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['value'] ?? null }}</td>
     <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['tally'] ?? null }}</td>
     <td rowspan="2" class="input-width-pmid table-border-thin">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['pmid'] ?? null) }}
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -230,7 +230,7 @@
     <td rowspan="4" class="input-width-numbers points-given-bg">{{ $record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['value'] ?? null }}</td>
     <td rowspan="4" class=" points-tally-bg">{{ $record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['tally'] ?? null }}</td>
     <td rowspan="4" class="input-width-pmid">
-    {{ App\Helper::PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['pmid'] ?? null) }}</td>
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['pmid'] ?? null) !!}</td>
   </tr>
   <tr>
     <td colspan="3">Cell culture model system</td>
@@ -309,7 +309,7 @@
             <td class="col-sm-2">
             			{{ $record['score_data_array']['ValidContradictoryEvidence']['YesNo'] ?? null }}
             </td>
-            <td class="col-sm-10">{{ App\Helper::PrintWrapperPmid($record['score_data_array']['ValidContradictoryEvidence']['pmid'] ?? null) }}
+            <td class="col-sm-10">{!! PrintWrapperPmid($record['score_data_array']['ValidContradictoryEvidence']['pmid'] ?? null) !!}
             </td>
           </tr>
         </table>
@@ -322,7 +322,7 @@
       {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}
       </div>
       <div class='col-sm-4'>
-      {{ $record['score_data_array']['summary']['CalculatedClassificationDate'] ?? null }}
+      {{ displayDate($record['score_data_array']['summary']['CalculatedClassificationDate'] ?? null) }}
       </div></td>
   </tr>
   		@if (($record['score_data_array']['summary']['CuratorModifyCalculation'] ?? null) == "YES"))
@@ -339,7 +339,7 @@
       {{ $record['score_data_array']['summary']['CuratorClassification'] ?? null }}
       </div>
       <div class='col-sm-4'>
-      {{ $record['score_data_array']['summary']['CuratorClassificationDate'] ?? null }}
+      {{ displayDate($record['score_data_array']['summary']['CuratorClassificationDate'] ?? null) }}
       </div>
       <div class='col-sm-12'>
       {{ $record['score_data_array']['summary']['CuratorClassificationNotes'] ?? null }}
@@ -353,7 +353,7 @@
       {{ $record['score_data_array']['summary']['FinalClassification'] ?? null }}
       </span> </div>
       <div class='col-sm-4'>
-      {{ $record['score_data_array']['summary']['FinalClassificationDate'] ?? null }}
+      {{ displayDate($record['score_data_array']['summary']['FinalClassificationDate'] ?? null) }}
       </div>
       <div class='col-sm-12'>
       {{ $record['score_data_array']['summary']['FinalClassificationNotes'] ?? null }}
