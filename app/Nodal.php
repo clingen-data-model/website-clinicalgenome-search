@@ -88,29 +88,32 @@ class Nodal extends Model
 		$records = [];
 
 		$mondo = str_replace(':', '_', $mondo);
-
+			//dd($mondo);
 		// scan through gene validity interps items
 		if (!empty($this->gene_validity_interps))
 			foreach ($this->gene_validity_interps as $item)
+			//dd($item);
 				if (basename($item['condition']['iri']) == $mondo)
 				{
 					foreach($this->validity_report as $vnode)
 					{
+				//dd($vnode['node']->moi);
 						foreach($vnode['idc'] as $key => $idc)
 						{
 							if (basename($idc[0]->value('iri')) == $mondo)
 							{
-								$permid = $vnode['node']->value('perm_id');
+								$permid = $vnode['node']->perm_id;
 							}
 						}
 					}
 
-					$records[] = ['date' => $item['date'],
+					$records[] = [
+									'date' => $item['date'],
+									'moi' => $vnode['node']->moi,
 								  'classification' => $item['significance']['label'],
 								  'report' => '/validity/' . $permid ?? 0];
 				}
 
-		//dd($records);
 
 		return $records;
 	}

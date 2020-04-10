@@ -202,6 +202,7 @@ class GeneController extends Controller
 				die("thow an error");
 			}
 
+			//dd($record);
 			return view('gene.show', compact('display_tabs', 'record'));
 		}
 	}

@@ -129,7 +129,7 @@ class Neo4j
 				MATCH (g)
 				WHERE (g.hgnc_id = "' . $gene . '")
 				RETURN ID(g) as identity, g {.symbol, .name, .hgnc_id, .location, .locus_group, .entrez_id, .locus_type, .prev_symbol, .alias_symbol,
-					gene_validity_interps: [(g)<-[:has_subject]-(gv:GeneDiseaseAssertion) | gv {.date, .uuid,
+					gene_validity_interps: [(g)<-[:has_subject]-(gv:GeneDiseaseAssertion) | gv {.date, .perm_id, .uuid,
 						condition: [(gv)-[:has_object|:equivalentClass*..2]->(c:DiseaseConcept) | c {.label, .iri}][0],
 						significance: [(gv)-[:has_predicate]->(i:Interpretation) | i {.label, .iri}][0],
 						replaced_by: [(gv)<-[:wasInvalidatedBy]-(r) | r.iri ]}],
@@ -201,13 +201,59 @@ class Neo4j
 				OPTIONAL MATCH (n)-[:has_object]->(diseases)
 				WHERE (diseases:RDFClass)
 				WITH n, collect(diseases) AS diseases_collection, interpretation_collection
-				RETURN n, [interpretation_collection,diseases_collection]';
+				RETURN n {
+					interpretation: [(i:Interpretation)<-[:has_predicate]-(n) | i {.label}],
+					diseases: [(d:DiseaseConcept)-[:has_object|:equivalentClass*1..2]-(n) | d {.curie, .label}],
+					agent: [(ag:Agent)<-[:wasAttributedto]-(n) | ag {.label}],
+					.date, .perm_id, .score_string, .jsonMessageVersion, .score_string_gci, .score_string_sop5, .iri, .title, .jsonMessageVersion, .sopVersion}, [interpretation_collection,diseases_collection]';
 
 				$response = Cypher::run($query);
 
-				foreach ($response->getRecords() as $record)
-					$validity_report[] = ['node' => $record->value('n'), 'idc' =>  $record->value('[interpretation_collection,diseases_collection]')];
+				foreach ($response->getRecords() as $record) {
 
+				//$node = $record->value('n');
+				$node = new Nodal($record->value('n'));
+				//dd($node->score_string_gci);
+				// Grab the JSON data and set it to common variable
+				// The order is important in case the record has more than one set of JSON data
+				// First check for GCI data, then SOP5 legacy data, then fall back to everything else
+				if (!empty($node->score_string_gci)) {
+					//dd("score_string_gci");
+					$node->score_data 	= json_decode($node->score_string_gci);
+					if (!empty($node->jsonMessageVersion)) {
+						$node->interface 					= "GCI";
+						$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+					} else {
+						$node->interface 					= "GCI";
+						$node->sop 								= "SOP5";
+					}
+					$node->moi 									= $node->score_data->ModeOfInheritance;
+				} elseif (!empty($node->score_string_sop5)) {
+					$node->score_data 					= json_decode($node->score_string_sop5);
+					$node->score_data 					= $node->score_data->scoreJson;
+					$node->interface 						= "GCXpress";
+					if (!empty($node->jsonMessageVersion)) {
+						$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+					} else {
+						$node->sop 								= "SOP5";
+					}
+					$node->moi 									= $node->score_data->ModeOfInheritance;
+				} else {
+					//dd("node");
+					//dd($node);
+					$node->score_data 					= json_decode($node->score_string);
+					$node->score_data_array 		= json_decode($node->score_string, true);
+					$node->interface 						= "GCXpress";
+					$node->sop 									= "SOP4";
+					$node->moi 									= $node->score_data->data->ModeOfInheritance;
+				}
+
+					$validity_report[] = [
+						'node' =>  $node,
+						'idc' =>  $record->value('[interpretation_collection,diseases_collection]')
+					];
+				}
+				//dd($validity_report);
 				$details['validity_report'] = $validity_report ?? [];
 		}
 
