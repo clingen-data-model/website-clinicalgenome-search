@@ -97,23 +97,26 @@ class Nodal extends Model
 				{
 					foreach($this->validity_report as $vnode)
 					{
-				//dd($vnode['node']->moi);
+						//dd($vnode['node']->moi);
 						foreach($vnode['idc'] as $key => $idc)
 						{
 							if (basename($idc[0]->value('iri')) == $mondo)
 							{
 								$permid = $vnode['node']->perm_id;
+								$records[$permid] = [
+									'date' => $item['date'],
+									'moi' => $vnode['node']->moi,
+									'classification' => $item['significance']['label'],
+									'report' => '/validity/' . $permid ?? 0
+								];
 							}
 						}
 					}
 
-					$records[] = [
-									'date' => $item['date'],
-									'moi' => $vnode['node']->moi,
-								  'classification' => $item['significance']['label'],
-								  'report' => '/validity/' . $permid ?? 0];
+
 				}
 
+				//dd($records);
 
 		return $records;
 	}
