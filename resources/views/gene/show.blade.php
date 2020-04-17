@@ -15,12 +15,12 @@
 			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
 			<ul class="nav nav-tabs">
           <li class="active">
-            <a href="#summary" class=" bg-primary text-white"">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class=" bg-primary text-white">
               ClinGen's Curation Summaries
             </a>
           </li>
           <li class="">
-            <a href="/kb/genes/HGNC:61/external_resources_genes">External Genomic Resources</a>
+            <a href="{{ route('gene-external', $record->hgnc_id) }}">External Genomic Resources </a>
           </li>
           <li class="">
             <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>

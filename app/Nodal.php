@@ -103,6 +103,8 @@ class Nodal extends Model
 							if (basename($idc[0]->value('iri')) == $mondo)
 							{
 								$permid = $vnode['node']->perm_id;
+
+								// Dropped in the permid as the key so a if looped again it wouldn't add another record
 								$records[$permid] = [
 									'date' => $item['date'],
 									'moi' => $vnode['node']->moi,

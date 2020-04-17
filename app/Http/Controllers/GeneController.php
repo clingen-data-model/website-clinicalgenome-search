@@ -205,4 +205,48 @@ class GeneController extends Controller
 			//dd($record);
 			return view('gene.show', compact('display_tabs', 'record'));
 		}
+
+	/**
+	 * External resource show
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function external(Request $request, $id = null)
+	{
+		if ($id === null)
+			die("display some error about needing a gene");
+
+		$display_tabs = collect([
+			'active' => "gene",
+			'query' => "BRCA2",
+			'counts' => [
+				'dosage' => "1434",
+				'gene_disease' => "500",
+				'actionability' => "270",
+				'variant_path' => "300"
+			]
+		]);
+
+		$record = GeneLib::geneDetail([
+			'page' => 0,
+			'pagesize' => 200,
+			'gene' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true
+		]);
+
+		//dd($record);
+		if ($record === null) {
+			GeneLib::errorDetail();
+			// do something
+			// return view
+			die("thow an error");
+		}
+
+		//dd($record);
+		return view('gene.show-external-resources', compact('display_tabs', 'record'));
+	}
 	}

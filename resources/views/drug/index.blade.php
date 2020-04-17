@@ -4,52 +4,48 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          <h1 class=" display-4 ">Drugs
-          </h1>
-        </div>
-        <div class="col-md-12">
+						<h2>Drugs &amp; Medications</h2>
+						<div class="mb-2 row">
+							<div class="col-sm-6">
+								<div class="input-group">
+										<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search"></i></span>
+										<input type="text" class="form-control input-block search" id="interactive_search" placeholder="Filter results...">
+								</div>
+							</div>
+							<div class="col-sm-6">
+								{{-- <div class=" pt-1 text-right">
+                  <span class='text-muted'>Gene Count:</span> <strong>{{ count($records)}}</strong>
+                </div> --}}
+							</div>
+						</div>
 
-            <div class="card">
-                <div class="card-body">
+                <table id="interactive_table" class="table table-sm table-striped">
+											<thead>
+													<tr class="small text-center border-bottom-3 text-secondary">
+															<th nowrap class="th-sort  bg-white border-1  text-uppercase">
+																 @sortablelink('curie','RXNORM')
+															</th>
+															<th class="th-sort  bg-white border-1  text-uppercase">
+																@sortablelink('label','Name')
+															</th>
+													</tr>
+											</thead>
+											<tbody>
+												@foreach ($records as $record)
+													<tr>
+                            <td>
+                              <a href="{{ route('drug-show', $record->curie) }}">RXNORM:{{ $record->curie }}</a>
+                            </td>
+                            <td>
+                              <a class="text-muted small" href="{{ route('drug-show', $record->curie) }}">{{ $record->label }}</a>
+                            </td>
+                        </tr>
+												@endforeach
+												</tbody>
+                    </table>
 
-                </div>
-                <table class="table table-striped table-hover">
-                    <tr class="small">
-                        <th>Name</th>
-                        <th>Curations</th>
-                    </tr>
-                    @foreach($records as $record)
-                    <tr>
-                        <td><a href="{{ route('drug-show', $record->curie) }}"><strong>{{ $record->label }}</strong></a>
-							<br />RXNORM:{{ $record->curie }}
-								<span class='badge text-xs'>Drug</span>
-							</td>
-              
-                        <td>
-							<a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
-								@if ($record->hasActionability ?? false)
-									<img class="img-responsive" src="/images/clinicalActionability-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/clinicalActionability-off.png" style="width:10px">
-								@endif
-							</a>
-							<a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
-								@if ($record->hasValidity ?? false)
-									<img class="img-responsive" src="/images/clinicalValidity-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/clinicalValidity-off.png" style="width:10px">
-								@endif
-                            </a>
-                            <a class="menu_icon" href="{{ route('drug-show', $record->curie) }}">
-								@if ($record->hasDosage ?? false)
-									<img class="img-responsive" src="/images/dosageSensitivity-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/dosageSensitivity-off.png" style="width:10px">
-								@endif
-                            </a>
-						</td>
-                    </tr>
-                    @endforeach
+
+
 				</table>
             </div>
 
