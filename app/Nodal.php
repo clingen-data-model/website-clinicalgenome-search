@@ -172,12 +172,28 @@ class Nodal extends Model
 
 		$mondo = str_replace(':', '_', $mondo);
 
+		//dd($this);
+		// null is sent through at the end of the gene show and disease show page to make sure dosages without diseases are displayed.
+		if($mondo != null) {
 		// scan through gene dosage interps items
-		if (!empty($this->gene_dosage_interps))
-			if (basename($this->gene_dosage_interps['condition']['iri']) == $mondo)
-				$records[] = ['date' => $this->gene_dosage_interps['date'],
-							  'classification' => $this->gene_dosage_interps['significance'][0]['label'],
-							  'report' => env('CG_URL_CURATIONS_DOSAGE') . $this->symbol . '&subject'];
+			if (!empty($this->gene_dosage_interps))
+				if (basename($this->gene_dosage_interps['condition']['iri']) == $mondo)
+					$records[] = ['date' => $this->gene_dosage_interps['date'],
+									'classification' => $this->gene_dosage_interps['significance'][0]['label'],
+									'report' => env('CG_URL_CURATIONS_DOSAGE') . $this->symbol . '&subject'];
+		} else {
+			// check to see if this has a condition
+			if (!$this->gene_dosage_interps['condition']['iri']) {
+				$records[] = [
+					'date' => $this->gene_dosage_interps['date'],
+					'classification' => $this->gene_dosage_interps['significance'][0]['label'],
+					'report' => env('CG_URL_CURATIONS_DOSAGE') . $this->symbol . '&subject'
+				];
+			} else {
+				// if no contition send back nothing to the view if doesn't render
+				return;
+			}
+		}
 
 		//dd($records);
 

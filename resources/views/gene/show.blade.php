@@ -79,6 +79,7 @@
 									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $dosage['report'] }}">View report</a></td>
 								</tr>
 						@endforeach
+
 					</tbody>
 
 
@@ -87,9 +88,59 @@
 
 				</div>
 			</div>
-			@empty
-			THIS GENE HAS NOT BEEN CURATED
-			@endforelse
+			{{-- @empty --}}
+			<!-- Gene Dosage						-->
+
+			{{-- THIS GENE HAS NOT BEEN CURATED --}}
+			{{-- @endforelse --}}
+			@endforeach
+			@if($record->findDosage(null) )
+			<div class="card">
+				<div class="card-header text-white bg-primary">
+					<h3 class="text-white h5 p-0 m-0">{{ $record->symbol }}</h3>
+				</div>
+				<div class="card-body p-0 m-0">
+
+					<table class="panel-body table table-hover">
+          <thead class="thead-labels">
+            <tr>
+              <th class="col-sm-3 th-curation-group text-left">Curated by</th>
+              <th class="col-sm-4 text-left"> Classification</th>
+              <th class="col-sm-2 text-left"> </th>
+              <th class="col-sm-2 text-center">Date</th>
+              <th class="col-sm-1 text-center">Report</th>
+            </tr>
+          </thead>
+
+					<tbody class="">
+
+						<!-- Gene Disease Validity				-->
+						@foreach($record->findDosage(null) as $dosage)
+								<tr>
+									<td class="col-sm-3">D - Dosage</td>
+									<td class="col-sm-6">{{ $dosage['classification'] }}</td>
+									<td class="col-sm-2"></td>
+									<td class="col-sm-2">{{ $record->displayDate($dosage['date']) }}</td>
+									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $dosage['report'] }}">View report</a></td>
+								</tr>
+						@endforeach
+
+					</tbody>
+
+
+        </table>
+
+
+				</div>
+			</div>
+			@endif
+
+			{{-- @empty --}}
+			<!-- Gene Dosage						-->
+
+			{{-- THIS GENE HAS NOT BEEN CURATED --}}
+			{{-- @endforelse --}}
+
 		</div>
 	</div>
 </div>
