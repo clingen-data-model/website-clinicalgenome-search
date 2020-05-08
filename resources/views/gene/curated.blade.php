@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center" id="gene_curations_all">
         <div class="col-md-12 text-center">
-          <h1 class=" display-4 "><strong>{{ count($collection)}}</strong> Curated Genes
+          <h1 class=" display-4 "><strong>{{ count($records)}}</strong> Curated Genes
           </h1>
           <div class="col-sm-4 col-sm-offset-4">
             <div class="input-group">
@@ -46,28 +46,28 @@
                     </tr>
                     </thead>
                     <tbody class="list">
-                    @isset($collection)
-                        @foreach($collection as $item)
+                    @isset($records)
+                        @foreach($records as $item)
                         <tr class="text-center">
                             <td class="text-left"><a class=" filter-gene" href="{{ route('gene-show', $item->href) }}">
                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{$item->href}}"><i class="fas fa-info-circle text-muted"></i></span><strong> {{ $item->label }}</strong>
                                 </a>
                             </td>
                                 <td>
-                                    @if(count($item->validity))<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
+                                    @if($item->has_validity)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
                                     @endif
                                 </td>
                                 <td>
-                                    @if(count($item->actionability))<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
+                                    @if($item->has_actionability)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
                                     @endif
                                 </td>
                                 <td>
-                                    @isset($item->dosage[0])<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
-                                    @endisset
+                                    @if($item->has_dosage_triplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_triplo }}</span></a>
+                                    @endif
                                 </td>
                                 <td>
-                                    @isset($item->dosage[1])<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>Curated</span></a>
-                                    @endisset
+                                    @if($item->has_dosage_haplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_haplo }}</span></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
