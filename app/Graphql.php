@@ -49,9 +49,26 @@ class Graphql
 			
 		// initialize the collection
 		$collection = collect();
-						
-		$query = '{
-					gene_list(limit: ' . $pagesize  . ($curated === false ? '' : ', curation_type: ALL') . ') {
+		
+		if ($curated === true)
+		{		
+			$query = '{
+					gene_list(limit: ' . $pagesize . ', curation_type: ALL) {
+						label
+						curation_activities
+						dosage_curation {
+							triplosensitivity_assertion { score }
+							haploinsufficiency_assertion { score }
+						}
+					}
+				}';
+					
+				
+		}
+		else
+		{
+			$query = '{
+					gene_list(limit: ' . $pagesize . ') {
 						label
 						alternative_label
 						hgnc_id
@@ -59,6 +76,8 @@ class Graphql
 						curation_activities
 					}
 				}';
+		}
+				
 
 		try {
 		
@@ -91,7 +110,7 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
-				
+		
 		return $collection;
 	}
 	

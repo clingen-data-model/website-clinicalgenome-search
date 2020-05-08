@@ -232,6 +232,38 @@ class Nodal extends Model
 	
 	
 	/**
+     * Flag indicating if gene has any dosage triplo scores 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasDosageTriploAttribute()
+    {
+		if (empty($this->dosage_curation))
+			return false;
+		
+		return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
+	
+	}
+	
+	
+	/**
+     * Flag indicating if gene has any dosage haplo scores 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasDosageHaploAttribute()
+    {
+		if (empty($this->dosage_curation))
+			return false;
+		
+		return $this->dosage_curation->haploinsufficiency_assertion->score ?? false;
+		
+	}
+	
+	
+	/**
      * Flag indicating if gene has any validity curations 
      * 
      * @@param	
