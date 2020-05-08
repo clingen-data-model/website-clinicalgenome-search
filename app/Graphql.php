@@ -45,11 +45,13 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 			
+		
+			
 		// initialize the collection
 		$collection = collect();
 						
 		$query = '{
-					gene_list(limit: ' . $pagesize . ', curation_type: ALL) {
+					gene_list(limit: ' . $pagesize  . ($curated === false ? '' : ', curation_type: ALL') . ') {
 						label
 						alternative_label
 						hgnc_id
@@ -57,7 +59,7 @@ class Graphql
 						curation_activities
 					}
 				}';
-      
+
 		try {
 		
 			$response = Genegraph::fetch($query);
