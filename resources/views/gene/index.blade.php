@@ -49,28 +49,28 @@
                             <td class="text-muted small">{{ $record->name }}</td>
                             <td nowrap>
                               <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->hasActionability ?? false)
+                                @if ($record->has_actionability)
                                   <img class="" src="/images/clinicalActionability-on.png" style="width:30px">
                                 @else
                                   <img class="" src="/images/clinicalActionability-off.png" style="width:30px">
                                 @endif
                               </a>
                               <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->hasValidity ?? false)
+                                @if ($record->has_validity)
                                   <img class="" src="/images/clinicalValidity-on.png" style="width:30px">
                                 @else
                                   <img class="" src="/images/clinicalValidity-off.png" style="width:30px">
                                 @endif
                                             </a>
                                             <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->hasDosage ?? false)
+                                @if ($record->has_dosage)
                                   <img class="" src="/images/dosageSensitivity-on.png" style="width:30px">
                                 @else
                                   <img class="" src="/images/dosageSensitivity-off.png" style="width:30px">
                                 @endif
                                             </a>
                             </td>
-                            <td class="text-right">{{ $record->displayDate($record->last_curated) }}</td>
+                            <td class="text-right">{{ $record->displayDate($record->last_curated_date) }}</td>
                         </tr>
 												@endforeach
 												</tbody>

@@ -47,8 +47,9 @@ class Nodal extends Model
      *
      * @var array
      */
-    //protected $appends = ['display_location', 'display_date',
-	//					  'list_date', 'display_status'];
+    protected $appends = ['has_dosage', 'has_actionability', 'has_validity',
+							'last_curated', 'description', 'symbol',
+							'curation_flag'];
 
 
     public const STATUS_ACTIVE = 1;
@@ -199,4 +200,114 @@ class Nodal extends Model
 
 		return $records;
 	}
+	
+	
+	/**
+     * Flag indicating if gene has any dosage curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function setCurationFlagAttribute($value)
+    {
+		if (!isset($this->curation_activities))
+			$this->curation_activities = [$value];
+		else
+			$this->curation_activities = array_merge($this->curation_activities,
+													[ $value ]);
+	}
+	
+	/**
+     * Flag indicating if gene has any dosage curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasDosageAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+					in_array('GENE_DOSAGE', $this->curation_activities) :
+					false); 
+	}
+	
+	
+	/**
+     * Flag indicating if gene has any validity curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasValidityAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+					in_array('GENE_VALIDITY', $this->curation_activities) :
+					false); 
+	}
+	
+	
+	/**
+     * Flag indicating if gene has any actionability curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasActionabilityAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+					in_array('ACTIONABILITY', $this->curation_activities) :
+					false); 
+	}
+	
+	
+	/**
+     * Return full name of gene 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getNameAttribute()
+    {
+		return $this->alternative_label ?? '';
+	}
+	
+	
+	/**
+     * Return symbol of gene 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getSymbolAttribute()
+    {
+		return $this->label ?? '';
+	}
+	
+	
+	/*
+     * Set or clear NodalError for use by controllers or views.  
+     *
+     * @param	string	$mondo
+     * @return 	array
+     */
+    public static function putError($error = null)
+    {
+		if ($error === null)
+			return session()->put('NodalError', false);
+			
+		session()->put('NodalEror', $error);
+	}
+	
+	
+	/*
+     * Get a NodalError.  
+     *
+     * @param	string	$mondo
+     * @return 	array
+     */
+    public static function getError($error = null)
+    {
+		return session()->get('NodalEror', false);
+	}
+			
+	
 }

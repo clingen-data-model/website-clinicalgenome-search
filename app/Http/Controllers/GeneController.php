@@ -9,6 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
+use App\Nodal;
 
 /**
 *
@@ -71,9 +72,8 @@ class GeneController extends Controller
 										'direction' => $direction ?? 'asc',
 										'curated' => false ]);
 
-		//dd($records);
 		if ($records === null)
-			die("thow an error");
+			die(print_r(Nodal::getError()));
 
 		// customize the pagination.
 		$records = new LengthAwarePaginator($records, 1500, $psize, $page);

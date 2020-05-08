@@ -5,6 +5,10 @@ namespace App;
 use Alexaandrov\GraphQL\Facades\Client as Genegraph;
 use Illuminate\Support\Facades\Log;
 
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
+
+use Exception;
 
 /**
  * 
@@ -31,6 +35,66 @@ class Graphql
     
     
     /**
+     * Get gene list with curation flags and last update
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+			
+		// initialize the collection
+		$collection = collect();
+						
+		$query = '{
+					gene_list(limit: ' . $pagesize . ', curation_type: ALL) {
+						label
+						alternative_label
+						hgnc_id
+						last_curated_date
+						curation_activities
+					}
+				}';
+      
+		try {
+		
+			$response = Genegraph::fetch($query);
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			Nodal::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			Nodal::putError($errors);
+			
+			return null;
+			
+		};
+		
+		// add each gene to the collection
+		foreach($response->gene_list as $record)
+			$collection->push(new Nodal((array) $record));
+				
+		return $collection;
+	}
+	
+	
+    /**
      * Get actionability details for a specific gene
      * 
      * @return Illuminate\Database\Eloquent\Collection
@@ -54,20 +118,37 @@ class Graphql
 				}
 			  }
 			}';
-			
-		//try {
+		
+		try {
 		
 			$response = Genegraph::fetch($query);
 			
-		/*} catch (Exception $exception) {
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
 			
-			// TODO - more comprehensive error recovery
-			die("error found");
+			Nodal::putError($errors);
 			
-		};*/
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			Nodal::putError($errors);
+			
+			return null;
+			
+		};
 				
-		dd($response->gene);
+		$node = new Nodal((array) $response->gene);
 		
-		return $response;
+		return $node;
 	}
 }

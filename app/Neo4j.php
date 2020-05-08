@@ -4,6 +4,8 @@ namespace App;
 
 use Ahsan\Neo4j\Facade\Cypher;
 
+use App\Nodal;
+
 
 /**
  *
@@ -39,6 +41,9 @@ class Neo4j
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+			
+		// initialize the collection
+		$collection = collect();
 
 		$query = '
 			MATCH (n:Gene) ' .
@@ -47,15 +52,14 @@ class Neo4j
 			OPTIONAL MATCH (n)<-[:has_subject]-(assertions)
 			WHERE (assertions:Assertion)
 			WITH n, collect(assertions) AS assertions_collection
-			RETURN n.hgnc_id as hgnc_id, n.symbol as symbol, n.name as name,
-				n.last_curated as last_curated, assertions_collection ' .
+			RETURN n.hgnc_id as hgnc_id, n.symbol as label, n.name as alternative_label,
+				n.last_curated as last_curated_date, assertions_collection ' .
 			(!empty($sort) ? 'ORDER BY n.' . $sort . ' ' . $direction : '')  . '
 			SKIP ' . ($page * $pagesize) . '
 			LIMIT ' . $pagesize . '
 			';
 
 
-//dd($query);
 		try {
 
 			$response = Cypher::run($query);
@@ -64,14 +68,36 @@ class Neo4j
 
 			// TODO - more comprehensive error recovery
 			die("error found");
+			return null;
 
 		};
 
 		// if no records found, return null
 		if ($response->size() == 0)
-			return null;
+			return $collection;
+			
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
 
-		return $response;
+			// set some shortcuts for the views
+			if (!empty($node->assertions_collection))
+			{
+				foreach($node->assertions_collection as $assertion)
+				{
+					if ($assertion->hasLabel('ActionabilityAssertion'))
+						$node->curation_flag = 'GENE_DOSAGE';
+					if ($assertion->hasLabel('GeneDiseaseAssertion'))
+						$node->curation_flag = 'GENE_VALIDITY';
+					if ($assertion->hasLabel('GeneDosageAssertion'))
+						$node->curation_flag = 'ACTIONABILITY';
+				}
+			}
+			$collection->push($node);
+		}
+
+		return $collection;
 	}
 
 	/**

@@ -63,34 +63,12 @@ class GeneLib
 			return collect([]);
 
 		// Gene data is currently in neo4j
-		$response = Neo4j::geneList($args);
+		//$response = Neo4j::geneList($args);
+		
+		// Gene listing using Graphql
+		$response = Graphql::geneList($args);
 
-		// TODO:  error return?
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		{
-			$node = new Nodal(array_combine($record->keys(), $record->values()));
-
-			// set some shortcuts for the views
-			if (!empty($node->assertions_collection))
-			{
-				foreach($node->assertions_collection as $assertion)
-				{
-					if ($assertion->hasLabel('ActionabilityAssertion'))
-						$node->hasActionability = true;
-					if ($assertion->hasLabel('GeneDiseaseAssertion'))
-						$node->hasValidity = true;
-					if ($assertion->hasLabel('GeneDosageAssertion'))
-						$node->hasDosage = true;
-				}
-			}
-			$records[] = $node;
-		}
-
-		return collect($records);
+		return $response;
 	}
 
 
