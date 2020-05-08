@@ -242,7 +242,7 @@ class Nodal extends Model
 		if (empty($this->dosage_curation))
 			return false;
 		
-		return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
+		return $this->dosage_curation->triplosensitivity_assertion->scode ?? false;
 	
 	}
 	

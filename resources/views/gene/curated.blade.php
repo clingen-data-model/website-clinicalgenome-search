@@ -62,11 +62,11 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->has_dosage_triplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_triplo }}</span></a>
+                                    @if($item->has_dosage_triplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE') . $item->label }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_triplo }}</span></a>
                                     @endif
                                 </td>
                                 <td>
-                                    @if($item->has_dosage_haplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ route('gene-show', $item->href) }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_haplo }}</span></a>
+                                    @if($item->has_dosage_haplo !== false)<a class="btn btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE') . $item->label }}"><i class="glyphicon glyphicon-ok"></i> <span class='hidden-sm hidden-xs'>{{ $item->has_dosage_haplo }}</span></a>
                                     @endif
                                 </td>
                             </tr>

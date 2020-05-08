@@ -53,8 +53,7 @@ class Graphql
 		if ($curated === true)
 		{		
 			$query = '{
-					gene_list(limit: ' . $pagesize . ', curation_type: ALL) {
-						label
+					gene_list(limit: ' . $pagesize . ', curation_type: ALL) {						label
 						curation_activities
 						dosage_curation {
 							triplosensitivity_assertion { score }

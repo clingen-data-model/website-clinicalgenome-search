@@ -1,0 +1,10 @@
+GENE_DOSAGE_PAGES=https://dosage.clinicalgenome.org
+
+CG_URL_CURATIONS_VARANTS="https://erepo.clinicalgenome.org/evrepo/"
+CG_URL_CURATIONS_DOSAGE="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym="
+CG_URL_CURATIONS_ACTIONABILITY="https://actionability.clinicalgenome.org/ac/"
+CG_URL_CURATIONS_ACTIONABILITY="https://www.clinicalgenome.org/curation-activities/clinical-actionability/browse-curations/"
+CG_URL_VALIDITY_SOP="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/"
+CG_URL_GENENAMES_GENE="https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/"
+CG_URL_NCBI_GENE="https://www.ncbi.nlm.nih.gov/gene/"
+
