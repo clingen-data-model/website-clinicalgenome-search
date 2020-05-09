@@ -55,13 +55,16 @@
 																</a>
 															</td>--}}
 															<td nowrap>
-																Haploinsufficiency
+																{{ App\GeneLib::dosageAssertionString($record->has_dosage_haplo) }}
 															</td>
 															<td>
-																Triplosensitivity
+																{{ App\GeneLib::dosageAssertionString($record->has_dosage_triplo) }}
 															</td>
-															<td data-sort="{{ $record->displaySortDate($record->last_curated) }}">
-																<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject="><i class="fas fa-file"></i> <span class='hidden-sm hidden-xs'>Report - </span>{{ $record->displayDate($record->last_curated) }}</a>
+															<td data-sort="{{ $record->displaySortDate($record->dosage_report_date) }}">
+																<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">
+																	<i class="fas fa-file"></i> 
+																	<span class='hidden-sm hidden-xs'>Report - </span>{{ $record->displayDate($record->dosage_report_date) }}
+																</a>
 															</td>
 													</tr>
 												@endforeach

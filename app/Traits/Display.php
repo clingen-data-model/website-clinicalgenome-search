@@ -165,35 +165,39 @@ trait Display
 		if (empty($moi))
 			return '';
 
-		$moi = explode("(", $moi);
-		switch($moi[1]){
+		$amoi = explode("(", $moi);
+
+		if (!isset($amoi[1]))
+			return 'Other';
+			
+		switch($amoi[1]){
 			case "HP:0000006)":
-				$text 	= "Autosomal Dominant";
-				$abr 		= "AD";
+				$text = "Autosomal Dominant";
+				$abr = "AD";
 				break;
 			case "HP:0000007)":
-				$text 	= "Autosomal Recessive";
-				$abr 	= 	"AR";
+				$text = "Autosomal Recessive";
+				$abr = "AR";
 				break;
 			case "HP:0001417)":
-				$text 	= "X-Linked";
-				$abr 		= "XL";
+				$text = "X-Linked";
+				$abr = "XL";
 				break;
 			case "HP:0001419)":
-				$text 	= "X-linked recessive";
-				$abr 		= "XLR";
+				$text = "X-linked recessive";
+				$abr = "XLR";
 				break;
       case "HP:0001427)":
-				$text 	= "Mitochondrial";
-				$abr 		= "MT";
+				$text = "Mitochondrial";
+				$abr = "MT";
 				break;
       case "HP:0032113)":
-				$text 	= "Semidominant";
-				$abr 		= "SD";
+				$text = "Semidominant";
+				$abr = "SD";
 				break;
       default:
-        $text 	= "Other";
-        $abr 		= "Other";
+				$text = "Other";
+				$abr = "Other";
 				break;
 		}
 

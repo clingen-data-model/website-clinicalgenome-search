@@ -41,7 +41,7 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $psize = 6000)
+    public function index(Request $request, $page = 1, $psize = 100)
     {
         
         //if (is_int($page)) // don't forget to check the parms
@@ -56,14 +56,19 @@ class DosageController extends Controller
 				'variant_path' => "300"
 			]
 		]);
-
-		$records = GeneLib::dosageList([	'page' => $page,
-		'pagesize' => $psize,
-		'curated' => true ]);
+		
+		$records = GeneLib::dosageList(['page' => $page - 1,
+										'pagesize' => $psize,
+										'sort' => $sort ?? 'symbol',
+										'direction' => $direction ?? 'asc',
+										'curated' => true ]);
 
 		if ($records === null)
-		die("thow an error");
-		//dd($records);
+			die(print_r(GeneLib::getError()));
+
+		// customize the pagination.
+		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		//$records->withPath('genes');
 
 		return view('gene-dosage.index', compact('display_tabs', 'records'));
     }
@@ -77,16 +82,17 @@ class DosageController extends Controller
      */
     public function show($id = '')
     {
-    $display_tabs = collect([
-            'active'                            => "gene",
-            'query'                             => "BRCA2",
-            'counts'    => [
-                'dosage'                        => "1434",
-                'gene_disease'                  => "500",
-                'actionability'                 => "270",
-                'variant_path'                  => "300"
-            ]
-    ]);
+		$display_tabs = collect([
+				'active'                            => "gene",
+				'query'                             => "BRCA2",
+				'counts'    => [
+					'dosage'                        => "1434",
+					'gene_disease'                  => "500",
+					'actionability'                 => "270",
+					'variant_path'                  => "300"
+				]
+		]);
+    
         return view('gene-dosage.show', compact('display_tabs'));
     }
 

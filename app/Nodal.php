@@ -35,7 +35,8 @@ class Nodal extends Model
 	];
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are mass assignable.  Remember to fill this
+     * in when all the attributes are known.
      *
      * @var array
      */
@@ -49,7 +50,7 @@ class Nodal extends Model
      */
     protected $appends = ['has_dosage', 'has_actionability', 'has_validity',
 							'last_curated', 'description', 'symbol',
-							'curation_flag'];
+							'curation_flag', 'dosage_report_date'];
 
 
     public const STATUS_ACTIVE = 1;
@@ -241,8 +242,8 @@ class Nodal extends Model
     {
 		if (empty($this->dosage_curation))
 			return false;
-		
-		return $this->dosage_curation->triplosensitivity_assertion->scode ?? false;
+
+		return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
 	
 	}
 	
@@ -260,6 +261,18 @@ class Nodal extends Model
 		
 		return $this->dosage_curation->haploinsufficiency_assertion->score ?? false;
 		
+	}
+	
+	
+	/**
+     * Get the latest date
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getDosageReportDateAttribute()
+    {
+		return $this->dosage_curation->report_date ?? '';	
 	}
 	
 	
@@ -313,33 +326,4 @@ class Nodal extends Model
     {
 		return $this->label ?? '';
 	}
-	
-	
-	/*
-     * Set or clear NodalError for use by controllers or views.  
-     *
-     * @param	string	$mondo
-     * @return 	array
-     */
-    public static function putError($error = null)
-    {
-		if ($error === null)
-			return session()->put('NodalError', false);
-			
-		session()->put('NodalEror', $error);
-	}
-	
-	
-	/*
-     * Get a NodalError.  
-     *
-     * @param	string	$mondo
-     * @return 	array
-     */
-    public static function getError($error = null)
-    {
-		return session()->get('NodalEror', false);
-	}
-			
-	
 }

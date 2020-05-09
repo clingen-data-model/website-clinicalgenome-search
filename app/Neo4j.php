@@ -145,9 +145,6 @@ class Neo4j
 				RETURN ID(g) as identity, g {.hgnc_id, .symbol, .name, .location,
 					.locus_group, .entrez_id, .locus_type, .prev_symbol as, .alias_symbol }
 				LIMIT 1';
-
-			//$response = Cypher::run($query);
-			//dd($response);
 		}
 		else
 		{
@@ -297,7 +294,9 @@ class Neo4j
 		// if no records found, return null
 		if ($response->size() == 0)
 			return null;*/
-		return $details;
+			
+		//temp exit while we play with some additional neo4j queries
+		return new Nodal($details);
 
 		// get the gene dosage details (evidence for setting Haplo and Triplo?)
 		if (!empty($dosage))
@@ -588,6 +587,9 @@ GeneDosageAssertion#interpretation
 		// break out the args
 		foreach ($args as $key => $value)
 			$key = $value;
+			
+		// initialize the collection
+		$collection = collect();
 
 		$query = '
 			MATCH (n:Agent)
@@ -624,9 +626,21 @@ GeneDosageAssertion#interpretation
 
 		// if no records found, return null
 		if ($response->size() == 0)
-			return null;
+			return $collection;
+			
+		foreach($response->getRecords() as $record)
+		{
+		// Make sure the following aren't true
+			// a label exists
+			// count of greater than zero
+			// the affiliate isn't unknown
+			if(!empty($record->values()[1]) && ($record->values()[2] > 0) && ($record->values()[0] > "https://search.clinicalgenome.org/kb/agents/00000"))
+			{
+				$records[] = new Nodal(array_combine($record->keys(), $record->values()));
+			}
+		}
 
-		return $response;
+		return collect($records);
 	}
 
 
@@ -673,7 +687,10 @@ GeneDosageAssertion#interpretation
 		if ($response->size() == 0)
 			return null;
 
-		return $response->firstRecord()->value('data');
+		// morph the graphware structure to a collection
+		$record = $response->firstRecord()->value('data');
+		
+		return new Nodal($record);
 	}
 
 
@@ -688,6 +705,9 @@ GeneDosageAssertion#interpretation
 		foreach ($args as $key => $value)
 			$$key = $value;
 
+		// initialize the collection
+		$collection = collect();
+		
 		// Get the condition and all its assertions
 		$query = '
 			MATCH (n:Condition:RDFClass)
@@ -734,9 +754,31 @@ GeneDosageAssertion#interpretation
 
 		// if no records found, return null
 		if ($response->size() == 0)
-			return null;
+			return $collection;
+			
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
 
-		return $response;
+			// set some shortcuts for the views
+			if (!empty($node->assertions_collection))
+			{
+				foreach($node->assertions_collection as $assertion)
+				{
+					if ($assertion->hasLabel('ActionabilityAssertion'))
+						$node->hasActionability = true;
+					if ($assertion->hasLabel('GeneDiseaseAssertion'))
+						$node->hasValidity = true;
+					if ($assertion->hasLabel('GeneDosageAssertion'))
+						$node->hasDosage = true;
+				}
+			}
+
+			$records[] = $node;
+		}
+
+		return collect($records);
 	}
 
 
@@ -901,7 +943,9 @@ D,
 		if ($response->size() == 0)
 			return null;
 
-		return $response;
+		$record = new Nodal($response);
+		
+		return $record;
 	}
 
 
@@ -916,6 +960,9 @@ D,
 		foreach ($args as $key => $value)
 			$$key = $value;
 
+		// initialize the collection
+		$collection = collect();
+		
 		$query = '
 			MATCH (n:Drug:RDFClass) ' .
 			(isset($term) ? 'WHERE (n.search_label contains ' . $term . ') ' : '') . '
@@ -937,9 +984,17 @@ D,
 		//dd($response);
 		// if no records found, return null
 		if ($response->size() == 0)
-			return null;
+			return $collection;
 
-		return $response;
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
+			
+			$records[] = $node;
+		}
+
+		return collect($records);
 	}
 
 
@@ -977,7 +1032,9 @@ D,
 		if ($response->size() == 0)
 			return null;
 
-		return $response->firstRecord();
+		$record = $response->firstRecord();
+		
+		return new Nodal(array_combine($record->keys(), $record->values()));
 	}
 
 
@@ -1015,8 +1072,54 @@ D,
 		// if no records found, return null
 		if ($response->size() == 0)
 			return null;
-		//dd($response);
-		return $response;
+		
+		// morph the graphware structure to a collection
+		foreach($response->getRecords() as $record)
+		{
+			$node = new Nodal($record->value('a'));
+
+			// set some shortcuts for the views
+			$node->disease 					= $node->diseases[0]['label'];
+			$node->mondo 						= $node->diseases[0]['curie'];
+			$node->classification 	= $node->interpretation[0]['label'];
+			$node->symbol 					= $node->genes[0]['symbol'];
+			$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
+			//dd($node);
+			// Grab the JSON data and set it to common variable
+			// The order is important in case the record has more than one set of JSON data
+			// First check for GCI data, then SOP5 legacy data, then fall back to everything else
+			if (!empty($node->score_string_gci)) {
+				$node->score_data 	= json_decode($node->score_string_gci);
+				if (!empty($node->jsonMessageVersion)) {
+					$node->interface 					= "GCI";
+					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+				} else {
+					$node->interface 					= "GCI";
+					$node->sop 								= "SOP5";
+				}
+				$node->moi 									= $node->score_data->ModeOfInheritance;
+			} elseif (!empty($node->score_string_sop5)) {
+				$node->score_data 					= json_decode($node->score_string_sop5);
+				$node->score_data 					= $node->score_data->scoreJson;
+				$node->interface 						= "GCXpress";
+				if (!empty($node->jsonMessageVersion)) {
+					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+				} else {
+					$node->sop 								= "SOP5";
+				}
+				$node->moi 									= $node->score_data->ModeOfInheritance;
+			} else {
+				$node->score_data 					= json_decode($node->score_string);
+				$node->score_data_array 		= json_decode($node->score_string, true);
+				$node->interface 						= "GCXpress";
+				$node->sop 									= "SOP4";
+				$node->moi 									= $node->score_data->data->ModeOfInheritance;
+			}
+
+			$records[] = $node;
+		}
+		
+		return collect($records);
 	}
 
 
@@ -1143,7 +1246,51 @@ D,
 
 		//CHECKPOINT 9
 		//dd($details);
-		return $response;
+		
+		$node = new Nodal($response->firstRecord()->value('a'));
+
+		//$node = new Nodal($record->value('a'));
+
+		// set some shortcuts for the views
+		$node->disease 					= $node->diseases[0]['label'];
+		$node->mondo 						= $node->diseases[0]['curie'];
+		$node->classification 	= $node->interpretation[0]['label'];
+		$node->symbol 					= $node->genes[0]['symbol'];
+		$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
+		$node->attributions 					= $node->agent[0] ?? null;
+		//dd($node);
+		// Grab the JSON data and set it to common variable
+		// The order is important in case the record has more than one set of JSON data
+		// First check for GCI data, then SOP5 legacy data, then fall back to everything else
+		if (!empty($node->score_string_gci)) {
+			$node->score_data 	= json_decode($node->score_string_gci);
+			if (!empty($node->jsonMessageVersion)) {
+				$node->interface 					= "GCI";
+				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+			} else {
+				$node->interface 					= "GCI";
+				$node->sop 								= "SOP5";
+			}
+			$node->moi 									= $node->score_data->ModeOfInheritance;
+		} elseif (!empty($node->score_string_sop5)) {
+			$node->score_data 					= json_decode($node->score_string_sop5);
+			$node->score_data 					= $node->score_data->scoreJson;
+			$node->interface 						= "GCXpress";
+			if (!empty($node->jsonMessageVersion)) {
+				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
+			} else {
+				$node->sop 								= "SOP5";
+			}
+			$node->moi 									= $node->score_data->ModeOfInheritance;
+		} else {
+			$node->score_data 					= json_decode($node->score_string);
+			$node->score_data_array 		= json_decode($node->score_string, true);
+			$node->interface 						= "GCXpress";
+			$node->sop 									= "SOP4";
+			$node->moi 									= $node->score_data->data->ModeOfInheritance;
+		}
+
+		return $node;
 	}
 
 
@@ -1225,6 +1372,17 @@ D,
 		// if no records found, return null
 		if ($response->size() == 0)
 			return null;
+		/*	
+		foreach($response->getRecords() as $record)
+		{
+			//dd($record);
+			$node = new Nodal(array_combine($record->keys(), $record->values()));
+
+			//dd($node);
+			$records[] = $node;
+		}*/
+
+		return collect($records);
 
 		return $response;
 	}

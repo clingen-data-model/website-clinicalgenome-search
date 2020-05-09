@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-use Ahsan\Neo4j\Facade\Cypher;
+//use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
 use App\Nodal;
 
@@ -40,11 +40,11 @@ class GeneController extends Controller
 
 
 	/**
-	* Display a listing of all curated genes.
+	* Display a listing of all genes.
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Request $request, $page = 1, $psize = 250)
+	public function index(Request $request, $page = 1, $psize = 5000)
 	{
 		// process request args
 		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
@@ -73,7 +73,7 @@ class GeneController extends Controller
 										'curated' => false ]);
 
 		if ($records === null)
-			die(print_r(Nodal::getError()));
+			die(print_r(GeneLib::getError()));
 
 		// customize the pagination.
 		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
@@ -82,17 +82,19 @@ class GeneController extends Controller
 		return view('gene.index', compact('display_tabs', 'records'));
 	}
 
+
 	/**
-	* Show all of the curations related to genes
-	* @return [type] [description]
+	* Show all of the curated genes
+	*
+	* @return \Illuminate\Http\Response
 	*/
-	public function curated(Request $request, $page = 1, $psize = 250)
+	public function curated(Request $request, $page = 1, $psize = 200) //$psize = 2000)
 	{
 		// process request args
 		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
 			$$key = $value;
 
-		/* build cqching of these values with cross-section updates
+		/* build caching of these values with cross-section updates
 		 * total counts for gene and diseases on relevant pages
 		 * category would be for setting default select of dropdown */
 		$display_tabs = collect([
@@ -115,14 +117,13 @@ class GeneController extends Controller
 										'curated' => true ]);
 
 		if ($records === null)
-			die(print_r(Nodal::getError()));
+			die(print_r(GeneLib::getError()));
 
 		// customize the pagination.
-		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
-		//$records->withPath('genes');
+		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		$records->withPath('genes');
 
 		return view('gene.curated', compact('display_tabs', 'records'));
-		//return view('gene.curated', compact('display_tabs', 'collection'));
 	}
 
 
@@ -135,7 +136,7 @@ class GeneController extends Controller
 	public function show(Request $request, $id = null)
 	{
 		if ($id === null)
-		die("display some error about needing a gene");
+			die("display some error about needing a gene");
 
 		$display_tabs = collect([
 			'active' => "gene",
@@ -148,30 +149,28 @@ class GeneController extends Controller
 				]
 			]);
 
-			$record = GeneLib::geneDetail(['page' => 0,
-			'pagesize' => 200,
-			'gene' => $id,
-			'curations' => true,
-			'action_scores' => true,
-			'validity' => true,
-			'dosage' => true
-			]);
+			$record = GeneLib::geneDetail([ 
+											'gene' => $id,
+											'curations' => true,
+											'action_scores' => true,
+											'validity' => true,
+											'dosage' => true
+										]);
 
-			//dd($record);
 			if ($record === null)
 			{
 				GeneLib::errorDetail();
-				// do something
-				// return view
+				// do something nice with a error view
 				die("thow an error");
 			}
 
-			//dd($record);
 			return view('gene.show', compact('display_tabs', 'record'));
 		}
 
+
 	/**
-	 * External resource show
+	 * Display the external resources section.  Since this is mostly static
+	 * it wuld just get displayed in a tab with the gene.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
@@ -193,24 +192,19 @@ class GeneController extends Controller
 		]);
 
 		$record = GeneLib::geneDetail([
-			'page' => 0,
-			'pagesize' => 200,
-			'gene' => $id,
-			'curations' => true,
-			'action_scores' => true,
-			'validity' => true,
-			'dosage' => true
-		]);
+										'page' => 0,
+										'pagesize' => 200,
+										'gene' => $id,
+										'curations' => true,
+										'action_scores' => true,
+										'validity' => true,
+										'dosage' => true
+									]);
 
-		//dd($record);
 		if ($record === null) {
-			GeneLib::errorDetail();
-			// do something
-			// return view
-			die("thow an error");
+			die(print_r(GeneLib::getError());
 		}
 
-		//dd($record);
 		return view('gene.show-external-resources', compact('display_tabs', 'record'));
 	}
-	}
+}

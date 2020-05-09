@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\GeneLib;
+use App\Nodal;
 use App\Helper;
 
 /**
@@ -39,7 +43,7 @@ class ValidityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $psize = 20)
+    public function index(Request $request, $page = 1, $psize = 250)
     {
 		//if (is_int($page)) // don't forget to check the parms
 
@@ -54,15 +58,20 @@ class ValidityController extends Controller
 				]
 		]);
 
-		$records = GeneLib::validityList([	'page' => $page,
-											'pagesize' => $psize
+		$records = GeneLib::validityList([	'page' => $page - 1,
+											'pagesize' => $psize,
+											'sort' => $sort ?? 'symbol',
+											'direction' => $direction ?? 'asc'
 										]);
 
-		//dd($records);
 		if ($records === null)
-			die("thow an error");
+			die(print_r(GeneLib::getError()));
 
-        return view('gene-validity.index', compact('display_tabs', 'records'));
+		// customize the pagination.
+		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		$records->withPath('genes');
+
+		return view('gene-validity.index', compact('display_tabs', 'records'));
     }
 
 

@@ -2,11 +2,9 @@
 
 namespace App;
 
-//use App\Traits\Display;
+use Jenssegers\Model\Model;
 
 use App\Nodal;
-
-// the various database access models
 use App\Neo4j;
 use App\Graphql;
 
@@ -25,17 +23,56 @@ use App\Graphql;
  * @since      Class available since Release 1.0.0
  *
  * */
-class GeneLib
-{
-    //use Display;
-
-    /**
+class GeneLib extends Model
+{	 
+	/**
      * This class is designed to be used statically.
      */
-
+     
+     /**
+     * The attributes that should be validity checked.
+     *
+     * @var array
+     */
+    public static $rules = [];
 
     /**
-     * Get a list of actionability curations from Genegraph
+     * The attributes that are mass assignable.  Remember to fill it
+     * in when all the attributes are known.
+     *
+     * @var array
+     */
+	//protected $fillable = ['name', 'address1', 'address2', 'city', 'state',
+	//					   'zip', 'contact', 'phone', 'status' ];
+
+	/**
+     * Non-persistent storage model attributes.
+     *
+     * @var array
+     */
+    protected $appends = [];
+     
+	/*
+     * Dosage Assertion strings for display methods
+     *
+     * */
+     protected static $dosage_assertion_strings = [
+			'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Associated with Autosomal Recessive Phenotype',
+			'MINIMAL_EVIDENCE' => ' Minimal Evidence',
+			'MODERATE_EVIDENCE' => 'Moderate Evidence',
+			'NO_EVIDENCE' => 'No Evidence',
+			'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
+			'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
+	];
+	
+	
+	/*----------------------Public Methods----------------------------*/
+	
+
+    /**
+     * Get a list of actionability curations
+     * 
+     * (Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -45,7 +82,7 @@ class GeneLib
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
-		// Gene data is currently in neo4j
+		// Use graphql for data content
 		$response = Graphql::actionabilityList($args);
 
 		return $response;
@@ -54,6 +91,8 @@ class GeneLib
 
     /**
      * Get a list of all the curated genes
+     * 
+     * (Neo4j, Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -74,6 +113,8 @@ class GeneLib
 
 	/**
      * Get details of a particular gene
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -88,19 +129,14 @@ class GeneLib
 		//...but actionability is now in genegraph
 		//$actionability = Genegraph::actionabilityList($args);
 
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		$record = new Nodal($response);
-
-		return $record;
+		return $response;
 	}
 
 
 	/**
      * Get a list of all the affiliates and associated curation counts
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -112,27 +148,14 @@ class GeneLib
 		// The affiliate and curation data is currently in neo4j
 		$response = Neo4j::affiliateList($args);
 
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		//dd($record->values()[0]);
-		// Make sure the following aren't true
-			// a label exists
-			// count of greater than zero
-			// the affiliate isn't unknown
-		if(!empty($record->values()[1]) && ($record->values()[2] > 0) && ($record->values()[0] > "https://search.clinicalgenome.org/kb/agents/00000")) {
-			$records[] = new Nodal(array_combine($record->keys(), $record->values()));
-		}
-
-		return collect($records);
+		return $response;
 	}
 
 
 	/**
      * Get details of a particular affiliate and associated curations
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -144,19 +167,14 @@ class GeneLib
 		// The affiliate and curation data is currently in neo4j
 		$response = Neo4j::affiliateDetail($args);
 
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		$record = new Nodal($response);
-
-		return $record;
+		return $response;
 	}
 
 
 	/**
      * Get a list of all gene validity assertions
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -167,64 +185,18 @@ class GeneLib
 
 		// Gene data is currently in neo4j
 		$response = Neo4j::validityList($args);
+		
+		// Gene data using Graphql
+		//$response = Graphql::validityList($args);
 
-		// TODO:  error return?
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		{
-			$node = new Nodal($record->value('a'));
-
-			// set some shortcuts for the views
-			$node->disease 					= $node->diseases[0]['label'];
-			$node->mondo 						= $node->diseases[0]['curie'];
-			$node->classification 	= $node->interpretation[0]['label'];
-			$node->symbol 					= $node->genes[0]['symbol'];
-			$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
-			//dd($node);
-			// Grab the JSON data and set it to common variable
-			// The order is important in case the record has more than one set of JSON data
-			// First check for GCI data, then SOP5 legacy data, then fall back to everything else
-			if (!empty($node->score_string_gci)) {
-				$node->score_data 	= json_decode($node->score_string_gci);
-				if (!empty($node->jsonMessageVersion)) {
-					$node->interface 					= "GCI";
-					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
-				} else {
-					$node->interface 					= "GCI";
-					$node->sop 								= "SOP5";
-				}
-				$node->moi 									= $node->score_data->ModeOfInheritance;
-			} elseif (!empty($node->score_string_sop5)) {
-				$node->score_data 					= json_decode($node->score_string_sop5);
-				$node->score_data 					= $node->score_data->scoreJson;
-				$node->interface 						= "GCXpress";
-				if (!empty($node->jsonMessageVersion)) {
-					$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
-				} else {
-					$node->sop 								= "SOP5";
-				}
-				$node->moi 									= $node->score_data->ModeOfInheritance;
-			} else {
-				$node->score_data 					= json_decode($node->score_string);
-				$node->score_data_array 		= json_decode($node->score_string, true);
-				$node->interface 						= "GCXpress";
-				$node->sop 									= "SOP4";
-				$node->moi 									= $node->score_data->data->ModeOfInheritance;
-			}
-
-			$records[] = $node;
-		}
-
-		//dd($records);
-		return collect($records);
+		return $response;
 	}
 
 
 	/**
      * Get details of a gene validity assertion
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -235,66 +207,15 @@ class GeneLib
 
 		// The gene validity data is currently in neo4j...
 		$response = Neo4j::validityDetail($args);
-		//dd($response->firstRecord()->value('a'));
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		//TODO, make this into a better structure.
-		$node = new Nodal($response->firstRecord()->value('a'));
-
-
-		//$node = new Nodal($record->value('a'));
-
-		// set some shortcuts for the views
-		$node->disease 					= $node->diseases[0]['label'];
-		$node->mondo 						= $node->diseases[0]['curie'];
-		$node->classification 	= $node->interpretation[0]['label'];
-		$node->symbol 					= $node->genes[0]['symbol'];
-		$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
-		$node->attributions 					= $node->agent[0];
-		$node->attributions 					= $node->agent[0];
-		//dd($node);
-		// Grab the JSON data and set it to common variable
-		// The order is important in case the record has more than one set of JSON data
-		// First check for GCI data, then SOP5 legacy data, then fall back to everything else
-		if (!empty($node->score_string_gci)) {
-			$node->score_data 	= json_decode($node->score_string_gci);
-			if (!empty($node->jsonMessageVersion)) {
-				$node->interface 					= "GCI";
-				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
-			} else {
-				$node->interface 					= "GCI";
-				$node->sop 								= "SOP5";
-			}
-			$node->moi 									= $node->score_data->ModeOfInheritance;
-		} elseif (!empty($node->score_string_sop5)) {
-			$node->score_data 					= json_decode($node->score_string_sop5);
-			$node->score_data 					= $node->score_data->scoreJson;
-			$node->interface 						= "GCXpress";
-			if (!empty($node->jsonMessageVersion)) {
-				$node->sop 								= str_replace("GCI.", "SOP", $node->jsonMessageVersion);
-			} else {
-				$node->sop 								= "SOP5";
-			}
-			$node->moi 									= $node->score_data->ModeOfInheritance;
-		} else {
-			$node->score_data 					= json_decode($node->score_string);
-			$node->score_data_array 		= json_decode($node->score_string, true);
-			$node->interface 						= "GCXpress";
-			$node->sop 									= "SOP4";
-			$node->moi 									= $node->score_data->data->ModeOfInheritance;
-		}
-
-		$record = $node;
-		//dd($record);
-		return $record;
+		
+		return $response;
 	}
 
 
 	/**
      * Get a list of all the genes with dosage sensitivitiy
+     * 
+     * (Neo4j, GeneGraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -304,23 +225,12 @@ class GeneLib
 			return collect([]);
 
 		// Gene data is currently in neo4j
-		$response = Neo4j::dosageList($args);
-
-		// TODO:  error return?
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		{
-			//dd($record);
-			$node = new Nodal(array_combine($record->keys(), $record->values()));
-
-			//dd($node);
-			$records[] = $node;
-		}
-
-		return collect($records);
+		//$response = Neo4j::dosageList($args);
+		
+		// Gene data is currently in graphgq
+		$response = Graphql::dosageList($args);
+		
+		return $response;
 	}
 
 
@@ -331,32 +241,15 @@ class GeneLib
      */
     static function dosageDetail($args)
     {
-		/*
-		// not needed this will redirect
-		if (is_null($args) || !is_array($args))
-			return collect([]);
-
-		// Most of the gene and curation data is currently in neo4j...
-		$response = Neo4j::geneDetail($args);
-
-		//...but actionability is now in genegraph
-		//$actionability = Genegraph::actionabilityList($args);
-
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		$record = new Nodal($response);
-
-		return $record;
-		* */
+		// this is currently not used, goes right to dci.
 		return null;
 	}
 
 
 	/**
      * Get a list of all the drugs
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -368,38 +261,14 @@ class GeneLib
 		// Drug data is currently in neo4j
 		$response = Neo4j::drugList($args);
 
-		// TODO:  error return?
-		if ($response === null)
-			return null;
-
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		{
-			$node = new Nodal(array_combine($record->keys(), $record->values()));
-
-			// set some shortcuts for the views when curations are added
-			/*if (!empty($node->assertions_collection))
-			{
-				foreach($node->assertions_collection as $assertion)
-				{
-					if ($assertion->hasLabel('ActionabilityAssertion'))
-						$node->hasActionability = true;
-					if ($assertion->hasLabel('GeneDiseaseAssertion'))
-						$node->hasValidity = true;
-					if ($assertion->hasLabel('GeneDosageAssertion'))
-						$node->hasDosage = true;
-				}
-			}*/
-			$records[] = $node;
-		}
-
-		return collect($records);
+		return $response;
 	}
 
 
 	/**
      * Get details of a particular drug
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -411,20 +280,14 @@ class GeneLib
 		// Drug details are currently in neo4j
 		$response = Neo4j::drugDetail($args);
 
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		//$record = new Nodal($response);
-		$record = new Nodal(array_combine($response->keys(), $response->values()));
-
-		return $record;
+		return $response;
 	}
 
 
 	/**
      * Get a list of all the conditions
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -436,38 +299,14 @@ class GeneLib
 		// Gene data is currently in neo4j
 		$response = Neo4j::conditionList($args);
 
-		// TODO:  error return?
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		foreach($response->getRecords() as $record)
-		{
-			$node = new Nodal(array_combine($record->keys(), $record->values()));
-
-			// set some shortcuts for the views
-			if (!empty($node->assertions_collection))
-			{
-				foreach($node->assertions_collection as $assertion)
-				{
-					if ($assertion->hasLabel('ActionabilityAssertion'))
-						$node->hasActionability = true;
-					if ($assertion->hasLabel('GeneDiseaseAssertion'))
-						$node->hasValidity = true;
-					if ($assertion->hasLabel('GeneDosageAssertion'))
-						$node->hasDosage = true;
-				}
-			}
-
-			$records[] = $node;
-		}
-
-		return collect($records);
+		return collect($response);
 	}
 
 
 	/**
-     * Get details of a particular gene
+     * Get details of a particular condition
+     * 
+     * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -476,20 +315,49 @@ class GeneLib
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
-		// Most of the gene and curation data is currently in neo4j...
+		// Condition data is all in Neo4j
 		$response = Neo4j::conditionDetail($args);
 
 		dd($response);
-		//...but actionability is now in genegraph
-		//$actionability = Genegraph::actionabilityList($args);
 
-		// null means no records found
-		if ($response === null)
-			return null;
-
-		// morph the graphware structure to a collection
-		$record = new Nodal($response);
-
-		return $record;
+		return $response;
+	}
+	
+	
+	/**
+     * Return a displayable dosage assertion description
+     * 
+     * @return string
+     */
+     public static function dosageAssertionString($str)
+     {
+		 return self::$dosage_assertion_strings[$str] ?? '';
+	 }
+	 
+	 
+	 /*
+     * Set a GraphLib error for use by controllers or views.  
+     *
+     * @param	string	$mondo
+     * @return 	array
+     */
+    public static function putError($error = null)
+    {
+		if ($error === null)
+			return session()->put('GeneLibError', false);
+			
+		session()->put('GeneLibError', $error);
+	}
+	
+	
+	/*
+     * Get a GraphLib error structure.  TODO:  formatting
+     *
+     * @param	string	$mondo
+     * @return 	array
+     */
+    public static function getError()
+    {
+		return session()->get('GeneLibError', false);
 	}
 }
