@@ -202,7 +202,7 @@ class GeneController extends Controller
 									]);
 
 		if ($record === null) {
-			die(print_r(GeneLib::getError());
+			die(print_r(GeneLib::getError()));
 		}
 
 		return view('gene.show-external-resources', compact('display_tabs', 'record'));
