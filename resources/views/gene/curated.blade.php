@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center" id="gene_curations_all">
         <div class="col-md-12 text-center">
-          <h1 class=" display-4 "><strong>{{ count($records)}}</strong> Curated Genes
+          <h1 class=" display-4 "><strong>{{ $count }}</strong> Curated Genes
           </h1>
           <div class="col-sm-4 col-sm-offset-4">
             <div class="input-group">

@@ -53,33 +53,39 @@ class Graphql
 		if ($curated === true)
 		{		
 			$query = '{
-					gene_list(' 
+					genes(' 
 					. self::optionList($page, $pagesize, 'ALL')
 					. ') {
-						label
-						hgnc_id
-						iri
-						curation_activities
-						dosage_curation {
-							triplosensitivity_assertion { score }
-							haploinsufficiency_assertion { score }
+						count
+						gene_list {
+							label
+							hgnc_id
+							iri
+							last_curated_date
+							alternative_label
+							curation_activities
+							dosage_curation {
+								triplosensitivity_assertion { score }
+								haploinsufficiency_assertion { score }
+							}
 						}
 					}
 				}';
-					
-				
 		}
 		else
 		{
 			$query = '{
-					gene_list('
+					genes('
 					. self::optionList($page, $pagesize, $curated)
 					. ') {
-						label
-						alternative_label
-						hgnc_id
-						last_curated_date
-						curation_activities
+						count
+						gene_list {
+							label
+							alternative_label
+							hgnc_id
+							last_curated_date
+							curation_activities
+						}
 					}
 				}';
 		}
@@ -121,10 +127,10 @@ class Graphql
 		};
 		
 		// add each gene to the collection
-		foreach($response->gene_list as $record)
+		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
 	
-		return $collection;
+		return (object) ['count' => $response->genes->count, 'collection' => $collection];
 	}
 	
 	
@@ -141,19 +147,44 @@ class Graphql
 				
 		$query = '{
 				gene(' 
-				. 'hgnc_id: ' . $gene
-				. ') {
+				. 'iri: "' . $gene
+				. '") {
 					label
+					alternative_label
 					hgnc_id
-					iri
+					chromosome_band
 					curation_activities
 					dosage_curation {
+						curie
+						report_date
 						triplosensitivity_assertion { score }
 						haploinsufficiency_assertion { score }
 					}
+					genetic_conditions {
+						disease {
+						  label
+						  iri
+						}
+						gene_validity_assertions {
+						  mode_of_inheritance
+						  report_date
+						  classification
+						  curie
+						}
+						actionability_curations {
+						  report_date
+						  source
+						}
+						gene_dosage_assertions {
+						  report_date
+						  assertion_type
+						  score
+						  curie
+						}
+					}
 				}
 			}';
-		
+
 		try {
 		
 			$response = Genegraph::fetch($query);
@@ -189,11 +220,44 @@ class Graphql
 			return null;
 			
 		};
-		
-		$node = new Nodal((array) $record);
-		dd($node);
+
+		$node = new Nodal((array) $response->gene);
+
+		// add additional information from local db
+		$localgene = Gene::where('hgnc_id', $gene)->first();
+		if ($localgene !== null)
+		{
+			$node->alias_symbols = $localgene->display_aliases;
+			$node->prev_symbols = $localgene->display_previous;
+		}
+
+		// currently, there is no easy way to track what needs dosage_curation entries belong in
+		// the catch all, so we need to process the genetic conditions and add some flags.
+		$dosage_curation_map = ["haploinsufficiency_assertion" => true, "triplosensitivity_assertion" => true];
+
+		if (!empty($node->genetic_conditions))
+		{
+			foreach($node->genetic_conditions as $condition)
+			{
+				foreach($condition->gene_dosage_assertions as $dosage)
+				{
+					switch ($dosage->assertion_type)
+					{
+						case "HAPLOINSUFFICIENCY_ASSERTION":
+							unset($dosage_curation_map["haploinsufficiency_assertion"]);
+							break;
+						case "TRIPLOSENSITIVITY_ASSERTION":
+							unset($dosage_curation_map["triplosensitivity_assertion"]);
+							break;
+					}
+				}
+			}
+
+			$node->dosage_curation_map = $dosage_curation_map;
+		}
+	//dd($node);	
+
 		return $node;	
-			
 	}
 	
 	
@@ -267,21 +331,25 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 			
-			// initialize the collection
+		// initialize the collection
 		$collection = collect();
 			
 		$query = '{
-				gene_list(' 
+				genes(' 
 				. self::optionList($page, $pagesize, "GENE_DOSAGE")
 				. ') {
-					label
-					dosage_curation {
-						report_date
-						triplosensitivity_assertion {
-							score
-						}
-						haploinsufficiency_assertion {
-							score
+					count
+					gene_list {
+						label
+						hgnc_id
+						dosage_curation {
+							report_date
+							triplosensitivity_assertion {
+								score
+							}
+							haploinsufficiency_assertion {
+								score
+							}
 						}
 					}
 				}
@@ -324,10 +392,10 @@ class Graphql
 		};
 
 		// add each gene to the collection
-		foreach($response->gene_list as $record)
+		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
-		
-		return $collection;
+	
+		return (object) ['count' => $response->genes->count, 'collection' => $collection];
 	}
 	
 	
@@ -364,6 +432,7 @@ class Graphql
 					}
 				}
 			}';
+			  
 	
 		try {
 		
@@ -458,6 +527,78 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+			$query = '{
+				disease('
+				. 'iri: "' . $condition
+				. '") {
+					label
+					iri
+					curation_activities
+					genetic_conditions {
+						gene {
+							hgnc_id
+							label
+						}
+						gene_validity_assertions {
+							mode_of_inheritance
+							report_date
+							classification
+							curie
+						}
+						actionability_curations {
+							report_date
+							source
+						}
+						gene_dosage_assertions {
+							report_date
+							score
+							curie
+						}
+					}
+				}
+			}';
+		
+		try {
+		
+			$response = Genegraph::fetch($query);
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return $collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+		
+		$node = new Nodal((array) $response->disease);
+//dd($node);
+		return $node;	
+			
 	}
 	
 	/**
@@ -470,6 +611,67 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+		
+			
+		$query = '{
+				diseases('
+				. self::optionList($page, $pagesize, $curated)
+				. ') {
+					count
+					disease_list {
+						iri
+						curie
+						label
+						last_curated_date
+						curation_activities
+					}
+				}
+			}';
+
+		try {
+		
+			$response = Genegraph::fetch($query);
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return $collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+
+		// add each gene to the collection
+		foreach($response->gene_list as $record)
+			$collection->push(new Nodal((array) $record));
+	
+		return $collection;
 	}
 	
 	
@@ -515,7 +717,8 @@ class Graphql
 			$options[] = 'offset: ' . $page;
 		
 		if ($curated !== false)
-			$options[] = 'curation_type: ' . $curated;
+			$options[] = 'curation_activity: ' . $curated;
+
 			
 		return implode(', ', $options);
 	}

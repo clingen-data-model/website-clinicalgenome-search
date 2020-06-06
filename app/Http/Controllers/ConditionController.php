@@ -97,13 +97,9 @@ class ConditionController extends Controller
 										'dosage' => true
 										]);
 
-		dd($record);
 		if ($record === null)
 		{
-			GeneLib::errorDetail();
-			// do something
-			// return view
-			die("thow an error");
+			die(print_r(GeneLib::getError()));
 		}
 		
 		return view('condition.show', compact('display_tabs', 'record'));

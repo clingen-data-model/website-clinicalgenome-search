@@ -326,4 +326,22 @@ class Nodal extends Model
     {
 		return $this->label ?? '';
 	}
+
+
+	/**
+     * Return symbol of gene 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getMondoString($original, $colonflag = false)
+    {
+
+		$prefix = "http://purl.obolibrary.org/obo/";
+		$prelen = strlen($prefix);
+
+		$mondo = substr($original, $prelen);
+
+		return ($colonflag ? str_replace(':', '_', $mondo) : $mondo);
+	}
 }

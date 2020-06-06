@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-		  <h1 class=" display-4 ">{{-- $record->symbol --}}Disease name
+		  <h1 class=" display-4 ">{{ $record->label }}
 				@include("_partials.facts.condition-button")
 		  </h1>
 		</div>
@@ -13,58 +13,88 @@
 			@include("_partials.facts.condition-panel")
 
 			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
+			<ul class="nav nav-tabs">
+          <li class="active">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class=" bg-primary text-white">
+              ClinGen's Curation Summaries
+            </a>
+          </li>
+          <li class="">
+            <a href="{{ route('gene-external', $record->hgnc_id) }}">External Genomic Resources </a>
+          </li>
+          <li class="">
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>
+          </li>
+		</ul>
 
-			@forelse ($record->diseases as $disease)
+		@forelse ($record->genetic_conditions as $disease)
 			<div class="card">
-				<div class="card-header text-white bg-info">
-					{{ $record->symbol }} - {{ $disease['label'] }} | {{ $disease['id'] }}
+			
+				<div class="card-header text-white bg-primary">
+					<h3 class="text-white h5 p-0 m-0"><a href="" >{{ $disease->gene->label }}</a> - 
+					{{ $record->label }} <small class="text-white">| {{ $record->getMondoString($record->iri, true) }}</small></h3>
 				</div>
-				<div class="card-body">
+				<div class="card-body p-0 m-0">
+	
+				<table class="panel-body table table-hover">
+					<thead class="thead-labels">
+						<tr>
+						<th class="col-sm-3 th-curation-group text-left">Curated by</th>
+						<th class="col-sm-4 text-left"> Classification</th>
+						<th class="col-sm-2 text-left"> </th>
+						<th class="col-sm-2 text-center">Date</th>
+						<th class="col-sm-1 text-center">Report</th>
+						</tr>
+					</thead>
 
-					<ul class="list-group list-group-flush">
+					<tbody class="">
 
-						<!-- Gene Disease Validity				-->
-						@foreach($record->findValidity($disease['id']) as $validity)
-						<li class="list-group-item">
-							<table style="table-layout:fixed;">
-								<tr>
-									<td class="col-sm-3">G - Gene-Disease Validity</td>
-									<td class="col-sm-6">{{ $validity['classification'] }}</td>
-									<td class="col-sm-2">{{ $record->displayDate($validity['date']) }} </td>
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $validity['report'] }}">View report</a></td>
-								</tr>
-							</table>
-						</li>
-						@endforeach
+					<!-- Gene Disease Validity				-->
+					@foreach($disease->gene_validity_assertions as $validity)
+						<tr>
+							<td class="col-sm-3">G - Gene-Disease Validity</td>
+							
+							<td class="col-sm-6">{{ $validity->classification }}</td>
+							
+							<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance }}"><i class="fas fa-info-circle text-muted"></i></span>{{ $validity->mode_of_inheritance }}</td>
+							
+							<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
+							
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $validity->curie }}">View report</a></td>
+						</tr>
+					@endforeach
 
-						<!-- Gene Dosage						-->
-						@foreach($record->findDosage($disease['id']) as $dosage)
-						<li class="list-group-item">
-							<table style="table-layout:fixed;">
-								<tr>
-									<td class="col-sm-3">D - Dosage</td>
-									<td class="col-sm-6">{{ $dosage['classification'] }}</td>
-									<td class="col-sm-2">{{ $record->displayDate($dosage['date']) }}</td>
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $dosage['report'] }}">View report</a></td>
-								</tr>
-							</table>
-						</li>
-						@endforeach
+					<!-- Actionability					-->
+					@foreach($disease->actionability_curations as $actionability)
+						<tr>
+							<td class="col-sm-3">A - Actionability</td>
+							
+							<td class="col-sm-6">View Report For Scoring Details</td>
+							
+							<td class="col-sm-2"></td>
+							
+							<td class="col-sm-2">{{ $record->displayDate($actionability->report_date) }}</td>
+							
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
+						</tr>
+					@endforeach
+						
 
-						<!-- Actionability					-->
-						@foreach($record->findActionability($disease['id']) as $actionability)
-						<li class="list-group-item">
-							<table style="table-layout:fixed;">
-								<tr>
-									<td class="col-sm-3">A - Actionability</td>
-									<td class="col-sm-6">{{ $actionability['type'] }} - View Report For Scoring Details</td>
-									<td class="col-sm-2">{{ $record->displayDate($actionability['date']) }}</td>
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $actionability['report'] }}">View report</a></td>
-								</tr>
-							</table>
-						</li>
-						@endforeach
-					</ul>
+					<!-- Gene Dosage						-->
+					@foreach($disease->gene_dosage_assertions as $dosage)
+						<tr>
+							<td class="col-sm-3">D - Dosage</td>
+							<td class="col-sm-6">{{ $dosage->score }}</td>
+							<td class="col-sm-2"></td>
+							<td class="col-sm-2">{{ $record->displayDate($dosage->report_date) }}</td>
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $validity->curie }}">View report</a></td>
+						</tr>
+					@endforeach
+				</tbody>
+
+
+			</table>
+	
 
 				</div>
 			</div>

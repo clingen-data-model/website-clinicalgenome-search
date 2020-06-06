@@ -57,13 +57,24 @@ class GeneLib extends Model
      *
      * */
      protected static $dosage_assertion_strings = [
-			'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Associated with Autosomal Recessive Phenotype',
-			'MINIMAL_EVIDENCE' => ' Minimal Evidence',
-			'MODERATE_EVIDENCE' => 'Moderate Evidence',
-			'NO_EVIDENCE' => 'No Evidence',
-			'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
-			'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
-	];
+          'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Associated with Autosomal Recessive Phenotype',
+          'MINIMAL_EVIDENCE' => ' Minimal Evidence',
+          'MODERATE_EVIDENCE' => 'Moderate Evidence',
+          'NO_EVIDENCE' => 'No Evidence',
+          'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
+          'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
+     ];
+     
+     protected static $validity_assertion_strings = [
+          'AUTOSOMAL_RECESSIVE' => 'Autosomal Recessive',
+          'DEFINITIVE' => 'Definitive',
+          'LIMITED' => 'Limited',
+          'MODERATE' => 'Moderate',
+          'NO_KNOWN_DISEASE_RELATIONSHIP' => 'No Known Disease Relationship',
+          'STRONG' => 'Strong',
+          'DISPUTED' => 'Disputed',
+          'REFUTED' => 'Refuted'
+     ];
 	
 	
 	/*----------------------Public Methods----------------------------*/
@@ -124,10 +135,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Most of the gene and curation data is currently in neo4j...
-		$response = Neo4j::geneDetail($args);
+		//$response = Neo4j::geneDetail($args);
 
 		//...but actionability is now in genegraph
-		//$actionability = Genegraph::actionabilityList($args);
+		$response = Graphql::geneDetail($args);
 
 		return $response;
 	}
@@ -316,9 +327,9 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Condition data is all in Neo4j
-		$response = Neo4j::conditionDetail($args);
-
-		dd($response);
+          //$response = Neo4j::conditionDetail($args);
+          
+          $response = Graphql::conditionDetail($args);
 
 		return $response;
 	}
@@ -329,10 +340,66 @@ class GeneLib extends Model
      * 
      * @return string
      */
+     public static function haploAssertionString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+      }
+      
+
+      /**
+     * Return a displayable dosage assertion description
+     * 
+     * @return string
+     */
+     public static function triploAssertionString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+      }
+
+
+      /**
+     * Return a displayable dosage assertion description
+     * 
+     * @return string
+     */
      public static function dosageAssertionString($str)
      {
-		 return self::$dosage_assertion_strings[$str] ?? '';
-	 }
+          if (empty($str))
+               return '';
+
+		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+      }
+      
+
+      /**
+     * Return a displayable validity assertion description
+     * 
+     * @return string
+     */
+     public static function validityAssertionString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$validity_assertion_strings[$str] ?? 'ERROR';
+      }
+      
+
+     /**
+     * Return a usable validity assertion identifier
+     * 
+     * @return string
+     */
+     public static function validityAssertionID($str)
+     {
+          return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
+	}
 	 
 	 
 	 /*

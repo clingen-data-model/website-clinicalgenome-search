@@ -14,7 +14,7 @@
 							</div>
 							<div class="col-sm-6">
 								<div class=" pt-1 text-right">
-									<span class='text-muted'>Curation Count:</span> <strong>{{ count($records)}}</strong> |
+									<span class='text-muted'>Curation Count:</span> <strong>{{ $record->count }}</strong> |
 
 									<a href="#"><i class="fas fa-file-download"></i> Download Summary Data</a>
 								</div>
@@ -42,11 +42,11 @@
 													</tr>
 											</thead>
 											<tbody>
-												@foreach ($records as $record)
+												@foreach ($record->collection as $element)
 													<tr>
-															<td nowrap data-search="{{ $record->hgnc_id }} {{ $record->symbol }}">
-																<a href="{{ route('gene-show', $record->hgnc_id) }}">
-																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{$record->hgnc_id}}"><i class="fas fa-info-circle text-muted"></i></span>&nbsp;<strong>{{ $record->symbol }}</strong>
+															<td nowrap data-search="{{ $element->hgnc_id }} {{ $element->symbol }}">
+																<a href="{{ route('gene-show', $element->hgnc_id) }}">
+																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{$element->hgnc_id}}"><i class="fas fa-info-circle text-muted"></i></span>&nbsp;<strong>{{ $element->symbol }}</strong>
 															</a>
 															</td>
 															{{-- <td>
@@ -55,15 +55,15 @@
 																</a>
 															</td>--}}
 															<td nowrap>
-																{{ App\GeneLib::dosageAssertionString($record->has_dosage_haplo) }}
+																{{ App\GeneLib::haploAssertionString($element->has_dosage_haplo) }}
 															</td>
 															<td>
-																{{ App\GeneLib::dosageAssertionString($record->has_dosage_triplo) }}
+																{{ App\GeneLib::triploAssertionString($element->has_dosage_triplo) }}
 															</td>
-															<td data-sort="{{ $record->displaySortDate($record->dosage_report_date) }}">
-																<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">
+															<td data-sort="{{ $element->displaySortDate($element->dosage_report_date) }}">
+																<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $element->symbol }}&subject=">
 																	<i class="fas fa-file"></i> 
-																	<span class='hidden-sm hidden-xs'>Report - </span>{{ $record->displayDate($record->dosage_report_date) }}
+																	<span class='hidden-sm hidden-xs'>Report - </span>{{ $element->displayDate($element->dosage_report_date) }}
 																</a>
 															</td>
 													</tr>

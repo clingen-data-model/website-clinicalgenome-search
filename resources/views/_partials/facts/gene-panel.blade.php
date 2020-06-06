@@ -11,7 +11,7 @@
 							<a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">NCBI <i class="fas fa-external-link-alt"></i> </a>
 							@endif
 						</dd>
-						@if($record->locus_group)
+						@if($record->name)
 						<dt>HGNC Name</dt>
 						<dd>{{ $record->name }}</dd>
 						@endif
@@ -23,13 +23,13 @@
 						<dt>Locus type</dt>
 						<dd>{{ $record->locus_type }}</dd>
 						@endif
-						@if($record->prev_symbols_string)
+						@if($record->prev_symbols)
 						<dt>Previous symbols</dt>
-						<dd>{{ $record->prev_symbols_string }}</dd>
+						<dd>{{ $record->prev_symbols ?? 'oops' }}</dd>
 						@endif
-						@if($record->alias_symbols_string)
+						@if($record->alias_symbols)
 						<dt>Alias symbols</dt>
-						<dd>{{ $record->alias_symbols_string }}</dd>
+						<dd>{{ $record->alias_symbols ?? 'oops'}}</dd>
 						@endif
 						{{-- <dt>Genomic Coordinate</dt>
 						<dd>
@@ -51,9 +51,9 @@
 							</table>
 						</dd>
 					--}}
-						@if($record->location)
+						@if($record->chromosome_band)
 						<dt>Chromosomal location</dt>
-						<dd>{{ $record->location }}</dd>
+						<dd>{{ $record->chromosome_band }}</dd>
 						@endif
 						{{-- <dt>Function</dt>
 						<dd>Involved in double-strand break repair and/or homologous recombination. Binds RAD51 and potentiates recombinational DNA repair by promoting assembly of RAD51 onto single-stranded DNA (ssDNA). Acts by targeting RAD51 to ssDNA over double-stranded DNA, enabling RAD51 to displace … Source: UniProt</dd> --}}

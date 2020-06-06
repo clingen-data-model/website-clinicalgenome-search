@@ -44,7 +44,7 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Request $request, $page = 1, $psize = 5000)
+	public function index(Request $request, $page = 1, $psize = 100)
 	{
 		// process request args
 		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
@@ -66,20 +66,21 @@ class GeneController extends Controller
 			]
 		]);
 
-		$records = GeneLib::geneList([	'page' => $page - 1,
+		$results = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'symbol',
 										'direction' => $direction ?? 'asc',
 										'curated' => false ]);
 
-		if ($records === null)
+		if ($results === null)
 			die(print_r(GeneLib::getError()));
 
 		// customize the pagination.
-		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
 		$records->withPath('genes');
 
-		return view('gene.index', compact('display_tabs', 'records'));
+		return view('gene.index', compact('display_tabs', 'records'))
+						->with('count', $results->count);
 	}
 
 
@@ -110,20 +111,20 @@ class GeneController extends Controller
 			]
 		]);
 
-		$records = GeneLib::geneList([	'page' => $page - 1,
+		$results = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'symbol',
 										'direction' => $direction ?? 'asc',
 										'curated' => true ]);
-
-		if ($records === null)
+		if ($results === null)
 			die(print_r(GeneLib::getError()));
 
 		// customize the pagination.
-		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
+		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
 		$records->withPath('genes');
 
-		return view('gene.curated', compact('display_tabs', 'records'));
+		return view('gene.curated', compact('display_tabs', 'records'))
+						->with('count', $results->count);
 	}
 
 
@@ -159,9 +160,7 @@ class GeneController extends Controller
 
 			if ($record === null)
 			{
-				GeneLib::errorDetail();
-				// do something nice with a error view
-				die("thow an error");
+				die(print_r(GeneLib::getError()));
 			}
 
 			return view('gene.show', compact('display_tabs', 'record'));

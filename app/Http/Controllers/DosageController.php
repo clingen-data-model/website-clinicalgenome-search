@@ -57,20 +57,22 @@ class DosageController extends Controller
 			]
 		]);
 		
-		$records = GeneLib::dosageList(['page' => $page - 1,
+		$record = GeneLib::dosageList(['page' => $page - 1,
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'symbol',
 										'direction' => $direction ?? 'asc',
 										'curated' => true ]);
 
-		if ($records === null)
+		if ($record === null)
+		{
 			die(print_r(GeneLib::getError()));
+		}
 
 		// customize the pagination.
 		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
 		//$records->withPath('genes');
 
-		return view('gene-dosage.index', compact('display_tabs', 'records'));
+		return view('gene-dosage.index', compact('display_tabs', 'record'));
     }
 
 
