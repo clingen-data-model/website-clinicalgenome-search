@@ -67,6 +67,11 @@ class GeneLib extends Model
      
      protected static $validity_assertion_strings = [
           'AUTOSOMAL_RECESSIVE' => 'Autosomal Recessive',
+          'AUTOSOMAL_DOMINANT' => 'Autosomal Dominant',
+          'X_LINKED' => 'Autosomal Recessive',
+          'SEMIDOMINANT' => 'Semidominant',
+          'MITOCHONDRIAL' => 'Mitochondrial',
+          'UNDETERMINED' => 'Undetermined',
           'DEFINITIVE' => 'Definitive',
           'LIMITED' => 'Limited',
           'MODERATE' => 'Moderate',
