@@ -86,6 +86,7 @@
             </div>
         </div>
     </div>
+    {!! $records->appends(\Request::except('page'))->render() !!}
 </div>
 @endsection
 
@@ -99,7 +100,7 @@
 @section('script_js')
     <script>
         $(document).ready(function() {
-            var table = $('#interactive_curations_table').DataTable(
+            /*var table = $('#interactive_curations_table').DataTable(
                 {
                     pageLength: 100,
                     lengthChange: false,
@@ -110,6 +111,6 @@
             $('#interactive_curations_search').on( 'keyup', function () {
                 table.search( this.value ).draw();
             } );
-        } );
+        } );*/
     </script>
 @endsection

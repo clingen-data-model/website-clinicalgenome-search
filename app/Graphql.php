@@ -54,7 +54,7 @@ class Graphql
 		{		
 			$query = '{
 					genes(' 
-					. self::optionList($page, $pagesize, 'ALL')
+					. self::optionList($page, $pagesize, $sort, $direction, 'ALL')
 					. ') {
 						count
 						gene_list {
@@ -76,7 +76,7 @@ class Graphql
 		{
 			$query = '{
 					genes('
-					. self::optionList($page, $pagesize, $curated)
+					. self::optionList($page, $pagesize, $sort, $direction, $curated)
 					. ') {
 						count
 						gene_list {
@@ -336,7 +336,7 @@ class Graphql
 			
 		$query = '{
 				genes(' 
-				. self::optionList($page, $pagesize, "GENE_DOSAGE")
+				. self::optionList($page, $pagesize, $sort, $direction, "GENE_DOSAGE")
 				. ') {
 					count
 					gene_list {
@@ -415,7 +415,7 @@ class Graphql
 			
 		$query = '{
 				gene_list(' 
-				. self::optionList($page, $pagesize, "GENE_VALIDITY")
+				. self::optionList($page, $pagesize, $sort, $direction, "GENE_VALIDITY")
 				. ') {
 					label
 					last_curated_date
@@ -618,7 +618,7 @@ class Graphql
 			
 		$query = '{
 				diseases('
-				. self::optionList($page, $pagesize, $curated)
+				. self::optionList($page, $pagesize, $sort, $direction, $curated)
 				. ') {
 					count
 					disease_list {
@@ -706,7 +706,7 @@ class Graphql
      * 
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function optionList($page = 0, $pagesize = null, $curated = false)
+    static function optionList($page = 0, $pagesize = null, $sort=null, $sortdir='ASC', $curated = false)
     {
 		$options = [];
 		
@@ -714,10 +714,13 @@ class Graphql
 			$options[] = 'limit: ' . $pagesize;
 			
 		if (!empty($page))
-			$options[] = 'offset: ' . $page;
+			$options[] = 'offset: ' . ($page * $pagesize);
 		
 		if ($curated !== false)
 			$options[] = 'curation_activity: ' . $curated;
+
+		if (!empty($sort))
+			$options[] = 'sort: {field: ' . $sort . ', direction: ' . $sortdir . '}';
 
 			
 		return implode(', ', $options);

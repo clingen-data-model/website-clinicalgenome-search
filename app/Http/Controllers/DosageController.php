@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Collection;
 use Ahsan\Neo4j\Facade\Cypher;
+
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\GeneLib;
 
 /**
@@ -57,13 +60,13 @@ class DosageController extends Controller
 			]
 		]);
 		
-		$record = GeneLib::dosageList(['page' => $page - 1,
+		$results = GeneLib::dosageList(['page' => $page - 1,
 										'pagesize' => $psize,
-										'sort' => $sort ?? 'symbol',
-										'direction' => $direction ?? 'asc',
+										'sort' => $sort ?? 'GENE_LABEL',
+										'direction' => $direction ?? 'ASC',
 										'curated' => true ]);
 
-		if ($record === null)
+		if ($results === null)
 		{
 			die(print_r(GeneLib::getError()));
 		}
@@ -71,8 +74,12 @@ class DosageController extends Controller
 		// customize the pagination.
 		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
 		//$records->withPath('genes');
+	
+		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
+		$records->withPath('gene-dosage');
 
-		return view('gene-dosage.index', compact('display_tabs', 'record'));
+		return view('gene-dosage.index', compact('display_tabs', 'records'))
+					->with('count', $results->count);;
     }
 
 

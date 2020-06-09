@@ -68,8 +68,8 @@ class GeneController extends Controller
 
 		$results = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
-										'sort' => $sort ?? 'symbol',
-										'direction' => $direction ?? 'asc',
+										'sort' => $sort ?? 'GENE_LABEL',
+										'direction' => $direction ?? 'ASC',
 										'curated' => false ]);
 
 		if ($results === null)
@@ -113,15 +113,15 @@ class GeneController extends Controller
 
 		$results = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
-										'sort' => $sort ?? 'symbol',
-										'direction' => $direction ?? 'asc',
+										'sort' => $sort ?? 'GENE_LABEL',
+										'direction' => $direction ?? 'ASC',
 										'curated' => true ]);
 		if ($results === null)
 			die(print_r(GeneLib::getError()));
 
 		// customize the pagination.
 		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		$records->withPath('genes');
+		$records->withPath('curations');
 
 		return view('gene.curated', compact('display_tabs', 'records'))
 						->with('count', $results->count);

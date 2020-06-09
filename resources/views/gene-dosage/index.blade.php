@@ -14,7 +14,7 @@
 							</div>
 							<div class="col-sm-6">
 								<div class=" pt-1 text-right">
-									<span class='text-muted'>Curation Count:</span> <strong>{{ $record->count }}</strong> |
+									<span class='text-muted'>Curation Count:</span> <strong>{{ $count }}</strong> |
 
 									<a href="#"><i class="fas fa-file-download"></i> Download Summary Data</a>
 								</div>
@@ -42,7 +42,7 @@
 													</tr>
 											</thead>
 											<tbody>
-												@foreach ($record->collection as $element)
+												@foreach ($records as $element)
 													<tr>
 															<td nowrap data-search="{{ $element->hgnc_id }} {{ $element->symbol }}">
 																<a href="{{ route('gene-show', $element->hgnc_id) }}">
@@ -50,8 +50,8 @@
 															</a>
 															</td>
 															{{-- <td>
-																<a href="{{ route('condition-show', $record->mondo) }}">
-																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $record->mondo }}"><i class="fas fa-info-circle text-muted"></i></span> {{ $record->disease }}
+																<a href="{{ route('condition-show', $records->mondo) }}">
+																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $records->mondo }}"><i class="fas fa-info-circle text-muted"></i></span> {{ $records->disease }}
 																</a>
 															</td>--}}
 															<td nowrap>
@@ -72,6 +72,8 @@
 										</table>
 				</div>
 		</div>
+
+		{!! $records->appends(\Request::except('page'))->render() !!}
 </div>
 
 @endsection
@@ -86,7 +88,7 @@
 
 @section('script_js')
     <script>
-        $(document).ready(function() {
+        /*$(document).ready(function() {
             var table = $('#interactive_table').DataTable(
                 {
                     pageLength: 250,
@@ -99,6 +101,6 @@
             $('#interactive_search').on( 'keyup', function () {
                 table.search( this.value ).draw();
             } );
-        } );
+        } );*/
     </script>
 @endsection
