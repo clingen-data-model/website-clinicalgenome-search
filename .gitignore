@@ -15,5 +15,7 @@ yarn-error.log
 .phpintel/index
 .phpintel/*
 .editorconfig
-**/*(copy)
+**/*\(copy\)
+**/*(another copy)
 **/OLD
+**/*.erb

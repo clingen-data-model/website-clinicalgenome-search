@@ -12,6 +12,8 @@ use App\GeneLib;
 
 use Exception;
 
+use Carbon\Carbon;
+
 /**
  * 
  * @category   Library
@@ -54,7 +56,7 @@ class Graphql
 		{		
 			$query = '{
 					genes(' 
-					. self::optionList($page, $pagesize, $sort, $direction, 'ALL')
+					. self::optionList($page, $pagesize, $sort, $direction, $search, 'ALL')
 					. ') {
 						count
 						gene_list {
@@ -76,7 +78,7 @@ class Graphql
 		{
 			$query = '{
 					genes('
-					. self::optionList($page, $pagesize, $sort, $direction, $curated)
+					. self::optionList($page, $pagesize, $sort, $direction, $search, $curated)
 					. ') {
 						count
 						gene_list {
@@ -89,10 +91,11 @@ class Graphql
 					}
 				}';
 		}
-
+//dd($query);
 		try {
-		
+			Log::info("Begin genelist" . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End genelist" . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -336,7 +339,7 @@ class Graphql
 			
 		$query = '{
 				genes(' 
-				. self::optionList($page, $pagesize, $sort, $direction, "GENE_DOSAGE")
+				. self::optionList($page, $pagesize, $sort, $direction, $search, "GENE_DOSAGE")
 				. ') {
 					count
 					gene_list {
@@ -354,7 +357,7 @@ class Graphql
 					}
 				}
 			}';
-	
+
 		try {
 		
 			$response = Genegraph::fetch($query);
@@ -415,7 +418,7 @@ class Graphql
 			
 		$query = '{
 				gene_list(' 
-				. self::optionList($page, $pagesize, $sort, $direction, "GENE_VALIDITY")
+				. self::optionList($page, $pagesize, $sort, $direction, $search, "GENE_VALIDITY")
 				. ') {
 					label
 					last_curated_date
@@ -618,7 +621,7 @@ class Graphql
 			
 		$query = '{
 				diseases('
-				. self::optionList($page, $pagesize, $sort, $direction, $curated)
+				. self::optionList($page, $pagesize, $sort, $direction, $search, $curated)
 				. ') {
 					count
 					disease_list {
@@ -706,23 +709,27 @@ class Graphql
      * 
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function optionList($page = 0, $pagesize = null, $sort=null, $sortdir='ASC', $curated = false)
+    static function optionList($page = 0, $pagesize = null, $sort=null, $sortdir='ASC', $search = null, $curated = false)
     {
 		$options = [];
 		
 		if (!is_null($pagesize))
 			$options[] = 'limit: ' . $pagesize;
+		else
+			$options[] = 'limit: null';
 			
 		if (!empty($page))
-			$options[] = 'offset: ' . ($page * $pagesize);
+			$options[] = 'offset: ' . $page; // ($page * $pagesize);
 		
 		if ($curated !== false)
 			$options[] = 'curation_activity: ' . $curated;
 
 		if (!empty($sort))
-			$options[] = 'sort: {field: ' . $sort . ', direction: ' . $sortdir . '}';
+			$options[] = 'sort: {field: ' . $sort . ', direction: ' . strtoupper($sortdir) . '}';
 
-			
+		if (!empty($search))
+			$options[] = 'text: "*' . $search . '*"';
+
 		return implode(', ', $options);
 	}
 }

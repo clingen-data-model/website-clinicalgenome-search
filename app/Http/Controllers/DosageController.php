@@ -9,6 +9,11 @@ use Ahsan\Neo4j\Facade\Cypher;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
+use Maatwebsite\Excel\Facades\Excel as Gexcel;
+
+use App\Imports\Excel;
+use App\Exports\DosageExport;
+
 use App\GeneLib;
 
 /**
@@ -64,6 +69,7 @@ class DosageController extends Controller
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'GENE_LABEL',
 										'direction' => $direction ?? 'ASC',
+										'search' => '',
 										'curated' => true ]);
 
 		if ($results === null)
@@ -103,6 +109,18 @@ class DosageController extends Controller
 		]);
     
         return view('gene-dosage.show', compact('display_tabs'));
+	}
+	
+
+	/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+		return Gexcel::download(new DosageExport, 'Clingen-Dosage-Sensitivity.csv');
     }
 
 }

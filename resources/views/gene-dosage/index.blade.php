@@ -16,7 +16,7 @@
 								<div class=" pt-1 text-right">
 									<span class='text-muted'>Curation Count:</span> <strong>{{ $count }}</strong> |
 
-									<a href="#"><i class="fas fa-file-download"></i> Download Summary Data</a>
+									<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a>
 								</div>
 							</div>
 						</div>
@@ -25,19 +25,19 @@
 											<thead>
 													<tr class="small text-center border-bottom-3 text-secondary">
 															<th class="th-sort  bg-white border-1  text-uppercase">
-																Gene
+																@sortablelink('symbol','Gene')
 															</th>
 															{{-- <th class="th-sort  bg-white border-1  text-uppercase">
 																Disease
 															</th> --}}
 															<th class="th-sort  bg-white border-1  text-uppercase">
-																Haploinsufficiency
+																@sortablelink('symbol','Haploinsufficiency')
 															</th>
 															<th class="th-sort  bg-white border-1  text-uppercase">
-																Triplosensitivity
+																@sortablelink('symbol','Triplosensitivity')
 															</th>
 															<th class="th-sort  bg-white border-1  text-uppercase">
-																Report &amp; Date
+																@sortablelink('symbol','Report & Date')
 															</th>
 													</tr>
 											</thead>

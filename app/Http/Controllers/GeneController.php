@@ -47,7 +47,7 @@ class GeneController extends Controller
 	public function index(Request $request, $page = 1, $psize = 100)
 	{
 		// process request args
-		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
 
 		/* build cqching of these values with cross-section updates
@@ -65,22 +65,26 @@ class GeneController extends Controller
 				'variant_path' => "300"
 			]
 		]);
-
+/*
 		$results = GeneLib::geneList([	'page' => $page - 1,
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'GENE_LABEL',
 										'direction' => $direction ?? 'ASC',
+										'search' => $search ?? null,
 										'curated' => false ]);
 
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+			die(print_r(GeneLib::getError()));*/
 
 		// customize the pagination.
-		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		$records->withPath('genes');
+		//$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
+		//$records->withPath('genes');
 
-		return view('gene.index', compact('display_tabs', 'records'))
-						->with('count', $results->count);
+		return view('gene.index', compact('display_tabs'))
+		//				->with('records', $results->collection)
+		//				->with('count', $results->count)
+						->with('pagesize', $psize)
+						->with('page', $page);
 	}
 
 

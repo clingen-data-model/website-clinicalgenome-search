@@ -2,88 +2,42 @@
 
 @section('content')
 <div class="container">
-		<div class="row justify-content-center">
-				<div class="col-md-12">
-						<h2>Genes</h2>
-						<div class="mb-2 row">
-							<div class="col-sm-6">
-								<div class="input-group">
-										<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search"></i></span>
-										<input type="text" class="form-control input-block search" id="interactive_search" placeholder="Filter results...">
-								</div>
-							</div>
-							<div class="col-sm-6">
-								{{-- <div class=" pt-1 text-right">
-                  <span class='text-muted'>Gene Count:</span> <strong>{{ count($records)}}</strong>
-                </div> --}}
-							</div>
-						</div>
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<h2>Genes</h2>
 
-										<table id="interactive_table" class="table table-sm table-striped">
-											<thead>
-													<tr class="small text-center border-bottom-3 text-secondary">
-															<th nowrap class="th-sort  bg-white border-1  text-uppercase">
-																 @sortablelink('symbol','Gene Symbol')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('hgnc_id','HGNC ID')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase hidden-sm hidden-xs">
+			<!-- The table -->					
+			<div id="toolbar">
+			</div>
+			<table
+			id="table"
+			data-toolbar="#toolbar"
+			data-addrbar="true"
+			data-search="true"
+			data-show-refresh="true"
+			data-show-toggle="true"
+			data-show-fullscreen="true"
+			data-show-columns="true"
+			data-show-columns-toggle-all="true"
+			data-detail-view="true"
+			data-show-export="true"
+			data-click-to-select="true"
+			data-detail-formatter="detailFormatter"
+			data-minimum-count-columns="2"
+			data-show-pagination-switch="true"
+			data-pagination="true"
+			data-id-field="id"
+			data-page-list="[10, 25, 50, 100, all]"
+			data-show-footer="false"
+			data-side-pagination="server"
+			data-url="http://s4.local/api/genes"
+			data-response-handler="responseHandler">
+			</table>
 
-																@sortablelink('name','Gene Name')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																Curations
-															</th>
-															<th nowrap class="th-sort  bg-white border-1  text-uppercase">
-
-																@sortablelink('last_curated','Last Curation Date')
-															</th>
-													</tr>
-											</thead>
-											<tbody>
-												@foreach ($records as $record)
-													<tr>
-                            <td><a href="{{ route('gene-show', $record->hgnc_id) }}"><strong>{{ $record->symbol }}</strong></a></td>
-                            <td><a class='text-muted small' href="{{ route('gene-show', $record->hgnc_id) }}">{{ $record->hgnc_id }}</a></td>
-                            <td class="text-muted small">{{ $record->name }}</td>
-                            <td nowrap>
-                              <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->has_actionability)
-                                  <img class="" src="/images/clinicalActionability-on.png" style="width:30px">
-                                @else
-                                  <img class="" src="/images/clinicalActionability-off.png" style="width:30px">
-                                @endif
-                              </a>
-                              <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->has_validity)
-                                  <img class="" src="/images/clinicalValidity-on.png" style="width:30px">
-                                @else
-                                  <img class="" src="/images/clinicalValidity-off.png" style="width:30px">
-                                @endif
-                                            </a>
-                                            <a class="menu_icon" href="{{ route('gene-show', $record->hgnc_id) }}">
-                                @if ($record->has_dosage)
-                                  <img class="" src="/images/dosageSensitivity-on.png" style="width:30px">
-                                @else
-                                  <img class="" src="/images/dosageSensitivity-off.png" style="width:30px">
-                                @endif
-                                            </a>
-                            </td>
-                            <td class="text-right">{{ $record->displayDate($record->last_curated_date) }}</td>
-                        </tr>
-												@endforeach
-												</tbody>
-										</table>
-				</div>
 		</div>
+	</div>
 </div>
 
-			{!! $records->appends(\Request::except('page'))->render() !!}
-
-        </div>
-    </div>
-</div>
 @endsection
 
 @section('heading')
@@ -95,4 +49,96 @@
 
 @section('script_js')
 
+<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+
+<script>
+	var $table = $('#table')
+  var selections = []
+
+
+  function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function badgeFormatter(index, row) { 
+	var html = '';
+	if (row.has_actionability)
+    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+
+	if (row.has_validity)
+    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+
+		if (row.has_dosage)
+    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+
+	return html;
+  }
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      locale: 'en-US',
+      columns: [
+        
+        {
+			title: 'Gene Symbol',
+			field: 'symbol',
+			sortable: true
+        },
+        {
+			title: 'HGNC ID',
+			field: 'hgnc_id',
+			sortable: true
+        },
+		{
+			title: 'Gene Name',
+			field: 'name'
+        },
+		{
+			title: 'Curations',
+			field: 'curations',
+			align: 'center',
+			formatter: badgeFormatter
+        },
+		{
+			field: 'date',
+			title: 'Last Curation Date',
+			align: 'right'
+        }
+      ]
+    })
+    
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+   
+  }
+
+  $(function() {
+    initTable()
+
+  })
+</script>
 @endsection

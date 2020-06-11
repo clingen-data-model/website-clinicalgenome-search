@@ -38,11 +38,11 @@
                             Gene Dosage Sensitivity</th>
                     </tr>
                     <tr class="small text-center border-bottom-3 text-secondary">
-                        <th class="th-sort  bg-white border-1  text-uppercase">Gene</th>
-                        <th class="th-sort  bg-white text-center border-1 text-uppercase">Clinical Validity <br /><span class='hidden-sm hidden-xs'>Classifications</span></th>
-                        <th class="th-sort  bg-white text-center border-1 text-uppercase">Evidence-Based Summary</th>
-                        <th class="th-sort  bg-white text-center border-1 text-uppercase"><span class='hidden-sm hidden-xs'>Haploinsufficiency</span><span class='visible-md visible-xs'>HI</span> Score</th>
-                        <th class="th-sort  bg-white text-center border-1 text-uppercase"><span class='hidden-sm hidden-xs'>Triplosensitivity</span><span class='visible-sm visible-xs'>TI</span> Score</th>
+                        <th class="th-sort  bg-white border-1  text-uppercase">@sortablelink('label','Gene')</th>
+                        <th class="th-sort  bg-white text-center border-1 text-uppercase">@sortablelink('validity','Clinical Validity Classifications')</th>
+                        <th class="th-sort  bg-white text-center border-1 text-uppercase">@sortablelink('actionability','Evidence-Based Summary')</th>
+                        <th class="th-sort  bg-white text-center border-1 text-uppercase"><span class='hidden-sm hidden-xs'>@sortablelink('haplo','Haploinsufficiency Score')</th>
+                        <th class="th-sort  bg-white text-center border-1 text-uppercase"><span class='hidden-sm hidden-xs'>@sortablelink('triplo','Triplosensitivity Score')</th>
                     </tr>
                     </thead>
                     <tbody class="list">

@@ -19,6 +19,11 @@ Route::get('/', 'HomeController@index')->name('home');
  */
 Route::get('/test/test', 'TestController@test')->name('test-test');
 
+/*
+ *	download dosage csv
+ */
+Route::get('/gene-dosage/download', 'DosageController@download')->name('dosage-download');
+
 
 /*
  * Gene display routes

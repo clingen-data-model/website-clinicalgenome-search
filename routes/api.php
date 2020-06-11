@@ -28,3 +28,6 @@ Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api
 // affiliates
 //Route::middleware('auth:api')->resource('affiliate', 'Api\AffiliateController');
 Route::resource('affiliates', 'Api\AffiliateController');
+
+// genes
+Route::resource('genes', 'Api\GeneController');
