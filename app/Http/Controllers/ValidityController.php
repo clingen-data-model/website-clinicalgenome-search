@@ -61,6 +61,7 @@ class ValidityController extends Controller
 		$records = GeneLib::validityList([	'page' => $page - 1,
 											'pagesize' => $psize,
 											'sort' => $sort ?? 'symbol',
+											'search' => $search ?? null,
 											'direction' => $direction ?? 'asc'
 										]);
 

@@ -30,7 +30,7 @@
 			data-page-list="[10, 25, 50, 100, all]"
 			data-show-footer="false"
 			data-side-pagination="server"
-			data-url="http://s4.local/api/genes"
+			data-url="/api/genes"
 			data-response-handler="responseHandler">
 			</table>
 
@@ -77,6 +77,11 @@
     return html.join('')
   }
 
+  function symbolFormatter(index, row) { 
+	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	return html;
+  }
+
   function badgeFormatter(index, row) { 
 	var html = '';
 	if (row.has_actionability)
@@ -105,6 +110,7 @@
         {
 			title: 'Gene Symbol',
 			field: 'symbol',
+			formatter: symbolFormatter,
 			sortable: true
         },
         {

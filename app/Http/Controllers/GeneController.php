@@ -119,6 +119,7 @@ class GeneController extends Controller
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'GENE_LABEL',
 										'direction' => $direction ?? 'ASC',
+										'search' => $search ?? null,
 										'curated' => true ]);
 		if ($results === null)
 			die(print_r(GeneLib::getError()));

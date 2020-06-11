@@ -91,69 +91,49 @@
 						@endforeach
 
 					</tbody>
-
-
-        </table>
-
-
-				</div>
+        		</table>
 			</div>
-			{{-- @empty --}}
-			<!-- Gene Dosage						-->
+		</div>
+		@empty
+		@endforelse
 
-			{{-- THIS GENE HAS NOT BEEN CURATED --}}
-			{{-- @endforelse --}}
-			@endforeach
-			@if(!empty($record->dosage_curation ))
-			<div class="card">
-				<div class="card-header text-white bg-primary">
-					<h3 class="text-white h5 p-0 m-0">{{ $record->symbol ?? '' }}</h3>
-				</div>
-				<div class="card-body p-0 m-0">
+		<!-- Gene Dosage Catchall -->
+		@if(!empty($record->dosage_curation ))
+		<div class="card">
+			<div class="card-header text-white bg-primary">
+				<h3 class="text-white h5 p-0 m-0">{{ $record->symbol ?? '' }}</h3>
+			</div>
+			<div class="card-body p-0 m-0">
 
-					<table class="panel-body table table-hover">
-          <thead class="thead-labels">
-            <tr>
-              <th class="col-sm-3 th-curation-group text-left">Curated by</th>
-              <th class="col-sm-4 text-left"> Classification</th>
-              <th class="col-sm-2 text-left"> </th>
-              <th class="col-sm-2 text-center">Date</th>
-              <th class="col-sm-1 text-center">Report</th>
-            </tr>
-          </thead>
+				<table class="panel-body table table-hover">
+					<thead class="thead-labels">
+						<tr>
+							<th class="col-sm-3 th-curation-group text-left">Curated by</th>
+							<th class="col-sm-4 text-left"> Classification</th>
+							<th class="col-sm-2 text-left"> </th>
+							<th class="col-sm-2 text-center">Date</th>
+							<th class="col-sm-1 text-center">Report</th>
+						</tr>
+					</thead>
 
 					<tbody class="">
 
-						<!-- Gene Dosage Catchall				-->
-						@if(!empty($record->dosage_curation))
-							@foreach($record->dosage_curation_map as $key => $value)
-								<tr>
-									<td class="col-sm-3">D - Dosage</td>
-									<td class="col-sm-6">{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->score) }}</td>
-									<td class="col-sm-2"></td>
-									<td class="col-sm-2">{{ $record->displayDate($record->dosage_curation->report_date) }}</td>
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View report</a></td>
-								</tr>
-							@endforeach
-						@endif
-
+					@foreach($record->dosage_curation_map as $key => $value)
+						<tr>
+							<td class="col-sm-3">D - Dosage</td>
+							<td class="col-sm-6">{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->score ?? null) }}</td>
+							<td class="col-sm-2"></td>
+							<td class="col-sm-2">{{ $record->displayDate($record->dosage_curation->report_date) }}</td>
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View report</a></td>
+						</tr>
+					@endforeach
 					</tbody>
+				</table>
 
-
-        </table>
-
-
-				</div>
 			</div>
-			@endif
-
-			{{-- @empty --}}
-			<!-- Gene Dosage						-->
-
-			{{-- THIS GENE HAS NOT BEEN CURATED --}}
-			{{-- @endforelse --}}
-
 		</div>
+		@endif
+
 	</div>
 </div>
 @endsection

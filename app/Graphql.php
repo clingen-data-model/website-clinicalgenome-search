@@ -238,6 +238,12 @@ class Graphql
 		// the catch all, so we need to process the genetic conditions and add some flags.
 		$dosage_curation_map = ["haploinsufficiency_assertion" => true, "triplosensitivity_assertion" => true];
 
+		if (empty($node->dosage_curation->triplosensitivity_assertion))
+			unset($dosage_curation_map["triplosensitivity_assertion"]);
+
+		if (empty($node->dosage_curation->haploinsufficiency_assertion))
+			unset($dosage_curation_map["haploinsufficiency_assertion"]);
+
 		if (!empty($node->genetic_conditions))
 		{
 			foreach($node->genetic_conditions as $condition)
@@ -256,8 +262,9 @@ class Graphql
 				}
 			}
 
-			$node->dosage_curation_map = $dosage_curation_map;
 		}
+
+		$node->dosage_curation_map = $dosage_curation_map;
 	//dd($node);	
 
 		return $node;	
