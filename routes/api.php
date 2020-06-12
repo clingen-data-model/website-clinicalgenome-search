@@ -31,3 +31,9 @@ Route::resource('affiliates', 'Api\AffiliateController');
 
 // genes
 Route::resource('genes', 'Api\GeneController');
+
+// curated genes
+Route::resource('curations', 'Api\CurationController');
+
+// dosage
+Route::resource('dosage', 'Api\DosageController');

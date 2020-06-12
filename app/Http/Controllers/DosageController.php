@@ -52,7 +52,9 @@ class DosageController extends Controller
     public function index(Request $request, $page = 1, $psize = 100)
     {
         
-        //if (is_int($page)) // don't forget to check the parms
+        // process request args
+		foreach ($request->only(['page', 'sort', 'search', 'direction']) as $key => $value)
+			$$key = $value;
 
 		$display_tabs = collect([
 			'active' => "dosage",
@@ -65,7 +67,7 @@ class DosageController extends Controller
 			]
 		]);
 		
-		$results = GeneLib::dosageList(['page' => $page - 1,
+		/*$results = GeneLib::dosageList(['page' => $page - 1,
 										'pagesize' => $psize,
 										'sort' => $sort ?? 'GENE_LABEL',
 										'direction' => $direction ?? 'ASC',
@@ -75,17 +77,23 @@ class DosageController extends Controller
 		if ($results === null)
 		{
 			die(print_r(GeneLib::getError()));
-		}
+		}*/
 
 		// customize the pagination.
 		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
 		//$records->withPath('genes');
 	
-		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		$records->withPath('gene-dosage');
+		//$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
+		//$records->withPath('gene-dosage');
 
-		return view('gene-dosage.index', compact('display_tabs', 'records'))
-					->with('count', $results->count);;
+		//return view('gene-dosage.index', compact('display_tabs', 'records'))
+		//			->with('count', $results->count);;
+
+		return view('gene-dosage.index', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('apiurl', '/api/dosage')
+						->with('pagesize', $psize)
+						->with('page', $page);
     }
 
 

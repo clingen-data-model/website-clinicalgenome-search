@@ -4,35 +4,10 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h2>Genes</h2>
+			<h1>Curated Genes</h1>
+      <h3>Clingen had information on <span id="gene-count">many</span> genes</h3>
 
-			<!-- The table -->					
-			<div id="toolbar">
-			</div>
-			<table
-			id="table"
-			data-toolbar="#toolbar"
-			data-addrbar="true"
-			data-search="true"
-			data-show-refresh="true"
-			data-show-toggle="true"
-			data-show-fullscreen="true"
-			data-show-columns="true"
-			data-show-columns-toggle-all="true"
-			data-detail-view="true"
-			data-show-export="true"
-			data-click-to-select="true"
-			data-detail-formatter="detailFormatter"
-			data-minimum-count-columns="2"
-			data-show-pagination-switch="true"
-			data-pagination="true"
-			data-id-field="id"
-			data-page-list="[10, 25, 50, 100, all]"
-			data-show-footer="false"
-			data-side-pagination="server"
-			data-url="/api/genes"
-			data-response-handler="responseHandler">
-			</table>
+			@include('_partials.genetable') 
 
 		</div>
 	</div>
@@ -57,15 +32,20 @@
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 <script>
 	var $table = $('#table')
-  var selections = []
+	var selections = []
 
 
   function responseHandler(res) {
+
+    $('#gene-count').html(res.total);
+    /*
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1
-    })
+    })*/
     return res
   }
 
@@ -115,8 +95,7 @@
         },
         {
 			title: 'HGNC ID',
-			field: 'hgnc_id',
-			sortable: true
+			field: 'hgnc_id'
         },
 		{
 			title: 'Gene Name',
@@ -139,11 +118,18 @@
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
+
+	$table.on('load-error.bs.table', function (e, name, args) {
+		swal("Load Error!");
+	})
    
   }
 
   $(function() {
     initTable()
+	var $search = $('.fixed-table-toolbar .search input');
+	$search.attr('placeholder', 'Search in table');
+	//$search.css('border', '1px solid red');
 
   })
 </script>

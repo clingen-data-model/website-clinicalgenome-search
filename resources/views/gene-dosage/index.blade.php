@@ -2,78 +2,19 @@
 
 @section('content')
 <div class="container">
-		<div class="row justify-content-center">
-				<div class="col-md-12">
-						<h2>Gene Dosage Curations</h2>
-						<div class="mb-2 row">
-							<div class="col-sm-6">
-								<div class="input-group">
-										<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search"></i></span>
-										<input type="text" class="form-control input-block search" id="interactive_search" placeholder="Filter results...">
-								</div>
-							</div>
-							<div class="col-sm-6">
-								<div class=" pt-1 text-right">
-									<span class='text-muted'>Curation Count:</span> <strong>{{ $count }}</strong> |
-
-									<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a>
-								</div>
-							</div>
-						</div>
-
-										<table id="interactive_table" class="table table-sm table-striped">
-											<thead>
-													<tr class="small text-center border-bottom-3 text-secondary">
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('symbol','Gene')
-															</th>
-															{{-- <th class="th-sort  bg-white border-1  text-uppercase">
-																Disease
-															</th> --}}
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('symbol','Haploinsufficiency')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('symbol','Triplosensitivity')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('symbol','Report & Date')
-															</th>
-													</tr>
-											</thead>
-											<tbody>
-												@foreach ($records as $element)
-													<tr>
-															<td nowrap data-search="{{ $element->hgnc_id }} {{ $element->symbol }}">
-																<a href="{{ route('gene-show', $element->hgnc_id) }}">
-																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{$element->hgnc_id}}"><i class="fas fa-info-circle text-muted"></i></span>&nbsp;<strong>{{ $element->symbol }}</strong>
-															</a>
-															</td>
-															{{-- <td>
-																<a href="{{ route('condition-show', $records->mondo) }}">
-																	<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $records->mondo }}"><i class="fas fa-info-circle text-muted"></i></span> {{ $records->disease }}
-																</a>
-															</td>--}}
-															<td nowrap>
-																{{ App\GeneLib::haploAssertionString($element->has_dosage_haplo) }}
-															</td>
-															<td>
-																{{ App\GeneLib::triploAssertionString($element->has_dosage_triplo) }}
-															</td>
-															<td data-sort="{{ $element->displaySortDate($element->dosage_report_date) }}">
-																<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $element->symbol }}&subject=">
-																	<i class="fas fa-file"></i> 
-																	<span class='hidden-sm hidden-xs'>Report - </span>{{ $element->displayDate($element->dosage_report_date) }}
-																</a>
-															</td>
-													</tr>
-												@endforeach
-												</tbody>
-										</table>
-				</div>
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">Genes with Dosage Sensitivity</h1>
+                <h3>Clingen has information on <span id="gene-count">many</span> curated dosage sensitivity genes</h3>
 		</div>
 
-		{!! $records->appends(\Request::except('page'))->render() !!}
+		<div class="col-md-12">
+
+			@include('_partials.genetable', 
+					['tools' => '<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a>'])
+									
+		</div>
+	</div>
 </div>
 
 @endsection
@@ -87,20 +28,123 @@
 
 
 @section('script_js')
-    <script>
-        /*$(document).ready(function() {
-            var table = $('#interactive_table').DataTable(
-                {
-                    pageLength: 250,
-                    lengthChange: false,
-                    //bFilter: false,
-                    fixedHeader: true
-                }
-            );
-            // #myInput is a <input type="text"> element
-            $('#interactive_search').on( 'keyup', function () {
-                table.search( this.value ).draw();
-            } );
-        } );*/
+	
+<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<script>
+		
+		var $table = $('#table')
+	var selections = []
+
+
+  function responseHandler(res) {
+	$('#gene-count').html(res.total);
+
+	/*
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+	})*/
+	
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function symbolFormatter(index, row) { 
+	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	return html;
+  }
+
+  function reportFormatter(index, row) { 
+	var html = '<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="'
+			+ row.report +'"><i class="fas fa-file"></i>  View Details</a>';
+
+	return html;
+  }
+
+  function badgeFormatter(index, row) { 
+	var html = '';
+	if (row.has_actionability)
+    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+
+	if (row.has_validity)
+    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+
+		if (row.has_dosage)
+    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+
+	return html;
+  }
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      locale: 'en-US',
+      columns: [
+        
+        {
+			title: 'Gene Symbol',
+			field: 'symbol',
+			formatter: symbolFormatter,
+			sortable: true
+        },
+        {
+			title: 'Haploinsufficiency',
+			field: 'haplo_assertion'
+        },
+		{
+			title: 'Triplosensitity',
+			field: 'triplo_assertion'
+        },
+		{
+			title: 'Report',
+			field: 'report',
+			align: 'center',
+			formatter: reportFormatter
+        },
+		{
+			field: 'date',
+			title: 'Report Date',
+        }
+      ]
+    })
+    
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+
+	$table.on('load-error.bs.table', function (e, name, args) {
+		swal("Load Error!");
+	})
+   
+  }
+
+  $(function() {
+    initTable()
+	var $search = $('.fixed-table-toolbar .search input');
+	$search.attr('placeholder', 'Search in table');
+	//$search.css('border', '1px solid red');
+
+  })
+
     </script>
 @endsection

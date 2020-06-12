@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Http\Requests\GeneListRequest;
+
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -44,10 +46,10 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Request $request, $page = 1, $psize = 100)
+	public function index(GeneListRequest $request, $page = 1, $size = 100)
 	{
 		// process request args
-		foreach ($request->only(['page', 'sort', 'search', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
 
 		/* build cqching of these values with cross-section updates
@@ -65,25 +67,10 @@ class GeneController extends Controller
 				'variant_path' => "300"
 			]
 		]);
-/*
-		$results = GeneLib::geneList([	'page' => $page - 1,
-										'pagesize' => $psize,
-										'sort' => $sort ?? 'GENE_LABEL',
-										'direction' => $direction ?? 'ASC',
-										'search' => $search ?? null,
-										'curated' => false ]);
-
-		if ($results === null)
-			die(print_r(GeneLib::getError()));*/
-
-		// customize the pagination.
-		//$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		//$records->withPath('genes');
 
 		return view('gene.index', compact('display_tabs'))
-		//				->with('records', $results->collection)
-		//				->with('count', $results->count)
-						->with('pagesize', $psize)
+						->with('apiurl', '/api/genes')
+						->with('pagesize', $size)
 						->with('page', $page);
 	}
 
@@ -93,10 +80,10 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function curated(Request $request, $page = 1, $psize = 200) //$psize = 2000)
+	public function curated(GeneListRequest $request, $page = 1, $size = 200)
 	{
 		// process request args
-		foreach ($request->only(['page', 'sort', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
 
 		/* build caching of these values with cross-section updates
@@ -115,21 +102,10 @@ class GeneController extends Controller
 			]
 		]);
 
-		$results = GeneLib::geneList([	'page' => $page - 1,
-										'pagesize' => $psize,
-										'sort' => $sort ?? 'GENE_LABEL',
-										'direction' => $direction ?? 'ASC',
-										'search' => $search ?? null,
-										'curated' => true ]);
-		if ($results === null)
-			die(print_r(GeneLib::getError()));
-
-		// customize the pagination.
-		$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		$records->withPath('curations');
-
-		return view('gene.curated', compact('display_tabs', 'records'))
-						->with('count', $results->count);
+		return view('gene.curated', compact('display_tabs'))
+						->with('apiurl', '/api/curations')
+						->with('pagesize', $size)
+						->with('page', $page);
 	}
 
 

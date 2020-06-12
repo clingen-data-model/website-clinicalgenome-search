@@ -86,7 +86,7 @@
 									<td class="col-sm-6">{{ $dosage->score }}</td>
 									<td class="col-sm-2"></td>
 									<td class="col-sm-2">{{ $record->displayDate($dosage->report_date) }}</td>
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $validity->curie }}">View report</a></td>
+									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $dosage->curie ?? '#' }}">View report</a></td>
 								</tr>
 						@endforeach
 
