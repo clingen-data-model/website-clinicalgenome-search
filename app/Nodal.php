@@ -5,6 +5,7 @@ namespace App;
 use Jenssegers\Model\Model;
 
 use App\Traits\Display;
+use App\Traits\Scores;
 
 
 /**
@@ -19,12 +20,12 @@ use App\Traits\Display;
  * @link       http://pear.php.net/package/PackageName
  * @see        NetOther, Net_Sample::Net_Sample()
  * @since      Class available since Release 1.2.0
- * @deprecated Class deprecated in Release 2.0.0
  *
  * */
 class Nodal extends Model
 {
 	use Display;
+	use Scores;
 
     /**
      * The attributes that should be validity checked.
@@ -343,5 +344,24 @@ class Nodal extends Model
 		$mondo = substr($original, $prelen);
 
 		return ($colonflag ? str_replace(':', '_', $mondo) : $mondo);
+	}
+
+
+	/**
+     * Return whether Actionability report is an adult or a pediatric 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function displayActionType($record)
+    {
+		
+		if (strpos($record, '/Adult/'))
+			return 'Adult - ';
+		else if (strpos($record, '/Pediatric/'))
+			return 'Pediatric - ';
+		else
+			return '';
+
 	}
 }

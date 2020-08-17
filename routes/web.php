@@ -18,6 +18,11 @@ Route::get('/', 'HomeController@index')->name('home');
  * Test route - remove for production
  */
 Route::get('/test/test', 'TestController@test')->name('test-test');
+Route::get('/test', 'TestController@index')->name('test-index');
+Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
+Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
+Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
+Route::get('/test/download', 'TestController@download')->name('dosage-download');
 
 /*
  *	download dosage csv
@@ -117,7 +122,7 @@ Route::group(['prefix' => 'affiliate'], function () {
 		Route::get('/gene-dosage/', 'DosageController@index')->name('dosage-index');
 
 		// SHOW ISN"T NEEDED - MVP IS A REDIRECT
-		Route::get('/gene-dosage/detail/', 'DosageController@show')->name('dosage-show');
+		Route::get('/gene-dosage/{id}', 'DosageController@show')->name('dosage-show');
 
 
 		// Gene Validity demo route

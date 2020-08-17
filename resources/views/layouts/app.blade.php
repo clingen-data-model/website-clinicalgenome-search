@@ -102,7 +102,7 @@
                   <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a class="@if ($display_tabs['active'] == "gene") font-weight-bold @endif" href="{{ route('gene-index') }}">All Genes</a></li>
-                  <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('disease-index') }}">All Disease</a></li>
+                  <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
                   {{-- <li role="separator" class="divider"></li>
                   <li><a href="#">APIs and Downloads</a></li> --}}

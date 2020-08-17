@@ -39,7 +39,7 @@ class ConditionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $psize = 20)
+    public function index(Request $request, $page = 0, $size = 20)
     {
 		//if (is_int($page)) // don't forget to check the parms
 
@@ -54,7 +54,7 @@ class ConditionController extends Controller
 				]
 		]);
 
-		$records = GeneLib::conditionList([	'page' => $page,
+		/*$records = GeneLib::conditionList([	'page' => $page,
 											'pagesize' => $psize
 										]);
 
@@ -62,7 +62,12 @@ class ConditionController extends Controller
 		if ($records === null)
 			die("thow an error");
 
-        return view('condition.index', compact('display_tabs', 'records'));
+		return view('condition.index', compact('display_tabs', 'records'));*/
+		
+		return view('condition.index', compact('display_tabs'))
+						->with('apiurl', '/api/conditions')
+						->with('pagesize', $size)
+						->with('page', $page);
     }
     
     

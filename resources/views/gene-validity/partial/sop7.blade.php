@@ -37,14 +37,14 @@
 			<td>2</td>
 			<td>0-3</td>
 			<td>12</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Count ?? null }}</span></td>
+			<td class="input-width-numbers"><span class="form-group">{{ $record->sop7_variant_is_de_novo }}</span></td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-						{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->TotalPoints ?? null }}
+						{{ $record->sop7_variant_is_de_novo_total }}
 				</div>
 			</td>
 			<td class="points-tally-bg">
-				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->PointsCounted ?? null }}
+				{{ $record->sop7_variant_is_de_novo_points }}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) !!}
@@ -55,13 +55,13 @@
 			<td>1.5</td>
 			<td>0-2</td>
 			<td id="GeneticEvidence3Max">10</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Count ?? null }}</span></td>
+			<td class="input-width-numbers"><span class="form-group">{{ $record->sop7_proband_with_predicted_count }}</span></td>
 			<td class="input-width-numbers points-given-bg">
 				<span class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->TotalPoints ?? null }}
+					{{ $record->sop7_proband_with_predicted_total }}
 			</span>								</td>
 			<td class="points-tally-bg">
-				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->PointsCounted ?? null }}
+				{{ $record->sop7_proband_with_predicted_points }}
 			<td class="input-width-pmid ">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Evidence ?? null ) !!}
 		  </td>
@@ -71,15 +71,15 @@
 		  <td class='table-border-thin'>0.5</td>
 		  <td class='table-border-thin'>0-1.5</td>
 			<td id="GeneticEvidence1Max" class='table-border-thin'>7</td>
-			<td class="input-width-numbers table-border-thin"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Count ?? null }}</span></td>
+			<td class="input-width-numbers table-border-thin"><span class="form-group">{{ $record->sop7_proband_with_other_count }}</span></td>
 			<td class="input-width-numbers points-given-bg table-border-thin">
 				<div class="form-group">
-									{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->TotalPoints ?? null }}
+									{{ $record->sop7_proband_with_other_total }}
 
 				</div>
 			</td>
 			<td class=" points-tally-bg table-border-thin">
-								{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->PointsCounted ?? null }}
+								{{ $record->sop7_proband_with_other_points }}
 
 			<td class="input-width-pmid table-border-thin">
 								{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Evidence ?? null ) !!}
@@ -93,14 +93,14 @@
 			<td>2</td>
 			<td>0-3</td>
 			<td rowspan="2" id="GeneticEvidence4Max" class=' table-border-thin'>12</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Count ?? null }}</span></td>
+			<td class="input-width-numbers"><span class="form-group">{{ $record->sop7_two_variants_count }}</span></td>
 			<td class="input-width-numbers  points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->TotalPoints ?? null }}
+					{{ $record->sop7_two_variants_total }}
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg table-border-thin">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->PointsCounted ?? null }}
+					{{ $record->sop7_two_variants_points }}
 			</td>
 			<td class="input-width-pmid">
 								{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Evidence ?? null ) !!}
@@ -110,9 +110,9 @@
 		  <td class='table-border-thin'>Two variants (not predicted/proven null) with some evidence of gene impact in trans</td>
 		  <td class='table-border-thin'>1</td>
 		  <td class='table-border-thin'>0-1.5</td>
-		  <td class=' input-width-numbers table-border-thin'><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Count ?? null }}</span></td>
+		  <td class=' input-width-numbers table-border-thin'><span class="form-group">{{ $record->sop7_two_variants_not_predicted_count }}</span></td>
 			<td class=' input-width-numbers  points-given-bg table-border-thin'><div class="form-group">
-				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->TotalPoints ?? null }}
+				{{ $record->sop7_two_variants_not_predicted_total }}
 			</div></td>
 			<td class="input-width-pmid  table-border-thin">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Evidence ?? null ) !!}
@@ -124,15 +124,15 @@
 		  <td colspan="2" class='table-border-thin' style="background-color: #f1f1f1">&nbsp;</td>
 		  <td colspan="2" class='table-border-thin' style="background-color: #f1f1f1">Summed LOD</td>
 		  <td class=' input-width-numbers table-border-thin' style="background-color: #f1f1f1">Family Count</td>
-		  <td rowspan="4" class=' input-width-numbers  points-given-bg table-heading-line-normal'>{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->PointsCounted ?? null}}</td>
-		  <td rowspan="4" class=" points-tally-bg table-heading-line-normal">{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->PointsCounted ?? null}}</td>
+		  <td rowspan="4" class=' input-width-numbers  points-given-bg table-heading-line-normal'>{{ $record->sop7_segregation_evidence_points_counted }}</td>
+		  <td rowspan="4" class=" points-tally-bg table-heading-line-normal">{{ $record->sop7_segregation_evidence_points_counted }}</td>
 		  <td class="input-width-pmid  table-border-thin" style="background-color: #f1f1f1">&nbsp;</td>
 	  </tr>
 		<tr>
 		  <td colspan="2" class='table-border-thin'>Candidate gene sequencing</td>
-		  <td colspan="2" class='table-border-thin'>{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->SummedLod ?? null}}</td>
-		  <td class=' input-width-numbers table-border-thin'>{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->FamilyCount ?? null}}</td>
-		  <td class="input-width-pmid  table-border-thin">{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->Evidence ?? null) !!}</td>
+		  <td colspan="2" class='table-border-thin'>{{ $record->sop7_candi_gene_summed }}</td>
+		  <td class=' input-width-numbers table-border-thin'>{{ $record->sop7_candi_gene_family }}</td>
+		  <td class="input-width-pmid  table-border-thin">{{ $record->sop7_candi_gene_family_evidence }}</td>
 	  </tr>
 		<tr>
 		  <td colspan="2" class='table-border-thin'>Exome/genome or all genes sequenced in linkage region</td>

@@ -37,3 +37,12 @@ Route::resource('curations', 'Api\CurationController');
 
 // dosage
 Route::resource('dosage', 'Api\DosageController');
+
+// gene validity
+Route::resource('validity', 'Api\ValidityController');
+
+// drugs
+Route::resource('drugs', 'Api\DrugController');
+
+// drugs
+Route::resource('conditions', 'Api\ConditionController');

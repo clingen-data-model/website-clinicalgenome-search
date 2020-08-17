@@ -6,14 +6,14 @@
 	<div class="row geneValidityScoresWrapper">
 		<div class="col-sm-12">
 			<div class="content-space content-border">
-				{{ $record->animalmode ?? '' }}
-				@if(strpos($record->specified_by->label,"SOP7"))
+				{{ $animalmode ?? '' }}
+				@if($record->sop == "SOP7")
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop7')
-				@elseif (strpos($record->specified_by->label,"SOP6"))
+				@elseif ($record->sop == "SOP6")
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop6')
-				@elseif (strpos($record->specified_by->label,"SOP5"))
+				@elseif ($record->sop == "SOP5")
 					@if($record->interface == "GCI")
 						@include('gene-validity.partial.report-heading')
 						@include('gene-validity.partial.sop5')
@@ -21,7 +21,7 @@
 						@include('gene-validity.partial.report-heading')
 						@include('gene-validity.partial.sop5-legacy')
 					@endif
-				@elseif (strpos($record->specified_by->label,"SOP4"))
+				@elseif ($record->sop == "SOP4")
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop4-legacy')
 				@else

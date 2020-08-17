@@ -1,0 +1,543 @@
+
+
+body {
+  background-color: #ccc;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+}
+
+ol, ul {
+    list-style : none;
+    margin: 0;
+    padding: 0;
+}
+
+p {
+   margin : 0.6923em 0;
+}
+
+h1 {
+   font-size : 2em;
+}
+
+h2 {
+   font-weight: bold;
+   color : #985735;
+   margin: 1.5em 0.5em;
+}
+
+h3 {
+    color : #985735;
+    font-weight: bold;
+    font-size : 1.3em;
+}
+
+/* page */
+.grid {
+    min-width: 800px;
+    font-size: 1.3em;
+    max-width: 1200px;
+    width : 100%;
+    /*clear: both;*/
+    text-align: left;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.col {
+    background-color: #fff;
+    margin-right: 1%;
+    float: left;
+    overflow: hidden;
+}
+
+.ten_col {
+    width: 99%;
+}
+
+
+.left_col {
+    margin-top : 15px;
+    width: 78.999%;
+}
+
+.last_col {
+    float: right;
+}
+
+.right_col {
+    margin-top : 15px;
+    width: 18.999%;
+}
+
+/* side_panel*/
+.side_panel {
+    border-top : 0.4em solid #97b0c8;
+    padding-top : 0.461em;
+    margin: 0.769em 0 2.154em 0;
+    line-height : 1.3em;
+    overflow: visible;
+    zoom: 1;
+}
+
+.side_panel_head {
+    margin-top : 0.3em;
+    margin-bottom: 1em;
+}
+
+.side_panel ul {
+        margin: 0;
+        padding: 0;
+}
+
+.side_panel ul li {
+   margin-top : 0.3em;
+   padding-bottom : 1px;
+   border-bottom: 1px dotted #ccc;
+   overflow: visible;
+}
+
+.side_panel ul li a {
+    text-decoration : none;
+}
+
+.side_panel h3 {
+    display:inline;
+}
+
+/* header */
+.prj_header {
+    margin-top : 1em;
+    height : 220px;
+}
+
+.header_img {
+     float: left;
+     width: 300px;
+     height: 220px;
+}
+
+#img_logo {
+        height: 220px;
+}
+
+.header_text {
+        margin-left : 300px;
+        margin-right: 50px;
+}
+
+.header_text h1 {
+    font-weight: bold;
+    padding: 1.5em 0.75em 0.33em 0.75em;
+    
+}
+
+.header_text .description {
+    font-size : 1.3em;
+    padding: 0.5em 0em 0.33em 0.75em;
+}
+
+
+/* index.shtml maincontent */
+.subsection {
+      width: 98%;
+      margin : 1em auto;
+}
+
+
+
+.data {
+        width: 375px;
+        margin: 1em auto;
+        padding: 1em;
+        padding-bottom: 7em;
+        display: inline-block;
+        border: 2px dotted #efefef;
+        height: 80px;
+        vertical-align: top;
+}
+
+
+.data fieldset {
+        padding: 1em;
+}
+
+.data fieldset legend {
+        background-color: #333;
+        color: #fff;
+}
+
+.data ol {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+}
+
+.data fieldset p {
+        margin: 0.5em;
+}
+
+.data fieldset input {
+        margin: 0.25em;
+}
+
+.test {
+        visibility: hidden;
+        line-height: 0.2em;
+}
+
+
+/* help page*/
+
+#toc {
+        font-size : 1.3em;
+        margin-bottom : 2em;
+
+}
+
+#toc li {
+        margin: 0.3em 0;
+}
+
+#help  {
+    line-height : 1.5em;
+}
+
+div.help_sections {
+        margin: 1em;
+        padding: 2em;
+        border: 1px dotted #333;
+}
+
+.strong {
+        font-weight: bold;
+        padding-right:  1em;
+}
+
+#pages ul {
+    list-style-type: none;
+    padding-left : 1em;
+}
+
+.note {
+        width: 90%;
+        border: 1px dotted #333;
+        background-color: #efefef;
+        padding: 0.5em;
+        margin: 0.5em;
+        margin-bottom: 2em;
+}
+
+/* gene page*/
+
+#curation .side_panel {
+   margin-bottom : 0;
+}
+
+#clingen_small_header {
+       font-size : 2em;
+}
+
+#clingen_small_logo {
+        height : 125px;
+        vertical-align:middle;
+}
+
+#gene_header {
+        padding-left: 0.5em;
+        margin-left : 1em;
+        
+}
+
+#gene_header ul {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+     
+}
+
+#gene_header h1 {
+     font-size : 3em;
+}
+
+#gene_info  {
+        width: 38%;
+        margin: 0em 0em 1em 1em;
+        padding: 1em 0 0.5em 0.5em;
+        line-height: 2em;
+}
+
+
+#cur_stat {
+        font-size: 1.5em;
+        color: #985735;
+        padding-top: 0.5em;
+}
+
+
+#link_region {
+        font-size:1.2em;
+        color:#FF0000;
+        font-weight: bold;
+}
+
+
+#gene_loc {
+        padding-top :3em;
+        width:58%;
+        line-height: 2em;
+        float: right;
+        display: inline-block;
+}
+
+
+#ideogram {
+        width: 450px;
+        margin-top: 0.5em ;
+        margin-bottom: 0.5em ;
+}
+
+#gene_loc h4 {
+        margin-top: 0.5em;
+        margin-bottom: 0em;
+}
+
+#gene_loc h3 {
+        color : #000;
+}
+
+
+#asm_name {
+        font-weight: bold;
+}
+
+
+
+#tabs {
+        line-height: 1.5em;
+        width: 98%;
+        clear: both;
+        margin: 3em auto;
+        border: 1px solid #aaa;
+}
+
+
+p#rep_link {
+        margin-left: 85%;
+        margin-top: 0;
+        padding: 0;
+}
+
+#rep_link a {
+        color: blue;
+        text-decoration: none;
+        border-bottom: 1px dotted blue;
+        padding: 0;
+        margin: 0;
+}
+
+/*update_gene page*/
+
+#update_gene  {
+    line-height : 1.5em;
+}
+
+#response {
+        width: 90%;
+        margin: 1em 0em 2em 2em;
+}
+
+/*user curation styling*/
+div#userInfo {
+	border: 1px dotted #565656;
+	margin: 0.5em;
+	padding: 0.1em 0.25em;
+}
+
+div#info {
+	margin: 0em 0.5em 0.5em 1em;
+}
+
+div#info ul {
+    list-style: none;
+    padding: 1em 0;
+    margin: 0px;
+}
+
+div#info ul li {
+    margin: 0.2em 0;
+}
+
+
+div#userInfo h2 {
+	margin: 0.5em 0.25em;
+}
+
+form#userInput fieldset {
+	margin-bottom: 10px;
+	padding: 0.25em;
+}
+
+form#userInput fieldset legend {
+	padding: 0.5em;
+	font-weight: bold;
+	font-size: 1.2em;
+	border: 1px solid #333;
+}
+
+form#userInput span.directions {
+	font-style: italic;
+	color: #333;
+}
+form#userInput label {
+	display: inline-block;
+	line-height: 1.8;
+	vertical-align: top;
+	font-weight: bold;
+}
+form#userInput input[type='radio']{
+	padding: 5px;
+}
+
+form#userInput input[type='textarea'] {
+	width: 90%; 
+	height: 120px;
+}
+
+/*Form styling*/
+form.isca_form p {
+	display: inline;
+}
+
+form.isca_form input {
+	min-width: 80px;
+}
+
+form.isca_form select {
+	min-width: 80px;
+}
+
+form.isca_form {
+	margin: 2em 1em;
+}
+
+form.isca_form fieldset {
+	margin-bottom: 10px;
+	background-color: #efefef;
+	padding: 1em;
+}
+
+form.isca_form label {
+	display: inline-block;
+	line-height: 1.8;
+	vertical-align: top;
+}
+
+form.isca_form legend {
+	padding: 0 2px;
+	font-weight: bold;
+	font-size: 1.2em;
+	border: 1px solid #333;
+	background-color: #333;
+	color: #efefef;
+	margin: 1em 0.5em;
+}
+
+form.isca_form fieldset p {
+	margin: 0.5em;
+	padding: 1em;
+}
+
+form.isca_form fieldset #hook {
+	margin: 0.5em;
+	padding: 1em;
+}
+
+.em {
+	font-style: italic;
+}
+
+
+form.isca_form fieldset ol, form#userInput fieldset ol {
+	margin: 0;
+	padding: 0;
+}
+
+form.isca_form fieldset ol li, form#userInput fieldset ol li {
+	list-style: none;
+	padding: 5px;
+	margin: 0;
+}
+
+form.isca_form .submit_button {
+	width: 100px;
+	background-color: #333;
+	color: #efefef;
+}
+
+form.isca_form #subject {
+	display: none;
+}
+
+
+#acmg tbody tr th {
+    color : #985735;
+    font-size : 1.2em;
+    border-top: 1px solid #d4dfe9;
+    border-bottom: none;
+}
+
+
+#pathogenic_region {
+   font-size : 1.1em;
+}
+
+#pathogenic_region  tr:nth-child(even) {
+    background-color : #E6EDF7;
+}
+
+
+#pathogenic_region_section .ui-ncbigrid-filter-toolbar {
+   right: auto;
+   font-size :  inherit;
+   line-height : inherit;
+}
+
+.stat_div {
+        margin: 1em;
+        padding: 2em;
+        /*border: 1px dotted #333;*/
+}
+
+#stat_toc {
+        font-size : 1.3em;
+        margin: 1em;
+        padding-left: 2em;
+
+}
+
+#stat_toc li {
+        list-style : disc;
+        margin: 0.3em 0;
+}
+
+.data_pre { white-space: pre-line;}
+
+.stat_tab > div > div.ui-ncbigrid-filter-toolbar {right:auto;
+                                                  font-size:1em;}
+
+.hide { 
+    display: none;
+}
+
+.seqview_head {
+   padding-bottom : 1em;
+}
+
+.assembly_select {
+   color : #985735;
+}
+
+.score_col {
+   width : 200px;
+}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Dosage as DosageResource;
 
 use Illuminate\Support\Collection;
 use Ahsan\Neo4j\Facade\Cypher;
@@ -15,6 +16,7 @@ use App\Imports\Excel;
 use App\Exports\DosageExport;
 
 use App\GeneLib;
+use App\Jira;
 
 /**
 *
@@ -103,7 +105,7 @@ class DosageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id = '')
+    public function show(Request $request, $id = '')
     {
 		$display_tabs = collect([
 				'active'                            => "gene",
@@ -115,8 +117,41 @@ class DosageController extends Controller
 					'variant_path'                  => "300"
 				]
 		]);
-    
-        return view('gene-dosage.show', compact('display_tabs'));
+	
+		$record = GeneLib::dosageDetail([ 
+			'gene' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true
+		]);
+
+		if ($record === null)
+		{
+			die(print_r(GeneLib::getError()));
+		}
+
+		// since we don't run through resources, we add some helpers here for now.  To be eventually
+		// moved back into the library
+		$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
+        $record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
+        $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
+		$record->date = $record->displayDate($record->dosage_report_date);
+			
+		// some data just to test the ideogram and sequence viewer
+		$record->chromosome = '22';
+		$record->start_location="43088121";
+		$record->stop_location="43117307";
+		$record->GRCh38_loc = 'chr22: 42,692,115-42,721,301';
+		$record->seqID = 'NC_000022.10';
+		$record->sv_start = '43085202.3';
+		$record->sv_stop = '43120225.7';
+		$record->loc = 'chr22: 43,088,121-43,117,307';
+		$record->GRCh38_seqID = 'NC_000022.11';
+		$record->GRCh38_sv_start = '42689196.3';
+		$record->GRCh38_sv_stop = '42724219.7';
+//dd($record);
+		return view('gene-dosage.show', compact('display_tabs', 'record'));
 	}
 	
 

@@ -994,7 +994,7 @@ D,
 			$records[] = $node;
 		}
 
-		return collect($records);
+		return (object) ['count' => count($records), 'collection' => $records];
 	}
 
 
@@ -1072,7 +1072,7 @@ D,
 		// if no records found, return null
 		if ($response->size() == 0)
 			return null;
-		
+
 		// morph the graphware structure to a collection
 		foreach($response->getRecords() as $record)
 		{
@@ -1083,6 +1083,7 @@ D,
 			$node->mondo 						= $node->diseases[0]['curie'];
 			$node->classification 	= $node->interpretation[0]['label'];
 			$node->symbol 					= $node->genes[0]['symbol'];
+			$node->label 					= $node->genes[0]['symbol'];
 			$node->hgnc_id 					= $node->genes[0]['hgnc_id'];
 			//dd($node);
 			// Grab the JSON data and set it to common variable
@@ -1118,8 +1119,9 @@ D,
 
 			$records[] = $node;
 		}
+
 		
-		return collect($records);
+		return (object) ['count' => count($records), 'collection' => $records];
 	}
 
 

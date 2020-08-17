@@ -2,89 +2,137 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-          <h1 class=" display-4 ">Conditions
-          </h1>
-        </div>
-        <div class="col-md-12">
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">Conditions</h1>
+                <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3>
+		</div>
 
-            <div class="card">
-                <div class="card-body">
+		<div class="col-md-12">
 
-                </div>
-                <table class="table table-striped table-hover">
-                    <tr class="small">
-                        <th>Name</th>
-                        <th>Curations</th>
-                        <th>Date</th>
-
-                    </tr>
-                    @foreach($records as $record)
-                    <tr>
-                        <td><a href="{{ route('condition-show', $record->curie) }}"><strong>{{ $record->label ?? $record->curie }}</strong></a>
-                        <div class="small text-muted">{{ $record->curie }}</div>
-                        </td>
-                        <td>
-							<a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
-								@if ($record->hasActionability ?? false)
-									<img class="img-responsive" src="/images/clinicalActionability-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/clinicalActionability-off.png" style="width:10px">
-								@endif
-							</a>
-							<a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
-								@if ($record->hasValidity ?? false)
-									<img class="img-responsive" src="/images/clinicalValidity-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/clinicalValidity-off.png" style="width:10px">
-								@endif
-                            </a>
-                            <a class="menu_icon" href="{{ route('condition-show', $record->curie) }}">
-								@if ($record->hasDosage ?? false)
-									<img class="img-responsive" src="/images/dosageSensitivity-on.png" style="width:10px">
-								@else
-									<img class="img-responsive" src="/images/dosageSensitivity-off.png" style="width:10px">
-								@endif
-                            </a>
-						</td>
-                        <td>{{ $record->displayDate($record->last_curated) }}</td>
-                    </tr>
-                    @endforeach
-				</table>
-            </div>
-
-            <nav class="text-center" aria-label="Page navigation">
-              <ul class="pagination">
-                <li>
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="active"><a href="{{ route('gene-index') }}/page/1">1</a></li>
-                <li><a href="{{ route('gene-index') }}/page/2">2</a></li>
-                <li><a href="{{ route('gene-index') }}/page/3">3</a></li>
-                <li><a href="{{ route('gene-index') }}/page/4">4</a></li>
-                <li><a href="{{ route('gene-index') }}/page/5">5</a></li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-        </div>
-    </div>
+			@include('_partials.genetable')
+									
+		</div>
+	</div>
 </div>
+
 @endsection
 
 @section('heading')
 <div class="content ">
-    <div class="section-heading-content">
-    </div>
+		<div class="section-heading-content">
+		</div>
 </div>
 @endsection
 
-@section('script_js')
 
+@section('script_js')
+	
+<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+	<script>
+		
+		var $table = $('#table')
+	var selections = []
+
+
+  function responseHandler(res) {
+	$('#gene-count').html(res.total);
+
+	/*
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+	})*/
+	
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function symbolFormatter(index, row) { 
+	var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
+            + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
+            
+  if (row.description != null)
+    html += '<div class="text-sm text-muted">' + row.description + '</div>';
+
+	return html;
+  }
+  
+  function badgeFormatter(index, row) { 
+	var html = '';
+	if (row.has_actionability)
+    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+
+	if (row.has_validity)
+    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+
+		if (row.has_dosage)
+    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+
+	return html;
+  }
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      locale: 'en-US',
+      columns: [
+        
+        {
+			title: 'Name',
+			field: 'label',
+			formatter: symbolFormatter,
+			sortable: true
+        },
+		{
+			title: 'Curations',
+			field: 'has_actionability',
+      formatter: badgeFormatter,
+        },
+		{
+      title: 'Last Curated',
+			field: 'date'
+        }
+      ]
+    })
+    
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+
+	$table.on('load-error.bs.table', function (e, name, args) {
+		swal("Load Error!");
+	})
+   
+  }
+
+  $(function() {
+    initTable()
+	var $search = $('.fixed-table-toolbar .search input');
+	$search.attr('placeholder', 'Search in table');
+	//$search.css('border', '1px solid red');
+
+  })
+
+    </script>
 @endsection

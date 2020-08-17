@@ -140,8 +140,8 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Most of the gene and curation data is currently in neo4j...
-		//$response = Neo4j::geneDetail($args);
-
+          //$response = Neo4j::geneDetail($args);
+          
 		//...but actionability is now in genegraph
 		$response = Graphql::geneDetail($args);
 
@@ -200,11 +200,11 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Gene data is currently in neo4j
-		$response = Neo4j::validityList($args);
-		
+		// $response = Neo4j::validityList($args);
+	
 		// Gene data using Graphql
-		//$response = Graphql::validityList($args);
-
+		$response = Graphql::validityList($args);
+//dd($response);
 		return $response;
 	}
 
@@ -222,7 +222,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// The gene validity data is currently in neo4j...
-		$response = Neo4j::validityDetail($args);
+          //$response = Neo4j::validityDetail($args);
+          
+          // The gene validity data is currently in neo4j...
+		$response = Graphql::validityDetail($args);
 		
 		return $response;
 	}
@@ -257,8 +260,27 @@ class GeneLib extends Model
      */
     static function dosageDetail($args)
     {
-		// this is currently not used, goes right to dci.
-		return null;
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // Most of the gene and curation data is currently in neo4j...
+          //$response = Neo4j::geneDetail($args);
+
+          // Much of the data is in graphql....
+          $response = Graphql::dosageDetail($args);
+
+          // ... but a lot is still in Jira
+          $supplement = Jira::dosageDetail($args);
+
+          // combine the two
+          foreach(['summary', 'genetype', 'GRCh37_position', 'GRCh38_position',
+          'triplo_score', 'haplo_score', 'cytoband' ] as $field)
+          {
+               $response->$field = $supplement->$field;
+          }
+
+
+          return $response;
 	}
 
 
@@ -313,9 +335,12 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Gene data is currently in neo4j
-		$response = Neo4j::conditionList($args);
+          //$response = Neo4j::conditionList($args);
+          
+          // Gene data is currently in neo4j
+		$response = Graphql::conditionList($args);
 
-		return collect($response);
+		return $response;
 	}
 
 

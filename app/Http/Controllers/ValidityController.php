@@ -43,7 +43,7 @@ class ValidityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $psize = 250)
+    public function index(Request $request, $page = 1, $size = 100)
     {
 		//if (is_int($page)) // don't forget to check the parms
 
@@ -58,21 +58,10 @@ class ValidityController extends Controller
 				]
 		]);
 
-		$records = GeneLib::validityList([	'page' => $page - 1,
-											'pagesize' => $psize,
-											'sort' => $sort ?? 'symbol',
-											'search' => $search ?? null,
-											'direction' => $direction ?? 'asc'
-										]);
-
-		if ($records === null)
-			die(print_r(GeneLib::getError()));
-
-		// customize the pagination.
-		$records = new LengthAwarePaginator($records, 1500, $psize, $page);
-		$records->withPath('genes');
-
-		return view('gene-validity.index', compact('display_tabs', 'records'));
+		return view('gene-validity.index', compact('display_tabs'))
+						->with('apiurl', '/api/validity')
+						->with('pagesize', $size)
+						->with('page', $page);
     }
 
 
@@ -145,6 +134,7 @@ class ValidityController extends Controller
 		 //dd($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid']);
 		 //dd($score_json);
 		 //dd($score_sop);
+		 //dd($record);
         return view('gene-validity.show', compact('display_tabs', 'record'));
     }
 }

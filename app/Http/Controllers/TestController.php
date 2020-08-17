@@ -25,6 +25,30 @@ class TestController extends Controller
      */
     public function index()
     {
+		return view('new-dosage.index');
+	}
+
+
+	public function reports()
+    {
+		return view('new-dosage.reports');
+	}
+
+	public function stats()
+    {
+		return view('new-dosage.stats');
+	}
+
+
+	public function show()
+    {
+		return view('new-dosage.show');
+	}
+
+
+	public function download()
+    {
+		return view('new-dosage.downloads');
 	}
 	
 	

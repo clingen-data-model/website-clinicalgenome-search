@@ -65,7 +65,7 @@
   }
 
   function symbolFormatter(index, row) { 
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	var html = '<a href="/gene-dosage/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
@@ -107,6 +107,10 @@
 			formatter: symbolFormatter,
 			sortable: true
         },
+		{
+			title: 'Location',
+			field: 'location'
+        },
         {
 			title: 'Haploinsufficiency',
 			field: 'haplo_assertion'
@@ -114,6 +118,14 @@
 		{
 			title: 'Triplosensitity',
 			field: 'triplo_assertion'
+        },
+		{
+			title: '%HI',
+			field: 'hi'
+        },
+		{
+			title: 'pLI',
+			field: 'pli'
         },
 		{
 			title: 'Report',

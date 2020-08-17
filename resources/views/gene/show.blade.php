@@ -53,9 +53,9 @@
 								<tr>
 									<td class="col-sm-3">G - Gene-Disease Validity</td>
 									
-									<td class="col-sm-6">{{ \App\GeneLib::validityAssertionString($validity->classification) }}</td>
+									<td class="col-sm-6">{{ \App\GeneLib::validityAssertionString($validity->classification->label) }}</td>
 									
-									<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance }}"><i class="fas fa-info-circle text-muted"></i></span>{{ \App\GeneLib::validityAssertionString($validity->mode_of_inheritance) }}</td>
+									<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span>{{ \App\GeneLib::validityAssertionString($validity->mode_of_inheritance->label) }}</td>
 									
 									<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
 									

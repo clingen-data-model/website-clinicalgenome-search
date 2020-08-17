@@ -41,7 +41,7 @@ class DrugController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-    public function index(Request $request, $page = 0, $psize = 6000)
+    public function index(Request $request, $page = 0, $size = 6000)
     {
         //if (is_int($page)) // don't forget to check the parms
 
@@ -61,15 +61,10 @@ class DrugController extends Controller
 			]
 		]);
 
-		$records = GeneLib::drugList([  'page' => $page,
-										'pagesize' => $psize,
-										'curated' => false ]);
-
-		//dd($records);
-		if ($records === null)
-		die("thow an error");
-
-		return view('drug.index', compact('display_tabs', 'records'));
+		return view('drug.index', compact('display_tabs'))
+						->with('apiurl', '/api/drugs')
+						->with('pagesize', $size)
+						->with('page', $page);
     }
 
 

@@ -2,75 +2,16 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-						<h2>Drugs &amp; Medications</h2>
-						<div class="mb-2 row">
-							<div class="col-sm-6">
-								<div class="input-group">
-										<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-search"></i></span>
-										<input type="text" class="form-control input-block search" id="interactive_search" placeholder="Filter results...">
-								</div>
-							</div>
-							<div class="col-sm-6">
-								{{-- <div class=" pt-1 text-right">
-                  <span class='text-muted'>Gene Count:</span> <strong>{{ count($records)}}</strong>
-                </div> --}}
-							</div>
-						</div>
+	<div class="row justify-content-center">
+		<div class="col-md-12">
+			<h1>Drugs &amp; Medications</h1>
 
-                <table id="interactive_table" class="table table-sm table-striped">
-											<thead>
-													<tr class="small text-center border-bottom-3 text-secondary">
-															<th nowrap class="th-sort  bg-white border-1  text-uppercase">
-																 @sortablelink('curie','RXNORM')
-															</th>
-															<th class="th-sort  bg-white border-1  text-uppercase">
-																@sortablelink('label','Name')
-															</th>
-													</tr>
-											</thead>
-											<tbody>
-												@foreach ($records as $record)
-													<tr>
-                            <td>
-                              <a href="{{ route('drug-show', $record->curie) }}">RXNORM:{{ $record->curie }}</a>
-                            </td>
-                            <td>
-                              <a class="text-muted small" href="{{ route('drug-show', $record->curie) }}">{{ $record->label }}</a>
-                            </td>
-                        </tr>
-												@endforeach
-												</tbody>
-                    </table>
+			@include('_partials.genetable')
 
-
-
-				</table>
-            </div>
-
-            <nav class="text-center" aria-label="Page navigation">
-              <ul class="pagination">
-                <li>
-                  <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="active"><a href="{{ route('drug-index') }}/page/1">1</a></li>
-                <li><a href="{{ route('drug-index') }}/page/2">2</a></li>
-                <li><a href="{{ route('drug-index') }}/page/3">3</a></li>
-                <li><a href="{{ route('drug-index') }}/page/4">4</a></li>
-                <li><a href="{{ route('drug-index') }}/page/5">5</a></li>
-                <li>
-                  <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>
-        </div>
-    </div>
+		</div>
+	</div>
 </div>
+
 @endsection
 
 @section('heading')
@@ -82,4 +23,109 @@
 
 @section('script_js')
 
+<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<script>
+	var $table = $('#table')
+	var selections = []
+
+
+  function responseHandler(res) {
+
+    $('#gene-count').html(res.total);
+    /*
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })*/
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function symbolFormatter(index, row) { 
+	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	return html;
+  }
+
+
+  function diseaseFormatter(index, row) { 
+	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
+	html += '<div><a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a></div>';
+	return html;
+  }
+
+  function badgeFormatter(index, row) { 
+	var html = '';
+	if (row.has_actionability)
+    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+
+	if (row.has_validity)
+    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+
+		if (row.has_dosage)
+    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+
+	return html;
+  }
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      locale: 'en-US',
+      columns: [
+        
+        {
+			title: 'RXNORM',
+			field: 'curie',
+			sortable: true
+        },
+        {
+			title: 'Drug',
+			field: 'label'
+        },
+		{
+			title: 'Application',
+			field: 'application',
+      formatter: badgeFormatter
+        }
+      ]
+    })
+    
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+
+	$table.on('load-error.bs.table', function (e, name, args) {
+		swal("Load Error!");
+	})
+   
+  }
+
+  $(function() {
+    initTable()
+	var $search = $('.fixed-table-toolbar .search input');
+	$search.attr('placeholder', 'Search in table');
+	//$search.css('border', '1px solid red');
+
+  })
+</script>
 @endsection
