@@ -5,10 +5,11 @@
 <!-- The table -->
 <table
     id="table"
-    data-classes="table table-borderless table-striped table-hover"
+    data-classes="table table-hover"
     data-toolbar="#toolbar"
     data-addrbar="true"
     data-search="true"
+    data-trim-on-search="false"
     data-show-refresh="true"
     data-show-toggle="true"
     data-show-fullscreen="true"
@@ -25,7 +26,7 @@
     data-page-list="[10, 25, 50, 100, all]"
     data-page-size="100"
     data-show-footer="false"
-    data-side-pagination="server"
+    data-side-pagination="client"
     data-url="{{  $apiurl }}"
     data-response-handler="responseHandler">
 </table>

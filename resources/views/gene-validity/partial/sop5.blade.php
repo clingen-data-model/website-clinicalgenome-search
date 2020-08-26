@@ -45,7 +45,7 @@
 				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? '' }}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) !!}
+				{{ App\Helper::PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence) }}
 			</span></td>
 		</tr>
 		<tr>
@@ -60,7 +60,7 @@
 			<td class="points-tally-bg">
 				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Tally ?? ''}}
 			<td class="input-width-pmid ">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Evidence ?? null) !!}
 		  </td>
 		</tr>
 		<tr>
@@ -78,7 +78,7 @@
 					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Tally ?? '' }}
 
 			<td class="input-width-pmid table-border-thin">
-					{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Evidence ?? null) !!}
+					{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Evidence ?? null) !!}
 
 
 			  </td>
@@ -201,7 +201,7 @@
 
 			</td>
 			<td class="input-width-pmid">
-					{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Evidence ?? null) !!}
+					{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -215,7 +215,7 @@
 				</div>
 			</td>
 			<td class="input-width-pmid">
-					{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Evidence ?? null) !!}
+					{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -264,7 +264,7 @@
 					{{ $record->score_data->ExperimentalEvidence->Function->Tally ?? ''}}
 			</td>
 			<td class="input-width-pmid">
-			  {!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Evidence ?? null) !!}
+			  {!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -276,7 +276,7 @@
 				{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -287,7 +287,7 @@
 				{{ $record->score_data->ExperimentalEvidence->Function->Expression->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->Expression->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->Expression->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -305,7 +305,7 @@
 					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->Tally ?? '' }}
 			</td>
 			<td class="input-width-pmid">
-			  {!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Evidence ?? null) !!}
+			  {!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -316,7 +316,7 @@
 						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-			  {!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Evidence ?? null) !!}
+			  {!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -332,7 +332,7 @@
 						{{ $record->score_data->ExperimentalEvidence->ModelsRescue->Tally ?? ''}}
 		  </td>
 		  <td class="input-width-pmid">
-		  	{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->Evidence ?? null) !!}
+		  	{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->Evidence ?? null) !!}
 			</td>
 	  </tr>
 		<tr>
@@ -343,7 +343,7 @@
 				{{ $record->score_data->ExperimentalEvidence->Models->CellCultureModel->Value ?? null }}
 		  </span></td>
 		  <td class="input-width-pmid  table-border-thin">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Models->CellCultureModel->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Models->CellCultureModel->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -358,7 +358,7 @@
 				</div>
 			</td>
 			<td class="input-width-pmid">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->Evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -370,7 +370,7 @@
 				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Value ?? null }}
 				</div></td>
 			<td class="input-width-pmid">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -381,7 +381,7 @@
 				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -392,7 +392,7 @@
 						{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -488,7 +488,7 @@
 				@endif
 								</td>
 								<td class="col-sm-10">
-				{!! PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->Evidence ?? null) !!}
+				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->Evidence ?? null) !!}
 								</td>
 							</tr>
 						</table>

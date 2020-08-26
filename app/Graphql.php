@@ -93,7 +93,7 @@ class Graphql
 					}
 				}';
 		}
-//dd($query);
+dd($query);
 		try {
 			Log::info("Begin genelist" . Carbon::now());
 			$response = Genegraph::fetch($query);
@@ -713,6 +713,10 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
+		// special case where legacy perm value is passed 
+		if (is_numeric($perm))
+			$perm = "CGGCIEX:assertion_" . $perm;
+		
 		$query = '{
 			gene_validity_assertion('
 			. 'iri: "' . $perm
@@ -785,7 +789,9 @@ class Graphql
 		};
 
 		$node = new Nodal((array) $response->gene_validity_assertion);
-
+		$node->json = json_decode($node->legacy_json, false);
+		$node->score_data = $node->json->scoreJson;
+//dd($node);
 		return $node;	
 
 	}

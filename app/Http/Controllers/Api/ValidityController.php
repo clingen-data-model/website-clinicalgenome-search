@@ -18,8 +18,8 @@ class ValidityController extends Controller
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
         
-        $results = GeneLib::validityList([	'page' => $input['offset'],
-											'pagesize' => $input['limit'],
+        $results = GeneLib::validityList([	'page' => $input['offset'] ?? 0,
+											'pagesize' => $input['limit'] ?? "null",
                                             //'sort' => $sort ?? 'symbol',
                                             'sort' => $sort ?? 'GENE_LABEL',
 											'search' => $input['search'] ?? null,

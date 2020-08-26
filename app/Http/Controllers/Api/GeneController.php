@@ -18,8 +18,8 @@ class GeneController extends Controller
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
-        $results = GeneLib::geneList([	'page' => $input['offset'],
-										'pagesize' => $input['limit'],
+        $results = GeneLib::geneList([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
 										'sort' => $sort ?? 'GENE_LABEL',
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => $input['search'] ?? null,
@@ -27,7 +27,7 @@ class GeneController extends Controller
                                         
 		if ($results === null)
 			die(print_r(GeneLib::getError()));
-
+dd($results);
         return ['total' => $results->count, 'totalNotFiltered' => $results->count,
                 'rows'=> GeneResource::collection($results->collection)];
     }

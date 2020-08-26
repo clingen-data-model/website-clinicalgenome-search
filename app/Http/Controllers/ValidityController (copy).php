@@ -92,9 +92,49 @@ class ValidityController extends Controller
 										'perm' => $id
 										 ]);
 
+		//dd($record->score_data->ExperimentalEvidence->ModelsRescue->PointsCounted);
+		//$assertion = $record->n;
+		//dd($record->score_data->GeneticEvidence);
+		// if (empty($assertion->score_string_gci)){
+		// 	$score_json = json_decode($assertion->score_string_gci);
+		// 	if ($assertion->jsonMessageVersion == "GCI.7") {
+		// 	} elseif ($assertion->jsonMessageVersion == "GCI.6") {
+		// 		$score_sop = "SOP6";
+		// 	} elseif ($assertion->jsonMessageVersion == "GCI.5") {
+		// 		$score_sop = "SOP5";
+		// 	}
+		// } elseif (empty($assertion->score_string_sop5)) {
+		// 	$score_json = json_decode($assertion->score_string_sop5);
+		// 	$score_sop = "SOP5-sop5";
+		// } else {
+		// 	$score_json = json_decode($assertion->score_string);
+		// 	$score_sop = "SOP4";
+		// }
+
+
+		// $geneSymbol = $record->symbol->value('result_genes')->value('symbol');
+		// $geneCurie = $record->symbol->value('result_genes')->value('symbol');
+
+		// $diseaseName = $record->disease_name->value('result_diseases')->value('label');
+
+		// //$geneCurie = $record->gene_curie->value('result_genes')->value('curie');
+
+		// $diseaseCurie = $record->disease_curie->value('result_diseases')->value('curie');
+
+		//$animalmode = false;
+
+		//dd($score_string_sop5->condition);
+
+
 		if ($record === null)
 			die("thow an error");
 
+
+
+		 //dd($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid']);
+		 //dd($score_json);
+		 //dd($score_sop);
+		 //dd($record);
         return view('gene-validity.show', compact('display_tabs', 'record'));
     }
 }

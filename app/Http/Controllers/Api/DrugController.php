@@ -18,8 +18,8 @@ class DrugController extends Controller
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
         
-        $results = GeneLib::DrugList([	'page' => $input['offset'],
-                                        'pagesize' => $input['limit'],
+        $results = GeneLib::DrugList([	'page' => $input['offset'] ?? 0,
+                                        'pagesize' => $input['limit'] ?? "null",
                                         'sort' => $sort ?? 'symbol',
                                         'search' => $input['search'] ?? null,
                                         'direction' => $input['order'] ?? 'ASC',
