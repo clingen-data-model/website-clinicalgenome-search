@@ -16,10 +16,17 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request, $page = 1, $size = 100)
     {
+        // process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+            $$key = $value;
+
+        /* build cqching of these values with cross-section updates
+        * total counts for gene and diseases on relevant pages
+        * category would be for setting default select of dropdown */
         $display_tabs = collect([
-            'active' => "affiliate",
+            'active' => "gene",
             'query' => "",
             'category' => "",
             'counts' => [
@@ -31,12 +38,11 @@ class AffiliateController extends Controller
             ]
         ]);
 
-        $records = GeneLib::AffiliateList([]);
-        //dd($records);
-        if ($records === null)
-            die("throw an error");
+        return view('affiliate.index', compact('display_tabs'))
+                        ->with('apiurl', '/api/affiliates')
+                        ->with('pagesize', $size)
+                        ->with('page', $page);
 
-        return view('affiliate.index', compact('display_tabs', 'records'));
     }
 
     /**

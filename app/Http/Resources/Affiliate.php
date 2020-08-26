@@ -15,7 +15,7 @@ class Affiliate extends JsonResource
     public function toArray($request)
     {
         return [
-            'agent' => $this->agent,
+            'agent' => basename($this->agent),
             'label' => $this->label,
             'count' => $this->count ?? count($this->curations),
             'curations' => $this->mapCurations()

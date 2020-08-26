@@ -640,7 +640,12 @@ GeneDosageAssertion#interpretation
 			}
 		}
 
-		return collect($records);
+		// mimic a genegraph return
+		$object = (object) [];
+		$object->count = count($records);
+		$object->collection = $records;
+
+		return $object; // collect($records);
 	}
 
 
@@ -963,14 +968,25 @@ D,
 		// initialize the collection
 		$collection = collect();
 		
-		$query = '
+		// temp fallback to deal with the genegraph json error
+		if ($pagesize == "null")
+		{
+			$query = '
 			MATCH (n:Drug:RDFClass) ' .
 			(isset($term) ? 'WHERE (n.search_label contains ' . $term . ') ' : '') . '
 			WITH n
-			SKIP ' . ($page * $pagesize) . '
-			LIMIT ' . $pagesize . '
 			RETURN n.label as label, n.curie as curie';
-
+		}
+		else
+		{
+			$query = '
+				MATCH (n:Drug:RDFClass) ' .
+				(isset($term) ? 'WHERE (n.search_label contains ' . $term . ') ' : '') . '
+				WITH n
+				SKIP ' . ($page * $pagesize) . '
+				LIMIT ' . $pagesize . '
+				RETURN n.label as label, n.curie as curie';
+		}
 		try {
 
 			$response = Cypher::run($query);

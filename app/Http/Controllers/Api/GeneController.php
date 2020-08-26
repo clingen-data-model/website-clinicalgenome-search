@@ -27,7 +27,7 @@ class GeneController extends Controller
                                         
 		if ($results === null)
 			die(print_r(GeneLib::getError()));
-dd($results);
+
         return ['total' => $results->count, 'totalNotFiltered' => $results->count,
                 'rows'=> GeneResource::collection($results->collection)];
     }

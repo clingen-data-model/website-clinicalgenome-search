@@ -268,15 +268,20 @@ class GeneLib extends Model
 
           // Much of the data is in graphql....
           $response = Graphql::dosageDetail($args);
+          if ($response === null)
+               return null;
 
           // ... but a lot is still in Jira
           $supplement = Jira::dosageDetail($args);
 
-          // combine the two
-          foreach(['summary', 'genetype', 'GRCh37_position', 'GRCh38_position',
-          'triplo_score', 'haplo_score', 'cytoband' ] as $field)
+          if ($supplement !== null)
           {
-               $response->$field = $supplement->$field;
+               // combine the two
+               foreach(['summary', 'genetype', 'GRCh37_position', 'GRCh38_position',
+               'triplo_score', 'haplo_score', 'cytoband' ] as $field)
+               {
+                    $response->$field = $supplement->$field;
+               }
           }
 
 

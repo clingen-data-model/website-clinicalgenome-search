@@ -93,11 +93,11 @@ class Graphql
 					}
 				}';
 		}
-dd($query);
+
 		try {
-			Log::info("Begin genelist" . Carbon::now());
+			Log::info("Begin Genegraph genelist call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
-			Log::info("End genelist" . Carbon::now());
+			Log::info("End Genegraph genelist call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -214,10 +214,12 @@ dd($query);
 
 		try {
 		
+			Log::info("Begin Genegraph genedetail call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph genedetail call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
-    dd($exception);
+    
 			$response = $exception->getResponse();
 			if (is_null($response))				// empty reply from server
 			{
@@ -337,7 +339,9 @@ dd($query);
 		
 		try {
 		
+			Log::info("Begin Genegraph actionabilitylist call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph actionabilitylist call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -407,7 +411,9 @@ dd($query);
 
 		try {
 		
+			Log::info("Begin Genegraph dosagelist call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph dosagelist call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -514,7 +520,9 @@ dd($query);
 
 		try {
 		
+			Log::info("Begin Genegraph dosagedetail call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph dosagedetail call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -660,7 +668,9 @@ dd($query);
 
 		try {
 		
+			Log::info("Begin Genegraph validitylist call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph validitylist call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -754,7 +764,9 @@ dd($query);
 
 		try {
 	
+			Log::info("Begin Genegraph validitydetail call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph validitydetail call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
 	
@@ -903,7 +915,9 @@ dd($query);
 		
 		try {
 		
+			Log::info("Begin Genegraph conditiondetail call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph conditiondetail call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     
@@ -976,7 +990,9 @@ dd($query);
 			  
 		try {
 		
+			Log::info("Begin Genegraph conditionlist call: " . Carbon::now());
 			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph conditionlist call: " . Carbon::now());
 			
 		} catch (RequestException $exception) {	// guzzle exceptions
     

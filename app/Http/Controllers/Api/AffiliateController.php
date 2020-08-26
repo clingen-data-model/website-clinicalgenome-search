@@ -18,12 +18,21 @@ class AffiliateController extends Controller
      */
     public function index(Request $request)
     {
-		$records = GeneLib::AffiliateList([	]);
-		dd($records);
-		if ($records === null)
-			die("throw an error");
 
-		return AffiliateResource::collection($records);
+        $input = $request->only(['search', 'order', 'offset', 'limit']);
+
+        $results = GeneLib::affiliateList([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $input['search'] ?? null,
+                                        'curated' => false ]);
+                                        
+		if ($results === null)
+			die(print_r(GeneLib::getError()));
+//dd($results);
+        return ['total' => $results->count, 'totalNotFiltered' => $results->count,
+                'rows'=> AffiliateResource::collection($results->collection)];
     }
 
     /**
