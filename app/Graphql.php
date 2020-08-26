@@ -499,9 +499,15 @@ class Graphql
 						  iri
 						}
 						gene_validity_assertions {
-						  mode_of_inheritance
+							mode_of_inheritance {
+								label
+								curie
+							}
 						  report_date
-						  classification
+						  classification {
+								label
+								curie
+							}
 						  curie
 						}
 						actionability_curations {
@@ -803,7 +809,7 @@ class Graphql
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson;
-//dd($node);
+dd($node);
 		return $node;	
 
 	}
