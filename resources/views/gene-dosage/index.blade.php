@@ -39,6 +39,12 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style>
+	.search-input {
+	  min-width: 300px;
+	}
+  </style>
+  
 	<script>
 		
 		var $table = $('#table')

@@ -90,21 +90,13 @@ class DrugController extends Controller
 				]
 			]);
 
-		$record = GeneLib::drugDetail([ 'page' => 0,
-										'pagesize' => 200,
-										'drug' => $id,
-										'curations' => true,
-										'action_scores' => true,
-										'validity' => true,
-										'dosage' => true
+		$record = GeneLib::drugDetail([ 
+										'drug' => $id
 									]);
 
 		if ($record === null)
 		{
-			//GeneLib::errorDetail();
-			// do something
-			// return view
-			die("thow an error");
+			die(print_r(GeneLib::getError()));
 		}
 		
         return view('drug.show', compact('display_tabs', 'record'));

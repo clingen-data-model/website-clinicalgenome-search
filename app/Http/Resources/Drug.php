@@ -18,11 +18,32 @@ class Drug extends JsonResource
     {
         return [
             'label' => $this->label,
-            'curie' => $this->curie
-        ];
+            'curie' => $this->mapCurie()        ];
     }
     
+    /**
+     * 
+     * Map the node structure to a json consumable array
+     * 
+     */
+    protected function mapCurie()
+    {
+		if (empty($this->curie))
+			return '';
+            
+        $pos = strrpos($this->curie, '/');
+
+        if($pos !== false)
+        {
+            $subject = substr_replace($this->curie, ':', $pos, 1);
+            return basename($subject);
+        }
+        
+        return basename($this->curie);
+		
+    }
     
+
     /**
      * 
      * Map the node structure to a json consumable array

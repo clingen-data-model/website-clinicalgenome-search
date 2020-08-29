@@ -7,7 +7,7 @@
 						<dt>Name</dt>
 						<dd>{{ $record->symbol }}</dd>
 						<dt>Ontological Reference</dt>
-						<dd>{{  $record->getMondoString($record->iri) }}</dd>
+						<dd>{{  $record->getMondoString($record->iri, true) }}</dd>
 						
 					</dl>
 			</div>

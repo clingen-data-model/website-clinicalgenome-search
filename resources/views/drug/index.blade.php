@@ -33,6 +33,12 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style>
+  .search-input {
+    min-width: 300px;
+  }
+</style>
+
 <script>
 	var $table = $('#table')
 	var selections = []
@@ -57,14 +63,12 @@
   }
 
   function symbolFormatter(index, row) { 
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	var html = '<a href="/drugs/' + row.curie + '">' + row.curie + '</a>';
 	return html;
   }
 
-
-  function diseaseFormatter(index, row) { 
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
-	html += '<div><a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a></div>';
+  function drugFormatter(index, row) { 
+	var html = '<a href="/drugs/' + row.curie + '">' + row.label + '</a>';
 	return html;
   }
 
@@ -96,11 +100,13 @@
         {
 			title: 'RXNORM',
 			field: 'curie',
+      formatter: symbolFormatter,
 			sortable: true
         },
         {
 			title: 'Drug',
-			field: 'label'
+			field: 'label',
+      formatter: drugFormatter,
         },
 		{
 			title: 'Application',

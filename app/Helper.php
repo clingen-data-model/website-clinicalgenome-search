@@ -123,12 +123,13 @@ die($data);
      * @param	string	$mondo
      * @return 	array
      */
-  static function PrintWrapperPmid($id = '', $data = null)
+  static function PrintWrapperPmid($data = null)
   {
     //	# "<div class=\"WrapperPmid\" >"
     // # "<div class=\"form-group\">"
     // # "<div class=\"WrapperPmidResults\">"
-    $varInner = "ddfsdfdsfdf";
+
+    $varInner = "";
     if (!empty($data)) {
       $varStart = "<div class=\"GeneticEvidencePmidData\">";
       if (!empty($data->notes->note))
@@ -137,8 +138,8 @@ die($data);
         $note = "";
 
       if (!empty($data->publications)) {
-        foreach ($data->publications as $pub)
-          $varInner .= $pubs["author"] . " et al. " . $pubs["pubdate"] . " (PMID:" . $pubs["uid"] . "); ";
+        foreach ($data->publications as $pubs)
+          $varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
         //##varInner += pubs.inspect
       }
 

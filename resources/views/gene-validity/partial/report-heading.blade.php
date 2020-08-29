@@ -7,7 +7,7 @@
     <td  style="border-top-width:6px">{{ $record->gene->label }} ({{ $record->gene->hgnc_id }})</td>
     <td colspan="2" rowspan="3"  style="border-top-width:6px; border-left-width:6px; border-left-color:rgb(221, 221, 221); border-left-style:solid; text-align: center;">
     <div class='badge badge-primary' style="font-size: 20px; padding:15px;">
-      <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ $record->classification->label ?? null }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
+      <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ App\GeneLib::validityClassificationString($record->classification->label ?? null) }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
     </div>
     <div>Classification - {{ displayDate($record->report_date ?? null) }}</div></td>
   </tr>
@@ -61,7 +61,7 @@
       {{ $record->sop7_final_classification_notes ?? null }}
       <div><a style="color:#000" href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/">
         Gene Clinical Validity Standard Operating Procedures (SOP) -
-        {{ $record->specified_by->label ?? null }}
+        {{ App\GeneLib::validityCriteriaString($record->specified_by->label ?? null) }}
       </a></div>
     </td>
   </tr>

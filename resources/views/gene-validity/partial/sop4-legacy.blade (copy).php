@@ -34,14 +34,14 @@
 
 
 
-      {{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->ProbandWithLOF->value ?? null }}
+      {{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['value'] ?? null }}
 
 
       </div></td>
-    <td class="points-tally-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->ProbandWithLOF->tally ?? null }}</td>
+    <td class="points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
 
-      {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->ProbandWithLOF->pmid ?? null) !!}
+      {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithLOF']['pmid'] ?? null) !!}
 
 
       </td>
@@ -51,10 +51,10 @@
     <td>1.5</td>
     <td>0-2</td>
     <td id="GeneticEvidence2Max">10</td>
-    <td class="input-width-numbers points-given-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->VariantIsDeNovo->value ?? null }}</td>
-    <td class=" points-tally-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->VariantIsDeNovo->tally ?? null }}</td>
+    <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['value'] ?? null }}</td>
+    <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->VariantIsDeNovo->pmid ?? null) !!}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['VariantIsDeNovo']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -62,12 +62,12 @@
     <td class='table-border-thin'>0.5</td>
     <td class='table-border-thin'>0-1.5</td>
     <td id="GeneticEvidence3Max" class='table-border-thin'>7</td>
-    <td class="input-width-numbers points-given-bg table-border-thin">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'ProbandWithNon-LOF'}->value ?? null }}</td>
+    <td class="input-width-numbers points-given-bg table-border-thin">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['value'] ?? null }}</td>
     <td class=" points-tally-bg table-border-thin"><span class="points-tally-bg">
-      {{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'ProbandWithNon-LOF'}->tally ?? null }}
+      {{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['tally'] ?? null }}
       </span></td>
     <td class="input-width-pmid table-border-thin"><span class="input-width-pmid">
-      {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'ProbandWithNon-LOF'}->pmid ?? null) !!}
+      {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['ProbandWithNon-LOF']['pmid'] ?? null) !!}
 
       </span></td>
   </tr>
@@ -77,17 +77,17 @@
     <td>2</td>
     <td>0-3</td>
     <td rowspan="2" id="GeneticEvidence4Max" class=' table-border-thin'>12</td>
-    <td class="input-width-numbers  points-given-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->TwoNariantsInTransAndAtLeastOneIsLOFOrDeNovo->value ?? null }}</td>
-    <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'TwoNon-LOFVariantsInTrans'}->tally ?? null }}</td>
+    <td class="input-width-numbers  points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNariantsInTransAndAtLeastOneIsLOFOrDeNovo']['value'] ?? null }}</td>
+    <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['tally'] ?? null }}</td>
     <td rowspan="2" class="input-width-pmid  table-border-thin">
-    	{!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'TwoNon-LOFVariantsInTrans'}->pmid ?? null) !!}
+    	{!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
     <td colspan="3" class='table-border-thin'>Two variants (not predicted/proven null) with some evidence of gene impact in trans</td>
     <td class='table-border-thin'>1</td>
     <td class='table-border-thin'>0-1.5</td>
-    <td class=' input-width-numbers  points-given-bg table-border-thin'>{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->{'TwoNon-LOFVariantsInTrans'}->value ?? null }}</td>
+    <td class=' input-width-numbers  points-given-bg table-border-thin'>{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['VariantEvidence']['AutosomalDominantDisease']['TwoNon-LOFVariantsInTrans']['value'] ?? null }}</td>
   </tr>
   <tr>
     <td colspan="2" rowspan="5" class="table-heading-line-normal table-title">Segregation Evidence</td>
@@ -97,10 +97,10 @@
     <td>5</td>
     <td rowspan="5" class="table-heading-line-normal">0-7</td>
     <td rowspan="5" id="GeneticEvidence5Max" class="table-heading-line-normal">7</td>
-    <td rowspan="5" class="table-heading-line-normal input-width-numbers  points-given-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->value ?? null }}</td>
-    <td rowspan="5" class="table-heading-line-normal points-tally-bg">{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->tally ?? null }}</td>
+    <td rowspan="5" class="table-heading-line-normal input-width-numbers  points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['value'] ?? null }}</td>
+    <td rowspan="5" class="table-heading-line-normal points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['tally'] ?? null }}</td>
     <td rowspan="5" class="table-heading-line-normal input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->pmid ?? null) !!}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['CaseLevelData']['SegregationEvidence']['EvidenceOfSegregationInOneOrMoreFamilies']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -143,27 +143,27 @@
       4. Statistical Significance</td>
     <td colspan="2">0-6</td>
     <td id="GeneticEvidence6Max">12</td>
-    <td class="input-width-numbers points-given-bg">{{ $record->score_data->GeneticEvidence->{'Case-ControlData'}->SingleVariantAnalysis->value ?? null }}</td>
-    <td class=" points-tally-bg">{{ $record->score_data->GeneticEvidence->{'Case-ControlData'}->SingleVariantAnalysis->tally ?? null }}</td>
+    <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['value'] ?? null }}</td>
+    <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->{'Case-ControlData'}->SingleVariantAnalysis->pmid ?? null) !!}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['SingleVariantAnalysis']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
     <td colspan="2" class="table-title">Aggregate Variant Analysis</td>
     <td colspan="2">0-6</td>
     <td id="GeneticEvidence7Max">12</td>
-    <td class="input-width-numbers points-given-bg">{{ $record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->value ?? null }}</td>
-    <td class=" points-tally-bg">{{ $record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->tally ?? null }}</td>
+    <td class="input-width-numbers points-given-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['value'] ?? null }}</td>
+    <td class=" points-tally-bg">{{ $record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['tally'] ?? null }}</td>
     <td class="input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->pmid ?? null) !!}
+    {!! PrintWrapperPmid($record['score_data_array']['GeneticEvidence']['Case-ControlData']['AggregateVariantAnalysis']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
     <td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Genetic Evidence Points (Maximum <span id="GeneticEvidenceMax">12</span>)</td>
-    <td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">{{ $record->score_data->summary->GeneticEvidencePointsTotal ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">{{ $record['score_data_array']['summary']['GeneticEvidencePointsTotal'] ?? null }}</td>
     <td class="table-heading-line-thick table-heading-bg table-heading table-total"><div class="form-group total-notes">
-      {{ $record->score_data->GeneticEvidence->TotalGeneticEvidencePoints->notes ?? null }}
+      {{ $record['score_data_array']['GeneticEvidence']['TotalGeneticEvidencePoints']['notes'] ?? null }}
       </div></td>
   </tr>
   <tr>
@@ -189,10 +189,10 @@
     <td>0.5</td>
     <td>0 - 2</td>
     <td rowspan="3" class='table-border-thin' id="ExperimentalEvidence1Max">2</td>
-    <td rowspan="3" class="input-width-numbers points-given-bg table-border-thin">{{ $record->score_data->ExperimentalEvidence->Function->value ?? null }}</td>
-    <td rowspan="3" class=" points-tally-bg table-border-thin">{{ $record->score_data->ExperimentalEvidence->Function->tally ?? null }}</td>
+    <td rowspan="3" class="input-width-numbers points-given-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['Function']['value'] ?? null }}</td>
+    <td rowspan="3" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['Function']['tally'] ?? null }}</td>
     <td rowspan="3" class="input-width-pmid table-border-thin">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->ExperimentalEvidence->Function->pmid ?? null) !!}</td>
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['Function']['pmid'] ?? null) !!}</td>
   </tr>
   <tr>
     <td colspan="3">Protein Interaction</td>
@@ -210,10 +210,10 @@
     <td>1</td>
     <td>0 - 2</td>
     <td rowspan="2" class=' table-border-thin' id="ExperimentalEvidence2Max">2</td>
-    <td rowspan="2" class="input-width-numbers points-given-bg table-border-thin">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->value ?? null }}</td>
-    <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->tally ?? null }}</td>
+    <td rowspan="2" class="input-width-numbers points-given-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['value'] ?? null }}</td>
+    <td rowspan="2" class=" points-tally-bg table-border-thin">{{ $record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['tally'] ?? null }}</td>
     <td rowspan="2" class="input-width-pmid table-border-thin">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->ExperimentalEvidence->FunctionalAlteration->pmid ?? null) !!}
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['FunctionalAlteration']['pmid'] ?? null) !!}
     </td>
   </tr>
   <tr>
@@ -227,10 +227,10 @@
     <td>2</td>
     <td>0 - 4</td>
     <td rowspan="4" id="ExperimentalEvidence3Max">4</td>
-    <td rowspan="4" class="input-width-numbers points-given-bg">{{ $record->score_data->ExperimentalEvidence->ModelsRescue->value ?? null }}</td>
-    <td rowspan="4" class=" points-tally-bg">{{ $record->score_data->ExperimentalEvidence->ModelsRescue->tally ?? null }}</td>
+    <td rowspan="4" class="input-width-numbers points-given-bg">{{ $record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['value'] ?? null }}</td>
+    <td rowspan="4" class=" points-tally-bg">{{ $record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['tally'] ?? null }}</td>
     <td rowspan="4" class="input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->ExperimentalEvidence->ModelsRescue->pmid ?? null) !!}</td>
+    {!! PrintWrapperPmid($record['score_data_array']['ExperimentalEvidence']['ModelsRescue']['pmid'] ?? null) !!}</td>
   </tr>
   <tr>
     <td colspan="3">Cell culture model system</td>
@@ -249,9 +249,9 @@
   </tr>
   <tr>
     <td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Experimental Evidence Points (Maximum <span id="ExperimentalEvidenceMax">6</span>)</td>
-    <td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">{{ $record->score_data->summary->ExperimentalEvidenceTotal ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">{{ $record['score_data_array']['summary']['ExperimentalEvidenceTotal'] ?? null }}</td>
     <td class="table-heading-line-thick table-heading-bg table-heading table-total"><div class="form-group total-notes">
-      {{ $record->score_data->ExperimentalEvidence->TotalExperimentalEvidencePoints->notes ?? null }}
+      {{ $record['score_data_array']['ExperimentalEvidence']['TotalExperimentalEvidencePoints']['notes'] ?? null }}
       </div></td>
   </tr>
 </tbody>
@@ -278,27 +278,27 @@
   </tr>
   <tr>
     <td class="table-heading-line-thick table-heading-bg table-heading">Assigned Points</td>
-    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record->score_data->summary->GeneticEvidencePointsTotal ?? null }}</td>
-    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record->score_data->summary->ExperimentalEvidencePointsTotal ?? null }}</td>
-    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record->score_data->summary->EvidencePointsTotal ?? null }}</td>
-    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record->score_data->ReplicationOverTime->YesNo ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record['score_data_array']['summary']['GeneticEvidencePointsTotal'] ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record['score_data_array']['summary']['ExperimentalEvidencePointsTotal'] ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record['score_data_array']['summary']['EvidencePointsTotal'] ?? null }}</td>
+    <td class="table-heading-line-thick table-heading-bg table-total table-total-border">{{ $record['score_data_array']['ReplicationOverTime']['YesNo'] ?? null }}</td>
   </tr>
   <tr class="LIMITED">
     <td colspan="2" rowspan="4" class="table-heading-line-thick table-heading ">CALCULATED CLASSIFICATION</td>
-    <td class="table-heading EvidenceLimitedBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">LIMITED</td>
-    <td colspan="2" class="table-heading EvidenceLimitedBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">1-6</td>
+    <td class="table-heading EvidenceLimitedBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">LIMITED</td>
+    <td colspan="2" class="table-heading EvidenceLimitedBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">1-6</td>
   </tr>
   <tr class="MODERATE">
-    <td class="table-heading EvidenceModerateBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">MODERATE</td>
-    <td colspan="2" class="table-heading EvidenceModerateBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">7-11</td>
+    <td class="table-heading EvidenceModerateBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">MODERATE</td>
+    <td colspan="2" class="table-heading EvidenceModerateBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">7-11</td>
   </tr>
   <tr class="STRONG">
-    <td class="table-heading EvidenceStrongBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">STRONG</td>
-    <td colspan="2" class="table-heading EvidenceStrongBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">12-18</td>
+    <td class="table-heading EvidenceStrongBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">STRONG</td>
+    <td colspan="2" class="table-heading EvidenceStrongBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">12-18</td>
   </tr>
   <tr class="DEFINITIVE">
-    <td class="table-heading-line-thick table-heading EvidenceDefinitiveBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">DEFINITIVE</td>
-    <td colspan="2" class="table-heading-line-thick table-heading EvidenceDefinitiveBg {{ $record->score_data->summary->CalculatedClassification ?? null }}">12-18 AND replication over time</td>
+    <td class="table-heading-line-thick table-heading EvidenceDefinitiveBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">DEFINITIVE</td>
+    <td colspan="2" class="table-heading-line-thick table-heading EvidenceDefinitiveBg {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}">12-18 AND replication over time</td>
   </tr>
   <tr>
     <td class="table-heading-line-thick table-heading">Valid contradictory evidence (Y/N)* <br></td>
@@ -307,9 +307,9 @@
         <table>
           <tr>
             <td class="col-sm-2">
-            			{{ $record->score_data->ValidContradictoryEvidence->YesNo ?? null }}
+            			{{ $record['score_data_array']['ValidContradictoryEvidence']['YesNo'] ?? null }}
             </td>
-            <td class="col-sm-10">{!! App\Helper::PrintWrapperPmid($record->score_data->ValidContradictoryEvidence->pmid ?? null) !!}
+            <td class="col-sm-10">{!! PrintWrapperPmid($record['score_data_array']['ValidContradictoryEvidence']['pmid'] ?? null) !!}
             </td>
           </tr>
         </table>
@@ -319,44 +319,44 @@
   <tr>
     <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION (DATE)</td>
     <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive "><div class='col-sm-8 '>
-      {{ $record->score_data->summary->CalculatedClassification ?? null }}
+      {{ $record['score_data_array']['summary']['CalculatedClassification'] ?? null }}
       </div>
       <div class='col-sm-4'>
-      {{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null) }}
+      {{ displayDate($record['score_data_array']['summary']['CalculatedClassificationDate'] ?? null) }}
       </div></td>
   </tr>
-  		@if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES"))
+  		@if (($record['score_data_array']['summary']['CuratorModifyCalculation'] ?? null) == "YES"))
 
   <tr>
     <td colspan="2" class="table-heading-bg table-heading text-right"> MODIFY CALCULATED CLASSIFICATION </td>
     <td colspan="3" class="table-heading-bg table-heading text-left CalculatedClassificationsActive-2 "><div class='col-sm-12'>
-      {{ $record->score_data->CuratorModifyCalculation->YesNo ?? null }}
+      {{ $record['score_data_array']['CuratorModifyCalculation']['YesNo'] ?? null }}
       </div></td>
   </tr>
   <tr>
     <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin"> CURATOR CLASSIFICATION (DATE) </td>
     <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive-2 "><div class='col-sm-8'>
-      {{ $record->score_data->summary->CuratorClassification ?? null }}
+      {{ $record['score_data_array']['summary']['CuratorClassification'] ?? null }}
       </div>
       <div class='col-sm-4'>
-      {{ displayDate($record->score_data->summary->CuratorClassificationDate ?? null) }}
+      {{ displayDate($record['score_data_array']['summary']['CuratorClassificationDate'] ?? null) }}
       </div>
       <div class='col-sm-12'>
-      {{ $record->score_data->summary->CuratorClassificationNotes ?? null }}
+      {{ $record['score_data_array']['summary']['CuratorClassificationNotes'] ?? null }}
       </div></td>
   </tr>
   @endif
-		@if ($record->score_data->summary->FinalClassification ?? null)
+		@if ($record['score_data_array']['summary']['FinalClassification'] ?? null)
   <tr>
     <td colspan="2" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
     <td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 "><div class='col-sm-8'> <span style="font-size: 145%;">
-      {{ $record->score_data->summary->FinalClassification ?? null }}
+      {{ $record['score_data_array']['summary']['FinalClassification'] ?? null }}
       </span> </div>
       <div class='col-sm-4'>
-      {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null) }}
+      {{ displayDate($record['score_data_array']['summary']['FinalClassificationDate'] ?? null) }}
       </div>
       <div class='col-sm-12'>
-      {{ $record->score_data->summary->FinalClassificationNotes ?? null }}
+      {{ $record['score_data_array']['summary']['FinalClassificationNotes'] ?? null }}
       </div></td>
   </tr>
   @endif

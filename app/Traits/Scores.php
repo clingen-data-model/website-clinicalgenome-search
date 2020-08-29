@@ -30,7 +30,9 @@ trait Scores
 	{
 		$j = json_decode($this->legacy_json);
 
-		return $j->scoreJson->ValidContradictoryEvidence->Value ?? 'Unknown';
+		$k = $j->scoreJson->ValidContradictoryEvidence->value ?? 'Unknown';
+
+		return (empty($k) ? "NO" : $k);
 
 	}
 
@@ -332,7 +334,9 @@ trait Scores
 
 		$records = [];
 
-		foreach ($j->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->Evidence->Publications as $publication)
+		$t = $j->scoreJson->GeneticEvidence->CaseLevelData->SegregationEvidence->CandidateSequencingMethod->Evidence->Publications ?? [];
+
+		foreach ($t as $publication)
 		{
 			$records[] = $publication->author . ' et al. ' . $publication->pubdate . ' (PMID:' 
 							. $publication->pmid . ')';

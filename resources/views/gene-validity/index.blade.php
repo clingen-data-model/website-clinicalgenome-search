@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1>Gene Disease Validity</h1>
+			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">Gene Disease Validity</h1>
       <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3>
 
 			@include('_partials.genetable', 
@@ -43,7 +43,14 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style>
+.search-input {
+  min-width: 300px;
+}
+</style>
+
 <script>
+
 	var $table = $('#table')
 	var selections = []
 

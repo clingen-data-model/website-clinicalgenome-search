@@ -337,13 +337,12 @@ class Nodal extends Model
      */
     public function getMondoString($original, $colonflag = false)
     {
-
 		$prefix = "http://purl.obolibrary.org/obo/";
 		$prelen = strlen($prefix);
 
 		$mondo = substr($original, $prelen);
 
-		return ($colonflag ? str_replace(':', '_', $mondo) : $mondo);
+		return ($colonflag ? str_replace('_', ':', $mondo) : $mondo);
 	}
 
 

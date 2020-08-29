@@ -34,6 +34,12 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style>
+  .search-input {
+    min-width: 300px;
+  }
+</style>
+
 <script>
 	var $table = $('#table')
 	var selections = []
@@ -113,7 +119,7 @@
     {
         html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
              + row.symbol + '&subject' 
-            + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">'
+            + '"><span class="hidden-sm hidden-xs">'
             + row.has_dosage_haplo + '</span></a>';
     }
 
@@ -128,7 +134,7 @@
     {
         html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
              + row.symbol + '&subject' 
-            + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">'
+            + '"><span class="hidden-sm hidden-xs">'
             + row.has_dosage_triplo + '</span></a>';
     }
 

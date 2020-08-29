@@ -56,10 +56,10 @@
 									</td>
 									
 									<td class="col-sm-6">
-										<strong>{{ \App\GeneLib::validityAssertionString($validity->classification->label) }}</strong>
+										<strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong>
 									</td>
 									
-									<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span>{{ \App\GeneLib::validityAssertionString($validity->mode_of_inheritance->label) }}</td>
+									<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span>{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}</td>
 									
 									<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
 									
@@ -91,7 +91,7 @@
 									<td class="col-sm-3"><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 									<td class="col-sm-6">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
-											{{ $dosage->score }}
+											{{ \App\GeneLib::haploAssertionString($dosage->score ?? null) }}
 										</strong>  <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
 									<td class="col-sm-2"></td>

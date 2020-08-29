@@ -187,19 +187,19 @@ trait Display
 				$text = "X-linked recessive";
 				$abr = "XLR";
 				break;
-      case "HP:0001427":
+			case "HP:0001427":
 				$text = "Mitochondrial";
 				$abr = "MT";
 				break;
-      case "HP:0032113":
+			case "HP:0032113":
 				$text = "Semidominant";
 				$abr = "SD";
 				break;
-      default:
+			default:
 				$text = $moi;
-				$abr = $moi;
+				$abr = "Other";
 				break;
-		}
+				}
 
 		return ($long ? $text : $abr);
 	}

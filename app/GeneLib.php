@@ -57,12 +57,35 @@ class GeneLib extends Model
      *
      * */
      protected static $dosage_assertion_strings = [
+          'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Gene Associated with Autosomal Recessive Phenotype',
+          'MINIMAL_EVIDENCE' => 'Minimal Evidence for ####',
+          'MODERATE_EVIDENCE' => 'Moderate Evidence for ####',
+          'NO_EVIDENCE' => 'No Evidence for ####',
+          'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence for ####',
+          'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
+     ];
+
+     protected static $curated_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Associated with Autosomal Recessive Phenotype',
-          'MINIMAL_EVIDENCE' => ' Minimal Evidence',
+          'MINIMAL_EVIDENCE' => 'Minimal Evidence',
           'MODERATE_EVIDENCE' => 'Moderate Evidence',
           'NO_EVIDENCE' => 'No Evidence',
           'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
           'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
+     ];
+
+     protected static $validity_classification_strings = [
+          'gene associated with autosomal recessive phenotype' => 'Autosomal Recessive',
+          'no evidence' => 'No Reported Evidence',
+          'sufficient evidence' => 'Sufficient',
+          'limited evidence' => 'Limited',
+          'disputing' => 'Disputing',
+          'definitive evidence' => 'Definitive',
+          'minimal evidence' => 'Minimal',
+          'met' => 'Met',
+          'strong evidence' => 'Strong',
+          'refuting evidence' => 'Refuted',
+          'moderate evidence' => 'Moderate'
      ];
      
      protected static $validity_assertion_strings = [
@@ -79,6 +102,29 @@ class GeneLib extends Model
           'STRONG' => 'Strong',
           'DISPUTED' => 'Disputed',
           'REFUTED' => 'Refuted'
+     ];
+
+     protected static $validity_moi_strings = [
+          'Autosomal recessive inheritance' => 'Autosomal Recessive',
+          'Autosomal dominant inheritance' => 'Autosomal Dominant',
+          'X-linked inheritance' => 'X-Linked',
+          'Mode of inheritance' => 'Other',
+          'X-linked recessive inheritance' => 'X-Linked Recessive',
+          'Semidominant mode of inheritance' => 'Semidomimant'
+     ];
+
+     protected static $validity_criteria_strings = [
+          'ClinGen Dosage Sensitivity Evaluation Guideline' => 'Eval',
+          'ClinGen Gene Validity Evaluation Guideline' => 'Eval',
+          'ACMG Variant Pathogenicity Interpretation Guidelines (2015, v1)' => 'ACMG',
+          'ACMG PVS1 criterion' => 'ACMG',
+          'ACMG PM2 criterion' => 'ACMG',
+          'variant pathogenicity criterion scoring rule set (2015 ACMG Guidelines, v1)' => 'ACMG',
+          'ClinGen Gene Validity Evaluation Criteria SOP6' => 'SOP6',
+          'ClinGen Gene Validity Evaluation Criteria SOP5' => 'SOP5',
+          'ClinGen Gene Validity Evaluation Criteria SOP4' => 'SOP4',
+          'ClinGen Gene Validity Evaluation Criteria SOP7' => 'SOP7',
+          'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
 	
 	
@@ -144,7 +190,7 @@ class GeneLib extends Model
           
 		//...but actionability is now in genegraph
 		$response = Graphql::geneDetail($args);
-
+//dd($response);
 		return $response;
 	}
 
@@ -162,7 +208,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// The affiliate and curation data is currently in neo4j
-		$response = Neo4j::affiliateList($args);
+          $response = Neo4j::affiliateList($args);
+          
+          // The affiliate and curation data is currently in graphql
+		//$response = Graphql::affiliateList($args);
 
 		return $response;
 	}
@@ -224,9 +273,9 @@ class GeneLib extends Model
 		// The gene validity data is currently in neo4j...
           //$response = Neo4j::validityDetail($args);
           
-          // The gene validity data is currently in neo4j...
+          // The gene validity data is currently in graphql...
 		$response = Graphql::validityDetail($args);
-		
+
 		return $response;
 	}
 
@@ -302,7 +351,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Drug data is currently in neo4j
-		$response = Neo4j::drugList($args);
+          //$response = Neo4j::drugList($args);
+          
+          // Drug data is now in graphql
+		$response = Graphql::drugList($args);
 
 		return $response;
 	}
@@ -321,7 +373,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Drug details are currently in neo4j
-		$response = Neo4j::drugDetail($args);
+          //$response = Neo4j::drugDetail($args);
+          
+          // Drug details are currently in neo4j
+		$response =Graphql::drugDetail($args);
 
 		return $response;
 	}
@@ -380,7 +435,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+		 return str_replace('####', 'Haplosufficiency', self::$dosage_assertion_strings[$str] ?? 'ERROR');
       }
       
 
@@ -394,7 +449,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+		 return str_replace('####', 'Triplosensitivity', self::$dosage_assertion_strings[$str] ?? 'ERROR');
       }
 
 
@@ -408,9 +463,23 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$dosage_assertion_strings[$str] ?? 'ERROR';
+		 return self::$curated_assertion_strings[$str] ?? 'ERROR';
       }
       
+
+      /**
+     * Return a displayable moi assertion description
+     * 
+     * @return string
+     */
+     public static function validityMoiString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$validity_moi_strings[$str] ?? 'ERROR';
+      }
+
 
       /**
      * Return a displayable validity assertion description
@@ -423,6 +492,34 @@ class GeneLib extends Model
                return '';
 
 		 return self::$validity_assertion_strings[$str] ?? 'ERROR';
+      }
+
+
+      /**
+     * Return a displayable validity classification description
+     * 
+     * @return string
+     */
+     public static function validityClassificationString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$validity_classification_strings[$str] ?? 'ERROR';
+      }
+
+
+      /**
+     * Return a displayable validity criteria description
+     * 
+     * @return string
+     */
+     public static function validityCriteriaString($str)
+     {
+          if (empty($str))
+               return '';
+
+		 return self::$validity_criteria_strings[$str] ?? 'ERROR';
       }
       
 

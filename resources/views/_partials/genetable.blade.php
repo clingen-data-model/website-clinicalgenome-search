@@ -27,6 +27,7 @@
     data-page-size="100"
     data-show-footer="false"
     data-side-pagination="client"
+    data-pagination-v-align="both"
     data-url="{{  $apiurl }}"
     data-response-handler="responseHandler">
 </table>

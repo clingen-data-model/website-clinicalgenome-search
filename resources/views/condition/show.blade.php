@@ -52,7 +52,7 @@
 					<!-- Gene Disease Validity				-->
 					@foreach($disease->gene_validity_assertions as $validity)
 						<tr>
-							<td class="col-sm-2">G - Gene-Disease Validity</td>
+							<td class="col-sm-2"><img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity</td>
 							
 							<td class="col-sm-5">{{ $validity->classification->label }}</td>
 							
@@ -60,14 +60,14 @@
 							
 							<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
 							
-							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $validity->curie }}">View report</a></td>
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-validity/{{ $validity->curie }}">View report</a></td>
 						</tr>
 					@endforeach
 
 					<!-- Actionability -->
 					@if (!empty($disease->actionability_curations))	
 						<tr>
-							<td class="col-sm-2">A - Actionability</td>
+							<td class="col-sm-2"><img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Actionability</td>
 							<td class="col-sm-10" colspan="4"><table>
 							@foreach($disease->actionability_curations as $actionability)
 								<tr>
@@ -86,10 +86,10 @@
 					<!-- Gene Dosage						-->
 					@foreach($disease->gene_dosage_assertions as $dosage)
 						<tr>
-							<td class="col-sm-2">D - Dosage</td>
+							<td class="col-sm-2"><img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Dosage</td>
 							<td class="col-sm-7" colspan="2">{{ $dosage->score }}</td>
 							<td class="col-sm-2">{{ $record->displayDate($dosage->report_date) }}</td>
-							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $dosage->curie }}">View report</a></td>
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-dosage/{{ $dosage->curie }}">View report</a></td>
 						</tr>
 					@endforeach
 				</tbody>

@@ -808,8 +808,8 @@ class Graphql
 
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
-		$node->score_data = $node->json->scoreJson;
-dd($node);
+		$node->score_data = $node->json->scoreJson ?? $node->json;
+//dd($node);
 		return $node;	
 
 	}
@@ -888,6 +888,7 @@ dd($node);
 				. 'iri: "' . $condition
 				. '") {
 					label
+					iri
 					curation_activities
 					genetic_conditions {
 						gene {
@@ -1045,11 +1046,69 @@ dd($node);
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function drugList($args, $page = 0, $pagesize = 20)
+    static function drugList($args, $page = 0, $pagesize = 2000)
     {
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+			
+		$query = '{
+				drugs(' 
+				. self::optionList($page, $pagesize, $sort, $direction, $search)
+				. ') {
+					count
+					drug_list {
+						label
+						curie
+					}
+				}
+			}';
+	
+		try {
+			Log::info("Begin Genegraph druglist call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph druglist call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return $collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+		
+		// add each gene to the collection
+		foreach($response->drugs->drug_list as $record)
+			$collection->push(new Nodal((array) $record));
+	
+		return (object) ['count' => $response->drugs->count, 'collection' => $collection];
 	}
 	
 	
@@ -1063,6 +1122,62 @@ dd($node);
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		// remap drug id back to ontology format
+		$drug = str_replace(':', '/', $drug);
+
+		$query = '{
+				drug(iri: "http://purl.bioontology.org/ontology/'
+				. $drug
+				. '") {
+						label
+						iri
+						curie
+						aliases
+					}
+				}
+			}';
+	
+		try {
+			Log::info("Begin Genegraph drugdetail call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph drugdetail call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return $collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+		
+		$node = new Nodal((array) $response->drug);
+	
+		return $node;
 	}
 	
 	

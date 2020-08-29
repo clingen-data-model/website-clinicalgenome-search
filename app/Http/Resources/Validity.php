@@ -23,8 +23,8 @@ class Validity extends JsonResource
             'disease' => $this->disease->label,
             'mondo' => $this->disease->curie,
             'moi' => $this->displayMoi($this->mode_of_inheritance->curie),
-            'sop' => $this->specified_by->label,
-            'classification' => $this->classification->label,
+            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
+            'classification' => Genelib::ValidityClassificationString($this->classification->label),
             'perm_id' => $this->curie,
             'released' => $this->displayDate($this->report_date)
         ];

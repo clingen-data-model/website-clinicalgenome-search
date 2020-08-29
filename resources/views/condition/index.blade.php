@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">Conditions</h1>
+			<h1>Conditions</h1>
                 <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3>
 		</div>
 
@@ -38,6 +38,12 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<style>
+  .search-input {
+    min-width: 300px;
+  }
+  </style>
+
 	<script>
 		
 		var $table = $('#table')
@@ -67,8 +73,8 @@
 	var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
             + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
             
-  if (row.description != null)
-    html += '<div class="text-sm text-muted">' + row.description + '</div>';
+  //if (row.description != null)
+  //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
 
 	return html;
   }
