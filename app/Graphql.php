@@ -307,21 +307,6 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
-				/*
-				{
-  affiliations (limit: null)
-{
-  count
-  agent_list {
-    iri
-    curie
-    label
-    gene_validity_assertions{
-      count
-    }
-  }
-}
-}*/
 	
 		$query = '{
 			gene(iri: "' . $iri . '") {
@@ -668,6 +653,10 @@ class Graphql
 							label
 							curie
 						}
+						attributed_to {
+							label
+							curie
+						}
 					}
 				}
 			}';
@@ -825,6 +814,64 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$query = '{ 
+			affiliations (limit: null)
+			{
+				count
+				agent_list {
+					iri
+					curie
+					label
+					gene_validity_assertions{
+						count
+					}
+				}
+			}
+		}';
+
+		try {
+	
+			Log::info("Begin Genegraph actionabilitylist call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph actionabilitylist call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+	
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+				
+		// add each gene to the collection
+		foreach($response->affiliations->agent_list as $record)
+		{
+			$node = new Nodal((array) $record);
+
+			$collection->push(new Nodal((array) $record));
+		}
+	//dd($collection);
+		return (object) ['count' => $response->affiliations->count, 'collection' => $collection];
 	}
 	
 	
@@ -838,6 +885,102 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$query = '{
+			affiliation('
+				. 'iri: "CGAGENT:' . $affiliate
+				. '") {
+				curie
+				iri
+				label
+				gene_validity_assertions(limit: null, sort: {field: GENE_LABEL, direction: ASC}) {
+					count
+					curation_list {
+						curie
+						iri
+						label
+						legacy_json
+						gene {
+							label
+							hgnc_id
+							curie
+						}
+						disease {
+							label
+							curie
+						}
+						mode_of_inheritance {
+							label
+							curie
+						}
+						attributed_to {
+							label
+							curie
+						}
+						classification {
+							label
+							curie
+						}
+						specified_by {
+							label
+							curie
+						}
+						report_date
+					}
+				}
+			}
+		}';
+
+		try {
+	
+			Log::info("Begin Genegraph affiliatedetail call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph affiliatedetail call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+	
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return $collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+
+		//$node = new Nodal((array) $response->affiliation);
+		//$node->json = json_decode($node->legacy_json, false);
+		//$node->score_data = $node->json->scoreJson ?? $node->json;
+
+		// add each gene to the collection
+		foreach($response->affiliation->gene_validity_assertions->curation_list as $record)
+			$collection->push(new Nodal((array) $record));
+	
+		return (object) ['count' => $response->affiliation->gene_validity_assertions->count, 'collection' => $collection, 'label' => $response->affiliation->label];
 	}
 	
 	

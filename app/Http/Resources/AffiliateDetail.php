@@ -4,7 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Affiliate extends JsonResource
+use App\GeneLib;
+
+class AffiliateDetail extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,11 +17,16 @@ class Affiliate extends JsonResource
     public function toArray($request)
     {
         return [
-            'agent' => basename($this->iri),
-            'label' => $this->label,
-            'curie' => $this->curie,
-            'count' => $this->gene_validity_assertions->count ?? 0
-            //'curations' => $this->mapCurations()
+            'symbol' => $this->gene->label,
+            'hgnc_id' => $this->gene->hgnc_id,
+            'href' => $this->href,
+            'disease' => $this->disease->label,
+            'mondo' => $this->disease->curie,
+            'moi' => $this->displayMoi($this->mode_of_inheritance->curie),
+            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
+            'classification' => Genelib::ValidityClassificationString($this->classification->label),
+            'perm_id' => $this->curie,
+            'released' => $this->displayDate($this->report_date)
         ];
     }
     

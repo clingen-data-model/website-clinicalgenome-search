@@ -208,10 +208,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// The affiliate and curation data is currently in neo4j
-          $response = Neo4j::affiliateList($args);
+          //$response = Neo4j::affiliateList($args);
           
           // The affiliate and curation data is currently in graphql
-		//$response = Graphql::affiliateList($args);
+		$response = Graphql::affiliateList($args);
 
 		return $response;
 	}
@@ -230,7 +230,10 @@ class GeneLib extends Model
 			return null;
 
 		// The affiliate and curation data is currently in neo4j
-		$response = Neo4j::affiliateDetail($args);
+          //$response = Neo4j::affiliateDetail($args);
+          
+          // The affiliate and curation data is currently in neo4j
+		$response = Graphql::affiliateDetail($args);
 
 		return $response;
 	}

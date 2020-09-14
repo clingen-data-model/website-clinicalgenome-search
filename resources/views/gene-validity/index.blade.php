@@ -109,6 +109,10 @@
 			field: 'disease',
 			formatter: diseaseFormatter
         },
+        {
+			title: 'EP',
+			field: 'ep'
+        },
 		{
 			title: 'MOI',
 			field: 'moi'
