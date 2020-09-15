@@ -8,7 +8,7 @@
       <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3>
 
 			@include('_partials.genetable', 
-					['tools' => '<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a>'])
+					['tools' => '<a href="/gene-validity/download"><i class="fas fa-file-download"></i> Download Summary Data</a>'])
 
 		</div>
 	</div>

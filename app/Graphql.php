@@ -702,7 +702,7 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
 			$collection->push(new Nodal((array) $record));
-	
+
 		return (object) ['count' => $response->gene_validity_assertions->count, 'collection' => $collection];
 	}
 	

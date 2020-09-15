@@ -15,8 +15,12 @@ trait Scores
 	{
 		$j = json_decode($this->legacy_json);
 
-		return $j->scoreJson->ReplicationOverTime ?? 'Unknown';
-
+		if (isset($j->scoreJson))
+			return $j->scoreJson->ReplicationOverTime ?? 'Unknown';
+		else if (isset($j->ReplicationOverTime->YesNo)) // SOP4
+			return $j->ReplicationOverTime->YesNo ?? 'Unknown';
+		else // SOP5
+			return $j->ReplicationOverTime ?? 'Unknown';
 	}
 
 
@@ -30,7 +34,10 @@ trait Scores
 	{
 		$j = json_decode($this->legacy_json);
 
-		$k = $j->scoreJson->ValidContradictoryEvidence->value ?? 'Unknown';
+		if (isset($j->scoreJson))
+			$k = $j->scoreJson->ValidContradictoryEvidence->Value ?? '';
+		else
+			$k = $j->ValidContradictoryEvidence->Value ?? '';
 
 		return (empty($k) ? "NO" : $k);
 
@@ -45,9 +52,12 @@ trait Scores
      */
 	public function getSop7AffiliationNameAttribute()
 	{
+		if (isset($this->attributed_to->label))
+			return $this->attributed_to->label;
+
 		$j = json_decode($this->legacy_json);
 
-		return $j->affiliation->gcep_name ?? 'Unknown';
+		return $j->affiliation->gcep_name ?? '';
 
 	}
 
@@ -77,7 +87,10 @@ trait Scores
 	{
 		$j = json_decode($this->legacy_json);
 
-		return $j->scoreJson->summary->FinalClassificationNotes ?? null;
+		if (isset($j->scoreJson))
+			return $j->scoreJson->summary->FinalClassificationNotes ?? null;
+		else
+		return $j->summary->FinalClassificationNotes ?? null;
 
 	}
 

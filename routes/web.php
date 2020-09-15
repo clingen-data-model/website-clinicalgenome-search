@@ -28,6 +28,7 @@ Route::get('/test/download', 'TestController@download')->name('dosage-download')
  *	download dosage csv
  */
 Route::get('/gene-dosage/download', 'DosageController@download')->name('dosage-download');
+Route::get('/gene-validity/download', 'ValidityController@download')->name('validity-download');
 
 
 /*
