@@ -297,6 +297,92 @@ class Graphql
 	}
 	
 	
+	/**
+     * Suggester for Drug names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugLook($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		$collection = collect();
+
+		$query = '{
+				suggest(contexts: ALL, suggest: DRUG, text: "'
+				. $search . '") {
+						curie
+						curations
+						highlighted
+						iri
+						text
+						type
+						weight
+					}
+				}
+			}';
+	
+		try {
+			Log::info("Begin Genegraph drugLook call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph drugLook call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return '{[]}'; //$collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+
+		// add each gene to the collection
+		foreach($response->suggest as $record)
+		{
+			$node = new Nodal((array) $record);
+			$node->label = $record->highlighted . '  (' . $record->curie . ')';
+			$node->href = route('drug-show', $record->curie);
+
+			$collection->push($node);
+		}
+
+		/*$array = [];
+		foreach($response->suggest as $record)
+		{
+			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
+						'url' => route('gene-show', $record->curie)];
+		}*/
+
+		return (object) ['count' => count($collection), 'collection' => $collection];
+		//return json_encode($array);
+	}
+
+
     /**
      * Get actionability details for a specific gene
      * 
@@ -1107,6 +1193,93 @@ class Graphql
 			
 	}
 	
+
+	/**
+     * Suggester for Condition names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function conditionLook($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		$collection = collect();
+
+		$query = '{
+				suggest(contexts: ALL, suggest: DISEASE, text: "'
+				. $search . '") {
+						curie
+						curations
+						highlighted
+						iri
+						text
+						type
+						weight
+					}
+				}
+			}';
+	
+		try {
+			Log::info("Begin Genegraph conditionLook call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph conditionLook call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return '{[]}'; //$collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+
+		// add each gene to the collection
+		foreach($response->suggest as $record)
+		{
+			$node = new Nodal((array) $record);
+			$node->label = $record->highlighted . '  (' . $record->curie . ')';
+			$node->href = route('condition-show', $record->curie);
+
+			$collection->push($node);
+		}
+
+		/*$array = [];
+		foreach($response->suggest as $record)
+		{
+			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
+						'url' => route('gene-show', $record->curie)];
+		}*/
+
+		return (object) ['count' => count($collection), 'collection' => $collection];
+		//return json_encode($array);
+	}
+
+
 	/**
      * Get listing of all conditions
      *
@@ -1321,6 +1494,92 @@ class Graphql
 		$node = new Nodal((array) $response->drug);
 	
 		return $node;
+	}
+
+
+	/**
+     * Suggester for Gene names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneLook($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		$collection = collect();
+
+		$query = '{
+				suggest(contexts: ALL, suggest: GENE, text: "'
+				. $search . '") {
+						curie
+						curations
+						highlighted
+						iri
+						text
+						type
+						weight
+					}
+				}
+			}';
+	
+		try {
+			Log::info("Begin Genegraph geneLook call: " . Carbon::now());
+			$response = Genegraph::fetch($query);
+			Log::info("End Genegraph geneLook call: " . Carbon::now());
+			
+		} catch (RequestException $exception) {	// guzzle exceptions
+    
+			$response = $exception->getResponse();
+			if (is_null($response))				// empty reply from server
+			{
+				//GeneLib::putError($errors);
+				
+				// for now, just return an empty list
+				return '{[]}'; //$collection;
+			}
+			
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		} catch (Exception $exception) {		// everything else
+			
+			$response = $exception->getResponse();
+			$code = $response->getStatusCode();
+			$reason = $response->getReasonPhrase();
+			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			
+			GeneLib::putError($errors);
+			
+			return null;
+			
+		};
+
+		// add each gene to the collection
+		foreach($response->suggest as $record)
+		{
+			$node = new Nodal((array) $record);
+			$node->label = $record->highlighted . '  (' . $record->curie . ')';
+			$node->href = route('gene-show', $record->curie);
+
+			$collection->push($node);
+		}
+
+		/*$array = [];
+		foreach($response->suggest as $record)
+		{
+			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
+						'url' => route('gene-show', $record->curie)];
+		}*/
+
+		return (object) ['count' => count($collection), 'collection' => $collection];
+		//return json_encode($array);
 	}
 	
 	

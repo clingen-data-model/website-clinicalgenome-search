@@ -192,6 +192,28 @@ class GeneLib extends Model
 		$response = Graphql::geneDetail($args);
 //dd($response);
 		return $response;
+     }
+     
+
+     /**
+     * Get a list of all the curated genes
+     * 
+     * (Neo4j, Genegraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneLook($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+
+		// Gene data is currently in neo4j
+		//$response = Neo4j::geneList($args);
+		
+		// Gene listing using Graphql
+		$response = Graphql::geneLook($args);
+
+		return $response;
 	}
 
 
@@ -382,7 +404,29 @@ class GeneLib extends Model
 		$response =Graphql::drugDetail($args);
 
 		return $response;
-	}
+     }
+     
+
+     /**
+     * Get a matched list of drugs
+     * 
+     * (Neo4j, Genegraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugLook($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+
+		// Gene data is currently in neo4j
+		//$response = Neo4j::geneList($args);
+		
+		// Gene listing using Graphql
+		$response = Graphql::drugLook($args);
+
+		return $response;
+     }
 
 
 	/**
@@ -425,7 +469,31 @@ class GeneLib extends Model
           $response = Graphql::conditionDetail($args);
 
 		return $response;
-	}
+     }
+     
+
+     /**
+     * Get a matched list of conditions
+     * 
+     * (Neo4j, Genegraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function conditionLook($args)
+    {
+		if (is_null($args) || !is_array($args))
+			return collect([]);
+
+		// Gene data is currently in neo4j
+		//$response = Neo4j::geneList($args);
+		
+		// Gene listing using Graphql
+		$response = Graphql::conditionLook($args);
+
+		return $response;
+     }
+     
+
 	
 	
 	/**
