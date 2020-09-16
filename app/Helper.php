@@ -41,7 +41,7 @@ class Helper
      */
   static function PrintWrapperPmidSop5Gci($data = null)
   {
-die($data);
+//die($data);
     // "<div class=\"WrapperPmid\" >"
     // "<div class=\"form-group\">"
     // "<div class=\"WrapperPmidResults\">"

@@ -28,10 +28,10 @@
 	        <div class="" style="position: absolute; z-index: 10000;" >
 	        	<div class="container">
 	        <div class="row  ml-1 mr-5" style="box-shadow: 0px 5px 5px rgba(0, 0, 0, .5);">
-	        	@foreach($queryResults as $result)
+				@foreach($queryResults as $result)
 	          <a href='{{$result['href']}}' class="list-group-item d-flex justify-content-between align-items-center">
-	            {{$result['label']}}
-	            @if($result['curated'])
+	            {!! $result['label'] !!}
+	            @if(!empty($result['curations']))
 	            	<span class="badge badge-success badge-pill"><i class="fas fa-check"></i> ClinGen Curations</span>
 	            @else
 	            	<span class="badge badge-light badge-pill text-muted"> No curations</span>

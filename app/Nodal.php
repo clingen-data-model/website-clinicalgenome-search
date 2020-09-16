@@ -50,8 +50,11 @@ class Nodal extends Model
      * @var array
      */
     protected $appends = ['has_dosage', 'has_actionability', 'has_validity',
-							'last_curated', 'description', 'symbol',
-							'curation_flag', 'dosage_report_date'];
+							//'last_curated', 
+							//'description', 
+							'symbol',
+							//'curation_flag', 
+							'dosage_report_date'];
 
 
     public const STATUS_ACTIVE = 1;

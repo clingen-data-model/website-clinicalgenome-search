@@ -14,6 +14,7 @@
 		  // "<div class=\"WrapperPmid\" >"
 		  // "<div class=\"form-group\">"
 		  // "<div class=\"WrapperPmidResults\">"
+		  //dd($data);
 		$varInner = "";
 		if ($data !== null)
 		{
@@ -34,7 +35,7 @@
 					}
 					else
 					{
-						dd($pubs);
+						//dd($pubs);
 						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["pmid"] . "); ";
 					}
 				}
@@ -43,7 +44,7 @@
 			}
 
 			$varEnd = $note . "</div>";
-
+			
 			return $varStart . $varInner . $varEnd;
 		}
 		else

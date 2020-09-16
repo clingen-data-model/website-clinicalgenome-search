@@ -45,13 +45,14 @@ class AffiliateController extends Controller
 
     }
 
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id, $page = 1, $size = 100)
     {
         $display_tabs = collect([
             'active' => "affiliate",
@@ -65,13 +66,11 @@ class AffiliateController extends Controller
                 'variant_path' => "300"
             ]
         ]);
-        //
-        $record = GeneLib::AffiliateDetail(['affiliate' => $id]);
-        //dd($record);
-        if ($record === null)
-            die("throw an error");
 
-        return view('affiliate.show', compact('display_tabs', 'record'));
+        return view('affiliate.show', compact('display_tabs'))
+                        ->with('apiurl', '/api/affiliates/' . $id)
+                        ->with('pagesize', $size)
+                        ->with('page', $page);
     }
 
 }

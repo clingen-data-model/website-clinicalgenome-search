@@ -25,6 +25,13 @@ class TestController extends Controller
      */
     public function index()
     {
+		$t = GeneLib::geneLook([	'page' =>  0,
+		'pagesize' =>  "null",
+		'sort' => 'GENE_LABEL',
+		'direction' =>  'ASC',
+		'search' =>  null,
+		'curated' => false ]);
+		dd($t);
 		return view('new-dosage.index');
 	}
 

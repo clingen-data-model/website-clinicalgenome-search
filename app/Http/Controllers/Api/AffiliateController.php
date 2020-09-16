@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
+use App\Http\Resources\AffiliateDetail as AffiliateDetailResource;
 
 use Ahsan\Neo4j\Facade\Cypher;
 
@@ -62,14 +63,17 @@ class AffiliateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $record = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
+        $input = $request->only(['search', 'order', 'offset', 'limit']);
 
-        if ($record === null)
+        $results = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
+        
+        if ($results === null)
 			die("throw an error");
 
-        return new AffiliateResource($record);
+        return ['total' => $results->count, 'totalNotFiltered' => $results->count, 'id' => $results->label,
+        'rows'=> AffiliateDetailResource::collection($results->collection)];
     }
 
     /**

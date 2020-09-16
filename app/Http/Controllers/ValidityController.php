@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
+use Maatwebsite\Excel\Facades\Excel as Gexcel;
+
+use App\Imports\Excel;
+use App\Exports\ValidityExport;
+
 use App\GeneLib;
 use App\Nodal;
 use App\Helper;
@@ -96,5 +101,17 @@ class ValidityController extends Controller
 			die("thow an error");
 
         return view('gene-validity.show', compact('display_tabs', 'record'));
+	}
+	
+
+	/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Request $request)
+    {
+		return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary.csv');
     }
 }
