@@ -96,6 +96,9 @@ Route::group(['prefix' => 'conditions'], function () {
 
 		Route::get('/{id?}', 'ConditionController@show')->name('condition-show');
 
+		// TODO
+		Route::get('/{id?}/external-resources', 'ConditionController@show')->name('condition-external');
+
 });
 
 /*

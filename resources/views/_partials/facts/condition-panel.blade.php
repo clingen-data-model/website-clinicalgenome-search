@@ -1,14 +1,14 @@
 <div class="collapse" id="collapseExample">
 	<div class="row">
 			<div class="col-sm-12  mt-0 pt-0 small">
-					<h4 class="border-bottom-1">Gene Facts</h4>
+					<h4 class="border-bottom-1">Condition Facts</h4>
 
 					<dl class="dl-horizontal">
 						<dt>Name</dt>
 						<dd>{{ $record->symbol }}</dd>
 						<dt>Ontological Reference</dt>
 						<dd>{{  $record->getMondoString($record->iri, true) }}</dd>
-						
+
 					</dl>
 			</div>
 	</div>
