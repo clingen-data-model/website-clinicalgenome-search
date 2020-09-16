@@ -38,10 +38,10 @@ require('datatables.net-responsive-bs');
 
 $(function () {
     $('[data-toggle="popover"]').popover()
-})
+});
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-})
+});
 $('.th-sort').on('click', function (e) {
     $(function () {
         $('[data-toggle="popover"]').popover()
