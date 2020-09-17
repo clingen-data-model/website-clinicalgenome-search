@@ -65393,6 +65393,11 @@ __webpack_require__(/*! datatables.net-responsive-bs */ "./node_modules/datatabl
 
 
 $(function () {
+  $("#navSearchToggle").click(function () {
+    $("#navSearchBar").toggle();
+  });
+});
+$(function () {
   $('[data-toggle="popover"]').popover();
 });
 $(function () {

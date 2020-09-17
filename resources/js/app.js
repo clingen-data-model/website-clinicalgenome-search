@@ -37,6 +37,12 @@ require('datatables.net-responsive-bs');
 // });
 
 $(function () {
+    $("#navSearchToggle").click(function () {
+        $("#navSearchBar").toggle();
+    });
+});
+
+$(function () {
     $('[data-toggle="popover"]').popover()
 });
 $(function () {
