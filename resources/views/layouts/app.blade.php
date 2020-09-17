@@ -89,7 +89,7 @@
             </li>
             @endif
              --}}
-            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "affiliate") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "disease")) active @endif">
+            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "affiliate") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition")) active @endif">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i> More
                 </a>
