@@ -11,9 +11,10 @@
 	           <ul class="dropdown-menu dropdown-menu-left">
 	             <li><a href="#">Gene Symbol</a></li>
 	             <li><a href="#">Disease Name</a></li>
-	             <li><a href="#">HGVS Expression</a></li>
-	             <li><a href="#">Genomic Coordinates</a></li>
-	             <li><a href="#">CAid (Variant)</a></li>
+	             <li><a href="#">Drug Name</a></li>
+	             {{-- <li><a href="#">HGVS Expression</a></li> --}}
+	             {{-- <li><a href="#">Genomic Coordinates</a></li> --}}
+	             {{-- <li><a href="#">CAid (Variant)</a></li> --}}
 	             <li role="separator" class="divider"></li>
 	             <li><a href="#">Website Content</a></li>
 	           </ul>
@@ -44,6 +45,6 @@
 
 	  @endif
 
-	  <small class="pl-2 ml-5 text-white-light mb-2 "><strong>Supported Queries:</strong> Gene Symbol, Disease (MONDO, OMIM, DOID), HGVS, Genomic Coordinate, CAid, PMID, Full Text (Beta)</small>
+	  <small class="pl-2 ml-5 text-white-light mb-2 "><strong>Supported Queries:</strong> Gene Symbol, Disease (MONDO), Drug</small>
 
 </div>
