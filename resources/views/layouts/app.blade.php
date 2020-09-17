@@ -23,10 +23,6 @@
 <body>
   <div id="app">
 
-
-
-
-
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
