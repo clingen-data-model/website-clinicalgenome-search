@@ -44,6 +44,11 @@
                 Overview
               </a>
             </li>
+            <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
+              <a class="nav-link" href="{{ route('gene-curations') }}">
+                Curated Genes
+              </a>
+            </li>
             <li class="nav-item @if ($display_tabs['active'] == "validity") active @endif ">
               <a class="nav-link" href="{{ route('validity-index') }}">
                 Gene-Disease Validity
@@ -57,11 +62,6 @@
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
               <a class="nav-link" target="external-actionability" href="{{ route('actionability-index') }}">
                 Clinical Actionability <i class="fas fa-external-link-alt small text-light"></i>
-              </a>
-            </li>
-            <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
-              <a class="nav-link" href="{{ route('gene-curations') }}">
-                Curated Genes
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
