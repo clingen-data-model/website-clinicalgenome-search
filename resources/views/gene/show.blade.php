@@ -12,7 +12,7 @@
 
 			@include("_partials.facts.gene-panel")
 
-			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
+			{{-- <h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2> --}}
 			<ul class="nav nav-tabs">
           <li class="active">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class=" bg-primary text-white">
@@ -26,12 +26,12 @@
             <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>
           </li>
 		</ul>
-		
+
 		@forelse ($record->genetic_conditions as $disease)
 			<div class="card">
 				<div class="card-header panel-title text-white bg-primary">
-					<h3 class="text-white h4 p-0 m-0"><i>{{ $record->symbol }}</i> - 
-					<a href="/conditions/{{ $record->getMondoString($disease->disease->iri) }}" >{{ $disease->disease->label }} <small class="text-white">| {{ $record->getMondoString($disease->disease->iri, true) }}</small></a></h3>
+					<h3 class="text-white h4 p-0 m-0"><i>{{ $record->symbol }}</i> -
+					<a class="text-white" href="/conditions/{{ $record->getMondoString($disease->disease->iri) }}" >{{ $disease->disease->label }} <small class="text-white">| {{ $record->getMondoString($disease->disease->iri, true) }}</small></a></h3>
 				</div>
 				<div class="card-body p-0 m-0">
 
@@ -54,15 +54,20 @@
 									<td class="col-sm-3">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
-									
-									<td class="col-sm-6">
-										<strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong>
+
+									<td class="col-sm-5">
+										<a class="text-dark" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information"><i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
-									
-									<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span>{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}</td>
-									
+
+
+
+									<td class="col-sm-3">{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}
+										{{-- <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span> --}}
+									</td>
+
 									<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
-									
+
 									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}">View report</a></td>
 								</tr>
 						@endforeach
@@ -73,13 +78,13 @@
 									<td class="col-sm-3">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
-									
+
 									<td class="col-sm-6"><strong>View Report For Scoring Details</strong></td>
-									
+
 									<td class="col-sm-2"></td>
-									
+
 									<td class="col-sm-2">{{ $record->displayDate($actionability->report_date) }}</td>
-									
+
 									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
 								</tr>
 						@endforeach
