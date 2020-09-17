@@ -1,4 +1,4 @@
-<!-- The toolbar -->					
+<!-- The toolbar -->
 <div id="toolbar">
     {!! $tools ?? '' !!}
 </div>
@@ -15,10 +15,10 @@
     data-show-fullscreen="true"
     data-show-columns="true"
     data-show-columns-toggle-all="true"
-    data-detail-view="true"
+    {{-- data-detail-view="true" --}}
     data-show-export="true"
     data-click-to-select="true"
-    data-detail-formatter="detailFormatter"
+    {{-- data-detail-formatter="detailFormatter" --}}
     data-minimum-count-columns="2"
     data-show-pagination-switch="true"
     data-pagination="true"
