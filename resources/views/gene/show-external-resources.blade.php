@@ -12,7 +12,7 @@
 
 			@include("_partials.facts.gene-panel")
 
-			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
+			{{-- <h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2> --}}
 			<ul class="nav nav-tabs">
           <li class="">
             <a href="{{ route('gene-show', $record->hgnc_id) }}">

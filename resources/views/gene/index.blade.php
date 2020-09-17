@@ -5,9 +5,9 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<h1>Curated Genes</h1>
-      <h3>Clingen had information on <span id="gene-count">many</span> genes</h3>
+      {{-- <h3>Clingen had information on <span id="gene-count">many</span> genes</h3> --}}
 
-			@include('_partials.genetable') 
+			@include('_partials.genetable')
 
 		</div>
 	</div>
@@ -63,12 +63,12 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -92,7 +92,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Gene Symbol',
 			field: 'symbol',
@@ -120,7 +120,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -128,7 +128,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {

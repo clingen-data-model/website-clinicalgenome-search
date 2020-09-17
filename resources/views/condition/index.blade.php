@@ -5,13 +5,13 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<h1>Conditions</h1>
-                <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3>
+                {{-- <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3> --}}
 		</div>
 
 		<div class="col-md-12">
 
 			@include('_partials.genetable')
-									
+
 		</div>
 	</div>
 </div>
@@ -27,7 +27,7 @@
 
 
 @section('script_js')
-	
+
 <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
@@ -45,7 +45,7 @@
   </style>
 
 	<script>
-		
+
 		var $table = $('#table')
 	var selections = []
 
@@ -57,7 +57,7 @@
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1
 	})*/
-	
+
     return res
   }
 
@@ -69,17 +69,19 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
+	// var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
+  //           + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
 	var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-            + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
-            
+            + '<div class="small text-muted">' + row.curie + '</div>';
+
   //if (row.description != null)
   //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
 
 	return html;
   }
-  
-  function badgeFormatter(index, row) { 
+
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -103,7 +105,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Name',
 			field: 'label',
@@ -121,7 +123,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -129,7 +131,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {

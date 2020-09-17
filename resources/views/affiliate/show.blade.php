@@ -4,8 +4,10 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">Affiliate:  <span id="affiliate-id"></span></h1>
-      <h3>Clingen had information on <span id="gene-count">many</span> curated diseases</h3>
+			<h1>
+        {{-- <img src="/images/clinicalValidity-on.png" width="50" height="50"> --}}
+        <span class="affiliate-id">Loading...</span> Expert Panel</h1>
+      <h5><strong class="gene-count">Loading...</strong> gene disease curations have been published by <span class="affiliate-id">loading..</span>.</h5>
 
 			@include('_partials.genetable')
 
@@ -56,13 +58,15 @@
 
   function responseHandler(res) {
 
+    // TODO - Moved away from #gene-count to class... check if all changed and temove the # code below
     $('#gene-count').html(res.total);
+    $('.gene-count').html(res.total);
     /*
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1
     })*/
 
-    $('#affiliate-id').html(res.id);
+    $('.affiliate-id').html(res.id);
 
     return res
   }
@@ -75,20 +79,20 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
 
-  function diseaseFormatter(index, row) { 
+  function diseaseFormatter(index, row) {
 	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
 	html += '<div><a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a></div>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
-	
+  function badgeFormatter(index, row) {
+
 	html = '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
             + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
 
@@ -99,7 +103,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Gene',
 			field: 'symbol',
@@ -132,7 +136,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -140,7 +144,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {

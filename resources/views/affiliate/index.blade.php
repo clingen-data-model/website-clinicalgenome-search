@@ -4,10 +4,10 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1>Curation by Gene Disease Validity Group</h1>
-      <h3>Clingen had information on <span id="gene-count">many</span> groups</h3>
+			<h1>Expert Panels With Gene Curations</h1>
+      {{-- <h3>Clingen had information on <span id="gene-count">many</span> groups</h3> --}}
 
-			@include('_partials.genetable') 
+			@include('_partials.genetable')
 
 		</div>
 	</div>
@@ -39,7 +39,7 @@
     min-width: 300px;
   }
   </style>
-  
+
 <script>
 	var $table = $('#table')
 	var selections = []
@@ -63,12 +63,12 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/affiliate/' + row.agent + '">' + row.label + '</a>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -92,7 +92,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Expert Panel',
 			field: 'label',
@@ -110,7 +110,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -118,7 +118,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {
