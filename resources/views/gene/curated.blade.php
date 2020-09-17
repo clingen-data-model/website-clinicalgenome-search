@@ -6,9 +6,9 @@
             <div class="col-md-12">
                 <h1>Curated Genes</h1>
                 <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3>
-    
-                @include('_partials.genetable') 
-    
+
+                @include('_partials.genetable')
+
             </div>
         </div>
     </div>
@@ -23,7 +23,7 @@
 @endsection
 
 @section('script_js')
-        
+
 <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
@@ -48,7 +48,7 @@
   function responseHandler(res) {
 
     $('#gene-count').html(res.total);
-    
+
     return res
   }
 
@@ -60,12 +60,12 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -86,9 +86,9 @@
   }
 
 
-  function validityFormatter(index, row) { 
+  function validityFormatter(index, row) {
     var html = '';
-    
+
     if (row.has_validity)
     {
         html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id
@@ -99,12 +99,12 @@
   }
 
 
-  function actionabilityFormatter(index, row) { 
+  function actionabilityFormatter(index, row) {
 	var html = '';
-    
+
     if (row.has_actionability)
     {
-        html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id 
+        html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id
             + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
     }
 
@@ -112,13 +112,13 @@
   }
 
 
-  function haploFormatter(index, row) { 
+  function haploFormatter(index, row) {
 	var html = '';
-    
+
     if (row.has_dosage_haplo)
     {
         html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
-             + row.symbol + '&subject' 
+             + row.symbol + '&subject'
             + '"><span class="hidden-sm hidden-xs">'
             + row.has_dosage_haplo + '</span></a>';
     }
@@ -127,13 +127,13 @@
   }
 
 
-  function triploFormatter(index, row) { 
+  function triploFormatter(index, row) {
 	var html = '';
-    
+
     if (row.has_dosage_triplo)
     {
         html = '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
-             + row.symbol + '&subject' 
+             + row.symbol + '&subject'
             + '"><span class="hidden-sm hidden-xs">'
             + row.has_dosage_triplo + '</span></a>';
     }
@@ -146,7 +146,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         [{
 			title: 'Gene',
             field: 'symbol',
@@ -156,15 +156,15 @@
 			sortable: true
         },
         {
-            title: '<img src="/images/clinicalValidity-on.png" width="40" height="40"><div>Gene-Disease Validity</div>',
+            title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?" aria-describedby="popover"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><br> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
 			align: 'center'
         },
 		{
-			title: '<img src="/images/clinicalActionability-on.png" width="40" height="40"><div>Clinical Actionability</div>',
+			title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
 			align: 'center'
         },
 		{
-			title: '<img src="/images/dosageSensitivity-on.png" width="40" height="40"><div>Gene Dosage Sensitivity</div>',
+			title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="popover954864"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
             colspan: 2,
 			align: 'center',
         }],
@@ -194,7 +194,7 @@
         }]
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -202,7 +202,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {
