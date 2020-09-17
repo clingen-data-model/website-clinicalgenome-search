@@ -31,18 +31,18 @@
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
     <main id='section_main' role="main">
-      <section id='section_heading' class="pt-4 pb-0 mb-2 section-heading section-heading-groups text-light">
+      <section id='section_heading' class="pt-0 pb-0 mb-2 section-heading section-heading-groups text-light">
         <div  class="container">
-
+          <span id="navSearchBar">
              @livewire('header-search-bar')
-
+          </span>
           @hasSection ('heading')
             @yield('heading')
           @else
             <div class="mb-3"></div>
           @endif
           @isset($display_tabs['active'])
-          <ul class="nav-tabs-search nav nav-tabs ml-0 mt-3">
+          <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1">
             <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
               <a class="nav-link" href="{{ route('home') }}">
                 Overview

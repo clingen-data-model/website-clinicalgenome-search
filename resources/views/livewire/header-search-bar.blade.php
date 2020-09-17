@@ -1,8 +1,8 @@
 <div>
-    
-	   <div id="section_search_wrapper" class="input-group input-group-xl">
 
-	         
+	   <div id="section_search_wrapper" class="mt-4 input-group input-group-xl">
+
+
 
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
 	         <input type="text" class="form-control" aria-label="..." wire:model="searchBarQuery"  value="{{ $searchBarQuery }}" placeholder="Type in a query...">
@@ -41,9 +41,9 @@
 	          </div>
 	        </div>
 	      </div>
-	  
+
 	  @endif
 
-	  <small class="pl-2 ml-5 text-white-light"><strong>Supported Queries:</strong> Gene Symbol, Disease (MONDO, OMIM, DOID), HGVS, Genomic Coordinate, CAid, PMID, Full Text (Beta)</small>
+	  <small class="pl-2 ml-5 text-white-light mb-2 "><strong>Supported Queries:</strong> Gene Symbol, Disease (MONDO, OMIM, DOID), HGVS, Genomic Coordinate, CAid, PMID, Full Text (Beta)</small>
 
 </div>
