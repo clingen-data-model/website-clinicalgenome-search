@@ -72,27 +72,44 @@
 
 					@endforeach
 
-					<!-- Actionability -->
+					{{-- <!-- Actionability -->
 					@if (!empty($disease->actionability_curations))
 						<tr>
 								<td class="col-sm-3">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
 									<td class="col-sm-9" colspan="4">
-								<table class="table">
-							@foreach($disease->actionability_curations as $actionability)
-								<tr>
-									<td class="col-sm-9">{{ $record->displayActionType($actionability->source) }}View Report For Scoring Details</td>
 
-									<td class="col-sm-2">{{ $record->displayDate($actionability->report_date) }}</td>
-
-									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
-								</tr>
-							@endforeach
-							</table>
 						</td>
 						</tr>
-					@endif
+					@endif --}}
+
+					<!-- Actionability					-->
+						@foreach($disease->actionability_curations as $actionability)
+								<tr>
+									<td class="col-sm-3">
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+									</td>
+
+									<td class="col-sm-8" colspan="4">
+										<table class="" style="width: 100%">
+											@foreach($disease->actionability_curations as $actionability)
+												<tr>
+													<td class="col-sm-10" style="padding: 0px;">{{ $record->displayActionType($actionability->source) }}View Report For Scoring Details</td>
+
+													<td class="col-sm-1">{{ $record->displayDate($actionability->report_date) }}</td>
+
+													<td class="col-sm-1" style="padding: 0px;"><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
+												</tr>
+											@endforeach
+									</table>
+									</td>
+
+									{{-- <td class="col-sm-2">{{ $record->displayDate($actionability->report_date) }}</td>
+
+									<td class="col-sm-1"><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td> --}}
+								</tr>
+						@endforeach
 
 
 					<!-- Gene Dosage						-->
