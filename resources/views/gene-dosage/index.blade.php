@@ -10,9 +10,9 @@
 
 		<div class="col-md-12">
 
-			@include('_partials.genetable', 
-					['tools' => '<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a>'])
-									
+			@include('_partials.genetable',
+					['tools' => '<a href="/gene-dosage/download"><i class="fas fa-file-download"></i> Download Summary Data</a> <a href="ftp://ftp.clinicalgenome.org/"> | <i class="fas fa-file-download"></i> Additional Download Options</a>'])
+
 		</div>
 	</div>
 </div>
@@ -28,7 +28,7 @@
 
 
 @section('script_js')
-	
+
 <link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
@@ -44,9 +44,9 @@
 	  min-width: 300px;
 	}
   </style>
-  
+
 	<script>
-		
+
 		var $table = $('#table')
 	var selections = []
 
@@ -58,7 +58,7 @@
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1
 	})*/
-	
+
     return res
   }
 
@@ -70,19 +70,19 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/gene-dosage/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
-  function reportFormatter(index, row) { 
+  function reportFormatter(index, row) {
 	var html = '<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="'
 			+ row.report +'"><i class="fas fa-file"></i>  View Details</a>';
 
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -106,7 +106,7 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Gene Symbol',
 			field: 'symbol',
@@ -145,7 +145,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -153,7 +153,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {
