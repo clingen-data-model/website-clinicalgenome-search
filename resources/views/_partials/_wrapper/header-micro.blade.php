@@ -16,11 +16,11 @@
 				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
 					<a class=' text-white' href='https://www.clinicalgenome.org/about/contact-clingen/'>Contact</a>
 				</li>
-				<li class='visible-inline-md visible-inline-lg visible-inline-xl text-white'>
+				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl text-white'>
 					|
-				</li>
+				</li> --}}
 				@guest
-				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
+				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl'>
 					<a class=' text-white' href='{{ route('login') }}'><i class="fas fa-user-circle"></i> Login</a>
 				</li>
 				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
@@ -39,7 +39,7 @@
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
-				</li>
+				</li> --}}
 				@endguest
 			</ul>
 		</div>
