@@ -90,7 +90,7 @@ class GeneController extends Controller
 		 * total counts for gene and diseases on relevant pages
 		 * category would be for setting default select of dropdown */
 		$display_tabs = collect([
-			'active' => "gene-curations",
+nav			'active' => "gene-curations",
 			'query' => "",
 			'category' => "",
 			'counts' => [
