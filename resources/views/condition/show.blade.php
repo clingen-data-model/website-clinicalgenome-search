@@ -12,7 +12,7 @@
 
 			@include("_partials.facts.condition-panel")
 
-			<h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2>
+			{{-- <h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2> --}}
 			<ul class="nav nav-tabs">
           <li class="active">
             <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white">
@@ -56,14 +56,20 @@
 								<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 							</td>
 
-							<td class="col-sm-4">{{ $validity->classification->label }}</td>
+							<td class="col-sm-5">
+								<a class="text-dark" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+							<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information"><i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+							</td>
 
-							<td class="col-sm-2"><span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ $validity->mode_of_inheritance->label }}"><i class="fas fa-info-circle text-muted"></i></span>{{ $validity->mode_of_inheritance->label }}</td>
+							<td class="col-sm-3">
+								{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}
+							</td>
 
 							<td class="col-sm-2">{{ $record->displayDate($validity->report_date) }} </td>
 
 							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-validity/{{ $validity->curie }}">View report</a></td>
 						</tr>
+
 					@endforeach
 
 					<!-- Actionability -->
