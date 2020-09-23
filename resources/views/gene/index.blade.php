@@ -101,11 +101,13 @@
         },
         {
 			title: 'HGNC ID',
-			field: 'hgnc_id'
+			field: 'hgnc_id',
+      sortable: true
         },
 		{
 			title: 'Gene Name',
-			field: 'name'
+			field: 'name',
+      sortable: true
         },
 		{
 			title: 'Curations',
@@ -116,7 +118,8 @@
 		{
 			field: 'date',
 			title: 'Last Curation Date',
-			align: 'right'
+			align: 'right',
+      sortable: true
         }
       ]
     })

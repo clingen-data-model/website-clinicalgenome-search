@@ -30,7 +30,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -161,7 +161,7 @@
         },
 		{
 			title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
-			align: 'center'
+			align: 'center',
         },
 		{
 			title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="popover954864"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
@@ -172,25 +172,29 @@
             title: 'Clinical Validity Classifications',
             field: 'has_validity',
             formatter: validityFormatter,
-			align: 'center'
+			align: 'center',
+      sortable: true
         },
         {
             title: 'Evidence-Based Summary',
             field: 'has_actionability',
             formatter: actionabilityFormatter,
-			align: 'center'
+			align: 'center',
+      sortable: true
         },
         {
             title: 'Haploinsufficiency Score',
             field: 'has_dosage_haplo',
             formatter: haploFormatter,
-			align: 'center'
+			align: 'center',
+      sortable: true
         },
         {
             title: 'Triplosensitivity Score',
             field: 'has_dosage_triplo',
             formatter: triploFormatter,
-			align: 'center'
+			align: 'center',
+      sortable: true
         }]
       ]
     })
