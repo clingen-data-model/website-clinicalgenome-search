@@ -35,7 +35,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -115,23 +115,29 @@
         },
 		{
 			title: 'Location',
-			field: 'location'
+			field: 'location',
+			sortable: true,
+			visible: false
         },
         {
 			title: 'Haploinsufficiency',
-			field: 'haplo_assertion'
+			field: 'haplo_assertion',
+			sortable: true
         },
 		{
 			title: 'Triplosensitity',
-			field: 'triplo_assertion'
+			field: 'triplo_assertion',
+			sortable: true
         },
 		{
 			title: '%HI',
-			field: 'hi'
+			field: 'hi',
+			sortable: true
         },
 		{
 			title: 'pLI',
-			field: 'pli'
+			field: 'pli',
+			sortable: true
         },
 		{
 			title: 'Report',
@@ -142,6 +148,7 @@
 		{
 			field: 'date',
 			title: 'Report Date',
+			sortable: true
         }
       ]
     })

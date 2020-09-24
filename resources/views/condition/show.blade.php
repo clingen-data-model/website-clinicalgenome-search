@@ -116,9 +116,10 @@
 					@foreach($disease->gene_dosage_assertions as $dosage)
 						<tr>
 							<td class="col-sm-3"><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
-							<td class="col-sm-7" colspan="2">{{ $dosage->score }}</td>
+							<td class="col-sm-7" colspan="2">{{ \App\GeneLib::dosageAssertionString($dosage->score) }}</td>
 							<td class="col-sm-2">{{ $record->displayDate($dosage->report_date) }}</td>
-							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-dosage/{{ $dosage->curie }}">View report</a></td>
+							<!--<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-dosage/{{ $dosage->curie }}">View report</a></td>-->
+							<td class="col-sm-1"><a class="btn btn-xs btn-success" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{  $disease->gene->label }}&subject">View report</a></td>
 						</tr>
 					@endforeach
 				</tbody>

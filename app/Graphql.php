@@ -956,6 +956,10 @@ class Graphql
 
 			$collection->push(new Nodal((array) $record));
 		}
+
+		// genegraph currently provides no sort capablility
+		$collection = $collection->sortBy('label');
+
 	//dd($collection);
 		return (object) ['count' => $response->affiliations->count, 'collection' => $collection];
 	}

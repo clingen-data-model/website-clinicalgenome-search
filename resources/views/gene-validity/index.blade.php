@@ -39,7 +39,7 @@
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/addrbar/bootstrap-table-addrbar.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -107,30 +107,37 @@
         {
 			title: 'Disease',
 			field: 'disease',
-			formatter: diseaseFormatter
-        },
-        {
-			title: 'EP',
-			field: 'ep'
+			formatter: diseaseFormatter,
+      sortable: true
         },
 		{
 			title: 'MOI',
-			field: 'moi'
+			field: 'moi',
+      sortable: true,
+      //visible: false
         },
+    {
+			title: 'EP',
+			field: 'ep',
+      sortable: true
+    },
 		{
 			title: 'SOP',
 			field: 'sop',
 			align: 'center',
+      sortable: true
         },
 		{
 			title: 'Classification',
 			field: 'classification',
-			formatter: badgeFormatter
+			formatter: badgeFormatter,
+      sortable: true
         },
 		{
 			field: 'released',
 			title: 'Released',
-			align: 'right'
+			align: 'right',
+      sortable: true
         }
       ]
     })

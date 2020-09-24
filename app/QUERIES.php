@@ -298,3 +298,66 @@
 }
 
 
+// Affiliate list
+{ 
+    affiliations (limit: null)
+    {
+        count
+        agent_list {
+            iri
+            curie
+            label
+            gene_validity_assertions{
+                count
+            }
+        }
+    }
+}
+
+
+// Drug list
+{
+    drugs(limit:  null){
+        count
+        drug_list {
+            label
+            curie
+        }
+    }
+}
+
+
+// Validity list
+{
+    gene_validity_assertions(limit:  null){
+        count
+        curation_list {
+            report_date
+            curie
+            disease {
+                label
+                curie
+            }
+            gene {
+                label
+                hgnc_id
+            }
+            mode_of_inheritance {
+                label
+                curie
+            }
+            classification {
+                label
+                curie
+            }
+            specified_by {
+                label
+                curie
+            }
+            attributed_to {
+                label
+                curie
+            }
+        }
+    }
+}
