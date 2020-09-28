@@ -4,7 +4,6 @@ namespace App;
 
 use Jenssegers\Model\Model;
 
-use App\Nodal;
 use App\Neo4j;
 use App\Graphql;
 
@@ -15,7 +14,7 @@ use App\Graphql;
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
  * @author     S. Goehringer <scottg@creationproject.com>
- * @copyright  2019 ClinGen
+ * @copyright  2020 ClinGen
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/PackageName
@@ -190,7 +189,7 @@ class GeneLib extends Model
           
 		//...but actionability is now in genegraph
 		$response = Graphql::geneDetail($args);
-//dd($response);
+
 		return $response;
      }
      
@@ -278,7 +277,7 @@ class GeneLib extends Model
 	
 		// Gene data using Graphql
 		$response = Graphql::validityList($args);
-//dd($response);
+
 		return $response;
 	}
 
@@ -357,7 +356,6 @@ class GeneLib extends Model
                     $response->$field = $supplement->$field;
                }
           }
-
 
           return $response;
 	}

@@ -13,7 +13,7 @@ use App\Helper;
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
  * @author     S. Goehringer <scottg@creationproject.com>
- * @copyright  2019 ClinGen
+ * @copyright  2020 ClinGen
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/PackageName
@@ -54,16 +54,6 @@ class ConditionController extends Controller
 				]
 		]);
 
-		/*$records = GeneLib::conditionList([	'page' => $page,
-											'pagesize' => $psize
-										]);
-
-		//dd($records);
-		if ($records === null)
-			die("thow an error");
-
-		return view('condition.index', compact('display_tabs', 'records'));*/
-
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', '/api/conditions')
 						->with('pagesize', $size)
@@ -79,8 +69,6 @@ class ConditionController extends Controller
 	*/
 	public function show(Request $request, $id = null)
 	{
-		if ($id === null)
-		die("display some error about needing a gene");
 
 		$display_tabs = collect([
 			'active' => "condition",
@@ -110,6 +98,13 @@ class ConditionController extends Controller
 		return view('condition.show', compact('display_tabs', 'record'));
 	}
 
+
+	/**
+	* Display the External Genomic Resources section of the specific condition..
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
 	public function external(Request $request, $id = null)
 	{
 		if ($id === null)
@@ -126,15 +121,14 @@ class ConditionController extends Controller
 			]
 		]);
 
-		$record = GeneLib::conditionDetail([
-			'page' => 0,
-			'pagesize' => 200,
-			'condition' => $id,
-			'curations' => true,
-			'action_scores' => true,
-			'validity' => true,
-			'dosage' => true
-		]);
+		$record = GeneLib::conditionDetail(['page' => 0,
+											'pagesize' => 200,
+											'condition' => $id,
+											'curations' => true,
+											'action_scores' => true,
+											'validity' => true,
+											'dosage' => true
+										]);
 
 		if ($record === null) {
 			die(print_r(GeneLib::getError()));

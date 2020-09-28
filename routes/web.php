@@ -102,8 +102,9 @@ Route::group(['prefix' => 'conditions'], function () {
 
 });
 
+
 /*
- * Gene display routes
+ * Affiliates display routes
  */
 Route::group(['prefix' => 'affiliate'], function () {
 
@@ -113,32 +114,30 @@ Route::group(['prefix' => 'affiliate'], function () {
 });
 
 
-		// Scotts stuff :)
+/*
+ * Dosage display routes
+ */
+Route::group(['prefix' => 'gene-dosage'], function () {
 
-		// Condition demo route
-		// STATIC PAGES FOR REFERENCE
-		Route::get('/disease/all/', 'DiseaseController@index')->name('disease-index');
-		Route::get('/disease/show/', 'DiseaseController@show')->name('disease-show');
+	Route::get('/', 'DosageController@index')->name('dosage-index');
 
-
-		// Dosage demo route
-		// STATIC PAGES FOR REFERENCE
-		Route::get('/gene-dosage/', 'DosageController@index')->name('dosage-index');
-
-		// SHOW ISN"T NEEDED - MVP IS A REDIRECT
-		Route::get('/gene-dosage/{id}', 'DosageController@show')->name('dosage-show');
+	Route::get('/{id?}', 'DosageController@show')->name('dosage-show');
+});
 
 
-		// Gene Validity demo route
-		// STATIC PAGES FOR REFERENCE
-		// Route::get('/gene-disease-validity/all/', 'GeneValidityController@index')->name('gene-disease-validity-index');
-		// Route::get('/gene-disease-validity/detail/', 'GeneValidityController@show')->name('gene-disease-validity-show');
+/*
+ * Actionability display routes
+ */
+Route::group(['prefix' => 'actionability'], function () {
 
+	Route::get('/', 'ActionabilityController@index')->name('actionability-index');
 
-		// Actionability demo route
-		Route::get('/actionability/', 'ActionabilityController@index')->name('actionability-index');
-		Route::get('/actionability/detail/', 'ActionabilityController@show')->name('actionability-show');
+	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
+});
 
+// ************************************************************************************************
+// DEMO ROUTES
+// ************************************************************************************************
 
 		// Variant Path demo route
 		// NOT FOR MVP

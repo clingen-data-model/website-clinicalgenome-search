@@ -68,28 +68,6 @@ class DosageController extends Controller
 				'variant_path' => "300"
 			]
 		]);
-		
-		/*$results = GeneLib::dosageList(['page' => $page - 1,
-										'pagesize' => $psize,
-										'sort' => $sort ?? 'GENE_LABEL',
-										'direction' => $direction ?? 'ASC',
-										'search' => '',
-										'curated' => true ]);
-
-		if ($results === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}*/
-
-		// customize the pagination.
-		//$records = new LengthAwarePaginator($records, 1500, $psize, $page);
-		//$records->withPath('genes');
-	
-		//$records = new LengthAwarePaginator($results->collection, $results->count, $psize, $page);
-		//$records->withPath('gene-dosage');
-
-		//return view('gene-dosage.index', compact('display_tabs', 'records'))
-		//			->with('count', $results->count);;
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -118,13 +96,12 @@ class DosageController extends Controller
 				]
 		]);
 	
-		$record = GeneLib::dosageDetail([ 
-			'gene' => $id,
-			'curations' => true,
-			'action_scores' => true,
-			'validity' => true,
-			'dosage' => true
-		]);
+		$record = GeneLib::dosageDetail([ 'gene' => $id,
+										'curations' => true,
+										'action_scores' => true,
+										'validity' => true,
+										'dosage' => true
+									]);
 
 		if ($record === null)
 		{

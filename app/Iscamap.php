@@ -41,7 +41,7 @@ class Iscamap extends Model
      */
      protected $fillable = ['symbol', 'issue', 'status', 'type' ];
 
-	/**
+	  /**
      * Non-persistent storage model attributes.
      *
      * @var array
@@ -59,18 +59,18 @@ class Iscamap extends Model
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
-	}
+  	}
 
 
-	/**
+	  /**
      * Query scope by ident
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeIdent($query, $ident)
+    public function scopeIdent($query, $ident)
     {
-		return $query->where('ident', $ident);
+      return $query->where('ident', $ident);
     }
 
 
@@ -80,8 +80,8 @@ class Iscamap extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeSymbol($query, $ident)
+    public function scopeSymbol($query, $ident)
     {
-		return $query->where('symbol', $ident);
+      return $query->where('symbol', $ident);
     }
 }

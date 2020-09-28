@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 
 Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
@@ -26,23 +26,22 @@ Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api
 */
 
 // affiliates
-//Route::middleware('auth:api')->resource('affiliate', 'Api\AffiliateController');
-Route::resource('affiliates', 'Api\AffiliateController');
+Route::resource('affiliates', 'Api\AffiliateController')->only(['index', 'show']);
 
 // genes
-Route::resource('genes', 'Api\GeneController');
+Route::resource('genes', 'Api\GeneController')->only(['index']);
 
 // curated genes
-Route::resource('curations', 'Api\CurationController');
+Route::resource('curations', 'Api\CurationController')->only(['index']);
 
 // dosage
-Route::resource('dosage', 'Api\DosageController');
+Route::resource('dosage', 'Api\DosageController')->only(['index']);
 
 // gene validity
-Route::resource('validity', 'Api\ValidityController');
+Route::resource('validity', 'Api\ValidityController')->only(['index']);
 
 // drugs
-Route::resource('drugs', 'Api\DrugController');
+Route::resource('drugs', 'Api\DrugController')->only(['index']);
 
 // drugs
-Route::resource('conditions', 'Api\ConditionController');
+Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);

@@ -2,15 +2,9 @@
 
 namespace App;
 
-use Alexaandrov\GraphQL\Facades\Client as Genegraph;
 use Illuminate\Support\Facades\Log;
 
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\RequestException;
-
-use App\GeneLib;
-
-use Exception;
+use App\Traits\Query;
 
 use Carbon\Carbon;
 
@@ -20,7 +14,7 @@ use Carbon\Carbon;
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
  * @author     S. Goehringer <scottg@creationproject.com>
- * @copyright  2019 ClinGen
+ * @copyright  2020 ClinGen
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/PackageName
@@ -30,7 +24,8 @@ use Carbon\Carbon;
  * */
 class Graphql
 {    
-	
+	use Query;
+
 	protected static $prefix = "https://search.clinicalgenome.org/kb/agents/";
 	 
 	/**
@@ -52,6 +47,7 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 		
+		// set up query for either all genes or just curated ones
 		if ($curated === true)
 		{		
 			$query = '{
@@ -94,42 +90,11 @@ class Graphql
 				}';
 		}
 
-		try {
-			Log::info("Begin Genegraph genelist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph genelist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 		
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
@@ -149,7 +114,8 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
-				
+		
+		// set up query for gene details
 		$query = '{
 				gene(' 
 				. 'iri: "' . $gene
@@ -212,43 +178,11 @@ class Graphql
 				}
 			}';
 
-		try {
-		
-			Log::info("Begin Genegraph genedetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph genedetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		$node = new Nodal((array) $response->gene);
 
@@ -291,7 +225,6 @@ class Graphql
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
-	//dd($node);	
 
 		return $node;	
 	}
@@ -324,42 +257,11 @@ class Graphql
 				}
 			}';
 	
-		try {
-			Log::info("Begin Genegraph drugLook call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph drugLook call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return '{[]}'; //$collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->suggest as $record)
@@ -371,15 +273,7 @@ class Graphql
 			$collection->push($node);
 		}
 
-		/*$array = [];
-		foreach($response->suggest as $record)
-		{
-			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
-						'url' => route('gene-show', $record->curie)];
-		}*/
-
 		return (object) ['count' => count($collection), 'collection' => $collection];
-		//return json_encode($array);
 	}
 
 
@@ -408,35 +302,11 @@ class Graphql
 			  }
 			}';
 		
-		try {
-		
-			Log::info("Begin Genegraph actionabilitylist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph actionabilitylist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 				
 		$node = new Nodal((array) $response->gene);
 		
@@ -480,49 +350,18 @@ class Graphql
 				}
 			}';
 
-		try {
-		
-			Log::info("Begin Genegraph dosagelist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph dosagelist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
 		{
 			$node = new Nodal((array) $record);
 
+			// query local db for additional information
 			$gene = Gene::where('hgnc_id', $node->hgnc_id)->first();
 
 			if ($gene !== null)
@@ -595,43 +434,11 @@ class Graphql
 				}
 			}';
 
-		try {
-		
-			Log::info("Begin Genegraph dosagedetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph dosagedetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		$node = new Nodal((array) $response->gene);
 
@@ -676,7 +483,6 @@ class Graphql
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
-	//dd($node);	
 
 		return $node;	
 	}
@@ -695,21 +501,6 @@ class Graphql
 			
 		// initialize the collection
 		$collection = collect();
-			
-		/*$query = '{
-				diseases('
-					. self::optionList($page, $pagesize, $sort, $direction, $search, "ALL")
-				. ') {
-					disease_list {
-						iri
-						curie
-						label
-						last_curated_date
-						curation_activities
-					}
-					count
-				}
-			}';*/
 
 		$query = '{
 				gene_validity_assertions('
@@ -747,43 +538,11 @@ class Graphql
 				}
 			}';
 
-		try {
-		
-			Log::info("Begin Genegraph validitylist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph validitylist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
@@ -843,48 +602,16 @@ class Graphql
 			}
 		}';
 
-		try {
-	
-			Log::info("Begin Genegraph validitydetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph validitydetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-	
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
-//dd($node);
+
 		return $node;	
 
 	}
@@ -919,35 +646,11 @@ class Graphql
 			}
 		}';
 
-		try {
-	
-			Log::info("Begin Genegraph actionabilitylist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph actionabilitylist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-	
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 				
 		// add each gene to the collection
 		foreach($response->affiliations->agent_list as $record)
@@ -960,7 +663,6 @@ class Graphql
 		// genegraph currently provides no sort capablility
 		$collection = $collection->sortBy('label');
 
-	//dd($collection);
 		return (object) ['count' => $response->affiliations->count, 'collection' => $collection];
 	}
 	
@@ -975,6 +677,10 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		// the affiliate ID is expected to be numeric, handle gracefully if not
+		if (!ctype_digit($affiliate))
+			$affiliate = "0";
 
 		// initialize the collection
 		$collection = collect();
@@ -1024,53 +730,18 @@ class Graphql
 			}
 		}';
 
-		try {
-	
-			Log::info("Begin Genegraph affiliatedetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph affiliatedetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-	
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
 
-		//$node = new Nodal((array) $response->affiliation);
-		//$node->json = json_decode($node->legacy_json, false);
-		//$node->score_data = $node->json->scoreJson ?? $node->json;
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->affiliation->gene_validity_assertions->curation_list as $record)
 			$collection->push(new Nodal((array) $record));
 	
-		return (object) ['count' => $response->affiliation->gene_validity_assertions->count, 'collection' => $collection, 'label' => $response->affiliation->label];
+		return (object) ['count' => $response->affiliation->gene_validity_assertions->count, 
+						 'collection' => $collection, 'label' => $response->affiliation->label];
 	}
 	
 	
@@ -1085,111 +756,52 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-			/*$query = '{
-				disease('
-				. 'iri: "' . $condition
-				. '") {
+		// genegraph doesn't like when the mondo prefix is missing, handle gracefully
+		if (strpos($condition, 'MONDO:') !== 0)
+			$condition = 'MONDO:' . $condition;
+
+		$query = '{
+			disease('
+			. 'iri: "' . $condition
+			. '") {
+				label
+				iri
+				curation_activities
+				genetic_conditions {
+					gene {
 					label
-					iri
-					curation_activities
-					genetic_conditions {
-						gene {
-							hgnc_id
-							label
-						}
-						gene_validity_assertions {
-							mode_of_inheritance
-							report_date
-							classification
-							curie
-						}
-						actionability_curations {
-							report_date
-							source
-						}
-						gene_dosage_assertions {
-							report_date
-							score
-							curie
-						}
+					hgnc_id
+					}
+					gene_validity_assertions {
+					mode_of_inheritance {
+						label
+						curie
+					}
+					report_date
+					classification {
+						label
+						curie
+					}
+					curie
+					}
+					actionability_curations {
+					report_date
+					source
+					}
+					gene_dosage_assertions {
+					report_date
+					score
+					curie
 					}
 				}
-			}';*/
-
-			$query = '{
-				disease('
-				. 'iri: "' . $condition
-				. '") {
-					label
-					iri
-					curation_activities
-					genetic_conditions {
-						gene {
-						label
-						hgnc_id
-						}
-						gene_validity_assertions {
-						mode_of_inheritance {
-							label
-							curie
-						}
-						report_date
-						classification {
-							label
-							curie
-						}
-						curie
-						}
-						actionability_curations {
-						report_date
-						source
-						}
-						gene_dosage_assertions {
-						report_date
-						score
-						curie
-						}
-				  	}
-				}
-			}';
-		
-		try {
-		
-			Log::info("Begin Genegraph conditiondetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph conditiondetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
 			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		}';
+
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 		
 		$node = new Nodal((array) $response->disease);
 
@@ -1224,43 +836,12 @@ class Graphql
 					}
 				}
 			}';
-	
-		try {
-			Log::info("Begin Genegraph conditionLook call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph conditionLook call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return '{[]}'; //$collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->suggest as $record)
@@ -1314,44 +895,12 @@ class Graphql
 					}
 				}
 			}';
-			  
-		try {
-		
-			Log::info("Begin Genegraph conditionlist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph conditionlist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->diseases->disease_list as $record)
@@ -1387,42 +936,11 @@ class Graphql
 				}
 			}';
 	
-		try {
-			Log::info("Begin Genegraph druglist call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph druglist call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 		
 		// add each gene to the collection
 		foreach($response->drugs->drug_list as $record)
@@ -1457,43 +975,12 @@ class Graphql
 					}
 				}
 			}';
-	
-		try {
-			Log::info("Begin Genegraph drugdetail call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph drugdetail call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return $collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 		
 		$node = new Nodal((array) $response->drug);
 	
@@ -1527,43 +1014,12 @@ class Graphql
 					}
 				}
 			}';
-	
-		try {
-			Log::info("Begin Genegraph geneLook call: " . Carbon::now());
-			$response = Genegraph::fetch($query);
-			Log::info("End Genegraph geneLook call: " . Carbon::now());
-			
-		} catch (RequestException $exception) {	// guzzle exceptions
-    
-			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
-			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return '{[]}'; //$collection;
-			}
-			
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		} catch (Exception $exception) {		// everything else
-			
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
-			
-			return null;
-			
-		};
+
+		// query genegraph
+		$response = self::query($query);
+
+		if (empty($response))
+			return $response;
 
 		// add each gene to the collection
 		foreach($response->suggest as $record)

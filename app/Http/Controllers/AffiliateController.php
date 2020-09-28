@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
 
-use Ahsan\Neo4j\Facade\Cypher;
-
 use App\GeneLib;
 
 class AffiliateController extends Controller
@@ -26,7 +24,7 @@ class AffiliateController extends Controller
         * total counts for gene and diseases on relevant pages
         * category would be for setting default select of dropdown */
         $display_tabs = collect([
-            'active' => "gene",
+            'active' => "affiliate",
             'query' => "",
             'category' => "",
             'counts' => [
@@ -66,6 +64,10 @@ class AffiliateController extends Controller
                 'variant_path' => "300"
             ]
         ]);
+
+        // the affiliate id is expected to be numeric.
+        if (!ctype_digit($id))
+            $id = 0;
 
         return view('affiliate.show', compact('display_tabs'))
                         ->with('apiurl', '/api/affiliates/' . $id)

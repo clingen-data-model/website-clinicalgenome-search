@@ -5,12 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 /*
-    ATTENTION
-    ATTENTION
-    ATTENTION
-    ATTENTION
-    ATTENTION
-    ATTENTION
     +++++++++++++++++++++++++++++++++++++++++++++++
         Actionability will redirect to ACI pages and reports
     +++++++++++++++++++++++++++++++++++++++++++++++

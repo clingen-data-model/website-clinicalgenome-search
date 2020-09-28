@@ -90,9 +90,7 @@ class DrugController extends Controller
 				]
 			]);
 
-		$record = GeneLib::drugDetail([ 
-										'drug' => $id
-									]);
+		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
 		{

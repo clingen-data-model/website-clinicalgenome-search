@@ -11,7 +11,7 @@ use Uuid;
 /**
  *
  * @category   Model
- * @package    DBDGenes
+ * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
  * @copyright  2020 Geisinger
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
@@ -35,8 +35,8 @@ class Gene extends Model
 		'ident' => 'alpha_dash|max:80|required',
 		'name' => 'name|max:80|required',
 		'hgnc_id' => 'string|nullable',
-        'description' => 'string|nullable',
-        'location' => 'string|nullable',
+          'description' => 'string|nullable',
+          'location' => 'string|nullable',
 		'alias_symbol' => 'json|nullable',
 		'prev_symbol' => 'json|nullable',
 		'date_symbol_changed' => 'string|nullable',

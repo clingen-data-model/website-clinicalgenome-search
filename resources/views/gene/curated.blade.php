@@ -38,6 +38,9 @@
   .search-input {
     min-width: 300px;
   }
+  .swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+}
 </style>
 
 <script>
@@ -204,7 +207,12 @@
     })
 
 	$table.on('load-error.bs.table', function (e, name, args) {
-		swal("Load Error!");
+    console.log(args.responseText);
+    swal({
+          title: "Load Error",
+          text: "The system could not retrieve data from GeneGraph",
+          icon: "error"
+    });
 	})
 
   }

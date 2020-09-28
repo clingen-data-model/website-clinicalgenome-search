@@ -131,21 +131,21 @@ class GeneController extends Controller
 				]
 			]);
 
-			$record = GeneLib::geneDetail([
-											'gene' => $id,
-											'curations' => true,
-											'action_scores' => true,
-											'validity' => true,
-											'dosage' => true
-										]);
+		$record = GeneLib::geneDetail([
+										'gene' => $id,
+										'curations' => true,
+										'action_scores' => true,
+										'validity' => true,
+										'dosage' => true
+									]);
 
-			if ($record === null)
-			{
-				die(print_r(GeneLib::getError()));
-			}
-
-			return view('gene.show', compact('display_tabs', 'record'));
+		if ($record === null)
+		{
+			die(print_r(GeneLib::getError()));
 		}
+
+		return view('gene.show', compact('display_tabs', 'record'));
+	}
 
 
 	/**
