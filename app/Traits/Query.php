@@ -27,9 +27,8 @@ trait Query
 			Log::info("Querying Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 			$response = Genegraph::fetch($query);
 			Log::info("Return from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
-			
 		} catch (RequestException $exception) {	// guzzle exceptions and error responses from gql
-	
+
 			Log::info("Guzzle Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
 			$response = $exception->getResponse();

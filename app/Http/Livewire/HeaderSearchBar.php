@@ -63,7 +63,7 @@ class HeaderSearchBar extends Component
 	        {
 		    	$collection = $items->collection;
 		      } else {
-		      	$collection = false;
+		      	$collection = collect();
 		      }
 		}
 		else

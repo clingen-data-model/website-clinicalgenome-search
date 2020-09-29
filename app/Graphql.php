@@ -757,7 +757,8 @@ class Graphql
 			$$key = $value;
 
 		// genegraph doesn't like when the mondo prefix is missing, handle gracefully
-		if (strpos($condition, 'MONDO:') !== 0)
+
+		if (strpos($condition, 'MONDO:') === false && strpos($condition, 'MONDO_') === false)
 			$condition = 'MONDO:' . $condition;
 
 		$query = '{
@@ -1007,6 +1008,7 @@ class Graphql
 						curie
 						curations
 						highlighted
+						alternative_curie
 						iri
 						text
 						type
@@ -1025,8 +1027,8 @@ class Graphql
 		foreach($response->suggest as $record)
 		{
 			$node = new Nodal((array) $record);
-			$node->label = $record->highlighted . '  (' . $record->curie . ')';
-			$node->href = route('gene-show', $record->curie);
+			$node->label = $record->highlighted . '  (' . $record->alternative_curie . ')';
+			$node->href = route('gene-show', $record->alternative_curie);
 
 			$collection->push($node);
 		}
