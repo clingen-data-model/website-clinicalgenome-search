@@ -73,7 +73,7 @@ updates all outdated commands
 ```composer update vendor-name/package-name```
 
 ### Load External
-- update:Genenames
-- decipher:query
-- exac:query
-- update:map
+- php artisan update:Genenames
+- php artisan decipher:query
+- php artisan exac:query
+- php artisan update:map
