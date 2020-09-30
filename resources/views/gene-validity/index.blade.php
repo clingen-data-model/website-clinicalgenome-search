@@ -5,9 +5,9 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">Gene Disease Validity</h1>
-      <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3>
+      {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 
-			@include('_partials.genetable', 
+			@include('_partials.genetable',
 					['tools' => '<a href="/gene-validity/download"><i class="fas fa-file-download"></i> Download Summary Data</a>'])
 
 		</div>
@@ -73,20 +73,28 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
   }
 
-
-  function diseaseFormatter(index, row) { 
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
-	html += '<div><a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a></div>';
+  function hgncFormatter(index, row) {
+	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
-	
+
+  function diseaseFormatter(index, row) {
+	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
+	return html;
+  }
+    function mondoFormatter(index, row) {
+	var html = '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
+	return html;
+  }
+
+  function badgeFormatter(index, row) {
+
 	html = '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
             + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
 
@@ -97,18 +105,31 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
+
         {
 			title: 'Gene',
 			field: 'symbol',
 			formatter: symbolFormatter,
 			sortable: true
+        },{
+			title: 'HGNC',
+			field: 'hgnc',
+			formatter: hgncFormatter,
+			sortable: true,
+			visible: false
         },
         {
 			title: 'Disease',
 			field: 'disease',
 			formatter: diseaseFormatter,
       sortable: true
+        },
+        {
+			title: 'MONDO',
+			field: 'mondo',
+			formatter: mondoFormatter,
+      sortable: true,
+			visible: false
         },
 		{
 			title: 'MOI',
@@ -141,7 +162,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -149,7 +170,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {
