@@ -76,7 +76,7 @@
   }
 
   function reportFormatter(index, row) {
-	var html = '<a class="btn btn-block text-left font-weight-bold btn-success btn-sm pb-0 pt-0" href="'
+	var html = '<a class="btn btn-block btn btn-default btn-xs" href="'
 			+ row.report +'"><i class="fas fa-file"></i>  View Details</a>';
 
 	return html;
@@ -147,7 +147,7 @@
         },
 		{
 			field: 'date',
-			title: 'Report Date',
+			title: 'Date',
 			sortable: true
         }
       ]
