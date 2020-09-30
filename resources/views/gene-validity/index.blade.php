@@ -145,19 +145,17 @@
 		{
 			title: 'SOP',
 			field: 'sop',
-			align: 'center',
+      sortable: true
+        },
+		{
+			field: 'released',
+			title: 'Released',
       sortable: true
         },
 		{
 			title: 'Classification',
 			field: 'classification',
 			formatter: badgeFormatter,
-      sortable: true
-        },
-		{
-			field: 'released',
-			title: 'Released',
-			align: 'right',
       sortable: true
         }
       ]

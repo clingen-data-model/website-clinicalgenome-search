@@ -73,6 +73,11 @@
   function symbolFormatter(index, row) {
 	var html = '<a href="/gene-dosage/' + row.hgnc_id + '">' + row.symbol + '</a>';
 	return html;
+	}
+
+  function hgncFormatter(index, row) {
+	var html = '<a href="/gene-dosage/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
+	return html;
   }
 
   function reportFormatter(index, row) {
@@ -108,11 +113,19 @@
       columns: [
 
         {
-			title: 'Gene Symbol',
+			title: 'Gene',
 			field: 'symbol',
 			formatter: symbolFormatter,
 			sortable: true
-        },
+				},
+        {
+			title: 'HGNC',
+			field: 'hgnc',
+			formatter: hgncFormatter,
+			sortable: true,
+			visible: false
+				},
+
 		{
 			title: 'Location',
 			field: 'location',
@@ -140,15 +153,14 @@
 			sortable: true
         },
 		{
-			title: 'Report',
-			field: 'report',
-			align: 'center',
-			formatter: reportFormatter
-        },
-		{
 			field: 'date',
 			title: 'Date',
 			sortable: true
+        },
+		{
+			title: 'Report',
+			field: 'report',
+			formatter: reportFormatter
         }
       ]
     })
