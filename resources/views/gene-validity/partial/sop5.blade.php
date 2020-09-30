@@ -556,7 +556,7 @@
 				<div class='col-sm-4'>
           {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null) }}
 				</div>
-				<div class='col-sm-12'>
+						<div class='col-sm-12 text-left'>
           {{ $record->score_data->summary->FinalClassificationNotes ?? null }}</div>
 
 					</td>
