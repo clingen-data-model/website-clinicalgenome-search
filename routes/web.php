@@ -12,17 +12,19 @@
 */
 
 
-Route::get('/', 'HomeController@index')->name('home');
-
+//Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function () {
+	return redirect()->route('gene-curations');
+})->name('home');
 /*
  * Test route - remove for production
  */
-Route::get('/test/test', 'TestController@test')->name('test-test');
-Route::get('/test', 'TestController@index')->name('test-index');
-Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
-Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
-Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
-Route::get('/test/download', 'TestController@download')->name('dosage-download');
+// Route::get('/test/test', 'TestController@test')->name('test-test');
+// Route::get('/test', 'TestController@index')->name('test-index');
+// Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
+// Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
+// Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
+// Route::get('/test/download', 'TestController@download')->name('dosage-download');
 
 /*
  *	download dosage csv

@@ -39,11 +39,11 @@
           @endif
           @isset($display_tabs['active'])
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1">
-            <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
+            {{-- <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
               <a class="nav-link" href="{{ route('home') }}">
                 Overview
               </a>
-            </li>
+            </li> --}}
             <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
               <a class="nav-link" href="{{ route('gene-curations') }}">
                 Curated Genes
