@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">Genes with Dosage Sensitivity</h1>
-                <h3>Clingen has information on <span id="gene-count">many</span> curated dosage sensitivity genes</h3>
+                {{-- <h3>Clingen has information on <span id="gene-count">many</span> curated dosage sensitivity genes</h3> --}}
 		</div>
 
 		<div class="col-md-12">
