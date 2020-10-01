@@ -18839,6 +18839,38 @@ table.border-none td {
   vertical-align: top;
 }
 
+.fixed-table-toolbar {
+  display: none;
+}
+
+.fixed-table-body {
+  border-top: 1px solid #ddd;
+}
+
+.fixed-table-body thead {
+  background-color: #eeeeee;
+}
+
+.fixed-table-pagination .pagination-detail,
+.fixed-table-pagination .pagination {
+  padding-left: 0.7rem !important;
+  padding-right: 0.2rem !important;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  font-size: 90%;
+}
+
+.curated-genes-table thead tr:first-child {
+  border-top: none;
+  background-color: #fff;
+}
+
+.curated-genes-table .fixed-table-body {
+  border-top: none;
+}
+
 /* CSS Document */
 
 /* curation_dashboard */

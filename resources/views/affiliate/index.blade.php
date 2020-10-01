@@ -113,7 +113,12 @@
     })
 
     $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args)
+      console.log(name, args);
+      $(function () {
+        $( ".fixed-table-toolbar" ).show();
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+      });
     })
 
 	$table.on('load-error.bs.table', function (e, name, args) {

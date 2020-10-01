@@ -166,10 +166,9 @@
       console.log(name, args);
       // Helpers
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      });
-      $(function () {
-        $('[data-toggle="popover"]').popover()
+        $( ".fixed-table-toolbar" ).show();
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
       });
     })
 

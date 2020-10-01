@@ -142,7 +142,7 @@
                   <li><a href="#">Coming soon...</a></li>
                 </ul>
               </li>--}}
-            <li role="presentation" class="nav-item dropdown pull-right">
+            {{-- <li role="presentation" class="nav-item dropdown pull-right">
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-share-square"></i>
                 </a>
@@ -151,7 +151,7 @@
                   <li><a href="#"><i class="fab fa-twitter"></i> Tweet this page...</a></li>
                   <li><a href="#"><i class="fas fa-quote-left"></i> How to cite...</a></li>
                 </ul>
-              </li>
+              </li> --}}
             {{--<li class="nav-item  pull-right ">
               <a class="nav-link" href="#">
                 <i class="fas fa-download"></i>

@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12">
+            <div class="col-md-12 curated-genes-table text-center">
                 <h1><span id="gene-count"></span> Curated Genes</h1>
                 {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 
@@ -206,10 +206,9 @@
       console.log(name, args);
       // Helpers
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
-      });
-      $(function () {
-        $('[data-toggle="popover"]').popover()
+        $( ".fixed-table-toolbar" ).show();
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
       });
     })
 
