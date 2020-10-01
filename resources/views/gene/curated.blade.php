@@ -203,7 +203,14 @@
     })
 
     $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args)
+      console.log(name, args);
+      // Helpers
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
+      $(function () {
+        $('[data-toggle="popover"]').popover()
+      });
     })
 
 	$table.on('load-error.bs.table', function (e, name, args) {

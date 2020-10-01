@@ -83,13 +83,17 @@
 	return html;
   }
 
-
   function diseaseFormatter(index, row) {
 	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
 	return html;
   }
     function mondoFormatter(index, row) {
 	var html = '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
+	return html;
+  }
+
+  function moiFormatter(index, row) {
+	var html = '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + row.moi +' full text" ">' + row.moi + '</span>';
 	return html;
   }
 
@@ -135,6 +139,7 @@
 			title: 'MOI',
 			field: 'moi',
       sortable: true,
+			formatter: moiFormatter,
       //visible: false
         },
     {
@@ -162,7 +167,15 @@
     })
 
     $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args)
+      console.log(name, args);
+
+      // Helpers
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      });
+      $(function () {
+        $('[data-toggle="popover"]').popover()
+      });
     })
 
 	$table.on('load-error.bs.table', function (e, name, args) {
