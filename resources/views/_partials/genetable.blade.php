@@ -11,12 +11,12 @@
     data-search="true"
     data-search-align="left"
     data-trim-on-search="false"
-    {{-- data-show-refresh="true" --}}
-    {{-- data-show-toggle="true" --}}
+    data-show-refresh="true"
+    data-show-toggle="true"
     data-show-align="left"
     data-show-fullscreen="true"
     data-show-columns="true"
-    {{-- data-show-columns-toggle-all="true" --}}
+    data-show-columns-toggle-all="true"
     {{-- data-detail-view="true" --}}
     data-show-export="true"
     {{-- data-click-to-select="true" --}}
