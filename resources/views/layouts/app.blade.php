@@ -30,7 +30,36 @@
       <section id='section_heading' class="pt-0 pb-0 mb-2 section-heading section-heading-groups text-light">
         <div  class="container">
           <span id="navSearchBar">
-             @livewire('header-search-bar')
+            <div id="section_search_wrapper" class="mt-4 mb-3 input-group input-group-xl">
+
+	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
+	         <div class="input-group-btn">
+	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene</span></button>
+	           <ul class="dropdown-menu dropdown-menu-left">
+	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
+	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
+	             <li><a class="typeQueryDrug pointer">Drug Name</a></li>
+	             {{-- <li><a href="#">HGVS Expression</a></li> --}}
+	             {{-- <li><a href="#">Genomic Coordinates</a></li> --}}
+	             {{-- <li><a href="#">CAid (Variant)</a></li> --}}
+               <li role="separator" class="divider"></li>
+               <li><a class="" target="allele_reg" href="http://reg.clinicalgenome.org">Variant <i class="fas fa-external-link-alt mt-1 text-muted"></i> </a></li>
+	             <li><a href="https://clinicalgenome.org/search/"> Website Content <i class="fas fa-external-link-alt mt-1 text-muted"></i></a></li>
+	           </ul>
+           </div><!-- /btn-group -->
+           <span class="inputQueryGene">
+            <input type="text" class="form-control queryGene " aria-label="..." value="" placeholder="Start typing a gene symbol...">
+           </span>
+           <span class="inputQueryDisease" style="display: none">
+            <input type="text" class="form-control  queryDisease" aria-label="..." value="" placeholder="Start typing a disease..." >
+           </span>
+           <span class="inputQueryDrug" style="display: none">
+           <input type="text" class="form-control queryDrug" aria-label="..." value="" placeholder="Start typing a drug...">
+           </span>
+	         <span class="input-group-btn">
+	                 <button class="btn btn-default btn-search-submit" type="button"> Search</button>
+	               </span>
+         </div><!-- /input-group -->
           </span>
           @hasSection ('heading')
             @yield('heading')
@@ -166,7 +195,118 @@
 
 
     @yield('script_js')
+
+    <script src="/js/typeahead.js"></script>
     <script>
+      $( ".typeQueryGene" ).click(function() {
+        $( ".inputQueryGene" ).show();
+        $( ".inputQueryGene .queryGene" ).show();
+        $( ".inputQueryDisease" ).hide();
+        $( ".inputQueryDisease .queryDisease" ).hide();
+        $( ".inputQueryDrug" ).hide();
+        $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".typeQueryLabel").text("Gene");
+      });
+      $( ".typeQueryDisease" ).click(function() {
+        $( ".inputQueryGene" ).hide();
+        $( ".inputQueryGene .queryGene" ).hide();
+        $( ".inputQueryDisease" ).show();
+        $( ".inputQueryDisease .queryDisease" ).show();
+        $( ".inputQueryDrug" ).hide();
+        $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".typeQueryLabel").text("Disease");
+      });
+      $( ".typeQueryDrug" ).click(function() {
+        $( ".inputQueryGene" ).hide();
+        $( ".inputQueryGene .queryGene" ).hide();
+        $( ".inputQueryDisease" ).hide();
+        $( ".inputQueryDisease .queryDisease" ).hide();
+        $( ".inputQueryDrug" ).show();
+        $( ".inputQueryDrug .queryDrug" ).show();
+        $( ".typeQueryLabel").text("Drug");
+      });
+
+
+      var term = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          url: 'https://search.clinicalgenome.org/kb/home.json?term=%QUERY',
+          wildcard: '%QUERY'
+        }
+      });
+
+      var termGene = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          url: 'https://search.clinicalgenome.org/kb/home.json?termGene=%QUERY',
+          wildcard: '%QUERY'
+        }
+      });
+
+      var termDisease = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          url: 'https://search.clinicalgenome.org/kb/home.json?termDisease=%QUERY',
+          wildcard: '%QUERY'
+        }
+      });
+
+      var termDrug = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          url: 'https://search.clinicalgenome.org/kb/home.json?termDisease=%QUERY',
+          wildcard: '%QUERY'
+        }
+      });
+
+      $('.queryDisease').typeahead(null,
+      {
+        name: 'termDisease',
+        display: 'label',
+        source: termDisease,
+
+        limit: 20,
+        minLength: 3,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+      }).bind('typeahead:selected',function(evt,item){
+        window.location = item.url;
+      });
+
+      $('.queryGene').typeahead(null,
+      {
+        name: 'termGene',
+        display: 'label',
+        source: termGene,
+
+        limit: 20,
+        minLength: 3,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+      }).bind('typeahead:selected',function(evt,item){
+        window.location = item.url;
+      });
+
+      $('.queryDrug').typeahead(null,
+      {
+        name: 'termDrug',
+        display: 'label',
+        source: termDrug,
+
+        limit: 20,
+        minLength: 3,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+      }).bind('typeahead:selected',function(evt,item){
+        window.location = item.url;
+      });
 
     </script>
     @livewireScripts
