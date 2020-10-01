@@ -5,7 +5,7 @@
 
 
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
-	         <input type="text" class="form-control" aria-label="..." wire:model="searchBarQuery"  value="{{ $searchBarQuery }}" placeholder="Type in a query...">
+
 	         <div class="input-group-btn">
 	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gene query...</button>
 	           <ul class="dropdown-menu dropdown-menu-left">
@@ -18,7 +18,8 @@
 	             <li role="separator" class="divider"></li>
 	             <li><a href="#">Website Content</a></li>
 	           </ul>
-	         </div><!-- /btn-group -->
+					 </div><!-- /btn-group -->
+					 <input type="text" class="form-control" aria-label="..." wire:model="searchBarQuery"  value="{{ $searchBarQuery }}" placeholder="Type in a query...">
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="button"> Search</button>
 	               </span>

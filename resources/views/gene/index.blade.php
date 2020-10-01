@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1>Curated Genes</h1>
+			<h1>Genes</h1>
       {{-- <h3>Clingen had information on <span id="gene-count">many</span> genes</h3> --}}
 
 			@include('_partials.genetable')

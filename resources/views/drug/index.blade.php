@@ -62,17 +62,17 @@
     return html.join('')
   }
 
-  function symbolFormatter(index, row) { 
+  function symbolFormatter(index, row) {
 	var html = '<a href="/drugs/' + row.curie + '">' + row.curie + '</a>';
 	return html;
   }
 
-  function drugFormatter(index, row) { 
+  function drugFormatter(index, row) {
 	var html = '<a href="/drugs/' + row.curie + '">' + row.label + '</a>';
 	return html;
   }
 
-  function badgeFormatter(index, row) { 
+  function badgeFormatter(index, row) {
 	var html = '';
 	if (row.has_actionability)
     	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
@@ -96,18 +96,18 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-        
-        {
-			title: 'RXNORM',
-			field: 'curie',
-      formatter: symbolFormatter,
-			sortable: true
-        },
+
+
         {
 			title: 'Drug',
 			field: 'label',
       formatter: drugFormatter,
       sortable: true
+        },{
+			title: 'RXNORM',
+			field: 'curie',
+      formatter: symbolFormatter,
+			sortable: true
         },
 		{
 			title: 'Application',
@@ -116,7 +116,7 @@
         }
       ]
     })
-    
+
     $table.on('all.bs.table', function (e, name, args) {
       console.log(name, args)
     })
@@ -124,7 +124,7 @@
 	$table.on('load-error.bs.table', function (e, name, args) {
 		swal("Load Error!");
 	})
-   
+
   }
 
   $(function() {

@@ -101,7 +101,8 @@
         },
         {
 			title: 'Clingen Affiliate ID',
-			field: 'agent'
+      field: 'agent',
+			visible: false
         },
 		{
 			title: 'Number of Curations',

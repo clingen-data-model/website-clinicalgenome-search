@@ -84,10 +84,18 @@
 	return html;
   }
 
+  function hgncFormatter(index, row) {
+	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
+	return html;
+  }
+
 
   function diseaseFormatter(index, row) {
 	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
-	html += '<div><a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a></div>';
+	return html;
+  }
+    function mondoFormatter(index, row) {
+	var html = '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
 	return html;
   }
 
@@ -109,30 +117,47 @@
 			field: 'symbol',
 			formatter: symbolFormatter,
 			sortable: true
+        },{
+			title: 'HGNC',
+			field: 'hgnc',
+			formatter: hgncFormatter,
+			sortable: true,
+			visible: false
         },
         {
 			title: 'Disease',
 			field: 'disease',
-			formatter: diseaseFormatter
+			formatter: diseaseFormatter,
+      sortable: true
+        },
+        {
+			title: 'MONDO',
+			field: 'mondo',
+			formatter: mondoFormatter,
+      sortable: true,
+			visible: false
         },
 		{
 			title: 'MOI',
-			field: 'moi'
+			field: 'moi',
+      sortable: true,
+      //visible: false
         },
 		{
 			title: 'SOP',
 			field: 'sop',
-			align: 'center',
-        },
-		{
-			title: 'Classification',
-			field: 'classification',
-			formatter: badgeFormatter
+      sortable: true
         },
 		{
 			field: 'released',
 			title: 'Released',
-			align: 'right'
+      sortable: true
+        },
+		{
+			title: 'Classification',
+			field: 'classification',
+			formatter: badgeFormatter,
+      sortable: true
         }
       ]
     })

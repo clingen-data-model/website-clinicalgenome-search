@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1>Conditions</h1>
+			<h1>Diseases</h1>
                 {{-- <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3> --}}
 		</div>
 
