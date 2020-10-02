@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Curated as CuratedResource;
 
 use App\GeneLib;
@@ -14,7 +15,7 @@ class CurationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
@@ -30,6 +31,9 @@ class CurationController extends Controller
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> CuratedResource::collection($results->collection)];
+                'rows'=> CuratedResource::collection($results->collection),
+                'naction' => $results->naction,
+                'ndosage' => $results->ndosage,
+                'nvalid' => $results->nvalid];
     }
 }

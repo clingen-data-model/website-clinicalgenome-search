@@ -3,13 +3,26 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-12 curated-genes-table text-center">
-                <h1><span id="gene-count"></span> Curated Genes</h1>
+            <div class="col-md-8 curated-genes-table">
+                <h1><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="50" height="50"><img src="/images/clinicalActionability-on.png" width="50" height="50"><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Curated Genes</h1>
                 {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 
-                @include('_partials.genetable')
-
             </div>
+            <div class="col-md-4">
+              <div class="">
+                <div class="text-right p-2">
+                    <ul class="list-inline pb-0 mb-0 small">
+                      <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+                      <li class="small line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Validity<br />Genes</li>
+                      <li class="small line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
+                      <li class="small line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Genes</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+          <div class="col-md-12">
+            @include('_partials.genetable')
+          </div>
         </div>
     </div>
 
@@ -50,8 +63,11 @@
 
   function responseHandler(res) {
 
-    $('#gene-count').html(res.total);
-
+    //$('#gene-count').html(res.total);
+    $('.countGenes').html(res.total);
+    $('.countValidity').html(res.nvalid);
+    $('.countActionability').html(res.naction);
+    $('.countDosage').html(res.ndosage);
     return res
   }
 

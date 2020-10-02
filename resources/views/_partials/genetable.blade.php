@@ -12,7 +12,7 @@
     data-search-align="left"
     data-trim-on-search="false"
     {{-- data-show-refresh="true" --}}
-    data-show-toggle="true"
+    {{-- data-show-toggle="true" --}}
     data-show-align="left"
     data-show-fullscreen="true"
     data-show-columns="true"

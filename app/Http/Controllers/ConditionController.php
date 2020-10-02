@@ -41,18 +41,14 @@ class ConditionController extends Controller
      */
     public function index(Request $request, $page = 0, $size = 20)
     {
-		//if (is_int($page)) // don't forget to check the parms
-
-		$display_tabs = collect([
-				'active' => "condition",
-				'query' => "",
-				'counts' => [
-					'dosage' => "1434",
-					'gene_disease' => "500",
-					'actionability' => "270",
-					'variant_path' => "300"
-				]
-		]);
+		// process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+			$$key = $value;
+			
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "condition"
+        ]);
 
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', '/api/conditions')
@@ -70,16 +66,10 @@ class ConditionController extends Controller
 	public function show(Request $request, $id = null)
 	{
 
-		$display_tabs = collect([
-			'active' => "condition",
-			'query' => "BRCA2",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-				]
-			]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "condition"
+        ]);
 
 		$record = GeneLib::conditionDetail([ 'page' => 0,
 										'pagesize' => 200,
@@ -110,16 +100,10 @@ class ConditionController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
-		$display_tabs = collect([
-			'active' => "condition",
-			'query' => "BRCA2",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "condition"
+        ]);
 
 		$record = GeneLib::conditionDetail(['page' => 0,
 											'pagesize' => 200,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Drug as DrugResource;
 
 use App\GeneLib;
@@ -14,7 +15,7 @@ class DrugController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
         

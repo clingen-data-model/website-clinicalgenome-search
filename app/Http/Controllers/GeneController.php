@@ -6,12 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\GeneListRequest;
 
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-
-//use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
-use App\Nodal;
 
 /**
 *
@@ -19,13 +14,12 @@ use App\Nodal;
 * @package    Search
 * @author     P. Weller <pweller1@geisinger.edu>
 * @author     S. Goehringer <scottg@creationproject.com>
-* @copyright  2019 ClinGen
+* @copyright  2020 ClinGen
 * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
 * @version    Release: @package_version@
 * @link       http://pear.php.net/package/PackageName
 * @see        NetOther, Net_Sample::Net_Sample()
 * @since      Class available since Release 1.2.0
-* @deprecated
 *
 * */
 class GeneController extends Controller
@@ -52,21 +46,10 @@ class GeneController extends Controller
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
 
-		/* build cqching of these values with cross-section updates
-		 * total counts for gene and diseases on relevant pages
-		 * category would be for setting default select of dropdown */
-		$display_tabs = collect([
-			'active' => "gene",
-			'query' => "",
-			'category' => "",
-			'counts' => [
-				'total' => 'something',
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "gene"
+        ]);
 
 		return view('gene.index', compact('display_tabs'))
 						->with('apiurl', '/api/genes')
@@ -86,21 +69,10 @@ class GeneController extends Controller
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
 
-		/* build caching of these values with cross-section updates
-		 * total counts for gene and diseases on relevant pages
-		 * category would be for setting default select of dropdown */
-		$display_tabs = collect([
-			'active' => "gene-curations",
-			'query' => "",
-			'category' => "",
-			'counts' => [
-				'total' => 'something',
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "gene-curations"
+        ]);
 
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', '/api/curations')
@@ -120,15 +92,9 @@ class GeneController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
+		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
-			'query' => "BRCA2",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-				]
+			'active' => "gene"
 			]);
 
 		$record = GeneLib::geneDetail([
@@ -160,16 +126,10 @@ class GeneController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
+		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
-			'query' => "BRCA2",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+			'active' => "gene"
+			]);
 
 		$record = GeneLib::geneDetail([
 										'page' => 0,

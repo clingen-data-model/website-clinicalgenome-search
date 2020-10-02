@@ -5,15 +5,15 @@
 	<div class="row justify-content-center">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">Dosage Sensitivity</h1>
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
       {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
     </div>
     <div class="col-md-4">
       <div class="">
         <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
+              <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+              <!--<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>-->
               <li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
               </a>
                   <ul class="dropdown-menu dropdown-menu-left">

@@ -100,7 +100,12 @@ class Graphql
 		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
 	
-		return (object) ['count' => $response->genes->count, 'collection' => $collection];
+		$naction = $collection->where('has_actionability', true)->count();
+		$nvalid = $collection->where('has_validity', true)->count();
+		$ndosage = $collection->where('has_dosage', true)->count();
+		
+		return (object) ['count' => $response->genes->count, 'collection' => $collection,
+						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
 	}
 	
 	
@@ -548,7 +553,14 @@ class Graphql
 		foreach($response->gene_validity_assertions->curation_list as $record)
 			$collection->push(new Nodal((array) $record));
 
-		return (object) ['count' => $response->gene_validity_assertions->count, 'collection' => $collection];
+		$ngenes = $collection->unique('gene')->count();
+		$npanels = $collection->unique('attributed_to')->count();
+		
+		return (object) ['count' => $response->gene_validity_assertions->count, 
+						'collection' => $collection,
+						'ngenes' => $ngenes,
+						'npanels' => $npanels
+						];
 	}
 	
 	

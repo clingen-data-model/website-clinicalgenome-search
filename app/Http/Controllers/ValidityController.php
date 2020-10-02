@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Collection;
-use Illuminate\Pagination\LengthAwarePaginator;
-
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
 
 use App\GeneLib;
-use App\Nodal;
-use App\Helper;
 
 /**
  *
@@ -22,7 +17,7 @@ use App\Helper;
  * @package    Search
  * @author     P. Weller <pweller1@geisinger.edu>
  * @author     S. Goehringer <scottg@creationproject.com>
- * @copyright  2019 ClinGen
+ * @copyright  2020 ClinGen
  * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
  * @version    Release: @package_version@
  * @link       http://pear.php.net/package/PackageName
@@ -50,18 +45,14 @@ class ValidityController extends Controller
      */
     public function index(Request $request, $page = 1, $size = 100)
     {
-		//if (is_int($page)) // don't forget to check the parms
-
-		$display_tabs = collect([
-				'active' => "validity",
-				'query' => "",
-				'counts' => [
-					'dosage' => "1434",
-					'gene_disease' => "500",
-					'actionability' => "270",
-					'variant_path' => "300"
-				]
-		]);
+		// process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+			$$key = $value;
+			
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "validity"
+        ]);
 
 		return view('gene-validity.index', compact('display_tabs'))
 						->with('apiurl', '/api/validity')
@@ -81,16 +72,10 @@ class ValidityController extends Controller
 		if ($id === null)
 			die("display some error about needing an id");
 
-		$display_tabs = collect([
-				'active' => "validity",
-				'query' => "BRCA2",
-				'counts' => [
-					'dosage' => "1434",
-					'gene_disease' => "500",
-					'actionability' => "270",
-					'variant_path' => "300"
-				]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "validity"
+        ]);
 
 		$record = GeneLib::validityDetail(['page' => 0,
 										'pagesize' => 20,

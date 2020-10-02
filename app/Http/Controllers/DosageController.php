@@ -3,12 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\Dosage as DosageResource;
-
-use Illuminate\Support\Collection;
-use Ahsan\Neo4j\Facade\Cypher;
-
-use Illuminate\Pagination\LengthAwarePaginator;
 
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
@@ -24,7 +18,7 @@ use App\Jira;
 * @package    Search
 * @author     P. Weller <pweller1@geisinger.edu>
 * @author     S. Goehringer <scottg@creationproject.com>
-* @copyright  2019 ClinGen
+* @copyright  2020 ClinGen
 * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
 * @version    Release: @package_version@
 * @link       http://pear.php.net/package/PackageName
@@ -51,28 +45,22 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $psize = 100)
+    public function index(Request $request, $page = 1, $size = 100)
     {
         
         // process request args
-		foreach ($request->only(['page', 'sort', 'search', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
 
-		$display_tabs = collect([
-			'active' => "dosage",
-			'query' => "",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+        ]);
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('apiurl', '/api/dosage')
-						->with('pagesize', $psize)
+						->with('pagesize', $size)
 						->with('page', $page);
     }
 
@@ -85,16 +73,10 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
-		$display_tabs = collect([
-				'active'                            => "gene",
-				'query'                             => "BRCA2",
-				'counts'    => [
-					'dosage'                        => "1434",
-					'gene_disease'                  => "500",
-					'actionability'                 => "270",
-					'variant_path'                  => "300"
-				]
-		]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+        ]);
 	
 		$record = GeneLib::dosageDetail([ 'gene' => $id,
 										'curations' => true,
