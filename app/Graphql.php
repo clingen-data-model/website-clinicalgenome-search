@@ -269,16 +269,28 @@ class Graphql
 			return $response;
 
 		// add each gene to the collection
-		foreach($response->suggest as $record)
+		/*foreach($response->suggest as $record)
 		{
 			$node = new Nodal((array) $record);
 			$node->label = $record->highlighted . '  (' . $record->curie . ')';
 			$node->href = route('drug-show', $record->curie);
 
 			$collection->push($node);
+		}*/
+
+		$array = [];
+		foreach($response->suggest as $record)
+		{
+			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$short = "RXNORM:" . basename($record->curie);
+			$array[] = ['label' => $record->text . '  (' . $short . ')' 
+							. $ctag,
+						'url' => route('drug-show', $short)];
 		}
 
-		return (object) ['count' => count($collection), 'collection' => $collection];
+
+		//return (object) ['count' => count($collection), 'collection' => $collection];
+		return json_encode($array);
 	}
 
 
@@ -857,24 +869,26 @@ class Graphql
 			return $response;
 
 		// add each gene to the collection
-		foreach($response->suggest as $record)
+		/*foreach($response->suggest as $record)
 		{
 			$node = new Nodal((array) $record);
 			$node->label = $record->highlighted . '  (' . $record->curie . ')';
 			$node->href = route('condition-show', $record->curie);
 
 			$collection->push($node);
-		}
-
-		/*$array = [];
-		foreach($response->suggest as $record)
-		{
-			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
-						'url' => route('gene-show', $record->curie)];
 		}*/
 
-		return (object) ['count' => count($collection), 'collection' => $collection];
-		//return json_encode($array);
+		$array = [];
+		foreach($response->suggest as $record)
+		{
+			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$array[] = ['label' => $record->text . '  (' . $record->curie . ')' 
+							. $ctag,
+						'url' => route('condition-show', $record->curie)];
+		}
+
+		//return (object) ['count' => count($collection), 'collection' => $collection];
+		return json_encode($array);
 	}
 
 
@@ -1017,14 +1031,10 @@ class Graphql
 		$query = '{
 				suggest(contexts: ALL, suggest: GENE, text: "'
 				. $search . '") {
-						curie
 						curations
 						highlighted
 						alternative_curie
-						iri
 						text
-						type
-						weight
 					}
 				}
 			}';
@@ -1036,24 +1046,26 @@ class Graphql
 			return $response;
 
 		// add each gene to the collection
-		foreach($response->suggest as $record)
+		/*foreach($response->suggest as $record)
 		{
 			$node = new Nodal((array) $record);
 			$node->label = $record->highlighted . '  (' . $record->alternative_curie . ')';
 			$node->href = route('gene-show', $record->alternative_curie);
 
 			$collection->push($node);
-		}
-
-		/*$array = [];
-		foreach($response->suggest as $record)
-		{
-			$array[] = ['label' => $record->highlighted . '(' . $record->curie . ')' ,
-						'url' => route('gene-show', $record->curie)];
 		}*/
 
-		return (object) ['count' => count($collection), 'collection' => $collection];
-		//return json_encode($array);
+		$array = [];
+		foreach($response->suggest as $record)
+		{
+			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')' 
+							. $ctag,
+						'url' => route('gene-show', $record->alternative_curie)];
+		}
+
+		//return (object) ['count' => count($collection), 'collection' => $collection];
+		return json_encode($array);
 	}
 	
 	

@@ -7,26 +7,26 @@
 			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">  Gene Disease Validity</h1>
       {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
     </div>
+
     <div class="col-md-4">
       <div class="">
         <div class="text-right p-2">
-            <ul class="list-inline pb-0 mb-0 small">
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countEps text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br /> Expert<br />Panels</li>
-              <li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
-              </a>
-                  <ul class="dropdown-menu dropdown-menu-left">
-                    <li><a href="/gene-validity/download">Summary Data (CSV)</a></li>
-                  </ul>
-                </div>
-            </ul>
-          </div>
+          <ul class="list-inline pb-0 mb-0 small">
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countEps text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br /> Expert<br />Panels</li>
+            <li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options</a>
+                <ul class="dropdown-menu dropdown-menu-left">
+                  <li><a href="/gene-validity/download">Summary Data (CSV)</a></li>
+                </ul>
+            </li>
+          </ul>
+         </div>
       </div>
     </div>
+
     <div class="col-md-12">
 			@include('_partials.genetable')
-
 		</div>
 	</div>
 </div>
@@ -95,121 +95,116 @@
   }
 
   function symbolFormatter(index, row) {
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
-	return html;
+	  return '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
   }
 
   function hgncFormatter(index, row) {
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
-	return html;
+	  return '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
   }
 
   function diseaseFormatter(index, row) {
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
-	return html;
+	  return '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
   }
-    function mondoFormatter(index, row) {
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
-	return html;
+
+  function mondoFormatter(index, row) {
+	  return '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
   }
 
   function moiFormatter(index, row) {
-	var html = '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + row.moi +' full text" ">' + row.moi + '</span>';
-	return html;
+	  return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + row.moi +' full text" ">' + row.moi + '</span>';
   }
 
   function badgeFormatter(index, row) {
-
-	html = '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
+	  return '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
             + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
-
-	return html;
   }
 
   function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-
         {
-			title: 'Gene',
-			field: 'symbol',
-			formatter: symbolFormatter,
-			sortable: true
-        },{
-			title: 'HGNC',
-			field: 'hgnc',
-			formatter: hgncFormatter,
-			sortable: true,
-			visible: false
+          title: 'Gene',
+          field: 'symbol',
+          formatter: symbolFormatter,
+          sortable: true
         },
         {
-			title: 'Disease',
-			field: 'disease',
-			formatter: diseaseFormatter,
-      sortable: true
+          title: 'HGNC',
+          field: 'hgnc',
+          formatter: hgncFormatter,
+          sortable: true,
+          visible: false
         },
         {
-			title: 'MONDO',
-			field: 'mondo',
-			formatter: mondoFormatter,
-      sortable: true,
-			visible: false
+          title: 'Disease',
+          field: 'disease',
+          formatter: diseaseFormatter,
+          sortable: true
         },
-		{
-			title: 'MOI',
-			field: 'moi',
-      sortable: true,
-			formatter: moiFormatter,
-      //visible: false
+        {
+          title: 'MONDO',
+          field: 'mondo',
+          formatter: mondoFormatter,
+          sortable: true,
+          visible: false
         },
-    {
-			title: 'EP',
-			field: 'ep',
-      sortable: true
-    },
-		{
-			title: 'SOP',
-			field: 'sop',
-      sortable: true
+        {
+          title: 'MOI',
+          field: 'moi',
+          sortable: true,
+          formatter: moiFormatter,
         },
-		{
-			field: 'released',
-			title: 'Released',
-      sortable: true,
+        {
+          title: 'EP',
+          field: 'ep',
+          sortable: true
         },
-		{
-			title: 'Classification',
-			field: 'classification',
-			formatter: badgeFormatter,
-      sortable: true
+        {
+          title: 'SOP',
+          field: 'sop',
+          sortable: true
+        },
+		    {
+          field: 'released',
+          title: 'Released',
+          sortable: true,
+          sortName: 'date'
+        },
+		    {
+          title: 'Classification',
+          field: 'classification',
+          formatter: badgeFormatter,
+          sortable: true
         }
       ]
     })
 
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-
-      // Helpers
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip()
-        $('[data-toggle="popover"]').popover()
+    $table.on('load-error.bs.table', function (e, name, args) {
+      $("body").css("cursor", "default");
+      swal({
+            title: "Load Error",
+            text: "The system could not retrieve data from GeneGraph",
+            icon: "error"
       });
+	  })
 
+    $table.on('load-success.bs.table', function (e, name, args) {
+      $("body").css("cursor", "default");
     })
-
-	$table.on('load-error.bs.table', function (e, name, args) {
-		swal("Load Error!");
-	})
-
   }
 
   $(function() {
-    initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
-	//$search.css('border', '1px solid red');
+    $("body").css("cursor", "progress");
+
+    initTable();
+
+	  var $search = $('.fixed-table-toolbar .search input');
+	  $search.attr('placeholder', 'Search in table');
+	  //$search.css('border', '1px solid red');
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="popover"]').popover()
 
   })
 </script>

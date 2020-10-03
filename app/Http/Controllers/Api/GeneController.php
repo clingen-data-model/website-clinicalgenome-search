@@ -36,4 +36,22 @@ class GeneController extends Controller
                 'ndosage' => $results->ndosage,
                 'nvalid' => $results->nvalid];
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function look(Request $request, $term = null)
+    {
+        $results = GeneLib::geneLook([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $term ?? null,
+                                        'curated' => false ]);
+
+        return $results;
+    }
 }

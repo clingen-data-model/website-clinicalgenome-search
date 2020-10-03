@@ -197,7 +197,7 @@
     @yield('script_js')
 
     <script>
-  var mybutton = document.getElementById("myBtn");
+  var mybutton = document.getElementById("clingen_top");
 
   // When the user scrolls down 20px from the top of the document, show the button
   window.onscroll = function() {scrollFunction()};
@@ -249,11 +249,20 @@
       });
 
 
-      var term = new Bloodhound({
+      /*var term = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
           url: 'https://search.clinicalgenome.org/kb/home.json?term=%QUERY',
+          wildcard: '%QUERY'
+        }
+      });*/
+
+      var term = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+          url: 'http://s4.local/api/genes/look/%QUERY',
           wildcard: '%QUERY'
         }
       });
@@ -262,7 +271,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'https://search.clinicalgenome.org/kb/home.json?termGene=%QUERY',
+          url: 'http://s4.local/api/genes/look/%QUERY',
           wildcard: '%QUERY'
         }
       });
@@ -271,7 +280,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'https://search.clinicalgenome.org/kb/home.json?termDisease=%QUERY',
+          url: 'http://s4.local/api/conditions/look/%QUERY',
           wildcard: '%QUERY'
         }
       });
@@ -280,7 +289,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'https://search.clinicalgenome.org/kb/home.json?termDisease=%QUERY',
+          url: 'http://s4.local/api/drugs/look/%QUERY',
           wildcard: '%QUERY'
         }
       });

@@ -34,4 +34,22 @@ class DrugController extends Controller
                 'totalNotFiltered' => $results->count,
                 'rows'=> DrugResource::collection($results->collection)];
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function look(Request $request, $term = null)
+    {
+        $results = GeneLib::drugLook([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $term ?? null,
+                                        'curated' => false ]);
+
+        return $results;
+    }
 }

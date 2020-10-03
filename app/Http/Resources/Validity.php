@@ -28,7 +28,8 @@ class Validity extends JsonResource
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
             'classification' => Genelib::ValidityClassificationString($this->classification->label),
             'perm_id' => $this->curie,
-            'released' => $this->displayDate($this->report_date)
+            'released' => $this->displayDate($this->report_date),
+            'date' => $this->report_date
         ];
     }
     

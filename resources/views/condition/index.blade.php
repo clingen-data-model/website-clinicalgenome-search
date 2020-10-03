@@ -134,13 +134,23 @@
       });
     })
 
-	$table.on('load-error.bs.table', function (e, name, args) {
-		swal("Load Error!");
+    $table.on('load-error.bs.table', function (e, name, args) {
+    $("body").css("cursor", "default");
+    swal({
+          title: "Load Error",
+          text: "The system could not retrieve data from GeneGraph",
+          icon: "error"
+    });
+	})
+
+  $table.on('load-success.bs.table', function (e, name, args) {
+    $("body").css("cursor", "default");
 	})
 
   }
 
   $(function() {
+    $("body").css("cursor", "progress");
     initTable()
 	var $search = $('.fixed-table-toolbar .search input');
 	$search.attr('placeholder', 'Search in table');

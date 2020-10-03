@@ -26,7 +26,8 @@ class Dosage extends JsonResource
             'haplo_assertion' => GeneLib::haploAssertionString($this->has_dosage_haplo),
             'triplo_assertion' => GeneLib::triploAssertionString($this->has_dosage_triplo),
             'report' => env('CG_URL_CURATIONS_DOSAGE', '#') . $this->symbol . '&subject=',
-            'date' => $this->displayDate($this->dosage_report_date)
+            'date' => $this->displayDate($this->dosage_report_date),
+            'rawdate' => $this->dosage_report_date
         ];
     }
 }
