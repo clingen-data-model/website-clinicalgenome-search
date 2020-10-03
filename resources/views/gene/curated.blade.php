@@ -38,13 +38,14 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <style>
@@ -79,29 +80,8 @@
   }
 
   function symbolFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
   }
-
-  /*function badgeFormatter(index, row) {
-	var html = '';
-	if (row.has_actionability)
-    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
-
-	if (row.has_validity)
-    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
-
-		if (row.has_dosage)
-    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
-
-	return html;
-  }*/
-
 
   function validityFormatter(index, row) {
 

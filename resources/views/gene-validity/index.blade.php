@@ -95,7 +95,7 @@
   }
 
   function symbolFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
+	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
   }
 
   function hgncFormatter(index, row) {
@@ -103,7 +103,7 @@
   }
 
   function diseaseFormatter(index, row) {
-	  return '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
+	  return '<a href="/conditions/' + row.mondo + '"><b>' + row.disease + '</b></a>';
   }
 
   function mondoFormatter(index, row) {

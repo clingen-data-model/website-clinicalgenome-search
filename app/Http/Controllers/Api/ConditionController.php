@@ -31,7 +31,8 @@ class ConditionController extends Controller
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> ConditionResource::collection($results->collection)];
+                'rows'=> ConditionResource::collection($results->collection),
+                'ncurated' => $results->ncurated];
     }
 
 

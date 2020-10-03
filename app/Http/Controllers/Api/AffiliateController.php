@@ -35,7 +35,8 @@ class AffiliateController extends Controller
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> AffiliateResource::collection($results->collection)];
+                'rows'=> AffiliateResource::collection($results->collection),
+                'ncurations' => $results->ncurations];
     }
 
 

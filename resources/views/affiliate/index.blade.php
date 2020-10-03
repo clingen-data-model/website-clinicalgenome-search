@@ -3,9 +3,23 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
+
+    <div class="col-md-8 curated-genes-table">
+      <h1><img src="/images/monitor_200x200.600x600.png" width="50" height="50">  Expert Panels With Gene Curations</h1>
+    </div>
+
+    <div class="col-md-4">
+      <div class="">
+        <div class="text-right p-2">
+          <ul class="list-inline pb-0 mb-0 small">
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countPanels text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />EPs</li>
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
 		<div class="col-md-12">
-			<h1>Expert Panels With Gene Curations</h1>
-      {{-- <h3>Clingen had information on <span id="gene-count">many</span> groups</h3> --}}
 
 			@include('_partials.genetable')
 
@@ -48,6 +62,8 @@
   function responseHandler(res) {
 
     $('#gene-count').html(res.total);
+    $('.countPanels').html(res.total);
+    $('.countCurations').html(res.ncurations);
     /*
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1

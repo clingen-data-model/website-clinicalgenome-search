@@ -3,10 +3,23 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-12">
-			<h1>Genes</h1>
-      {{-- <h3>Clingen had information on <span id="gene-count">many</span> genes</h3> --}}
+      <div class="col-md-8 curated-genes-table">
+        <h1><span id="gene-count"></span><img src="/images/adept-icon-circle-gene.png" width="50" height="50">  Genes</h1>
+        {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
+      </div>
 
+      <div class="col-md-4">
+        <div class="">
+          <div class="text-right p-2">
+            <ul class="list-inline pb-0 mb-0 small">
+              <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-12">
+			
 			@include('_partials.genetable')
 
 		</div>
@@ -47,7 +60,8 @@
 
   function responseHandler(res) {
 
-    $('#gene-count').html(res.total);
+    //$('#gene-count').html(res.total);
+    $('.countGenes').html(res.total);
     /*
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1
@@ -64,28 +78,28 @@
   }
 
   function symbolFormatter(index, row) {
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
-	return html;
+	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
   }
 
   function badgeFormatter(index, row) {
-	var html = '';
-	if (row.has_actionability)
-    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    var html = '';
+
+    if (row.has_actionability)
+        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
 
-	if (row.has_validity)
-    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
 
-		if (row.has_dosage)
-    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    if (row.has_dosage)
+      html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
 
-	return html;
+    return html;
   }
 
   function initTable() {
@@ -124,14 +138,6 @@
       ]
     })
 
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-      });
-    })
 
     $table.on('load-error.bs.table', function (e, name, args) {
     $("body").css("cursor", "default");
@@ -152,9 +158,12 @@
   $(function() {
     $("body").css("cursor", "progress");
     initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
-	//$search.css('border', '1px solid red');
+	  var $search = $('.fixed-table-toolbar .search input');
+	  $search.attr('placeholder', 'Search in table');
+	  //$search.css('border', '1px solid red');
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 
   })
 </script>

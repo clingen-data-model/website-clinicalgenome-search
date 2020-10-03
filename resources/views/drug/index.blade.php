@@ -3,8 +3,21 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
+    <div class="col-md-8 curated-genes-table">
+      <h1><span id="gene-count"></span><img src="/images/drugmed.png" width="50" height="50">  Drugs & Medications</h1>
+    </div>
+
+    <div class="col-md-4">
+      <div class="">
+        <div class="text-right p-2">
+          <ul class="list-inline pb-0 mb-0 small">
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Drugs & Medications</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
 		<div class="col-md-12">
-			<h1>Drugs &amp; Medications</h1>
 
 			@include('_partials.genetable')
 
@@ -46,7 +59,8 @@
 
   function responseHandler(res) {
 
-    $('#gene-count').html(res.total);
+    //$('#gene-count').html(res.total);
+    $('.countDrugs').html(res.total);
     /*
     $.each(res.rows, function (i, row) {
       row.state = $.inArray(row.id, selections) !== -1

@@ -91,7 +91,7 @@ class Graphql
 		}
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query, __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -184,7 +184,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -263,7 +263,7 @@ class Graphql
 			}';
 	
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -320,7 +320,7 @@ class Graphql
 			}';
 		
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -368,7 +368,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -385,12 +385,16 @@ class Graphql
 			{
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
-				$collection->push($node);
+				//$collection->push($node);
 			}
-			//$collection->push(new Nodal((array) $record));
+			$collection->push($node);
 		}
+
+		$nhaplo = $collection->where('has_dosage_haplo', '!=', 'NO_EVIDENCE')->count();
+		$ntriplo = $collection->where('has_dosage_triplo', '!=', 'NO_EVIDENCE')->count();
 	
-		return (object) ['count' => $response->genes->count, 'collection' => $collection];
+		return (object) ['count' => $response->genes->count, 'collection' => $collection,
+						'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
 	}
 
 
@@ -452,7 +456,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -556,7 +560,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -627,7 +631,7 @@ class Graphql
 		}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -671,15 +675,18 @@ class Graphql
 		}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
+
+		$ncurations = 0;
 				
 		// add each gene to the collection
 		foreach($response->affiliations->agent_list as $record)
 		{
 			$node = new Nodal((array) $record);
+			$ncurations += $node->gene_validity_assertions->count;
 
 			$collection->push(new Nodal((array) $record));
 		}
@@ -687,7 +694,8 @@ class Graphql
 		// genegraph currently provides no sort capablility
 		$collection = $collection->sortBy('label');
 
-		return (object) ['count' => $response->affiliations->count, 'collection' => $collection];
+		return (object) ['count' => $response->affiliations->count, 'collection' => $collection,
+						'ncurations' => $ncurations];
 	}
 	
 	
@@ -755,7 +763,7 @@ class Graphql
 		}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -823,7 +831,7 @@ class Graphql
 		}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -863,7 +871,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -924,7 +932,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -932,8 +940,11 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->diseases->disease_list as $record)
 			$collection->push(new Nodal((array) $record));
+
+		$ncurated = $collection->where('last_curated_date', '!=', null)->count();
 	
-		return (object) ['count' => $response->diseases->count, 'collection' => $collection];
+		return (object) ['count' => $response->diseases->count, 'collection' => $collection,
+						'ncurated' => $ncurated];
 	}
 	
 	
@@ -964,7 +975,7 @@ class Graphql
 			}';
 	
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -972,6 +983,8 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->drugs->drug_list as $record)
 			$collection->push(new Nodal((array) $record));
+		
+		//$collection = $collection->SortBy('label');
 	
 		return (object) ['count' => $response->drugs->count, 'collection' => $collection];
 	}
@@ -1004,7 +1017,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
@@ -1040,7 +1053,7 @@ class Graphql
 			}';
 
 		// query genegraph
-		$response = self::query($query);
+		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;

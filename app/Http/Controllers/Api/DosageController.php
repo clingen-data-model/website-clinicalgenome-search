@@ -31,7 +31,9 @@ class DosageController extends Controller
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> DosageResource::collection($results->collection)];
+                'rows'=> DosageResource::collection($results->collection),
+                'nhaplo' => $results->nhaplo,
+                'ntriplo' => $results->ntriplo];
     }
 
 

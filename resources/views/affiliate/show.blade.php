@@ -151,7 +151,8 @@
 		{
 			field: 'released',
 			title: 'Released',
-      sortable: true
+      sortable: true,
+      sortName: 'date'
         },
 		{
 			title: 'Classification',

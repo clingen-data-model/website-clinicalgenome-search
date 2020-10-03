@@ -3,10 +3,20 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-12">
-			<h1>Diseases</h1>
-                {{-- <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3> --}}
-		</div>
+    <div class="col-md-8 curated-genes-table">
+      <h1><span id="gene-count"></span><img src="/images/C_Biohazard-512.png" width="50" height="50">  Diseases</h1>
+    </div>
+
+    <div class="col-md-4">
+      <div class="">
+        <div class="text-right p-2">
+          <ul class="list-inline pb-0 mb-0 small">
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countDisease text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Diseases</li>
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurated text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curated</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
 		<div class="col-md-12">
 
@@ -51,7 +61,9 @@
 
 
   function responseHandler(res) {
-	$('#gene-count').html(res.total);
+	  //$('#gene-count').html(res.total);
+    $('.countDisease').html(res.total);
+    $('.countCurated').html(res.ncurated);
 
 	/*
     $.each(res.rows, function (i, row) {

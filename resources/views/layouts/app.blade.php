@@ -262,7 +262,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'http://s4.local/api/genes/look/%QUERY',
+          url: '{{  url('api/genes/look/%QUERY') }}',
           wildcard: '%QUERY'
         }
       });
@@ -271,7 +271,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'http://s4.local/api/genes/look/%QUERY',
+          url: '{{  url('api/genes/look/%QUERY') }}',
           wildcard: '%QUERY'
         }
       });
@@ -280,7 +280,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'http://s4.local/api/conditions/look/%QUERY',
+          url: '{{  url('api/conditions/look/%QUERY') }}',
           wildcard: '%QUERY'
         }
       });
@@ -289,7 +289,7 @@
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-          url: 'http://s4.local/api/drugs/look/%QUERY',
+          url: '{{  url('api/drugs/look/%QUERY') }}',
           wildcard: '%QUERY'
         }
       });
