@@ -46,19 +46,25 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-	.search-input {
+	.fixed-table-toolbar .search-input {
 	  min-width: 300px;
+	}
+	.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
 	}
   </style>
 
@@ -69,7 +75,7 @@
 
 
 	function responseHandler(res) {
-		$('#gene-count').html(res.total);
+		//$('#gene-count').html(res.total);
 		$('.countCurations').html(res.total);
 		$('.countGenes').html(res.total);
 		$('.countHaplo').html(res.nhaplo);
@@ -112,6 +118,7 @@
 			title: 'Gene',
 			field: 'symbol',
 			formatter: symbolFormatter,
+			filterControl: 'input',
 			sortable: true
 		},
         {
@@ -119,6 +126,7 @@
 			field: 'hgnc',
 			formatter: hgncFormatter,
 			sortable: true,
+			filterControl: 'input',
 			visible: false
 		},
 
@@ -126,32 +134,38 @@
 			title: 'Location',
 			field: 'location',
 			sortable: true,
+			filterControl: 'input',
 			visible: false
         },
         {
 			title: 'Haploinsufficiency',
 			field: 'haplo_assertion',
+			filterControl: 'select',
 			sortable: true
         },
 		{
 			title: 'Triplosensitity',
 			field: 'triplo_assertion',
+			filterControl: 'select',
 			sortable: true
         },
 		{
 			title: '%HI',
 			field: 'hi',
+			filterControl: 'input',
 			sortable: true
         },
 		{
 			title: 'pLI',
 			field: 'pli',
+			filterControl: 'input',
 			sortable: true
         },
 		{
 			field: 'date',
 			title: 'Date',
 			sortable: true,
+			filterControl: 'input',
 			sortName: 'rawdate'
         },
 		{
@@ -172,7 +186,16 @@
 	})
 
   	$table.on('load-success.bs.table', function (e, name, args) {
-    	$("body").css("cursor", "default");
+		$("body").css("cursor", "default");
+		
+		if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
 	})
 
   }

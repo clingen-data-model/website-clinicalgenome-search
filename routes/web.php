@@ -151,10 +151,15 @@ Route::group(['prefix' => 'actionability'], function () {
 		Route::get('/publication/all/', 'PublicationController@index')->name('publication-index');
 		Route::get('/publication/detail/', 'PublicationController@show')->name('publication-show');
 
+		// New dosagw index page
+		Route::get('/new-dosage', 'DosageController@newindex')->name('new-dosage-index');
+		Route::get('/new-dosage/show', 'DosageController@newshow')->name('new-dosage-show');
+		Route::get('/new-dosagereports', 'DosageController@newindex')->name('dosage-reports');
+		Route::get('/new-dosage/stats', 'DosageController@newindex')->name('dosage-stats');
+		Route::get('/new-dosage/downloads', 'DosageController@newindex')->name('dosage-download');
+
 // ************************************************************************************************
 // DEMO ROUTES END
 // ************************************************************************************************
 
 Auth::routes();
-
-Route::get('/me', 'HomeController@index')->name('dashboard');

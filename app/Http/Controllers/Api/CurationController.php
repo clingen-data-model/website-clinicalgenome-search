@@ -26,8 +26,8 @@ class CurationController extends Controller
                                         'search' => $input['search'] ?? null,
                                         'curated' => true ]);
                                         
-		if ($results === null)
-			die(print_r(GeneLib::getError()));
+        if ($results === null)
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,

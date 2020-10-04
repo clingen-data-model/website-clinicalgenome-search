@@ -27,7 +27,7 @@ class DosageController extends Controller
 										'curated' => true ]);
         
         if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,

@@ -50,20 +50,26 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-.search-input {
+.fixed-table-toolbar .search-input {
   min-width: 300px;
 }
+.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+	}
 </style>
 
 <script>
@@ -127,12 +133,14 @@
           title: 'Gene',
           field: 'symbol',
           formatter: symbolFormatter,
+          filterControl: 'input',
           sortable: true
         },
         {
           title: 'HGNC',
           field: 'hgnc',
           formatter: hgncFormatter,
+          filterControl: 'input',
           sortable: true,
           visible: false
         },
@@ -140,12 +148,14 @@
           title: 'Disease',
           field: 'disease',
           formatter: diseaseFormatter,
+          filterControl: 'input',
           sortable: true
         },
         {
           title: 'MONDO',
           field: 'mondo',
           formatter: mondoFormatter,
+          filterControl: 'input',
           sortable: true,
           visible: false
         },
@@ -153,28 +163,33 @@
           title: 'MOI',
           field: 'moi',
           sortable: true,
+          filterControl: 'input',
           formatter: moiFormatter,
         },
         {
           title: 'EP',
           field: 'ep',
+          filterControl: 'select',
           sortable: true
         },
         {
           title: 'SOP',
           field: 'sop',
+          filterControl: 'select',
           sortable: true
         },
 		    {
           field: 'released',
           title: 'Released',
           sortable: true,
+          filterControl: 'input',
           sortName: 'date'
         },
 		    {
           title: 'Classification',
           field: 'classification',
           formatter: badgeFormatter,
+          filterControl: 'input',
           sortable: true
         }
       ]
@@ -191,6 +206,15 @@
 
     $table.on('load-success.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
+
+      if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
     })
   }
 

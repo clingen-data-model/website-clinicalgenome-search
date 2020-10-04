@@ -9,7 +9,9 @@
     data-toolbar="#toolbar"
     data-addrbar="true"
     data-search="true"
-    data-advanced-search="true"
+    {{-- data-advanced-search="true" --}}
+    data-filter-control="true"
+    data-filter-control-visible="false"
     data-id-table="advancedTable"
     data-search-align="left"
     data-trim-on-search="false"
@@ -35,5 +37,6 @@
     data-pagination-v-align="both"
     data-show-extended-pagination="false"
     data-url="{{  $apiurl }}"
-    data-response-handler="responseHandler">
+    data-response-handler="responseHandler"
+    data-show-filter-control-switch="true">
 </table>

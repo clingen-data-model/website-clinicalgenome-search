@@ -38,20 +38,26 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-  .search-input {
-    min-width: 300px;
-  }
+  .fixed-table-toolbar .search-input {
+	  min-width: 300px;
+	}
+	.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+	}
   </style>
 
 <script>
@@ -108,34 +114,28 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-
         {
-			title: 'Expert Panel',
-			field: 'label',
+            title: 'Expert Panel',
+            field: 'label',
             formatter: symbolFormatter,
-			sortable: true
+            filterControl: 'input',
+			      sortable: true
         },
         {
-			title: 'Clingen Affiliate ID',
-      field: 'agent',
-			visible: false
+            title: 'Clingen Affiliate ID',
+            field: 'agent',
+            filterControl: 'input',
+            visible: false
         },
-		{
-			title: 'Number of Curations',
-			field: 'count',
-			align: 'center'
+		  {
+          title: 'Number of Curations',
+          field: 'count',
+          filterControl: 'input',
+          align: 'center'
         }
       ]
     })
-
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-      });
-    })
+    
 
     $table.on('load-error.bs.table', function (e, name, args) {
     $("body").css("cursor", "default");
@@ -148,6 +148,15 @@
 
   $table.on('load-success.bs.table', function (e, name, args) {
     $("body").css("cursor", "default");
+
+    if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
 	})
 
   }
@@ -155,8 +164,11 @@
   $(function() {
     $("body").css("cursor", "progress");
     initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
+	  var $search = $('.fixed-table-toolbar .search input');
+    $search.attr('placeholder', 'Search in table');
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 	//$search.css('border', '1px solid red');
 
   })

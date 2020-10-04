@@ -28,7 +28,7 @@ class DrugController extends Controller
 									]);
 
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,

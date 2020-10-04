@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectionException;
 
 use Exception;
 
@@ -46,12 +47,11 @@ trait Query
 			Log::info("Guzzle Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
 			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
+			if (is_null($response))				// likely a connection error
 			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return collect();
+				$errors = $exception->getHandlerContext();
+				GeneLib::putError($errors);
+				return null;
 			}
 			
 			$code = $response->getStatusCode();
@@ -63,7 +63,7 @@ trait Query
 			return null;
 			
 		} catch (Exception $exception) {		// everything else
-			die("cp1");
+	
 			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
 			$response = $exception->getResponse();

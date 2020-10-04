@@ -36,20 +36,26 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-  .search-input {
-    min-width: 300px;
-  }
+  .fixed-table-toolbar .search-input {
+	  min-width: 300px;
+	}
+	.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+	}
 </style>
 
 <script>
@@ -77,13 +83,11 @@
   }
 
   function symbolFormatter(index, row) {
-	var html = '<a href="/drugs/' + row.curie + '">' + row.curie + '</a>';
-	return html;
+	  return '<a href="/drugs/' + row.curie + '">' + row.curie + '</a>';
   }
 
   function drugFormatter(index, row) {
-	var html = '<a href="/drugs/' + row.curie + '">' + row.label + '</a>';
-	return html;
+	  return '<a href="/drugs/' + row.curie + '">' + row.label + '</a>';
   }
 
   function badgeFormatter(index, row) {
@@ -111,33 +115,25 @@
       locale: 'en-US',
       columns: [
 
-
         {
-			title: 'Drug',
-			field: 'label',
-      formatter: drugFormatter,
-      sortable: true
+          title: 'Drug',
+          field: 'label',
+          formatter: drugFormatter,
+          filterControl: 'input',
+          sortable: true
         },{
-			title: 'RXNORM',
-			field: 'curie',
-      formatter: symbolFormatter,
-			sortable: true
+          title: 'RXNORM',
+          field: 'curie',
+          formatter: symbolFormatter,
+          filterControl: 'input',
+          sortable: true
         },
-		{
-			title: 'Application',
-			field: 'application',
-      formatter: badgeFormatter
+        {
+          title: 'Application',
+          field: 'application',
+          formatter: badgeFormatter
         }
       ]
-    })
-
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-      });
     })
 
     $table.on('load-error.bs.table', function (e, name, args) {
@@ -151,6 +147,15 @@
 
   $table.on('load-success.bs.table', function (e, name, args) {
     $("body").css("cursor", "default");
+
+    if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
 	})
 
   }
@@ -158,9 +163,12 @@
   $(function() {
     $("body").css("cursor", "progress");
     initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
-	//$search.css('border', '1px solid red');
+	  var $search = $('.fixed-table-toolbar .search input');
+	  $search.attr('placeholder', 'Search in table');
+  //$search.css('border', '1px solid red');
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 
   })
 </script>

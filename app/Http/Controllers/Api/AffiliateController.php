@@ -31,7 +31,7 @@ class AffiliateController extends Controller
                                         'curated' => false ]);
                                         
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
@@ -53,7 +53,7 @@ class AffiliateController extends Controller
         $results = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
         
         if ($results === null)
-			die("throw an error");
+            return GeneLib::getError();
 
         return ['total' => $results->count,
                 'totalNotFiltered' => $results->count, 

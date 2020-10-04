@@ -48,8 +48,12 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+
 <style>
-  .search-input {
+  .fixed-table-toolbar .search-input {
     min-width: 300px;
   }
   .swal-overlay--show-modal, .swal-modal {
@@ -144,6 +148,7 @@
           field: 'symbol',
           rowspan: 2,
           formatter: symbolFormatter,
+          filterControl: 'input',
           sortable: true
         },
         {
@@ -164,40 +169,39 @@
           field: 'has_validity',
           formatter: validityFormatter,
           align: 'center',
+          filterControl: 'input',
           sortable: true
         },
         {
           title: 'Evidence-Based Summary',
           field: 'has_actionability',
           formatter: actionabilityFormatter,
-			    align: 'center',
+          align: 'center',
+          filterControl: 'input',
           sortable: true
         },
         {
           title: 'Haploinsufficiency Score',
           field: 'has_dosage_haplo',
           formatter: haploFormatter,
-			    align: 'center',
+          align: 'center',
+          filterControl: 'input',
           sortable: true
         },
         {
           title: 'Triplosensitivity Score',
           field: 'has_dosage_triplo',
           formatter: triploFormatter,
-			    align: 'center',
+          align: 'center',
+          filterControl: 'input',
           sortable: true
         }]
       ]
     })
 
-    /*$table.on('all.bs.table', function (e, name, args) {
-        $( ".fixed-table-toolbar" ).show();
-        //$('[data-toggle="tooltip"]').tooltip();
-        //$('[data-toggle="popover"]').popover();
-    })*/
-
     $table.on('load-error.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
+      
       swal({
             title: "Load Error",
             text: "The system could not retrieve data from GeneGraph",
@@ -207,6 +211,15 @@
 
     $table.on('load-success.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
+
+      if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
     })
 
   }
