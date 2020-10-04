@@ -66,6 +66,11 @@
 	.swal-overlay--show-modal, .swal-modal {
     animation: none !important;
 	}
+	.fixed-table-container .global_table_cell {
+    font-weight: 500;
+    font-size: 14px;
+    padding: 21px 12px 19px !important;
+}
   </style>
 
 <script>
@@ -110,6 +115,10 @@
 				+ row.report +'"><i class="fas fa-file"></i>  View Details</a>';
   	}
 
+	function cellFormatter(index, row) {
+		return { classes: 'global_table_cell' };
+  	}
+
   	function initTable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 		locale: 'en-US',
@@ -118,6 +127,7 @@
 			title: 'Gene',
 			field: 'symbol',
 			formatter: symbolFormatter,
+			cellStyle: cellFormatter,
 			filterControl: 'input',
 			sortable: true
 		},
@@ -127,6 +137,7 @@
 			formatter: hgncFormatter,
 			sortable: true,
 			filterControl: 'input',
+			cellStyle: cellFormatter,
 			visible: false
 		},
 
@@ -135,30 +146,35 @@
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
+			cellStyle: cellFormatter,
 			visible: false
         },
         {
 			title: 'Haploinsufficiency',
 			field: 'haplo_assertion',
 			filterControl: 'select',
+			cellStyle: cellFormatter,
 			sortable: true
         },
 		{
 			title: 'Triplosensitity',
 			field: 'triplo_assertion',
 			filterControl: 'select',
+			cellStyle: cellFormatter,
 			sortable: true
         },
 		{
 			title: '%HI',
 			field: 'hi',
 			filterControl: 'input',
+			cellStyle: cellFormatter,
 			sortable: true
         },
 		{
 			title: 'pLI',
 			field: 'pli',
 			filterControl: 'input',
+			cellStyle: cellFormatter,
 			sortable: true
         },
 		{
@@ -166,11 +182,13 @@
 			title: 'Date',
 			sortable: true,
 			filterControl: 'input',
+			cellStyle: cellFormatter,
 			sortName: 'rawdate'
         },
 		{
 			title: 'Report',
 			field: 'report',
+			cellStyle: cellFormatter,
 			formatter: reportFormatter
         }
       ]
