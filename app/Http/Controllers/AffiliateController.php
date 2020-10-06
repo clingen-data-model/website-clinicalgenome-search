@@ -20,20 +20,9 @@ class AffiliateController extends Controller
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
             $$key = $value;
 
-        /* build cqching of these values with cross-section updates
-        * total counts for gene and diseases on relevant pages
-        * category would be for setting default select of dropdown */
+        // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate",
-            'query' => "",
-            'category' => "",
-            'counts' => [
-                'total' => 'something',
-                'dosage' => "1434",
-                'gene_disease' => "500",
-                'actionability' => "270",
-                'variant_path' => "300"
-            ]
+            'active' => "affiliate"
         ]);
 
         return view('affiliate.index', compact('display_tabs'))
@@ -52,17 +41,9 @@ class AffiliateController extends Controller
      */
     public function show(Request $request, $id, $page = 1, $size = 100)
     {
+        // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate",
-            'query' => "",
-            'category' => "",
-            'counts' => [
-                'total' => 'something',
-                'dosage' => "1434",
-                'gene_disease' => "500",
-                'actionability' => "270",
-                'variant_path' => "300"
-            ]
+            'active' => "affiliate"
         ]);
 
         // the affiliate id is expected to be numeric.

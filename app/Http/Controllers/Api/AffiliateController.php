@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Affiliate as AffiliateResource;
 use App\Http\Resources\AffiliateDetail as AffiliateDetailResource;
 
@@ -17,7 +18,7 @@ class AffiliateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
 
         $input = $request->only(['search', 'order', 'offset', 'limit']);
@@ -30,11 +31,12 @@ class AffiliateController extends Controller
                                         'curated' => false ]);
                                         
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> AffiliateResource::collection($results->collection)];
+                'rows'=> AffiliateResource::collection($results->collection),
+                'ncurations' => $results->ncurations];
     }
 
 
@@ -44,14 +46,14 @@ class AffiliateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(ApiRequest $request, $id)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
         $results = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
         
         if ($results === null)
-			die("throw an error");
+            return GeneLib::getError();
 
         return ['total' => $results->count,
                 'totalNotFiltered' => $results->count, 

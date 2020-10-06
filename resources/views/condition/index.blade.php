@@ -3,10 +3,20 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-12">
-			<h1>Diseases</h1>
-                {{-- <h3>Clingen has information on <span id="gene-count">many</span> conditions</h3> --}}
-		</div>
+    <div class="col-md-8 curated-genes-table">
+      <h1><span id="gene-count"></span><img src="/images/C_Biohazard-512.png" width="50" height="50">  Diseases</h1>
+    </div>
+
+    <div class="col-md-4">
+      <div class="">
+        <div class="text-right p-2">
+          <ul class="list-inline pb-0 mb-0 small">
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countDisease text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Diseases</li>
+            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurated text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curated</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
 		<div class="col-md-12">
 
@@ -28,20 +38,26 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-  .search-input {
-    min-width: 300px;
-  }
+  .fixed-table-toolbar .search-input {
+	  min-width: 300px;
+	}
+	.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+	}
   </style>
 
 	<script>
@@ -51,7 +67,9 @@
 
 
   function responseHandler(res) {
-	$('#gene-count').html(res.total);
+	  //$('#gene-count').html(res.total);
+    $('.countDisease').html(res.total);
+    $('.countCurated').html(res.ncurated);
 
 	/*
     $.each(res.rows, function (i, row) {
@@ -105,45 +123,60 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-
         {
-			title: 'Name',
-			field: 'label',
-			formatter: symbolFormatter,
-			sortable: true
+          title: 'Name',
+          field: 'label',
+          formatter: symbolFormatter,
+          filterControl: 'input',
+          sortable: true
         },
-		{
-			title: 'Curations',
-			field: 'has_actionability',
-      formatter: badgeFormatter,
+        {
+          title: 'Curations',
+          field: 'has_actionability',
+          filterControl: 'input',
+          formatter: badgeFormatter,
         },
-		{
-      title: 'Last Curated',
-			field: 'date',
-      sortable: true
+        {
+          title: 'Last Curated',
+          field: 'date',
+          filterControl: 'input',
+          sortable: true
         }
       ]
     })
+    
+    $table.on('load-error.bs.table', function (e, name, args) {
+    $("body").css("cursor", "default");
+    swal({
+          title: "Load Error",
+          text: "The system could not retrieve data from GeneGraph",
+          icon: "error"
+    });
+	})
 
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-      });
-    })
+  $table.on('load-success.bs.table', function (e, name, args) {
+    $("body").css("cursor", "default");
 
-	$table.on('load-error.bs.table', function (e, name, args) {
-		swal("Load Error!");
+    if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
 	})
 
   }
 
   $(function() {
+    $("body").css("cursor", "progress");
     initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
+    var $search = $('.fixed-table-toolbar .search input');
+    $search.attr('placeholder', 'Search in table');
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 	//$search.css('border', '1px solid red');
 
   })

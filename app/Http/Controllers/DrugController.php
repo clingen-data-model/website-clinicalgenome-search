@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
-use Ahsan\Neo4j\Facade\Cypher;
 use App\GeneLib;
 
 /**
@@ -43,23 +41,14 @@ class DrugController extends Controller
 	*/
     public function index(Request $request, $page = 0, $size = 6000)
     {
-        //if (is_int($page)) // don't forget to check the parms
-
-		/* build cqching of these values with cross-section updates 
-		 * total counts for gene and diseases on relevant pages 
-		 * category would be for setting default select of dropdown */
-		$display_tabs = collect([
-			'active' => "drug",
-			'query' => "",
-			'category' => "",
-			'counts' => [
-				'total' => 'something',
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-			]
-		]);
+		// process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+			$$key = $value;
+			
+        // set display context for view
+        $display_tabs = collect([
+            'active' => "drug"
+        ]);
 
 		return view('drug.index', compact('display_tabs'))
 						->with('apiurl', '/api/drugs')
@@ -79,16 +68,10 @@ class DrugController extends Controller
 		if ($id === null)
 			die("display some error about needing a drug");
 
-		$display_tabs = collect([
-			'active' => "drug",
-			'query' => " ",
-			'counts' => [
-				'dosage' => "1434",
-				'gene_disease' => "500",
-				'actionability' => "270",
-				'variant_path' => "300"
-				]
-			]);
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "drug"
+        ]);
 
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 

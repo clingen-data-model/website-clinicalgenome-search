@@ -25,7 +25,8 @@ use App\Graphql;
 class GeneLib extends Model
 {	 
 	/**
-     * This class is designed to be used statically.
+     * This class is designed to be used statically.  It is a non-persistant model
+     * with no corresponding table in the database
      */
      
      /**
@@ -33,7 +34,7 @@ class GeneLib extends Model
      *
      * @var array
      */
-    public static $rules = [];
+     public static $rules = [];
 
     /**
      * The attributes that are mass assignable.  Remember to fill it
@@ -49,7 +50,7 @@ class GeneLib extends Model
      *
      * @var array
      */
-    protected $appends = [];
+     protected $appends = [];
      
 	/*
      * Dosage Assertion strings for display methods
@@ -137,8 +138,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function actionabilityList($args)
-    {
+     static function actionabilityList($args)
+     {
 		// check args
 		if (is_null($args) || !is_array($args))
 			return collect([]);
@@ -157,8 +158,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneList($args)
-    {
+     static function geneList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -179,8 +180,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneDetail($args)
-    {
+     static function geneDetail($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -201,8 +202,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneLook($args)
-    {
+     static function geneLook($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -223,8 +224,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function affiliateList($args)
-    {
+     static function affiliateList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -245,8 +246,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function affiliateDetail($args)
-    {
+     static function affiliateDetail($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return null;
 
@@ -267,8 +268,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function validityList($args)
-    {
+     static function validityList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -289,8 +290,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function validityDetail($args)
-    {
+     static function validityDetail($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -311,8 +312,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function dosageList($args)
-    {
+     static function dosageList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -331,8 +332,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function dosageDetail($args)
-    {
+     static function dosageDetail($args)
+     {
           if (is_null($args) || !is_array($args))
                return collect([]);
 
@@ -368,8 +369,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function drugList($args)
-    {
+     static function drugList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -390,8 +391,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function drugDetail($args)
-    {
+     static function drugDetail($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -412,8 +413,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function drugLook($args)
-    {
+     static function drugLook($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -434,8 +435,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function conditionList($args)
-    {
+     static function conditionList($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -456,8 +457,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function conditionDetail($args)
-    {
+     static function conditionDetail($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -477,8 +478,8 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function conditionLook($args)
-    {
+     static function conditionLook($args)
+     {
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
@@ -505,7 +506,7 @@ class GeneLib extends Model
                return '';
 
 		 return str_replace('####', 'Haplosufficiency', self::$dosage_assertion_strings[$str] ?? 'ERROR');
-      }
+     }
       
 
       /**
@@ -519,10 +520,10 @@ class GeneLib extends Model
                return '';
 
 		 return str_replace('####', 'Triplosensitivity', self::$dosage_assertion_strings[$str] ?? 'ERROR');
-      }
+     }
 
 
-      /**
+     /**
      * Return a displayable dosage assertion description
      * 
      * @return string
@@ -533,10 +534,10 @@ class GeneLib extends Model
                return '';
 
 		 return self::$curated_assertion_strings[$str] ?? 'ERROR';
-      }
+     }
       
 
-      /**
+     /**
      * Return a displayable moi assertion description
      * 
      * @return string
@@ -547,10 +548,10 @@ class GeneLib extends Model
                return '';
 
 		 return self::$validity_moi_strings[$str] ?? 'ERROR';
-      }
+     }
 
 
-      /**
+     /**
      * Return a displayable validity assertion description
      * 
      * @return string
@@ -561,10 +562,10 @@ class GeneLib extends Model
                return '';
 
 		 return self::$validity_assertion_strings[$str] ?? 'ERROR';
-      }
+     }
 
 
-      /**
+     /**
      * Return a displayable validity classification description
      * 
      * @return string
@@ -575,10 +576,10 @@ class GeneLib extends Model
                return '';
 
 		 return self::$validity_classification_strings[$str] ?? 'ERROR';
-      }
+     }
 
 
-      /**
+     /**
      * Return a displayable validity criteria description
      * 
      * @return string
@@ -589,7 +590,7 @@ class GeneLib extends Model
                return '';
 
 		 return self::$validity_criteria_strings[$str] ?? 'ERROR';
-      }
+     }
       
 
      /**

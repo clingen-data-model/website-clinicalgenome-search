@@ -34,20 +34,26 @@
 
 @section('script_js')
 
-<link href="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.16.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
 <style>
-.search-input {
+.fixed-table-toolbar .search-input {
   min-width: 300px;
 }
+.swal-overlay--show-modal, .swal-modal {
+    animation: none !important;
+	}
 </style>
 
 <script>
@@ -80,31 +86,26 @@
   }
 
   function symbolFormatter(index, row) {
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
-	return html;
+	  return '<a href="/genes/' + row.hgnc_id + '">' + row.symbol + '</a>';
   }
 
   function hgncFormatter(index, row) {
-	var html = '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
-	return html;
+	  return '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
   }
-
 
   function diseaseFormatter(index, row) {
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
-	return html;
+	  return '<a href="/conditions/' + row.mondo + '">' + row.disease + '</a>';
   }
-    function mondoFormatter(index, row) {
-	var html = '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
-	return html;
+
+  function mondoFormatter(index, row) {
+	  return '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
   }
 
   function badgeFormatter(index, row) {
 
-	html = '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
+	  return '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
             + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
 
-	return html;
   }
 
   function initTable() {
@@ -113,75 +114,96 @@
       columns: [
 
         {
-			title: 'Gene',
-			field: 'symbol',
-			formatter: symbolFormatter,
-			sortable: true
+          title: 'Gene',
+          field: 'symbol',
+          formatter: symbolFormatter,
+          filterControl: 'input',
+          sortable: true
         },{
-			title: 'HGNC',
-			field: 'hgnc',
-			formatter: hgncFormatter,
-			sortable: true,
-			visible: false
+          title: 'HGNC',
+          field: 'hgnc',
+          formatter: hgncFormatter,
+          filterControl: 'input',
+          sortable: true,
+          visible: false
         },
         {
-			title: 'Disease',
-			field: 'disease',
-			formatter: diseaseFormatter,
-      sortable: true
+          title: 'Disease',
+          field: 'disease',
+          formatter: diseaseFormatter,
+          filterControl: 'input',
+          sortable: true
         },
         {
-			title: 'MONDO',
-			field: 'mondo',
-			formatter: mondoFormatter,
-      sortable: true,
-			visible: false
+          title: 'MONDO',
+          field: 'mondo',
+          formatter: mondoFormatter,
+          filterControl: 'input',
+          sortable: true,
+          visible: false
         },
-		{
-			title: 'MOI',
-			field: 'moi',
-      sortable: true,
-      //visible: false
+        {
+          title: 'MOI',
+          field: 'moi',
+          sortable: true,
+          filterControl: 'input'
         },
-		{
-			title: 'SOP',
-			field: 'sop',
-      sortable: true
+        {
+          title: 'SOP',
+          field: 'sop',
+          filterControl: 'select',
+          sortable: true
         },
-		{
-			field: 'released',
-			title: 'Released',
-      sortable: true
+        {
+          field: 'released',
+          title: 'Released',
+          sortable: true,
+          filterControl: 'input',
+          sortName: 'date'
         },
-		{
-			title: 'Classification',
-			field: 'classification',
-			formatter: badgeFormatter,
-      sortable: true
+        {
+          title: 'Classification',
+          field: 'classification',
+          formatter: badgeFormatter,
+          filterControl: 'input',
+          sortable: true
         }
       ]
     })
 
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args);
-      // Helpers
-      $(function () {
-        $( ".fixed-table-toolbar" ).show();
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-      });
-    })
 
 	$table.on('load-error.bs.table', function (e, name, args) {
-		swal("Load Error!");
-	})
+    $("body").css("cursor", "default");
+    swal({
+            title: "Load Error",
+            text: "The system could not retrieve data from GeneGraph",
+            icon: "error"
+      });
+  })
+  
+  $table.on('load-success.bs.table', function (e, name, args) {
+      $("body").css("cursor", "default");
+
+      if (name.hasOwnProperty('error'))
+      {
+        swal({
+            title: "Load Error",
+            text: name.error,
+            icon: "error"
+        });
+      }
+    })
 
   }
 
   $(function() {
+    $("body").css("cursor", "progress");
     initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
+	  var $search = $('.fixed-table-toolbar .search input');
+    $search.attr('placeholder', 'Search in table');
+    $(".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 	//$search.css('border', '1px solid red');
 
   })

@@ -1,4 +1,4 @@
-<div class="" id="clingen_top">
+<div class="" id="clingen_top" style="display:none">
     <a href="#top">
       <i class="glyphicon glyphicon-circle-arrow-up clingen_top_icon"></i>
       <div class="">Back To Top</div>

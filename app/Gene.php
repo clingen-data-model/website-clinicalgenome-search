@@ -60,26 +60,26 @@ class Gene extends Model
 			'prev_symbol' => 'array'
 		];
 
-    /**
+     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
-							'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-							'haplo', 'triplo', 'type', 'notes', 'status' ];
+					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
+					   'haplo', 'triplo', 'type', 'notes', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.
      *
      * @var array
      */
-    protected $appends = ['display_date', 'list_date', 'display_status',
+     protected $appends = ['display_date', 'list_date', 'display_status',
 							'display_aliases', 'display_previous'];
 
-    public const TYPE_NONE = 0;
+     public const TYPE_NONE = 0;
 
-    /*
+     /*
      * Type strings for display methods
      *
      * */
@@ -88,9 +88,9 @@ class Gene extends Model
 	 		9 => 'Deleted'
 	];
 
-    public const STATUS_INITIALIZED = 0;
+     public const STATUS_INITIALIZED = 0;
 
-    /*
+     /*
      * Status strings for display methods
      *
      * */
@@ -106,8 +106,8 @@ class Gene extends Model
      * @param	array	$attributes
      * @return 	void
      */
-    public function __construct(array $attributes = array())
-    {
+     public function __construct(array $attributes = array())
+     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
 	}
@@ -120,9 +120,9 @@ class Gene extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeIdent($query, $ident)
-    {
+     {
 		return $query->where('ident', $ident);
-    }
+     }
 
 
     /**
@@ -143,8 +143,8 @@ class Gene extends Model
      * @@param
      * @return
      */
-    public function getDisplayAliasesAttribute()
-    {
+     public function getDisplayAliasesAttribute()
+     {
 		if (empty($this->alias_symbol))
 			return 'No aliases found';
 
@@ -158,8 +158,8 @@ class Gene extends Model
      * @@param
      * @return
      */
-    public function getDisplayPreviousAttribute()
-    {
+     public function getDisplayPreviousAttribute()
+     {
 		if (empty($this->prev_symbol))
 			return 'No previous names found';
 

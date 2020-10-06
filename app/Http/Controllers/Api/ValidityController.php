@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Validity as ValidityResource;
 
 use App\GeneLib;
@@ -14,7 +15,7 @@ class ValidityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
         
@@ -28,11 +29,14 @@ class ValidityController extends Controller
 										]);
 
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> ValidityResource::collection($results->collection)];
+                'rows'=> ValidityResource::collection($results->collection),
+                'ngenes' => $results->ngenes,
+                'npanels' => $results->npanels
+                ];
     }
 
     
@@ -47,7 +51,7 @@ class ValidityController extends Controller
         $record = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
 
         if ($record === null)
-			die("throw an error");
+            return GeneLib::getError();
 
         return new AffiliateResource($record);
     }

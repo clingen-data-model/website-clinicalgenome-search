@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 //});
 
 
-Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
+//Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
 
 
 /*
@@ -30,6 +30,7 @@ Route::resource('affiliates', 'Api\AffiliateController')->only(['index', 'show']
 
 // genes
 Route::resource('genes', 'Api\GeneController')->only(['index']);
+Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
 
 // curated genes
 Route::resource('curations', 'Api\CurationController')->only(['index']);
@@ -42,6 +43,10 @@ Route::resource('validity', 'Api\ValidityController')->only(['index']);
 
 // drugs
 Route::resource('drugs', 'Api\DrugController')->only(['index']);
+Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look');
 
-// drugs
+
+// diseases
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
+Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
+

@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Log;
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectionException;
 
 use Exception;
 
 use Carbon\Carbon;
 use App\GeneLib;
+use App\Minute;
 
 trait Query
 {
@@ -21,23 +23,35 @@ trait Query
      * @param
      * @return string
      */
-	public static function query($query)
+	public static function query($query, $method = '')
 	{
 		try {
-			Log::info("Querying Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
+			$begin = Carbon::now();
+			$begin = Carbon::now();
 			$response = Genegraph::fetch($query);
-			Log::info("Return from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
+			$end = Carbon::now();
+			$record = new Minute([
+				'system' => 'Search',
+				'subsystem' => $method,
+				'method' => 'query',
+				'start' => $begin,
+				'finish' => $end,
+				'status' => 1
+
+			]);
+			$record->save();
+			Log::info("Query Genegraph: From=" . $method . ", start=" . $begin->format('Y-m-d H:i:s.u')
+						. ', end=' . $end->format('Y-m-d H:i:s.u'));
 		} catch (RequestException $exception) {	// guzzle exceptions and error responses from gql
 
 			Log::info("Guzzle Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
 			$response = $exception->getResponse();
-			if (is_null($response))				// empty reply from server
+			if (is_null($response))				// likely a connection error
 			{
-				//GeneLib::putError($errors);
-				
-				// for now, just return an empty list
-				return collect();
+				$errors = $exception->getHandlerContext();
+				GeneLib::putError($errors);
+				return null;
 			}
 			
 			$code = $response->getStatusCode();
@@ -49,7 +63,7 @@ trait Query
 			return null;
 			
 		} catch (Exception $exception) {		// everything else
-			die("cp1");
+	
 			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
 			$response = $exception->getResponse();

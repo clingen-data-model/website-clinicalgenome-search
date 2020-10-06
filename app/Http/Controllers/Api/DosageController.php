@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Dosage as DosageResource;
 
 use App\GeneLib;
@@ -14,7 +15,7 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
@@ -26,11 +27,13 @@ class DosageController extends Controller
 										'curated' => true ]);
         
         if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> DosageResource::collection($results->collection)];
+                'rows'=> DosageResource::collection($results->collection),
+                'nhaplo' => $results->nhaplo,
+                'ntriplo' => $results->ntriplo];
     }
 
 

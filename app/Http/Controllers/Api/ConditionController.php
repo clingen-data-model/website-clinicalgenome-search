@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Condition as ConditionResource;
 
 use App\GeneLib;
@@ -14,7 +15,7 @@ class ConditionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(ApiRequest $request)
     {
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
@@ -26,11 +27,12 @@ class ConditionController extends Controller
                                         'curated' => false ]);
                                         
 		if ($results === null)
-			die(print_r(GeneLib::getError()));
+            return GeneLib::getError();
 
         return ['total' => $results->count, 
                 'totalNotFiltered' => $results->count,
-                'rows'=> ConditionResource::collection($results->collection)];
+                'rows'=> ConditionResource::collection($results->collection),
+                'ncurated' => $results->ncurated];
     }
 
 
@@ -45,8 +47,26 @@ class ConditionController extends Controller
         $record = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
 
         if ($record === null)
-			die("throw an error");
+            return GeneLib::getError();
 
         return new AffiliateResource($record);
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function look(Request $request, $term = null)
+    {
+        $results = GeneLib::conditionLook([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $term ?? null,
+                                        'curated' => false ]);
+
+        return $results;
     }
 }
