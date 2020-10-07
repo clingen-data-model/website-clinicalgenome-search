@@ -73,6 +73,8 @@ updates all outdated commands
 ```composer update vendor-name/package-name```
 
 ### Load External
+Run the following in order to make sure you have everything on a new build... if this isn't a new build and no tables/columns were changed in the DB then feel free to skip the migrate.
+  php artisan migrate
 - php artisan update:Genenames
 - php artisan decipher:query
 - php artisan exac:query
