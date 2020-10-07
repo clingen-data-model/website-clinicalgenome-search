@@ -50,6 +50,7 @@ class Graphql
 		// set up query for either all genes or just curated ones
 		if ($curated === true)
 		{		
+			// note:  we don't currently use last_curated_date
 			$query = '{
 					genes(' 
 					. self::optionList($page, $pagesize, $sort, $direction, $search, 'ALL')
@@ -58,14 +59,19 @@ class Graphql
 						gene_list {
 							label
 							hgnc_id
-							iri
-							chromosome_band
 							last_curated_date
-							alternative_label
 							curation_activities
 							dosage_curation {
-								triplosensitivity_assertion { score }
-								haploinsufficiency_assertion { score }
+								triplosensitivity_assertion { 
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion { 
+									dosage_classification {
+										ordinal
+									  }
+								}
 							}
 						}
 					}
@@ -82,7 +88,6 @@ class Graphql
 							label
 							alternative_label
 							hgnc_id
-							chromosome_band
 							last_curated_date
 							curation_activities
 						}
@@ -100,9 +105,20 @@ class Graphql
 		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
 	
-		$naction = $collection->where('has_actionability', true)->count();
-		$nvalid = $collection->where('has_validity', true)->count();
-		$ndosage = $collection->where('has_dosage', true)->count();
+		if ($curated)
+		{
+			$naction = $collection->where('has_actionability', true)->count();
+			$nvalid = $collection->where('has_validity', true)->count();
+			$ndosage = $collection->where('has_dosage', true)->count();
+		}
+		else
+		{
+			// right now we only use these counts on the curated page.  Probably should get triggered
+			// by a call option so as not to bury things to deep.
+			$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;
+		}
 		
 		return (object) ['count' => $response->genes->count, 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
@@ -134,20 +150,14 @@ class Graphql
 						curie
 						report_date
 						triplosensitivity_assertion {
-							score
 							dosage_classification {
-								label
 								ordinal
-								enum_value
 							  }
 					  
 						}
 						haploinsufficiency_assertion {
-							score
 							dosage_classification {
-								label
 								ordinal
-								enum_value
 							  }
 					  
 						}
@@ -176,7 +186,9 @@ class Graphql
 						gene_dosage_assertions {
 						  report_date
 						  assertion_type
-						  score
+						  dosage_classification {
+							ordinal
+							}
 						  curie
 						}
 					}
@@ -357,10 +369,14 @@ class Graphql
 						dosage_curation {
 							report_date
 							triplosensitivity_assertion {
-								score
+								dosage_classification {
+									ordinal
+								}
 							}
 							haploinsufficiency_assertion {
-								score
+								dosage_classification {
+									ordinal
+								}
 							}
 						}
 					}
@@ -385,8 +401,11 @@ class Graphql
 			{
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
-				//$collection->push($node);
+				$node->omimlink = $gene->display_omim;
 			}
+
+			$node->type = 0;
+
 			$collection->push($node);
 		}
 
@@ -421,8 +440,18 @@ class Graphql
 					dosage_curation {
 						curie
 						report_date
-						triplosensitivity_assertion { score }
-						haploinsufficiency_assertion { score }
+						triplosensitivity_assertion { 
+							dosage_classification {
+								ordinal
+							}
+							score
+						}
+						haploinsufficiency_assertion { 
+							dosage_classification {
+								ordinal
+							}
+							score
+						}
 					}
 					genetic_conditions {
 						disease {
@@ -448,6 +477,9 @@ class Graphql
 						gene_dosage_assertions {
 						  report_date
 						  assertion_type
+						  dosage_classification {
+							ordinal
+							}
 						  score
 						  curie
 						}
@@ -545,15 +577,12 @@ class Graphql
 						}
 						classification {
 							label
-							curie
 						}
 						specified_by {
 							label
-							curie
 						}
 						attributed_to {
 							label
-							curie
 						}
 					}
 				}
@@ -818,13 +847,15 @@ class Graphql
 					curie
 					}
 					actionability_curations {
-					report_date
-					source
+						report_date
+						source
 					}
 					gene_dosage_assertions {
-					report_date
-					score
-					curie
+						report_date
+						dosage_classification {
+							ordinal
+						}
+						curie
 					}
 				}
 			}
@@ -921,7 +952,6 @@ class Graphql
 				. ') {
 					count
 					disease_list {
-						iri
 						curie
 						label
 						description

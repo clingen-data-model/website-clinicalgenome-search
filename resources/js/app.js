@@ -5,12 +5,12 @@
  */
 
 
-window.Vue = require('vue');
+//window.Vue = require('vue');
 
 require('./bootstrap');
-require('datatables.net-bs');
-require('datatables.net-fixedheader-bs');
-require('datatables.net-responsive-bs');
+//require('datatables.net-bs');
+//require('datatables.net-fixedheader-bs');
+//require('datatables.net-responsive-bs');
 
 
 /**

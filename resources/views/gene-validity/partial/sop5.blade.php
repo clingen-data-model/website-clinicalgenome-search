@@ -45,7 +45,7 @@
 				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? '' }}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
-				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence) !!}
+				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) !!}
 			</span></td>
 		</tr>
 		<tr>

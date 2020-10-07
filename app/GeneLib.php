@@ -126,7 +126,25 @@ class GeneLib extends Model
           'ClinGen Gene Validity Evaluation Criteria SOP7' => 'SOP7',
           'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
-	
+
+	protected static $dosage_score_assertion_strings = [
+          '0' => 'No Evidence for ####',
+          '1' => 'Minimal Evidence for ####',
+          '2' => 'Moderate Evidence for ####',
+          '3' =>'Sufficient Evidence for ####',
+          '30' => 'Gene Associated with Autosomal Recessive Phenotype',
+          '40' => 'Dosage Sensitivity Unlikely'
+     ];
+
+     protected static $curated_score_assertion_strings = [
+          '0' => 'No Evidence',
+          '1' => 'Minimal Evidence',
+          '2' => 'Moderate Evidence',
+          '3' =>'Sufficient Evidence',
+          '30' => 'Associated with Autosomal Recessive Phenotype',
+          '40' => 'Dosage Sensitivity Unlikely'
+     ];
+
 	
 	/*----------------------Public Methods----------------------------*/
 	
@@ -359,7 +377,102 @@ class GeneLib extends Model
           }
 
           return $response;
-	}
+     }
+     
+
+     /**
+     * Get list of recurrent CNVs
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function cnvList($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // regions are still only found in Jira
+         $response = Jira::cnvList($args);
+
+         return $response;
+    }
+
+
+    /**
+     * Get list of ACMG59 Genes
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function acmg59List($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+          // build data structure from the original ini in the database
+          $records = Acmg59::all();
+
+         // now pull the updates from jira
+         $local = Jira::acmg59List($args);
+         // combine
+         $c = $local->collection;
+         $records = $records->map( function ($record) use ($c)
+         {
+              //dd($c);
+              $node = $c->where('label', $record->gene)->first();
+
+              if ($node !== null)
+               {
+                    $record->geneomim = $node->omim;
+                    $record->gain = $node->haplo_score;
+                    $record->loss = $node->triplo_score;
+                    $record->key = $node->key;
+               }
+
+               return $record;
+         });
+
+
+         $local->collection = $records;
+
+         return $local;
+    }
+
+
+    /**
+     * Get list dosage regions
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionList($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // pull all the regions from jira
+         $local = Jira::regionList($args);
+
+         // combine
+         /*$c = $local->collection;
+         $records = $records->map( function ($record) use ($c)
+         {
+              //dd($c);
+              $node = $c->where('label', $record->gene)->first();
+
+              if ($node !== null)
+               {
+                    $record->geneomim = $node->omim;
+                    $record->gain = $node->haplo_score;
+                    $record->loss = $node->triplo_score;
+                    $record->key = $node->key;
+               }
+
+               return $record;
+         });
+
+
+         $local->collection = $records;*/
+
+         return $local;
+    }
 
 
 	/**
@@ -502,10 +615,10 @@ class GeneLib extends Model
      */
      public static function haploAssertionString($str)
      {
-          if (empty($str))
+          if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Haplosufficiency', self::$dosage_assertion_strings[$str] ?? 'ERROR');
+		 return str_replace('####', 'Haplosufficiency', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
      }
       
 
@@ -516,10 +629,10 @@ class GeneLib extends Model
      */
      public static function triploAssertionString($str)
      {
-          if (empty($str))
+          if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Triplosensitivity', self::$dosage_assertion_strings[$str] ?? 'ERROR');
+		 return str_replace('####', 'Triplosensitivity', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
      }
 
 
@@ -530,10 +643,11 @@ class GeneLib extends Model
      */
      public static function dosageAssertionString($str)
      {
-          if (empty($str))
+          if ($str === null || $str === false)
                return '';
 
-		 return self::$curated_assertion_strings[$str] ?? 'ERROR';
+          return self::$curated_score_assertion_strings[$str] ?? 'ERROR';
+          //return self::$curated_assertion_strings[$str] ?? 'ERROR';
      }
       
 

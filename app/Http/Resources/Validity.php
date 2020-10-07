@@ -20,7 +20,7 @@ class Validity extends JsonResource
         return [
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,
-            'href' => $this->href,
+            //'href' => $this->href,
             'ep' => $this->attributed_to->label ?? '',
             'disease' => $this->disease->label,
             'mondo' => $this->disease->curie,

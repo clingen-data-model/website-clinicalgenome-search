@@ -247,7 +247,8 @@ class Nodal extends Model
 		if (empty($this->dosage_curation))
 			return false;
 
-		return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
+		return $this->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal ?? false;
+		//return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
 	
 	}
 	
@@ -263,8 +264,8 @@ class Nodal extends Model
 		if (empty($this->dosage_curation))
 			return false;
 		
-		return $this->dosage_curation->haploinsufficiency_assertion->score ?? false;
-		
+		//return $this->dosage_curation->haploinsufficiency_assertion->score ?? false;
+		return $this->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal ?? false;
 	}
 	
 	

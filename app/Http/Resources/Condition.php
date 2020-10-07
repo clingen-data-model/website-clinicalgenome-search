@@ -17,14 +17,14 @@ class Condition extends JsonResource
     public function toArray($request)
     {
         return [
-            'iri' => $this->iri,
             'curie' => $this->curie,
-            'description' => $this->description,
+            //'description' => $this->description,
             'label' => $this->label,
             'has_actionability' => $this->has_actionability,
             'has_validity' => $this->has_validity,
             'has_dosage' => $this->has_dosage,
-            'date' => $this->displayDate($this->last_curated_date)
+            'date' => $this->displayDate($this->last_curated_date),
+            'rawdate' => $this->last_curated_date
         ];
     }
     

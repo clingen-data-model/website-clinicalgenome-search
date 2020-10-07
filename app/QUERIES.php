@@ -114,7 +114,7 @@
 
 // Dosage List
 {
-    genes(limit: null, curation_activity: GENE_DOSAGE)
+    genes(limit: null, curation_activity: GENE_DOSAGE, sort: {field: GENE_LABEL, direction: ASC})
     {
         count
         gene_list {
@@ -124,9 +124,15 @@
             dosage_curation {
                 report_date
                 triplosensitivity_assertion {
+                    dosage_classification {
+									ordinal
+								}
                     score
                 }
                 haploinsufficiency_assertion {
+                    dosage_classification {
+									ordinal
+								}
                     score
                 }
             }
@@ -196,11 +202,9 @@
             }
             classification {
                 label
-                curie
             }
             specified_by {
                 label
-                curie
             }
         }
     }

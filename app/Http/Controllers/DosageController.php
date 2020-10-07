@@ -199,5 +199,132 @@ class DosageController extends Controller
 		return view('new-dosage.show', compact('display_tabs', 'record'));
 	}
 
+	/**
+     * Demo page for new dosage listing.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ftps(Request $request)
+    {
+		$filelist = [
+        	'ClinGen recurrent CNV .aed file V1.1-hg19.aed',
+			'ClinGen recurrent CNV .aed file V1.1-hg38.aed',
+			'ClinGen recurrent CNV .bed file V1.1-hg19.bed',
+			'ClinGen recurrent CNV .bed file V1.1-hg38.bed',
+			'ClinGen_gene_curation_list_GRCh37.tsv',
+			'ClinGen_gene_curation_list_GRCh38.tsv',
+			'ClinGen_haploinsufficiency_gene_GRCh37.bed',
+			'ClinGen_haploinsufficiency_gene_GRCh38.bed',
+			'ClinGen_region_curation_list_GRCh37.tsv',
+			'ClinGen_region_curation_list_GRCh38.tsv',
+			'ClinGen_triplosensitivity_gene_GRCh37.bed',
+			'ClinGen_triplosensitivity_gene_GRCh38.bed',
+			'README'];
 
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+        ]);
+
+		return view('gene-dosage.downloads', compact('display_tabs'))
+						->with('filelist', $filelist);
+	}
+
+
+	/**
+     * Demo page for new cnv listing.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cnv(Request $request, $page = 1, $size = 100)
+    {
+        
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+		]);
+		
+		return view('gene-dosage.cnv', compact('display_tabs'))
+						->with('apiurl', '/api/dosage/cnv')
+						->with('pagesize', $size)
+						->with('page', $page);
+	}
+
+
+	/**
+     * Demo page for new cnv listing.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function acmg59(Request $request, $page = 1, $size = 100)
+    {
+        
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+		]);
+		
+		return view('gene-dosage.acmg59', compact('display_tabs'))
+						->with('apiurl', '/api/dosage/acmg59')
+						->with('pagesize', $size)
+						->with('page', $page);
+	}
+
+
+	/**
+     * Demo page for new dosage listing.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newreports(Request $request, $page = 1, $size = 100)
+    {
+        
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+        ]);
+
+		return view('new-dosage.reports', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('apiurl', '/api/dosage')
+						->with('pagesize', $size)
+						->with('page', $page);
+	}
+
+
+	/**
+     * Demo page for new dosage listing.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function newstats(Request $request, $page = 1, $size = 100)
+    {
+        
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage"
+        ]);
+
+		return view('new-dosage.stats', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('apiurl', '/api/dosage')
+						->with('pagesize', $size)
+						->with('page', $page);
+	}
 }

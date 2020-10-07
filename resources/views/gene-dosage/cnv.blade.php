@@ -3,43 +3,19 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-5">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
+		<div class="col-md-8">
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Curation of Recurrent CNVs</h1>
       	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 		</div>
-
-		<div class="col-md-2 pt-3">
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="showgenes" checked>
-				Show Genes
-			  </div>
-			  <div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="showregions" checked>
-				Show Regions
-			  </div>
-		</div>
-
-		<div class="col-md-5">
+	
+		<div class="col-md-4">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-download') }}">Summary Data (CSV)</a></li>
-							<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
-						</ul>
-					</li>
-					<li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />More<br />Data
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
-							<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
-						</ul>
-					</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Regions</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Regions</li>
+					<li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -98,14 +74,7 @@
     background-repeat: no-repeat;
     padding-left: 20px !important;
 }
-.bootstrap-table .fixed-table-container .table thead th .both {
-}
-.bootstrap-table .fixed-table-container .table thead th .asc {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==");
-}
-.bootstrap-table .fixed-table-container .table thead th .desc {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=");
-}
+
   </style>
 
 <script>
@@ -149,31 +118,20 @@
 	}
 
   	function symbolFormatter(index, row) {
-		if (row.type == 0)
-			return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>  <a href="/gene-dosage/'
-						+ row.hgnc_id + '"><i class="fas fa-external-link-alt"></i></a>';
-		else
-			return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
-	}
 
-  	function hgncFormatter(index, row) {
-		if (row.type == 0)
-			return '<a href="/gene-dosage/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
-		else
-			return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.hgnc_id + '</b></a>';
+		var url = "https://dosage.clinicalgenome.org/clingen_region.cgi?id=";
+
+		return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
 	}
 
 	function locationFormatter(index, row) {
 
-		if (row.type == 0)
-			return row.location;
-
-		var name = row.GRCh37_position.trim();
+		var name = row.location.trim();
 
 		// strip off chr
 		if (name.indexOf("chr") === 0)
 			name = name.substring(3);
-
+		
 		var chr = name.indexOf(':');
 		var pos = name.indexOf('-');
 
@@ -188,26 +146,6 @@
 		return html;
 	}
 
-
-	function pliFormatter(index, row) {
-		if (row.pli === null)
-			return '-';
-
-		if (row.pli > .50)
-			return '<span style="color: red">' + row.pli + '</span>';
-		else
-			return '<span style="color: green">' + row.pli + '</span>';
-	}
-
-	function hiFormatter(index, row) {
-		if (row.hi === null)
-			return '-';
-			
-		if (row.hi > 50)
-			return '<span style="color: red">' + row.hi + '</span>';
-		else
-			return '<span style="color: green">' + row.hi + '</span>';
-	}
 
 	function haploFormatter(index, row) {
 		if (row.haplo_assertion === false)
@@ -233,23 +171,11 @@
 		return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
 	}
 
-	function omimFormatter(index, row) {
-		if (row.omimlink)
-			return '<span class="text-success"><i class="fas fa-check"></i></span>';
-		else
-			return '';
-	}
-
   	function reportFormatter(index, row) {
 		/*return '<a class="btn btn-block btn btn-default btn-xs" href="'
 				+ report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-		if (row.type == 0)
-			return '<a class="btn btn-block btn btn-default btn-xs" href="'
+		return '<a class="btn btn-block btn btn-default btn-xs" href="'
 				+ report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
-		else
-			return '<a class="btn btn-block btn btn-default btn-xs" href="' 
-				+ 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id 
-				+ '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
   	}
 
 	function cellFormatter(index, row) {
@@ -268,25 +194,15 @@
 		locale: 'en-US',
 		columns: [
 		{
-			title: 'Gene/Region',
-			field: 'symbol',
+			title: 'Region Name',
+			field: 'name',
 			formatter: symbolFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'input',
 			sortable: true
 		},
-        {
-			title: 'HGNC',
-			field: 'hgnc',
-			formatter: hgncFormatter,
-			sortable: true,
-			filterControl: 'input',
-			cellStyle: cellFormatter,
-			visible: false
-		},
-
 		{
-			title: 'Location',
+			title: 'Location on GRCh37',
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
@@ -309,39 +225,7 @@
 			formatter: triploFormatter,
 			cellStyle: cellFormatter,
 			sortable: true
-        },
-		{
-			title: 'OMIM',
-			field: 'omimlimk',
-			filterControl: 'select',
-			formatter: omimFormatter,
-			cellStyle: cellFormatter,
-			sortable: true
-        },
-		{
-			title: '%HI',
-			field: 'hi',
-			filterControl: 'input',
-			cellStyle: cellFormatter,
-			formatter: hiFormatter,
-			sortable: true
-        },
-		{
-			title: 'pLI',
-			field: 'pli',
-			filterControl: 'input',
-			cellStyle: cellFormatter,
-			formatter: pliFormatter,
-			sortable: true
-        },
-		/*{
-			field: 'date',
-			title: 'Date',
-			sortable: true,
-			filterControl: 'input',
-			cellStyle: cellFormatter,
-			sortName: 'rawdate'
-		},*/
+        }/*,
 		{
 			field: 'date',
 			title: 'Reviewed',
@@ -350,11 +234,6 @@
 			cellStyle: cellFormatter,
 			formatter: reportFormatter,
 			sortName: 'rawdate'
-        }
-		/*{
-			title: 'Report',
-			cellStyle: cellFormatter,
-			formatter: reportFormatter
         }*/
       ]
     })
@@ -385,43 +264,13 @@
 
   $(function() {
 	$("body").css("cursor", "progress");
-    initTable();
-	var search = $('.fixed-table-toolbar .search input');
-	search.attr('placeholder', 'Search in table');
-
+    initTable()
+	var $search = $('.fixed-table-toolbar .search input');
+	$search.attr('placeholder', 'Search in table');
 	//$search.css('border', '1px solid red');
 	$( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
-
-	$('#showgenes').on('change', function() {
-		var viz = [];
-
-		if (this.checked)
-			viz.push(0);
-
-		if ($('#showregions').prop("checked"))
-			viz.push(1);
-
-    	$table.bootstrapTable('filterBy', {
-       			 type: viz
-     	});
- 
-    });
-
-	$('#showregions').on('change', function() {
-		var viz = [];
-
-		if ($('#showgenes').prop("checked"))
-			viz.push(0);
-
-		if (this.checked)
-			viz.push(1);
-
-		$table.bootstrapTable('filterBy', {
-					type: viz
-		});
-	});
+    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="popover"]').popover()
 
   })
 

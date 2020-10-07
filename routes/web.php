@@ -20,16 +20,14 @@ Route::get('/', function () {
  * Test route - remove for production
  */
 // Route::get('/test/test', 'TestController@test')->name('test-test');
-// Route::get('/test', 'TestController@index')->name('test-index');
+ Route::get('/test', 'TestController@index')->name('test-index');
 // Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
 // Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
 // Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
-// Route::get('/test/download', 'TestController@download')->name('dosage-download');
 
 /*
  *	download dosage csv
  */
-Route::get('/gene-dosage/download', 'DosageController@download')->name('dosage-download');
 Route::get('/gene-validity/download', 'ValidityController@download')->name('validity-download');
 
 
@@ -123,6 +121,14 @@ Route::group(['prefix' => 'gene-dosage'], function () {
 
 	Route::get('/', 'DosageController@index')->name('dosage-index');
 
+	Route::get('/download', 'DosageController@download')->name('dosage-download');
+
+	Route::get('/ftp', 'DosageController@ftps')->name('dosage-ftp');
+
+	Route::get('/cnv', 'DosageController@cnv')->name('dosage-cnv');
+
+	Route::get('/acmg59', 'DosageController@acmg59')->name('dosage-acmg59');
+
 	Route::get('/{id?}', 'DosageController@show')->name('dosage-show');
 });
 
@@ -153,10 +159,8 @@ Route::group(['prefix' => 'actionability'], function () {
 
 		// New dosagw index page
 		Route::get('/new-dosage', 'DosageController@newindex')->name('new-dosage-index');
-		Route::get('/new-dosage/show', 'DosageController@newshow')->name('new-dosage-show');
-		Route::get('/new-dosagereports', 'DosageController@newindex')->name('dosage-reports');
-		Route::get('/new-dosage/stats', 'DosageController@newindex')->name('dosage-stats');
-		Route::get('/new-dosage/downloads', 'DosageController@newindex')->name('dosage-download');
+		Route::get('/new-dosage/reports', 'DosageController@newreports')->name('dosage-reports');
+		Route::get('/new-dosage/stats', 'DosageController@newstats')->name('dosage-stats');
 
 // ************************************************************************************************
 // DEMO ROUTES END

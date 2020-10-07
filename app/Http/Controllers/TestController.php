@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Resources\Dosage as DosageResource;
 
 use App\GeneLib;
 
@@ -25,14 +26,23 @@ class TestController extends Controller
      */
     public function index()
     {
-		$t = GeneLib::geneLook([	'page' =>  0,
+		$a = GeneLib::dosageList(['page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+										'direction' => $input['order'] ?? 'ASC',
+										'search' => $input['search'] ?? null,
+										'curated' => true ]);
+
+		$b = GeneLib::regionList([	'page' =>  0,
 		'pagesize' =>  "null",
 		'sort' => 'GENE_LABEL',
 		'direction' =>  'ASC',
 		'search' =>  null,
 		'curated' => false ]);
-		dd($t);
-		return view('new-dosage.index');
+
+		$c = $a->collection->concat($b->collection);
+		//dd($c->count());
+		return DosageResource::collection($c);
 	}
 
 

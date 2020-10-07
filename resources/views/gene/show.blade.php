@@ -96,7 +96,11 @@
 									<td class=""><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 									<td class="">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
-											{{ \App\GeneLib::haploAssertionString($dosage->score ?? null) }}
+											@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
+											{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
+											@else
+											{{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
+											@endif
 										</strong>  <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
 									<td class=""></td>
@@ -138,7 +142,11 @@
 							<td class=""><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 							<td class="">
 								<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
-									{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->score ?? null) }}
+									@if ($key == "haploinsufficiency_assertion")
+									{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+									@else
+									{{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+									@endif
 								</strong>  <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 							</td>
 							<td class=""></td>

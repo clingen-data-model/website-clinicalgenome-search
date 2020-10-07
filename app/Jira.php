@@ -8,8 +8,11 @@ use JiraRestApi\Issue\IssueService;
 use JiraRestApi\User\UserService;
 use JiraRestApi\JiraException;
 
+use Carbon\Carbon;
+
 use App\Gene;
 use App\Iscamap;
+use App\Minute;
 
 /**
  *
@@ -110,7 +113,169 @@ class Jira extends Model
 
 		return $node;	
      }
+
+
+     /**
+     * Get a list of recurrent CNVs
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function cnvList($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+              
+          $collection = collect();
+
+          // filter 14035 is erica's recurrent cnv search string
+          $response = self::getIssues('filter=14035');
+
+          if (empty($response))
+               return $collection;
+
+          foreach ($response->issues as $issue)
+          {
+               // map the jira response into a somewhat sane structure
+               $node = new Nodal([
+                    'key' => $issue->key,
+                    'summary' => $issue->fields->summary,
+                    'GRCh37_position' => $issue->fields->customfield_10160,
+                    'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
+                    'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown'
+               ]);
+               
+               // for 30 and 40, Jira also sends text
+               if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo_score = 30;
+               else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+                    $node->triplo_score = 40;
+
+               if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo_score = 30;
+               else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+                    $node->haplo_score = 40;
+
+               $collection->push($node);
+          }
+
+          $nhaplo = $collection->where('haplo_score', '>', 0)->count();
+          $ntriplo = $collection->where('triplo_score', '>', 0)->count();
+
+          return (object) ['count' => $response->total, 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
      
+
+     /**
+     * Get a list of ACMG 59 genes
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+     static function acmg59List($args, $page = 0, $pagesize = 20)
+     {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+              
+          $collection = collect();
+
+          $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Gene Curation") AND labels in ("ACMGSFv2.0") ');
+
+          if (empty($response))
+               return $collection;
+
+          foreach ($response->issues as $issue)
+          {
+               // map the jira response into a somewhat sane structure
+               $node = new Nodal([
+                    'key' => $issue->key,
+                    'label' => $issue->fields->customfield_10030,
+                    'omim' => $issue->fields->customfield_10147,
+                    'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
+                    'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown'
+               ]);
+               
+               // for 30 and 40, Jira also sends text
+               if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo_score = 30;
+               else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+                    $node->triplo_score = 40;
+
+               if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo_score = 30;
+               else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+                    $node->haplo_score = 40;
+
+               $collection->push($node);
+          }
+
+          $nhaplo = $collection->where('haplo_score', '>', 0)->count();
+          $ntriplo = $collection->where('triplo_score', '>', 0)->count();
+
+          return (object) ['count' => $response->total, 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
+
+
+    /**
+     * Get a list of regions
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionList($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+              
+          $collection = collect();
+
+          // filter 10632 is the region selection filter
+          //$response = self::getIssues('filter=10632');
+          $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Region Curation") AND Resolution = Complete');
+
+          if (empty($response))
+               return $collection;
+;
+          foreach ($response->issues as $issue)
+          {
+               // map the jira response into a somewhat sane structure
+               $node = new Nodal([
+                    'hgnc_id' => $issue->key,
+                    'type' => 1,
+                    'label' => $issue->fields->customfield_10202,
+                    'cytoband' => $issue->fields->customfield_10145 ?? null,
+                    'omimlink' => $issue->fields->customfield_10147 ?? null,
+                    'GRCh37_position' => $issue->fields->customfield_10160 ?? null,
+                    'GRCh38_position' => $issue->fields->customfield_10532 ?? null,
+                    'pli' => $issue->fields->customfield_11635 ?? null,
+                    'hi' => null,
+                    'triplo_assertion' => $issue->fields->customfield_10166->value ?? 'unknown',
+                    'haplo_assertion' => $issue->fields->customfield_10165->value ?? 'unknown',
+                    'resolved_date' => $issue->fields->resolutiondate
+               ]);
+
+               // for 30 and 40, Jira also sends text
+               if ($node->triplo_assertion == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo_assertion = 30;
+               else if ($node->triplo_assertion == "40: Dosage sensitivity unlikely")
+                    $node->triplo_assertion = 40;
+
+               if ($node->haplo_assertion == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo_assertion = 30;
+               else if ($node->haplo_assertion == "40: Dosage sensitivity unlikely")
+                    $node->haplo_assertion = 40;
+
+               $collection->push($node);
+          }
+
+          $nhaplo = $collection->where('haplo_assertion', '>', 0)->count();
+          $ntriplo = $collection->where('triplo_assertion', '>', 0)->count();
+
+          return (object) ['count' => $response->total, 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
 
 
 
@@ -126,6 +291,39 @@ class Jira extends Model
           // check if parent exists, if not create.
           
      }
+
+
+     /**
+     * Get all issue
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function getIssues($query)
+    {
+         try {
+              $issueService = new IssueService();
+
+              $begin = Carbon::now();
+              $issues = $issueService->search($query, 0, 2500);
+              $end = Carbon::now();
+               $record = new Minute([
+				'system' => 'Search',
+				'subsystem' => __METHOD__,
+				'method' => 'query',
+				'start' => $begin,
+				'finish' => $end,
+				'status' => 1
+
+               ]);
+               $record->save();
+              
+              //var_dump($issue->fields);	
+         } catch (JiraRestApi\JiraException $e) {
+              print("Error Occured! " . $e->getMessage());
+         }
+
+         return $issues ?? null;
+    }
 
 
     /**
@@ -151,8 +349,20 @@ class Jira extends Model
                     'changelog',
                ]
                ];
-                    
+               
+               $begin = Carbon::now();
                $issue = $issueService->get($issue, $queryParam);
+               $end = Carbon::now();
+               $record = new Minute([
+				'system' => 'Search',
+				'subsystem' => __METHOD__,
+				'method' => 'query',
+				'start' => $begin,
+				'finish' => $end,
+				'status' => 1
+
+               ]);
+               $record->save();
                
                //var_dump($issue->fields);	
           } catch (JiraRestApi\JiraException $e) {

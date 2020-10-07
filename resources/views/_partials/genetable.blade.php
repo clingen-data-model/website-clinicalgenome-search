@@ -38,5 +38,8 @@
     data-show-extended-pagination="false"
     data-url="{{  $apiurl }}"
     data-response-handler="responseHandler"
-    data-show-filter-control-switch="true">
+    data-header-style="headerStyle"
+    data-show-filter-control-switch="true"
+    data-group-by="true"
+    data-group-by-field="pheno">
 </table>

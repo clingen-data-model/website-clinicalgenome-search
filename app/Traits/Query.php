@@ -26,7 +26,7 @@ trait Query
 	public static function query($query, $method = '')
 	{
 		try {
-			$begin = Carbon::now();
+
 			$begin = Carbon::now();
 			$response = Genegraph::fetch($query);
 			$end = Carbon::now();

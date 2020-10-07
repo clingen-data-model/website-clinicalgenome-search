@@ -57,7 +57,8 @@ class Gene extends Model
      */
 	protected $casts = [
 			'alias_symbol' => 'array',
-			'prev_symbol' => 'array'
+               'prev_symbol' => 'array',
+               'omim_id' => 'array'
 		];
 
      /**
@@ -67,7 +68,7 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-					   'haplo', 'triplo', 'type', 'notes', 'status' ];
+					   'haplo', 'triplo', 'omim_id', 'type', 'notes', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -75,7 +76,8 @@ class Gene extends Model
      * @var array
      */
      protected $appends = ['display_date', 'list_date', 'display_status',
-							'display_aliases', 'display_previous'];
+                                   'display_aliases', 'display_previous',
+                                   'display_omim'];
 
      public const TYPE_NONE = 0;
 
@@ -164,6 +166,21 @@ class Gene extends Model
 			return 'No previous names found';
 
 		return implode(', ', $this->prev_symbol);
-	}
+     }
+     
+
+     /**
+     * Get a display formatted form of omim ids
+     *
+     * @@param
+     * @return
+     */
+    public function getDisplayOmimAttribute()
+    {
+         if (empty($this->omim_id))
+              return 'No ids found';
+
+         return implode(', ', $this->omim_id);
+    }
 
 }
