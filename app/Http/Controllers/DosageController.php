@@ -47,7 +47,6 @@ class DosageController extends Controller
      */
     public function index(Request $request, $page = 1, $size = 100)
     {
-        
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
@@ -89,7 +88,7 @@ class DosageController extends Controller
 		{
 			die(print_r(GeneLib::getError()));
 		}
-
+//dd($record);
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
 		$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
@@ -98,17 +97,18 @@ class DosageController extends Controller
 		$record->date = $record->displayDate($record->dosage_report_date);
 			
 		// some data just to test the ideogram and sequence viewer
-		$record->chromosome = '22';
-		$record->start_location="43088121";
-		$record->stop_location="43117307";
-		$record->GRCh38_loc = 'chr22: 42,692,115-42,721,301';
-		$record->seqID = 'NC_000022.10';
-		$record->sv_start = '43085202.3';
-		$record->sv_stop = '43120225.7';
-		$record->loc = 'chr22: 43,088,121-43,117,307';
-		$record->GRCh38_seqID = 'NC_000022.11';
-		$record->GRCh38_sv_start = '42689196.3';
-		$record->GRCh38_sv_stop = '42724219.7';
+		$record->chromosome = $record->formatPosition($record->GRCh37_position, 'chr');
+
+		$record->start_location=$record->formatPosition($record->GRCh37_position, 'from');
+		$record->stop_location=$record->formatPosition($record->GRCh37_position, 'to');
+		//$record->GRCh38_loc = 'chr22: 42,692,115-42,721,301';
+		//$record->seqID = 'NC_000022.10';
+		$record->sv_start = $record->formatPosition($record->GRCh37_position, 'svfrom');
+		$record->sv_stop = $record->formatPosition($record->GRCh37_position, 'svto');
+		//$record->loc = 'chr22: 43,088,121-43,117,307';
+		//$record->GRCh38_seqID = 'NC_000022.11';
+		$record->GRCh38_sv_start = $record->formatPosition($record->GRCh38_position, 'svfrom');
+		$record->GRCh38_sv_stop = $record->formatPosition($record->GRCh38_position, 'svto');
 //dd($record);
 		return view('gene-dosage.show', compact('display_tabs', 'record'));
 	}
@@ -133,7 +133,6 @@ class DosageController extends Controller
      */
     public function newindex(Request $request, $page = 1, $size = 100)
     {
-        
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
@@ -143,11 +142,11 @@ class DosageController extends Controller
             'active' => "dosage"
         ]);
 
-		return view('new-dosage.index', compact('display_tabs'))
+		return view('new-dosage.index', compact('display_tabs'));
 		//				->with('count', $results->count)
-						->with('apiurl', '/api/dosage')
-						->with('pagesize', $size)
-						->with('page', $page);
+		//				->with('apiurl', '/api/dosage')
+		//				->with('pagesize', $size)
+		//				->with('page', $page);
 	}
 	
 

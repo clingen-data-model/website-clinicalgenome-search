@@ -402,6 +402,20 @@ class Graphql
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
 				$node->omimlink = $gene->display_omim;
+				if ($gene->history !== null)
+				{
+					//dd($gene->history);
+					foreach ($gene->history as $item)
+					{
+						//dd($item["what"]);
+						if ($item['what'] == 'Triplosensitivity Score')
+							$node->triplo_history = $item['what'] . ' changed from ' . $item['from'] 
+													. ' to ' . $item['to'] . ' on ' . $item['when'];
+						else if ($item['what'] == 'Haploinsufficiency Score')						
+							$node->haplo_history = $item['what'] . ' changed from ' . $item['from'] 
+													. ' to ' . $item['to'] . ' on ' . $item['when'];
+					}
+				}
 			}
 
 			$node->type = 0;

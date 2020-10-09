@@ -65,7 +65,12 @@
 		var $table = $('#table')
 	var selections = []
 
-
+  function table_buttons ()
+	{
+		return {
+    	}
+  }
+  
   function responseHandler(res) {
 	  //$('#gene-count').html(res.total);
     $('.countDisease').html(res.total);

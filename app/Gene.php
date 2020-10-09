@@ -45,7 +45,8 @@ class Gene extends Model
 		'pli' => 'string|nullable',
 		'haplo' => 'string|nullable',
 		'triplo' => 'string|nullable',
-		'notes' => 'string|nullable',
+          'notes' => 'string|nullable',
+          'history' => 'json|nullable',
 		'type' => 'integer',
 		'status' => 'integer'
 	];
@@ -58,7 +59,8 @@ class Gene extends Model
 	protected $casts = [
 			'alias_symbol' => 'array',
                'prev_symbol' => 'array',
-               'omim_id' => 'array'
+               'omim_id' => 'array',
+               'history' => 'array'
 		];
 
      /**
@@ -68,7 +70,7 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-					   'haplo', 'triplo', 'omim_id', 'type', 'notes', 'status' ];
+					   'haplo', 'triplo', 'omim_id', 'history', 'type', 'notes', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -124,6 +126,18 @@ class Gene extends Model
 	public function scopeIdent($query, $ident)
      {
 		return $query->where('ident', $ident);
+     }
+
+
+     /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeName($query, $name)
+     {
+		return $query->where('name', $name);
      }
 
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
 
 use App\GeneLib;
+use App\Jira;
 
 class TestController extends Controller
 {
@@ -26,22 +27,14 @@ class TestController extends Controller
      */
     public function index()
     {
-		$a = GeneLib::dosageList(['page' => $input['offset'] ?? 0,
-										'pagesize' => $input['limit'] ?? "null",
-										'sort' => $sort ?? 'GENE_LABEL',
-										'direction' => $input['order'] ?? 'ASC',
-										'search' => $input['search'] ?? null,
-										'curated' => true ]);
-
-		$b = GeneLib::regionList([	'page' =>  0,
+		$b = Jira::ratingsList([	'page' =>  0,
 		'pagesize' =>  "null",
 		'sort' => 'GENE_LABEL',
 		'direction' =>  'ASC',
 		'search' =>  null,
 		'curated' => false ]);
 
-		$c = $a->collection->concat($b->collection);
-		//dd($c->count());
+		dd($b);
 		return DosageResource::collection($c);
 	}
 
