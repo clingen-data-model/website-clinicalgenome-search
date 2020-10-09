@@ -21,7 +21,7 @@ use Uuid;
  * @since      Class available since Release 1.0.0
  *
  * */
-class Region extends Model
+class Omim extends Model
 {
     use SoftDeletes;
     use Display;
@@ -39,8 +39,8 @@ class Region extends Model
      *
      * @var array
      */
-     protected $fillable = ['location', 'issue', 'curation', 'workflow',
-                            'name', 'gain', 'loss', 'pli', 'status', 'omim', 'type' ];
+     protected $fillable = ['prefix', 'omimid', 'titles', 'alt_titles',
+                            'inc_titles', 'status', 'type' ];
 
 	  /**
      * Non-persistent storage model attributes.
@@ -76,25 +76,30 @@ class Region extends Model
 
 
     /**
-     * Query scope by iddur
+     * Query scope by ident
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function scopeIssue($query, $issue)
+    public function scopeOmimid($query, $ident)
     {
-      return $query->where('issue', $issue);
+      return $query->where('omimid', $ident);
     }
 
 
     /**
-     * Query scope by location
+     * Query title for omim id
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function scopeLocation($query, $location)
+    public static function titles($id)
     {
-      return $query->where('location', $location);
+      $record = self::omimid($id)->first();
+
+      if ($record === null)
+        return '';
+
+      return $record->titles;
     }
 }

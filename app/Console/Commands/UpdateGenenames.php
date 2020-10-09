@@ -78,7 +78,8 @@ class UpdateGenenames extends Command
 			
 			// change doc name and symbol to description and name
 			$doc['description'] = $doc['name'];
-			$doc['name'] = $doc['symbol'];
+            $doc['name'] = $doc['symbol'];
+            //dd($doc);
 			
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['name' => $doc['symbol']], $doc);

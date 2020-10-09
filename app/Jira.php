@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Gene;
 use App\Iscamap;
 use App\Minute;
+use App\Omim;
 
 /**
  *
@@ -97,17 +98,77 @@ class Jira extends Model
                return null;
 
           $response = self::getIssue($issue->issue);
-
+//dd($response);
           // map the jira response into a somewhat sane structure
 		$node = new Nodal([
                'summary' => $response->summary,
+               'key' => $issue->issue,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
                'GRCh37_position' => $response->customfield_10160,
                'GRCh38_position' => $response->customfield_10532,
+               'GRCh37_seqid' => $response->customfield_10158,
+               'GRCh38_seqid' => $response->customfield_10537,
                'triplo_score' => $response->customfield_10166->value ?? 'unknown',
                'haplo_score' => $response->customfield_10165->value ?? 'unknown',
-               'cytoband' => $response->customfield_10145
+               'cytoband' => $response->customfield_10145,
+               'loss_comments' => $response->customfield_10198 ?? null,
+               'loss_pheno_omim' => $response->customfield_10200 ?? null,
+               'gain_comments' => $response->customfield_10199 ?? null,
+               'gain_pheno_omim' => $response->customfield_10201 ?? null
           ]);
+
+          // create the structures for pmid.  Jira will not send the fields if empty
+          $pmids = [];
+          if (isset($response->customfield_10183))
+               $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184];
+          if (isset($response->customfield_10185))
+               $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186];
+          if (isset($response->customfield_10187))
+               $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188];
+          $node->loss_pmids = $pmids;
+          $pmids = [];
+          if (isset($response->customfield_10189))
+               $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190];
+          if (isset($response->customfield_10191))
+               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192];
+          if (isset($response->customfield_10193))
+               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193];
+          $node->gain_pmids = $pmids;
+
+          // for the omim fields, transform into structure and add title
+          $omims = [];
+          if (!empty($node->loss_pheno_omim))
+          {
+               foreach (explode(',', $node->loss_pheno_omim) as $item)
+               {
+                    $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+               }
+          }
+          $node->loss_pheno_omim = $omims;
+
+          $omims = [];
+          if (!empty($node->gain_pheno_omim))
+          {
+               foreach (explode(',', $node->gain_pheno_omim) as $item)
+               {
+                    $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+               }
+          }
+          $node->gain_pheno_omim = $omims;
+
+          //dd($node);
+
+          // for 30 and 40, Jira also sends text
+          if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+               $node->triplo_score = 30;
+          else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+               $node->triplo_score = 40;
+
+          if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+               $node->haplo_score = 30;
+          else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+               $node->haplo_score = 40;
+
 
 	//dd($node);	
 
@@ -165,6 +226,100 @@ class Jira extends Model
           return (object) ['count' => $response->total, 'collection' => $collection,
                'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
     }
+
+
+    /**
+     * Get a list of all recent ratings changes
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function ratingsList($args, $page = 0, $pagesize = 20)
+    {
+        // break out the args
+        foreach ($args as $key => $value)
+             $$key = $value;
+             
+         $collection = collect();
+
+         $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Gene Curation", "ISCA Region Curation") AND labels in ("RatingChange")');
+
+         if (empty($response))
+              return $collection;
+
+          foreach ($response->getIssues() as $issue) 
+          {
+               $changelog = self::getIssue($issue->key, 'changelog');
+
+               foreach ($changelog->histories as $history)
+               {
+                    foreach ($history->items as $item)
+                    {
+                         if ($item->field == 'ISCA Triplosensitivity score')
+                         {
+                              if ($item->fromString !== null 
+                                   && trim($item->fromString) != 'Not yet evaluated'
+                                   && $item->toString !== null)
+                              {
+                                   $created = new Carbon($history->created);
+                                   if (Carbon::now()->diffInWeeks($created) <= 130)
+                                   {
+                                        //dd($issue->fields);
+                                        if ($issue->fields->issuetype->name == "ISCA Gene Curation")
+                                             $title = $issue->fields->customfield_10030;
+                                        else if ($issue->fields->issuetype->name == "ISCA Region Curation")
+                                             $title = $issue->fields->customfield_10202;
+                                        else
+                                             $title = 'Unknown Issue Type';
+
+                                        $node = new Nodal([
+                                             'key' => $issue->key,
+                                             'title' => $title,
+                                             'type' => $issue->fields->issuetype->name,
+                                             'what' => 'Triplosensitivity Score',
+                                             'when' => $history->created,
+                                             'from' => $item->fromString,
+                                             'to' => $item->toString,
+                                             'age' => Carbon::now()->diffInWeeks($created)
+                                        ]);
+                                        $collection->push($node);
+                                   }
+                              }
+                         }
+                         else if ($item->field == 'ISCA Haploinsufficiency score')
+                         {
+                              if ($item->fromString !== null 
+                                   && trim($item->fromString) != 'Not yet evaluated'
+                                   && $item->toString !== null)
+                              {
+                                   $created = new Carbon($history->created);
+                                   if (Carbon::now()->diffInWeeks($created) <= 130)
+                                   {
+                                        if ($issue->fields->issuetype->name == "ISCA Gene Curation")
+                                             $title = $issue->fields->customfield_10030;
+                                        else if ($issue->fields->issuetype->name == "ISCA Region Curation")
+                                             $title = $issue->fields->customfield_10202;
+                                        else
+                                             $title = 'Unknown Issue Type';
+
+                                        $node = new Nodal([
+                                             'key' => $issue->key,
+                                             'title' => $title,
+                                             'type' => $issue->fields->issuetype->name,
+                                             'what' => 'Haploinsufficiency Score',
+                                             'when' => $history->created,
+                                             'from' => $item->fromString,
+                                             'to' => $item->toString,
+                                             'age' => Carbon::now()->diffInWeeks($created)
+                                        ]);
+                                        $collection->push($node);
+                                   }
+                              }
+                         }
+                    }
+               }
+          }
+         return $collection;
+     }
      
 
      /**
@@ -331,23 +486,21 @@ class Jira extends Model
      * 
      * @return Illuminate\Database\Eloquent\Collection
      */
-     static function getIssue($issue)
+     static function getIssue($issue, $field = 'fields')
      {
           try {
                $issueService = new IssueService();
                
                $queryParam = [
-               'fields' => [ 
-               ],
-               'expand' => [
-                    'renderedFields',
-                    'names',
-                    'schema',
-                    'transitions',
-                    'operations',
-                    'editmeta',
-                    'changelog',
-               ]
+                    'expand' => [
+                         'renderedFields',
+                         'names',
+                         'schema',
+                         'transitions',
+                         'operations',
+                         'editmeta',
+                         'changelog',
+                    ]
                ];
                
                $begin = Carbon::now();
@@ -369,7 +522,7 @@ class Jira extends Model
                print("Error Occured! " . $e->getMessage());
           }
 
-          return $issue->fields ?? null;
+          return $issue->$field ?? null;
      }
      
 

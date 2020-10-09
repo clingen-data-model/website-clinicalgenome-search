@@ -62,6 +62,11 @@
 	var $table = $('#table')
 	var selections = []
 
+  function table_buttons ()
+	{
+		return {
+    	}
+  }
 
   function responseHandler(res) {
 

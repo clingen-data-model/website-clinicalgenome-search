@@ -18,26 +18,28 @@
         <dd>{{ $record->alias_symbols }}</dd>
         <dt>Chromosomal location</dt>
         <dd>
-          {{ $record->chromosome_band }} <a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
-          <div class="mt-2 mb-4">
+          {{ $record->chromosome_band }} <a href="/genes/{{ $record->hgnc_id }}" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
+          <!--<div class="mt-2 mb-4">
             <div id="ideogram"> </div>
-          </div>
+          </div>-->
         </dd>
         <dt>Genomic Coordinate</dt>
         <dd>
           <table>
             <tr>
                 <td>GRCh37/hg19</td>
-                <td>chr17: 41,196,312-41,277,500
-                    <a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a> 
-                    <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> NCBI</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> Ensembl</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> UCSC</span>
+                <td>{{ $record->GRCh37_position }}
+                  <a href="{{ $record->formatNcbi($record->GRCh37_position, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+                  <a href="{{ $record->formatEnsembl($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+                  <a href="{{ $record->formatUcsc19($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
                 </td>
             </tr>  
             <tr>
                 <td class="pr-3">GRCh38/hg38</td>
-                <td>chr17: 43,044,295-43,125,483
-                    <a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a> 
-                    <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> NCBI</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> Ensembl</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> UCSC</span>
+                <td>{{  $record->GRCh38_position }}
+                  <a href="{{ $record->formatNcbi($record->GRCh38_position, $record->GRCh38_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+                  <a href="{{ $record->formatEnsembl($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+                  <a href="{{ $record->formatUcsc38($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
                 </td>
             </tr> 
           </table>

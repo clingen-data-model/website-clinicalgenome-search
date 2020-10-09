@@ -370,10 +370,21 @@ class GeneLib extends Model
           {
                // combine the two
                foreach(['summary', 'genetype', 'GRCh37_position', 'GRCh38_position',
-               'triplo_score', 'haplo_score', 'cytoband' ] as $field)
+               'triplo_score', 'haplo_score', 'cytoband', 'key',
+               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+               'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
                {
                     $response->$field = $supplement->$field;
                }
+          }
+
+          // need the titles from Omim
+          $omim = null; //Omim::omimid($)->first();
+
+          if ($omim !== null)
+          {
+               $response->omimtitle = $omim->titles;
           }
 
           return $response;

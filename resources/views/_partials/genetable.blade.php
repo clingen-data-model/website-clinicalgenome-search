@@ -16,6 +16,7 @@
     data-search-align="left"
     data-trim-on-search="false"
     data-show-search-clear-button="true"
+    data-buttons="table_buttons"
     {{-- data-show-refresh="true" --}}
     {{-- data-show-toggle="true" --}}
     data-show-align="left"

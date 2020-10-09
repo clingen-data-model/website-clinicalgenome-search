@@ -77,6 +77,21 @@
 	var $table = $('#table')
 	var selections = []
 
+  function table_buttons ()
+	{
+		return {
+			/*btnUsersAdd: {
+				text: 'Filters',
+				icon: 'glyphicon-ok',
+				event: function () {
+					alert('Do some stuff to e.g. search all users which has logged in the last week')
+				},
+				attributes: {
+					title: 'Search all users which has logged in the last week'
+				}
+			}*/
+    	}
+  	}
 
   function responseHandler(res) {
 

@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-5">
+		<div class="col-md-7">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
       	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 		</div>
 
-		<div class="col-md-2 pt-3">
+		<!--<div class="col-md-2 pt-3">
 			<div class="form-check form-check-inline">
 				<input class="form-check-input" type="checkbox" id="showgenes" checked>
 				Show Genes
@@ -17,7 +17,7 @@
 				<input class="form-check-input" type="checkbox" id="showregions" checked>
 				Show Regions
 			  </div>
-		</div>
+		</div>-->
 
 		<div class="col-md-5">
 			<div class="">
@@ -61,6 +61,12 @@
 </div>
 @endsection
 
+@section('modals')
+
+	@include('modals.filter')
+
+@endsection
+
 
 @section('script_js')
 
@@ -99,12 +105,15 @@
     padding-left: 20px !important;
 }
 .bootstrap-table .fixed-table-container .table thead th .both {
+	background-image: url("/images/sort-both-20.png") !important;
 }
 .bootstrap-table .fixed-table-container .table thead th .asc {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZ0lEQVQ4y2NgGLKgquEuFxBPAGI2ahhWCsS/gDibUoO0gPgxEP8H4ttArEyuQYxAPBdqEAxPBImTY5gjEL9DM+wTENuQahAvEO9DMwiGdwAxOymGJQLxTyD+jgWDxCMZRsEoGAVoAADeemwtPcZI2wAAAABJRU5ErkJggg==");
+	background-image: url("/images/sort-up-20.png") !important;
 }
+
 .bootstrap-table .fixed-table-container .table thead th .desc {
-	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAZUlEQVQ4y2NgGAWjYBSggaqGu5FA/BOIv2PBIPFEUgxjB+IdQPwfC94HxLykus4GiD+hGfQOiB3J8SojEE9EM2wuSJzcsFMG4ttQgx4DsRalkZENxL+AuJQaMcsGxBOAmGvopk8AVz1sLZgg0bsAAAAASUVORK5CYII=");
+	background-image: url("/images/sort-dn-20.png") !important;
+
 }
   </style>
 
@@ -123,6 +132,76 @@
 		  '30': 'Autosomal Recessive',
           '40': 'Dosage Sensitivity Unlikely'
 	};
+
+	function table_buttons ()
+	{
+		return {
+			btnUsersAdd: {
+				text: 'Filters',
+				icon: 'glyphicon-ok',
+				event: function () {
+					$('#modalFilter').modal('toggle');
+					//alert('Do some stuff to e.g. search all users which has logged in the last week')
+				},
+				attributes: {
+					title: 'Advanced Filters'
+				}
+			}
+    	}
+	}
+	  
+
+	$('.action-show-new').on('click', function() {
+		alert("toggle");
+	});
+
+
+	$('.action-show-genes').on('click', function() {
+		var viz = [];
+
+		if ($(this).hasClass('fa-toggle-on'))
+		{
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-genes-text').html('Off')
+		}
+		else
+		{
+			viz.push(0);
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-genes-text').html('On')
+		}
+
+		if ($('.action-show-regions').hasClass('fa-toggle-on'))
+			viz.push(1);
+
+    	$table.bootstrapTable('filterBy', {
+       			 type: viz
+     	});
+	});
+
+
+	$('.action-show-regions').on('click', function() {
+		var viz = [];
+
+		if ($('.action-show-genes').hasClass('fa-toggle-on'))
+			viz.push(0);
+
+		if ($(this).hasClass('fa-toggle-on'))
+		{
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-regions-text').html('Off')
+		}
+		else
+		{
+			viz.push(1);
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-regions-text').html('On')
+		}
+
+		$table.bootstrapTable('filterBy', {
+					type: viz
+		});
+	});
 
 
 	function responseHandler(res) {
@@ -218,7 +297,14 @@
 		else
 			return score_assertion_strings[row.haplo_assertion];*/
 
-		return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+		var html = score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+
+		if (row.haplo_history === null)
+			return html;
+		
+		return '<span style="color:red">' + html + '</span>';
+
+		//return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
 	}
 
 	function triploFormatter(index, row) {
@@ -230,7 +316,15 @@
 		else
 			return score_assertion_strings[row.triplo_assertion];*/
 
-		return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
+			var html = score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
+
+			if (row.triplo_history === null)
+				return html;
+
+			return '<span style="color:red">' + html + '</span>';
+
+
+		//return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
 	}
 
 	function omimFormatter(index, row) {

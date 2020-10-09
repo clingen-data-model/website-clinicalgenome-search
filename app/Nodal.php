@@ -367,4 +367,144 @@ class Nodal extends Model
 			return '';
 
 	}
+
+
+	/**
+     * Format for ensemble 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function formatEnsembl($position)
+    {
+		$prefix = "https://www.ensembl.org/Homo_sapiens/Location/View?r=";
+
+		// remove chr
+		if (strpos($position, "chr") == 0)
+			$position = substr($position, 3);
+
+		return $prefix . $position;
+	}
+
+
+	/**
+     * Format for ncbi 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function formatNcbi($position, $seq)
+    {
+		$prefix = "https://www.ncbi.nlm.nih.gov/nuccore/";
+
+		// remove chr
+		if (strpos($position, "chr") == 0)
+			$position = substr($position, 3);
+
+		// get chromosome
+		$n = strpos($position, ':');
+
+		if ($n === false)
+			return '';
+
+		$chr = substr($position, 0, $n);
+
+		// get chromosome
+		$m = strpos($position, '-');
+		if ($m === false)
+			return '';
+
+		$from = substr($position, $n + 1, $m - $n);
+
+		$to = substr($position, $m + 1);
+
+		return $prefix . $seq . '?report=graph&from='
+					. $from . '&to=' . $to;
+	}
+
+
+	/**
+     * Format for ucsc 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function formatUcsc19($position)
+    {
+		$prefix = "https://genome.ucsc.edu/cgi-bin/hgTracks?clade=mammal&org=Human&db=hg19&position=";
+
+		return $prefix . $position . "&knownGene=pack";
+	}
+
+
+	/**
+     * Format for ucsc 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function formatUcsc38($position)
+    {
+		$prefix = "https://genome.ucsc.edu/cgi-bin/hgTracks?clade=mammal&org=Human&db=hg38&position=";
+
+		return $prefix . $position . "&knownGene=pack";
+	}
+
+
+	/**
+     * Format for ncbi 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function formatPosition($position, $ext)
+    {
+		// remove chr
+		if (strpos($position, "chr") == 0)
+			$position = substr($position, 3);
+
+		// get chromosome
+		$n = strpos($position, ':');
+
+		if ($n === false)
+			return '';
+
+		$chr = substr($position, 0, $n);
+
+		if ($ext == 'chr')
+			return $chr;
+
+		// get chromosome
+		$m = strpos($position, '-');
+		if ($m === false)
+			return '';
+
+		$n++;
+		$from = substr($position, $n, $m - $n);
+
+		if ($ext == 'from')
+			return $from;
+
+		$to = substr($position, $m + 1);
+
+		if ($ext == 'to')
+			return $to;
+
+		//dd($to);
+		$sv_start =  $from - (($to - $from + 1) * 0.1);
+
+		if ($ext == 'svfrom')
+			return $sv_start;
+
+		$sv_stop = $to + (($to - $from + 1) * 0.1);
+		
+		if ($ext == 'svto')
+			return $sv_stop;
+
+		if ($ext == 'nice')
+			return 'chr' . $chr . ': ' . $from . '-' . $to;
+		
+			return '';
+
+	}
 }

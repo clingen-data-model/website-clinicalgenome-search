@@ -181,6 +181,8 @@
           @endif
           <div class="row">
             @yield('content')
+
+            @yield('modals')
           </div>
         </section>
       </main>
