@@ -4,7 +4,9 @@
 <div class="container">
 	<div class="row justify-content-center">
     <div class="col-md-8 curated-genes-table">
-      <h1><span id="gene-count"></span><img src="/images/C_Biohazard-512.png" width="50" height="50">  Diseases</h1>
+      <h1>
+        <img src="/images/disease.png" width="50" height="50">
+        Diseases</h1>
     </div>
 
     <div class="col-md-4">
@@ -70,7 +72,7 @@
 		return {
     	}
   }
-  
+
   function responseHandler(res) {
 	  //$('#gene-count').html(res.total);
     $('.countDisease').html(res.total);
@@ -149,7 +151,7 @@
         }
       ]
     })
-    
+
     $table.on('load-error.bs.table', function (e, name, args) {
     $("body").css("cursor", "default");
     swal({

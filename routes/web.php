@@ -11,6 +11,7 @@
 |
 */
 
+Route::view('/message', 'error.message-standard');
 
 //Route::get('/', 'HomeController@index')->name('home');
 Route::get('/', function () {

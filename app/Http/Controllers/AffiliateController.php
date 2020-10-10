@@ -22,7 +22,8 @@ class AffiliateController extends Controller
 
         // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate"
+            'active' => "affiliate",
+            'title' => "ClinGen Expert Panels With Gene Curations"
         ]);
 
         return view('affiliate.index', compact('display_tabs'))
@@ -43,7 +44,8 @@ class AffiliateController extends Controller
     {
         // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate"
+            'active' => "affiliate",
+            'title' => "ClinGen Expert Panel Curations"
         ]);
 
         // the affiliate id is expected to be numeric.

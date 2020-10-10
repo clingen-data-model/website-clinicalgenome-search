@@ -7,7 +7,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>{{ config('app.name', 'ClinGen') }}</title>
+  <title>@isset($display_tabs['title']) {{ $display_tabs['title'] }} @else {{ config('app.name', 'Clinical Genome Resource') }} @endisset </title>
 
   <!-- Scripts -->
 
@@ -20,7 +20,7 @@
 
   @livewireStyles
 
-  
+
 </head>
 <body>
   <div id="app">

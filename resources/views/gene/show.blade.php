@@ -35,7 +35,7 @@
 				</div>
 				<div class="card-body p-0 m-0">
 
-				<table class="panel-body table table-hover">
+				<table class="panel-body table">
 					<thead class="thead-labels">
 						<tr>
 						<th class="col-sm-3 th-curation-group text-left">Curated by</th>
@@ -51,50 +51,54 @@
 						<!-- Gene Disease Validity				-->
 						@foreach($disease->gene_validity_assertions as $validity)
 								<tr>
-									<td class="">
+									<td class=" @if(!$loop->first) border-0 @endif ">
+										@if($loop->first)
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+										@endif
 									</td>
 
-									<td class="">
-										<a class="text-dark" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+									<td class=" @if(!$loop->first) border-0 @endif ">
+										<a class="text-dark" href="/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information"><i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
 
 
 
-									<td class="">{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}
+									<td class=" @if(!$loop->first) border-0 @endif ">{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}
 										<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
 									</td>
 
-									<td class=" text-center">{{ $record->displayDate($validity->report_date) }} </td>
+									<td class="  @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($validity->report_date) }} </td>
 
-									<td class=""><a class="btn btn-xs btn-success" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}">View report</a></td>
 								</tr>
 						@endforeach
 
 						<!-- Actionability					-->
-						@foreach($disease->actionability_curations as $actionability)
+						@foreach($disease->actionability_curations as $key => $actionability)
 								<tr>
-									<td class="">
+									<td class=" @if(!$loop->first) border-0 @endif ">
+										@if($loop->first)
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+										@endif
 									</td>
 
-									<td class=""><strong>{{ $record->displayActionType($actionability->source) }}View Report For Scoring Details </strong></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><strong>{{ $record->displayActionType($actionability->source) }}View Report For Scoring Details </strong></td>
 
-									<td class=""></td>
+									<td class=" @if(!$loop->first) border-0 @endif "></td>
 
-									<td class=" text-center">{{ $record->displayDate($actionability->report_date) }}</td>
+									<td class=" @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($actionability->report_date) }}</td>
 
-									<td class=""><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ $actionability->source }}">View report</a></td>
 								</tr>
 						@endforeach
 
 
 						<!-- Gene Dosage						-->
-						@foreach($disease->gene_dosage_assertions as $dosage)
+						@foreach($disease->gene_dosage_assertions as $key => $dosage)
 								<tr>
-									<td class=""><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
-									<td class="">
+									<td class=" @if(!$loop->first) border-0 @endif "><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
+									<td class=" @if(!$loop->first) border-0 @endif ">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
 											@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
 											{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
@@ -103,9 +107,9 @@
 											@endif
 										</strong>  <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 									</td>
-									<td class=""></td>
-									<td class=" text-center">{{ $record->displayDate($dosage->report_date) }}</td>
-									<td class=""><a class="btn btn-xs btn-success" href="{{ $dosage->curie ?? '#' }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "></td>
+									<td class=" @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($dosage->report_date) }}</td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ $dosage->curie ?? '#' }}">View report</a></td>
 								</tr>
 						@endforeach
 
@@ -124,7 +128,7 @@
 			</div>
 			<div class="card-body p-0 m-0">
 
-				<table class="panel-body table table-hover">
+				<table class="panel-body table">
 					<thead class="thead-labels">
 						<tr>
 							<th class="col-sm-3 th-curation-group text-left">Curated by</th>
@@ -139,8 +143,12 @@
 
 					@foreach($record->dosage_curation_map as $key => $value)
 						<tr>
-							<td class=""><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
-							<td class="">
+							<td class=" @if(!$loop->first) border-0 @endif ">
+								@if($loop->first)
+								<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Gene Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+							@endif
+						</td>
+							<td class=" @if(!$loop->first) border-0 @endif ">
 								<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
 									@if ($key == "haploinsufficiency_assertion")
 									{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
@@ -149,9 +157,9 @@
 									@endif
 								</strong>  <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 							</td>
-							<td class=""></td>
-							<td class=" text-center">{{ $record->displayDate($record->dosage_curation->report_date) }}</td>
-							<td class=""><a class="btn btn-xs btn-success" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View report</a></td>
+							<td class=" @if(!$loop->first) border-0 @endif "></td>
+							<td class=" @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($record->dosage_curation->report_date) }}</td>
+							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View report</a></td>
 						</tr>
 					@endforeach
 					</tbody>

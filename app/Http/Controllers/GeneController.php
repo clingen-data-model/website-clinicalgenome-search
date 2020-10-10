@@ -48,7 +48,8 @@ class GeneController extends Controller
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "gene"
+            'active' => "gene",
+            'title' => "Genes"
         ]);
 
 		return view('gene.index', compact('display_tabs'))
@@ -71,7 +72,8 @@ class GeneController extends Controller
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "gene-curations"
+            'active' => "gene-curations",
+            'title' => "ClinGen Curatated Genes"
         ]);
 
 		return view('gene.curated', compact('display_tabs'))
@@ -92,10 +94,6 @@ class GeneController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
-		// set display context for view
-		$display_tabs = collect([
-			'active' => "gene"
-			]);
 
 		$record = GeneLib::geneDetail([
 										'gene' => $id,
@@ -109,6 +107,12 @@ class GeneController extends Controller
 		{
 			die(print_r(GeneLib::getError()));
 		}
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => $record->label . " curation results"
+		]);
 
 		return view('gene.show', compact('display_tabs', 'record'));
 	}
@@ -126,10 +130,6 @@ class GeneController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
-		// set display context for view
-		$display_tabs = collect([
-			'active' => "gene"
-			]);
 
 		$record = GeneLib::geneDetail([
 										'page' => 0,
@@ -145,6 +145,11 @@ class GeneController extends Controller
 			die(print_r(GeneLib::getError()));
 		}
 
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => $record->label . " external resources"
+		]);
 		return view('gene.show-external-resources', compact('display_tabs', 'record'));
 	}
 }

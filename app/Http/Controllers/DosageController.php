@@ -38,8 +38,8 @@ class DosageController extends Controller
 	{
 		//$this->middleware('auth');
 	}
-	
-	
+
+
     /**
      * Display a listing of curated genes with a dosage sensitivity.
      *
@@ -53,7 +53,8 @@ class DosageController extends Controller
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "dosage"
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Curations"
         ]);
 
 		return view('gene-dosage.index', compact('display_tabs'))
@@ -72,11 +73,7 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "dosage"
-        ]);
-	
+
 		$record = GeneLib::dosageDetail([ 'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
@@ -95,7 +92,7 @@ class DosageController extends Controller
         $record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
         $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
 		$record->date = $record->displayDate($record->dosage_report_date);
-			
+
 		// some data just to test the ideogram and sequence viewer
 		$record->chromosome = $record->formatPosition($record->GRCh37_position, 'chr');
 
@@ -109,10 +106,18 @@ class DosageController extends Controller
 		//$record->GRCh38_seqID = 'NC_000022.11';
 		$record->GRCh38_sv_start = $record->formatPosition($record->GRCh38_position, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->GRCh38_position, 'svto');
-//dd($record);
+		//dd($record);
+
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "dosage",
+			'title' => $record->label . " curation results for Dosage Sensitivity"
+		]);
+
 		return view('gene-dosage.show', compact('display_tabs', 'record'));
 	}
-	
+
 
 	/**
      * Display the specified resource.
@@ -124,7 +129,7 @@ class DosageController extends Controller
     {
 		return Gexcel::download(new DosageExport, 'Clingen-Dosage-Sensitivity.csv');
 	}
-	
+
 
 	/**
      * Demo page for new dosage listing.
@@ -139,7 +144,8 @@ class DosageController extends Controller
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "dosage"
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Curations"
         ]);
 
 		return view('new-dosage.index', compact('display_tabs'));
@@ -148,7 +154,7 @@ class DosageController extends Controller
 		//				->with('pagesize', $size)
 		//				->with('page', $page);
 	}
-	
+
 
 	/**
      * Display the specified resource.
@@ -158,11 +164,7 @@ class DosageController extends Controller
      */
     public function newshow(Request $request, $id = '')
     {
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "dosage"
-        ]);
-	
+
 		$record = GeneLib::dosageDetail([ 'gene' => 'HGNC:18149',
 										'curations' => true,
 										'action_scores' => true,
@@ -181,7 +183,7 @@ class DosageController extends Controller
         $record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
         $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
 		$record->date = $record->displayDate($record->dosage_report_date);
-			
+
 		// some data just to test the ideogram and sequence viewer
 		$record->chromosome = '22';
 		$record->start_location="43088121";
@@ -194,7 +196,15 @@ class DosageController extends Controller
 		$record->GRCh38_seqID = 'NC_000022.11';
 		$record->GRCh38_sv_start = '42689196.3';
 		$record->GRCh38_sv_stop = '42724219.7';
-//dd($record);
+		//dd($record);
+
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "dosage",
+			'title' => $record->label . " curation results for Dosage Sensitivity"
+		]);
+
 		return view('new-dosage.show', compact('display_tabs', 'record'));
 	}
 
@@ -237,16 +247,17 @@ class DosageController extends Controller
      */
     public function cnv(Request $request, $page = 1, $size = 100)
     {
-        
+
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "dosage"
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity CNV Curations"
 		]);
-		
+
 		return view('gene-dosage.cnv', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/cnv')
 						->with('pagesize', $size)
@@ -261,7 +272,7 @@ class DosageController extends Controller
      */
     public function acmg59(Request $request, $page = 1, $size = 100)
     {
-        
+
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
@@ -270,7 +281,7 @@ class DosageController extends Controller
         $display_tabs = collect([
             'active' => "dosage"
 		]);
-		
+
 		return view('gene-dosage.acmg59', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/acmg59')
 						->with('pagesize', $size)
@@ -285,14 +296,15 @@ class DosageController extends Controller
      */
     public function newreports(Request $request, $page = 1, $size = 100)
     {
-        
+
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "dosage"
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Files"
         ]);
 
 		return view('new-dosage.reports', compact('display_tabs'))
@@ -310,14 +322,15 @@ class DosageController extends Controller
      */
     public function newstats(Request $request, $page = 1, $size = 100)
     {
-        
+
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "dosage"
+            'active' => "dosage",
+            'title' => "ClinGen Dosage Sensitivity Statistics"
         ]);
 
 		return view('new-dosage.stats', compact('display_tabs'))

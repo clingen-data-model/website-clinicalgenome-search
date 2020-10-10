@@ -44,10 +44,11 @@ class ConditionController extends Controller
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
-			
+
 		// set display context for view
         $display_tabs = collect([
-            'active' => "condition"
+            'active' => "condition",
+            'title' => "ClinGen Diseases"
         ]);
 
 		return view('condition.index', compact('display_tabs'))
@@ -66,10 +67,6 @@ class ConditionController extends Controller
 	public function show(Request $request, $id = null)
 	{
 
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "condition"
-        ]);
 
 		$record = GeneLib::conditionDetail([ 'page' => 0,
 										'pagesize' => 200,
@@ -84,6 +81,12 @@ class ConditionController extends Controller
 		{
 			die(print_r(GeneLib::getError()));
 		}
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "condition",
+			'title' => $record->label . " curation results"
+		]);
 
 		return view('condition.show', compact('display_tabs', 'record'));
 	}
@@ -100,10 +103,6 @@ class ConditionController extends Controller
 		if ($id === null)
 			die("display some error about needing a gene");
 
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "condition"
-        ]);
 
 		$record = GeneLib::conditionDetail(['page' => 0,
 											'pagesize' => 200,
@@ -117,6 +116,12 @@ class ConditionController extends Controller
 		if ($record === null) {
 			die(print_r(GeneLib::getError()));
 		}
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "condition",
+			'title' => $record->label . " Disease External Resources"
+		]);
 
 		return view('condition.show-external-resources', compact('display_tabs', 'record'));
 	}

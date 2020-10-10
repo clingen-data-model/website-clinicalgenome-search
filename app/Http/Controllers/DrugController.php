@@ -44,10 +44,11 @@ class DrugController extends Controller
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
-			
+
         // set display context for view
         $display_tabs = collect([
-            'active' => "drug"
+            'active' => "drug",
+            'title' => "Drugs"
         ]);
 
 		return view('drug.index', compact('display_tabs'))
@@ -68,18 +69,18 @@ class DrugController extends Controller
 		if ($id === null)
 			die("display some error about needing a drug");
 
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "drug"
-        ]);
-
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
 		{
 			die(print_r(GeneLib::getError()));
 		}
-		
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "drug",
+			'title' => $record->label . " drug information"
+		]);
         return view('drug.show', compact('display_tabs', 'record'));
     }
 }

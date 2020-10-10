@@ -48,10 +48,11 @@ class ValidityController extends Controller
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
 			$$key = $value;
-			
+
 		// set display context for view
         $display_tabs = collect([
-            'active' => "validity"
+            'active' => "validity",
+            'title' => "ClinGen Gene Disease Validity Curations"
         ]);
 
 		return view('gene-validity.index', compact('display_tabs'))
@@ -72,10 +73,6 @@ class ValidityController extends Controller
 		if ($id === null)
 			die("display some error about needing an id");
 
-		// set display context for view
-        $display_tabs = collect([
-            'active' => "validity"
-        ]);
 
 		$record = GeneLib::validityDetail(['page' => 0,
 										'pagesize' => 20,
@@ -83,11 +80,18 @@ class ValidityController extends Controller
 										 ]);
 
 		if ($record === null)
-			die("thow an error");
+            die("thow an error");
+
+
+        // set display context for view
+        $display_tabs = collect([
+            'active' => "dosage",
+            'title' => $record->label . " curation results for Gene Disease Validity"
+        ]);
 
         return view('gene-validity.show', compact('display_tabs', 'record'));
 	}
-	
+
 
 	/**
      * Display the specified resource.
