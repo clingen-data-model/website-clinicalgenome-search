@@ -23,7 +23,7 @@
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
 					<li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Genes</li>
 					<li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Genes</li>
 					<li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
@@ -44,7 +44,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div class="col-md-12">
 				@include('_partials.genetable')
 
@@ -90,11 +90,12 @@
 	.swal-overlay--show-modal, .swal-modal {
     animation: none !important;
 	}
+	/* REVIEW
 	.fixed-table-container .global_table_cell {
     font-weight: 500;
     font-size: 14px;
 	padding: 21px 12px 19px !important;
-	}
+	} */
 	.header_class {
     	font-size: 14px;
 	}
@@ -149,7 +150,7 @@
 			}
     	}
 	}
-	  
+
 
 	$('.action-show-new').on('click', function() {
 		alert("toggle");
@@ -246,6 +247,9 @@
 
 		if (row.type == 0)
 			return row.location;
+		else
+			return row.GRCh37_position;
+
 
 		var name = row.GRCh37_position.trim();
 
@@ -263,30 +267,70 @@
 				+ '</td></tr><tr><td class="text-10px line-height-normal">'
 				+ name.substring(pos + 1)
 				+ '</td></tr></table>';
-				
 		return html;
 	}
 
+	  function locationCellStyle(value, row, index) {
+			if (row.type == 0)
+			return {
+					classes: "format-cyto"
+				}
+
+			var name = row.GRCh37_position.trim();
+			if (name.indexOf("chr") === 0)
+				return {
+					classes: "format-loc"
+				}
+			else
+				return {
+					classes: "format-null"
+				}
+  }
+
+	function pliCellStyle(value, row, index) {
+			if (row.pli > .50)
+				return {
+					classes: "format-pli-high"
+				}
+			else
+				return {
+					classes: "format-pli-low"
+				}
+	}
 
 	function pliFormatter(index, row) {
 		if (row.pli === null)
 			return '-';
-
-		if (row.pli > .50)
-			return '<span style="color: red">' + row.pli + '</span>';
 		else
-			return '<span style="color: green">' + row.pli + '</span>';
+			return row.pli;
 	}
 
+	function hiCellStyle(value, row, index) {
+			if (row.hi > .50)
+				return {
+					classes: "format-hi-high"
+				}
+			else
+				return {
+					classes: "format-hi-low"
+				}
+	}
 	function hiFormatter(index, row) {
 		if (row.hi === null)
 			return '-';
-			
-		if (row.hi > 50)
-			return '<span style="color: red">' + row.hi + '</span>';
 		else
-			return '<span style="color: green">' + row.hi + '</span>';
+			return row.hi;
 	}
+
+	// function hiFormatter(index, row) {
+	// 	if (row.hi === null)
+	// 		return '-';
+
+	// 	if (row.hi > 50)
+	// 		return '<span style="color: red">' + row.hi + '</span>';
+	// 	else
+	// 		return '<span style="color: green">' + row.hi + '</span>';
+	// }
 
 	function haploFormatter(index, row) {
 		if (row.haplo_assertion === false)
@@ -301,7 +345,7 @@
 
 		if (row.haplo_history === null)
 			return html;
-		
+
 		return '<span style="color:red">' + html + '</span>';
 
 		//return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
@@ -329,7 +373,7 @@
 
 	function omimFormatter(index, row) {
 		if (row.omimlink)
-			return '<span class="text-success"><i class="fas fa-check"></i></span>';
+			return '<i class="fas fa-check text-success"></i>';
 		else
 			return '';
 	}
@@ -341,14 +385,14 @@
 			return '<a class="btn btn-block btn btn-default btn-xs" href="'
 				+ report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
 		else
-			return '<a class="btn btn-block btn btn-default btn-xs" href="' 
-				+ 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id 
+			return '<a class="btn btn-block btn btn-default btn-xs" href="'
+				+ 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id
 				+ '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
   	}
 
-	function cellFormatter(index, row) {
-		return { classes: 'global_table_cell' };
-  	}
+	// function cellFormatter(index, row) {
+	// 	return { classes: 'global_table_cell' };
+  // 	}
 
 	function headerStyle(column) {
     	return {
@@ -365,7 +409,7 @@
 			title: 'Gene/Region',
 			field: 'symbol',
 			formatter: symbolFormatter,
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			filterControl: 'input',
 			sortable: true
 		},
@@ -375,7 +419,7 @@
 			formatter: hgncFormatter,
 			sortable: true,
 			filterControl: 'input',
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			visible: false
 		},
 
@@ -385,7 +429,7 @@
 			sortable: true,
 			filterControl: 'input',
 			formatter: locationFormatter,
-			cellStyle: cellFormatter
+			cellStyle: locationCellStyle
 			//visible: false
         },
         {
@@ -393,7 +437,7 @@
 			field: 'haplo_assertion',
 			filterControl: 'select',
 			formatter: haploFormatter,
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			sortable: true
         },
 		{
@@ -401,7 +445,7 @@
 			field: 'triplo_assertion',
 			filterControl: 'select',
 			formatter: triploFormatter,
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			sortable: true
         },
 		{
@@ -409,14 +453,14 @@
 			field: 'omimlimk',
 			filterControl: 'select',
 			formatter: omimFormatter,
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			sortable: true
         },
 		{
 			title: '%HI',
 			field: 'hi',
 			filterControl: 'input',
-			cellStyle: cellFormatter,
+			cellStyle: hiCellStyle,
 			formatter: hiFormatter,
 			sortable: true
         },
@@ -424,7 +468,7 @@
 			title: 'pLI',
 			field: 'pli',
 			filterControl: 'input',
-			cellStyle: cellFormatter,
+			cellStyle: pliCellStyle,
 			formatter: pliFormatter,
 			sortable: true
         },
@@ -441,7 +485,7 @@
 			title: 'Reviewed',
 			sortable: true,
 			filterControl: 'input',
-			cellStyle: cellFormatter,
+			// cellStyle: cellFormatter,
 			formatter: reportFormatter,
 			sortName: 'rawdate'
         }
@@ -462,9 +506,43 @@
 		});
 	})
 
+	$table.on('post-body.bs.table', function (e, name, args) {
+
+			$('div.bootstrap-table table td.format-loc').each(function() {
+					var text = $(this).text();
+					var name = text.trim();
+					name = name.substring(3)
+					var chr = name.indexOf(':');
+					var pos = name.indexOf('-');
+					var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">'
+							+ name.substring(0, chr)
+							+ '</td><td class="text-10px line-height-normal">'
+							+ name.substring(chr + 1, pos)
+							+ '</td></tr><tr><td class="text-10px line-height-normal">'
+							+ name.substring(pos + 1)
+							+ '</td></tr></table>';
+					$(this).html(html);
+			});
+		})
+
   	$table.on('load-success.bs.table', function (e, name, args) {
 		$("body").css("cursor", "default");
-		
+
+		// if (name.indexOf("chr") === 0)
+		// 	name = name.substring(3);
+
+		// var chr = name.indexOf(':');
+		// var pos = name.indexOf('-');
+
+		// var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">'
+		// 		+ name.substring(0, chr)
+		// 		+ '</td><td class="text-10px line-height-normal">'
+		// 		+ name.substring(chr + 1, pos)
+		// 		+ '</td></tr><tr><td class="text-10px line-height-normal">'
+		// 		+ name.substring(pos + 1)
+		// 		+ '</td></tr></table>';
+		// return html;
+
 		if (name.hasOwnProperty('error'))
       {
         swal({
@@ -500,7 +578,7 @@
     	$table.bootstrapTable('filterBy', {
        			 type: viz
      	});
- 
+
     });
 
 	$('#showregions').on('change', function() {

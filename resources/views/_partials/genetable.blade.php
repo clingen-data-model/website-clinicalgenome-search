@@ -23,6 +23,7 @@
     data-show-fullscreen="true"
     data-show-columns="true"
     data-show-columns-toggle-all="true"
+    data-search-formatter="false"
     {{-- data-detail-view="true" --}}
     data-show-export="true"
     {{-- data-click-to-select="true" --}}

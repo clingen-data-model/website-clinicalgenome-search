@@ -49,7 +49,7 @@ class UpdateRatings extends Command
                                     'direction' =>  'ASC',
                                     'search' =>  null,
                                     'curated' => false ]);
-            
+
         foreach($updates as $update)
         {
             // process the line read.
@@ -60,7 +60,7 @@ class UpdateRatings extends Command
                 case 'ISCA Gene Curation':
                     $gene = Gene::name($update->title)->first();
                     if ($gene === null)
-                        continue;
+                        continue 2;
                     if ($gene->history === null)
                         $history = [ $update->attributesToArray() ];
                     else
@@ -73,7 +73,7 @@ class UpdateRatings extends Command
                 case 'ISCA Region Curation':
                     $region = Region::issue($update->issue)->first();
                     if ($region === null)
-                        continue;
+                        continue 2;
                     if ($region->history === null)
                         $history = [ $update->attributesToArray()];
                     else

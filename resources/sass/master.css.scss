@@ -1,3 +1,27 @@
+.bootstrap-table table.table>tbody>tr>td {
+  padding: .95rem .5rem !important;
+  font-size: .95rem;
+}
+.format-pli-high {
+  color: red;
+}
+.format-pli-low {
+  color: green;
+}
+.format-hi-high {
+  color: red;
+}
+.format-hi-low {
+  color: green;
+}
+.bootstrap-table .dropdown-toggle .caret {
+  display: none;
+}
+.bootstrap-table .pagination-detail .btn.btn-default {
+  padding: 4px 12px;
+}
+
+
 
 #input_feedback {
   position: absolute;
