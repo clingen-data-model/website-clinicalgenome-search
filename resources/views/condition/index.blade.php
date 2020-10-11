@@ -20,7 +20,7 @@
       </div>
     </div>
 
-		<div class="col-md-12">
+		<div class="col-md-12 light-arrows">
 
 			@include('_partials.genetable')
 
@@ -53,99 +53,54 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
-<style>
-  .fixed-table-toolbar .search-input {
-	  min-width: 300px;
-	}
-	.swal-overlay--show-modal, .swal-modal {
-    animation: none !important;
-	}
-  </style>
+<!-- load up all the local formatters and stylers -->
+<script src="/js/genetable.js"></script>
 
-	<script>
+<script>
 
-		var $table = $('#table')
-	var selections = []
-
-  function table_buttons ()
-	{
-		return {
-    	}
-  }
+  /**
+	**
+	**		Globals
+	**
+	*/
+	
+  var $table = $('#table');
+  
 
   function responseHandler(res) {
-	  //$('#gene-count').html(res.total);
     $('.countDisease').html(res.total);
     $('.countCurated').html(res.ncurated);
-
-	/*
-    $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
-	})*/
 
     return res
   }
 
-  function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-    return html.join('')
-  }
 
-  function symbolFormatter(index, row) {
-	// var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-  //           + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
-	var html = '<a href="/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-            + '<div class="small text-muted">' + row.curie + '</div>';
-
-  //if (row.description != null)
-  //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
-
-	return html;
-  }
-
-  function badgeFormatter(index, row) {
-	var html = '';
-	if (row.has_actionability)
-    	html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
-
-	if (row.has_validity)
-    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
-
-		if (row.has_dosage)
-    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
-
-	return html;
-  }
-
-  function initTable() {
+  function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
         {
           title: 'Name',
           field: 'label',
-          formatter: symbolFormatter,
+          formatter: conditionFormatter,
+          cellStyle: cellFormatter,
           filterControl: 'input',
+          searchFormatter: true,
           sortable: true
         },
         {
           title: 'Curations',
           field: 'has_actionability',
           filterControl: 'input',
-          formatter: badgeFormatter,
+          formatter: cbadgeFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false
         },
         {
           title: 'Last Curated',
           field: 'date',
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'input',
           sortable: true
         }
@@ -153,40 +108,53 @@
     })
 
     $table.on('load-error.bs.table', function (e, name, args) {
-    $("body").css("cursor", "default");
-    swal({
-          title: "Load Error",
-          text: "The system could not retrieve data from GeneGraph",
-          icon: "error"
-    });
-	})
-
-  $table.on('load-success.bs.table', function (e, name, args) {
-    $("body").css("cursor", "default");
-
-    if (name.hasOwnProperty('error'))
-      {
-        swal({
+      $("body").css("cursor", "default");
+      swal({
             title: "Load Error",
-            text: name.error,
+            text: "The system could not retrieve data from GeneGraph",
             icon: "error"
-        });
-      }
-	})
+      });
+	  })
+
+    $table.on('load-success.bs.table', function (e, name, args) {
+      $("body").css("cursor", "default");
+
+      if (name.hasOwnProperty('error'))
+        {
+          swal({
+              title: "Load Error",
+              text: name.error,
+              icon: "error"
+          });
+        }
+    })
+
+    $table.on('post-body.bs.table', function (e, name, args) {
+			console.log("post body fired");
+
+			$('[data-toggle="tooltip"]').tooltip();
+		})
 
   }
 
   $(function() {
+
+    // Set cursor to busy prior to table init
     $("body").css("cursor", "progress");
-    initTable()
-    var $search = $('.fixed-table-toolbar .search input');
-    $search.attr('placeholder', 'Search in table');
+
+    // initialize the table and load the data
+    inittable();
+
+    // make some mods to the search input field
+    var search = $('.fixed-table-toolbar .search input');
+    search.attr('placeholder', 'Search in table');
+
     $( ".fixed-table-toolbar" ).show();
     $('[data-toggle="tooltip"]').tooltip();
     $('[data-toggle="popover"]').popover();
-	//$search.css('border', '1px solid red');
 
-  })
+  });
 
-    </script>
+</script>
+
 @endsection

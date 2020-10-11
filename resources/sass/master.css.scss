@@ -1,7 +1,13 @@
-.bootstrap-table table.table>tbody>tr>td {
+/*.bootstrap-table table.table>tbody>tr>td {
   padding: .95rem .5rem !important;
   font-size: .95rem;
+}*/
+.fixed-table-container .global_table_cell {
+  font-weight: 500;
+  font-size: 14px;
+  padding: 21px 12px 19px !important;
 }
+
 .format-pli-high {
   color: red;
 }
@@ -21,7 +27,43 @@
   padding: 4px 12px;
 }
 
+// set the bootstrap table header font size
+.header_class {
+  font-size: 14px;
+}
 
+// move the sort arrows to the left of the column title
+.bootstrap-table .fixed-table-container .table thead th .sortable {
+  cursor: pointer !important;
+  background-position: left !important;
+  background-repeat: no-repeat !important;
+  padding-left: 20px !important;
+}
+
+// replace stock bootstrap table sort arrows with better ones, but only if
+// the light-arrows class is applied.
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .both {
+background-image: url("/images/sort-both-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .asc {
+background-image: url("/images/sort-up-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .desc {
+background-image: url("/images/sort-dn-20.png") !important;
+
+}
+
+// override the bootstraptable search input size
+.fixed-table-toolbar .search-input {
+  min-width: 300px;
+}
+
+// Turn off the ugly swal animation across the board
+.swal-overlay--show-modal, .swal-modal {
+  animation: none !important;
+}
 
 #input_feedback {
   position: absolute;

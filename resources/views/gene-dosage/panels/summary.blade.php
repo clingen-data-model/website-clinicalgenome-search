@@ -5,14 +5,17 @@
     <div class="card">
       <div class="card-body bg-light">
         <h3 class="h4 mt-0 mb-1 border-bottom-2 border-info">{{ $record->symbol }} Dosage Sensitivity Summary</h3>
-        <div class="row pb-2 pt-2">
-          <div class="col-sm-3 text-right">DCI Issue:</div>
-          <div class="col-sm-9 border-left-4 border-info bold">
+        <div class="row pt-2">
+          <div class="col-sm-3 text-right mt-3">DCI Issue:</div>
+          <div class="col-sm-3 border-left-4 border-info bold mt-3">
             {{  $record->key }}
             <div class="small"><a href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{ $record->symbol }}">View legacy report...</a></div>
           </div>
+          <div class="col-sm-4">
+            <div id="ideogram"> </div>
+          </div>
         </div>
-        <div class="row pb-2 pt-2">
+        <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Haploinsufficiency:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             {{ $record->haplo_assertion }} ({{ $record->haplo_score }})
@@ -36,16 +39,17 @@
           <div class="col-sm-3 text-right">Genomic Coordinates:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             {{ $record->cytoband }}<br />
+            <div>
             GRCh37/hg19 {{ $record->GRCh37_position }}
-            <a href="{{ $record->formatNcbi($record->GRCh37_position, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
-            <a href="{{ $record->formatEnsembl($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
-            <a href="{{ $record->formatUcsc19($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
-            <br />
+            <a href="{{ $record->formatNcbi($record->GRCh37_position, $record->GRCh37_seqid) }}" class="badge-info badge pointer ml-2"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+            <a href="{{ $record->formatEnsembl($record->GRCh37_position) }}" class="badge-info badge pointer ml-1"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+            <a href="{{ $record->formatUcsc19($record->GRCh37_position) }}" class="badge-info badge pointer ml-1"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+            </div><div class="pt-2">
             GRCh38/hg38 {{ $record->GRCh38_position }}
-            <a href="{{ $record->formatNcbi($record->GRCh38_position, $record->GRCh38_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
-            <a href="{{ $record->formatEnsembl($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
-            <a href="{{ $record->formatUcsc38($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
-            <br />
+            <a href="{{ $record->formatNcbi($record->GRCh38_position, $record->GRCh38_seqid) }}" class="badge-info badge pointer ml-2"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+            <a href="{{ $record->formatEnsembl($record->GRCh38_position) }}" class="badge-info badge pointer ml-1"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+            <a href="{{ $record->formatUcsc38($record->GRCh38_position) }}" class="badge-info badge pointer ml-1"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+            </div>
           </div>
         </div>
         <div class="row pb-2 pt-2">

@@ -71,18 +71,22 @@ class ValidityController extends Controller
     public function show(Request $request, $id = null)
     {
 		if ($id === null)
-			die("display some error about needing an id");
-
+            return view('error.message-standard')
+                ->with('title', 'Error retrieving Gene Validity details')
+                ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                ->with('back', url()->previous());
 
 		$record = GeneLib::validityDetail(['page' => 0,
 										'pagesize' => 20,
 										'perm' => $id
 										 ]);
 
-		if ($record === null)
-            die("thow an error");
-
-
+        if ($record === null)
+                return view('error.message-standard')
+                            ->with('title', 'Error retrieving Gene Validity details')
+                            ->with('message', 'The system was not able to retrieve details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+                            ->with('back', url()->previous());
+                            
         // set display context for view
         $display_tabs = collect([
             'active' => "dosage",

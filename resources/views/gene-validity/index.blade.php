@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="col-md-12">
+    <div class="col-md-12 light-arrows">
 			@include('_partials.genetable')
 		</div>
 	</div>
@@ -39,14 +39,6 @@
     </div>
 </div>
 @endsection
-
-@section('heading')
-<div class="content ">
-		<div class="section-heading-content">
-		</div>
-</div>
-@endsection
-
 
 @section('script_js')
 
@@ -63,113 +55,66 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
-<style>
-.fixed-table-toolbar .search-input {
-  min-width: 300px;
-}
-.swal-overlay--show-modal, .swal-modal {
-    animation: none !important;
-	}
-</style>
+<!-- load up all the local formatters and stylers -->
+<script src="/js/genetable.js"></script>
 
 <script>
 
-	var $table = $('#table')
-	var selections = []
-
-  function table_buttons ()
-	{
-		return {
-			/*btnUsersAdd: {
-				text: 'Filters',
-				icon: 'glyphicon-ok',
-				event: function () {
-					alert('Do some stuff to e.g. search all users which has logged in the last week')
-				},
-				attributes: {
-					title: 'Search all users which has logged in the last week'
-				}
-			}*/
-    	}
-  	}
+  /**
+	**
+	**		Globals
+	**
+	*/
+	
+  var $table = $('#table');
 
   function responseHandler(res) {
 
-    $('#gene-count').html(res.total);
     $('.countCurations').html(res.total);
     $('.countGenes').html(res.ngenes);
-    //$('.countDiseases').html(res.total);
     $('.countEps').html(res.npanels);
-    /*
-    $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
-    })*/
+    
     return res
   }
 
-  function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-    return html.join('')
-  }
-
-  function symbolFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
-  }
-
-  function hgncFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
-  }
-
-  function diseaseFormatter(index, row) {
-	  return '<a href="/conditions/' + row.mondo + '"><b>' + row.disease + '</b></a>';
-  }
-
-  function mondoFormatter(index, row) {
-	  return '<a href="/conditions/' + row.mondo + '">' + row.mondo.replace('_', ':') + '</a>';
-  }
-
-  function moiFormatter(index, row) {
-	  return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + row.moi +' full text" ">' + row.moi + '</span>';
-  }
-
-  function badgeFormatter(index, row) {
-	  return '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">'
-            + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
-  }
-
-  function initTable() {
+  function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
         {
           title: 'Gene',
           field: 'symbol',
-          formatter: symbolFormatter,
+          formatter: geneFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'input',
           sortable: true
         },
         {
           title: 'HGNC',
           field: 'hgnc',
-          formatter: hgncFormatter,
+          formatter: ashgncFormatter,
+          cellStyle: cellFormatter,
           filterControl: 'input',
+          searchFormatter: false,
           sortable: true,
           visible: false
         },
         {
           title: 'Disease',
           field: 'disease',
-          formatter: diseaseFormatter,
+          formatter: asdiseaseFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'input',
           sortable: true
         },
         {
           title: 'MONDO',
           field: 'mondo',
-          formatter: mondoFormatter,
+          formatter: asmondoFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'input',
           sortable: true,
           visible: false
@@ -179,23 +124,31 @@
           field: 'moi',
           sortable: true,
           filterControl: 'input',
+          searchFormatter: false,
           formatter: moiFormatter,
+          cellStyle: cellFormatter,
         },
         {
           title: 'EP',
           field: 'ep',
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'select',
           sortable: true
         },
         {
           title: 'SOP',
           field: 'sop',
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'select',
           sortable: true
         },
 		    {
           field: 'released',
           title: 'Released',
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           sortable: true,
           filterControl: 'input',
           sortName: 'date'
@@ -203,7 +156,9 @@
 		    {
           title: 'Classification',
           field: 'classification',
-          formatter: badgeFormatter,
+          formatter: asbadgeFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false,
           filterControl: 'input',
           sortable: true
         }
@@ -231,20 +186,30 @@
         });
       }
     })
+
+    $table.on('post-body.bs.table', function (e, name, args) {
+
+			$('[data-toggle="tooltip"]').tooltip();
+		})
   }
 
-  $(function() {
-    $("body").css("cursor", "progress");
+$(function() {
 
-    initTable();
+  // Set cursor to busy prior to table init
+  $("body").css("cursor", "progress");
 
-	  var $search = $('.fixed-table-toolbar .search input');
-	  $search.attr('placeholder', 'Search in table');
-	  //$search.css('border', '1px solid red');
-    $( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip()
-    $('[data-toggle="popover"]').popover()
+  // initialize the table and load the data
+  inittable();
 
-  })
+  // make some mods to the search input field
+  var search = $('.fixed-table-toolbar .search input');
+  search.attr('placeholder', 'Search in table');
+
+  $( ".fixed-table-toolbar" ).show();
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
+
+});
+
 </script>
 @endsection

@@ -92,7 +92,10 @@ class GeneController extends Controller
 	public function show(Request $request, $id = null)
 	{
 		if ($id === null)
-			die("display some error about needing a gene");
+			return view('error.message-standard')
+				->with('title', 'Error retrieving Gene details')
+				->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+				->with('back', url()->previous());
 
 
 		$record = GeneLib::geneDetail([
@@ -104,9 +107,10 @@ class GeneController extends Controller
 									]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Gene details')
+						->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 		// set display context for view
 		$display_tabs = collect([
@@ -128,7 +132,10 @@ class GeneController extends Controller
 	public function external(Request $request, $id = null)
 	{
 		if ($id === null)
-			die("display some error about needing a gene");
+			return view('error.message-standard')
+				->with('title', 'Error retrieving Gene details')
+				->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+				->with('back', url()->previous());
 
 
 		$record = GeneLib::geneDetail([
@@ -141,9 +148,11 @@ class GeneController extends Controller
 										'dosage' => true
 									]);
 
-		if ($record === null) {
-			die(print_r(GeneLib::getError()));
-		}
+		if ($record === null)
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Gene details')
+						->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 		// set display context for view
 		$display_tabs = collect([

@@ -78,9 +78,11 @@ class ConditionController extends Controller
 										]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Disease details')
+						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
+
 
 		// set display context for view
 		$display_tabs = collect([
@@ -101,7 +103,10 @@ class ConditionController extends Controller
 	public function external(Request $request, $id = null)
 	{
 		if ($id === null)
-			die("display some error about needing a gene");
+			return view('error.message-standard')
+				->with('title', 'Error retrieving Disease details')
+				->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+				->with('back', url()->previous());
 
 
 		$record = GeneLib::conditionDetail(['page' => 0,
@@ -113,9 +118,11 @@ class ConditionController extends Controller
 											'dosage' => true
 										]);
 
-		if ($record === null) {
-			die(print_r(GeneLib::getError()));
-		}
+		if ($record === null)
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Disease details')
+						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 		// set display context for view
 		$display_tabs = collect([

@@ -14,7 +14,7 @@
 				<!--<button type="submit" class="btn btn-primary mr-auto">{{ __('Submit') }}
 				</button> -->
 				<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" aria-label="Close">
-				Cancel
+				Close
 				</button>
 			</div>
 		</div>

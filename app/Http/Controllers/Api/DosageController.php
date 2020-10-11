@@ -27,7 +27,7 @@ class DosageController extends Controller
 										'direction' => $input['order'] ?? 'ASC',
 										'search' => $input['search'] ?? null,
                                         'curated' => true ]);
-                                        
+                                    
         if ($results === null)
             return GeneLib::getError();
 

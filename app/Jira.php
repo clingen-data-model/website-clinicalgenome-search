@@ -276,11 +276,21 @@ class Jira extends Model
                                              'title' => $title,
                                              'type' => $issue->fields->issuetype->name,
                                              'what' => 'Triplosensitivity Score',
-                                             'when' => $history->created,
+                                             'when' => $created->format('m/d/Y'),
                                              'from' => $item->fromString,
                                              'to' => $item->toString,
                                              'age' => Carbon::now()->diffInWeeks($created)
                                         ]);
+                                        // for 30 and 40, Jira also sends text
+               if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+               $node->from = 30;
+          else if ($node->from == "40: Dosage sensitivity unlikely")
+               $node->from = 40;
+
+          if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+               $node->to = 30;
+          else if ($node->to == "40: Dosage sensitivity unlikely")
+               $node->to = 40;
                                         $collection->push($node);
                                    }
                               }
@@ -306,11 +316,21 @@ class Jira extends Model
                                              'title' => $title,
                                              'type' => $issue->fields->issuetype->name,
                                              'what' => 'Haploinsufficiency Score',
-                                             'when' => $history->created,
+                                             'when' => $created->format('m/d/Y'),
                                              'from' => $item->fromString,
                                              'to' => $item->toString,
                                              'age' => Carbon::now()->diffInWeeks($created)
                                         ]);
+                                        // for 30 and 40, Jira also sends text
+               if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+               $node->from = 30;
+          else if ($node->from == "40: Dosage sensitivity unlikely")
+               $node->from = 40;
+
+          if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+               $node->to = 30;
+          else if ($node->to == "40: Dosage sensitivity unlikely")
+               $node->to = 40;
                                         $collection->push($node);
                                    }
                               }

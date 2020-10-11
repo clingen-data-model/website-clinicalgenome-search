@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 
     <div class="col-md-12 curated-genes-table">
-      <h1>System Message</h1>
+      <h1>{{ $title ?? '' }}</h1>
 
     </div>
 
@@ -13,9 +13,13 @@
 
 
       <div class="alert alert-warning" role="alert">
-        <p>Unknown %%%% '#######'</p>
+        <p>{{ $message ?? '' }}</p>
       </div>
-		</div>
+    </div>
+    
+    <div class="col-md-12">
+      <a href="{{ $back ?? '/' }}">Return to previous page</a>
+    </div>
 	</div>
 </div>
 

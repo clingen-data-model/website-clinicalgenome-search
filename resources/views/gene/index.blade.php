@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div class="col-md-12">
+      <div class="col-md-12 light-arrows">
 			
 			@include('_partials.genetable')
 
@@ -50,146 +50,124 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
-<style>
-  .fixed-table-toolbar .search-input {
-    min-width: 300px;
-  }
-  .swal-overlay--show-modal, .swal-modal {
-    animation: none !important;
-	}
-</style>
+<!-- load up all the local formatters and stylers -->
+<script src="/js/genetable.js"></script>
 
 <script>
-	var $table = $('#table')
-	var selections = []
-
-  function table_buttons ()
-	{
-		return {
-    	}
-  }
+	
+	/**
+	**
+	**		Globals
+	**
+	*/
+	
+	var $table = $('#table');
   
   function responseHandler(res) {
 
-    //$('#gene-count').html(res.total);
     $('.countGenes').html(res.total);
-    /*
-    $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
-    })*/
+  
     return res
   }
 
-  function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-    return html.join('')
-  }
-
-  function symbolFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
-  }
-
-  function badgeFormatter(index, row) {
-    var html = '';
-
-    if (row.has_actionability)
-        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
-
-    if (row.has_validity)
-        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
-
-    if (row.has_dosage)
-      html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
-    else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
-
-    return html;
-  }
-
-  function initTable() {
+  function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
-
         {
-			title: 'Gene Symbol',
-			field: 'symbol',
-      formatter: symbolFormatter,
-      filterControl: 'input',
-			sortable: true
+          title: 'Gene Symbol',
+          field: 'symbol',
+          formatter: geneFormatter,
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortable: true
         },
         {
-			title: 'HGNC ID',
-      field: 'hgnc_id',
-      filterControl: 'input',
-      sortable: true
+          title: 'HGNC ID',
+          field: 'hgnc_id',
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortable: true
         },
-		{
-			title: 'Gene Name',
-      field: 'name',
-      filterControl: 'input',
-      sortable: true
+        {
+          title: 'Gene Name',
+          field: 'name',
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortable: true
         },
-		{
-			title: 'Curations',
-			field: 'curations',
-      align: 'center',
-      filterControl: 'input',
-			formatter: badgeFormatter
+        {
+          title: 'Curations',
+          field: 'curations',
+          align: 'center',
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          formatter: badgeFormatter
         },
-		{
-			field: 'date',
-			title: 'Last Curation Date',
-      align: 'right',
-      filterControl: 'input',
-      sortable: true
+        {
+          field: 'date',
+          title: 'Last Curation Date',
+          align: 'right',
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortable: true
         }
       ]
     })
 
 
     $table.on('load-error.bs.table', function (e, name, args) {
-    $("body").css("cursor", "default");
-    swal({
-          title: "Load Error",
-          text: "The system could not retrieve data from GeneGraph",
-          icon: "error"
-    });
-	})
-
-  $table.on('load-success.bs.table', function (e, name, args) {
-    $("body").css("cursor", "default");
-
-    if (name.hasOwnProperty('error'))
-      {
-        swal({
+      $("body").css("cursor", "default");
+      swal({
             title: "Load Error",
-            text: name.error,
+            text: "The system could not retrieve data from GeneGraph",
             icon: "error"
-        });
-      }
-	})
+      });
+    })
 
+    $table.on('load-success.bs.table', function (e, name, args) {
+      $("body").css("cursor", "default");
+
+      if (name.hasOwnProperty('error'))
+        {
+          swal({
+              title: "Load Error",
+              text: name.error,
+              icon: "error"
+          });
+        }
+    })
+  
+    $table.on('post-body.bs.table', function (e, name, args) {
+
+			$('[data-toggle="tooltip"]').tooltip();
+		})
 
   }
 
-  $(function() {
-    $("body").css("cursor", "progress");
-    initTable()
-	  var $search = $('.fixed-table-toolbar .search input');
-	  $search.attr('placeholder', 'Search in table');
-	  //$search.css('border', '1px solid red');
-    $( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
+  
+$(function() {
 
-  })
+  // Set cursor to busy prior to table init
+  $("body").css("cursor", "progress");
+
+  // initialize the table and load the data
+  inittable();
+
+  // make some mods to the search input field
+  var search = $('.fixed-table-toolbar .search input');
+  search.attr('placeholder', 'Search in table');
+
+  $( ".fixed-table-toolbar" ).show();
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
+
+});
+
 </script>
 @endsection

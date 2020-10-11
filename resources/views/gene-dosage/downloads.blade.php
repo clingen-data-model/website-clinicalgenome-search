@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity<h1>
+            <h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
         </div>
 
         <div class="col-md-4">

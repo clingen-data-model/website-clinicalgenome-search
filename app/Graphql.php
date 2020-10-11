@@ -402,6 +402,7 @@ class Graphql
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
 				$node->omimlink = $gene->display_omim;
+				$node->morbid = $gene->morbid;
 				if ($gene->history !== null)
 				{
 					//dd($gene->history);

@@ -82,9 +82,11 @@ class DosageController extends Controller
 									]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Dosage Sensitivity details')
+						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
+
 //dd($record);
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
@@ -209,7 +211,7 @@ class DosageController extends Controller
 	}
 
 	/**
-     * Demo page for new dosage listing.
+     * Show the ftp downloads page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -241,7 +243,7 @@ class DosageController extends Controller
 
 
 	/**
-     * Demo page for new cnv listing.
+     * Show the revurrent  cnv listings.
      *
      * @return \Illuminate\Http\Response
      */
@@ -266,7 +268,7 @@ class DosageController extends Controller
 
 
 	/**
-     * Demo page for new cnv listing.
+     * Show the acmg genes page.
      *
      * @return \Illuminate\Http\Response
      */

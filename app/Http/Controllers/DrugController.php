@@ -67,14 +67,18 @@ class DrugController extends Controller
     public function show(Request $request, $id = null)
     {
 		if ($id === null)
-			die("display some error about needing a drug");
+			return view('error.message-standard')
+				->with('title', 'Error retrieving Drug details')
+				->with('message', 'The system was not able to retrieve details for this Drug. Please return to the previous page and try again.')
+				->with('back', url()->previous());
 
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Drug details')
+						->with('message', 'The system was not able to retrieve details for this Drug.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 		// set display context for view
 		$display_tabs = collect([

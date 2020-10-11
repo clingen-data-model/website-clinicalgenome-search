@@ -19,9 +19,6 @@
         <dt>Chromosomal location</dt>
         <dd>
           {{ $record->chromosome_band }} <a href="/genes/{{ $record->hgnc_id }}" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
-          <!--<div class="mt-2 mb-4">
-            <div id="ideogram"> </div>
-          </div>-->
         </dd>
         <dt>Genomic Coordinate</dt>
         <dd>

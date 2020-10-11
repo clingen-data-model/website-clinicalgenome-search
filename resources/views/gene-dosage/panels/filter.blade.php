@@ -24,9 +24,9 @@
         <div class="input-group col-sm-4">
             <input type="text" class="form-control" name="search37">
             <span class="input-group-btn">
-                 <button class="btn btn-default" type="button">Go!</button>
+                <button class="btn btn-default" type="button">Go!</button>
             </span>
-         </div>
+        </div>
         <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh38 Location Search</label>
         <div class="input-group col-sm-4">
             <input type="text" class="form-control" name="search38">

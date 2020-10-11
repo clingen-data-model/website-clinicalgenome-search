@@ -56,6 +56,16 @@ class GeneLib extends Model
      * Dosage Assertion strings for display methods
      *
      * */
+
+    protected static $short_dosage_assertion_strings = [
+          '0' => 'No Evidence',
+          '1' => 'Minimal Evidence',
+          '2' => 'Moderate Evidence',
+          '3' => 'Sufficient Evidence',
+          '30' => 'Autosomal Recessive',
+          '40' => 'Dosage Sensitivity Unlikely'
+     ];
+
      protected static $dosage_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Gene Associated with Autosomal Recessive Phenotype',
           'MINIMAL_EVIDENCE' => 'Minimal Evidence for ####',
@@ -617,7 +627,19 @@ class GeneLib extends Model
      }
      
 
-	
+	/**
+     * Return a displayable dosage assertion description
+     * 
+     * @return string
+     */
+    public static function shortAssertionString($str)
+    {
+         if ($str === null || $str === false || $str === 'unknown')
+              return '';
+
+          return self::$short_dosage_assertion_strings[$str] . '<br />(' . $str . ')';
+    }
+
 	
 	/**
      * Return a displayable dosage assertion description
