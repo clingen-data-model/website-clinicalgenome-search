@@ -3,32 +3,18 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-7">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
+		<div class="col-md-8">
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
       	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 		</div>
 
-		<div class="col-md-5">
+		<div class="col-md-4">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-download') }}">Summary Data (CSV)</a></li>
-							<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
-						</ul>
-					</li>
-					<li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />More<br />Data
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
-							<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
-						</ul>
-					</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+					<li class="small line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
+					<li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -181,21 +167,19 @@
 
 		}
 
-		// 'filterAlgorithm': function (){ return true;}
 	});
-
 
 	/**
 	 * 
 	 * Listener for displaying only the recent reviewed items
 	 * 
 	 * */
-	 $('.action-show-recent').on('click', function() {
+	$('.action-show-recent').on('click', function() {
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
 			$table.bootstrapTable('filterBy', {type: [0, 1]}, {'filterAlgorithm': monthFilter});
-	
+
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-recent-text').html('On');
 
@@ -216,7 +200,6 @@
 		return Date.parse(rows.rawdate) > timestamp;
 	}
 
-
 	/**
 	 * 
 	 * Table response handler for updating page counters after data load
@@ -225,10 +208,9 @@
 	function responseHandler(res) {
 
 		// update the counters
-		$('.countCurations').html(res.total);
-		$('.countGenes').html(res.total);
-		$('.countHaplo').html(res.nhaplo);
-		$('.countTriplo').html(res.ntriplo);
+		$('.countGenes').html(res.gene_count);
+		$('.countRegions').html(res.region_count);
+		//$('.countTriplo').html(res.ntriplo);
 		return res
 	}
 
@@ -293,7 +275,7 @@
 					searchFormatter: false,
 					sortable: true
 				},
-				{
+				/*{
 					title: 'Morbid',
 					field: 'morbid',
 					formatter: morbidFormatter,
@@ -301,8 +283,8 @@
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
-				},
-				{
+				},*/
+				/*{
 					title: '%HI',
 					field: 'hi',
 					formatter: hiFormatter,
@@ -310,7 +292,7 @@
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
-				},
+				},*/
 				{
 					title: 'pLI',
 					field: 'pli',
@@ -320,7 +302,7 @@
 					searchFormatter: false,
 					sortable: true
 				},
-				{
+				/*{
 					field: 'date',
 					title: 'Reviewed',
 					formatter: reportFormatter,
@@ -329,6 +311,24 @@
 					searchFormatter: false,
 					sortName: 'rawdate',
 					sortable: true,
+				}*/
+				{
+					title: 'Relationship',
+					field: 'relationship',
+					//formatter: pliFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'ISCA ID',
+					field: 'isca',
+					formatter: iscaFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true
 				}
 			]
 		});

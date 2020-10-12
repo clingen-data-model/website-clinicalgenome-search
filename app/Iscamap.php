@@ -80,8 +80,20 @@ class Iscamap extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function scopeSymbol($query, $ident)
+    public function scopeSymbol($query, $symbol)
     {
-      return $query->where('symbol', $ident);
+      return $query->where('symbol', $symbol);
+    }
+
+
+    /**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeIssue($query, $issue)
+    {
+      return $query->where('issue', $issue);
     }
 }

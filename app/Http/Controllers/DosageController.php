@@ -122,6 +122,32 @@ class DosageController extends Controller
 
 
 	/**
+     * Display the results of a region search.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function region_search(Request $request, $page = 1, $size = 100)
+    {
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Curations"
+        ]);
+
+		return view('gene-dosage.region_search', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('type', $type)
+						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
+						->with('pagesize', $size)
+						->with('page', $page);
+    }
+
+
+	/**
      * Display the specified resource.
      *
      * @param  int  $id

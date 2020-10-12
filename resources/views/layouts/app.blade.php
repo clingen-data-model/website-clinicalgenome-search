@@ -31,10 +31,8 @@
     <main id='section_main' role="main">
       <section id='section_heading' class="pt-0 pb-0 mb-2 section-heading section-heading-groups text-light">
         <div  class="container">
-          <form id="navSearchBar" method="GET" action="{{ route('gene-index') }}">
-            <input type="hidden" name="_method" value="GET" />
-            <input type="hidden" value="page" name="1" />
-            <input type="hidden" value="size" name="50" />
+          <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
+            @csrf
             <div id="section_search_wrapper" class="mt-4 mb-3 input-group input-group-xl">
 
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
@@ -53,13 +51,13 @@
 	           </ul>
            </div><!-- /btn-group -->
            <span class="inputQueryGene">
-            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search" placeholder="Start typing a gene symbol...">
+            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Start typing a gene symbol...">
            </span>
            <span class="inputQueryDisease" style="display: none">
-            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search" placeholder="Start typing a disease..." >
+            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Start typing a disease..." >
            </span>
            <span class="inputQueryDrug" style="display: none">
-           <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search" placeholder="Start typing a drug...">
+           <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Start typing a drug...">
            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit"> Search</button>
@@ -228,7 +226,7 @@
     <script src="/js/typeahead.js"></script>
     <script>
       $( ".typeQueryGene" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('gene-index') }}");
+        $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
         $( ".inputQueryGene" ).show();
         $( ".inputQueryGene .queryGene" ).show();
         $( ".inputQueryDisease" ).hide();
@@ -238,7 +236,7 @@
         $( ".typeQueryLabel").text("Gene");
       });
       $( ".typeQueryDisease" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('condition-index') }}");
+        $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
         $( ".inputQueryGene" ).hide();
         $( ".inputQueryGene .queryGene" ).hide();
         $( ".inputQueryDisease" ).show();
@@ -248,7 +246,7 @@
         $( ".typeQueryLabel").text("Disease");
       });
       $( ".typeQueryDrug" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('drug-index') }}");
+        $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
         $( ".inputQueryGene" ).hide();
         $( ".inputQueryGene .queryGene" ).hide();
         $( ".inputQueryDisease" ).hide();

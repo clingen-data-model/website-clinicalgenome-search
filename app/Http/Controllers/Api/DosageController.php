@@ -7,6 +7,7 @@ use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Dosage as DosageResource;
 use App\Http\Resources\Region as RegionResource;
 use App\Http\Resources\Acmg59 as Acmg59Resource;
+use App\Http\Resources\Search as SearchResource;
 
 use App\GeneLib;
 
@@ -61,6 +62,36 @@ class DosageController extends Controller
     public function show($id)
     {
         //
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function region_search(ApiRequest $request, $type = '', $region = '')
+    {
+        $input = $request->only(['search', 'order', 'offset', 'limit', 'region', 'type']);
+
+        $results = GeneLib::regionSearchList(['page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+										'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $input['search'] ?? null,
+                                        'type' => $type ?? '',
+                                        'region' => $region ?? '',
+										'curated' => true ]);
+        
+        if ($results === null)
+            return GeneLib::getError();
+
+        return ['total' => $results->count, 
+                'totalNotFiltered' => $results->count,
+                'rows'=> SearchResource::collection($results->collection),
+                'gene_count' => $results->gene_count,
+                'region_count' => $results->region_count
+                ];
     }
 
 

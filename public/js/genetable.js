@@ -108,12 +108,12 @@ function hiCellStyle(value, row, index) {
 
 function pliFormatter(index, row) {
   if (row.pli === null) return '-';
-  if (row.pli > .90) return '<span class="format-pli-high">' + row.pli + '</span>';else return '<span class="format-pli-low">' + row.pli + '</span>';
+  if (row.pli >= .90) return '<span class="format-pli-high">' + row.pli + '</span>';else return '<span class="format-pli-low">' + row.pli + '</span>';
 }
 
 function hiFormatter(index, row) {
   if (row.hi === null) return '-';
-  if (row.hi < 10) return '<span class="format-hi-high">' + row.hi + '</span>';else return '<span class="format-hi-low">' + row.hi + '</span>';
+  if (row.hi <= 10) return '<span class="format-hi-high">' + row.hi + '</span>';else return '<span class="format-hi-low">' + row.hi + '</span>';
 }
 
 function haploFormatter(index, row) {
@@ -143,6 +143,10 @@ function reportFormatter(index, row) {
   /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
           + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
   if (row.type == 0) return '<a class="btn btn-block btn btn-default btn-xs" href="' + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';else return '<a class="btn btn-block btn btn-default btn-xs" href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+}
+
+function iscaFormatter(index, row) {
+  if (row.type == 0) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=' + row.symbol + '">' + row.isca + '</a>';else if (row.type == 1) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.isca + '">' + row.isca + '</a>';else return row.isca;
 }
 /**
  * 

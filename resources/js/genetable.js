@@ -218,6 +218,21 @@ function reportFormatter(index, row) {
   }
 
 
+  function iscaFormatter(index, row) {
+    
+    if (row.type == 0)
+        return '<a href="' 
+            + 'https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=' + row.symbol
+            + '">' + row.isca + '</a>';
+    else if (row.type == 1)
+        return '<a href="' 
+            + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.isca
+            + '">' + row.isca + '</a>';
+    else
+        return row.isca;
+  }
+
+
   /**
    * 
    * @param {*} index 

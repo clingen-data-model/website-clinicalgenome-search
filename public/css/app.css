@@ -14810,7 +14810,6 @@ header {
   padding-bottom: 5px;
   background: #2b5e8d;
   background: linear-gradient(0deg, #2b5e8d 0%, #4085ba 100%);
-  background: none !important;
 }
 
 .nav-tabs-affiliates {
@@ -19562,3 +19561,4 @@ footer {
 footer p {
   margin-bottom: 0.25rem;
 }
+

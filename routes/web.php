@@ -39,6 +39,8 @@ Route::group(['prefix' => 'genes'], function () {
 
 		Route::get('/', 'GeneController@index')->name('gene-index');
 
+		Route::post('/', 'GeneController@search')->name('gene-search');
+
 		Route::get('/page/{page}', 'GeneController@index');
 
 		Route::get('/page/{page}/view/{psize}', 'GeneController@index');
@@ -59,6 +61,8 @@ Route::group(['prefix' => 'genes'], function () {
 Route::group(['prefix' => 'drugs'], function () {
 
 		Route::get('/', 'DrugController@index')->name('drug-index');
+
+		Route::post('/', 'DrugController@search')->name('drug-search');
 
 		Route::get('/page/{page}', 'DrugController@index');
 
@@ -92,6 +96,8 @@ Route::group(['prefix' => 'conditions'], function () {
 
 		Route::get('/', 'ConditionController@index')->name('condition-index');
 
+		Route::post('/', 'ConditionController@search')->name('condition-search');
+
 		Route::get('/page/{page}', 'ConditionController@index');
 
 		Route::get('/page/{page}/view/{psize}', 'ConditionController@index');
@@ -121,6 +127,12 @@ Route::group(['prefix' => 'affiliate'], function () {
 Route::group(['prefix' => 'gene-dosage'], function () {
 
 	Route::get('/', 'DosageController@index')->name('dosage-index');
+
+	Route::get('/region_search', function () {
+		return redirect()->route('dosage-index');
+	});
+
+	Route::post('/region_search', 'DosageController@region_search')->name('dosage-region-search');
 
 	Route::get('/download', 'DosageController@download')->name('dosage-download');
 

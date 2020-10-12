@@ -104,7 +104,7 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
-	
+
 		if ($curated)
 		{
 			$naction = $collection->where('has_actionability', true)->count();

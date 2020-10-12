@@ -39,7 +39,8 @@ class Region extends Model
      *
      * @var array
      */
-     protected $fillable = ['location', 'issue', 'curation', 'workflow',
+     protected $fillable = ['location', 'chr', 'start', 'stop', 'issue', 'curation',
+                            'workflow',
                             'name', 'gain', 'loss', 'pli', 'status', 'omim', 'type' ];
 
 	  /**
@@ -96,5 +97,95 @@ class Region extends Model
     public function scopeLocation($query, $location)
     {
       return $query->where('location', $location);
+    }
+
+
+    /**
+     * Search for all contained or overlapped genes and regions
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function searchList($args, $page = 0, $pagesize = 20)
+    {
+      // break out the args
+      foreach ($args as $key => $value)
+        $$key = $value;
+        
+      // initialize the collection
+      $collection = collect();
+
+      // map string type to type flag
+      if ($type == 'GRCh37')
+        $type = 1;
+      else if ($type == 'GRCh38')
+        $type = 2;
+      else
+        return (object) ['count' => $collection->count(), 'collection' => $collection];
+
+      // break out the location and clean it up
+      $location = preg_split('/[:-]/', trim($region), 3);
+
+      $chr = strtoupper($location[0]);
+      
+      if (strpos($chr, 'CHR') == 0)   // strip out the chr
+          $chr = substr($chr, 3);
+
+      //vet the search terms
+      $start = str_replace(',', '', $location[1] ?? '');  // strip out commas
+      $stop = str_replace(',', '', $location[2] ?? '');
+
+      if ($start == '' || $stop == '')
+        return (object) ['count' => $collection->count(), 'collection' => $collection];
+
+      if (!is_numeric($start) || !is_numeric($stop))
+        return (object) ['count' => $collection->count(), 'collection' => $collection];
+
+      if ((int) $start >= (int) $stop)
+        return (object) ['count' => $collection->count(), 'collection' => $collection];
+
+      $regions = self::where('type', $type)
+                        ->where('chr', $chr)
+                        ->where('start', '<=', (int) $stop)
+                        ->where('stop', '>=', (int) $start)->get();
+
+      $gene_count = 0;
+      $region_count = 0;
+
+      foreach ($regions as $region)
+      {
+        $region->relationship = ($region->start >= (int) $start && $region->stop <= (int) $stop ? 'Contained' : 'Overlap');
+        if ($region->curation == 'ISCA Gene Curation')
+        {
+          $map = Iscamap::issue($region->issue)->first();
+          if ($map !== null)
+            $region->symbol = $map->symbol;
+          $region->type = 0;  //gene
+          $gene_count++;
+        }
+        else
+        {
+          $region->symbol = 'get region name';
+          $region->type = 1;    //region
+          $region_count++;
+        }
+  
+        // for 30 and 40, Jira also sends text
+        if ($region->loss == "30: Gene associated with autosomal recessive phenotype")
+              $region->loss = 30;
+        else if ($region->loss == "40: Dosage sensitivity unlikely")
+              $region->loss = 40;
+
+        if ($region->gain == "30: Gene associated with autosomal recessive phenotype")
+              $region->gain = 30;
+        else if ($region->gain == "40: Dosage sensitivity unlikely")
+              $region->gain = 40;
+
+        $collection->push($region);
+
+      }
+      
+      return (object) ['count' => $collection->count(), 'collection' => $collection,
+                      'gene_count' => $gene_count, 'region_count' => $region_count];
     }
 }

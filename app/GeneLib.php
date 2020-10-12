@@ -6,6 +6,8 @@ use Jenssegers\Model\Model;
 
 use App\Neo4j;
 use App\Graphql;
+use App\Jira;
+use App\Region;
 
 
 /**
@@ -331,6 +333,25 @@ class GeneLib extends Model
 
 		return $response;
 	}
+
+
+     /**
+     * Get a list of all genes and regions within the search params
+     * 
+     * (Neo4j, GeneGraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionSearchList($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Gene data is locally populated from batch exports
+         $response = Region::searchList($args);
+         
+         return $response;
+    }
 
 
 	/**

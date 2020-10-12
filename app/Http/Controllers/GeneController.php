@@ -161,4 +161,22 @@ class GeneController extends Controller
 		]);
 		return view('gene.show-external-resources', compact('display_tabs', 'record'));
 	}
+
+
+	/**
+	* Display a listing of all genes.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function search(Request $request)
+	{
+
+		// process request args
+		foreach ($request->only(['search']) as $key => $value)
+			$$key = $value;
+
+		// the way layouts is set up, everything is named search.  Gene is the first
+		
+		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0] ]);
+	}
 }

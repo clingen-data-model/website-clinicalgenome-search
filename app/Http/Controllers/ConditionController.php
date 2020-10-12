@@ -132,4 +132,21 @@ class ConditionController extends Controller
 
 		return view('condition.show-external-resources', compact('display_tabs', 'record'));
 	}
+
+	/**
+	* Display a listing of all genes.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function search(Request $request)
+	{
+
+		// process request args
+		foreach ($request->only(['search']) as $key => $value)
+			$$key = $value;
+
+		// the way layouts is set up, everything is named search.  Condition is the second
+		
+		return redirect()->route('condition-index', ['page' => 1, 'size' => 50, 'search' => $search[1] ]);
+	}
 }
