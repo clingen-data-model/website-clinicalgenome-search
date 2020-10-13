@@ -70,7 +70,8 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-					   'haplo', 'triplo', 'omim_id', 'history', 'type', 'notes', 'status' ];
+                            'haplo', 'triplo', 'omim_id', 'morbid',
+                            'history', 'type', 'notes', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.

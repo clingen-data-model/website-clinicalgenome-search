@@ -1,4 +1,9 @@
-<h4>Genomic View</h4>
+<div class="row" id="report_details_triplosensitivity">
+  <div class="col-sm-12 pt-3 pb-3">
+    <h3 class="h4 mb-1 border-bottom-2">Genomic View</h3>
+    <div class="text-muted small">
+    </div>
+  </div>
 
 <div id="g_view">
 

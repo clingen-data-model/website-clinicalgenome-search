@@ -12,5 +12,5 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/genetable.js', 'public/js')
+    .babel('resources/js/genetable.js', 'public/js/genetable.js')
     .sass('resources/sass/app.scss', 'public/css');

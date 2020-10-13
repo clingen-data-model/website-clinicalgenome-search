@@ -51,100 +51,30 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
-
-<style>
-  .fixed-table-toolbar .search-input {
-    min-width: 300px;
-  }
-  .swal-overlay--show-modal, .swal-modal {
-    animation: none !important;
-}
-</style>
+<!-- load up all the local formatters and stylers -->
+<script src="/js/genetable.js"></script>
 
 <script>
-	var $table = $('#table')
-	//var selections = []
 
-  function table_buttons ()
-	{
-		return {
-    	}
-  }
+	/**
+	**
+	**		Globals
+	**
+	*/
+	
+  var $table = $('#table');
+  var lightstyle = true;
 
   function responseHandler(res) {
-    //$('#gene-count').html(res.total);
     $('.countGenes').html(res.total);
     $('.countValidity').html(res.nvalid);
     $('.countActionability').html(res.naction);
     $('.countDosage').html(res.ndosage);
+
     return res
   }
 
-  function detailFormatter(index, row) {
-    var html = []
-    $.each(row, function (key, value) {
-      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
-    return html.join('')
-  }
-
-  function symbolFormatter(index, row) {
-	  return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
-  }
-
-  function validityFormatter(index, row) {
-
-    if (row.has_validity)
-    {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
-
-	  return '';
-  }
-
-
-  function actionabilityFormatter(index, row) {
-	
-    if (row.has_actionability)
-    {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
-
-	  return '';
-  }
-
-
-  function haploFormatter(index, row) {
-
-    if (row.has_dosage_haplo)
-    {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
-             + row.symbol + '&subject'
-            + '"><span class="hidden-sm hidden-xs">'
-            + row.has_dosage_haplo + '</span></a>';
-    }
-
-	  return '';
-  }
-
-
-  function triploFormatter(index, row) {
-
-    if (row.has_dosage_triplo)
-    {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym='
-             + row.symbol + '&subject'
-            + '"><span class="hidden-sm hidden-xs">'
-            + row.has_dosage_triplo + '</span></a>';
-    }
-
-	  return '';
-  }
-
-
-  function initTable() {
+  function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
       columns: [
@@ -152,7 +82,7 @@
           title: 'Gene',
           field: 'symbol',
           rowspan: 2,
-          formatter: symbolFormatter,
+          formatter: geneFormatter,
           filterControl: 'input',
           sortable: true
         },
@@ -172,33 +102,37 @@
 		    [{
           title: 'Clinical Validity Classifications',
           field: 'has_validity',
-          formatter: validityFormatter,
+          formatter: hasvalidityFormatter,
           align: 'center',
           filterControl: 'input',
+          searchFormatter: true,
           sortable: true
         },
         {
           title: 'Evidence-Based Summary',
           field: 'has_actionability',
-          formatter: actionabilityFormatter,
+          formatter: hasactionabilityFormatter,
           align: 'center',
           filterControl: 'input',
+          searchFormatter: true,
           sortable: true
         },
         {
           title: 'Haploinsufficiency Score',
           field: 'has_dosage_haplo',
-          formatter: haploFormatter,
+          formatter: hashaploFormatter,
           align: 'center',
           filterControl: 'input',
+          searchFormatter: false,
           sortable: true
         },
         {
           title: 'Triplosensitivity Score',
           field: 'has_dosage_triplo',
-          formatter: triploFormatter,
+          formatter: hastriploFormatter,
           align: 'center',
           filterControl: 'input',
+          searchFormatter: false,
           sortable: true
         }]
       ]
@@ -227,21 +161,32 @@
       }
     })
 
+    $table.on('post-body.bs.table', function (e, name, args) {
+			console.log("post body fired");
+
+			$('[data-toggle="tooltip"]').tooltip();
+		})
+
   }
 
-  $(function() {
-    $("body").css("cursor", "progress");
-    
-    initTable();
+$(function() {
 
-	  var $search = $('.fixed-table-toolbar .search input');
-	  $search.attr('placeholder', 'Search in table');
-    $( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
-	  //$search.css('border', '1px solid red');
+  // Set cursor to busy prior to table init
+  $("body").css("cursor", "progress");
 
-  })
+  // initialize the table and load the data
+  inittable();
+
+  // make some mods to the search input field
+  var search = $('.fixed-table-toolbar .search input');
+  search.attr('placeholder', 'Search in table');
+
+  $( ".fixed-table-toolbar" ).show();
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
+
+});
+
 
 </script>
 @endsection

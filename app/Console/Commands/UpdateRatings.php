@@ -49,7 +49,11 @@ class UpdateRatings extends Command
                                     'direction' =>  'ASC',
                                     'search' =>  null,
                                     'curated' => false ]);
-
+            
+        // clear existing history
+        Gene::query()->update(['history' => null]);
+        Region::query()->update(['history' => null]);
+        
         foreach($updates as $update)
         {
             // process the line read.

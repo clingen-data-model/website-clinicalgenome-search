@@ -82,9 +82,11 @@ class DosageController extends Controller
 									]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Dosage Sensitivity details')
+						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
+
 //dd($record);
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
@@ -117,6 +119,32 @@ class DosageController extends Controller
 
 		return view('gene-dosage.show', compact('display_tabs', 'record'));
 	}
+
+
+	/**
+     * Display the results of a region search.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function region_search(Request $request, $page = 1, $size = 100)
+    {
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Curations"
+        ]);
+
+		return view('gene-dosage.region_search', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('type', $type)
+						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
+						->with('pagesize', $size)
+						->with('page', $page);
+    }
 
 
 	/**
@@ -209,7 +237,7 @@ class DosageController extends Controller
 	}
 
 	/**
-     * Demo page for new dosage listing.
+     * Show the ftp downloads page.
      *
      * @return \Illuminate\Http\Response
      */
@@ -241,7 +269,7 @@ class DosageController extends Controller
 
 
 	/**
-     * Demo page for new cnv listing.
+     * Show the revurrent  cnv listings.
      *
      * @return \Illuminate\Http\Response
      */
@@ -266,7 +294,7 @@ class DosageController extends Controller
 
 
 	/**
-     * Demo page for new cnv listing.
+     * Show the acmg genes page.
      *
      * @return \Illuminate\Http\Response
      */

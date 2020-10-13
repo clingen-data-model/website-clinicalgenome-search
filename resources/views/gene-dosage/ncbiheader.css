@@ -1,0 +1,182 @@
+/* CSS Document */
+body {
+	min-width: 800px;
+	margin: 0px;
+	padding: 0px;
+	font-family: arial,helvetica,clean,sans-serif;
+	font-size: 13px;
+}
+
+#ncbiheader{
+	border: 0px solid red;
+	padding-top: 2px;
+	padding-left: 2px;
+	font-family:Verdana,sans-serif;
+	white-space: nowrap;
+	background: #669ccf url(topbg6.jpg) repeat-x scroll 0pt 100%;
+	height: 43px; /*Height of top section8*/
+}
+
+#ncbiheader h1{
+	margin: 0px;
+	padding-top: 0px;
+	float: left;
+}
+
+#ncbiheader h1 a{
+	background:transparent url(ncbi-logo-new.png) no-repeat scroll 0pt 100%;
+	border: 0px solid red;
+	display:block;
+	height:35px;
+	width:103px;
+	text-decoration:none;
+	text-indent:-1000em;
+	z-index:1000;
+}
+
+#ncbiheader ul{
+ 	float:left;
+ 	height: 35px;
+ 	margin:0;
+ 	padding:0;
+ 	padding-left: 20px;
+ 	padding-right: 20px;
+}
+
+#ncbiheader ul li {
+ 	list-style-image:none;
+ 	list-style-type:none;
+ 	padding:0pt;
+ 	display: inline;
+}
+
+#ncbiheader li a {
+ 	color:#d3e1f0;
+ 	float:left;
+ 	padding:11px 8px;
+ 	text-decoration:none;
+ 	white-space:nowrap;
+ 	font-weight:bold;
+ 	font-size:93%; /* 12px */
+}
+
+#ncbiheader li a:hover {
+ 	color:white;
+}
+
+/* NCBI Footer CSS */
+/* This is for all browsers */
+#ncbifooter {
+ clear: left;
+ /*background:#e6e3d6 url(http://graceland.ncbi.nlm.nih.gov/coreweb/images/ncbi/footer_bg_plain2.jpg) repeat-x scroll center top;*/
+ background:#e6e3d6 url(footer_bg_plain2.jpg) repeat-x scroll center top;
+ margin-top:1em;
+ padding: 1px;
+ color:#f3f0e2;
+ font-family:verdana,sans-serif;
+ font-size: 100%;
+ height: 63px;
+}
+
+/* This is for all but IE and Opera */
+#ncbifooter:not([class="xxx"]) {
+ font-size: 100%;
+}
+
+
+/* This is for Opera */
+@media all and (min-width:0px) { /* Opera */
+
+#ncbifooter {
+ font-size: 110%;
+ }
+}
+
+#footer-contents-right {
+ float: right;
+ border: solid 0px green;
+ text-align: right;
+}
+
+#footer-contents-right a {
+ border: 0px solid green;
+ padding-top:14px;
+ padding-left:2px;
+ height:41px;
+ width:50px;
+ text-decoration:none;
+ text-indent:10em;
+ float:left;
+ overflow: hidden;
+}
+
+#footer-contents-right a:hover {
+ text-decoration:none;
+}
+
+#footer-contents-right a.nih_img_link{
+ /*background:transparent url(http://graceland.ncbi.nlm.nih.gov/coreweb/images/ncbi/footer/nih_logo_footer.gif) no-repeat scroll 0pt 100%;*/
+ background:transparent url(nih_logo_footer.gif) no-repeat scroll 0pt 100%;
+ width:48px;
+}
+
+#footer-contents-right a.nlm_img_link{
+ /*background:transparent url(http://graceland.ncbi.nlm.nih.gov/coreweb/images/ncbi/footer/nlm_logo_footer.gif) no-repeat scroll 0pt 100%;*/
+ background:transparent url(nlm_logo_footer.gif) no-repeat scroll 0pt 100%;
+ width:50px;
+}
+#footer-contents-right a.dhhs_img_link{
+ /*background:transparent url(http://graceland.ncbi.nlm.nih.gov/coreweb/images/ncbi/footer/dhhs_logo_footer.gif) no-repeat scroll 0pt 100%;*/
+ background:transparent url(dhhs_logo_footer.gif) no-repeat scroll 0pt 100%;
+ width:49px;
+}
+
+#footer-contents-right a.usagov_img_link{
+ /*background:transparent url(http://graceland.ncbi.nlm.nih.gov/coreweb/images/ncbi/footer/usagov_logo_footer.gif) no-repeat scroll 0pt 100%;*/
+ background:transparent url(usagov_logo_footer.gif) no-repeat scroll 0pt 100%;
+ width:94px;
+}
+#footer-contents-left {
+ color:#867e58;
+ border: 0px solid green;
+ padding:9px;
+ padding-top:13px;
+}
+
+#footer-contents-left p.address {
+ font-size:75%;
+ margin: 0px;
+ padding-top:1px;
+ color: #867e58;
+}
+
+#footer-contents-left p.updateinfo {
+ font-size:75%;
+ margin: 1px;
+ padding-top:2px;
+ color: #867e58;
+ border: 0px solid red;
+ text-align: right;
+ font-family:arial;
+}
+
+p.updateinfo {
+ font-size:75%;
+ margin: 1px;
+ padding-top:0px;
+ color: #867e58;
+ border: 0px solid red;
+ text-align: right;
+ font-family:arial;
+}
+
+#footer-contents-left a {
+ color:#3168a1;
+ font-size:90%;
+ font-weight: bold;
+}
+
+#footer-contents-left a:hover {
+ text-decoration:none;
+}
+/* NCBI Footer CSS ENDS HERE*/

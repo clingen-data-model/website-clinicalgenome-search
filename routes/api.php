@@ -39,6 +39,7 @@ Route::resource('curations', 'Api\CurationController')->only(['index']);
 Route::resource('dosage', 'Api\DosageController')->only(['index']);
 Route::get('/dosage/cnv', 'Api\DosageController@cnv')->name('dosage.cnv');
 Route::get('/dosage/acmg59', 'Api\DosageController@acmg59')->name('dosage.acmg59');
+Route::get('/dosage/region_search/{type}/{region}', 'Api\DosageController@region_search')->name('dosage.region-search');
 
 // gene validity
 Route::resource('validity', 'Api\ValidityController')->only(['index']);

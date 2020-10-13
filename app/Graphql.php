@@ -104,7 +104,7 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
 			$collection->push(new Nodal((array) $record));
-	
+
 		if ($curated)
 		{
 			$naction = $collection->where('has_actionability', true)->count();
@@ -402,6 +402,7 @@ class Graphql
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
 				$node->omimlink = $gene->display_omim;
+				$node->morbid = $gene->morbid;
 				if ($gene->history !== null)
 				{
 					//dd($gene->history);

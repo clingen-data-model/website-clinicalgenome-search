@@ -6,6 +6,8 @@ use Jenssegers\Model\Model;
 
 use App\Neo4j;
 use App\Graphql;
+use App\Jira;
+use App\Region;
 
 
 /**
@@ -56,6 +58,16 @@ class GeneLib extends Model
      * Dosage Assertion strings for display methods
      *
      * */
+
+    protected static $short_dosage_assertion_strings = [
+          '0' => 'No Evidence',
+          '1' => 'Minimal Evidence',
+          '2' => 'Moderate Evidence',
+          '3' => 'Sufficient Evidence',
+          '30' => 'Autosomal Recessive',
+          '40' => 'Dosage Sensitivity Unlikely'
+     ];
+
      protected static $dosage_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Gene Associated with Autosomal Recessive Phenotype',
           'MINIMAL_EVIDENCE' => 'Minimal Evidence for ####',
@@ -321,6 +333,25 @@ class GeneLib extends Model
 
 		return $response;
 	}
+
+
+     /**
+     * Get a list of all genes and regions within the search params
+     * 
+     * (Neo4j, GeneGraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionSearchList($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Gene data is locally populated from batch exports
+         $response = Region::searchList($args);
+         
+         return $response;
+    }
 
 
 	/**
@@ -617,7 +648,19 @@ class GeneLib extends Model
      }
      
 
-	
+	/**
+     * Return a displayable dosage assertion description
+     * 
+     * @return string
+     */
+    public static function shortAssertionString($str)
+    {
+         if ($str === null || $str === false || $str === 'unknown')
+              return '';
+
+          return self::$short_dosage_assertion_strings[$str] . '<br />(' . $str . ')';
+    }
+
 	
 	/**
      * Return a displayable dosage assertion description

@@ -67,14 +67,18 @@ class DrugController extends Controller
     public function show(Request $request, $id = null)
     {
 		if ($id === null)
-			die("display some error about needing a drug");
+			return view('error.message-standard')
+				->with('title', 'Error retrieving Drug details')
+				->with('message', 'The system was not able to retrieve details for this Drug. Please return to the previous page and try again.')
+				->with('back', url()->previous());
 
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
-		{
-			die(print_r(GeneLib::getError()));
-		}
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Drug details')
+						->with('message', 'The system was not able to retrieve details for this Drug.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 		// set display context for view
 		$display_tabs = collect([
@@ -82,5 +86,23 @@ class DrugController extends Controller
 			'title' => $record->label . " drug information"
 		]);
         return view('drug.show', compact('display_tabs', 'record'));
-    }
+	}
+	
+
+	/**
+	* Display a listing of all genes.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function search(Request $request)
+	{
+
+		// process request args
+		foreach ($request->only(['search']) as $key => $value)
+			$$key = $value;
+
+		// the way layouts is set up, everything is named search.  Drug is the third
+		
+		return redirect()->route('drug-index', ['page' => 1, 'size' => 50, 'search' => $search[2] ]);
+	}
 }
