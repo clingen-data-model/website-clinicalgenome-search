@@ -329,7 +329,17 @@
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
+				},
+				{
+					field: 'workflow',
+					title: 'Status',
+					//formatter: reportFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
 				}
+				
 			]
 		});
 

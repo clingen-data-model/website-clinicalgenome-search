@@ -31,6 +31,7 @@ class Search extends JsonResource
             'relationship' => $this->relationship,
             'pli' => $this->pli,
             'type' => $this->type,
+            'workflow' => $this->workflow
             //'date' => $this->displayDate($this->dosage_report_date),
             //'rawdate' => $this->dosage_report_date
         ];
