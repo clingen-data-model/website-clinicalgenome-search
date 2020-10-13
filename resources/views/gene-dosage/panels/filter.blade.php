@@ -27,8 +27,8 @@
             </div>
         </div>
         <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh37 Location Search</label>
-        <div class="input-group col-sm-4">
-            <form method="post" action="/gene-dosage/region_search">
+        <div class="col-sm-4">
+            <form class="input-group mb-1" method="post" action="/gene-dosage/region_search">
                 @csrf
                 <input type="hidden" name="type" value="GRCh37">
                 <input type="text" class="form-control" name="region">
@@ -38,8 +38,8 @@
             </form>
         </div>
         <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh38 Location Search</label>
-        <div class="input-group col-sm-4">
-            <form method="post" action="/gene-dosage/region_search">
+        <div class="col-sm-4">
+            <form class="input-group " method="post" action="/gene-dosage/region_search">
                 @csrf
                 <input type="hidden" name="type" value="GRCh38">
                 <input type="text" class="form-control" name="region">

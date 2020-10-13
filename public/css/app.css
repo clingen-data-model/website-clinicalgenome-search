@@ -14805,11 +14805,8 @@ header {
 }
 
 #navSearchBar {
-  background-color: #2b5e8d;
   padding-top: 10px;
   padding-bottom: 5px;
-  background: #2b5e8d;
-  background: linear-gradient(0deg, #2b5e8d 0%, #4085ba 100%);
 }
 
 .nav-tabs-affiliates {

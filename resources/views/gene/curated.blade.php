@@ -61,7 +61,7 @@
 	**		Globals
 	**
 	*/
-	
+
   var $table = $('#table');
   var lightstyle = true;
 
@@ -100,7 +100,7 @@
           align: 'center',
         }],
 		    [{
-          title: 'Clinical Validity Classifications',
+          title: 'Clinical Validity<br />Classifications',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
           align: 'center',
@@ -109,7 +109,7 @@
           sortable: true
         },
         {
-          title: 'Evidence-Based Summary',
+          title: 'Evidence-Based<br />Summary',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
           align: 'center',
@@ -118,7 +118,7 @@
           sortable: true
         },
         {
-          title: 'Haploinsufficiency Score',
+          title: 'Haploinsufficiency<br />Score',
           field: 'has_dosage_haplo',
           formatter: hashaploFormatter,
           align: 'center',
@@ -127,7 +127,7 @@
           sortable: true
         },
         {
-          title: 'Triplosensitivity Score',
+          title: 'Triplosensitivity<br />Score',
           field: 'has_dosage_triplo',
           formatter: hastriploFormatter,
           align: 'center',
@@ -140,7 +140,7 @@
 
     $table.on('load-error.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
-      
+
       swal({
             title: "Load Error",
             text: "The system could not retrieve data from GeneGraph",
