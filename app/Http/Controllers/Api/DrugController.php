@@ -22,7 +22,7 @@ class DrugController extends Controller
         $results = GeneLib::DrugList([	'page' => $input['offset'] ?? 0,
                                         'pagesize' => $input['limit'] ?? "null",
                                         'sort' => $sort ?? null,
-                                        'search' => $input['search'] ?? null,
+                                        'search' => null, // $input['search'] ?? null,
                                         'direction' => $input['order'] ?? 'ASC',
                                         'curated' => true
 									]);

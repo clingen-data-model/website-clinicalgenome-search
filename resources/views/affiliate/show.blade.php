@@ -4,16 +4,13 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<h1>
-        {{-- <img src="/images/clinicalValidity-on.png" width="50" height="50"> --}}
-        <span class="affiliate-id">Loading...</span> Expert Panel</h1>
-      <h5><strong class="gene-count">Loading...</strong> gene disease curations have been published by <span class="affiliate-id">loading..</span>.</h5>
+			<h1><span class="affiliate-id">Loading...</span> Expert Panel</h1>
+      <h5><strong class="gene-count">Loading...</strong> gene disease curations have been published by <span class="affiliate-id">loading...</span></h5>
+    </div>
+    <div class="col-md-12 light-arrows">
+      @include('_partials.genetable')
+    </div>
 
-      <div class="col-md-12 light-arrows">
-        @include('_partials.genetable')
-      </div>
-
-		</div>
 	</div>
 </div>
 

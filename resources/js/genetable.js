@@ -55,7 +55,7 @@ function symbolFormatter(index, row) {
 
     if (row.type == 0)
         return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>  <a href="/gene-dosage/'
-                    + row.hgnc_id + '"><i class="fas fa-external-link-alt"></i></a>';
+                    + row.hgnc_id + '" class="float-right mr-5"><i class="fas fa-map"></i></a>';
     else
         return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
 }
@@ -363,8 +363,10 @@ function drbadgeFormatter(index, row) {
   return html;
 }
 
+var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked", "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD":  "Semidominant"};
+
 function moiFormatter(index, row) {
-    return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + row.moi +' full text" ">' + row.moi + '</span>';
+    return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';
 }
 
 function hasvalidityFormatter(index, row) {

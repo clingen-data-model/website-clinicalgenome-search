@@ -23,7 +23,7 @@ class GeneController extends Controller
 										'pagesize' => $input['limit'] ?? "null",
 										'sort' => $sort ?? 'GENE_LABEL',
                                         'direction' => $input['order'] ?? 'ASC',
-                                        'search' => $input['search'] ?? null,
+                                        'search' => null, // $input['search'] ?? null,
                                         'curated' => false ]);
                                         
         if ($results === null)
