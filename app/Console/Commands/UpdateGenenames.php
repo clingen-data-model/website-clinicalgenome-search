@@ -57,7 +57,7 @@ class UpdateGenenames extends Command
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retreiving search data\n";
+			echo "(E001) Error retrieving search data\n";
 			exit;
 			
 		}
