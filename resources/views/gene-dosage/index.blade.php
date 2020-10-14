@@ -267,6 +267,24 @@
 					sortable: true
 				},
 				{
+					title: 'Haploinsufficiency',
+					field: 'haplo_assertion',
+					formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'Triplosensitity',
+					field: 'triplo_assertion',
+					formatter: triploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
 					title: 'OMIM',
 					field: 'omimlimk',
 					formatter: omimFormatter,
@@ -311,24 +329,6 @@
 					searchFormatter: false,
 					sortName: 'rawdate',
 					sortable: true,
-				},
-				{
-					title: 'Haploinsufficiency',
-					field: 'haplo_assertion',
-					formatter: haploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'Triplosensitity',
-					field: 'triplo_assertion',
-					formatter: triploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
 				}
 			]
 		});
