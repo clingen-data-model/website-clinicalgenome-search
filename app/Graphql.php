@@ -239,10 +239,10 @@ class Graphql
 				}
 			}
 		}
+		$by_activity 							= [];
 			if (!empty($node->genetic_conditions))
 			{
 				//dd($node->genetic_conditions);
-				$by_activity 							= [];
 				$i = -1;
 				foreach($node->genetic_conditions as $genetic_condition) {
 					$i++;
