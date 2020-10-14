@@ -16,7 +16,12 @@
 			<ul class="nav nav-tabs">
           <li class="active">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class=" bg-primary text-white">
-              ClinGen's Curation Summaries
+              Curations By Disease
+            </a>
+					</li>
+					<li class="">
+            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class=" ">
+              Curations By Activity
             </a>
           </li>
           <li class="">
@@ -70,7 +75,7 @@
 
 									<td class="  @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($validity->report_date) }} </td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ $validity->curie }}">View report</a></td>
 								</tr>
 						@endforeach
 

@@ -33,7 +33,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div class="col-md-12 light-arrows">
 				@include('_partials.genetable')
 
@@ -82,7 +82,7 @@
 	**		Globals
 	**
 	*/
-	
+
 	var $table = $('#table');
 	var showadvanced = true;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
@@ -99,9 +99,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only genes
-	 * 
+	 *
 	 * */
 	$('.action-show-genes').on('click', function() {
 		var viz = [];
@@ -128,9 +128,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only regions
-	 * 
+	 *
 	 * */
 	$('.action-show-regions').on('click', function() {
 		var viz = [];
@@ -157,9 +157,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only the recent score changes
-	 * 
+	 *
 	 * */
 	$('.action-show-new').on('click', function() {
 		var viz = [];
@@ -167,7 +167,7 @@
 		if ($(this).hasClass('fa-toggle-off'))
 		{
 			$table.bootstrapTable('filterBy', {thr: 1, hhr: 1}, {'filterAlgorithm': 'or'});
-	
+
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-regions-text').html('On');
 
@@ -186,16 +186,16 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only the recent reviewed items
-	 * 
+	 *
 	 * */
 	 $('.action-show-recent').on('click', function() {
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
 			$table.bootstrapTable('filterBy', {type: [0, 1]}, {'filterAlgorithm': monthFilter});
-	
+
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-recent-text').html('On');
 
@@ -218,9 +218,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Table response handler for updating page counters after data load
-	 * 
+	 *
 	 * */
 	function responseHandler(res) {
 
@@ -263,24 +263,6 @@
 					formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'Haploinsufficiency',
-					field: 'haplo_assertion',
-					formatter: haploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'Triplosensitity',
-					field: 'triplo_assertion',
-					formatter: triploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -329,6 +311,24 @@
 					searchFormatter: false,
 					sortName: 'rawdate',
 					sortable: true,
+				},
+				{
+					title: 'Haploinsufficiency',
+					field: 'haplo_assertion',
+					formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'Triplosensitity',
+					field: 'triplo_assertion',
+					formatter: triploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
 				}
 			]
 		});
@@ -349,7 +349,7 @@
 			console.log("success fired");
 
 			$("body").css("cursor", "default");
-			
+
 			if (name.hasOwnProperty('error'))
 			{
 				swal({

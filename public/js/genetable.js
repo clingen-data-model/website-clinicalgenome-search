@@ -6,9 +6,9 @@
 
 /**
  * Format the expanded detail section
- * 
- * @param {} index 
- * @param {*} row 
+ *
+ * @param {} index
+ * @param {*} row
  */
 function detailFormatter(index, row) {
   var html = [];
@@ -39,9 +39,9 @@ function table_buttons() {
 }
 /**
  * For a symbol or region cell
- * 
- * @param {*} index 
- * @param {*} row 
+ *
+ * @param {*} index
+ * @param {*} row
  */
 
 
@@ -117,18 +117,31 @@ function hiFormatter(index, row) {
 }
 
 function haploFormatter(index, row) {
-  if (row.haplo_assertion === false) return '';
-  var html = row.haplo_assertion; //score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+  if (row.haplo_assertion.length === 0) return '';
 
-  if (row.haplo_history === null) return html;
-  return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+  if (row.haplo_history !== null) {
+    var badge = '<i class="fas fa-comment pointer text-danger"></i>';
+    var toggle = 'data-toggle="tooltip" data-placement="top" title="' + row.haplo_history + '"';
+  } else {
+    var badge = '';
+    var toggle = '';
+  }
+
+  return '<a class="btn btn-block btn btn-default btn-xs text-left" ' + toggle + ' href="' + report + row.symbol + '">' + row.haplo_assertion + ' ' + badge + '</a>';
 }
 
 function triploFormatter(index, row) {
-  if (row.triplo_assertion === false) return '';
-  var html = row.triplo_assertion;
-  if (row.triplo_history === null) return html;
-  return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+  if (row.triplo_assertion.length === 0) return '';
+
+  if (row.triplo_history !== null) {
+    var badge = '<i class="fas fa-comment pointer text-danger"></i>';
+    var toggle = 'data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"';
+  } else {
+    var badge = '';
+    var toggle = '';
+  }
+
+  return '<a class="btn btn-block btn btn-default btn-xs text-left" ' + toggle + ' href="' + report + row.symbol + '">' + row.triplo_assertion + ' ' + badge + '</a>';
 }
 
 function omimFormatter(index, row) {
@@ -142,16 +155,16 @@ function morbidFormatter(index, row) {
 function reportFormatter(index, row) {
   /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
           + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-  if (row.type == 0) return '<a class="btn btn-block btn btn-default btn-xs" href="' + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';else return '<a class="btn btn-block btn btn-default btn-xs" href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  if (row.type == 0) return '' + row.date + '';
 }
 
 function iscaFormatter(index, row) {
   if (row.type == 0) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=' + row.symbol + '">' + row.isca + '</a>';else if (row.type == 1) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.isca + '">' + row.isca + '</a>';else return row.isca;
 }
 /**
- * 
- * @param {*} index 
- * @param {*} row 
+ *
+ * @param {*} index
+ * @param {*} row
  */
 
 
@@ -163,8 +176,8 @@ function cellFormatter(index, row) {
 /**
  * The global header style set in the genetable partial.  If the lightstyle
  * global is set, leave the default style, else go dark.
- * 
- * @param {*} column 
+ *
+ * @param {*} column
  */
 
 

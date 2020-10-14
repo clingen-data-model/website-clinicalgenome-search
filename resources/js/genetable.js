@@ -6,9 +6,9 @@
 
 /**
  * Format the expanded detail section
- * 
- * @param {} index 
- * @param {*} row 
+ *
+ * @param {} index
+ * @param {*} row
  */
 function detailFormatter(index, row) {
     var html = [];
@@ -47,9 +47,9 @@ function table_buttons ()
 
 /**
  * For a symbol or region cell
- * 
- * @param {*} index 
- * @param {*} row 
+ *
+ * @param {*} index
+ * @param {*} row
  */
 function symbolFormatter(index, row) {
 
@@ -95,7 +95,7 @@ function locationFormatter(index, row) {
             + '</td></tr><tr><td class="text-10px line-height-normal">'
             + name.substring(pos + 1)
             + '</td></tr></table>';
-            
+
     return html;
 }
 
@@ -153,7 +153,7 @@ function pliFormatter(index, row) {
 function hiFormatter(index, row) {
     if (row.hi === null)
         return '-';
-        
+
     if (row.hi <= 10)
         return '<span class="format-hi-high">' + row.hi + '</span>';
     else
@@ -162,30 +162,31 @@ function hiFormatter(index, row) {
 
 
 function haploFormatter(index, row) {
-    if (row.haplo_assertion === false)
-        return '';
+    if (row.haplo_assertion.length === 0) return '';
 
-    var html = row.haplo_assertion; //score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
-        
-    if (row.haplo_history === null)
-        return html;
-    
-    return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' 
-                + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+    if (row.haplo_history !== null) {
+        var badge = '<i class="fas fa-comment pointer text-danger"></i>';
+        var toggle = 'data-toggle="tooltip" data-placement="top" title="' + row.haplo_history + '"';
+    } else {
+        var badge = '';
+        var toggle = '';
+    }
+    return '<a class="btn btn-block btn btn-default btn-xs text-left" ' + toggle + ' href="' + report + row.symbol + '">' + row.haplo_assertion + ' ' + badge + '</a>';
 
 }
 
 
 function triploFormatter(index, row) {
-    if (row.triplo_assertion === false)
-        return '';
+    if (row.triplo_assertion.length === 0) return '';
 
-        var html = row.triplo_assertion;
-
-        if (row.triplo_history === null)
-            return html;
-
-        return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+    if (row.triplo_history !== null) {
+    var badge = '<i class="fas fa-comment pointer text-danger"></i>';
+    var toggle = 'data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"';
+    } else {
+        var badge = '';
+        var toggle = '';
+    }
+    return '<a class="btn btn-block btn btn-default btn-xs text-left" ' + toggle + ' href="' + report + row.symbol + '">' + row.triplo_assertion + ' ' + badge + '</a>';
 
 }
 
@@ -208,24 +209,18 @@ function morbidFormatter(index, row) {
 function reportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-	if (row.type == 0)
-        return '<a class="btn btn-block btn btn-default btn-xs" href="'
-            + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
-    else
-        return '<a class="btn btn-block btn btn-default btn-xs" href="' 
-            + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id 
-            + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+    if (row.type == 0) return '' + row.date + '';
   }
 
 
   function iscaFormatter(index, row) {
-    
+
     if (row.type == 0)
-        return '<a href="' 
+        return '<a href="'
             + 'https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=' + row.symbol
             + '">' + row.isca + '</a>';
     else if (row.type == 1)
-        return '<a href="' 
+        return '<a href="'
             + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.isca
             + '">' + row.isca + '</a>';
     else
@@ -234,9 +229,9 @@ function reportFormatter(index, row) {
 
 
   /**
-   * 
-   * @param {*} index 
-   * @param {*} row 
+   *
+   * @param {*} index
+   * @param {*} row
    */
 function cellFormatter(index, row) {
     return { classes: 'global_table_cell' };
@@ -246,8 +241,8 @@ function cellFormatter(index, row) {
   /**
    * The global header style set in the genetable partial.  If the lightstyle
    * global is set, leave the default style, else go dark.
-   * 
-   * @param {*} column 
+   *
+   * @param {*} column
    */
 function headerStyle(column) {
     if (typeof lightstyle !== 'undefined' && lightstyle)
@@ -382,7 +377,7 @@ function hasvalidityFormatter(index, row) {
 
 
   function hasactionabilityFormatter(index, row) {
-	
+
     if (row.has_actionability)
     {
         return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id

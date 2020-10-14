@@ -29,7 +29,7 @@
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
     <main id='section_main' role="main">
-      <section id='section_heading' class="pt-0 pb-0 mb-2 section-heading section-heading-groups text-light">
+      <section id='section_heading' class="pt-0 pb-0 mb-0 section-heading section-heading-groups text-light">
         <div  class="container">
           <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
             @csrf
@@ -170,6 +170,14 @@
           @endisset
           </div>
         </section>
+        @hasSection ('content-heading')
+          <section id='section_content_heading' class="pt-0 pb-0 mb-2 section-heading section-content-heading-groups text-light">
+            <div  class="container">
+             @yield('content-heading')
+            </div>
+            </section>
+        @endif
+
         <section id='section_content' class="container">
           @if (session('status'))
           <div class="row">
