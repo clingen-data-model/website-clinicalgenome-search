@@ -295,7 +295,10 @@
 		</div>
 		@endisset
 
+    @if(empty($record->curations_by_activity ))
+			<div class="alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
 
+		@endif
 	</div>
 </div>
 @endsection
