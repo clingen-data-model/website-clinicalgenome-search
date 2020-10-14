@@ -49,6 +49,8 @@ Route::group(['prefix' => 'genes'], function () {
 
 		Route::get('/{id?}', 'GeneController@show')->name('gene-show');
 
+		Route::get('/{id?}/by-activity', 'GeneController@show_by_activity')->name('gene-by-activity');
+
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 
 

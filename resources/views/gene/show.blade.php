@@ -16,7 +16,12 @@
 			<ul class="nav nav-tabs">
           <li class="active">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class=" bg-primary text-white">
-              ClinGen's Curation Summaries
+              Curations By Disease
+            </a>
+					</li>
+					<li class="">
+            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class=" ">
+              Curations By Activity
             </a>
           </li>
           <li class="">
@@ -70,7 +75,7 @@
 
 									<td class="  @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($validity->report_date) }} </td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ \App\GeneLib::validityAssertionID($validity->curie) }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ $validity->curie }}">View report</a></td>
 								</tr>
 						@endforeach
 
@@ -168,7 +173,11 @@
 			</div>
 		</div>
 		@endif
+        
+        @if(empty($record->dosage_curation ) && empty($record->genetic_conditions ))
+			<div class="alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
 
+		@endif
 	</div>
 </div>
 @endsection

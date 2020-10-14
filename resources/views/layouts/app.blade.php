@@ -29,7 +29,7 @@
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
     <main id='section_main' role="main">
-      <section id='section_heading' class="pt-0 pb-0 mb-2 section-heading section-heading-groups text-light">
+      <section id='section_heading' class="pt-0 pb-0 mb-0 section-heading section-heading-groups text-light">
         <div  class="container">
           <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
             @csrf
@@ -101,6 +101,11 @@
                 Curated Variants <i class="fas fa-external-link-alt small text-light"></i>
               </a>
             </li>
+            <li class="nav-item @if ($display_tabs['active'] == "affiliate") active @endif ">
+              <a class="nav-link" target="external-erepo" href="{{ route('affiliate-index') }}">
+                Curations by Expert Panel
+              </a>
+            </li>
             {{-- <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
               <a class="nav-link" href="{{ route('variant-path-index') }}">
                 Variant Pathogenicity
@@ -121,14 +126,14 @@
             </li>
             @endif
              --}}
-            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "affiliate") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition")) active @endif">
+            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition")) active @endif">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i> More
                 </a>
                 <ul class="dropdown-menu">
                   {{-- <li><a href="#">Genomic Browser</a></li> --}}
-                  <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
-                  <li role="separator" class="divider"></li>
+                  {{-- <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
+                  <li role="separator" class="divider"></li> --}}
                   <li><a class="@if ($display_tabs['active'] == "gene") font-weight-bold @endif" href="{{ route('gene-index') }}">All Genes</a></li>
                   <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
@@ -170,6 +175,14 @@
           @endisset
           </div>
         </section>
+        @hasSection ('content-heading')
+          <section id='section_content_heading' class="pt-0 pb-0 mb-2 section-heading section-content-heading-groups text-light">
+            <div  class="container">
+             @yield('content-heading')
+            </div>
+            </section>
+        @endif
+
         <section id='section_content' class="container">
           @if (session('status'))
           <div class="row">

@@ -121,6 +121,38 @@ class GeneController extends Controller
 		return view('gene.show', compact('display_tabs', 'record'));
 	}
 
+	public function show_by_activity(Request $request, $id = null)
+	{
+		if ($id === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+			->with('back', url()->previous());
+
+
+		$record = GeneLib::geneDetail([
+			'gene' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true
+		]);
+
+		if ($record === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+			->with('back', url()->previous());
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => $record->label . " curation results"
+		]);
+			//dd($record);
+		return view('gene.by-activity', compact('display_tabs', 'record'));
+	}
+
 
 	/**
 	 * Display the external resources section.  Since this is mostly static
@@ -176,7 +208,7 @@ class GeneController extends Controller
 			$$key = $value;
 
 		// the way layouts is set up, everything is named search.  Gene is the first
-		
+
 		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0] ]);
 	}
 }
