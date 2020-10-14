@@ -146,6 +146,7 @@ class Graphql
 					hgnc_id
 					chromosome_band
 					curation_activities
+					last_curated_date:
 					dosage_curation {
 						curie
 						report_date

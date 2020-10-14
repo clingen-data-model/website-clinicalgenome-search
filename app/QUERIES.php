@@ -6,20 +6,26 @@
         gene_list {
             label
             hgnc_id
-            iri
-            chromosome_band
             last_curated_date
-            alternative_label
             curation_activities
             dosage_curation {
-                triplosensitivity_assertion { score }
-                haploinsufficiency_assertion { score }
+                triplosensitivity_assertion { 
+                    dosage_classification {
+                        ordinal
+                        }
+                }
+                haploinsufficiency_assertion { 
+                    dosage_classification {
+                        ordinal
+                        }
+                }
             }
         }
     }
 }
 
-// Gene list
+
+// Gene list all
 {
     genes(limit: null)
     {
@@ -28,7 +34,6 @@
             label
             alternative_label
             hgnc_id
-            chromosome_band
             last_curated_date
             curation_activities
         }
@@ -44,24 +49,19 @@
         hgnc_id
         chromosome_band
         curation_activities
+        last_curated_date:
         dosage_curation {
             curie
             report_date
             triplosensitivity_assertion {
-                score
                 dosage_classification {
-                    label
                     ordinal
-                    enum_value
                     }
             
             }
             haploinsufficiency_assertion {
-                score
                 dosage_classification {
-                    label
                     ordinal
-                    enum_value
                     }
             
             }
@@ -90,12 +90,15 @@
             gene_dosage_assertions {
                 report_date
                 assertion_type
-                score
+                dosage_classification {
+                ordinal
+                }
                 curie
             }
         }
     }
 }
+
 
 // Actionability List
 {
@@ -109,8 +112,10 @@
                 source
             }
         }
+        }
     }
 }
+
 
 // Dosage List
 {
@@ -125,15 +130,13 @@
                 report_date
                 triplosensitivity_assertion {
                     dosage_classification {
-									ordinal
-								}
-                    score
+                        ordinal
+                    }
                 }
                 haploinsufficiency_assertion {
                     dosage_classification {
-									ordinal
-								}
-                    score
+                        ordinal
+                    }
                 }
             }
         }
@@ -144,6 +147,7 @@
 // Dosage detail
 {
     gene(iri: "HGNC:18149") {
+    {
         label
         alternative_label
         hgnc_id
@@ -152,8 +156,18 @@
         dosage_curation {
             curie
             report_date
-            triplosensitivity_assertion { score }
-            haploinsufficiency_assertion { score }
+            triplosensitivity_assertion { 
+                dosage_classification {
+                    ordinal
+                }
+                score
+            }
+            haploinsufficiency_assertion { 
+                dosage_classification {
+                    ordinal
+                }
+                score
+            }
         }
         genetic_conditions {
             disease {
@@ -161,9 +175,15 @@
                 iri
             }
             gene_validity_assertions {
-                mode_of_inheritance
+                mode_of_inheritance {
+                    label
+                    curie
+                }
                 report_date
-                classification
+                classification {
+                    label
+                    curie
+                }
                 curie
             }
             actionability_curations {
@@ -173,6 +193,9 @@
             gene_dosage_assertions {
                 report_date
                 assertion_type
+                dosage_classification {
+                ordinal
+                }
                 score
                 curie
             }
@@ -204,6 +227,9 @@
                 label
             }
             specified_by {
+                label
+            }
+            attributed_to {
                 label
             }
         }
@@ -253,7 +279,6 @@
     {
         count
         disease_list {
-            iri
             curie
             label
             description
@@ -270,6 +295,7 @@
     . 'iri: "' . $condition
     . '") {
         label
+        iri
         curation_activities
         genetic_conditions {
             gene {
@@ -289,13 +315,15 @@
             curie
             }
             actionability_curations {
-            report_date
-            source
+                report_date
+                source
             }
             gene_dosage_assertions {
-            report_date
-            score
-            curie
+                report_date
+                dosage_classification {
+                    ordinal
+                }
+                curie
             }
         }
     }
@@ -303,7 +331,7 @@
 
 
 // Affiliate list
-{ 
+{
     affiliations (limit: null)
     {
         count
@@ -321,7 +349,7 @@
 
 // Drug list
 {
-    drugs(limit:  null){
+    drugs(limit: null){
         count
         drug_list {
             label
@@ -331,9 +359,22 @@
 }
 
 
+{
+    drug(iri: "http://purl.bioontology.org/ontology/'
+    . $drug
+    . '") {
+            label
+            iri
+            curie
+            aliases
+        }
+    }
+}
+
+
 // Validity list
 {
-    gene_validity_assertions(limit:  null){
+    gene_validity_assertions(limit: null){
         count
         curation_list {
             report_date
@@ -352,15 +393,12 @@
             }
             classification {
                 label
-                curie
             }
             specified_by {
                 label
-                curie
             }
             attributed_to {
                 label
-                curie
             }
         }
     }
