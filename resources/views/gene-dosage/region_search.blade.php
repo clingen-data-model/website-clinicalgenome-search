@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
-      	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
+			<h5><span class="ml-7">Location: {{ $region }}</span></h5>
 		</div>
 
 		<div class="col-md-4">
@@ -19,7 +19,7 @@
 				</div>
 			</div>
 		</div>
-	
+
 		<div class="col-md-12 light-arrows">
 				@include('_partials.genetable')
 

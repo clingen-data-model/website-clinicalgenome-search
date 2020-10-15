@@ -109,7 +109,8 @@ class Graphql
 		{
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
-			$ndosage = $collection->where('has_dosage', true)->count();
+			//$ndosage = $collection->where('has_dosage', true)->count();
+			$ndosage = $collection->whereNotNull('dosage_curation')->count();
 		}
 		else
 		{

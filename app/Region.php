@@ -101,6 +101,69 @@ class Region extends Model
 
 
     /**
+     * Check for proper region formatting.  Accepted formats are:
+     *
+     *    chr#:#-#
+     *    #:#-#
+     *    #p#[.#]-#p#[.#]
+     * 
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function checkRegion($region)
+    {
+      if (empty($region))
+        return false;
+
+      if (strtoupper(substr($region, 0, 3)) == 'CHR')     // get rid of the useless chr
+        $region = substr($region, 3);
+
+      if (preg_match('/^([0-9xX]{1,2}):([0-9,]+)-([0-9,]+)$/', $region, $matches))
+      {
+
+        if (count($matches) != 4)
+          return false;
+
+        // clean up the values
+        $chr = strtoupper($matches[1]);
+        $start = str_replace(',', '', $matches[2]);
+        $stop = str_replace(',', '', $matches[3]);
+
+        if ($start == '' || $stop == '')
+          return false;
+
+        if ((int) $start >= (int) $stop)
+          return false;
+
+        return true;
+      }
+      else if (preg_match('/^([0-9X]{1,2})([pPqQ])([0-9]+)([\.[0-9]+])?-([0-9X]{1,2})([pPqQ])([0-9]+)([\.[0-9]+])?$/', $region, $matches))
+      {
+
+        /*dd($matches);
+        $chr = \mb_strtoupper($matches[1]);
+
+        $arm = strtolower($matches[2]);
+
+        $band = $matches[3];
+
+        $subband = $matches[4];
+
+        $chr = \mb_strtoupper($matches[1]);
+
+        $arm = strtolower($matches[2]);
+
+        $band = $matches[3];
+
+        $subband = $matches[4];*/
+        return false;
+      }
+      else
+        return false;
+    }
+
+
+    /**
      * Search for all contained or overlapped genes and regions
      *
      * @@param	string	$ident

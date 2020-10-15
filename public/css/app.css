@@ -19414,10 +19414,11 @@ table.dataTable thead th.sorting_desc:after {
   color: #17a2b8;
 }
 
-/*.bootstrap-table table.table>tbody>tr>td {
-  padding: .95rem .5rem !important;
-  font-size: .95rem;
-}*/
+.bootstrap-table table.table > tbody > tr > td {
+  padding: 1.05rem 0.5rem !important;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
 
 .format-pli-high {
   color: red;

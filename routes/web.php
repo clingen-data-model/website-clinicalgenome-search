@@ -136,6 +136,8 @@ Route::group(['prefix' => 'gene-dosage'], function () {
 
 	Route::post('/region_search', 'DosageController@region_search')->name('dosage-region-search');
 
+	Route::get('/region_search/{type}/{region}', 'DosageController@region_search')->name('dosage-region-research');
+
 	Route::get('/download', 'DosageController@download')->name('dosage-download');
 
 	Route::get('/ftp', 'DosageController@ftps')->name('dosage-ftp');

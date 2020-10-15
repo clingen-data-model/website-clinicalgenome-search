@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
+use GuzzleHttp\Client;
+
 use App\Imports\Excel;
 use App\Exports\DosageExport;
 
@@ -126,7 +128,7 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function region_search(Request $request, $page = 1, $size = 100)
+    public function region_search(Request $request, $type = '', $region = '', $page = 1, $size = 100)
     {
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
@@ -136,11 +138,39 @@ class DosageController extends Controller
         $display_tabs = collect([
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
-        ]);
+		]);
+		
+		// if the region is a cytoband, convert to chromosomal location
+		if (strtoupper(substr($region, 0, 3)) != 'CHR')
+		{
+			$client = new Client([
+				'base_uri' => 'https://www.ncbi.nlm.nih.gov/projects/ideogram/data/',
+				'headers' => [
+					'Content-Type' => 'text/csv'
+				]
+			]);
+
+			try {
+
+				$response = $client->request('POST', 'band2bp.cgi?taxid=9606&assm=' . $type, ['body' => $region]);
+
+				$cords = json_decode($response->getBody()->getContents());
+
+				if (isset($cords->coords[0]->bp))
+					$region = 'chr' . $cords->coords[0]->bp->chrom . ':'
+								. $cords->coords[0]->bp->bp->from . '-' . $cords->coords[0]->bp->bp->to;
+				else
+					$region = '';
+
+			} catch (ClientException $e) {
+				dd($e);
+			}
+		}
 
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
+						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
 						->with('page', $page);

@@ -26,7 +26,13 @@
                 <span class="ml-4 hgnc text-muted action-show-recent-text">Off</span>
             </div>
         </div>
-        <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh37 Location Search</label>
+        <label for="gene" class="col-sm-6 ml-5 col-form-label">
+            GRCh37 Location Search<br>(
+            <a href="/gene-dosage/region_search/GRCh37/chr2:44,000,000-45,500,000">
+            chr2:44,000,000-45,500,000</a>, 
+            <a href="/region_search/GRCh37/2p21-2p16.2">2p21-2p16.2</a>
+            )
+        </label>
         <div class="col-sm-4">
             <form class="input-group mb-1" method="post" action="/gene-dosage/region_search">
                 @csrf
@@ -37,7 +43,12 @@
                 </span>
             </form>
         </div>
-        <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh38 Location Search</label>
+        <label for="gene" class="col-sm-6 ml-5 col-form-label">GRCh38 Location Search<br>(
+            <a href="/gene-dosage/region_search/GRCh38/chr2:44,000,000-45,500,000">
+            chr2:44,000,000-45,500,000</a>, 
+            <a href="/region_search/GRCh37/2p21-2p16.2">2p21-2p16.2</a>
+            )
+        </label>
         <div class="col-sm-4">
             <form class="input-group " method="post" action="/gene-dosage/region_search">
                 @csrf
