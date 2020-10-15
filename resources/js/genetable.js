@@ -165,7 +165,7 @@ function haploFormatter(index, row) {
     if (row.haplo_assertion === false)
         return '';
 
-    var html = row.haplo_assertion; //score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+    var html = row.haplo_assertion.replace(' (', '<br />(');
         
     if (row.haplo_history === null)
         return html;
@@ -180,7 +180,7 @@ function triploFormatter(index, row) {
     if (row.triplo_assertion === false)
         return '';
 
-        var html = row.triplo_assertion;
+        var html = row.triplo_assertion.replace(' (', '<br />(');
 
         if (row.triplo_history === null)
             return html;

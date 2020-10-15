@@ -118,15 +118,14 @@ function hiFormatter(index, row) {
 
 function haploFormatter(index, row) {
   if (row.haplo_assertion === false) return '';
-  var html = row.haplo_assertion; //score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
-
+  var html = row.haplo_assertion.replace(' (', '<br />(');
   if (row.haplo_history === null) return html;
   return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
 }
 
 function triploFormatter(index, row) {
   if (row.triplo_assertion === false) return '';
-  var html = row.triplo_assertion;
+  var html = row.triplo_assertion.replace(' (', '<br />(');
   if (row.triplo_history === null) return html;
   return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
 }
