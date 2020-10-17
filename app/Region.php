@@ -174,9 +174,11 @@ class Region extends Model
       // break out the args
       foreach ($args as $key => $value)
         $$key = $value;
-        
+      
       // initialize the collection
       $collection = collect();
+      $gene_count = 0;
+      $region_count = 0;
 
       // map string type to type flag
       if ($type == 'GRCh37')
@@ -184,7 +186,8 @@ class Region extends Model
       else if ($type == 'GRCh38')
         $type = 2;
       else
-        return (object) ['count' => $collection->count(), 'collection' => $collection];
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
 
       // break out the location and clean it up
       $location = preg_split('/[:-]/', trim($region), 3);
@@ -199,21 +202,21 @@ class Region extends Model
       $stop = str_replace(',', '', $location[2] ?? '');
 
       if ($start == '' || $stop == '')
-        return (object) ['count' => $collection->count(), 'collection' => $collection];
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
 
       if (!is_numeric($start) || !is_numeric($stop))
-        return (object) ['count' => $collection->count(), 'collection' => $collection];
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
 
       if ((int) $start >= (int) $stop)
-        return (object) ['count' => $collection->count(), 'collection' => $collection];
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
 
       $regions = self::where('type', $type)
                         ->where('chr', $chr)
                         ->where('start', '<=', (int) $stop)
                         ->where('stop', '>=', (int) $start)->get();
-
-      $gene_count = 0;
-      $region_count = 0;
 
       foreach ($regions as $region)
       {

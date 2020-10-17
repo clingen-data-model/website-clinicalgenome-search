@@ -82,7 +82,7 @@ class DosageController extends Controller
                                         'type' => $type ?? '',
                                         'region' => $region ?? '',
 										'curated' => true ]);
-        
+
         if ($results === null)
             return GeneLib::getError();
 

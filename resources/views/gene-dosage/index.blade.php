@@ -35,11 +35,13 @@
 		</div>
 
 		<div class="col-md-12 light-arrows">
-				@include('_partials.genetable')
+
+			@include('_partials.genetable')
 
 		</div>
 	</div>
 </div>
+
 
 @endsection
 
@@ -321,6 +323,15 @@
 					sortable: true
 				},
 				{
+					title: 'pLoF',
+					field: 'plof',
+					//formatter: pliFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
 					field: 'date',
 					title: 'Reviewed',
 					formatter: reportFormatter,
@@ -384,6 +395,14 @@
 		$( ".fixed-table-toolbar" ).show();
     	$('[data-toggle="tooltip"]').tooltip();
     	$('[data-toggle="popover"]').popover();
+
+		var html = `@include("gene-dosage.panels.search")`;
+
+		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
+        $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
+		$(".fixed-table-toolbar .search .input-group:first").after(html);
+
+		region_listener();
 
   	});
 

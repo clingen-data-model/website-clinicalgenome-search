@@ -279,3 +279,11 @@ function hastriploFormatter(index, row) {
 
   return '';
 }
+
+function region_listener() {
+  $('.fixed-table-toolbar').on('click', '.action-select-grch', function () {
+    var uuid = $(this).attr('data-uuid');
+    $('.action-select-text').html(uuid);
+    $('#select-gchr').val(uuid);
+  });
+}

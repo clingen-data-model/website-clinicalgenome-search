@@ -139,6 +139,8 @@ class DosageController extends Controller
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
 		]);
+
+		$original = $region;
 		
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
@@ -160,16 +162,17 @@ class DosageController extends Controller
 					$region = 'chr' . $cords->coords[0]->bp->chrom . ':'
 								. $cords->coords[0]->bp->bp->from . '-' . $cords->coords[0]->bp->bp->to;
 				else
-					$region = '';
+					$region = 'INVALID';
 
 			} catch (ClientException $e) {
-				dd($e);
+				$region = 'INVALID';
 			}
 		}
 
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
+						->with('original', $original)
 						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)

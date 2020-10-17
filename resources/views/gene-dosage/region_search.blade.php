@@ -5,7 +5,11 @@
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
-			<h5><span class="ml-7">Location: {{ $region }}</span></h5>
+			<h5><span class="ml-7">Location: {{ $region }}
+				@if ($region == 'INVALID')
+					&nbsp;(Original: {{ $original }})
+				@endif
+			</span></h5>
 		</div>
 
 		<div class="col-md-4">
@@ -393,7 +397,15 @@
 
 		$( ".fixed-table-toolbar" ).show();
     	$('[data-toggle="tooltip"]').tooltip();
-    	$('[data-toggle="popover"]').popover();
+		$('[data-toggle="popover"]').popover();
+		
+		var html = `@include("gene-dosage.panels.search")`;
+
+		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
+        $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
+		$(".fixed-table-toolbar .search .input-group:first").after(html);
+
+		region_listener();
 
   	});
 

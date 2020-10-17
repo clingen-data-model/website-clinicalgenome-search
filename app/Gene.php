@@ -118,6 +118,17 @@ class Gene extends Model
 	}
 
 
+     /**
+     * Access the devices associated with this clinic
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+     public function location()
+     {
+		return $this->hasOne('App\Location');
+     }
+     
+
 	/**
      * Query scope by ident
      *
@@ -139,6 +150,18 @@ class Gene extends Model
 	public function scopeName($query, $name)
      {
 		return $query->where('name', $name);
+     }
+
+
+     /**
+     * Query scope by cytoband
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeCytoband($query, $name)
+     {
+		return $query->where('location', $name);
      }
 
 
