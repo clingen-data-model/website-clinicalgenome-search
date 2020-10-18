@@ -34,7 +34,7 @@ class Dosage extends JsonResource
             'hhr' => empty($this->haplo_history) ? 0 : 1,
             'triplo_history' => $this->triplo_history ?? null,
             'thr' => empty($this->triplo_history) ? 0 : 1,
-            'plof' => 0,
+            'plof' => $this->plof,
             //'report' => env('CG_URL_CURATIONS_DOSAGE', '#') . $this->symbol . '&subject=',
             'date' => $this->displayDate($this->resolved_date ?? $this->dosage_report_date),
             'rawdate' => $this->resolved_date ?? $this->dosage_report_date
