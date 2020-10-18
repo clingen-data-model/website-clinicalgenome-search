@@ -53,46 +53,20 @@
 <link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
-<style>
-	.fixed-table-toolbar .search-input {
-	  min-width: 300px;
-	}
-	.swal-overlay--show-modal, .swal-modal {
-    animation: none !important;
-	}
-	.fixed-table-container .global_table_cell {
-    font-weight: 500;
-    font-size: 14px;
-	padding: 21px 12px 19px !important;
-	}
-	.header_class {
-    	font-size: 14px;
-	}
-.bootstrap-table .fixed-table-container .table thead th .sortable {
-    cursor: pointer;
-    background-position: left;
-    background-repeat: no-repeat;
-    padding-left: 20px !important;
-}
-
-  </style>
+<!-- load up all the local formatters and stylers -->
+<script src="/js/genetable.js"></script>
 
 <script>
 
-	var $table = $('#table')
-	var selections = []
+	/**
+	**
+	**		Globals
+	**
+	*/
+
+	var $table = $('#table');
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
-
-	var score_assertion_strings = {
-          '0': 'No Evidence',
-          '1': 'Minimal Evidence',
-          '2': 'Moderate Evidence',
-          '3': 'Sufficient Evidence',
-		  //'30': 'Gene Associated with Autosomal Recessive Phenotype',
-		  '30': 'Autosomal Recessive',
-          '40': 'Dosage Sensitivity Unlikely'
-	};
-
+	
 
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);
@@ -101,104 +75,21 @@
 		$('.countHaplo').html(res.nhaplo);
 		$('.countTriplo').html(res.ntriplo);
 
-		/*
-		$.each(res.rows, function (i, row) {
-		row.state = $.inArray(row.id, selections) !== -1
-		})*/
-
     	return res
   	}
 
-	function detailFormatter(index, row) {
-		var html = []
-		$.each(row, function (key, value) {
-		html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-		})
-		return html.join('')
-	}
 
-  	function symbolFormatter(index, row) {
-
-		var url = "https://dosage.clinicalgenome.org/clingen_region.cgi?id=";
-
-		return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
-	}
-
-	function locationFormatter(index, row) {
-
-		var name = row.location.trim();
-
-		// strip off chr
-		if (name.indexOf("chr") === 0)
-			name = name.substring(3);
-		
-		var chr = name.indexOf(':');
-		var pos = name.indexOf('-');
-
-		var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">'
-				+ name.substring(0, chr)
-				+ '</td><td class="text-10px line-height-normal">'
-				+ name.substring(chr + 1, pos)
-				+ '</td></tr><tr><td class="text-10px line-height-normal">'
-				+ name.substring(pos + 1)
-				+ '</td></tr></table>';
-				
-		return html;
-	}
-
-
-	function haploFormatter(index, row) {
-		if (row.haplo_assertion === false)
-			return '';
-
-		/*if (row.haplo_assertion < 10)
-			return score_assertion_strings[row.haplo_assertion] + ' for Haploinsufficiency';
-		else
-			return score_assertion_strings[row.haplo_assertion];*/
-
-		return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
-	}
-
-	function triploFormatter(index, row) {
-		if (row.triplo_assertion === false)
-			return '';
-
-		/*if (row.triplo_assertion < 10)
-			return score_assertion_strings[row.triplo_assertion] + ' for Triplosensitivity';
-		else
-			return score_assertion_strings[row.triplo_assertion];*/
-
-		return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
-	}
-
-  	function reportFormatter(index, row) {
-		/*return '<a class="btn btn-block btn btn-default btn-xs" href="'
-				+ report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-		return '<a class="btn btn-block btn btn-default btn-xs" href="'
-				+ report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
-  	}
-
-	function cellFormatter(index, row) {
-		return { classes: 'global_table_cell' };
-  	}
-
-	function headerStyle(column) {
-    	return {
-      		// css: { 'font-weight': 'normal' },
-      		classes: 'bg-secondary text-light header_class'
-    	}
-  	}
-
-  	function initTable() {
+  	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 		locale: 'en-US',
 		columns: [
 		{
 			title: 'Region Name',
 			field: 'name',
-			formatter: symbolFormatter,
+			formatter: regionFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'input',
+			searchFormatter: false,
 			sortable: true
 		},
 		{
@@ -206,24 +97,27 @@
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
-			formatter: locationFormatter,
-			cellStyle: cellFormatter
+			formatter: cnvlocationFormatter,
+			cellStyle: cellFormatter,
+			searchFormatter: false
 			//visible: false
         },
         {
 			title: 'Haploinsufficiency',
 			field: 'haplo_assertion',
 			filterControl: 'select',
-			formatter: haploFormatter,
+			formatter: cnvhaploFormatter,
 			cellStyle: cellFormatter,
+			searchFormatter: false,
 			sortable: true
         },
 		{
 			title: 'Triplosensitity',
-			field: 'triplo_assertion',
+			field: 'cnvtriplo_assertion',
 			filterControl: 'select',
-			formatter: triploFormatter,
+			formatter: cnvtriploFormatter,
 			cellStyle: cellFormatter,
+			searchFormatter: false,
 			sortable: true
         }/*,
 		{
@@ -239,40 +133,54 @@
     })
 
 	$table.on('load-error.bs.table', function (e, name, args) {
-		$("body").css("cursor", "default");
-		swal({
-			title: "Load Error",
-			text: "The system could not retrieve data from GeneGraph",
-			icon: "error"
-		});
-	})
 
-  	$table.on('load-success.bs.table', function (e, name, args) {
-		$("body").css("cursor", "default");
-		
-		if (name.hasOwnProperty('error'))
-      {
-        swal({
-            title: "Load Error",
-            text: name.error,
-            icon: "error"
-        });
-      }
-	})
+			$("body").css("cursor", "default");
+
+			swal({
+				title: "Load Error",
+				text: "The system could not retrieve data from GeneGraph",
+				icon: "error"
+			});
+		})
+
+	$table.on('load-success.bs.table', function (e, name, args) {
+
+			$("body").css("cursor", "default");
+
+			if (name.hasOwnProperty('error'))
+			{
+				swal({
+					title: "Load Error",
+					text: name.error,
+					icon: "error"
+				});
+			}
+		})
+
+	$table.on('post-body.bs.table', function (e, name, args) {
+
+			$('[data-toggle="tooltip"]').tooltip();
+		})
 
   }
 
   $(function() {
-	$("body").css("cursor", "progress");
-    initTable()
-	var $search = $('.fixed-table-toolbar .search input');
-	$search.attr('placeholder', 'Search in table');
-	//$search.css('border', '1px solid red');
-	$( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip()
-    $('[data-toggle="popover"]').popover()
 
-  })
+	// Set cursor to busy prior to table init
+	$("body").css("cursor", "progress");
+
+	// initialize the table and load the data
+	inittable();
+
+	// make some mods to the search input field
+	var search = $('.fixed-table-toolbar .search input');
+	search.attr('placeholder', 'Search in table');
+
+	$( ".fixed-table-toolbar" ).show();
+	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="popover"]').popover();
+
+});
 
 </script>
 @endsection

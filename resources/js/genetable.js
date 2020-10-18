@@ -99,6 +99,14 @@ function locationFormatter(index, row) {
     return html;
 }
 
+
+function regionFormatter(index, row) {
+
+    var url = "https://dosage.clinicalgenome.org/clingen_region.cgi?id=";
+
+    return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
+}
+
 /*
 function pliCellStyle(value, row, index) {
         if (row.pli > .50)
@@ -431,3 +439,156 @@ function hasvalidityFormatter(index, row) {
         $('#select-gchr').val(uuid);
       });
   }
+
+
+  function cnvlocationFormatter(index, row) {
+
+    var name = row.location.trim();
+
+    // strip off chr
+    if (name.indexOf("chr") === 0)
+        name = name.substring(3);
+    
+    var chr = name.indexOf(':');
+    var pos = name.indexOf('-');
+
+    var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">'
+            + name.substring(0, chr)
+            + '</td><td class="text-10px line-height-normal">'
+            + name.substring(chr + 1, pos)
+            + '</td></tr><tr><td class="text-10px line-height-normal">'
+            + name.substring(pos + 1)
+            + '</td></tr></table>';
+            
+    return html;
+}
+
+var score_assertion_strings = {
+    '0': 'No Evidence',
+    '1': 'Minimal Evidence',
+    '2': 'Moderate Evidence',
+    '3': 'Sufficient Evidence',
+    //'30': 'Gene Associated with Autosomal Recessive Phenotype',
+    '30': 'Autosomal Recessive',
+    '40': 'Dosage Sensitivity Unlikely'
+};
+
+
+function cnvhaploFormatter(index, row) {
+    if (row.haplo_assertion === false)
+        return '';
+
+    /*if (row.haplo_assertion < 10)
+        return score_assertion_strings[row.haplo_assertion] + ' for Haploinsufficiency';
+    else
+        return score_assertion_strings[row.haplo_assertion];*/
+
+    return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+}
+
+function cnvtriploFormatter(index, row) {
+    if (row.triplo_assertion === false)
+        return '';
+
+    /*if (row.triplo_assertion < 10)
+        return score_assertion_strings[row.triplo_assertion] + ' for Triplosensitivity';
+    else
+        return score_assertion_strings[row.triplo_assertion];*/
+
+    return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
+}
+
+  function cnvreportFormatter(index, row) {
+    /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
+            + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
+    return '<a class="btn btn-block btn btn-default btn-xs" href="'
+            + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  }
+
+  function acmsymbolFormatter(index, row) {
+
+    var url = "https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=";
+
+    return '<a href="' + url + row.gene + '"><b>' + row.gene + '</b></a>';
+}
+
+function acmomimFormatter(index, row) {
+
+    var name = row.omim.substring(row.omim.lastIndexOf('/') + 1);
+
+    return '<a href="' + row.omim + '">' + name + '</a>';
+}
+
+function acmomimsFormatter(index, row) {
+
+    var html = '';
+
+    var list = row.omims.split(',');
+
+    var addcomma = false;
+
+    list.forEach(function(item) {
+        var trimmed = item.trim();
+        if (addcomma)
+            html += ', ';
+
+        html += '<a href="https://omim.org/entry/' + trimmed + '">' + trimmed + '</a>';
+        addcomma = true;
+    });
+
+    return html;
+}
+
+
+function acmpmidsFormatter(index, row) {
+
+    var html = '';
+
+    var list = row.pmids.split(',');
+
+    var addcomma = false;
+
+    list.forEach(function(item) {
+        var trimmed = item.trim();
+        if (addcomma)
+            html += ', ';
+
+        html += '<a href="https://ncbi.nlm.nih.gov/pubmed/' + trimmed + '">' + trimmed + '</a>';
+        addcomma = true;
+    });
+
+    return html;
+}
+
+
+function acmhaploFormatter(index, row) {
+    if (row.haplo_assertion === false)
+        return '';
+
+    /*if (row.haplo_assertion < 10)
+        return score_assertion_strings[row.haplo_assertion] + ' for Haploinsufficiency';
+    else
+        return score_assertion_strings[row.haplo_assertion];*/
+
+    return score_assertion_strings[row.haplo_assertion] + '<br />(' + row.haplo_assertion + ')';
+}
+
+function acmtriploFormatter(index, row) {
+    if (row.triplo_assertion === false)
+        return '';
+
+    /*if (row.triplo_assertion < 10)
+        return score_assertion_strings[row.triplo_assertion] + ' for Triplosensitivity';
+    else
+        return score_assertion_strings[row.triplo_assertion];*/
+
+    return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
+}
+
+  function acmreportFormatter(index, row) {
+    /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
+            + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
+    return '<a class="btn btn-block btn btn-default btn-xs" href="'
+            + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  }
+
