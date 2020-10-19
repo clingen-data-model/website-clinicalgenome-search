@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use App\Decipher;
 use App\Gene;
 
-class QueryExac extends Command
+class UpdatePlof extends Command
 {
     /**
      * The name and signature of the console command.
