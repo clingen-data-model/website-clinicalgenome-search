@@ -241,7 +241,7 @@ class Graphql
 				}
 			}
 		}
-		$by_activity 							= [];
+		$by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
 			if (!empty($node->genetic_conditions))
 			{
 				//dd($node->genetic_conditions);
@@ -260,7 +260,7 @@ class Graphql
 						$ii++;
 						$curie = explode("/", $genetic_condition->disease->iri);
 						$by_activity['dosage_curation'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-						$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $dosage_curation;
+						$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
 					}
 					$ii = -1;
 					foreach ($genetic_condition->actionability_curations as $actionability_curation) {
