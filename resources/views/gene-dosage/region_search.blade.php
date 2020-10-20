@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
 			<h5><span class="ml-7">Location: {{ $region }}
 				@if ($region == 'INVALID')
@@ -12,13 +12,13 @@
 			</span></h5>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
-					<li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -72,7 +72,7 @@
 	**		Globals
 	**
 	*/
-	
+
 	var $table = $('#table');
 	var showadvanced = true;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
@@ -89,9 +89,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only genes
-	 * 
+	 *
 	 * */
 	$('.action-show-genes').on('click', function() {
 		var viz = [];
@@ -118,9 +118,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only regions
-	 * 
+	 *
 	 * */
 	$('.action-show-regions').on('click', function() {
 		var viz = [];
@@ -147,9 +147,9 @@
 
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only the recent score changes
-	 * 
+	 *
 	 * */
 	$('.action-show-new').on('click', function() {
 		var viz = [];
@@ -157,7 +157,7 @@
 		if ($(this).hasClass('fa-toggle-off'))
 		{
 			$table.bootstrapTable('filterBy', {thr: 1, hhr: 1}, {'filterAlgorithm': 'or'});
-	
+
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-regions-text').html('On');
 
@@ -174,9 +174,9 @@
 	});
 
 	/**
-	 * 
+	 *
 	 * Listener for displaying only the recent reviewed items
-	 * 
+	 *
 	 * */
 	$('.action-show-recent').on('click', function() {
 
@@ -205,9 +205,9 @@
 	}
 
 	/**
-	 * 
+	 *
 	 * Table response handler for updating page counters after data load
-	 * 
+	 *
 	 * */
 	function responseHandler(res) {
 
@@ -343,7 +343,7 @@
 					searchFormatter: false,
 					sortable: true
 				}
-				
+
 			]
 		});
 
@@ -363,7 +363,7 @@
 			console.log("success fired");
 
 			$("body").css("cursor", "default");
-			
+
 			if (name.hasOwnProperty('error'))
 			{
 				swal({
@@ -398,7 +398,7 @@
 		$( ".fixed-table-toolbar" ).show();
     	$('[data-toggle="tooltip"]').tooltip();
 		$('[data-toggle="popover"]').popover();
-		
+
 		var html = `@include("gene-dosage.panels.search")`;
 
 		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");

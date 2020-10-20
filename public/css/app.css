@@ -14952,7 +14952,7 @@ header .dropdown-toggle::after {
 }
 
 body .section-heading {
-  font-size: 13px !important;
+  font-size: 0.95rem !important;
 }
 
 .pointer,
@@ -18867,7 +18867,7 @@ table.border-none td {
   padding-bottom: 0px !important;
   margin-top: 0px !important;
   margin-bottom: 0px !important;
-  font-size: 90%;
+  font-size: 98%;
 }
 
 .curated-genes-table thead tr:first-child {
@@ -19416,8 +19416,23 @@ table.dataTable thead th.sorting_desc:after {
 
 .bootstrap-table table.table > tbody > tr > td {
   padding: 1.05rem 0.5rem !important;
-  font-size: 0.95rem;
+  font-size: 0.99rem;
   font-weight: 500;
+}
+
+.bootstrap-table .input-btn-region-prefix .btn {
+  border-radius: 1rem 0 0 1rem !important;
+}
+
+.text-stats {
+  font-size: 0.8rem !important;
+  color: #333333;
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.line-tight {
+  line-height: normal;
 }
 
 .format-pli-high {
@@ -19445,7 +19460,7 @@ table.dataTable thead th.sorting_desc:after {
 }
 
 .header_class {
-  font-size: 14px;
+  font-size: 0.95rem;
 }
 
 .bootstrap-table .fixed-table-container .table thead th .sortable {
@@ -19563,9 +19578,5 @@ footer {
 
 footer p {
   margin-bottom: 0.25rem;
-}
-
-body {
-  font-size: 0.9rem;
 }
 

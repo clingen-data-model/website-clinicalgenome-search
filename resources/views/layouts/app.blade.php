@@ -81,6 +81,7 @@
                 Curated Genes
               </a>
             </li>
+
             <li class="nav-item @if ($display_tabs['active'] == "validity") active @endif ">
               <a class="nav-link" href="{{ route('validity-index') }}">
                 Gene-Disease Validity
@@ -101,11 +102,11 @@
                 Curated Variants <i class="fas fa-external-link-alt small text-light"></i>
               </a>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "affiliate") active @endif ">
-              <a class="nav-link" target="external-erepo" href="{{ route('affiliate-index') }}">
+            {{-- <li class="nav-item @if ($display_tabs['active'] == "affiliate") active @endif ">
+              <a class="nav-link" href="{{ route('affiliate-index') }}">
                 Curations by Expert Panel
               </a>
-            </li>
+            </li> --}}
             {{-- <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
               <a class="nav-link" href="{{ route('variant-path-index') }}">
                 Variant Pathogenicity
@@ -126,9 +127,26 @@
             </li>
             @endif
              --}}
+
+            <li role="presentation" class="nav-item dropdown @if ($display_tabs['active'] == "affiliate") active @endif">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Expert Panels
+                </a>
+                <ul class="dropdown-menu">
+                  {{-- <li><a href="#">Genomic Browser</a></li> --}}
+                  {{-- <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
+                  <li role="separator" class="divider"></li> --}}
+                  <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Gene Curation Expert Panels with curations</a></li>
+                  <li><a class="" target="external-erepo" href="https://erepo.clinicalgenome.org/evrepo/">Variant Curation Expert Panels with curations</a></li>
+                  <li class="divider"></li>
+                  <li><a class="" target="_blank" href="https://clinicalgenome.org/affiliation/">About ClinGen's Expert Panels</a></li>
+                  {{-- <li role="separator" class="divider"></li>
+                  <li><a href="#">APIs and Downloads</a></li> --}}
+                </ul>
+              </li>
             <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition")) active @endif">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-v"></i> More
+                 More
                 </a>
                 <ul class="dropdown-menu">
                   {{-- <li><a href="#">Genomic Browser</a></li> --}}

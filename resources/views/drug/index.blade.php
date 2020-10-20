@@ -3,15 +3,15 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-    <div class="col-md-8 curated-genes-table">
+    <div class="col-md-7 curated-genes-table">
       <h1><span id="gene-count"></span><img src="/images/drugmed.png" width="50" height="50">  Drugs & Medications</h1>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="">
         <div class="text-right p-2">
           <ul class="list-inline pb-0 mb-0 small">
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Drugs<br />& Medications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Drugs<br />& Medications</li>
           </ul>
         </div>
       </div>
@@ -59,13 +59,13 @@
 	**		Globals
 	**
 	*/
-	
+
 	var $table = $('#table');
 
   function responseHandler(res) {
 
     $('.countDrugs').html(res.total);
-    
+
     return res
   }
 

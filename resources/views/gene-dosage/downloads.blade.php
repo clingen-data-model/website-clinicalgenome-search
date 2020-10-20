@@ -3,15 +3,15 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-7">
             <h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
             <div class="">
               <div class="text-right p-2">
                   <ul class="list-inline pb-0 mb-0 small">
-                    <li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+                    <li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
                   </ul>
               </div>
             </div>
@@ -81,7 +81,7 @@
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> README</button><a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
-                    
+
                 </table>
             </div>
         </div>

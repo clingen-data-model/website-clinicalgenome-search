@@ -3,19 +3,19 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">  Gene Disease Validity</h1>
       {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="">
         <div class="text-right p-2">
           <ul class="list-inline pb-0 mb-0 small">
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countEps text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br /> Expert<br />Panels</li>
-            <li class="small line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options</a>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br /> Expert<br />Panels</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options</a>
                 <ul class="dropdown-menu dropdown-menu-left">
                   <li><a href="/gene-validity/download">Summary Data (CSV)</a></li>
                 </ul>
@@ -65,7 +65,7 @@
 	**		Globals
 	**
 	*/
-	
+
   var $table = $('#table');
 
   function responseHandler(res) {
@@ -73,7 +73,7 @@
     $('.countCurations').html(res.total);
     $('.countGenes').html(res.ngenes);
     $('.countEps').html(res.npanels);
-    
+
     return res
   }
 

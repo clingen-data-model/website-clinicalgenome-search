@@ -5,21 +5,21 @@
   <div class="row justify-content-center">
 
     <!-- Header -->
-    <div class="col-md-8">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{ $record->symbol }} 
+    <div class="col-md-7">
+			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{ $record->symbol }}
         <a class="btn btn-default btn-sm pl-2 pr-2 pt-1 pb-1 text-10px" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          <i class="far fa-caret-square-down"></i> Gene Facts 
+          <i class="far fa-caret-square-down"></i> Gene Facts
         </a>
       </h1>
     </div>
-    
-    <div class="col-md-4">
+
+    <div class="col-md-5">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px">{{ $record->haplo_score }}</span><br />Haplo<br />Score</li>
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px">{{ $record->triplo_score }}</span><br />Triplo<br />Score</li>
-            <li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px">{{ $record->haplo_score }}</span><br />Haplo<br />Score</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px">{{ $record->triplo_score }}</span><br />Triplo<br />Score</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -78,8 +78,8 @@
 <script>
 
 $('[data-toggle="tooltip"]').tooltip();
-$('[data-toggle="popover"]').popover({ 
-      html : true, 
+$('[data-toggle="popover"]').popover({
+      html : true,
       content: function() {
         return $('#popover_content_wrapper').html();
       }
@@ -113,12 +113,12 @@ $(document).ready(function() {
   $("#gain_sc").click(function(){
       $("#tabs").ncbitabs("option", "active", 2);
   });
-  
+
   jQuery("#last_footnote").load("footnote.html", function() {
       jQuery.ui.jig.scan(this, {
-                                'widgets': ['ncbihelpwindow'] 
-      });      
-      
+                                'widgets': ['ncbihelpwindow']
+      });
+
       var dt = new Date();
       var time_str = dt.getFullYear() + "-" + (dt.getMonth()+1) + "-" + dt.getDate() +
                         "T" + dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds() +
@@ -130,11 +130,11 @@ $(document).ready(function() {
                         jQuery('meta[name=ncbi_pdid]').attr('content') +
                         "&Time=" + time_str +
                         "&Data=+PageURL:+" +
-                        window.location.href +  
-                        ";";  
+                        window.location.href +
+                        ";";
       jQuery('#help-desk-link').attr('href',link_str);
-  }); 
-  
+  });
+
   var appIndex=0;
   jQuery("#g_view_menu").on('change', function(eventObj) {
       var target = eventObj.currentTarget;
@@ -157,7 +157,7 @@ $(document).ready(function() {
           });
       }
   });
-      
+
 
 //{% if chrom|length > 0 %}
 	try{
@@ -170,7 +170,7 @@ $(document).ready(function() {
 		data: [
 			{chrom: '{{ $record->chromosome }}', start: {{ $record->start_location }}, stop: {{ $record->stop_location }}},
 		],
-		width: 10 
+		width: 10
 	});
 	var bandLabelConfig = {
 		mode:IDEO.LabelOrientation.Lengthwise,

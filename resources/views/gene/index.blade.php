@@ -3,23 +3,23 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-      <div class="col-md-8 curated-genes-table">
+      <div class="col-md-7 curated-genes-table">
         <h1><span id="gene-count"></span><img src="/images/adept-icon-circle-gene.png" width="50" height="50">  Genes</h1>
         {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-5">
         <div class="">
           <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div class="col-md-12 light-arrows">
-			
+
 			@include('_partials.genetable')
 
 		</div>
@@ -54,19 +54,19 @@
 <script src="/js/genetable.js"></script>
 
 <script>
-	
+
 	/**
 	**
 	**		Globals
 	**
 	*/
-	
+
 	var $table = $('#table');
-  
+
   function responseHandler(res) {
 
     $('.countGenes').html(res.total);
-  
+
     return res
   }
 
@@ -142,7 +142,7 @@
           });
         }
     })
-  
+
     $table.on('post-body.bs.table', function (e, name, args) {
 
 			$('[data-toggle="tooltip"]').tooltip();
@@ -150,7 +150,7 @@
 
   }
 
-  
+
 $(function() {
 
   // Set cursor to busy prior to table init

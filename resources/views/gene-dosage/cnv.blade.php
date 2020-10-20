@@ -3,24 +3,24 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Curation of Recurrent CNVs</h1>
       	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
 		</div>
-	
-		<div class="col-md-4">
+
+		<div class="col-md-5">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Regions</li>
-					<li class="small line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Regions</li>
-					<li class="small line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Haplo<br />Regions</li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Triplo<br />Regions</li>
+					<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
 		</div>
-	
+
 		<div class="col-md-12">
 				@include('_partials.genetable')
 
@@ -66,7 +66,7 @@
 
 	var $table = $('#table');
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
-	
+
 
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);

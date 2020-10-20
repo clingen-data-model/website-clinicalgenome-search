@@ -4,16 +4,16 @@
 <div class="container">
 	<div class="row justify-content-center">
 
-    <div class="col-md-8 curated-genes-table">
-      <h1><img src="/images/monitor_200x200.600x600.png" width="50" height="50">  Expert Panels With Gene Curations</h1>
+    <div class="col-md-7 curated-genes-table">
+      <h1><img src="/images/monitor_200x200.600x600.png" width="40" height="40">  Gene Curation Expert Panels</h1>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
       <div class="">
         <div class="text-right p-2">
           <ul class="list-inline pb-0 mb-0 small">
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countPanels text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />EPs</li>
-            <li class="small line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countPanels text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Expert Panels<br />with curations</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
           </ul>
         </div>
       </div>
@@ -62,7 +62,7 @@
   */
 
   var $table = $('#table');
-  
+
 
   function responseHandler(res) {
 
@@ -107,7 +107,7 @@
         }
       ]
     })
-    
+
 
     $table.on('load-error.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");

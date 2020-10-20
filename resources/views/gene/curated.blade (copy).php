@@ -12,10 +12,10 @@
         <div class="">
           <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Validity<br />Genes</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
-              <li class="small line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Validity<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Genes</li>
             </ul>
           </div>
         </div>
@@ -105,7 +105,7 @@
 
 
   function actionabilityFormatter(index, row) {
-	
+
     if (row.has_actionability)
     {
         return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id
@@ -206,7 +206,7 @@
 
     $table.on('load-error.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
-      
+
       swal({
             title: "Load Error",
             text: "The system could not retrieve data from GeneGraph",
@@ -231,7 +231,7 @@
 
   $(function() {
     $("body").css("cursor", "progress");
-    
+
     initTable();
 
 	  var $search = $('.fixed-table-toolbar .search input');
