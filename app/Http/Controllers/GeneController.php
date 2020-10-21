@@ -70,7 +70,7 @@ class GeneController extends Controller
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
-			'title' => "List of HGNC Genes"
+			'title' => "Listing of HGNC Genes"
 		]);
 
 		$all = Gene::Paginate(1000);
