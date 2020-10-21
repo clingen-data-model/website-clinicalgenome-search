@@ -128,15 +128,21 @@ class GeneLib extends Model
      protected static $validity_criteria_strings = [
           'ClinGen Dosage Sensitivity Evaluation Guideline' => 'Eval',
           'ClinGen Gene-Disease Validity Evaluation Guideline' => 'Eval',
+          'ClinGen Gene Validity Evaluation Guideline' => 'Eval',
           'ACMG Variant Pathogenicity Interpretation Guidelines (2015, v1)' => 'ACMG',
           'ACMG PVS1 criterion' => 'ACMG',
           'ACMG PM2 criterion' => 'ACMG',
           'variant pathogenicity criterion scoring rule set (2015 ACMG Guidelines, v1)' => 'ACMG',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOP6' => 'SOP6',
+          'ClinGen Gene Validity Evaluation Criteria SOP6' => 'SOP6',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOP5' => 'SOP5',
+          'ClinGen Gene Validity Evaluation Criteria SOP5' => 'SOP5',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOP4' => 'SOP4',
+          'ClinGen Gene Validity Evaluation Criteria SOP4' => 'SOP4',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOP7' => 'SOP7',
-          'ClinGen Gene-Disease Validity Evaluation Criteria SOPX' => 'SOPX'
+          'ClinGen Gene Validity Evaluation Criteria SOP7' => 'SOP7',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOPX' => 'SOPX',
+          'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
 
 	protected static $dosage_score_assertion_strings = [
