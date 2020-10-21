@@ -33,7 +33,7 @@
         <div  class="container">
           <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
             @csrf
-            <div id="section_search_wrapper" class="mt-3 mb-2 input-group input-group-md">
+            <div id="section_search_wrapper" class="mt-2 mb-2 input-group input-group-md">
 
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
 	         <div class="input-group-btn">
@@ -199,7 +199,7 @@
           </div>
         </section>
         @hasSection ('content-heading')
-          <section id='section_content_heading' class="pt-0 pb-0 mb-2 section-heading section-content-heading-groups text-light">
+          <section id='section_content_heading' class="pt-0 pb-0 mb-2 section-heading section-content-heading-groups">
             <div  class="container">
              @yield('content-heading')
             </div>

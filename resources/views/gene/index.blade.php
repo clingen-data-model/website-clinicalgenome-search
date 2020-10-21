@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
       <div class="col-md-7 curated-genes-table">
-        <h1><span id="gene-count"></span><img src="/images/adept-icon-circle-gene.png" width="50" height="50">  Genes</h1>
+        <h1><a href="{{ route('gene-all') }}"><img src="/images/adept-icon-circle-gene.png" width="50" height="50"></a>  Genes</h1>
         {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
       </div>
 

@@ -16,8 +16,16 @@ section.section-heading {
 
 .section-content-heading-groups {
   background: #0085CB;
+  background: rgba(28,158,228,0.20);
+  /* background: rgba(15,175,178,0.149) */
+  /* background: rgba(30,81,131,0.149); */
 }
 
+.stat-wrapper {
+  border: 2px solid #fff;
+  border-radius: 1rem;
+  background: rgba(28,158,228,0.10);
+}
 
 
 .section-hero-gradient-standard {
