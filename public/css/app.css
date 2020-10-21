@@ -19416,7 +19416,7 @@ table.dataTable thead th.sorting_desc:after {
 
 .bootstrap-table table.table > tbody > tr > td {
   padding: 1.05rem 0.5rem !important;
-  font-size: 0.95rem;
+  font-size: 0.99rem;
   font-weight: 500;
 }
 
@@ -19425,8 +19425,8 @@ table.dataTable thead th.sorting_desc:after {
 }
 
 .text-stats {
-  font-size: 0.8rem !important;
-  color: #333333;
+  font-size: 0.7rem !important;
+  color: #555555;
   margin-bottom: 0.25rem;
   margin-top: 0.25rem;
 }
@@ -19459,8 +19459,8 @@ table.dataTable thead th.sorting_desc:after {
   padding: 4px 12px;
 }
 
-.header_class {
-  font-size: 0.95rem;
+.bootstrap-table .fixed-table-body {
+  font-size: 90%;
 }
 
 .bootstrap-table .fixed-table-container .table thead th .sortable {

@@ -14,8 +14,8 @@
 }
 
 .text-stats {
-  font-size: .8rem !important;
-  color: #333333;
+  font-size: .7rem !important;
+  color: #555555;
   margin-bottom: .25rem;
   margin-top:  .25rem;
 }
@@ -42,12 +42,9 @@
 .bootstrap-table .pagination-detail .btn.btn-default {
   padding: 4px 12px;
 }
-
-// set the bootstrap table header font size
-.header_class {
-  font-size: .95rem;
+.bootstrap-table .fixed-table-body {
+  font-size: 90%;
 }
-
 // move the sort arrows to the left of the column title
 .bootstrap-table .fixed-table-container .table thead th .sortable {
   cursor: pointer !important;
