@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\GeneListRequest;
 
 use App\GeneLib;
+use App\Gene;
 
 /**
 *
@@ -56,6 +57,25 @@ class GeneController extends Controller
 						->with('apiurl', '/api/genes')
 						->with('pagesize', $size)
 						->with('page', $page);
+	}
+
+
+	/**
+	 * Display a listing of all genes via HGNC Database.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function all()
+	{
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => "List of HGNC Genes"
+		]);
+
+		$all = Gene::Paginate(1000);
+
+		return view('gene.all', compact('display_tabs', 'all'));
 	}
 
 

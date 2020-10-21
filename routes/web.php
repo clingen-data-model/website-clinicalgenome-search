@@ -41,6 +41,8 @@ Route::group(['prefix' => 'genes'], function () {
 
 		Route::post('/', 'GeneController@search')->name('gene-search');
 
+		Route::get('/all/', 'GeneController@all')->name('gene-all');
+
 		Route::get('/page/{page}', 'GeneController@index');
 
 		Route::get('/page/{page}/view/{psize}', 'GeneController@index');
@@ -52,6 +54,7 @@ Route::group(['prefix' => 'genes'], function () {
 		Route::get('/{id?}/by-activity', 'GeneController@show_by_activity')->name('gene-by-activity');
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
+
 
 
 });
