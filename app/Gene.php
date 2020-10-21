@@ -39,12 +39,17 @@ class Gene extends Model
           'location' => 'string|nullable',
 		'alias_symbol' => 'json|nullable',
 		'prev_symbol' => 'json|nullable',
-		'date_symbol_changed' => 'string|nullable',
+          'date_symbol_changed' => 'string|nullable',
+          'locus_type' => 'string|nullable',
+          'locus_group' => 'string|nullable',
 		'hi' => 'string|nullable',
 		'plof' => 'string|nullable',
 		'pli' => 'string|nullable',
 		'haplo' => 'string|nullable',
-		'triplo' => 'string|nullable',
+          'triplo' => 'string|nullable',
+          'ensemble_gene_id' => 'string|nullable',
+          'entrez_id' => 'string|nullable',
+          'ucsc_id' => 'string|nullable',
           'notes' => 'string|nullable',
           'history' => 'json|nullable',
 		'type' => 'integer',
@@ -70,8 +75,9 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-                            'haplo', 'triplo', 'omim_id', 'morbid',
-                            'history', 'type', 'notes', 'status' ];
+                            'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
+                            'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
+                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -150,6 +156,18 @@ class Gene extends Model
 	public function scopeName($query, $name)
      {
 		return $query->where('name', $name);
+     }
+
+
+     /**
+     * Query scope by hgncid name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeHgnc($query, $id)
+     {
+		return $query->where('hgnc_id', $id);
      }
 
 

@@ -169,9 +169,23 @@ function hiFormatter(index, row) {
 }
 
 
+function plofFormatter(index, row) {
+    if (row.plof === null)
+        return '-';
+
+    if (row.plof <= .35)
+        return '<span class="format-pli-high">' + row.plof + '</span>';
+    else
+        return '<span class="format-pli-low">' + row.plof + '</span>';
+}
+
+
 function haploFormatter(index, row) {
     if (row.haplo_assertion === false)
         return '';
+
+    if (row.haplo_assertion == 'Not Yet Evaluated')
+        return '<span class="text-muted">Not Yet <br />Evaluated</span>';
 
     var html = row.haplo_assertion.replace(' (', '<br />(');
         
@@ -187,6 +201,9 @@ function haploFormatter(index, row) {
 function triploFormatter(index, row) {
     if (row.triplo_assertion === false)
         return '';
+
+    if (row.triplo_assertion == 'Not Yet Evaluated')
+        return '<span class="text-muted">Not Yet <br />Evaluated</span>';
 
         var html = row.triplo_assertion.replace(' (', '<br />(');
 

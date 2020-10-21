@@ -261,7 +261,7 @@ class Jira extends Model
                                    && $item->toString !== null)
                               {
                                    $created = new Carbon($history->created);
-                                   if (Carbon::now()->diffInWeeks($created) <= 130)
+                                   if (Carbon::now()->diffInWeeks($created) <= 52)
                                    {
                                         //dd($issue->fields);
                                         if ($issue->fields->issuetype->name == "ISCA Gene Curation")
@@ -302,7 +302,7 @@ class Jira extends Model
                                    && $item->toString !== null)
                               {
                                    $created = new Carbon($history->created);
-                                   if (Carbon::now()->diffInWeeks($created) <= 130)
+                                   if (Carbon::now()->diffInWeeks($created) <= 52)
                                    {
                                         if ($issue->fields->issuetype->name == "ISCA Gene Curation")
                                              $title = $issue->fields->customfield_10030;

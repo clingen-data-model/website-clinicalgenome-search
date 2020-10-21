@@ -180,6 +180,10 @@
 		})
 
 		$table.on('load-success.bs.table', function (e, name, args) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7ea5582432c2f665ad5206aee53bb0822cd0fd5d
 			$("body").css("cursor", "default");
 
 			if (name.hasOwnProperty('error'))

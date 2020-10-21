@@ -223,6 +223,28 @@ class GeneLib extends Model
 
 		return $response;
      }
+
+
+     /**
+     * Get details of a particular gene
+     * 
+     * (Neo4j)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneActivityDetail($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Most of the gene and curation data is currently in neo4j...
+         //$response = Neo4j::geneDetail($args);
+         
+         //...but actionability is now in genegraph
+         $response = Graphql::geneActivityDetail($args);
+
+         return $response;
+    }
      
 
      /**
@@ -406,6 +428,11 @@ class GeneLib extends Model
                'gain_comments', 'gain_pheno_omim', 'gain_pmids',
                'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
                {
+                    if ($field == 'genetype' && !empty($response->locus_group))
+                    {
+                         $response->$field = $response->locus_group;
+                         continue;
+                    }
                     $response->$field = $supplement->$field;
                }
           }
@@ -656,7 +683,7 @@ class GeneLib extends Model
     public static function shortAssertionString($str)
     {
          if ($str === null || $str === false || $str === 'unknown')
-              return '';
+              return 'Not Yet Evaluated';
 
           return self::$short_dosage_assertion_strings[$str] . ' (' . $str . ')';
     }
