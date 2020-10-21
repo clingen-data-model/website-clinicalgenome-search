@@ -92,6 +92,17 @@ Route::group(['prefix' => 'gene-validity'], function () {
 
 
 /*
+ * Region display routes
+ */
+Route::group(['prefix' => 'regions'], function () {
+
+	Route::get('/', 'RegionController@index')->name('region-index');
+
+	Route::post('/', 'RegionController@index')->name('region-search');
+
+});
+
+/*
  * Conditions display routes
  */
 Route::group(['prefix' => 'conditions'], function () {

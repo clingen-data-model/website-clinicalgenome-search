@@ -33,7 +33,7 @@
         <div  class="container">
           <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
             @csrf
-            <div id="section_search_wrapper" class="mt-4 mb-3 input-group input-group-xl">
+            <div id="section_search_wrapper" class="mt-3 mb-2 input-group input-group-md">
 
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
 	         <div class="input-group-btn">
@@ -42,6 +42,8 @@
 	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
 	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
 	             <li><a class="typeQueryDrug pointer">Drug Name</a></li>
+	             <li><a class="typeQueryRegionGRCh37 pointer">Region (GRCh37)</a></li>
+	             <li><a class="typeQueryRegionGRCh38 pointer">Region (GRCh38)</a></li>
 	             {{-- <li><a href="#">HGVS Expression</a></li> --}}
 	             {{-- <li><a href="#">Genomic Coordinates</a></li> --}}
 	             {{-- <li><a href="#">CAid (Variant)</a></li> --}}
@@ -58,6 +60,9 @@
            </span>
            <span class="inputQueryDrug" style="display: none">
            <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Start typing a drug...">
+           </span>
+           <span class="inputQueryRegion" style="display: none">
+           <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Start typing a region...">
            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit"> Search</button>
@@ -144,7 +149,7 @@
                   <li><a href="#">APIs and Downloads</a></li> --}}
                 </ul>
               </li>
-            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition")) active @endif">
+            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                  More
                 </a>
@@ -264,6 +269,8 @@
         $( ".inputQueryDisease .queryDisease" ).hide();
         $( ".inputQueryDrug" ).hide();
         $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".inputQueryRegion" ).hide();
+        $( ".inputQueryRegion .queryRegion" ).hide();
         $( ".typeQueryLabel").text("Gene");
       });
       $( ".typeQueryDisease" ).click(function() {
@@ -274,6 +281,8 @@
         $( ".inputQueryDisease .queryDisease" ).show();
         $( ".inputQueryDrug" ).hide();
         $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".inputQueryRegion" ).hide();
+        $( ".inputQueryRegion .queryRegion" ).hide();
         $( ".typeQueryLabel").text("Disease");
       });
       $( ".typeQueryDrug" ).click(function() {
@@ -284,7 +293,33 @@
         $( ".inputQueryDisease .queryDisease" ).hide();
         $( ".inputQueryDrug" ).show();
         $( ".inputQueryDrug .queryDrug" ).show();
+        $( ".inputQueryRegion" ).hide();
+        $( ".inputQueryRegion .queryRegion" ).hide();
         $( ".typeQueryLabel").text("Drug");
+      });
+      $( ".typeQueryRegionGRCh37" ).click(function() {
+        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+        $( ".inputQueryGene" ).hide();
+        $( ".inputQueryGene .queryGene" ).hide();
+        $( ".inputQueryDisease" ).hide();
+        $( ".inputQueryDisease .queryDisease" ).hide();
+        $( ".inputQueryDrug" ).hide();
+        $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".inputQueryRegion" ).show();
+        $( ".inputQueryRegion .queryRegion" ).show();
+        $( ".typeQueryLabel").text("GRCh37 Region");
+      });
+      $( ".typeQueryRegionGRCh38" ).click(function() {
+        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+        $( ".inputQueryGene" ).hide();
+        $( ".inputQueryGene .queryGene" ).hide();
+        $( ".inputQueryDisease" ).hide();
+        $( ".inputQueryDisease .queryDisease" ).hide();
+        $( ".inputQueryDrug" ).hide();
+        $( ".inputQueryDrug .queryDrug" ).hide();
+        $( ".inputQueryRegion" ).show();
+        $( ".inputQueryRegion .queryRegion" ).show();
+        $( ".typeQueryLabel").text("GRCh38 Region");
       });
 
 
