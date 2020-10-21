@@ -52,7 +52,7 @@ class ValidityController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "validity",
-            'title' => "ClinGen Gene Disease Validity Curations"
+            'title' => "ClinGen Gene-Disease Validity Curations"
         ]);
 
 		return view('gene-validity.index', compact('display_tabs'))
@@ -86,11 +86,11 @@ class ValidityController extends Controller
                             ->with('title', 'Error retrieving Gene Validity details')
                             ->with('message', 'The system was not able to retrieve details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
                             ->with('back', url()->previous());
-                            
+
         // set display context for view
         $display_tabs = collect([
-            'active' => "dosage",
-            'title' => $record->label . " curation results for Gene Disease Validity"
+            'active' => "validity",
+            'title' => $record->label . " curation results for Gene-Disease Validity"
         ]);
 
         return view('gene-validity.show', compact('display_tabs', 'record'));

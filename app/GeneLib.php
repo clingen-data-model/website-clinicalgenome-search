@@ -25,12 +25,12 @@ use App\Region;
  *
  * */
 class GeneLib extends Model
-{	 
+{
 	/**
      * This class is designed to be used statically.  It is a non-persistant model
      * with no corresponding table in the database
      */
-     
+
      /**
      * The attributes that should be validity checked.
      *
@@ -53,7 +53,7 @@ class GeneLib extends Model
      * @var array
      */
      protected $appends = [];
-     
+
 	/*
      * Dosage Assertion strings for display methods
      *
@@ -99,7 +99,7 @@ class GeneLib extends Model
           'refuting evidence' => 'Refuted',
           'moderate evidence' => 'Moderate'
      ];
-     
+
      protected static $validity_assertion_strings = [
           'AUTOSOMAL_RECESSIVE' => 'Autosomal Recessive',
           'AUTOSOMAL_DOMINANT' => 'Autosomal Dominant',
@@ -127,16 +127,16 @@ class GeneLib extends Model
 
      protected static $validity_criteria_strings = [
           'ClinGen Dosage Sensitivity Evaluation Guideline' => 'Eval',
-          'ClinGen Gene Validity Evaluation Guideline' => 'Eval',
+          'ClinGen Gene-Disease Validity Evaluation Guideline' => 'Eval',
           'ACMG Variant Pathogenicity Interpretation Guidelines (2015, v1)' => 'ACMG',
           'ACMG PVS1 criterion' => 'ACMG',
           'ACMG PM2 criterion' => 'ACMG',
           'variant pathogenicity criterion scoring rule set (2015 ACMG Guidelines, v1)' => 'ACMG',
-          'ClinGen Gene Validity Evaluation Criteria SOP6' => 'SOP6',
-          'ClinGen Gene Validity Evaluation Criteria SOP5' => 'SOP5',
-          'ClinGen Gene Validity Evaluation Criteria SOP4' => 'SOP4',
-          'ClinGen Gene Validity Evaluation Criteria SOP7' => 'SOP7',
-          'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOP6' => 'SOP6',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOP5' => 'SOP5',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOP4' => 'SOP4',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOP7' => 'SOP7',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
 
 	protected static $dosage_score_assertion_strings = [
@@ -157,13 +157,13 @@ class GeneLib extends Model
           '40' => 'Dosage Sensitivity Unlikely'
      ];
 
-	
+
 	/*----------------------Public Methods----------------------------*/
-	
+
 
     /**
      * Get a list of actionability curations
-     * 
+     *
      * (Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -183,7 +183,7 @@ class GeneLib extends Model
 
     /**
      * Get a list of all the curated genes
-     * 
+     *
      * (Neo4j, Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -195,7 +195,7 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		//$response = Neo4j::geneList($args);
-		
+
 		// Gene listing using Graphql
 		$response = Graphql::geneList($args);
 
@@ -205,7 +205,7 @@ class GeneLib extends Model
 
 	/**
      * Get details of a particular gene
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -217,7 +217,7 @@ class GeneLib extends Model
 
 		// Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
-          
+
 		//...but actionability is now in genegraph
 		$response = Graphql::geneDetail($args);
 
@@ -227,7 +227,7 @@ class GeneLib extends Model
 
      /**
      * Get details of a particular gene
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -239,17 +239,17 @@ class GeneLib extends Model
 
          // Most of the gene and curation data is currently in neo4j...
          //$response = Neo4j::geneDetail($args);
-         
+
          //...but actionability is now in genegraph
          $response = Graphql::geneActivityDetail($args);
 
          return $response;
     }
-     
+
 
      /**
      * Get a list of all the curated genes
-     * 
+     *
      * (Neo4j, Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -261,7 +261,7 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		//$response = Neo4j::geneList($args);
-		
+
 		// Gene listing using Graphql
 		$response = Graphql::geneLook($args);
 
@@ -271,7 +271,7 @@ class GeneLib extends Model
 
 	/**
      * Get a list of all the affiliates and associated curation counts
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -283,7 +283,7 @@ class GeneLib extends Model
 
 		// The affiliate and curation data is currently in neo4j
           //$response = Neo4j::affiliateList($args);
-          
+
           // The affiliate and curation data is currently in graphql
 		$response = Graphql::affiliateList($args);
 
@@ -293,7 +293,7 @@ class GeneLib extends Model
 
 	/**
      * Get details of a particular affiliate and associated curations
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -305,7 +305,7 @@ class GeneLib extends Model
 
 		// The affiliate and curation data is currently in neo4j
           //$response = Neo4j::affiliateDetail($args);
-          
+
           // The affiliate and curation data is currently in neo4j
 		$response = Graphql::affiliateDetail($args);
 
@@ -315,7 +315,7 @@ class GeneLib extends Model
 
 	/**
      * Get a list of all gene validity assertions
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -327,7 +327,7 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		// $response = Neo4j::validityList($args);
-	
+
 		// Gene data using Graphql
 		$response = Graphql::validityList($args);
 
@@ -337,7 +337,7 @@ class GeneLib extends Model
 
 	/**
      * Get details of a gene validity assertion
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -349,7 +349,7 @@ class GeneLib extends Model
 
 		// The gene validity data is currently in neo4j...
           //$response = Neo4j::validityDetail($args);
-          
+
           // The gene validity data is currently in graphql...
 		$response = Graphql::validityDetail($args);
 
@@ -359,7 +359,7 @@ class GeneLib extends Model
 
      /**
      * Get a list of all genes and regions within the search params
-     * 
+     *
      * (Neo4j, GeneGraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -371,14 +371,14 @@ class GeneLib extends Model
 
          // Gene data is locally populated from batch exports
          $response = Region::searchList($args);
-         
+
          return $response;
     }
 
 
 	/**
      * Get a list of all the genes with dosage sensitivitiy
-     * 
+     *
      * (Neo4j, GeneGraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -390,10 +390,10 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		//$response = Neo4j::dosageList($args);
-		
+
 		// Gene data is currently in graphgq
 		$response = Graphql::dosageList($args);
-		
+
 		return $response;
 	}
 
@@ -447,7 +447,7 @@ class GeneLib extends Model
 
           return $response;
      }
-     
+
 
      /**
      * Get list of recurrent CNVs
@@ -546,7 +546,7 @@ class GeneLib extends Model
 
 	/**
      * Get a list of all the drugs
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -558,7 +558,7 @@ class GeneLib extends Model
 
 		// Drug data is currently in neo4j
           //$response = Neo4j::drugList($args);
-          
+
           // Drug data is now in graphql
 		$response = Graphql::drugList($args);
 
@@ -568,7 +568,7 @@ class GeneLib extends Model
 
 	/**
      * Get details of a particular drug
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -580,17 +580,17 @@ class GeneLib extends Model
 
 		// Drug details are currently in neo4j
           //$response = Neo4j::drugDetail($args);
-          
+
           // Drug details are currently in neo4j
 		$response =Graphql::drugDetail($args);
 
 		return $response;
      }
-     
+
 
      /**
      * Get a matched list of drugs
-     * 
+     *
      * (Neo4j, Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -602,7 +602,7 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		//$response = Neo4j::geneList($args);
-		
+
 		// Gene listing using Graphql
 		$response = Graphql::drugLook($args);
 
@@ -612,7 +612,7 @@ class GeneLib extends Model
 
 	/**
      * Get a list of all the conditions
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -624,7 +624,7 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
           //$response = Neo4j::conditionList($args);
-          
+
           // Gene data is currently in neo4j
 		$response = Graphql::conditionList($args);
 
@@ -634,7 +634,7 @@ class GeneLib extends Model
 
 	/**
      * Get details of a particular condition
-     * 
+     *
      * (Neo4j)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -646,16 +646,16 @@ class GeneLib extends Model
 
 		// Condition data is all in Neo4j
           //$response = Neo4j::conditionDetail($args);
-          
+
           $response = Graphql::conditionDetail($args);
 
 		return $response;
      }
-     
+
 
      /**
      * Get a matched list of conditions
-     * 
+     *
      * (Neo4j, Genegraph)
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -667,17 +667,17 @@ class GeneLib extends Model
 
 		// Gene data is currently in neo4j
 		//$response = Neo4j::geneList($args);
-		
+
 		// Gene listing using Graphql
 		$response = Graphql::conditionLook($args);
 
 		return $response;
      }
-     
+
 
 	/**
      * Return a displayable dosage assertion description
-     * 
+     *
      * @return string
      */
     public static function shortAssertionString($str)
@@ -688,10 +688,10 @@ class GeneLib extends Model
           return self::$short_dosage_assertion_strings[$str] . ' (' . $str . ')';
     }
 
-	
+
 	/**
      * Return a displayable dosage assertion description
-     * 
+     *
      * @return string
      */
      public static function haploAssertionString($str)
@@ -701,11 +701,11 @@ class GeneLib extends Model
 
 		 return str_replace('####', 'Haplosufficiency', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
      }
-      
+
 
       /**
      * Return a displayable dosage assertion description
-     * 
+     *
      * @return string
      */
      public static function triploAssertionString($str)
@@ -719,7 +719,7 @@ class GeneLib extends Model
 
      /**
      * Return a displayable dosage assertion description
-     * 
+     *
      * @return string
      */
      public static function dosageAssertionString($str)
@@ -730,11 +730,11 @@ class GeneLib extends Model
           return self::$curated_score_assertion_strings[$str] ?? 'ERROR';
           //return self::$curated_assertion_strings[$str] ?? 'ERROR';
      }
-      
+
 
      /**
      * Return a displayable moi assertion description
-     * 
+     *
      * @return string
      */
      public static function validityMoiString($str)
@@ -748,7 +748,7 @@ class GeneLib extends Model
 
      /**
      * Return a displayable validity assertion description
-     * 
+     *
      * @return string
      */
      public static function validityAssertionString($str)
@@ -762,7 +762,7 @@ class GeneLib extends Model
 
      /**
      * Return a displayable validity classification description
-     * 
+     *
      * @return string
      */
      public static function validityClassificationString($str)
@@ -776,7 +776,7 @@ class GeneLib extends Model
 
      /**
      * Return a displayable validity criteria description
-     * 
+     *
      * @return string
      */
      public static function validityCriteriaString($str)
@@ -786,21 +786,21 @@ class GeneLib extends Model
 
 		 return self::$validity_criteria_strings[$str] ?? 'ERROR';
      }
-      
+
 
      /**
      * Return a usable validity assertion identifier
-     * 
+     *
      * @return string
      */
      public static function validityAssertionID($str)
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
 	}
-	 
-	 
+
+
 	 /*
-     * Set a GraphLib error for use by controllers or views.  
+     * Set a GraphLib error for use by controllers or views.
      *
      * @param	string	$mondo
      * @return 	array
@@ -809,11 +809,11 @@ class GeneLib extends Model
     {
 		if ($error === null)
 			return session()->put('GeneLibError', false);
-			
+
 		session()->put('GeneLibError', $error);
 	}
-	
-	
+
+
 	/*
      * Get a GraphLib error structure.  TODO:  formatting
      *

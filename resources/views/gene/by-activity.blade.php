@@ -18,7 +18,7 @@
 				</li>
 				<li class="mr-5">
 					<a href="#link-gene-validity" class="text-light">
-					<div class="text-xs small text-light">Gene Disease Validity<br />Classifications <i class="fas fa-arrow-down"></i></div></a>
+					<div class="text-xs small text-light">Gene-Disease Validity<br />Classifications <i class="fas fa-arrow-down"></i></div></a>
 				</li>
 				@endif
 				@isset($record->curations_by_activity->dosage_curation)
@@ -44,7 +44,7 @@
 			{{-- <ul class="list-inline mt-3 mb-4" style="">
 				@isset($record->curations_by_activity->gene_validity)
 				<li class="mr-5"><a href="#link-gene-validity" class="text-light"><span class="h3 font-weight-light text-light">{{ count((array)$record->curations_by_activity->gene_validity) }}<img src="/images/clinicalValidity-dark.png" style="margin-top:-4px" width="30" height="30"></span>
-					<div class="text-xs small text-light">Gene Disease Validity<br />Classifications</div></a>
+					<div class="text-xs small text-light">Gene-Disease Validity<br />Classifications</div></a>
 				</li>
 				@endif
 				@isset($record->curations_by_activity->dosage_curation)
@@ -86,7 +86,7 @@
 		<div class="col-md-12">
 
 		@isset($record->curations_by_activity->gene_validity)
-		<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Gene Disease Validity</h3>
+		<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Gene-Disease Validity</h3>
 			<div class="card mb-4">
 				<div class="card-body p-0 m-0">
 
@@ -104,7 +104,7 @@
 
 					<tbody class="">
 		@forelse ($record->curations_by_activity->gene_validity as $items)
-						<!-- Gene Disease Validity				-->
+						<!-- Gene-Disease Validity				-->
 						@foreach($items as $item)
 								<tr>
 									<td class="">
@@ -174,7 +174,7 @@
 					<tbody class="">
 
 		@forelse ($record->curations_by_activity->dosage_curation as $items)
-						<!-- Gene Disease Validity				-->
+						<!-- Gene-Disease Validity				-->
 						@foreach($items as $item)
 								<tr>
 									<td class="">
@@ -248,7 +248,7 @@
 					<tbody class="">
 
 		@forelse ($record->curations_by_activity->actionability as $items)
-						<!-- Gene Disease Validity				-->
+						<!-- Gene-Disease Validity				-->
 						@foreach($items as $item)
 								<tr>
 									<td class="">

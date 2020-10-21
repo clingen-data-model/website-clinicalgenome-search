@@ -4,20 +4,20 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-          <h1 class=" display-4 ">Genes 
+          <h1 class=" display-4 ">Genes
           </h1>
         </div>
         <div class="col-md-12">
 
             <div class="card">
                 <div class="card-body">
-                    
+
                 </div>
                 <table class="table table-striped table-hover">
                     <tr class="small">
                         <th>Gene</th>
                         <th>Location</th>
-                        <th>Gene Validity</th>
+                        <th>Gene-Disease Validity</th>
                         <th>Actionability</th>
                         <th>Variant Path.</th>
                         <th>HI <i class="fas fa-info-circle text-info"></i></th>

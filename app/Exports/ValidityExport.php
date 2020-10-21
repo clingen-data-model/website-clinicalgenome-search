@@ -23,14 +23,14 @@ class ValidityExport implements FromCollection, WithHeadings
 										'direction' => 'ASC',
 										'search' => '',
                                         'curated' => true ]);
-                                   
+
         return GdsResource::collection($results->collection);
     }
-    
+
     public function headings(): array
     {
         return [
-            ["CLINGEN GENE VALIDITY CURATIONS"],
+            ["CLINGEN GENE DISEASE VALIDITY CURATIONS"],
             ["FILE CREATED: " . Carbon::now()->format('Y-m-d')],
             ["WEBPAGE: " . route('validity-index')],
             ["+++++++++++","++++++++++++++","+++++++++++++","++++++++++++++++++","+++++++++","+++++++++","++++++++++++++","+++++++++++++","+++++++++++++++++++"],

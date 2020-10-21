@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="gene_validity_show" class="container">
-	<h2>Gene Validity Classification Summary</h2>
+	<h2 class="mb-3">Gene-Disease Validity Classification Summary</h2>
 	<div class="row geneValidityScoresWrapper">
 		<div class="col-sm-12">
 			<div class="content-space content-border">

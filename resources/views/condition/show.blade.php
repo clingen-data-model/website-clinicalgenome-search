@@ -49,7 +49,7 @@
 
 					<tbody class="">
 
-					<!-- Gene Disease Validity				-->
+					<!-- Gene-Disease Validity				-->
 					@foreach($disease->gene_validity_assertions as $validity)
 						<tr>
 							<td class=" @if(!$loop->first) border-0 @endif ">
