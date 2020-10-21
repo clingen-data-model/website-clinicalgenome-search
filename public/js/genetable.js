@@ -6,9 +6,9 @@
 
 /**
  * Format the expanded detail section
- * 
- * @param {} index 
- * @param {*} row 
+ *
+ * @param {} index
+ * @param {*} row
  */
 function detailFormatter(index, row) {
   var html = [];
@@ -39,14 +39,14 @@ function table_buttons() {
 }
 /**
  * For a symbol or region cell
- * 
- * @param {*} index 
- * @param {*} row 
+ *
+ * @param {*} index
+ * @param {*} row
  */
 
 
 function symbolFormatter(index, row) {
-  if (row.type == 0) return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>  <a href="/gene-dosage/' + row.hgnc_id + '" class="float-right mr-5"><i class="fas fa-map"></i></a>';else return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+  if (row.type == 0) return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>  <a href="/gene-dosage/' + row.hgnc_id + '" class="float-right"><i class="fas fa-map"></i></a>';else return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
 }
 
 function geneFormatter(index, row) {
@@ -160,9 +160,9 @@ function iscaFormatter(index, row) {
   if (row.type == 0) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_gene.cgi?sym=' + row.symbol + '">' + row.isca + '</a>';else if (row.type == 1) return '<a href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.isca + '">' + row.isca + '</a>';else return row.isca;
 }
 /**
- * 
- * @param {*} index 
- * @param {*} row 
+ *
+ * @param {*} index
+ * @param {*} row
  */
 
 
@@ -174,8 +174,8 @@ function cellFormatter(index, row) {
 /**
  * The global header style set in the genetable partial.  If the lightstyle
  * global is set, leave the default style, else go dark.
- * 
- * @param {*} column 
+ *
+ * @param {*} column
  */
 
 
