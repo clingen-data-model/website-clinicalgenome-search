@@ -8,7 +8,22 @@
 						<dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
 							<a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer">HGNC <i class="fas fa-external-link-alt"></i></a>
 							@if($record->entrez_id)
-							<a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">NCBI <i class="fas fa-external-link-alt"></i> </a>
+							<a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">Entrez <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+							@if($record->ensembl_id)
+							<a target='external' href="{{env('CG_URL_ENSEMBL_GENE')}}{{ $record->ensembl_id }}" class="badge-info badge pointer">Ensembl <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+							@if($record->omim_id)
+							<a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $record->omim_id[0] ?? '' }}" class="badge-info badge pointer">OMIM <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+							@if($record->ucsc_id)
+							<a target='external' href="{{env('CG_URL_UCSC_GENE')}}{{ $record->ucsc_id ?? '' }}" class="badge-info badge pointer">UCSC <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+							@if($record->uniprot_id)
+							<a target='external' href="{{env('CG_URL_UNIPROT_GENE')}}{{ $record->uniprot_id }}" class="badge-info badge pointer">Uniprot <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+							@if($record->symbol)
+							<a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
 							@endif
 						</dd>
 						@if($record->name)
@@ -31,6 +46,22 @@
 						<dt>Alias symbols</dt>
 						<dd>{{ $record->alias_symbols ?? 'oops'}}</dd>
 						@endif
+						@if($record->hi)
+						<dt>%HI</dt>
+						<dd>{{ $record->hi }}</dd>
+						@endif
+						@if($record->pli)
+						<dt>pLI</dt>
+						<dd>{{  $record->pli }}</dd>
+						@endif
+						@if($record->plof)
+						<dt>LOEUF</dt>
+						<dd>{{  $record->plof }}</dd>
+						@endif
+						@if($record->chromosome_band)
+						<dt>Cytoband</dt>
+						<dd>{{ $record->chromosome_band }}</dd>
+						@endif
 						{{-- <dt>Genomic Coordinate</dt>
 						<dd>
 							<table>
@@ -51,12 +82,10 @@
 							</table>
 						</dd>
 					--}}
-						@if($record->chromosome_band)
-						<dt>Chromosomal location</dt>
-						<dd>{{ $record->chromosome_band }}</dd>
+						@if($record->function)
+						<dt>Function</dt>
+						<dd>{{ $record->function }}  <i>(Source: <a href="https://www.uniprot.org/uniprot/{{ $record->uniprot_id }}">Uniprot</a>)</i></dd>
 						@endif
-						{{-- <dt>Function</dt>
-						<dd>Involved in double-strand break repair and/or homologous recombination. Binds RAD51 and potentiates recombinational DNA repair by promoting assembly of RAD51 onto single-stranded DNA (ssDNA). Acts by targeting RAD51 to ssDNA over double-stranded DNA, enabling RAD51 to displace … Source: UniProt</dd> --}}
 					</dl>
 			</div>
 	</div>

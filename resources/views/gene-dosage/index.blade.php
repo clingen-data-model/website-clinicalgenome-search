@@ -323,9 +323,9 @@
 					sortable: true
 				},
 				{
-					title: 'pLoF',
+					title: 'LOEUF',
 					field: 'plof',
-					//formatter: pliFormatter,
+					formatter: plofFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					searchFormatter: false,

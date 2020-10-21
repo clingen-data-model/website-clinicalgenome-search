@@ -121,8 +121,14 @@ function hiFormatter(index, row) {
   if (row.hi <= 10) return '<span class="format-hi-high">' + row.hi + '</span>';else return '<span class="format-hi-low">' + row.hi + '</span>';
 }
 
+function plofFormatter(index, row) {
+  if (row.plof === null) return '-';
+  if (row.plof <= .35) return '<span class="format-pli-high">' + row.plof + '</span>';else return '<span class="format-pli-low">' + row.plof + '</span>';
+}
+
 function haploFormatter(index, row) {
   if (row.haplo_assertion === false) return '';
+  if (row.haplo_assertion == 'Not Yet Evaluated') return '<span class="text-muted">Not Yet <br />Evaluated</span>';
   var html = row.haplo_assertion.replace(' (', '<br />(');
   if (row.haplo_history === null) return html;
   return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
@@ -130,6 +136,7 @@ function haploFormatter(index, row) {
 
 function triploFormatter(index, row) {
   if (row.triplo_assertion === false) return '';
+  if (row.triplo_assertion == 'Not Yet Evaluated') return '<span class="text-muted">Not Yet <br />Evaluated</span>';
   var html = row.triplo_assertion.replace(' (', '<br />(');
   if (row.triplo_history === null) return html;
   return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';

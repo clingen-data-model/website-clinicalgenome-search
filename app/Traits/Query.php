@@ -50,7 +50,7 @@ trait Query
 			if (is_null($response))				// likely a connection error
 			{
 				$errors = $exception->getHandlerContext();
-				GeneLib::putError($errors);
+				GeneLib::putError($errors['error']);
 				return null;
 			}
 			

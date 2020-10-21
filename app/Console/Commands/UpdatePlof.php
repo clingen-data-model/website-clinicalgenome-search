@@ -57,18 +57,18 @@ class UpdatePlof extends Command
 		// discard the header
 		$line = fgets($file);
 		
-		//$parts = explode("\t", $line);
+		/*$parts = explode("\t", $line);
 			
-		//echo $parts[19];
-		//exit;
+		echo $parts[29];
+		exit;*/
 		
 		// parse the remaining file
 		while (($line = fgets($file)) !== false)
 		{
 			$parts = explode("\t", $line);
 			
-			echo "Gene " . $parts[0] . " PLOF = " . $parts[16] . "\n";
-			
+			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . "\n";
+
 			// what we want is in the second and 20th sections...
 			if (isset($parts[0]))
 			{
@@ -78,7 +78,7 @@ class UpdatePlof extends Command
 					continue;
 				
 				// observed is 16, expected is 19
-				$gene->plof = $parts[16];
+				$gene->plof = $parts[29];
 				$gene->save();
 			}
 			

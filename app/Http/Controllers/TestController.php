@@ -27,11 +27,12 @@ class TestController extends Controller
      */
     public function index()
     {
-		$b = Jira::ratingsList([	'page' =>  0,
+		$b = GeneLib::geneActivityDetail([	'page' =>  0,
 		'pagesize' =>  "null",
 		'sort' => 'GENE_LABEL',
 		'direction' =>  'ASC',
 		'search' =>  null,
+		'gene' => 'HGNC:6769',
 		'curated' => false ]);
 
 		dd($b);

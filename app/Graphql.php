@@ -211,6 +211,17 @@ class Graphql
 		{
 			$node->alias_symbols = $localgene->display_aliases;
 			$node->prev_symbols = $localgene->display_previous;
+			$node->hi = round($localgene->hi, 2);
+			$node->pli = round($localgene->pli, 2);
+			$node->plof = round($localgene->plof, 2);
+			$node->locus_type = $localgene->locus_type;
+			$node->locus_group = $localgene->locus_group;
+			$node->ensembl_id = $localgene->ensembl_gene_id;
+			$node->entrez_id = $localgene->entrez_id;
+			$node->omim_id = $localgene->omim_id;
+			$node->ucsc_id = $localgene->ucsc_id;
+			$node->uniprot_id = $localgene->uniprot_id;
+			$node->function = $localgene->function;
 		}
 
 		// currently, there is no easy way to track what needs dosage_curation entries belong in
@@ -241,6 +252,187 @@ class Graphql
 				}
 			}
 		}
+		$by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
+			if (!empty($node->genetic_conditions))
+			{
+				//dd($node->genetic_conditions);
+				$i = -1;
+				foreach($node->genetic_conditions as $genetic_condition) {
+					$i++;
+					$ii = -1;
+					foreach ($genetic_condition->gene_validity_assertions as $gene_validity_assertion) {
+						$ii++;
+						$curie = explode("/", $genetic_condition->disease->iri);
+						$by_activity['gene_validity'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+						$by_activity['gene_validity'][end($curie)][$ii]['curation'] = $gene_validity_assertion;
+					}
+					$ii = -1;
+					foreach ($genetic_condition->gene_dosage_assertions as $gene_dosage_assertion) {
+						$ii++;
+						$curie = explode("/", $genetic_condition->disease->iri);
+						$by_activity['dosage_curation'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+						$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
+					}
+					$ii = -1;
+					foreach ($genetic_condition->actionability_curations as $actionability_curation) {
+						$ii++;
+						$curie = explode("/", $genetic_condition->disease->iri);
+						$by_activity['actionability'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+						$by_activity['actionability'][end($curie)][$ii]['curation'] = $actionability_curation;
+					}
+					//$i++;
+					//$curations_by_activity[$i]	=	$by_activity;
+				}
+				$ii++;
+				if($node->dosage_curation){
+					$by_activity['dosage_curation']['null'][$ii]['curation'] = $node->dosage_curation;
+				}
+
+
+			} elseif ($node->dosage_curation) {
+				$by_activity 							= [];
+				$by_activity['dosage_curation']['null'][0]['curation'] = $node->dosage_curation;
+			}
+			//dd($by_activity);
+			$curations_by_activity = json_decode(json_encode($by_activity));
+			//dd($curations_by_activity);
+			$node->curations_by_activity = $curations_by_activity;
+
+
+		$node->dosage_curation_map = $dosage_curation_map;
+
+		//dd($node);
+		return $node;
+	}
+
+
+	/**
+     * Get details of a specific gene by activity
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneActivityDetail($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// set up query for gene details
+		$query = '{
+				gene('
+				. 'iri: "' . $gene
+				. '") {
+					label
+					alternative_label
+					hgnc_id
+					chromosome_band
+					curation_activities
+					last_curated_date:
+					dosage_curation {
+						curie
+						report_date
+						triplosensitivity_assertion {
+							dosage_classification {
+								ordinal
+							  }
+
+						}
+						haploinsufficiency_assertion {
+							dosage_classification {
+								ordinal
+							  }
+
+						}
+					}
+					genetic_conditions {
+						disease {
+						  label
+						  iri
+						}
+						gene_validity_assertions {
+						  mode_of_inheritance {
+							  label
+							  curie
+						  }
+						  report_date
+						  classification {
+							  label
+							  curie
+						  }
+						  curie
+						}
+						actionability_curations {
+						  report_date
+						  source
+						}
+						gene_dosage_assertions {
+						  report_date
+						  assertion_type
+						  dosage_classification {
+							ordinal
+							}
+						  curie
+						}
+					}
+				}
+			}';
+
+		// query genegraph
+		$response = self::query($query,  __METHOD__);
+
+		if (empty($response))
+			return $response;
+
+		$node = new Nodal((array) $response->gene);
+
+		// add additional information from local db
+		$localgene = Gene::where('hgnc_id', $gene)->first();
+		if ($localgene !== null)
+		{
+			$node->alias_symbols = $localgene->display_aliases;
+			$node->prev_symbols = $localgene->display_previous;
+			$node->hi = round($localgene->hi, 2);
+			$node->pli = round($localgene->pli, 2);
+			$node->plof = round($localgene->plof, 2);
+			$node->locus_type = $localgene->locus_type;
+			$node->locus_group = $localgene->locus_group;
+			$node->ensembl_id = $localgene->ensembl_gene_id;
+			$node->entrez_id = $localgene->entrez_id;
+			$node->omim_id = $localgene->omim_id;
+			$node->ucsc_id = $localgene->ucsc_id;
+			$node->uniprot_id = $localgene->uniprot_id;
+			$node->function = $localgene->function;
+		}
+
+		// currently, there is no easy way to track what needs dosage_curation entries belong in
+		// the catch all, so we need to process the genetic conditions and add some flags.
+		$dosage_curation_map = ["haploinsufficiency_assertion" => true, "triplosensitivity_assertion" => true];
+
+		if (empty($node->dosage_curation->triplosensitivity_assertion))
+			unset($dosage_curation_map["triplosensitivity_assertion"]);
+
+		if (empty($node->dosage_curation->haploinsufficiency_assertion))
+			unset($dosage_curation_map["haploinsufficiency_assertion"]);
+
+		if (!empty($node->genetic_conditions))
+		{
+			foreach($node->genetic_conditions as $condition)
+			{
+				foreach($condition->gene_dosage_assertions as $dosage)
+				{
+					switch ($dosage->assertion_type)
+					{
+						case "HAPLOINSUFFICIENCY_ASSERTION":
+							unset($dosage_curation_map["haploinsufficiency_assertion"]);
+							break;
+						case "TRIPLOSENSITIVITY_ASSERTION":
+							unset($dosage_curation_map["triplosensitivity_assertion"]);
+							break;
+					}
+				}
+			}
+		}
+		//dd($node);
 		$by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
 			if (!empty($node->genetic_conditions))
 			{
@@ -473,8 +665,8 @@ class Graphql
 			$collection->push($node);
 		}
 
-		$nhaplo = $collection->where('has_dosage_haplo', '!=', 'NO_EVIDENCE')->count();
-		$ntriplo = $collection->where('has_dosage_triplo', '!=', 'NO_EVIDENCE')->count();
+		$nhaplo = $collection->where('has_dosage_haplo', '!=', 0)->count();
+		$ntriplo = $collection->where('has_dosage_triplo', '!=', 0)->count();
 
 		return (object) ['count' => $response->genes->count, 'collection' => $collection,
 						'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
@@ -567,6 +759,15 @@ class Graphql
 			$node->prev_symbols = $localgene->display_previous;
 			$node->hi = round($localgene->hi, 2);
 			$node->pli = round($localgene->pli, 2);
+			$node->plof = round($localgene->plof, 2);
+			$node->locus_type = $localgene->locus_type;
+			$node->locus_group = $localgene->locus_group;
+			$node->ensembl_id = $localgene->ensembl_gene_id;
+			$node->entrez_id = $localgene->entrez_id;
+			$node->omim_id = $localgene->omim_id;
+			$node->ucsc_id = $localgene->ucsc_id;
+			$node->uniprot_id = $localgene->uniprot_id;
+			$node->function = $localgene->function;
 		}
 
 		// currently, there is no easy way to track what needs dosage_curation entries belong in

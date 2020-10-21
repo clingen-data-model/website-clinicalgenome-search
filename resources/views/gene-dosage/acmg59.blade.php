@@ -180,7 +180,7 @@
 		})
 
 		$table.on('load-success.bs.table', function (e, name, args) {
-=
+
 			$("body").css("cursor", "default");
 
 			if (name.hasOwnProperty('error'))
@@ -194,7 +194,7 @@
 		})
 
 		$table.on('post-body.bs.table', function (e, name, args) {
-					]
+
 			$('[data-toggle="tooltip"]').tooltip();
 		})
 
