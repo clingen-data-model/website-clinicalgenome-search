@@ -2,7 +2,7 @@
         <form class="input-group" method="post" action="/gene-dosage/region_search">
             @csrf
         <div class="input-group-btn input-btn-region-prefix">
-                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="action-select-text">{{  $type ?? 'GRCh37' }}</span> <span class="caret"></span>
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="action-select-text">{{  $type ?? 'GRCh37' }}</span> <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
                   <li><a href="#" class="action-select-grch" data-uuid="GRCh37">GRCh37</a></li>

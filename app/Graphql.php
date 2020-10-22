@@ -639,6 +639,8 @@ class Graphql
 
 			if ($gene !== null)
 			{
+				$node->GRCh37_position = $gene->grch37;
+            	$node->GRCh38_position = $gene->grch38;
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
 				$node->plof = $gene->plof;
@@ -768,6 +770,8 @@ class Graphql
 			$node->ucsc_id = $localgene->ucsc_id;
 			$node->uniprot_id = $localgene->uniprot_id;
 			$node->function = $localgene->function;
+			$node->GRCh37_position = $localgene->grch37;
+            $node->GRCh38_position = $localgene->grch38;
 		}
 
 		// currently, there is no easy way to track what needs dosage_curation entries belong in

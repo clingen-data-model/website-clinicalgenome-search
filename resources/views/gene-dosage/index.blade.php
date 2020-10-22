@@ -260,12 +260,32 @@
 					visible: false
 				},
 				{
-					title: 'Location',
+					title: 'Cytoband',
+					field: 'location',
+					//formatter: locationFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					visible: false,
+					sortable: true
+				},
+				{
+					title: 'GRCh37',
 					field: 'location',
 					formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'GRCh38',
+					field: 'location',
+					formatter: location38Formatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					visible: false,
 					sortable: true
 				},
 				{

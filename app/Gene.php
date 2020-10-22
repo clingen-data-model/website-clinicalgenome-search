@@ -86,7 +86,7 @@ class Gene extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status',
                                    'display_aliases', 'display_previous',
-                                   'display_omim'];
+                                   'display_omim', 'grch37', 'grch38'];
 
      public const TYPE_NONE = 0;
 
@@ -239,4 +239,33 @@ class Gene extends Model
          return implode(', ', $this->omim_id);
     }
 
+
+    /**
+     * Get a display formatted form of aliases
+     *
+     * @@param
+     * @return
+     */
+    public function getGrch37Attribute()
+    {
+         if ($this->chr === null || $this->start37 === null || $this->stop37 === null)
+              return null;
+
+         return 'chr' . $this->chr . ':' . $this->start37 . '-' . $this->stop37;
+    }
+
+
+    /**
+     * Get a display formatted form of aliases
+     *
+     * @@param
+     * @return
+     */
+    public function getGrch38Attribute()
+    {
+         if ($this->chr == null || $this->start38 == null || $this->stop38 == null)
+              return null;
+
+         return 'chr' . $this->chr . ':' . $this->start38 . '-' . $this->stop38;
+    }
 }

@@ -424,11 +424,11 @@ class GeneLib extends Model
 
           // ... but a lot is still in Jira
           $supplement = Jira::dosageDetail($args);
-
+          
           if ($supplement !== null)
           {
                // combine the two
-               foreach(['summary', 'genetype', 'GRCh37_position', 'GRCh38_position',
+               foreach(['summary', 'genetype',
                'triplo_score', 'haplo_score', 'cytoband', 'key',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids',

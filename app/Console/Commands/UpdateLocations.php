@@ -51,6 +51,9 @@ class UpdateLocations extends Command
 
                 $parts = explode("\t", $line);
 
+                if (strpos($parts[0], 'NW') === 0)
+                    continue;
+
                 if ($parts[2] != "gene")
                     continue;
 
@@ -96,6 +99,9 @@ class UpdateLocations extends Command
                     continue;
 
                 $parts = explode("\t", $line);
+
+                if (strpos($parts[0], 'NW') === 0)
+                    continue;
 
                 if ($parts[2] != "gene")
                     continue;

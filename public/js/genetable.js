@@ -58,8 +58,23 @@ function hgncFormatter(index, row) {
 }
 
 function locationFormatter(index, row) {
-  if (row.type == 0) return row.location;
+  //if (row.type == 0)
+  //   return row.location;
+  if (row.GRCh37_position == null) return '';
   var name = row.GRCh37_position.trim(); // strip off chr
+
+  if (name.indexOf("chr") === 0) name = name.substring(3);
+  var chr = name.indexOf(':');
+  var pos = name.indexOf('-');
+  var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  return html;
+}
+
+function location38Formatter(index, row) {
+  //if (row.type == 0)
+  //   return row.location;
+  if (row.GRCh38_position == null) return '';
+  var name = row.GRCh38_position.trim(); // strip off chr
 
   if (name.indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
