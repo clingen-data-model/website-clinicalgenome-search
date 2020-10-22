@@ -272,7 +272,26 @@ class GeneLib extends Model
 		$response = Graphql::geneLook($args);
 
 		return $response;
-	}
+     }
+     
+
+     /**
+     * Get a list of all genes and regions within the search params
+     *
+     * (Neo4j, GeneGraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneRegionList($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Gene data is locally populated from batch exports
+         $response = Gene::searchList($args);
+
+         return $response;
+    }
 
 
 	/**

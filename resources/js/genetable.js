@@ -13,11 +13,11 @@
 function detailFormatter(index, row) {
     var html = [];
 
-    $.each(row, function (key, value) {
+    /*$.each(row, function (key, value) {
         html.push('<p><b>' + key + ':</b> ' + value + '</p>')
-    })
+    })*/
 
-    return html.join('');
+    return 'This is a section for facts'; //html.join('');
 }
 
 
@@ -563,9 +563,9 @@ function cnvtriploFormatter(index, row) {
 
 function acmomimFormatter(index, row) {
 
-    var name = row.omim.substring(row.omim.lastIndexOf('/') + 1);
+    var name = row.omimgene.substring(row.omimgene.lastIndexOf('/') + 1);
 
-    return '<a href="' + row.omim + '">' + name + '</a>';
+    return '<a href="' + row.omimgene + '">' + name + '</a>';
 }
 
 function acmomimsFormatter(index, row) {

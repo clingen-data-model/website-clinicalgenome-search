@@ -132,7 +132,7 @@
 		{
 			title: 'Gene (OMIM)',
 			field: 'omimgene',
-			formatter: acmomimsFormatter,
+			formatter: acmomimFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'input',
 			searchFormatter: false,

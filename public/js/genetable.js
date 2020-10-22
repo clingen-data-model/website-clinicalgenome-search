@@ -12,10 +12,11 @@
  */
 function detailFormatter(index, row) {
   var html = [];
-  $.each(row, function (key, value) {
-    html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-  });
-  return html.join('');
+  /*$.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+  })*/
+
+  return 'This is a section for facts'; //html.join('');
 }
 /**
  * Show the advanced filter toolbar button if the showadvanced
@@ -367,8 +368,8 @@ function acmsymbolFormatter(index, row) {
 }
 
 function acmomimFormatter(index, row) {
-  var name = row.omim.substring(row.omim.lastIndexOf('/') + 1);
-  return '<a href="' + row.omim + '">' + name + '</a>';
+  var name = row.omimgene.substring(row.omimgene.lastIndexOf('/') + 1);
+  return '<a href="' + row.omimgene + '">' + name + '</a>';
 }
 
 function acmomimsFormatter(index, row) {

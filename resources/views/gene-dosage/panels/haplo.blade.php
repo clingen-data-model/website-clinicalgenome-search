@@ -37,7 +37,7 @@
         <ul class="list-unstyled">
           @foreach ($record->loss_pmids as $loss_pmid)
           <li class="mb-3 pb-3 border-bottom-1">
-            <a href="" class="">[PUBMED: {{ $loss_pmid['pmid'] }}]</a>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $loss_pmid['pmid'] }}" class="">PUBMED: {{ $loss_pmid['pmid'] }}</a>
             <div class="small  summariesShow mt-1" id="collapsesummary1">{{ $loss_pmid['desc'] ?? '' }}</div>
           </li>
           @endforeach

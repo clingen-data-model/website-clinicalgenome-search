@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
+			<h1><img src="/images/adept-icon-circle-gene.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
 			<h5><span class="ml-7">Location: {{ $region }}
 				@if ($region == 'INVALID')
 					&nbsp;(Original: {{ $original }})
@@ -18,7 +18,6 @@
 					<ul class="list-inline pb-0 mb-0 small">
 					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
 					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
 					</ul>
 				</div>
 			</div>
@@ -74,7 +73,7 @@
 	*/
 
 	var $table = $('#table');
-	var showadvanced = true;
+	var showadvanced = false;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
 	/* no longer used
@@ -224,7 +223,7 @@
 			locale: 'en-US',
 			columns: [
 				{
-					title: 'Gene/Region',
+					title: 'Gene',
 					field: 'symbol',
 					formatter: symbolFormatter,
 					cellStyle: cellFormatter,
@@ -246,76 +245,39 @@
 				{
 					title: 'Location',
 					field: 'location',
-					formatter: locationFormatter,
+					//formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
 				},
 				{
-					title: 'Haploinsufficiency',
-					field: 'haplo_assertion',
-					formatter: haploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'Triplosensitity',
-					field: 'triplo_assertion',
-					formatter: triploFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'OMIM',
-					field: 'omimlimk',
-					formatter: omimFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				/*{
-					title: 'Morbid',
-					field: 'morbid',
-					formatter: morbidFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},*/
-				/*{
-					title: '%HI',
-					field: 'hi',
-					formatter: hiFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'input',
-					searchFormatter: false,
-					sortable: true
-				},*/
-				{
-					title: 'pLI',
-					field: 'pli',
-					formatter: pliFormatter,
+					title: 'Chromosome',
+					field: 'chr',
+					//formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
 				},
-				/*{
-					field: 'date',
-					title: 'Reviewed',
-					formatter: reportFormatter,
+				{
+					title: 'Start',
+					field: 'start',
+					//formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					searchFormatter: false,
-					sortName: 'rawdate',
-					sortable: true,
-				}*/
+					sortable: true
+				},
+				{
+					title: 'Stop',
+					field: 'stop',
+					//formatter: locationFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true
+				},
 				{
 					title: 'Relationship',
 					field: 'relationship',
@@ -326,16 +288,7 @@
 					sortable: true
 				},
 				{
-					title: 'ISCA ID',
-					field: 'isca',
-					formatter: iscaFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'input',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					field: 'workflow',
+					field: 'status',
 					title: 'Status',
 					//formatter: reportFormatter,
 					cellStyle: cellFormatter,
@@ -399,13 +352,12 @@
     	$('[data-toggle="tooltip"]').tooltip();
 		$('[data-toggle="popover"]').popover();
 
-		var html = `@include("gene-dosage.panels.search")`;
 
-		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
-        $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
-		$(".fixed-table-toolbar .search .input-group:first").after(html);
+		//$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
+        //$(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
+		//$(".fixed-table-toolbar .search .input-group:first").after(html);
 
-		region_listener();
+		//region_listener();
 
   	});
 

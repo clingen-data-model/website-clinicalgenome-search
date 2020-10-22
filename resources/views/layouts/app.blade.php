@@ -34,7 +34,7 @@
           <form id="navSearchBar" method="post" action="{{ route('gene-search') }}">
             @csrf
             <div id="section_search_wrapper" class="mt-2 mb-2 input-group input-group-md">
-
+           <input type="hidden" class="buildtype" name="type" value="">
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
 	         <div class="input-group-btn">
 	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene</span></button>
@@ -308,6 +308,7 @@
         $( ".inputQueryRegion" ).show();
         $( ".inputQueryRegion .queryRegion" ).show();
         $( ".typeQueryLabel").text("GRCh37 Region");
+        $( ".buildtype").val("GRCh37");
       });
       $( ".typeQueryRegionGRCh38" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('region-search') }}");
@@ -320,6 +321,7 @@
         $( ".inputQueryRegion" ).show();
         $( ".inputQueryRegion .queryRegion" ).show();
         $( ".typeQueryLabel").text("GRCh38 Region");
+        $( ".buildtype").val("GRCh38");
       });
 
 

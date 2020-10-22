@@ -24,7 +24,10 @@
 					@endif
           @if($record->symbol)
 							<a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
-							@endif
+            @endif
+          @if($record->symbol)
+            <a target='external' href="{{env('CG_URL_CLINVAR_GENE')}}{{ $record->symbol }}[gene]" class="badge-info badge pointer">ClinVar <i class="fas fa-external-link-alt"></i> </a>
+          @endif
         </dd>
         <dt>HGNC Name</dt>
         <dd>{{ $record->name }}</dd>

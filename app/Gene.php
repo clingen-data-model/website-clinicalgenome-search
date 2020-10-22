@@ -251,7 +251,18 @@ class Gene extends Model
          if ($this->chr === null || $this->start37 === null || $this->stop37 === null)
               return null;
 
-         return 'chr' . $this->chr . ':' . $this->start37 . '-' . $this->stop37;
+          switch ($this->chr)
+          {
+               case '23':
+                    $chr = 'X';
+                    break;
+               case '24':
+                    $chr = 'Y';
+                    break;
+               default: 
+                    $chr = $this->chr;
+          }
+         return 'chr' . $chr . ':' . $this->start37 . '-' . $this->stop37;
     }
 
 
@@ -266,6 +277,101 @@ class Gene extends Model
          if ($this->chr == null || $this->start38 == null || $this->stop38 == null)
               return null;
 
-         return 'chr' . $this->chr . ':' . $this->start38 . '-' . $this->stop38;
+          switch ($this->chr)
+          {
+               case '23':
+                    $chr = 'X';
+                    break;
+               case '24':
+                    $chr = 'Y';
+                    break;
+               default: 
+                    $chr = $this->chr;
+          }
+         return 'chr' . $chr . ':' . $this->start38 . '-' . $this->stop38;
+    }
+
+
+    /**
+     * Search for all contained or overlapped genes and regions
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function searchList($args, $page = 0, $pagesize = 20)
+    {
+      // break out the args
+      foreach ($args as $key => $value)
+        $$key = $value;
+      
+      // initialize the collection
+      $collection = collect();
+      $gene_count = 0;
+      $region_count = 0;
+
+      // map string type to type flag
+      if ($type == 'GRCh37')
+        ;
+      else if ($type == 'GRCh38')
+        ;
+      else
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
+
+      // break out the location and clean it up
+      $location = preg_split('/[:-]/', trim($region), 3);
+
+      $chr = strtoupper($location[0]);
+      
+      if (strpos($chr, 'CHR') == 0)   // strip out the chr
+          $chr = substr($chr, 3);
+
+      //vet the search terms
+      $start = str_replace(',', '', $location[1] ?? '');  // strip out commas
+      $stop = str_replace(',', '', $location[2] ?? '');
+
+      if ($start == '' || $stop == '')
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
+
+      if (!is_numeric($start) || !is_numeric($stop))
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
+
+      if ((int) $start >= (int) $stop)
+        return (object) ['count' => $collection->count(), 'collection' => $collection,
+                        'gene_count' => $gene_count, 'region_count' => $region_count];
+
+      if ($type == 'GRCh37')
+          $regions = self::where('chr', $chr)
+                        ->where('start37', '<=', (int) $stop)
+                        ->where('stop37', '>=', (int) $start)->get();
+     else if ($type == 'GRCh38')
+          $regions = self::where('chr', $chr)
+                         ->where('start38', '<=', (int) $stop)
+                         ->where('stop38', '>=', (int) $start)->get();
+     
+      foreach ($regions as $region)
+      {
+     
+          $region->type = $type;
+          $gene_count++;
+          if ($type == 'GRCh37')
+          {
+               $region->start = $region->start37;
+               $region->stop = $region->stop37;
+          }
+          else if ($type == 'GRCh38')
+          {
+               $region->start = $region->start38;
+               $region->stop = $region->stop38;
+          }
+          $region->relationship = ($region->start >= (int) $start && $region->stop <= (int) $stop ? 'Contained' : 'Overlap');
+        $collection->push($region);
+
+      }
+      
+      return (object) ['count' => $collection->count(), 'collection' => $collection,
+                      'gene_count' => $gene_count, 'region_count' => $region_count];
     }
 }

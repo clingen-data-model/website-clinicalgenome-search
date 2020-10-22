@@ -53,3 +53,6 @@ Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look')
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
 
+// region search
+Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');
+

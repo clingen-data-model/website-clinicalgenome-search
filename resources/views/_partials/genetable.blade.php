@@ -24,10 +24,12 @@
     data-show-columns="true"
     data-show-columns-toggle-all="true"
     data-search-formatter="false"
-    {{-- data-detail-view="true" --}}
+    data-detail-view="true"
     data-show-export="true"
     {{-- data-click-to-select="true" --}}
-    {{-- data-detail-formatter="detailFormatter" --}}
+    data-detail-view-icon="false"
+    data-detail-view-by-click="true"
+    data-detail-formatter="detailFormatter"
     data-minimum-count-columns="2"
     {{-- data-show-pagination-switch="true" --}}
     data-pagination="true"

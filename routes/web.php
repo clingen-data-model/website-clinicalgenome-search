@@ -101,7 +101,7 @@ Route::group(['prefix' => 'regions'], function () {
 
 	Route::get('/', 'RegionController@index')->name('region-index');
 
-	Route::post('/', 'RegionController@index')->name('region-search');
+	Route::post('/', 'RegionController@search')->name('region-search');
 
 });
 

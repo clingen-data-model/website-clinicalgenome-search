@@ -362,6 +362,7 @@ class Jira extends Model
 
           foreach ($response->issues as $issue)
           {
+               //dd($issue);
                // map the jira response into a somewhat sane structure
                $node = new Nodal([
                     'key' => $issue->key,

@@ -23,7 +23,7 @@ class Acmg59 extends JsonResource
             'pmids' => $this->pmids,
             'age' => $this->age,
             'gene' => $this->gene,
-            'omimgene' => $this->omimgene,
+            'omimgene' => $this->geneomim,
             'haplo_assertion' => $this->gain,
             'triplo_assertion' => $this->loss
             //'date' => $this->displayDate($this->dosage_report_date),
