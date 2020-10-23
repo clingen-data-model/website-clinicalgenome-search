@@ -243,7 +243,7 @@
 					visible: false
 				},
 				{
-					title: 'Location',
+					title: 'Cytoband',
 					field: 'location',
 					//formatter: locationFormatter,
 					cellStyle: cellFormatter,
@@ -256,7 +256,7 @@
 					field: 'chr',
 					//formatter: locationFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'input',
+					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -289,10 +289,19 @@
 				},
 				{
 					field: 'status',
-					title: 'Status',
-					//formatter: reportFormatter,
+					title: 'Activity',
+					formatter: badgeFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					field: 'date_last_curated',
+					title: 'Last Curated',
+					//formatter: badgeFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
 				}

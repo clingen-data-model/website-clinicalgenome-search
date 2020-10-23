@@ -65,7 +65,8 @@ class Gene extends Model
 			'alias_symbol' => 'array',
                'prev_symbol' => 'array',
                'omim_id' => 'array',
-               'history' => 'array'
+               'history' => 'array',
+               'activity' => 'array'
 		];
 
      /**
@@ -77,7 +78,7 @@ class Gene extends Model
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
-                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'status' ];
+                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.

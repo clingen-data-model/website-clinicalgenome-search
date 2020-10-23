@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 //use Maatwebsite\Excel\Concerns\WithValidation;
 //use Maatwebsite\Excel\Concerns\WithMultipleSheets;
+
+use \App\Cpic;
 
 /**
  * 
@@ -29,7 +32,22 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class Excel implements ToCollection, WithHeadingRow
 {
 	use Importable;
-	
+    
+    /**
+     * @return int
+     */
+    /*public function startRow(): int
+    {
+        return 2;
+    }*/
+
+
+    public function headingRow(): int
+    {
+        return 2;
+    }
+
+
 	/**
      * The attributes that are mass assignable.
      *
@@ -37,16 +55,9 @@ class Excel implements ToCollection, WithHeadingRow
      */
 	public function collection(Collection $rows)
     {
-		die("cp1");
-		Validator::make($rows->toArray(), [
-             'onions' => 'required',
-         ])->validate();
-         
         foreach ($rows as $row) 
         {
-            /*User::create([
-                'name' => $row[0],
-            ]);*/
+           ;
         }
     }
     

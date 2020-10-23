@@ -47,7 +47,7 @@ function table_buttons() {
 
 
 function symbolFormatter(index, row) {
-  if (row.type == 0) return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>  <a href="/gene-dosage/' + row.hgnc_id + '" class="float-right"><i class="fas fa-map"></i></a>';else return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+  if (row.type == 0) return '<a href="/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';else return '<a href="https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
 }
 
 function geneFormatter(index, row) {
@@ -67,7 +67,7 @@ function locationFormatter(index, row) {
   if (name.indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
   var pos = name.indexOf('-');
-  var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  var html = '<table><tr><td class="pr-1 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
   return html;
 }
 
@@ -169,7 +169,13 @@ function morbidFormatter(index, row) {
 function reportFormatter(index, row) {
   /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
           + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-  if (row.type == 0) return '<a class="btn btn-block btn btn-default btn-xs" href="' + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';else return '<a class="btn btn-block btn btn-default btn-xs" href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  if (row.type == 0) {
+    /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
+        + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
+    return '<a class="btn btn-block btn btn-default btn-xs" href="' + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  } else {
+    return '<a class="btn btn-block btn btn-default btn-xs" href="' + 'https://dosage.clinicalgenome.org/clingen_region.cgi?id=' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+  }
 }
 
 function iscaFormatter(index, row) {

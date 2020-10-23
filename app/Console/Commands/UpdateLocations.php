@@ -51,7 +51,7 @@ class UpdateLocations extends Command
 
                 $parts = explode("\t", $line);
 
-                if (strpos($parts[0], 'NW') === 0)
+                if (substr($parts[0], 0, 2) != 'NC')
                     continue;
 
                 if ($parts[2] != "gene")
@@ -62,6 +62,13 @@ class UpdateLocations extends Command
                 $chr = ltrim($split[1], "0");
                 $start = $parts[3];
                 $stop = $parts[4];
+
+                if ($chr > 24)
+                {
+                    $chr = null;
+                    $start = null;
+                    $stop = null;
+                }
 
                 // the HGNC ID lives here
                 $moreparts = explode(";", $parts[8]);
@@ -100,7 +107,7 @@ class UpdateLocations extends Command
 
                 $parts = explode("\t", $line);
 
-                if (strpos($parts[0], 'NW') === 0)
+                if (substr($parts[0], 0, 2) != 'NC')
                     continue;
 
                 if ($parts[2] != "gene")
@@ -111,6 +118,13 @@ class UpdateLocations extends Command
                 $chr = ltrim($split[1], "0");
                 $start = $parts[3];
                 $stop = $parts[4];
+
+                if ($chr > 24)
+                {
+                    $chr = null;
+                    $start = null;
+                    $stop = null;
+                }
 
                 // the HGNC ID lives here
                 $moreparts = explode(";", $parts[8]);
