@@ -155,7 +155,8 @@ class GeneController extends Controller
 			'curations' => true,
 			'action_scores' => true,
 			'validity' => true,
-			'dosage' => true
+			'dosage' => true,
+			'pharma' => true
 		]);
 
 		if ($record === null)

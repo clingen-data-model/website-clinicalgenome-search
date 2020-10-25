@@ -24,6 +24,12 @@
 			</div>
 		</div>
 
+		<div class="col-md-5">
+
+			@include('gene-dosage.panels.selector')
+
+		</div>
+
 		<div class="col-md-12 light-arrows">
 				@include('_partials.genetable')
 
@@ -222,11 +228,23 @@
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 			locale: 'en-US',
+			sortName:  "location",
+			sortOrder: "asc",
 			columns: [
 				{
-					title: 'Gene/Region',
+					title: 'C<br>O',
+					field: 'relationship',
+					formatter: relationFormatter,
+					cellStyle: typeFormatter,
+					align: 'center',
+					filterControl: 'select',
+					searchFormatter: false,
+					sortable: false
+				},
+				{
+					title: 'Gene/<br>Region',
 					field: 'symbol',
-					formatter: symbolFormatter,
+					formatter: dssymbolFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					width: 250,
@@ -244,28 +262,41 @@
 					visible: false
 				},
 				{
-					title: 'Location',
-					field: 'location',
-					formatter: locationFormatter,
+					title: 'Issue',
+					field: 'isca',
+					//formatter: hgncFormatter,
 					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true,
+					visible: false
+				},
+				{
+					title: '{{ $type }}',
+					field: 'location',
+					formatter: location01Formatter,
+					cellStyle: cellFormatter,
+					sorter: locationSorter,
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true
 				},
 				{
-					title: 'Haploinsufficiency',
+					title: 'Haplo-<br>insufficiency',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
+					align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
 				},
 				{
-					title: 'Triplosensitity',
+					title: 'Triplo-<br>sensitity',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
+					align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
@@ -275,34 +306,48 @@
 					field: 'omimlimk',
 					formatter: omimFormatter,
 					cellStyle: cellFormatter,
+					align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
 				},
-				/*{
+				{
 					title: 'Morbid',
 					field: 'morbid',
 					formatter: morbidFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
+					align: 'center',
 					searchFormatter: false,
 					sortable: true
-				},*/
-				/*{
+				},
+				{
 					title: '%HI',
 					field: 'hi',
 					formatter: hiFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'center',
 					searchFormatter: false,
 					sortable: true
-				},*/
+				},
 				{
 					title: 'pLI',
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'center',
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'LO-<br>EUF',
+					field: 'plof',
+					formatter: plofFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					align: 'center',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -317,31 +362,14 @@
 					sortable: true,
 				}*/
 				{
-					title: 'Relationship',
-					field: 'relationship',
-					//formatter: pliFormatter,
+					field: 'workflow',
+					title: 'Reviewed',
+					formatter: dsreportFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
-				},
-				{
-					title: 'ISCA ID',
-					field: 'isca',
-					formatter: iscaFormatter,
-					cellStyle: cellFormatter,
+					align: 'center',
 					filterControl: 'input',
 					searchFormatter: false,
-					sortable: true
-				},
-				{
-					field: 'workflow',
-					title: 'Status',
-					//formatter: reportFormatter,
-					cellStyle: cellFormatter,
-					filterControl: 'select',
-					searchFormatter: false,
-					sortable: true
+					sortable: true,
 				}
 
 			]

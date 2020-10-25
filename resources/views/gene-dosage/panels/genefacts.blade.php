@@ -34,18 +34,18 @@
         <dt>Gene type</dt>
         <dd>{{ $record->genetype }}</dd>
         <dt>Locus type</dt>
-        <dd>gene with protein product</dd>
+        <dd>{{ $record->locus_type }}</dd>
         <dt>Previous symbols</dt>
         <dd>{{ $record->prev_symbols }}</dd>
         <dt>Alias symbols</dt>
         <dd>{{ $record->alias_symbols }}</dd>
         @if($record->hi)
         <dt>%HI</dt>
-        <dd>{{ $record->hi }}</dd>
+        <dd>{{ $record->hi }}<a href="http://gnomad.broadinstitute.org/faq" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
         @endif
-        @if($record->pli)
+        @if(isset($record->pli))
         <dt>pLI</dt>
-        <dd>{{  $record->pli }}</dd>
+        <dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about pLI score)</a></dd>
         @endif
         @if($record->plof)
         <dt>LOEUF</dt>

@@ -147,7 +147,7 @@ class Graphql
 					hgnc_id
 					chromosome_band
 					curation_activities
-					last_curated_date:
+					last_curated_date
 					dosage_curation {
 						curie
 						report_date
@@ -252,6 +252,7 @@ class Graphql
 				}
 			}
 		}
+
 		$by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
 			if (!empty($node->genetic_conditions))
 			{
@@ -298,6 +299,11 @@ class Graphql
 			//dd($curations_by_activity);
 			$node->curations_by_activity = $curations_by_activity;
 
+		if (!empty($pharma))
+		{
+			$entries = Cpic::gene($node->label)->get();
+			$node->pharma = $entries->toArray();
+		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
 
@@ -327,7 +333,7 @@ class Graphql
 					hgnc_id
 					chromosome_band
 					curation_activities
-					last_curated_date:
+					last_curated_date
 					dosage_curation {
 						curie
 						report_date
@@ -667,11 +673,8 @@ class Graphql
 			$collection->push($node);
 		}
 
-		$nhaplo = $collection->where('has_dosage_haplo', '!=', 0)->count();
-		$ntriplo = $collection->where('has_dosage_triplo', '!=', 0)->count();
-
 		return (object) ['count' => $response->genes->count, 'collection' => $collection,
-						'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+						'ngenes' => $response->genes->count, 'nregions' => 0];
 	}
 
 

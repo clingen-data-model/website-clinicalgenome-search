@@ -124,6 +124,58 @@ class DosageController extends Controller
 
 
 	/**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function region_show(Request $request, $id = '')
+    {
+
+		$record = GeneLib::dosageRegionDetail([ 'gene' => $id,
+										'curations' => true,
+										'action_scores' => true,
+										'validity' => true,
+										'dosage' => true
+									]);
+//dd($record);
+		if ($record === null)
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Dosage Sensitivity details')
+						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
+
+//dd($record);
+		// since we don't run through resources, we add some helpers here for now.  To be eventually
+		// moved back into the library
+		$record->haplo_assertion = GeneLib::haploAssertionString($record->haplo_score);
+        $record->triplo_assertion = GeneLib::triploAssertionString($record->triplo_score);
+        //$record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
+		//$record->date = $record->displayDate($record->dosage_report_date);
+
+		// some data just to test the ideogram and sequence viewer
+		$record->chromosome = $record->formatPosition($record->GRCh37_position, 'chr');
+
+		$record->start_location=$record->formatPosition($record->GRCh37_position, 'from');
+		$record->stop_location=$record->formatPosition($record->GRCh37_position, 'to');
+		$record->sv_start = $record->formatPosition($record->GRCh37_position, 'svfrom');
+		$record->sv_stop = $record->formatPosition($record->GRCh37_position, 'svto');
+		$record->GRCh38_sv_start = $record->formatPosition($record->GRCh38_position, 'svfrom');
+		$record->GRCh38_sv_stop = $record->formatPosition($record->GRCh38_position, 'svto');
+		//dd($record);
+
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "dosage",
+			'title' => $record->label . " curation results for Dosage Sensitivity"
+		]);
+
+		return view('gene-dosage.region_show', compact('display_tabs', 'record'));
+	}
+
+
+	/**
      * Display the results of a region search.
      *
      * @return \Illuminate\Http\Response

@@ -13,6 +13,12 @@
   border-radius:  1rem 0 0 1rem !important;
 }
 
+.info_panel {
+  //margin: 1em;
+  padding: 1em 2em 1em 2em;
+  border: 1px dotted #333;
+}
+
 .text-stats {
   font-size: .7rem !important;
   color: #555555;
@@ -35,6 +41,21 @@
 }
 .format-hi-low {
   color: green;
+}
+.region {
+  background-color: #D7BDE2;
+}
+.gene {
+  background-color: #A9CCE3;
+}
+.dosage-box {
+  display: inline-block;
+  //float: left;
+  height: 15px;
+  width: 15px;
+  //margin-bottom: 15px;
+  border: 1px solid black;
+  clear: both;
 }
 .bootstrap-table .dropdown-toggle .caret {
   display: none;

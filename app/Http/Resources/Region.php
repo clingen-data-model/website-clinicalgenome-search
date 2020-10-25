@@ -21,9 +21,9 @@ class Region extends JsonResource
             'name' => $this->summary,
             'location' => $this->GRCh37_position,
             'haplo_assertion' => $this->haplo_score,
-            'triplo_assertion' => $this->triplo_score
-            //'date' => $this->displayDate($this->dosage_report_date),
-            //'rawdate' => $this->dosage_report_date
+            'triplo_assertion' => $this->triplo_score,
+            'date' => $this->displayDate($this->jira_report_date),
+            'rawdate' => $this->jira_report_date
         ];
     }
 }

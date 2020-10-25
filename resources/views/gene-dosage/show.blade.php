@@ -26,10 +26,6 @@
     </div>
 
     <div class="col-md-12">
-      Assess whether there is evidence to support that <b>{{ $record->symbol }}</b> gene is dosage sensitive and should be targeted on a cytogenomic array.
-    </div>
-
-    <div class="col-md-12">
 
       <!-- include the genefacts panel -->
       @include('gene-dosage.panels.genefacts')

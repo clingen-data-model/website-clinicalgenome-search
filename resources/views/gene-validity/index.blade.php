@@ -80,6 +80,8 @@
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
+      sortName:  "symbol",
+			sortOrder: "asc",
       columns: [
         {
           title: 'Gene',
@@ -123,13 +125,14 @@
           title: 'MOI',
           field: 'moi',
           sortable: true,
-          filterControl: 'input',
+          filterControl: 'select',
           searchFormatter: false,
+          align: 'center',
           formatter: moiFormatter,
           cellStyle: cellFormatter,
         },
         {
-          title: 'EP',
+          title: 'Expert Panel',
           field: 'ep',
           cellStyle: cellFormatter,
           searchFormatter: false,
@@ -158,6 +161,7 @@
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
+          align: 'center',
           searchFormatter: false,
           filterControl: 'input',
           sortable: true

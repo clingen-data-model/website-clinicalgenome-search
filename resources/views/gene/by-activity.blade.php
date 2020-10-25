@@ -282,6 +282,86 @@
 				</div>
 				@endisset
 
+				@if (!empty($record->pharma))
+				<div class="row justify-content-center">
+					<div class="col-md-12">
+					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
+						  src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Pharmacogenomics - CPIC</h3>
+					  <div class="card mb-4">
+						<div class="card-body p-0 m-0">
+						  <table class="panel-body table mb-0">
+							<thead class="thead-labels">
+							  <tr>
+								<th class="col-sm-1 th-curation-group text-left">Gene</th>
+								<th class="col-sm-4">Drug</th>
+								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-3 text-center">Level</th>
+								<th class="col-sm-1 text-center">Date</th>
+								<th class="col-sm-1 text-center">CPC Clinical Guidelines</th>
+							  </tr>
+							</thead>
+							<tbody class="">
+							  @foreach($record->pharma as $entry)
+							  <tr>
+								<td class="">{{ $entry['gene'] }}</td>
+								<td class="">{{  $entry['drug'] }}</td>
+								<td class=""></td>
+								<td class=" text-center">Level {{ $entry['cpic_level'] }}</td>
+								<td class=" text-center">10/14/2020</td>
+								@if (empty($entry['guideline']))
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="https://cpicpgx.org/genes-drugs">None</a></td>
+								@else
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $entry['guideline'] }}">Guiideline</a></td>
+								@endif
+							  </tr>
+							  @endforeach
+							</tbody>
+						  </table>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				@endif
+
+				@if (!empty($record->pharma))
+				<div class="row justify-content-center">
+					<div class="col-md-12">
+					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
+						  src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Pharmacogenomics  - PharmaGKB</h3>
+					  <div class="card mb-4">
+						<div class="card-body p-0 m-0">
+						  <table class="panel-body table mb-0">
+							<thead class="thead-labels">
+							  <tr>
+								<th class="col-sm-1 th-curation-group text-left">Gene</th>
+								<th class="col-sm-4 ">Drug</th>
+								<th class="col-sm-2 text-center">Partner</th>
+								<th class="col-sm-3 text-center">Highest Level of Evidence</th>
+								<th class="col-sm-1 text-center">Date</th>
+								<th class="col-sm-1 text-center">Report</th>
+							  </tr>
+							</thead>
+							<tbody class="">
+							  @foreach($record->pharma as $entry)
+							  @if ($entry['pharmgkb_level_of_evidence'] == null)
+								@continue;
+							  @endif
+							  <tr>
+								<td class="">{{ $entry['gene'] }}</td>
+								<td class="">{{ $entry['drug'] }}</td>
+								<td class=" text-center">PharmaGKB</td>
+								<td class=" text-center">Level {{ $entry['pharmgkb_level_of_evidence'] }}</td>
+								<td class=" text-center">10/14/2020</td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation">View</a></td>
+							  </tr>
+							  @endforeach
+							</tbody>
+						  </table>
+						</div>
+					  </div>
+					</div>
+				  </div>
+				  @endif
 
 @endsection
 

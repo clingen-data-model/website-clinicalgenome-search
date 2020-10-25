@@ -114,7 +114,9 @@ class Jira extends Model
                'loss_comments' => $response->customfield_10198 ?? null,
                'loss_pheno_omim' => $response->customfield_10200 ?? null,
                'gain_comments' => $response->customfield_10199 ?? null,
-               'gain_pheno_omim' => $response->customfield_10201 ?? null
+               'gain_pheno_omim' => $response->customfield_10201 ?? null,
+               'resolution' => $response->resolution->name ?? 'In Review',
+               'issue_type' => $response->issuetype->name
           ]);
 
           // create the structures for pmid.  Jira will not send the fields if empty
@@ -177,6 +179,100 @@ class Jira extends Model
 
 
      /**
+     * Get details of a specific gene
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageRegionDetail($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+
+         $response = self::getIssue($gene);
+         //dd($response);
+         // map the jira response into a somewhat sane structure
+         $node = new Nodal([
+              'summary' => $response->summary,
+              'key' => $gene,
+              'genetype' => $response->customfield_10156->value ?? 'unknown',
+              'GRCh37_position' => $response->customfield_10160 ?? null,
+              'GRCh38_position' => $response->customfield_10532 ?? null,
+              'GRCh37_seqid' => $response->customfield_10158 ?? null,
+              'GRCh38_seqid' => $response->customfield_10537 ?? null,
+              'triplo_score' => $response->customfield_10166->value ?? 'unknown',
+              'haplo_score' => $response->customfield_10165->value ?? 'unknown',
+              'cytoband' => $response->customfield_10145 ?? null,
+              'chromosome_band' => $response->customfield_10145 ?? null,
+              'loss_comments' => $response->customfield_10198 ?? null,
+              'loss_pheno_omim' => $response->customfield_10200 ?? null,
+              'gain_comments' => $response->customfield_10199 ?? null,
+              'gain_pheno_omim' => $response->customfield_10201 ?? null,
+              'label' => $response->customfield_10202 ?? null,
+              'resolution' => $response->resolution->name ?? 'In Review',
+              'issue_type' => $response->issuetype->name
+         ]);
+
+         $node->date = $node->displayDate($response->resolutiondate ?? '');
+
+         // create the structures for pmid.  Jira will not send the fields if empty
+         $pmids = [];
+         if (isset($response->customfield_10183))
+              $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184];
+         if (isset($response->customfield_10185))
+              $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186];
+         if (isset($response->customfield_10187))
+              $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188];
+         $node->loss_pmids = $pmids;
+         $pmids = [];
+         if (isset($response->customfield_10189))
+              $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190];
+         if (isset($response->customfield_10191))
+              $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192];
+         if (isset($response->customfield_10193))
+              $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193];
+         $node->gain_pmids = $pmids;
+
+         // for the omim fields, transform into structure and add title
+         $omims = [];
+         if (!empty($node->loss_pheno_omim))
+         {
+              foreach (explode(',', $node->loss_pheno_omim) as $item)
+              {
+                   $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+              }
+         }
+         $node->loss_pheno_omim = $omims;
+
+         $omims = [];
+         if (!empty($node->gain_pheno_omim))
+         {
+              foreach (explode(',', $node->gain_pheno_omim) as $item)
+              {
+                   $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+              }
+         }
+         $node->gain_pheno_omim = $omims;
+
+         // for 30 and 40, Jira also sends text
+         if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+              $node->triplo_score = 30;
+         else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+              $node->triplo_score = 40;
+
+         if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+              $node->haplo_score = 30;
+         else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+              $node->haplo_score = 40;
+
+
+    //dd($node);	
+
+         return $node;	
+    }
+
+
+     /**
      * Get a list of recurrent CNVs
      *
      * @return Illuminate\Database\Eloquent\Collection
@@ -194,18 +290,19 @@ class Jira extends Model
 
           if (empty($response))
                return $collection;
-
+//dd($response->issues);
           foreach ($response->issues as $issue)
           {
                // map the jira response into a somewhat sane structure
                $node = new Nodal([
                     'key' => $issue->key,
                     'summary' => $issue->fields->summary,
-                    'GRCh37_position' => $issue->fields->customfield_10160,
+                    'GRCh37_position' => trim($issue->fields->customfield_10160),
                     'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
-                    'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown'
+                    'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown',
+                    'jira_report_date' => $issue->fields->resolutiondate ?? ''
                ]);
-               
+
                // for 30 and 40, Jira also sends text
                if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
                     $node->triplo_score = 30;
@@ -429,7 +526,7 @@ class Jira extends Model
                     'hi' => null,
                     'triplo_assertion' => $issue->fields->customfield_10166->value ?? 'unknown',
                     'haplo_assertion' => $issue->fields->customfield_10165->value ?? 'unknown',
-                    'resolved_date' => $issue->fields->resolutiondate
+                    'resolved_date' => $issue->fields->resolutiondate ?? ''
                ]);
 
                // for 30 and 40, Jira also sends text

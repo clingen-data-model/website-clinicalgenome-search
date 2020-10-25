@@ -61,6 +61,7 @@ class Cpic extends Model
      */
 	protected $fillable = ['gene', 'drug', 'guideline', 'cpic_level', 'cpic_level_status',
                             'pharmgkb_level_of_evidence', 'pgx_on_fda_label', 'cpic_publications_pmid',
+                            'hgnc_id', 'pa_id', 'is_vip', 'has_va', 'had_cpic_guideline',
                             'notes', 'type', 'status' ];
 
 	/**

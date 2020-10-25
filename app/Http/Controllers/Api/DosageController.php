@@ -48,8 +48,8 @@ class DosageController extends Controller
         return ['total' => $results->count + $jresults->count, 
                 'totalNotFiltered' => $results->count + $jresults->count,
                 'rows'=> DosageResource::collection($results->collection->concat($jresults->collection)),
-                'nhaplo' => $results->nhaplo + $jresults->nhaplo,
-                'ntriplo' => $results->ntriplo + $jresults->ntriplo];
+                'ngenes' => $results->count,
+                'nregions' => $jresults->count];
     }
 
 
@@ -110,7 +110,7 @@ class DosageController extends Controller
 										'direction' => $input['order'] ?? 'ASC',
 										'search' => $input['search'] ?? null,
 										'curated' => true ]);
-        
+
         if ($results === null)
             return GeneLib::getError();
 

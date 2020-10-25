@@ -160,6 +160,8 @@ Route::group(['prefix' => 'gene-dosage'], function () {
 
 	Route::get('/acmg59', 'DosageController@acmg59')->name('dosage-acmg59');
 
+	Route::get('/region/{id?}', 'DosageController@region_show')->name('dosage-region-show');
+
 	Route::get('/{id?}', 'DosageController@show')->name('dosage-show');
 });
 

@@ -451,8 +451,10 @@ class GeneLib extends Model
                'triplo_score', 'haplo_score', 'cytoband', 'key',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+               'resolution', 'issue_type',
                'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
                {
+                    // Prefer the NIH wording over the local Jira one.
                     if ($field == 'genetype' && !empty($response->locus_group))
                     {
                          $response->$field = $response->locus_group;
@@ -472,6 +474,53 @@ class GeneLib extends Model
 
           return $response;
      }
+
+
+     /**
+     * Get details of a particular gene with dosage sensitivitiy
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageRegionDetail($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+          $response = new Nodal([]);
+     
+         // ... but a lot is still in Jira
+         $supplement = Jira::dosageRegionDetail($args);
+         
+         if ($supplement !== null)
+         {
+              // combine the two
+              foreach(['summary', 'genetype', 'label', 'date',
+              'triplo_score', 'haplo_score', 'cytoband', 'key',
+              'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+              'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+              'GRCh37_position', 'GRCh38_position', 'chromosome_band',
+              'resolution', 'issue_type',
+              'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
+              {
+                   if ($field == 'genetype' && !empty($response->locus_group))
+                   {
+                        $response->$field = $response->locus_group;
+                        continue;
+                   }
+                   $response->$field = $supplement->$field;
+              }
+         }
+
+         // need the titles from Omim
+         $omim = null; //Omim::omimid($)->first();
+
+         if ($omim !== null)
+         {
+              $response->omimtitle = $omim->titles;
+         }
+//dd($response);
+         return $response;
+    }
 
 
      /**

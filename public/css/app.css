@@ -19227,142 +19227,6 @@ tr.DEFINITIVE td.DEFINITIVE {
   padding-bottom: 5px;
 }
 
-/* CSS Document */
-
-.hideDataTableFilters .dataTables_filter {
-  display: none;
-}
-
-a.info-popover {
-  color: #000;
-}
-
-.info-popover:hover {
-  cursor: help;
-}
-
-.info-popover-template .popover-title {
-  margin: 0;
-  padding: 3px 14px 11px 14px;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 10px;
-  background-color: #fff;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  display: block;
-}
-
-.fixedHeader-floating .floating-hide {
-  display: none;
-}
-
-#interactive_curations_table_filter,
-#interactive_table_filter {
-  display: none;
-}
-
-#interactive_curations_form .input-group-addon {
-  background-color: #fff !important;
-  border: 1px solid #ccc;
-  border-right: 0px none;
-  padding-right: 0px;
-}
-
-.table-interactive {
-  border: 1px solid #ddd;
-  border-top: none !important;
-  border: none !important;
-}
-
-.heading-border-left {
-  border-left: 1px solid #ddd !important;
-}
-
-table.table-interactive thead th.heading-border {
-  border-left: none !important;
-  border-right: none !important;
-  border: 1px solid #ddd;
-  padding-bottom: 5px !important;
-}
-
-#interactive_curations_form .form-control {
-  border-left: 0px none;
-}
-
-table.table-interactive thead th,
-table.table-interactive thead td {
-  padding: 5px 15px 5px 15px !important;
-}
-
-table.table-interactive {
-  clear: both;
-  margin-top: 10px !important;
-  margin-bottom: 6px !important;
-  max-width: none !important;
-}
-
-table.table-bordered.table-interactive {
-  border-collapse: separate !important;
-}
-
-table.table-interactive thead .sorting:after,
-table.table-interactive thead .sorting_asc:after,
-table.table-interactive thead .sorting_desc:after {
-  top: auto !important;
-  bottom: 4px !important;
-}
-
-table.fixedHeader-floating {
-  position: fixed !important;
-  background-color: white;
-}
-
-table.fixedHeader-floating.no-footer {
-  border-bottom-width: 0;
-}
-
-table.fixedHeader-locked {
-  position: absolute !important;
-  background-color: white;
-}
-
-@media print {
-  table.fixedHeader-floating {
-    display: none;
-  }
-}
-
-table.dataTable thead th {
-  position: relative;
-  background-image: none !important;
-}
-
-table.dataTable thead th.sorting:after,
-table.dataTable thead th.sorting_asc:after,
-table.dataTable thead th.sorting_desc:after {
-  position: absolute;
-  bottom: 10px;
-  right: 8px;
-  display: block;
-  font-family: "Font Awesome 5 Free";
-}
-
-table.dataTable thead th.sorting:after {
-  content: "\F0DC";
-  color: #ddd;
-  font-size: 0.8em;
-  padding-top: 0.12em;
-}
-
-table.dataTable thead th.sorting_asc:after {
-  content: "\F0DE";
-}
-
-table.dataTable thead th.sorting_desc:after {
-  content: "\F0DD";
-}
-
 .input-,
 .input-group-xl > .form-control,
 .input-group-xl > .input-group-addon,
@@ -19432,6 +19296,11 @@ table.dataTable thead th.sorting_desc:after {
   border-radius: 1rem 0 0 1rem !important;
 }
 
+.info_panel {
+  padding: 1em 2em 1em 2em;
+  border: 1px dotted #333;
+}
+
 .text-stats {
   font-size: 0.7rem !important;
   color: #555555;
@@ -19457,6 +19326,22 @@ table.dataTable thead th.sorting_desc:after {
 
 .format-hi-low {
   color: green;
+}
+
+.region {
+  background-color: #D7BDE2;
+}
+
+.gene {
+  background-color: #A9CCE3;
+}
+
+.dosage-box {
+  display: inline-block;
+  height: 15px;
+  width: 15px;
+  border: 1px solid black;
+  clear: both;
 }
 
 .bootstrap-table .dropdown-toggle .caret {

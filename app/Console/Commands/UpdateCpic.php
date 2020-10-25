@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use App\Imports\Excel;
+use App\Imports\ExcelGKB;
 
 use App\Cpic;
 use App\GeneLib;
@@ -55,6 +56,45 @@ class UpdateCpic extends Command
             echo "Updating  " . $row['gene'] . "\n";
 
             $stat = Cpic::updateOrCreate(['gene' => $row['gene'], 'drug' => $row['drug']], $row);
+
+        }
+
+        echo "Augmenting pharma data from pharmGKB ...\n";
+
+        $file = base_path() . '/data/pharmgkb/genes.tsv';
+			
+		try {
+					
+			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
+			$file = fopen($file,"r");
+
+		} catch (\Exception $e) {
+		
+			echo "(E001) Error accessing pharmGKB data\n";
+			exit;
+			
+		}
+	
+		// discard the header
+		$line = fgets($file);
+		
+		/*$parts = explode("\t", $line);
+			
+		echo $parts[29];
+		exit;*/
+		
+		// parse the remaining file
+		while (($line = fgets($file)) !== false)
+		{
+			$row = explode("\t", $line);
+        
+            echo "Updating  " . $row[5] . "\n";
+
+            $records = Cpic::gene($row[5])->get();
+
+            foreach($records as $record)
+                $record->update(['hgnc_id' => $row[2], 'pa_id' => $row[0], 'is_vip' => $row[8],
+                    'has_va' => $row[9], 'had_cpic_guideline' => $row[11]]);
 
         }
 

@@ -21,7 +21,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-md-12 light-arrows">
 				@include('_partials.genetable')
 
 		</div>
@@ -82,6 +82,8 @@
   	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 		locale: 'en-US',
+		sortName:  "location",
+		sortOrder: "asc",
 		columns: [
 		{
 			title: 'Region Name',
@@ -93,12 +95,13 @@
 			sortable: true
 		},
 		{
-			title: 'Location on GRCh37',
+			title: 'Location on<br>GRCh37',
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
 			formatter: cnvlocationFormatter,
 			cellStyle: cellFormatter,
+			sorter: locationSorter,
 			searchFormatter: false
 			//visible: false
         },
@@ -108,27 +111,29 @@
 			filterControl: 'select',
 			formatter: cnvhaploFormatter,
 			cellStyle: cellFormatter,
+			align: "center",
 			searchFormatter: false,
 			sortable: true
         },
 		{
-			title: 'Triplosensitity',
+			title: 'Triplosensitivity',
 			field: 'cnvtriplo_assertion',
 			filterControl: 'select',
 			formatter: cnvtriploFormatter,
 			cellStyle: cellFormatter,
+			align: "center",
 			searchFormatter: false,
 			sortable: true
-        }/*,
+        },
 		{
 			field: 'date',
 			title: 'Reviewed',
 			sortable: true,
 			filterControl: 'input',
 			cellStyle: cellFormatter,
-			formatter: reportFormatter,
+			formatter: cnvreportFormatter,
 			sortName: 'rawdate'
-        }*/
+        }
       ]
     })
 

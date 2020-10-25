@@ -114,7 +114,7 @@
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($dosage->report_date) }}</td>
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ $dosage->curie ?? '#' }}">View report</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ route('dosage-show', $record->hgnc_id) }}">View report</a></td>
 								</tr>
 						@endforeach
 
@@ -126,7 +126,7 @@
 		@endforelse
 
 		<!-- Gene Dosage Catchall -->
-		@if(!empty($record->dosage_curation ))
+		@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map))
 		<div class="card">
 			<div class="card-header text-white bg-primary">
 				<h3 class="text-white h4 panel-title p-0 m-0"><i> {{ $record->symbol ?? '' }} </i></h3>
@@ -164,7 +164,7 @@
 							</td>
 							<td class=" @if(!$loop->first) border-0 @endif "></td>
 							<td class=" @if(!$loop->first) border-0 @endif text-center">{{ $record->displayDate($record->dosage_curation->report_date) }}</td>
-							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View report</a></td>
+							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="{{ route('dosage-show', $record->hgnc_id) }}">View report</a></td>
 						</tr>
 					@endforeach
 					</tbody>

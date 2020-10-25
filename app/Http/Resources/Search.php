@@ -20,7 +20,7 @@ class Search extends JsonResource
             'symbol' => $this->symbol,
             'isca' => $this->issue,
             'hgnc_id' => $this->hgnc_id,
-            'GRCh37_position' => $this->location,
+            'location' => $this->location,
             'haplo_assertion' => (is_numeric($this->gain) ? GeneLib::shortAssertionString($this->gain) : $this->gain),
             'triplo_assertion' => (is_numeric($this->loss) ? GeneLib::shortAssertionString($this->loss) : $this->loss),
             'haplo_history' => null,
@@ -29,11 +29,14 @@ class Search extends JsonResource
             'thr' => 0,
             'omimlink' => $this->omim,
             'relationship' => $this->relationship,
-            'pli' => $this->pli,
+            'pli' => is_null($this->pli) ? null : round($this->pli, 2),
+            'hi' => is_null($this->hi) ? null : round($this->hi, 2),
+            'morbid' => $this->morbid ?? 0,
+            'plof' => is_null($this->plof) ? null : round($this->plof, 2),
             'type' => $this->type,
-            'workflow' => $this->workflow
-            //'date' => $this->displayDate($this->dosage_report_date),
-            //'rawdate' => $this->dosage_report_date
+            'workflow' => $this->workflow,
+            'date' => $this->displayDate($this->dosage_report_date),
+            'rawdate' => $this->dosage_report_date
         ];
     }
 }

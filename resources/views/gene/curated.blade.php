@@ -77,6 +77,8 @@
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
+      sortName:  "symbol",
+			sortOrder: "asc",
       columns: [
         [{
           title: 'Gene',
@@ -122,7 +124,7 @@
           field: 'has_dosage_haplo',
           formatter: hashaploFormatter,
           align: 'center',
-          filterControl: 'input',
+          filterControl: 'select',
           searchFormatter: false,
           sortable: true
         },
@@ -131,7 +133,7 @@
           field: 'has_dosage_triplo',
           formatter: hastriploFormatter,
           align: 'center',
-          filterControl: 'input',
+          filterControl: 'select',
           searchFormatter: false,
           sortable: true
         }]

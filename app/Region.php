@@ -227,16 +227,38 @@ class Region extends Model
           if ($map !== null)
             $region->symbol = $map->symbol;
           $region->type = 0;  //gene
+
+          // rats, we need the hgnc_id until jira supports it directly
+          $g = Gene::name($region->symbol)->first();
+          if ($g !== null)
+          {
+            $region->hgnc_id = $g->hgnc_id; 
+            $region->plof = $g->plof;
+            $region->hi = $g->hi;
+            $region->pli = $g->pli;
+            $region->morbid = $g->morbid;
+          }
           $gene_count++;
         }
         else
         {
-          $region->symbol = 'get region name';
+          $region->symbol = $region->name;
           $region->type = 1;    //region
           $region_count++;
+          $region->plof = null;
+            $region->hi = null;
+            $region->pli = null;
         }
   
         // for 30 and 40, Jira also sends text
+        if ($region->loss == 'N/A')
+            $region->loss = "Not Yet Evaluated";
+        if ($region->gain == 'N/A')
+            $region->gain = "Not Yet Evaluated";
+        if ($region->loss == 'Not yet evaluated')
+            $region->loss = "Not Yet Evaluated";
+        if ($region->gain == 'Not yet evaluated')
+            $region->gain = "Not Yet Evaluated";
         if ($region->loss == "30: Gene associated with autosomal recessive phenotype")
               $region->loss = 30;
         else if ($region->loss == "40: Dosage sensitivity unlikely")
