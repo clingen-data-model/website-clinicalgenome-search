@@ -27,16 +27,10 @@ class TestController extends Controller
      */
     public function index()
     {
-		$b = GeneLib::geneActivityDetail([	'page' =>  0,
-		'pagesize' =>  "null",
-		'sort' => 'GENE_LABEL',
-		'direction' =>  'ASC',
-		'search' =>  null,
-		'gene' => 'HGNC:6769',
-		'curated' => false ]);
+		/*$b = Jira::updateIssue("ISCA-21328");
 
 		dd($b);
-		return DosageResource::collection($c);
+		return DosageResource::collection($c);*/
 	}
 
 

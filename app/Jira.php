@@ -5,6 +5,7 @@ namespace App;
 use Jenssegers\Model\Model;
 
 use JiraRestApi\Issue\IssueService;
+use JiraRestApi\Issue\IssueField;
 use JiraRestApi\User\UserService;
 use JiraRestApi\JiraException;
 
@@ -642,6 +643,63 @@ class Jira extends Model
 
           return $issue->$field ?? null;
      }
+
+
+     /**
+     * Get an issue
+     * 
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function updateIssue($issue, $field = 'fields')
+    {
+         return;
+         
+         try {
+              $issueService = new IssueService();
+              
+              $queryParam = [
+                   'expand' => [
+                        'renderedFields',
+                        'names',
+                        'schema',
+                        'transitions',
+                        'operations',
+                        'editmeta',
+                        'changelog',
+                   ]
+              ];
+
+              $issueField = new IssueField(true);
+
+               $issueField->addCustomField('customfield_12431', '59');
+
+                // optionally set some query params
+                $editParams = [
+                    'notifyUsers' => false,
+                ];
+
+                $begin = Carbon::now();
+                // You can set the $paramArray param to disable notifications in example
+                $issue = $issueService->update($issue, $issueField, $editParams);
+              $end = Carbon::now();
+              $record = new Minute([
+                   'system' => 'Search',
+                   'subsystem' => __METHOD__,
+                   'method' => 'query',
+                   'start' => $begin,
+                   'finish' => $end,
+                   'status' => 1
+
+              ]);
+              $record->save();
+              
+              //var_dump($issue->fields);	
+         } catch (JiraRestApi\JiraException $e) {
+              print("Error Occured! " . $e->getMessage());
+         }
+dd($issue);
+         return $issue->$field ?? null;
+    }
      
 
      /**

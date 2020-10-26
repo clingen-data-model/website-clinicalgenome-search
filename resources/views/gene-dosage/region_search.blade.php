@@ -342,7 +342,7 @@
 					sortable: true
 				},
 				{
-					title: 'LO-<br>EUF',
+					title: 'LO<br>EUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,

@@ -25,11 +25,11 @@
 							<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
 						</ul>
 					</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />More<br />Data
+					<li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />ACMG<br />CNV
 					</a>
 						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
 							<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
+							<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
 						</ul>
 					</li>
 					</ul>
@@ -424,7 +424,7 @@
 					sortable: true
 				},
 				{
-					title: 'LO-<br>EUF',
+					title: 'LO<br>EUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,
@@ -476,10 +476,28 @@
 		var html = `@include("gene-dosage.panels.selector")`;
 
 		$table.on('post-body.bs.table', function (e, name, args) {
-			console.log("post body fired");
 
 			$('[data-toggle="tooltip"]').tooltip();
 
+		})
+
+
+		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+			// split the object
+			$obj.attr('colspan',10);
+			$obj.addClass("bg-white");
+			if (row.type == 0)
+				$obj.before('<td class="gene"></td>');
+			else
+				$obj.before('<td class="region"></td>');
+			$obj.closest('tr').css('border-bottom', '2px solid black');
+			
+			
+			//$obj.addClass('detail-table-shade');
+			$obj.load( "api/dosage/expand/" + row.hgnc_id );
+
+			return false;
 		})
 
 	}

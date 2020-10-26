@@ -11,13 +11,14 @@
  * @param {*} row
  */
 function detailFormatter(index, row) {
+    console.log('default Formatter fired');
     var html = [];
 
     /*$.each(row, function (key, value) {
         html.push('<p><b>' + key + ':</b> ' + value + '</p>')
     })*/
 
-    return 'This is a section for facts'; //html.join('');
+    return false;
 }
 
 

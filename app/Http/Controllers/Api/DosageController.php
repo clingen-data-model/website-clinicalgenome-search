@@ -147,4 +147,15 @@ class DosageController extends Controller
                 'nhaplo' => $results->nhaplo,
                 'ntriplo' => $results->ntriplo];
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function expand(ApiRequest $request)
+    {
+        return view('gene-dosage.expand');
+    }
 }

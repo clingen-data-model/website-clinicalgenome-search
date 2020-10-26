@@ -29,7 +29,7 @@
     {{-- data-click-to-select="true" --}}
     {{-- data-detail-view-icon="false" --}}
     {{-- data-detail-view-by-click="true" --}}
-    data-detail-formatter="detailFormatter"
+    {{-- data-detail-formatter="detailFormatter" --}}
     data-minimum-count-columns="2"
     {{-- data-show-pagination-switch="true" --}}
     data-pagination="true"
