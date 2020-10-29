@@ -26,10 +26,6 @@ Route::get('/', function () {
 // Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
 // Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
 
-/*
- *	download dosage csv
- */
-Route::get('/gene-validity/download', 'ValidityController@download')->name('validity-download');
 
 
 /*
@@ -84,6 +80,8 @@ Route::group(['prefix' => 'drugs'], function () {
 Route::group(['prefix' => 'gene-validity'], function () {
 
 		Route::get('/', 'ValidityController@index')->name('validity-index');
+
+		Route::get('/download', 'ValidityController@download')->name('validity-download');
 
 		Route::get('/page/{page}', 'ValidityController@index');
 
