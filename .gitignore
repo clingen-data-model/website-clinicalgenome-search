@@ -4,6 +4,9 @@
 /public/js/genetable.js
 /public/storage
 /storage/*.key
+/data/*.dat
+/data/hg19/*.gff3
+/data/hg38/*.gff
 /vendor
 .env
 .env.backup
