@@ -92,18 +92,18 @@
 	 * Listener for displaying only genes
 	 *
 	 * */
-	$('.action-show-genes').on('click', function() {
+	$('.action-show-genes-btn').on('click', function() {
 		var viz = [];
 
-		if ($(this).hasClass('fa-toggle-on'))
+		if ($(this).find('.action-show-genes').hasClass('fa-toggle-on'))
 		{
-			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$(this).find('.action-show-genes').removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-genes-text').html('Off')
 		}
 		else
 		{
 			viz.push(0);
-			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$(this).find('.action-show-genes').removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-genes-text').html('On')
 		}
 
@@ -121,21 +121,20 @@
 	 * Listener for displaying only regions
 	 *
 	 * */
-	$('.action-show-regions').on('click', function() {
+	$('.action-show-regions-btn').on('click', function() {
 		var viz = [];
-
 		if ($('.action-show-genes').hasClass('fa-toggle-on'))
 			viz.push(0);
 
-		if ($(this).hasClass('fa-toggle-on'))
+		if ($(this).find('.action-show-regions').hasClass('fa-toggle-on'))
 		{
-			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$(this).find('.action-show-regions').removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-regions-text').html('Off')
 		}
 		else
 		{
 			viz.push(1);
-			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$(this).find('.action-show-regions').removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-regions-text').html('On')
 		}
 
