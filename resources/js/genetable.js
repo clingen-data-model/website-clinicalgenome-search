@@ -69,7 +69,10 @@ function typeFormatter(index, row) {
 
 function nullFormatter(index, row)
 {
-    return '';
+    if (row.type == 0)
+        return '<span>G</span>';
+    else
+        return '<span>R</span>';
 }
 
 function geneFormatter(index, row) {
@@ -306,7 +309,7 @@ function morbidFormatter(index, row) {
 function reportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-    
+
     if (row.type == 0)
     {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
@@ -708,7 +711,7 @@ function acmtriploFormatter(index, row) {
   function dsreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-    
+
     if (row.type == 0)
     {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
@@ -775,11 +778,9 @@ function locationSorter(one, two)
 				oneloc[2] = parseInt(oneloc[2]);
 				twoloc[2] = parseInt(twoloc[2]);
 				return (oneloc[2] < twoloc[2] ? -1 : 1);
-				
+
 			}
 		}
-	
+
 		return 0;
     }
-    
-    

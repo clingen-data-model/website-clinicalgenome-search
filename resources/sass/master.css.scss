@@ -42,21 +42,34 @@
 .format-hi-low {
   color: green;
 }
-.region {
-  background-color: #D7BDE2;
+.dosage-box.region, td.region span, .dosage-box.gene, td.gene span {
+  padding: 0px 3px;
+  font-size: 13px;
+  border-radius: 10rem;
+  color: #fff;
 }
-.gene {
-  background-color: #A9CCE3;
+.bootstrap-table table.table > tbody > tr > td.global_table_cell.region,
+.bootstrap-table table.table > tbody > tr > td.global_table_cell.gene {
+  padding-right: 0rem !important;
+  padding-left: .2rem !important;
 }
-.dosage-box {
-  display: inline-block;
-  //float: left;
-  height: 15px;
-  width: 15px;
-  //margin-bottom: 15px;
-  border: 1px solid black;
-  clear: both;
-}
+.dosage-box.region, td.region span {
+   background-color: #D7BDE2;
+   background-color: #663468;
+ }
+.dosage-box.gene, td.gene span {
+   background-color: #A9CCE3;
+   background-color: #417279;
+ }
+// .dosage-box {
+//   display: inline-block;
+//   //float: left;
+//   height: 15px;
+//   width: 15px;
+//   //margin-bottom: 15px;
+//   border: 1px solid black;
+//   clear: both;
+// }
 .detail-table-shade {
   background-color: #FEF9E7;
 }
