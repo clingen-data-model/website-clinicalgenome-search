@@ -273,7 +273,7 @@ class GeneLib extends Model
 
 		return $response;
      }
-     
+
 
      /**
      * Get a list of all genes and regions within the search params
@@ -443,7 +443,7 @@ class GeneLib extends Model
 
           // ... but a lot is still in Jira
           $supplement = Jira::dosageDetail($args);
-          
+
           if ($supplement !== null)
           {
                // combine the two
@@ -487,10 +487,10 @@ class GeneLib extends Model
               return collect([]);
 
           $response = new Nodal([]);
-     
+
          // ... but a lot is still in Jira
          $supplement = Jira::dosageRegionDetail($args);
-         
+
          if ($supplement !== null)
          {
               // combine the two
@@ -773,7 +773,7 @@ class GeneLib extends Model
           if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Haplosufficiency', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
+		 return str_replace('####', 'Haploinsufficiency', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
      }
 
 
