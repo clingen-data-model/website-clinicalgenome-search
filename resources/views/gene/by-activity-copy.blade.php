@@ -7,8 +7,8 @@
 
 			</h1>
 			<strong>GENE ID: {{ $record->hgnc_id }}</strong>
-			<a class="btn btn-outline-primary bg-white btn-xs text-dark" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-				<i class="far fa-caret-square-down"></i> More gene facts
+			<a class="btn btn-facts btn-outline-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+				<i class="far fa-caret-square-down"></i> View Gene Facts
 			</a>
 </div>
 
@@ -130,7 +130,7 @@
 
 									<td class="text-center">
 										<div class="mx-4">
-										<a class="btn btn-xs btn-outline-primary mb-1 btn-block text-capitalize" href="/gene-validity/{{ $item->curation->curie }}">
+										<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="/gene-validity/{{ $item->curation->curie }}">
 										{{ $item->curation->classification->label }}
 										</a>
 										</div>
@@ -198,12 +198,12 @@
 									<td class="text-center">
 
 											@isset($item->curation->haploinsufficiency_assertion->dosage_classification->ordinal)
-										<a class="btn btn-xs btn-outline-primary mb-1 btn-block" href="{{ $item->curation->curie ?? '#' }}">
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $item->curation->curie ?? '#' }}">
 											{{ \App\GeneLib::haploAssertionString($item->curation->haploinsufficiency_assertion->dosage_classification->ordinal ?? null) }}
 											</a>
 											@endif
 											@isset($item->curation->triplosensitivity_assertion->dosage_classification->ordinal)
-										<a class="btn btn-xs btn-outline-primary mb-1 btn-block " href="{{ $item->curation->curie ?? '#' }}">
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $item->curation->curie ?? '#' }}">
 											{{ \App\GeneLib::triploAssertionString($item->curation->triplosensitivity_assertion->dosage_classification->ordinal ?? null) }}
 											</a>
 											@endif

@@ -2,46 +2,23 @@
 
 @section('content-heading')
 <div class="row mb-1 mt-1">
-	<div class="col-md-5">
+	<div class="col-md-5 mb-2">
 			<h1 class="h2 mb-0">{{ $record->label }}
 
 			</h1>
-			<strong>GENE ID: {{ $record->hgnc_id }}</strong>
-			<a class="btn btn-outline-primary bg-white btn-xs text-dark" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-				<i class="far fa-caret-square-down"></i> More gene facts
+			{{-- <strong></strong> --}}
+			<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+				<i class="far fa-caret-square-down"></i> View Gene Facts
 			</a>
 </div>
 
-	<div class="col-md-7 text-right">
-			<ul class="list-inline line-tight float-right mt-4 stat-wrapper p-1" style="">
-				@isset($record->curations_by_activity->gene_validity)
-				<li class="mr-0 pr-0">
-					<a href="#link-gene-validity" class="text-dark"><span class="h2 font-weight-light text-dark">{{ count((array)$record->curations_by_activity->gene_validity) }}</span></a>
-				</li>
-				<li class="mr-4 text-left pl-0">
-					<a href="#link-gene-validity" class="text-dark">
-					<div class="text-xs small text-dark">Gene-Disease Validity<br />Classifications <i class="fas fa-arrow-down"></i></div></a>
-				</li>
-				@endif
-				@isset($record->curations_by_activity->dosage_curation)
-				<li class="mr-0 pr-0">
-					<a href="#link-dosage-curation" class="text-dark"><span class="h2 font-weight-light text-dark">{{ count((array)$record->curations_by_activity->dosage_curation) }}</span></a>
-				</li>
-				<li class="mr-4 text-left pl-0">
-					<a href="#link-dosage-curation" class="text-dark">
-					<div class="text-xs small text-dark">Dosage Sensitivity<br />Classifications <i class="fas fa-arrow-down"></i></div></a>
-				</li>
-				@endif
-				@isset($record->curations_by_activity->actionability)
-				<li class="mr-0 pr-0">
-					<a href="#link-actionability" class="text-dark"><span class="h2 font-weight-light text-dark">{{ count((array)$record->curations_by_activity->actionability) }}</span></a>
-				</li>
-				<li class="mr-4 text-left pl-0">
-					<a href="#link-actionability" class="text-dark">
-					<div class="text-xs small text-dark">Clinical Actionability<br />Assertions <i class="fas fa-arrow-down"></i></div></a>
-				</li>
-				@endif
-				</ul>
+	<div class="col-md-7 text-right mt-2">
+		  <ul class="list-inline pb-0 mb-0 small">
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ count((array)$record->curations_by_activity->gene_validity) }}</span><br />Gene-Disease Validity<br />Classifications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ count((array)$record->curations_by_activity->actionability) }}</span><br /> Clinical Actionability<br />Assertions</li>
+			</ul>
+
 </div>
 			@include("_partials.facts.gene-panel")
 
@@ -65,22 +42,22 @@
 				@endif
 				</ul> --}}
 			</div>
-			<ul class="nav nav-tabs mt-1" style="border-bottom: none;">
+			<ul class="nav nav-tabs mt-1" style="">
           {{-- <li class="" style="margin-bottom: 0px;">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class="pt-2 pb-2 text-primary">
               Curations By Disease
             </a>
 					</li> --}}
-					<li class="" style="margin-bottom: 0px;">
-            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class="pt-2 pb-2  bg-white text-primary">
-              ClinGen's Curations
+					<li class="active" style="">
+            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class="">
+              Curation Summaries
             </a>
           </li>
-          <li class="" style="margin-bottom: 0px;">
-            <a href="{{ route('gene-external', $record->hgnc_id) }}" class="pt-2 pb-2 text-primary">External Genomic Resources </a>
+          <li class="" style="">
+            <a href="{{ route('gene-external', $record->hgnc_id) }}" class="">External Genomic Resources </a>
           </li>
-          <li class="" style="margin-bottom: 0px;">
-            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="pt-2 pb-2 text-primary" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
+          <li class="" style="">
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
           </li>
 		</ul>
 
@@ -105,9 +82,8 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
 								<th class="col-sm-2 text-left">MOI</th>
-								<th class="col-sm-3 text-center">Classification</th>
-								<th class="col-sm-1 text-center">Date</th>
-								<th class="col-sm-1 text-center">Report</th>
+								<th class="col-sm-2  ">Classification</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
 							<tbody class="">
@@ -124,23 +100,16 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												<div class="text-overflow">
 												{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }}
 												<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
-												</div>
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
-												<div class="mx-4">
-												<a class="btn btn-xs btn-outline-primary mb-1 btn-block text-capitalize" href="/gene-validity/{{ $validity->curie }}">
+												<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/gene-validity/{{ $validity->curie }}">
 												{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}
 												</a>
-												</div>
 											</td>
-
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">{{ $record->displayDate($validity->report_date) }}</td>
-
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="/gene-validity/{{ $validity->curie }}">View</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -156,9 +125,10 @@
 				@endisset
 
 
+
 				@php ($header_dos = true) @endphp
 				@forelse ($record->genetic_conditions as $disease)
-				@if(count($disease->gene_dosage_assertions))
+				@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map) && count($disease->gene_dosage_assertions))
 				@if($header_dos == true)
 					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40"> Dosage Sensitivity</h3>
 					<div class="card mb-4">
@@ -170,9 +140,8 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
 								<th class="col-sm-2 text-center"></th>
-								<th class="col-sm-3 text-center">Haploinsufficiency &amp; Triplosensitivity</th>
-								<th class="col-sm-1 text-center">Date</th>
-								<th class="col-sm-1 text-center">Report</th>
+								<th class="col-sm-2">HI Score &amp; TS Score</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
 
@@ -193,22 +162,50 @@
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
-												<div class="mx-4">
 													@if($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
-													<a class="btn btn-xs btn-outline-primary mb-1 btn-block " href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">
+													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 													{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
 													</a>
 													@endif
 													@if($dosage->assertion_type != "HAPLOINSUFFICIENCY_ASSERTION")
-													<a class="btn btn-xs btn-outline-primary mb-1 btn-block " href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">
+													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 													{{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
 													</a>
 													@endif
-												</div>
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">{{ $record->displayDate($dosage->report_date) }}</td>
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="{{ env('CG_URL_CURATIONS_DOSAGE', '#') }}{{ $record->symbol }}&subject=">View</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
+										</tr>
+								@php ($first = false) @endphp
+								@endforeach
+
+								@php ($first = true) @endphp
+								@foreach($record->dosage_curation_map as $key => $value)
+										<tr>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+												{{ $record->label }}
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+											</td>
+
+											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
+													@if ($key == "haploinsufficiency_assertion")
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
+														{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													</a>
+													@else
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
+														{{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													</a>
+													@endif
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -235,10 +232,9 @@
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2 text-center"></th>
-								<th class="col-sm-3 text-center">Report</th>
-								<th class="col-sm-1 text-center">Date</th>
-								<th class="col-sm-1 text-center">Report</th>
+								<th class="col-sm-2"></th>
+								<th class="col-sm-2">Adult &amp; Pediatric Reports</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
 
@@ -259,15 +255,12 @@
 											</td>
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
-												<div class="mx-4">
-													<a class="btn btn-xs btn-outline-primary mb-1 btn-block " href="{{ $actionability->source }}">
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">
 													{{ $record->displayActionType($actionability->source) }}View Details
 													</a>
-												</div>
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center">{{ $record->displayDate($actionability->report_date) }}</td>
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}">View</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> VIEW -{{ $record->displayDate($actionability->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -295,9 +288,8 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4">Drug</th>
 								<th class="col-sm-2 text-center"></th>
-								<th class="col-sm-3 text-center">Level</th>
-								<th class="col-sm-1 text-center">Date</th>
-								<th class="col-sm-1 text-center">CPC Clinical Guidelines</th>
+								<th class="col-sm-2">Level</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
 							  </tr>
 							</thead>
 							<tbody class="">
@@ -306,12 +298,21 @@
 								<td class="">{{ $entry['gene'] }}</td>
 								<td class="">{{  $entry['drug'] }}</td>
 								<td class=""></td>
-								<td class=" text-center">Level {{ $entry['cpic_level'] }}</td>
-								<td class=" text-center">10/14/2020</td>
+								<td class=" text-center">
+									@if (empty($entry['guideline']))
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="https://cpicpgx.org/genes-drugs">
+										Level {{ $entry['cpic_level'] }}
+										<div class="small">[Guideline Not Available]</div></a>
+									@else
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="{{ $entry['guideline'] }}">
+											Level {{ $entry['cpic_level'] }}
+										<div class="small">[Guideline Available]</div></a>
+									@endif
+								</td>
 								@if (empty($entry['guideline']))
-								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="https://cpicpgx.org/genes-drugs">None</a></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@else
-								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $entry['guideline'] }}">Guiideline</a></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><i class="glyphicon glyphicon-file"></i><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@endif
 							  </tr>
 							  @endforeach
@@ -335,10 +336,10 @@
 							  <tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
-								<th class="col-sm-2 text-center">Partner</th>
-								<th class="col-sm-3 text-center">Highest Level of Evidence</th>
-								<th class="col-sm-1 text-center">Date</th>
-								<th class="col-sm-1 text-center">Report</th>
+								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-2">Highest Level of Evidence</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
+
 							  </tr>
 							</thead>
 							<tbody class="">
@@ -349,10 +350,10 @@
 							  <tr>
 								<td class="">{{ $entry['gene'] }}</td>
 								<td class="">{{ $entry['drug'] }}</td>
-								<td class=" text-center">PharmaGKB</td>
-								<td class=" text-center">Level {{ $entry['pharmgkb_level_of_evidence'] }}</td>
-								<td class=" text-center">10/14/2020</td>
-								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation">View</a></td>
+								<td class=" text-center"></td>
+								<td class="">
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 							  </tr>
 							  @endforeach
 							</tbody>
