@@ -60,7 +60,7 @@ function typeFormatter(index, row) {
 }
 
 function nullFormatter(index, row) {
-  return '';
+  if (row.type == 0) return '<span>G</span>';else return '<span>R</span>';
 }
 
 function geneFormatter(index, row) {
@@ -198,9 +198,9 @@ function reportFormatter(index, row) {
   if (row.type == 0) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
         + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-    return '<a class="btn btn-block btn btn-default btn-xs" href="' + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+    return '<a class="btn btn-xs btn-success btn-block" href="' + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
   } else {
-    return '<a class="btn btn-block btn btn-default btn-xs" href="' + '/gene-dosage/region/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+    return '<a class="btn btn-xs btn-success btn-block" href="' + '/gene-dosage/region/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
   }
 }
 
@@ -259,7 +259,11 @@ function asmondoFormatter(index, row) {
 }
 
 function asbadgeFormatter(index, row) {
-  return '<a class="btn btn-default btn-xs" href="/gene-validity/' + row.perm_id + '">' + '<i class="glyphicon glyphicon-file"></i> <strong>' + row.classification + '</strong></a>';
+  return '<a class="btn btn-default btn-block text-left btn-classification" href="/gene-validity/' + row.perm_id + '">' + '' + row.classification + '</a>';
+}
+
+function datebadgeFormatter(index, row) {
+  return '<a class="btn btn-xs btn-success btn-block" href="/gene-validity/' + row.perm_id + '"><i class="glyphicon glyphicon-file"></i> ' + '' + row.released + '</a>';
 }
 
 function conditionFormatter(index, row) {
@@ -310,7 +314,7 @@ function moiFormatter(index, row) {
 
 function hasvalidityFormatter(index, row) {
   if (row.has_validity) {
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
   }
 
   return '';
@@ -318,7 +322,7 @@ function hasvalidityFormatter(index, row) {
 
 function hasactionabilityFormatter(index, row) {
   if (row.has_actionability) {
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id + '"><i class="glyphicon glyphicon-ok"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/genes/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
   }
 
   return '';
@@ -326,7 +330,7 @@ function hasactionabilityFormatter(index, row) {
 
 function hashaploFormatter(index, row) {
   if (row.has_dosage_haplo) {
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/gene-dosage/' + row.hgnc_id + '"><span class="hidden-sm hidden-xs">' + row.has_dosage_haplo + '</span></a>';
+    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">' + row.has_dosage_haplo + '</span></a>';
   }
 
   return '';
@@ -334,7 +338,7 @@ function hashaploFormatter(index, row) {
 
 function hastriploFormatter(index, row) {
   if (row.has_dosage_triplo) {
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/gene-dosage/' + row.hgnc_id + '"><span class="hidden-sm hidden-xs">' + row.has_dosage_triplo + '</span></a>';
+    return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">' + row.has_dosage_triplo + '</span></a>';
   }
 
   return '';
