@@ -1,4 +1,29 @@
 
+
+.btn.btn-classification {
+  padding: .1rem .4rem;
+  font-size: .95rem;
+  font-weight: 600 !important;
+  line-height: normal;
+  border-radius: .45rem;
+  background-color: rgb(242, 247, 252);
+  //background-color: #fff;
+  //border:none;
+  white-space: normal !important;
+}
+
+btn.btn-wrap {
+  white-space: normal !important;
+}
+
+.btn.btn-facts  {
+  padding: .1rem .4rem;
+  font-size: .85rem;
+  font-weight: 600 !important;
+}
+.btn.btn-classification:hover {
+  background-color: rgb(241, 241, 241);
+}
 .btn-outline-primary {
   color: #166894;
   border-color: #166894;
