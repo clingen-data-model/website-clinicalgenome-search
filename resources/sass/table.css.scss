@@ -4,6 +4,10 @@ table.border-none td {
   border-top:none !important;
 }
 
+td.valign-top {
+  vertical-align: top;
+}
+
 .table-spacing table td {
   padding: 10px !important;
   margin: 10px !important;
