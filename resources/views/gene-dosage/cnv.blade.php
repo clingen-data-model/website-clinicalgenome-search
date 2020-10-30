@@ -4,8 +4,16 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-7">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Curation of Recurrent CNVs</h1>
-      	{{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
+
+
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">  Curations of Recurrent CNVs</h1>
+          </td>
+        </tr>
+			</table>
+
 		</div>
 
 		<div class="col-md-5">

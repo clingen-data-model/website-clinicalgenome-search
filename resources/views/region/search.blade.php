@@ -4,12 +4,19 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<h1><img src="/images/adept-icon-circle-gene.png" width="50" height="50">  {{  $type }} Location Search Results</h1>
-			<h5><span class="ml-7">Location: {{ $region }}
+			<table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+					<td class="pl-2"><h1 class="h2 p-0 m-0">  {{  $type }} Location Search Results</h1>
+						<h5 class="mt-2"><span class="ml-7">Location: {{ $region }}
 				@if ($region == 'INVALID')
 					&nbsp;(Original: {{ $original }})
 				@endif
 			</span></h5>
+          </td>
+        </tr>
+      </table>
+
 		</div>
 
 		<div class="col-md-4">
@@ -227,7 +234,7 @@
 					formatter: symbolFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					width: 250,
+					width: 200,
 					searchFormatter: false,
 					sortable: true
 				},

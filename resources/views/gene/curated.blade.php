@@ -3,19 +3,19 @@
 @section('content')
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-md-7 curated-genes-table">
+      <div class="col-md-6 curated-genes-table">
         <h1><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="50" height="50"><img src="/images/clinicalActionability-on.png" width="50" height="50"><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Curated Genes</h1>
         {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-6">
         <div class="">
           <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">
-              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
-              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Validity<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique Curated<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Gene-Disease<br />Validity Genes</li>
               <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
-              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Genes</li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Sensitivity Genes</li>
             </ul>
           </div>
         </div>

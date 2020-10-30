@@ -4,7 +4,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-7">
-            <h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  Dosage Sensitivity</h1>
+
+            <table class="mt-3 mb-2">
+                <tr>
+                <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
+                <td class="pl-2"><h1 class="h2 p-0 m-0">  Dosage Sensitivity Downloads</h1>
+                </td>
+                </tr>
+            </table>
         </div>
 
         <div class="col-md-5">
@@ -26,8 +33,8 @@
                             <div class="small text-muted">Lorem ipsum dolor sit amet, at suas esse iracundia qui, has electram mediocrem forensibus ex, virtute adipiscing quo cu.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -35,8 +42,8 @@
                             <div class="small text-muted">Lorem ipsum dolor sit amet, at suas esse iracundia qui, has electram mediocrem forensibus ex, virtute adipiscing quo cu.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh37 (tsv)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -44,8 +51,8 @@
                             <div class="small text-muted">Lorem ipsum dolor sit amet, at suas esse iracundia qui, has electram mediocrem forensibus ex, virtute adipiscing quo cu.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -53,8 +60,8 @@
                             <div class="small text-muted">Lorem ipsum dolor sit amet, at suas esse iracundia qui, has electram mediocrem forensibus ex, virtute adipiscing quo cu.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
 
@@ -64,12 +71,12 @@
                         </td>
                         <td></td>
                         <td style="text-align:center"">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed"><button class="btn btn-default btn-sm mt-1 mb-3"><i class="fas fa-download"></i> HG19 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed"><button class="btn btn-default btn-sm mb-1"><i class="fas fa-download"></i> HG19 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed"><button class="btn btn-default mt-1 mb-3"><i class="fas fa-download"></i> HG19 (bed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed"><button class="btn btn-default mb-1"><i class="fas fa-download"></i> HG19 (aed)</button></a>
                         </td>
                         <td style="text-align:center">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed"><button class="btn btn-default btn-sm mt-1 mb-3"><i class="fas fa-download"></i> HG38 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed"><button class="btn btn-default btn-sm mb-1"><i class="fas fa-download"></i> HG38 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed"><button class="btn btn-default mt-1 mb-3"><i class="fas fa-download"></i> HG38 (bed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed"><button class="btn btn-default mb-1"><i class="fas fa-download"></i> HG38 (aed)</button></a>
                         </td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
@@ -78,7 +85,7 @@
                             <div class="small text-muted">Lorem ipsum dolor sit amet, at suas esse iracundia qui, has electram mediocrem forensibus ex, virtute adipiscing quo cu.</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default btn-sm"><i class="fas fa-download"></i> README</button><a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default"><i class="fas fa-download"></i> README</button><a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
 

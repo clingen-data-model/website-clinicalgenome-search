@@ -3,27 +3,30 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-7">
-			<h1><img src="/images/clinicalValidity-on.png" width="50" height="50">  Gene-Disease Validity</h1>
-      {{-- <h3>Clingen had information on <span id="gene-count">many</span> curated genes</h3> --}}
+
+
+	  <div class="col-md-7">
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/clinicalValidity-on.png" width="40" height="40"></td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">  Gene-Disease Validity </h1>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="col-md-5">
-      <div class="">
-        <div class="text-right p-2">
-          <ul class="list-inline pb-0 mb-0 small">
+			<div class="">
+				<div class="text-right p-2">
+					<ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br /> Expert<br />Panels</li>
-            <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options</a>
-                <ul class="dropdown-menu dropdown-menu-left">
-                  <li><a href="/gene-validity/download">Summary Data (CSV)</a></li>
-                </ul>
-            </li>
           </ul>
-         </div>
-      </div>
+				</div>
+			</div>
     </div>
+
 
     <div class="col-md-12 light-arrows">
 			@include('_partials.genetable')
@@ -127,7 +130,7 @@
           sortable: true,
           filterControl: 'select',
           searchFormatter: false,
-          align: 'center',
+          //align: 'center',
           formatter: moiFormatter,
           cellStyle: cellFormatter,
         },
@@ -148,23 +151,24 @@
           sortable: true
         },
 		    {
-          field: 'released',
-          title: 'Released',
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          sortable: true,
-          filterControl: 'input',
-          sortName: 'date'
-        },
-		    {
           title: 'Classification',
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          align: 'center',
+          //align: 'center',
           searchFormatter: false,
           filterControl: 'input',
           sortable: true
+        },
+		    {
+          field: 'released',
+          title: 'Last Eval.',
+          cellStyle: cellFormatter,
+          formatter: datebadgeFormatter,
+          searchFormatter: false,
+          sortable: true,
+          filterControl: 'input',
+          sortName: 'date'
         }
       ]
     })

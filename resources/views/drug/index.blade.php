@@ -4,7 +4,13 @@
 <div class="container">
 	<div class="row justify-content-center">
     <div class="col-md-7 curated-genes-table">
-      <h1><span id="gene-count"></span><img src="/images/drugmed.png" width="50" height="50">  Drugs & Medications</h1>
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/drugmed.png" width="40" height="40">  </td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">Drugs & Medications</h1>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="col-md-5">

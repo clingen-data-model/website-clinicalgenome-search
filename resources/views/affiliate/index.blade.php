@@ -4,19 +4,25 @@
 <div class="container">
 	<div class="row justify-content-center">
 
-    <div class="col-md-7 curated-genes-table">
-      <h1><img src="/images/monitor_200x200.600x600.png" width="40" height="40">  Gene Curation Expert Panels</h1>
+    <div class="col-md-7">
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/clinicalValidity-on.png" width="40" height="40"></td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">  Gene Curation Expert Panels</h1>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="col-md-5">
-      <div class="">
-        <div class="text-right p-2">
-          <ul class="list-inline pb-0 mb-0 small">
+			<div class="">
+				<div class="text-right p-2">
+					<ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countPanels text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Expert Panels<br />with curations</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
           </ul>
-        </div>
-      </div>
+				</div>
+			</div>
     </div>
 
 		<div class="col-md-12 light-arrows">

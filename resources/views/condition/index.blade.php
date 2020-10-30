@@ -4,9 +4,14 @@
 <div class="container">
 	<div class="row justify-content-center">
     <div class="col-md-8 curated-genes-table">
-      <h1>
-        <img src="/images/disease.png" width="50" height="50">
-        Diseases</h1>
+
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/disease.png" width="40" height="40">  </td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">Diseases</h1>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="col-md-4">

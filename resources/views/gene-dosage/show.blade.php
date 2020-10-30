@@ -5,15 +5,22 @@
   <div class="row justify-content-center">
 
     <!-- Header -->
-    <div class="col-md-6">
-			<h1><img src="/images/dosageSensitivity-on.png" width="50" height="50">  {{ $record->symbol }}
-        <a class="btn btn-default btn-sm pl-2 pr-2 pt-1 pb-1 text-10px" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-          <i class="far fa-caret-square-down"></i> Gene Facts
-        </a>
-      </h1>
+    <div class="col-md-8">
+      <table class="mt-3 mb-2">
+        <tr>
+          <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">  {{ $record->symbol }}</h1>
+            <div>
+              <a class="btn btn-facts btn-outline-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <i class="far fa-caret-square-down"></i> Gene Facts
+              </a>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-4">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
