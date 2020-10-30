@@ -75,7 +75,8 @@
             <div class="mb-3"></div>
           @endif
           @isset($display_tabs['active'])
-          <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1">
+
+          <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1 ">
             {{-- <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
               <a class="nav-link" href="{{ route('home') }}">
                 Overview
@@ -87,70 +88,42 @@
               </a>
             </li>
 
-            <li class="nav-item @if ($display_tabs['active'] == "validity") active @endif ">
-              <a class="nav-link" href="{{ route('validity-index') }}">
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "validity") active @endif ">
+              <a class="nav-link  dropdown-toggle" href="{{ route('validity-index') }}"  aria-haspopup="true" aria-expanded="false">
                 Gene-Disease Validity
               </a>
-            </li>
-            <li class="nav-item @if ($display_tabs['active'] == "dosage") active @endif ">
-              <a class="nav-link" href="{{ route('dosage-index') }}">
+                <ul class="dropdown-menu">
+                  <li><a class="" href="{{ route('validity-index') }}">All curations</a></li>
+                  <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
+                  <li class="divider"></li>
+                  <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
+                </ul>
+              </li>
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "dosage") active @endif ">
+              <a class="nav-link  dropdown-toggle" href="{{ route('dosage-index') }}" aria-haspopup="true" aria-expanded="false">
                 Dosage Sensitivity
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('dosage-index') }}">All Curations</a></li>
+                <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
+                <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
+                <li><a href="{{ route('dosage-ftp') }}"><i class="fas fa-external-link-alt"></i> Additional Download Options</a></li>
+              </ul>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
               <a class="nav-link" target="external-actionability" href="{{ route('actionability-index') }}">
-                Clinical Actionability <i class="fas fa-external-link-alt small text-light"></i>
+                Clinical Actionability <i class="fas fa-external-link-alt small"></i>
               </a>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
               <a class="nav-link" target="external-erepo" href="{{ route('variant-path-index') }}">
-                Curated Variants <i class="fas fa-external-link-alt small text-light"></i>
+                Curated Variants <i class="fas fa-external-link-alt small"></i>
               </a>
             </li>
-            {{-- <li class="nav-item @if ($display_tabs['active'] == "affiliate") active @endif ">
-              <a class="nav-link" href="{{ route('affiliate-index') }}">
-                Curations by Expert Panel
-              </a>
-            </li> --}}
-            {{-- <li class="nav-item @if ($display_tabs['active'] == "variant_path") active @endif ">
-              <a class="nav-link" href="{{ route('variant-path-index') }}">
-                Variant Pathogenicity
-              </a>
-            </li>
-            @if ($display_tabs['active'] == "gene")
-            <li class="nav-item active  ">
-              <a class="nav-link" href="{{ route('gene-index') }}">
-                Gene
-              </a>
-            </li>
-            @endif
-            @if ($display_tabs['active'] == "disease")
-            <li class="nav-item active  ">
-              <a class="nav-link" href="{{ route('disease-index') }}">
-                Gene
-              </a>
-            </li>
-            @endif
-             --}}
-
-            <li role="presentation" class="nav-item dropdown @if ($display_tabs['active'] == "affiliate") active @endif">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                Expert Panels
-                </a>
-                <ul class="dropdown-menu">
-                  {{-- <li><a href="#">Genomic Browser</a></li> --}}
-                  {{-- <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
-                  <li role="separator" class="divider"></li> --}}
-                  <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Gene Curation Expert Panels with curations</a></li>
-                  <li><a class="" target="external-erepo" href="https://erepo.clinicalgenome.org/evrepo/">Variant Curation Expert Panels with curations</a></li>
-                  <li class="divider"></li>
-                  <li><a class="" target="_blank" href="https://clinicalgenome.org/affiliation/">About ClinGen's Expert Panels</a></li>
-                  {{-- <li role="separator" class="divider"></li>
-                  <li><a href="#">APIs and Downloads</a></li> --}}
-                </ul>
-              </li>
-            <li role="presentation" class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
-                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
+                <a class="nav-link dropdown-toggle"  href="#" >
                  More
                 </a>
                 <ul class="dropdown-menu">
