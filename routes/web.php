@@ -45,9 +45,11 @@ Route::group(['prefix' => 'genes'], function () {
 
 		Route::get('/curations/', 'GeneController@curated')->name('gene-curations');
 
-		Route::get('/{id?}', 'GeneController@show')->name('gene-show');
+		Route::get('/{id?}', 'GeneController@show_by_activity')->name('gene-show');
 
-		Route::get('/{id?}/by-activity', 'GeneController@show_by_activity')->name('gene-by-activity');
+		//Route::get('/{id?}/by-activity', 'GeneController@show_by_activity')->name('gene-by-activity');
+
+		Route::get('/{id?}/by-disease', 'GeneController@show_by_disease')->name('gene-by-disease');
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 

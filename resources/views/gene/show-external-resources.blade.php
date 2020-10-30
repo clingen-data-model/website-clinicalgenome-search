@@ -1,39 +1,62 @@
 @extends('layouts.app')
 
+@section('content-heading')
+<div class="row mb-1 mt-1">
+	<div class="col-md-5">
+			<table class="mt-3 mb-4">
+        <tr>
+          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+          <td class="pl-2">
+						<h1 class="h2 p-0 m-0">{{ $record->label }}</h1>
+						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+							<i class="far fa-caret-square-down"></i> View Gene Facts
+						</a>
+          </td>
+        </tr>
+      </table>
+
+			</h1>
+			{{-- <strong></strong> --}}
+
+</div>
+
+	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
+		  <ul class="list-inline pb-0 mb-0 small">
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ count((array)$record->curations_by_activity->gene_validity) }}</span><br />Gene-Disease Validity<br />Classifications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ count((array)$record->curations_by_activity->actionability) }}</span><br /> Clinical Actionability<br />Assertions</li>
+			</ul>
+
+</div>
+			@include("_partials.facts.gene-panel")
+
+			</div>
+			<ul class="nav nav-tabs mt-1" style="">
+          {{-- <li class="" style="margin-bottom: 0px;">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="pt-2 pb-2 text-primary">
+              Curations By Disease
+            </a>
+					</li> --}}
+					<li class="" style="">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="">
+              Curation Summaries
+            </a>
+          </li>
+          <li class="active" style="">
+            <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
+          </li>
+          <li class="" style="">
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
+          </li>
+		</ul>
+
+@endsection
+
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-		  <h1 class=" display-4 ">{{ $record->symbol }}
-				@include("_partials.facts.gene-button")
-		  </h1>
-		</div>
-		<div class="col-md-12">
-
-			@include("_partials.facts.gene-panel")
-
-			{{-- <h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2> --}}
-			<ul class="nav nav-tabs">
-          <li class="">
-            <a href="{{ route('gene-show', $record->hgnc_id) }}">
-              ClinGen's Curation Summaries
-            </a>
-          </li>
-          <li class="active">
-            <a href="{{ route('gene-external', $record->hgnc_id) }}" class=" bg-primary text-white">External Genomic Resources </a>
-          </li>
-          <li class="">
-            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>
-          </li>
-        </ul>
-			<div class="panel panel-default">
-          <div class="panel-heading" id="results_curation_summary_heading">
-            <div class="row">
-            	<div class="col-sm-12">
-	              External Resources
-	            </div>
-	          </div>
-          </div>
+			<div class="panel">
           <div id="results_curation_summary_details" class="panel-body results_curation_summary_details">
 
 

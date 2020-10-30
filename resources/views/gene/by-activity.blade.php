@@ -2,17 +2,25 @@
 
 @section('content-heading')
 <div class="row mb-1 mt-1">
-	<div class="col-md-5 mb-2">
-			<h1 class="h2 mb-0">{{ $record->label }}
+	<div class="col-md-5">
+			<table class="mt-3 mb-4">
+        <tr>
+          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+          <td class="pl-2">
+						<h1 class="h2 p-0 m-0">{{ $record->label }}</h1>
+						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+							<i class="far fa-caret-square-down"></i> View Gene Facts
+						</a>
+          </td>
+        </tr>
+      </table>
 
 			</h1>
 			{{-- <strong></strong> --}}
-			<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-				<i class="far fa-caret-square-down"></i> View Gene Facts
-			</a>
+
 </div>
 
-	<div class="col-md-7 text-right mt-2">
+	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
 		  <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ count((array)$record->curations_by_activity->gene_validity) }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
@@ -22,25 +30,6 @@
 </div>
 			@include("_partials.facts.gene-panel")
 
-
-
-			{{-- <ul class="list-inline mt-3 mb-4" style="">
-				@isset($record->curations_by_activity->gene_validity)
-				<li class="mr-5"><a href="#link-gene-validity" class="text-light"><span class="h3 font-weight-light text-light">{{ count((array)$record->curations_by_activity->gene_validity) }}<img src="/images/clinicalValidity-dark.png" style="margin-top:-4px" width="30" height="30"></span>
-					<div class="text-xs small text-light">Gene-Disease Validity<br />Classifications</div></a>
-				</li>
-				@endif
-				@isset($record->curations_by_activity->dosage_curation)
-				<li class="mr-5"><a href="#link-dosage-curation" class="text-light"><span class="h3 font-weight-light text-light">{{ count((array)$record->curations_by_activity->dosage_curation) }}<img src="/images/dosageSensitivity-dark.png" style="margin-top:-4px" width="30" height="30"></span>
-					<div class="text-xs small text-light">Dosage Sensitivity<br />Classifications</div></a>
-				</li>
-				@endif
-				@isset($record->curations_by_activity->actionability)
-				<li class="mr-5"><a href="#link-actionability" class="text-light"><span class="h3 font-weight-light text-light">{{ count((array)$record->curations_by_activity->actionability) }}<img src="/images/clinicalActionability-dark.png" style="margin-top:-4px" width="30" height="30"></span>
-					<div class="text-xs small text-light">Clinical Actionability<br />Assertions</div></a>
-				</li>
-				@endif
-				</ul> --}}
 			</div>
 			<ul class="nav nav-tabs mt-1" style="">
           {{-- <li class="" style="margin-bottom: 0px;">
@@ -49,15 +38,15 @@
             </a>
 					</li> --}}
 					<li class="active" style="">
-            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class="">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="">
               Curation Summaries
             </a>
           </li>
           <li class="" style="">
-            <a href="{{ route('gene-external', $record->hgnc_id) }}" class="">External Genomic Resources </a>
+            <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>
           <li class="" style="">
-            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
           </li>
 		</ul>
 
@@ -68,13 +57,17 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
+<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
+  <a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-primary active">Group By Activity</a>
+  <a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-default">Group By Gene-Disease Pair</a>
+</div>
 
 			@php ($header_val = true) @endphp
 			@forelse ($record->genetic_conditions as $key => $disease)
 				@if(count($disease->gene_validity_assertions))
 				@if($header_val == true)
-					<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Gene-Disease Validity</h3>
-					<div class="card mb-4">
+					<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Gene-Disease Validity</h3>
+					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
 							<thead class="thead-labels">
@@ -130,8 +123,8 @@
 				@forelse ($record->genetic_conditions as $disease)
 				@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map) && count($disease->gene_dosage_assertions))
 				@if($header_dos == true)
-					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40"> Dosage Sensitivity</h3>
-					<div class="card mb-4">
+					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
+					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 
 						<table class="panel-body table mb-0">
@@ -224,8 +217,8 @@
 				@forelse ($record->genetic_conditions as $key => $disease)
 					@if(count($disease->actionability_curations))
 				  @if($header_aci == true)
-					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40"> Actionability</h3>
-					<div class="card mb-4">
+					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Actionability</h3>
+					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
 							<thead class="thead-labels">
@@ -260,7 +253,7 @@
 													</a>
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> VIEW -{{ $record->displayDate($actionability->report_date) }}</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i>{{ $record->displayDate($actionability->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -279,8 +272,8 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Pharmacogenomics - CPIC</h3>
-					  <div class="card mb-4">
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenomics - CPIC</h3>
+					  <div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
 							<thead class="thead-labels">
@@ -328,7 +321,7 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px"> Pharmacogenomics  - PharmaGKB</h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenomics  - PharmaGKB</h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">

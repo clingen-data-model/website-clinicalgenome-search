@@ -109,7 +109,7 @@ class GeneController extends Controller
 	* @param  int  $id
 	* @return \Illuminate\Http\Response
 	*/
-	public function show(Request $request, $id = null)
+	public function show_by_disease(Request $request, $id = null)
 	{
 		if ($id === null)
 			return view('error.message-standard')
@@ -138,7 +138,7 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-		return view('gene.show', compact('display_tabs', 'record'));
+		return view('gene.by-disease', compact('display_tabs', 'record'));
 	}
 
 	public function show_by_activity(Request $request, $id = null)
