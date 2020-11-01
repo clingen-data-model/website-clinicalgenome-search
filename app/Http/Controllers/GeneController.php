@@ -73,7 +73,7 @@ class GeneController extends Controller
 			'title' => "Listing of HGNC Genes"
 		]);
 
-		$all = Gene::Paginate(1000);
+		$all = Gene::where("locus_group", "protein-coding gene")->Paginate(1000);
 
 		return view('gene.all', compact('display_tabs', 'all'));
 	}
