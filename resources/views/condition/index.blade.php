@@ -102,7 +102,7 @@
           searchFormatter: false
         },
         {
-          title: 'Last Curated',
+          title: 'Last Eval.',
           field: 'date',
           cellStyle: cellFormatter,
           searchFormatter: false,
