@@ -135,7 +135,7 @@
         },
 		{
 			field: 'date',
-			title: 'Reviewed',
+			title: 'Last Eval.',
 			sortable: true,
 			filterControl: 'input',
 			cellStyle: cellFormatter,
