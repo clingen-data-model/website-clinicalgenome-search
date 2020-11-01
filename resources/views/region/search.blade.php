@@ -304,7 +304,7 @@
 				},
 				{
 					field: 'date_last_curated',
-					title: 'Last Curated',
+					title: 'Last Eval.',
 					//formatter: badgeFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

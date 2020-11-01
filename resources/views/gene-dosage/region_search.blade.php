@@ -371,7 +371,7 @@
 				}*/
 				{
 					field: 'workflow',
-					title: 'Reviewed',
+					title: 'Last Eval.',
 					formatter: dsreportFormatter,
 					cellStyle: cellFormatter,
 					align: 'center',
