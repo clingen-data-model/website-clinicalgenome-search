@@ -72,7 +72,7 @@
             </a>
 					</li> --}}
 					<li class="" style="margin-bottom: 0px;">
-            <a href="{{ route('gene-by-activity', $record->hgnc_id) }}" class="pt-2 pb-2  bg-white text-primary">
+            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="pt-2 pb-2  bg-white text-primary">
               ClinGen's Curations
             </a>
           </li>
