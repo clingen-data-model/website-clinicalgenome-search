@@ -224,6 +224,9 @@ class Graphql
 			$node->function = $localgene->function;
 		}
 
+		$naction = 0;
+		$nvalid = 0;
+		$ndosage = 0;
 		// currently, there is no easy way to track what needs dosage_curation entries belong in
 		// the catch all, so we need to process the genetic conditions and add some flags.
 		$dosage_curation_map = ["haploinsufficiency_assertion" => true, "triplosensitivity_assertion" => true];
@@ -238,6 +241,16 @@ class Graphql
 		{
 			foreach($node->genetic_conditions as $condition)
 			{
+				//$nodeCollect = collect($node);
+				//dd($nodeCollect);
+				//dd(count($condition->gene_validity_assertions));
+				$naction = $naction + count($condition->actionability_curations);
+				$nvalid = $nvalid + count($condition->gene_validity_assertions);
+				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
+
+				//dd($naction);
+				//dd($nvalid);
+				//dd($ndosage);
 				foreach($condition->gene_dosage_assertions as $dosage)
 				{
 					switch ($dosage->assertion_type)
@@ -299,11 +312,21 @@ class Graphql
 			//dd($curations_by_activity);
 			$node->curations_by_activity = $curations_by_activity;
 
+
+		$node->naction = $naction;
+		$node->nvalid = $nvalid;
+		$node->ndosage = $ndosage;
+
+		//dd($node);
+
 		if (!empty($pharma))
 		{
 			$entries = Cpic::gene($node->label)->get();
 			$node->pharma = $entries->toArray();
 		}
+
+
+
 
 		$node->dosage_curation_map = $dosage_curation_map;
 

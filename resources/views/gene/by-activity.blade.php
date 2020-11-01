@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@php ($currations_set = false) @endphp
 
 @section('content-heading')
 <div class="row mb-1 mt-1">
@@ -22,9 +23,9 @@
 
 	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
 		  <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ count((array)$record->curations_by_activity->gene_validity) }}</span><br />Gene-Disease Validity<br />Classifications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ count((array)$record->curations_by_activity->actionability) }}</span><br /> Clinical Actionability<br />Assertions</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br /> Clinical Actionability<br />Assertions</li>
 			</ul>
 
 </div>
@@ -66,6 +67,7 @@
 			@forelse ($record->genetic_conditions as $key => $disease)
 				@if(count($disease->gene_validity_assertions))
 				@if($header_val == true)
+				@php ($currations_set = true) @endphp
 					<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Gene-Disease Validity</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
@@ -121,7 +123,8 @@
 
 				@php ($header_dos = true) @endphp
 				@forelse ($record->genetic_conditions as $disease)
-				@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map) && count($disease->gene_dosage_assertions))
+				@if(count($disease->gene_dosage_assertions))
+				@php ($currations_set = true) @endphp
 				@if($header_dos == true)
 					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
 					<div class="card mb-3">
@@ -141,7 +144,7 @@
 							<tbody class="">
 							@endif
 								@php ($first = true) @endphp
-								@foreach($disease->gene_dosage_assertions as $i => $dosage)
+								@forelse($disease->gene_dosage_assertions as $i => $dosage)
 										<tr>
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												{{ $record->label }}
@@ -170,7 +173,7 @@
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
-								@endforeach
+								@empty
 
 								@php ($first = true) @endphp
 								@foreach($record->dosage_curation_map as $key => $value)
@@ -202,10 +205,69 @@
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
+								@endforelse
 								@php ($header_dos = false) @endphp
+
 				@endisset
 				@empty
 				@endforelse
+				{{-- CHeck if no diseases for dosage and loop through --}}
+					@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map))
+					@if($header_dos == true)
+					@php ($currations_set = true) @endphp
+					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
+					<div class="card mb-3">
+						<div class="card-body p-0 m-0">
+
+						<table class="panel-body table mb-0">
+							<thead class="thead-labels">
+								<tr>
+								<th class="col-sm-1 th-curation-group text-left">Gene</th>
+								<th class="col-sm-4 text-left"> </th>
+								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-2">HI Score &amp; TS Score</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
+								</tr>
+							</thead>
+
+							<tbody class="">
+							@endif
+								@php ($first = true) @endphp
+								@foreach($record->dosage_curation_map as $key => $value)
+										<tr>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+												@if($loop->first)
+												{{ $record->label }}
+												@endif
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+											</td>
+
+											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
+													@if ($key == "haploinsufficiency_assertion")
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
+														{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													</a>
+													@else
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
+														{{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													</a>
+													@endif
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
+										</tr>
+								@php ($first = false) @endphp
+								@endforeach
+								@php ($header_dos = false) @endphp
+								@endisset
+
+
 				@if($header_dos == false)
 							</tbody>
 						</table>
@@ -217,6 +279,7 @@
 				@forelse ($record->genetic_conditions as $key => $disease)
 					@if(count($disease->actionability_curations))
 				  @if($header_aci == true)
+					@php ($currations_set = true) @endphp
 					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Actionability</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
@@ -269,11 +332,12 @@
 				@endisset
 
 				@if (!empty($record->pharma))
+				@php ($currations_set = true) @endphp
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
 						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenomics - CPIC</h3>
-					  <div class="card mb-3">
+					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
 							<thead class="thead-labels">
@@ -318,6 +382,7 @@
 				@endif
 
 				@if (!empty($record->pharma))
+				@php ($currations_set = true) @endphp
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
@@ -355,7 +420,13 @@
 					  </div>
 					</div>
 				  </div>
-				  @endif
+					@endif
+
+				{{-- Check to see if curations are showing --}}
+				@if($currations_set == false)
+						<br clear="both" />
+						<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
+				@endif
 
 @endsection
 
