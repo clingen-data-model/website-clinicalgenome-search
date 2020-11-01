@@ -74,8 +74,7 @@
   function responseHandler(res) {
 
     // TODO - Moved away from #gene-count to class... check if all changed and temove the # code below
-    $('#gene-count').html(res.total);
-    $('.gene-count').html(res.total);
+    $('.countCurations').html(res.total);
     $('.affiliate-id').html(res.id);
 
     return res

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
 
 
-    <div class="col-md-6">
+    <div class="col-md-5">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="40" height="40"><img src="/images/clinicalActionability-on.png" width="40" height="40" style="margin-left: -6px"><img src="/images/dosageSensitivity-on.png" width="40" height="40" style="margin-left: -6px"></td>
@@ -15,7 +15,7 @@
       </table>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-7">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
