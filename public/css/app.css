@@ -15764,7 +15764,7 @@ btn.btn-wrap {
 .btn-group-xs > .btn,
 .btn-xs {
   padding: 0.19rem 0.5rem 0.15rem 0.5rem;
-  font-size: 0.775rem;
+  font-size: 0.775rem !important;
   line-height: 1.5;
 }
 

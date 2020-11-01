@@ -618,10 +618,10 @@ function cnvtriploFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
     if (row.rawdate === "")
-        return '<a class="btn btn-block btn btn-default btn-xs" href="/gene-dosage/region/'
+        return '<a class="btn btn-xs btn-success btn-block" href="/gene-dosage/region/'
         + row.key + '"><i class="fas fa-file"></i>  Under Review</a>';
 
-    return '<a class="btn btn-block btn btn-default btn-xs" href="/gene-dosage/region/'
+      return '<a class="btn btn-xs btn-success btn-block" href="/gene-dosage/region/'
             + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
   }
 
@@ -716,17 +716,16 @@ function acmtriploFormatter(index, row) {
   function dsreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
-
     if (row.type == 0)
     {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-        return '<a class="btn btn-block btn btn-default btn-xs" href="'
+        return '<a class="btn btn-xs btn-success btn-block" href="'
             + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
     else
     {
-        return '<a class="btn btn-block btn btn-default btn-xs" href="'
+        return '<a class="btn btn-xs btn-success btn-block" href="'
             + '/gene-dosage/region/' + row.isca
             + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
