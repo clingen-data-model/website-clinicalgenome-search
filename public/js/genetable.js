@@ -487,9 +487,12 @@ function dssymbolFormatter(index, row) {
 }
 
 function relationFormatter(index, row) {
-  if (row.relationship === null) return '-';
+  var html = '';
+  if (row.type == 0) html += '<div class="global_table_cell font-weight-bold gene" title="Gene">G</div>';else html += '<div class="global_table_cell font-weight-bold region" title="Region">R</div>';
+  if (row.relationship === null) return html;
   var c = row.relationship.substring(0, 1);
-  return '<span class="font-weight-bold">' + c + '</span>';
+  html += '<div class="global_table_cell font-weight-bold carryover mt-1 mb-1" title="' + row.relationship + '">' + c + '</div>';
+  return html;
 }
 
 function locationSorter(one, two) {

@@ -3,12 +3,12 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-8">
+		<div class="col-md-5">
 			<table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">  {{  $type }} Location Search Results</h1>
+						<h1 class="h2 p-0 m-0">  {{  $type }} Search Results</h1>
         		<div>
 							<h5 class="mt-1"><span class="">Location: {{ $region }}
 								@if ($region == 'INVALID')
@@ -21,22 +21,22 @@
       </table>
 		</div>
 
-		<div class="col-md-4">
+		<div class="col-md-4 mt-3">
+
+			@include('gene-dosage.panels.selector')
+
+		</div>
+
+		<div class="col-md-3">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
 					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
 					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+					<!--<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>-->
 					</ul>
 				</div>
 			</div>
-		</div>
-
-		<div class="col-md-5">
-
-			@include('gene-dosage.panels.selector')
-
 		</div>
 
 		<div class="col-md-12 light-arrows">
@@ -240,10 +240,10 @@
 			sortOrder: "asc",
 			columns: [
 				{
-					title: 'C<br>O',
+					title: '',
 					field: 'relationship',
 					formatter: relationFormatter,
-					cellStyle: typeFormatter,
+					//cellStyle: typeFormatter,
 					align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,

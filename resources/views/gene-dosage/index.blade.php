@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-7">
+		<div class="col-md-5">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
@@ -13,7 +13,13 @@
       </table>
 		</div>
 
-		<div class="col-md-5">
+		<div class="col-md-4 mt-3">
+
+			@include('gene-dosage.panels.selector')
+
+		</div>
+
+		<div class="col-md-3">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
@@ -51,11 +57,6 @@
 			</div>
 		</div> --}}
 
-		<div class="col-md-8">
-
-			@include('gene-dosage.panels.selector')
-
-		</div>
 
 		<div class="col-md-12 light-arrows">
 

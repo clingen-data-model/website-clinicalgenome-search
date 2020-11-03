@@ -43,25 +43,34 @@
 .format-hi-low {
   color: green;
 }
-.dosage-box.region, td.region span, .dosage-box.gene, td.gene span {
+.dosage-box.region, td.region span, .dosage-box.gene, td.gene span, div.global_table_cell.region, div.global_table_cell.gene {
   padding: 0px 3px;
   font-size: 13px;
   border-radius: 10rem;
   color: #fff;
+}
+.dosage-box.carryover, .global_table_cell.carryover {
+  padding: 0px 3px;
+  font-size: 13px;
+  border-radius: 10rem;
+  color: #000;
 }
 .bootstrap-table table.table > tbody > tr > td.global_table_cell.region,
 .bootstrap-table table.table > tbody > tr > td.global_table_cell.gene {
   padding-right: 0rem !important;
   padding-left: .2rem !important;
 }
-.dosage-box.region, td.region span {
+.dosage-box.region, td.region span, div.global_table_cell.region {
    background-color: #D7BDE2;
    background-color: #663468;
  }
-.dosage-box.gene, td.gene span {
+.dosage-box.gene, td.gene span, div.global_table_cell.gene {
    background-color: #A9CCE3;
    background-color: #417279;
  }
+ .global_table_cell.carryover {
+  background-color: #A9CCE3;
+}
 // .dosage-box {
 //   display: inline-block;
 //   //float: left;

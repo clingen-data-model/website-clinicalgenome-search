@@ -280,7 +280,7 @@
 					@if(count($disease->actionability_curations))
 				  @if($header_aci == true)
 					@php ($currations_set = true) @endphp
-					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Actionability</h3>
+					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -369,7 +369,7 @@
 								@if (empty($entry['guideline']))
 								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@else
-								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><i class="glyphicon glyphicon-file"></i><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@endif
 							  </tr>
 							  @endforeach

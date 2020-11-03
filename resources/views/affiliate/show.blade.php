@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 
-    <div class="col-md-8">
+    <div class="col-md-7">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/clinicalValidity-on.png" width="40" height="40"></td>
@@ -14,7 +14,7 @@
       </table>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
@@ -139,24 +139,22 @@
           sortable: true
         },
         {
+          field: 'released',
+          title: 'Released',
+          cellStyle: cellFormatter,
+          sortable: true,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortName: 'date'
+        },
+        {
           title: 'Classification',
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          //align: 'center',
-          searchFormatter: false,
           filterControl: 'input',
+          searchFormatter: false,
           sortable: true
-        },
-		    {
-          field: 'released',
-          title: 'Last Eval.',
-          cellStyle: cellFormatter,
-          formatter: datebadgeFormatter,
-          searchFormatter: false,
-          sortable: true,
-          filterControl: 'input',
-          sortName: 'date'
         }
       ]
     })
