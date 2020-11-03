@@ -21,7 +21,8 @@ class Gene extends JsonResource
             'has_actionability' => $this->has_actionability,
             'has_validity' => $this->has_validity,
             'has_dosage' => $this->has_dosage,
-            'date' => $this->displayDate($this->last_curated_date)
+            'date' => $this->displayDate($this->last_curated_date),
+            'rawdate' => $this->last_curated_date
         ];
     }
     

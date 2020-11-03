@@ -107,6 +107,7 @@
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
+          sortName: 'rawdate',
           sortable: true
         }
       ]

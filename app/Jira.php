@@ -216,6 +216,9 @@ class Jira extends Model
 
          $node->date = $node->displayDate($response->resolutiondate ?? '');
 
+         // some of the region fields for G37 have commas in them, remove them
+         $node->GRCh37_position = str_replace(',', '', $node->GRCh37_position);
+
          // create the structures for pmid.  Jira will not send the fields if empty
          $pmids = [];
          if (isset($response->customfield_10183))
@@ -529,6 +532,9 @@ class Jira extends Model
                     'haplo_assertion' => $issue->fields->customfield_10165->value ?? 'unknown',
                     'resolved_date' => $issue->fields->resolutiondate ?? ''
                ]);
+
+               // some of the region fields for G37 have commas in them, remove them
+               $node->GRCh37_position = str_replace(',', '', $node->GRCh37_position);
 
                // for 30 and 40, Jira also sends text
                if ($node->triplo_assertion == "30: Gene associated with autosomal recessive phenotype")
