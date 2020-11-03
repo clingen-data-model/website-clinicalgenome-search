@@ -10146,30 +10146,30 @@ fieldset[disabled] .btn-primary.focus {
 
 .btn-success {
   color: #fff;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #009465;
+  border-color: #007b54;
 }
 
 .btn-success:focus,
 .btn-success.focus {
   color: #fff;
-  background-color: #449d44;
-  border-color: #255625;
+  background-color: #006142;
+  border-color: black;
 }
 
 .btn-success:hover {
   color: #fff;
-  background-color: #449d44;
-  border-color: #398439;
+  background-color: #006142;
+  border-color: #003d2a;
 }
 
 .btn-success:active,
 .btn-success.active,
 .open > .btn-success.dropdown-toggle {
   color: #fff;
-  background-color: #449d44;
+  background-color: #006142;
   background-image: none;
-  border-color: #398439;
+  border-color: #003d2a;
 }
 
 .btn-success:active:hover,
@@ -10182,8 +10182,8 @@ fieldset[disabled] .btn-primary.focus {
 .open > .btn-success.dropdown-toggle:focus,
 .open > .btn-success.dropdown-toggle.focus {
   color: #fff;
-  background-color: #398439;
-  border-color: #255625;
+  background-color: #003d2a;
+  border-color: black;
 }
 
 .btn-success.disabled:hover,
@@ -10195,12 +10195,12 @@ fieldset[disabled] .btn-primary.focus {
 fieldset[disabled] .btn-success:hover,
 fieldset[disabled] .btn-success:focus,
 fieldset[disabled] .btn-success.focus {
-  background-color: #5cb85c;
-  border-color: #4cae4c;
+  background-color: #009465;
+  border-color: #007b54;
 }
 
 .btn-success .badge {
-  color: #5cb85c;
+  color: #009465;
   background-color: #fff;
 }
 
@@ -12122,12 +12122,12 @@ a.label:focus {
 }
 
 .label-success {
-  background-color: #5cb85c;
+  background-color: #009465;
 }
 
 .label-success[href]:hover,
 .label-success[href]:focus {
-  background-color: #449d44;
+  background-color: #006142;
 }
 
 .label-info {
@@ -12444,7 +12444,7 @@ a.thumbnail.active {
 }
 
 .progress-bar-success {
-  background-color: #5cb85c;
+  background-color: #009465;
 }
 
 .progress-striped .progress-bar-success {
@@ -14711,6 +14711,10 @@ button.bg-dark:focus {
   margin-bottom: -1px !important;
 }
 
+.twitter-typeahead .tt-hint {
+  display: none !important;
+}
+
 .nav-tabs-search {
   border: none !important;
 }
@@ -14906,6 +14910,18 @@ header .dropdown-menu .svg-h-text {
 
 header .dropdown-toggle::after {
   margin-left: 0px !important;
+}
+
+.nav-tabs-search .dropdown-toggle::after {
+  margin-left: 0px !important;
+  display: inline-block;
+  margin-left: 0em;
+  vertical-align: 0.255em;
+  content: "";
+  border-top: 0.3em solid;
+  border-right: 0.3em solid transparent;
+  border-bottom: 0;
+  border-left: 0.3em solid transparent;
 }
 
 .svg-h-text {
