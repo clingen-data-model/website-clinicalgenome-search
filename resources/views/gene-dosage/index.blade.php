@@ -150,13 +150,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-default active').addClass('btn-warning');
 			$(this).html('<b>Show Genes</b>');
 		}
 		else
 		{
 			viz.push(0);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-default active').removeClass('btn-warning');
 			$(this).html('<b>Hide Genes</b>')
 		}
 
@@ -203,13 +203,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-default active').addClass('btn-warning');
 			$(this).html('<b>Show Regions</b>');
 		}
 		else
 		{
 			viz.push(1);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-default active').removeClass('btn-warning');
 			$(this).html('<b>Hide Regions</b>')
 		}
 

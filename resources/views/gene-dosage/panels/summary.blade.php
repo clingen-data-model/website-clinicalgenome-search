@@ -10,7 +10,7 @@
           @else
           (Region)
           @endif
-          <span class="float-right">Curation Status:  {{ $record->resolution }}</span>
+          <!--<span class="float-right">Curation Status:  {{ $record->resolution }}</span>-->
         </h3>
         <div class="row pt-2">
           <div class="col-sm-3 text-right mt-3">Dosage ID:</div>
@@ -20,6 +20,12 @@
           </div>
           <div class="col-sm-4">
             <div id="ideogram"> </div>
+          </div>
+        </div>
+        <div class="row pb-2 pt-3">
+          <div class="col-sm-3 text-right">Curation Status:</div>
+          <div class="col-sm-9 border-left-4 border-info bold">
+            {{ $record->resolution }}
           </div>
         </div>
         <div class="row pb-2 pt-3">
