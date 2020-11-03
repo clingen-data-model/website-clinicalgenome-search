@@ -120,6 +120,7 @@
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
+          sortName: 'rawdate',
           sortable: true
         }
       ]

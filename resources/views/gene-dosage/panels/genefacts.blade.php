@@ -53,7 +53,7 @@
         @endif
         <dt>Cytoband</dt>
         <dd>
-          {{ $record->chromosome_band }} <a href="/genes/{{ $record->hgnc_id }}" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
+          {{ $record->chromosome_band }}
         </dd>
         <dt>Genomic Coordinates</dt>
         <dd>

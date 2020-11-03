@@ -60,7 +60,7 @@ function typeFormatter(index, row) {
 }
 
 function nullFormatter(index, row) {
-  if (row.type == 0) return '<span>G</span>';else return '<span>R</span>';
+  if (row.type == 0) return '<span title="Gene">G</span>';else return '<span title="Region">R</span>';
 }
 
 function geneFormatter(index, row) {
@@ -259,7 +259,7 @@ function asmondoFormatter(index, row) {
 }
 
 function asbadgeFormatter(index, row) {
-  return '<a class="btn btn-default btn-block text-left btn-classification" href="/gene-validity/' + row.perm_id + '">' + '' + row.classification + '</a>';
+  return '<a class="btn btn-default btn-block text-center btn-classification" href="/gene-validity/' + row.perm_id + '">' + '' + row.classification + '</a>';
 }
 
 function datebadgeFormatter(index, row) {
