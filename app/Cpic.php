@@ -61,7 +61,7 @@ class Cpic extends Model
      */
 	protected $fillable = ['gene', 'drug', 'guideline', 'cpic_level', 'cpic_level_status',
                             'pharmgkb_level_of_evidence', 'pgx_on_fda_label', 'cpic_publications_pmid',
-                            'hgnc_id', 'pa_id', 'is_vip', 'has_va', 'had_cpic_guideline',
+                            'hgnc_id', 'pa_id', 'is_vip', 'has_va', 'had_cpic_guideline', 'pa_id_drug',
                             'notes', 'type', 'status' ];
 
 	/**
@@ -140,5 +140,17 @@ class Cpic extends Model
     {
     return $query->where('gene', $gene)->orderBy('guideline')->orderBy('drug');
     }
+
+
+    /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDrug($query, $drug)
+     {
+     return $query->where('drug', $drug);
+     }
 
 }

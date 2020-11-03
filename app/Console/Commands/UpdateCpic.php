@@ -45,6 +45,7 @@ class UpdateCpic extends Command
      */
     public function handle()
     {
+    
         echo "Importing pharma data from CPIC ...\n";
 
         $file = base_path() . '/data/cpicPairs.csv';
@@ -78,10 +79,6 @@ class UpdateCpic extends Command
 		// discard the header
 		$line = fgets($file);
 		
-		/*$parts = explode("\t", $line);
-			
-		echo $parts[29];
-		exit;*/
 		
 		// parse the remaining file
 		while (($line = fgets($file)) !== false)
@@ -95,6 +92,44 @@ class UpdateCpic extends Command
             foreach($records as $record)
                 $record->update(['hgnc_id' => $row[2], 'pa_id' => $row[0], 'is_vip' => $row[8],
                     'has_va' => $row[9], 'had_cpic_guideline' => $row[11]]);
+
+        }
+
+        echo "Augmenting drug data from pharmGKB ...\n";
+
+        $file = base_path() . '/data/pharmgkb/drugs.tsv';
+			
+		try {
+					
+			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
+			$file = fopen($file,"r");
+
+		} catch (\Exception $e) {
+		
+			echo "(E001) Error accessing pharmGKB data\n";
+			exit;
+			
+		}
+	
+		// discard the header
+		$line = fgets($file);
+		
+		/*$parts = explode("\t", $line);
+			
+		echo $parts[29];
+		exit;*/
+		
+		// parse the remaining file
+		while (($line = fgets($file)) !== false)
+		{
+			$row = explode("\t", $line);
+        
+            echo "Updating  " . $row[1] . "\n";
+
+            $records = Cpic::drug($row[1])->get();
+
+            foreach($records as $record)
+                $record->update(['pa_id_drug' => $row[0]]);
 
         }
 

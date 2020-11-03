@@ -410,7 +410,7 @@
 							  @endif
 							  <tr>
 								<td class="border-0">{{ isset($border) && $border == "" ? $entry['gene'] : ''  }}</td>
-								<td class="border-0"><a href="https://www.pharmgkb.org/chemical/PA449957">{{ $entry['drug'] }}</a></td>
+								<td class="border-0"><a href="https://www.pharmgkb.org/chemical/{{ $entry['pa_id_drug'] }}">{{ $entry['drug'] }}</a></td>
 								<td class="border-0">
 									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
 									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
