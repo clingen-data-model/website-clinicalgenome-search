@@ -41,15 +41,15 @@
         <dd>{{ $record->alias_symbols }}</dd>
         @if($record->hi)
         <dt>%HI</dt>
-        <dd>{{ $record->hi }}<a href="http://gnomad.broadinstitute.org/faq" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
+        <dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
         @endif
         @if(isset($record->pli))
         <dt>pLI</dt>
-        <dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about pLI score)</a></dd>
+        <dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD pLI score)</a></dd>
         @endif
         @if($record->plof)
         <dt>LOEUF</dt>
-        <dd>{{  $record->plof }}</dd>
+        <dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD LOEUF score)</a></dd>
         @endif
         <dt>Cytoband</dt>
         <dd>

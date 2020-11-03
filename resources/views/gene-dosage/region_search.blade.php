@@ -108,7 +108,7 @@
 	 * Listener for displaying only genes
 	 *
 	 * */
-	$('.action-show-genes-btn').on('click', function() {
+	/*$('.action-show-genes-btn').on('click', function() {
 		var viz = [];
 
 		if ($(this).find('.action-show-genes').hasClass('fa-toggle-on'))
@@ -129,6 +129,28 @@
 		$table.bootstrapTable('filterBy', {
 				type: viz
 		});
+	});*/
+	$('.action-show-genes').on('click', function() {
+		var viz = [];
+
+		if ($(this).hasClass('active'))
+		{
+			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).html('<b>Show Genes</b>');
+		}
+		else
+		{
+			viz.push(0);
+			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).html('<b>Hide Genes</b>')
+		}
+
+		if ($('.action-show-regions').hasClass('active'))
+			viz.push(1);
+
+		$table.bootstrapTable('filterBy', {
+				type: viz
+		});
 	});
 
 
@@ -137,7 +159,7 @@
 	 * Listener for displaying only regions
 	 *
 	 * */
-	$('.action-show-regions-btn').on('click', function() {
+	/*$('.action-show-regions-btn').on('click', function() {
 		var viz = [];
 		if ($('.action-show-genes').hasClass('fa-toggle-on'))
 			viz.push(0);
@@ -152,6 +174,27 @@
 			viz.push(1);
 			$(this).find('.action-show-regions').removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-regions-text').html('On')
+		}
+
+		$table.bootstrapTable('filterBy', {
+					type: viz
+		});
+	});*/
+	$('.action-show-regions').on('click', function() {
+		var viz = [];
+		if ($('.action-show-genes').hasClass('active'))
+			viz.push(0);
+
+		if ($(this).hasClass('active'))
+		{
+			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).html('<b>Show Regions</b>');
+		}
+		else
+		{
+			viz.push(1);
+			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).html('<b>Hide Regions</b>')
 		}
 
 		$table.bootstrapTable('filterBy', {

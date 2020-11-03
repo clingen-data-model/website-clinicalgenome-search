@@ -5,6 +5,11 @@
     <div class="card">
       <div class="card-body bg-light">
         <h3 class="h4 mt-0 mb-1 border-bottom-2 border-info">Dosage Sensitivity Summary
+          @if ($record->issue_type == "ISCA Gene Curation")
+          (Gene)
+          @else
+          (Region)
+          @endif
           <span class="float-right">Curation Status:  {{ $record->resolution }}</span>
         </h3>
         <div class="row pt-2">
@@ -19,8 +24,12 @@
         </div>
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Issue Type:</div>
-          <div class="col-sm-9 border-left-4 border-info bold">
-            {{ $record->issue_type }}
+          <div class="col-sm-9 border-left-4 border-info bold">Dosage Curation -
+            @if ($record->issue_type == "ISCA Gene Curation")
+            Gene
+            @else
+            Region
+            @endif
           </div>
         </div>
         <div class="row pb-2 pt-3">

@@ -5,7 +5,7 @@
   <div class="row justify-content-center">
 
     <!-- Header -->
-    <div class="col-md-8">
+    <div class="col-md-7">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
@@ -20,13 +20,13 @@
       </table>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-5">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px">{{ $record->haplo_score }}</span><br />Haplo<br />Score</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px">{{ $record->triplo_score }}</span><br />Triplo<br />Score</li>
-            <li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>
+            <!--<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>-->
 					</ul>
 				</div>
 			</div>
