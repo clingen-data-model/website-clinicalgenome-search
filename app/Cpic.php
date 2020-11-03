@@ -138,7 +138,7 @@ class Cpic extends Model
      */
 	public function scopeGene($query, $gene)
     {
-    return $query->where('gene', $gene);
+    return $query->where('gene', $gene)->orderBy('guideline')->orderBy('drug');
     }
 
 }

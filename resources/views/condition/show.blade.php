@@ -155,7 +155,8 @@
 				</div>
 			</div>
 			@empty
-			THIS CONDITION HAS NOT BEEN CURATED
+			<br clear="both" />
+			<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated this disease.</strong> <br />View <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
 			@endforelse
 
 		<!-- Gene Dosage Catchall -->
