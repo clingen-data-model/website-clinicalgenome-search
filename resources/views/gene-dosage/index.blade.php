@@ -374,7 +374,7 @@
 					sortable: true
 				},
 				{
-					title: 'HGNC',
+					title: 'HGNC/<br>Dosage ID',
 					field: 'hgnc',
 					formatter: hgncFormatter,
 					cellStyle: cellFormatter,
@@ -399,6 +399,7 @@
 					formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'right',
 					sorter: locationSorter,
 					searchFormatter: false,
 					sortable: true
@@ -409,13 +410,14 @@
 					formatter: location38Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'right',
 					sorter: locationSorter,
 					searchFormatter: false,
 					visible: false,
 					sortable: true
 				},
 				{
-					title: 'Haplo-<br>insufficiency',
+					title: 'HI Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
@@ -425,7 +427,7 @@
 					sortable: true
 				},
 				{
-					title: 'Triplo-<br>sensitity',
+					title: 'TS Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
@@ -486,7 +488,8 @@
 				},
 				{
 					field: 'date',
-					title: 'Last Eval.',
+					//title: 'Last Eval.',
+					title: 'View<br>Report',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

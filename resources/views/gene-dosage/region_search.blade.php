@@ -354,7 +354,7 @@
 					sortable: true
 				},
 				{
-					title: 'HGNC',
+					title: 'HGNC/<br>Dosage ID',
 					field: 'hgnc',
 					formatter: hgncFormatter,
 					cellStyle: cellFormatter,
@@ -384,7 +384,7 @@
 					sortable: true
 				},
 				{
-					title: 'Haplo-<br>insufficiency',
+					title: 'HI Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
@@ -394,7 +394,7 @@
 					sortable: true
 				},
 				{
-					title: 'Triplo-<br>sensitity',
+					title: 'TS Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
@@ -465,7 +465,7 @@
 				}*/
 				{
 					field: 'workflow',
-					title: 'Reviewed',
+					title: 'View<br>Report',
 					formatter: dsreportFormatter,
 					cellStyle: cellFormatter,
 					align: 'center',

@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use GuzzleHttp\Client;
 
+use Session;
+
 use App\Imports\Excel;
 use App\Exports\DosageExport;
 
@@ -221,6 +223,9 @@ class DosageController extends Controller
 			}
 		}
 
+		session(['dosage_region_search' => $region]);
+		session(['dosage_region_search_type' => $type]);
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -231,7 +236,68 @@ class DosageController extends Controller
 						->with('page', $page);
     }
 
+/**
+     * Redisplay the results of a region search.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function region_search_refresh(Request $request, $type = '', $region = '', $page = 1, $size = 100)
+    {
+        // process request args
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
+			$$key = $value;
 
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "dosage",
+            'title' => "Dosage Sensitivity Curations"
+		]);
+
+		$region = session('dosage_region_search', false);
+		$type = session('dosage_region_search_type', false);
+
+		if ($region === false)
+			return redirect()->route('dosage-index');
+
+		$original = $region;
+		
+		// if the region is a cytoband, convert to chromosomal location
+		if (strtoupper(substr($region, 0, 3)) != 'CHR')
+		{
+			$client = new Client([
+				'base_uri' => 'https://www.ncbi.nlm.nih.gov/projects/ideogram/data/',
+				'headers' => [
+					'Content-Type' => 'text/csv'
+				]
+			]);
+
+			try {
+
+				$response = $client->request('POST', 'band2bp.cgi?taxid=9606&assm=' . $type, ['body' => $region]);
+
+				$cords = json_decode($response->getBody()->getContents());
+
+				if (isset($cords->coords[0]->bp))
+					$region = 'chr' . $cords->coords[0]->bp->chrom . ':'
+								. $cords->coords[0]->bp->bp->from . '-' . $cords->coords[0]->bp->bp->to;
+				else
+					$region = 'INVALID';
+
+			} catch (ClientException $e) {
+				$region = 'INVALID';
+			}
+		}
+
+		return view('gene-dosage.region_search', compact('display_tabs'))
+		//				->with('count', $results->count)
+						->with('type', $type)
+						->with('original', $original)
+						->with('region', $region)
+						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
+						->with('pagesize', $size)
+						->with('page', $page);
+	}
+			
 	/**
      * Display the specified resource.
      *
