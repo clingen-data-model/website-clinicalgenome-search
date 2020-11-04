@@ -83,3 +83,5 @@ Run the following in order to make sure you have everything on a new build... if
 - php artisan update:omim
 - php artisan update:ratings
 - php artisan update:region
+- php artisan update:locations
+- php artisan update:activity
