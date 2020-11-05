@@ -115,7 +115,7 @@
         },
         {
           field: 'date',
-          title: 'Last Curation Date',
+          title: 'Last Eval.',
           align: 'right',
           cellStyle: cellFormatter,
           filterControl: 'input',

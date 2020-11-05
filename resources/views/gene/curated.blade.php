@@ -99,28 +99,19 @@
           title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?" aria-describedby="popover"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><br> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
 			    align: 'center'
         },
-		    {
-          title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
-          align: 'center',
-        },
         {
           title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="popover954864"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
           colspan: 2,
+          align: 'center',
+        },
+		    {
+          title: '<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>',
           align: 'center',
         }],
 		    [{
           title: 'Clinical Validity<br />Classifications',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
-          align: 'center',
-          filterControl: 'input',
-          searchFormatter: true,
-          sortable: true
-        },
-        {
-          title: 'Evidence-Based<br />Summary',
-          field: 'has_actionability',
-          formatter: hasactionabilityFormatter,
           align: 'center',
           filterControl: 'input',
           searchFormatter: true,
@@ -142,6 +133,15 @@
           align: 'center',
           filterControl: 'select',
           searchFormatter: false,
+          sortable: true
+        },
+        {
+          title: 'Evidence-Based<br />Summary',
+          field: 'has_actionability',
+          formatter: hasactionabilityFormatter,
+          align: 'center',
+          filterControl: 'input',
+          searchFormatter: true,
           sortable: true
         }]
       ]
