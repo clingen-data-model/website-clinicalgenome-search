@@ -150,13 +150,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-default active').addClass('btn-warning');
 			$(this).html('<b>Show Genes</b>');
 		}
 		else
 		{
 			viz.push(0);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-default active').removeClass('btn-warning');
 			$(this).html('<b>Hide Genes</b>')
 		}
 
@@ -203,13 +203,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-default active').addClass('btn-warning');
 			$(this).html('<b>Show Regions</b>');
 		}
 		else
 		{
 			viz.push(1);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-default active').removeClass('btn-warning');
 			$(this).html('<b>Hide Regions</b>')
 		}
 
@@ -374,7 +374,7 @@
 					sortable: true
 				},
 				{
-					title: 'HGNC',
+					title: 'HGNC/<br>Dosage ID',
 					field: 'hgnc',
 					formatter: hgncFormatter,
 					cellStyle: cellFormatter,
@@ -399,6 +399,7 @@
 					formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'right',
 					sorter: locationSorter,
 					searchFormatter: false,
 					sortable: true
@@ -409,13 +410,14 @@
 					formatter: location38Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
+					align: 'right',
 					sorter: locationSorter,
 					searchFormatter: false,
 					visible: false,
 					sortable: true
 				},
 				{
-					title: 'Haplo-<br>insufficiency',
+					title: 'HI Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
@@ -425,7 +427,7 @@
 					sortable: true
 				},
 				{
-					title: 'Triplo-<br>sensitity',
+					title: 'TS Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
@@ -486,7 +488,8 @@
 				},
 				{
 					field: 'date',
-					title: 'Last Eval.',
+					//title: 'Last Eval.',
+					title: 'View<br>Report',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

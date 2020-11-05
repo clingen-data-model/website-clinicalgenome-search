@@ -93,7 +93,7 @@
                 Gene-Disease Validity
               </a>
                 <ul class="dropdown-menu">
-                  <li><a class="" href="{{ route('validity-index') }}">All curations</a></li>
+                  <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
                   <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
                   <li class="divider"></li>
                   <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
@@ -109,7 +109,7 @@
                 <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
                 <li class="divider"></li>
                 <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
-                <li><a href="{{ route('dosage-ftp') }}"><i class="fas fa-external-link-alt"></i> Additional Download Options</a></li>
+                <li><a href="{{ route('dosage-ftp') }}"><i class="fas fa-external-link-alt"></i> FTP File Downloads (BED, TSV)</a></li>
               </ul>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">

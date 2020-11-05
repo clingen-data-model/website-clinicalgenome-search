@@ -135,13 +135,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-info active').addClass('btn-warning');
 			$(this).html('<b>Show Genes</b>');
 		}
 		else
 		{
 			viz.push(0);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-info active').removeClass('btn-warning');
 			$(this).html('<b>Hide Genes</b>')
 		}
 
@@ -187,13 +187,13 @@
 
 		if ($(this).hasClass('active'))
 		{
-			$(this).removeClass('btn-primary active').addClass('btn-default');
+			$(this).removeClass('btn-info active').addClass('btn-warning');
 			$(this).html('<b>Show Regions</b>');
 		}
 		else
 		{
 			viz.push(1);
-			$(this).addClass('btn-primary active').removeClass('btn-default');
+			$(this).addClass('btn-info active').removeClass('btn-warning');
 			$(this).html('<b>Hide Regions</b>')
 		}
 
@@ -202,6 +202,57 @@
 		});
 	});
 
+
+	/**
+	 *
+	 * Listener for displaying only the known HI
+	 *
+	 * */
+	 $('.action-show-hiknown').on('click', function() {
+
+		if ($(this).hasClass('fa-toggle-off'))
+		{
+			$table.bootstrapTable('filterBy', {haplo_assertion: 'Sufficient Evidence (3)'});
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-hiknown-text').html('On');
+
+		}
+		else
+		{
+			$table.bootstrapTable('filterBy', {type: [0, 1]});
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-hiknown-text').html('Off');
+
+		}
+	});
+
+
+	/**
+	*
+	* Listener for displaying only the known TS
+	*
+	* */
+	$('.action-show-tsknown').on('click', function() {
+
+		if ($(this).hasClass('fa-toggle-off'))
+		{
+			$table.bootstrapTable('filterBy', {triplo_assertion: 'Sufficient Evidence (3)'});
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-tsknown-text').html('On');
+
+		}
+		else
+		{
+			$table.bootstrapTable('filterBy', {type: [0, 1]});
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-tsknown-text').html('Off');
+
+		}
+	});
 
 	/**
 	 *
@@ -303,7 +354,7 @@
 					sortable: true
 				},
 				{
-					title: 'HGNC',
+					title: 'HGNC/<br>Dosage ID',
 					field: 'hgnc',
 					formatter: hgncFormatter,
 					cellStyle: cellFormatter,
@@ -333,7 +384,7 @@
 					sortable: true
 				},
 				{
-					title: 'Haplo-<br>insufficiency',
+					title: 'HI Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
@@ -343,7 +394,7 @@
 					sortable: true
 				},
 				{
-					title: 'Triplo-<br>sensitity',
+					title: 'TS Score <i class="fas fa-info-circle color-white ml-1"></i>',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
@@ -414,7 +465,7 @@
 				}*/
 				{
 					field: 'workflow',
-					title: 'Reviewed',
+					title: 'View<br>Report',
 					formatter: dsreportFormatter,
 					cellStyle: cellFormatter,
 					align: 'center',

@@ -22,7 +22,7 @@ class AffiliateController extends Controller
 
         // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate",
+            'active' => "validity",
             'title' => "Gene Curation Expert Panels"
         ]);
 
@@ -44,7 +44,7 @@ class AffiliateController extends Controller
     {
         // set display context for view
         $display_tabs = collect([
-            'active' => "affiliate",
+            'active' => "validity",
             'title' => "ClinGen Expert Panel Curations"
         ]);
 

@@ -144,9 +144,7 @@ Route::group(['prefix' => 'gene-dosage'], function () {
 
 	Route::get('/', 'DosageController@index')->name('dosage-index');
 
-	Route::get('/region_search', function () {
-		return redirect()->route('dosage-index');
-	});
+	Route::get('/region_search', 'DosageController@region_search_refresh')->name('dosage-region-search-refresh');
 
 	Route::post('/region_search', 'DosageController@region_search')->name('dosage-region-search');
 

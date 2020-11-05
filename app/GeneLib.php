@@ -61,8 +61,8 @@ class GeneLib extends Model
 
     protected static $short_dosage_assertion_strings = [
           '0' => 'No Evidence',
-          '1' => 'Minimal Evidence',
-          '2' => 'Moderate Evidence',
+          '1' => 'Little Evidence',
+          '2' => 'Emerging Evidence',
           '3' => 'Sufficient Evidence',
           '30' => 'Autosomal Recessive',
           '40' => 'Dosage Sensitivity Unlikely'
@@ -70,8 +70,8 @@ class GeneLib extends Model
 
      protected static $dosage_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Gene Associated with Autosomal Recessive Phenotype',
-          'MINIMAL_EVIDENCE' => 'Minimal Evidence for ####',
-          'MODERATE_EVIDENCE' => 'Moderate Evidence for ####',
+          'MINIMAL_EVIDENCE' => 'Little Evidence for ####',
+          'MODERATE_EVIDENCE' => 'Emerging Evidence for ####',
           'NO_EVIDENCE' => 'No Evidence for ####',
           'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence for ####',
           'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
@@ -79,8 +79,8 @@ class GeneLib extends Model
 
      protected static $curated_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Associated with Autosomal Recessive Phenotype',
-          'MINIMAL_EVIDENCE' => 'Minimal Evidence',
-          'MODERATE_EVIDENCE' => 'Moderate Evidence',
+          'MINIMAL_EVIDENCE' => 'Little Evidence',
+          'MODERATE_EVIDENCE' => 'Emerging Evidence',
           'NO_EVIDENCE' => 'No Evidence',
           'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
           'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
@@ -147,8 +147,8 @@ class GeneLib extends Model
 
 	protected static $dosage_score_assertion_strings = [
           '0' => 'No Evidence for ####',
-          '1' => 'Minimal Evidence for ####',
-          '2' => 'Moderate Evidence for ####',
+          '1' => 'Little Evidence for ####',
+          '2' => 'Emerging Evidence for ####',
           '3' =>'Sufficient Evidence for ####',
           '30' => 'Gene Associated with Autosomal Recessive Phenotype',
           '40' => 'Dosage Sensitivity Unlikely'
@@ -156,8 +156,8 @@ class GeneLib extends Model
 
      protected static $curated_score_assertion_strings = [
           '0' => 'No Evidence',
-          '1' => 'Minimal Evidence',
-          '2' => 'Moderate Evidence',
+          '1' => 'Little Evidence',
+          '2' => 'Emerging Evidence',
           '3' =>'Sufficient Evidence',
           '30' => 'Associated with Autosomal Recessive Phenotype',
           '40' => 'Dosage Sensitivity Unlikely'

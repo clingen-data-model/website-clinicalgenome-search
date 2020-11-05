@@ -77,10 +77,10 @@ function location01Formatter(index, row) {
   if (row.location == null) return '';
   var name = row.location.trim(); // strip off chr
 
-  if (name.indexOf("chr") === 0) name = name.substring(3);
+  if (name.toLowerCase().indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
   var pos = name.indexOf('-');
-  var html = '<table><tr><td class="pr-1 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px text-right line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px text-right line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
   return html;
 }
 
@@ -90,10 +90,10 @@ function locationFormatter(index, row) {
   if (row.GRCh37_position == null) return '';
   var name = row.GRCh37_position.trim(); // strip off chr
 
-  if (name.indexOf("chr") === 0) name = name.substring(3);
+  if (name.toLowerCase().indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
   var pos = name.indexOf('-');
-  var html = '<table><tr><td class="pr-1 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px text-right line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px text-right line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
   return html;
 }
 
@@ -103,10 +103,10 @@ function location38Formatter(index, row) {
   if (row.GRCh38_position == null) return '';
   var name = row.GRCh38_position.trim(); // strip off chr
 
-  if (name.indexOf("chr") === 0) name = name.substring(3);
+  if (name.toLowerCase().indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
   var pos = name.indexOf('-');
-  var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px text-right line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px text-right line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
   return html;
 }
 
@@ -355,17 +355,17 @@ function region_listener() {
 function cnvlocationFormatter(index, row) {
   var name = row.location.trim(); // strip off chr
 
-  if (name.indexOf("chr") === 0) name = name.substring(3);
+  if (name.toLowerString().indexOf("chr") === 0) name = name.substring(3);
   var chr = name.indexOf(':');
   var pos = name.indexOf('-');
-  var html = '<table><tr><td class="pr-0 text-22px text-normal line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
+  var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">' + name.substring(0, chr) + '</td><td class="text-10px text-right line-height-normal">' + name.substring(chr + 1, pos) + '</td></tr><tr><td class="text-10px text-right line-height-normal">' + name.substring(pos + 1) + '</td></tr></table>';
   return html;
 }
 
 var score_assertion_strings = {
   '0': 'No Evidence',
-  '1': 'Minimal Evidence',
-  '2': 'Moderate Evidence',
+  '1': 'Little Evidence',
+  '2': 'Emerging Evidence',
   '3': 'Sufficient Evidence',
   //'30': 'Gene Associated with Autosomal Recessive Phenotype',
   '30': 'Autosomal Recessive',
@@ -473,12 +473,14 @@ function acmreportFormatter(index, row) {
 function dsreportFormatter(index, row) {
   /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
           + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
+  var bclass = row.workflow == "Awaiting Review" ? "default" : "success";
+
   if (row.type == 0) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
         + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-    return '<a class="btn btn-xs btn-success btn-block" href="' + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+    return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="' + '/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
   } else {
-    return '<a class="btn btn-xs btn-success btn-block" href="' + '/gene-dosage/region/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+    return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="' + '/gene-dosage/region/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
   }
 }
 

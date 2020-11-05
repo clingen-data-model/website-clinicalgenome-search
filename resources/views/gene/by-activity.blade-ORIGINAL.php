@@ -316,7 +316,7 @@
 													</a>
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif  text-center"><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i>{{ $record->displayDate($actionability->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -336,41 +336,40 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="40"></a></h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenomics - CPIC</h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
 							<thead class="thead-labels">
 							  <tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 ">Drug</th>
-								<th class="col-sm-2">CPIC Level</th>
-								<th class="col-sm-2">Date</th>
-								<th class="col-sm-1 text-center">CPIC Clinical Guidelines</th>
+								<th class="col-sm-4">Drug</th>
+								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-2">Level</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
 							  </tr>
 							</thead>
 							<tbody class="">
-							  @foreach($record->pharma as $idx => $entry)
-								@php $border = ($idx > 0 && $entry['guideline'] == $record->pharma[$idx - 1]['guideline'] ? "border-0" : ""); @endphp
-								<tr>
-									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? $entry['gene'] : ''  }}</td>
-								<td class="{{ $border ?? '' }}">{{  $entry['drug'] }}</td>
-								<td class="{{ $border ?? '' }}">
+							  @foreach($record->pharma as $entry)
+							  <tr>
+								<td class="">{{ $entry['gene'] }}</td>
+								<td class="">{{  $entry['drug'] }}</td>
+								<td class=""></td>
+								<td class=" text-center">
 									@if (empty($entry['guideline']))
-											<a href="https://cpicpgx.org/genes-drugs/">Level {{ $entry['cpic_level'] }}</a>
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="https://cpicpgx.org/genes-drugs">
+										Level {{ $entry['cpic_level'] }}
+										<div class="small">[Guideline Not Available]</div></a>
 									@else
-									<a href="https://cpicpgx.org/genes-drugs/">Level {{ $entry['cpic_level'] }}</a>
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="{{ $entry['guideline'] }}">
+											Level {{ $entry['cpic_level'] }}
+										<div class="small">[Guideline Available]</div></a>
 									@endif
 								</td>
-								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
-								@if (isset($border) && $border == "")
-									@if (empty($entry['guideline']))
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  None</span></a></td>
-									@else
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="{{ $entry['guideline'] }}"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
-									@endif
+								@if (empty($entry['guideline']))
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@else
-								<td class="{{ $border ?? '' }}"></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 								@endif
 							  </tr>
 							  @endforeach
@@ -387,38 +386,32 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="80"></a> </h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenomics  - PharmaGKB</h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
 							<thead class="thead-labels">
 							  <tr>
-								<th class="col-sm-1 ml-3 th-curation-group text-left">Gene</th>
+								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
+								<th class="col-sm-2 text-center"></th>
 								<th class="col-sm-2">Highest Level of Evidence</th>
-								<th class="col-sm-2">Date</th>
-								<th class="col-sm-1 text-center">Information</th>
+								<th class="col-sm-1 text-center">Report &amp; Date</th>
+
 							  </tr>
 							</thead>
 							<tbody class="">
-							  @foreach($record->pharma as $idx => $entry)
-							  @php $border = (isset($first) && $first  ? "border-0" : ""); @endphp
+							  @foreach($record->pharma as $entry)
 							  @if ($entry['pharmgkb_level_of_evidence'] == null)
 								@continue;
-							  @else
-								@php $first = true; @endphp
 							  @endif
 							  <tr>
-								<td class="border-0">{{ isset($border) && $border == "" ? $entry['gene'] : ''  }}</td>
-								<td class="border-0"><a href="https://www.pharmgkb.org/chemical/{{ $entry['pa_id_drug'] }}">{{ $entry['drug'] }}</a></td>
-								<td class="border-0">
-									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
-									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
-								@if (isset($border) && $border == "")
-									<td class="border-0 text-center"><a class="btn btn-xs btn-success" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
-								@else
-								<td class="{{ $border ?? '' }}"></td>
-								@endif
+								<td class="">{{ $entry['gene'] }}</td>
+								<td class="">{{ $entry['drug'] }}</td>
+								<td class=" text-center"></td>
+								<td class="">
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
+								<td class=" text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><i class="glyphicon glyphicon-file"></i> 10/14/2020</a></td>
 							  </tr>
 							  @endforeach
 							</tbody>
