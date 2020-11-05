@@ -14912,7 +14912,8 @@ header .dropdown-toggle::after {
   margin-left: 0px !important;
 }
 
-.nav-tabs-search .dropdown-toggle::after, .bootstrap-table .dropdown-toggle::after {
+.nav-tabs-search .dropdown-toggle::after,
+.bootstrap-table .dropdown-toggle::after {
   margin-left: 0px !important;
   display: inline-block;
   margin-left: 0em;
@@ -15458,8 +15459,8 @@ sup {
 
 .btn.btn-classification {
   padding: 0.1rem 0.4rem;
-  font-size: 0.95rem;
-  font-weight: 600 !important;
+  font-size: 0.9rem;
+  font-weight: 500 !important;
   line-height: normal;
   border-radius: 0.45rem;
   background-color: #f2f7fc;
@@ -19429,7 +19430,7 @@ div.global_table_cell.gene {
 }
 
 .bootstrap-table .fixed-table-body {
-  font-size: 90%;
+  font-size: 0.9rem;
 }
 
 .bootstrap-table .fixed-table-container .table thead th .sortable {
@@ -19548,3 +19549,4 @@ footer {
 footer p {
   margin-bottom: 0.25rem;
 }
+
