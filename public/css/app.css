@@ -14912,7 +14912,7 @@ header .dropdown-toggle::after {
   margin-left: 0px !important;
 }
 
-.nav-tabs-search .dropdown-toggle::after {
+.nav-tabs-search .dropdown-toggle::after, .bootstrap-table .dropdown-toggle::after {
   margin-left: 0px !important;
   display: inline-block;
   margin-left: 0em;
@@ -19548,4 +19548,3 @@ footer {
 footer p {
   margin-bottom: 0.25rem;
 }
-
