@@ -552,8 +552,11 @@ function hasvalidityFormatter(index, row) {
 
     var name = row.location.trim();
 
+    if (name == null)
+        return '';
+
     // strip off chr
-    if (name.toLowerString().indexOf("chr") === 0)
+    if (name.toLowerCase().indexOf("chr") === 0)
         name = name.substring(3);
 
     var chr = name.indexOf(':');
