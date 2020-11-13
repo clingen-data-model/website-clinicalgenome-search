@@ -40,15 +40,15 @@
         <dt>Alias symbols</dt>
         <dd>{{ $record->alias_symbols }}</dd>
         @if($record->hi)
-        <dt>%HI</dt>
+        <dt>%HI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></dt>
         <dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
         @endif
         @if(isset($record->pli))
-        <dt>pLI</dt>
+        <dt>pLI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></dt>
         <dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD pLI score)</a></dd>
         @endif
         @if($record->plof)
-        <dt>LOEUF</dt>
+        <dt>LOEUF <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></dt>
         <dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD LOEUF score)</a></dd>
         @endif
         <dt>Cytoband</dt>
@@ -65,7 +65,7 @@
                   <a href="{{ $record->formatEnsembl($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
                   <a href="{{ $record->formatUcsc19($record->GRCh37_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
                 </td>
-            </tr>  
+            </tr>
             <tr>
                 <td class="pr-3">GRCh38/hg38</td>
                 <td>{{  $record->GRCh38_position }}
@@ -73,7 +73,7 @@
                   <a href="{{ $record->formatEnsembl($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
                   <a href="{{ $record->formatUcsc38($record->GRCh38_position) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
                 </td>
-            </tr> 
+            </tr>
           </table>
         </dd>
         @if($record->function)

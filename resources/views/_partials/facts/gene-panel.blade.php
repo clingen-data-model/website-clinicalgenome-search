@@ -50,11 +50,11 @@
 						<dd>{{ $record->alias_symbols ?? 'oops'}}</dd>
 						@endif
 						@if($record->hi)
-						<dt>%HI</dt>
+						<dt>%HI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></dt>
 						<dd>{{ $record->hi }}</dd>
 						@endif
 						@if($record->pli)
-						<dt>pLI</dt>
+						<dt>pLI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></dt>
 						<dd>{{  $record->pli }}</dd>
 						@endif
 						@if($record->plof)
