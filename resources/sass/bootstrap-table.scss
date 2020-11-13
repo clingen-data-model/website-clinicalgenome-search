@@ -1,0 +1,52 @@
+
+
+.bootstrap-table .dropdown-toggle .caret {
+  display: none;
+}
+.bootstrap-table .pagination-detail .btn.btn-default {
+  padding: 4px 12px;
+}
+.bootstrap-table .fixed-table-body {
+  font-size: .9rem;
+}
+
+.bootstrap-table .fixed-table-toolbar .columns label span div {
+  display: none !important;
+}
+
+// move the sort arrows to the left of the column title
+.bootstrap-table .fixed-table-container .table thead th .sortable {
+  cursor: pointer !important;
+  background-position: left bottom .7rem !important;
+  background-repeat: no-repeat !important;
+  padding-left: 15px !important;
+  padding-right: 20px !important;
+
+}
+.bootstrap-table .fixed-table-container .table thead th:first-child .sortable {
+  padding-left: 17px !important;
+  background-position: left 3px bottom .7rem !important;
+}
+.bootstrap-table .fixed-table-container .table thead th:last-child .sortable {
+  padding-right: 0px !important;
+}
+
+// replace stock bootstrap table sort arrows with better ones, but only if
+// the light-arrows class is applied.
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .both {
+background-image: url("/images/sort-both-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .asc {
+background-image: url("/images/sort-up-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .desc {
+background-image: url("/images/sort-dn-20.png") !important;
+
+}
+
+// override the bootstraptable search input size
+.fixed-table-toolbar .search-input {
+  min-width: 300px;
+}

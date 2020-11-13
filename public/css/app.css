@@ -15465,6 +15465,7 @@ sup {
   border-radius: 0.45rem;
   background-color: #f2f7fc;
   white-space: normal !important;
+  text-align: left;
 }
 
 btn.btn-wrap {
@@ -19380,7 +19381,7 @@ td.gene span,
 div.global_table_cell.region,
 div.global_table_cell.gene {
   padding: 0px 3px;
-  font-size: 13px;
+  font-size: 11px;
   border-radius: 10rem;
   color: #fff;
 }
@@ -19388,7 +19389,7 @@ div.global_table_cell.gene {
 .dosage-box.carryover,
 .global_table_cell.carryover {
   padding: 0px 3px;
-  font-size: 13px;
+  font-size: 11px;
   border-radius: 10rem;
   color: #000;
 }
@@ -19419,41 +19420,6 @@ div.global_table_cell.gene {
 
 .detail-table-shade {
   background-color: #FEF9E7;
-}
-
-.bootstrap-table .dropdown-toggle .caret {
-  display: none;
-}
-
-.bootstrap-table .pagination-detail .btn.btn-default {
-  padding: 4px 12px;
-}
-
-.bootstrap-table .fixed-table-body {
-  font-size: 0.9rem;
-}
-
-.bootstrap-table .fixed-table-container .table thead th .sortable {
-  cursor: pointer !important;
-  background-position: left !important;
-  background-repeat: no-repeat !important;
-  padding-left: 20px !important;
-}
-
-.light-arrows .bootstrap-table .fixed-table-container .table thead th .both {
-  background-image: url("/images/sort-both-20.png") !important;
-}
-
-.light-arrows .bootstrap-table .fixed-table-container .table thead th .asc {
-  background-image: url("/images/sort-up-20.png") !important;
-}
-
-.light-arrows .bootstrap-table .fixed-table-container .table thead th .desc {
-  background-image: url("/images/sort-dn-20.png") !important;
-}
-
-.fixed-table-toolbar .search-input {
-  min-width: 300px;
 }
 
 .swal-overlay--show-modal,
@@ -19548,5 +19514,54 @@ footer {
 
 footer p {
   margin-bottom: 0.25rem;
+}
+
+.bootstrap-table .dropdown-toggle .caret {
+  display: none;
+}
+
+.bootstrap-table .pagination-detail .btn.btn-default {
+  padding: 4px 12px;
+}
+
+.bootstrap-table .fixed-table-body {
+  font-size: 0.9rem;
+}
+
+.bootstrap-table .fixed-table-toolbar .columns label span div {
+  display: none !important;
+}
+
+.bootstrap-table .fixed-table-container .table thead th .sortable {
+  cursor: pointer !important;
+  background-position: left bottom 0.7rem !important;
+  background-repeat: no-repeat !important;
+  padding-left: 15px !important;
+  padding-right: 20px !important;
+}
+
+.bootstrap-table .fixed-table-container .table thead th:first-child .sortable {
+  padding-left: 17px !important;
+  background-position: left 3px bottom 0.7rem !important;
+}
+
+.bootstrap-table .fixed-table-container .table thead th:last-child .sortable {
+  padding-right: 0px !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .both {
+  background-image: url("/images/sort-both-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .asc {
+  background-image: url("/images/sort-up-20.png") !important;
+}
+
+.light-arrows .bootstrap-table .fixed-table-container .table thead th .desc {
+  background-image: url("/images/sort-dn-20.png") !important;
+}
+
+.fixed-table-toolbar .search-input {
+  min-width: 300px;
 }
 
