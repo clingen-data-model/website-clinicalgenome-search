@@ -67,7 +67,7 @@
 
 
 				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i>{{ $record->symbol }}</i> -
-					<a class="text-dark" href="/conditions/{{ $record->getMondoString($disease->disease->iri) }}" >{{ $disease->disease->label }}</a></h3>
+					<a class="text-dark" href="/kb/conditions/{{ $record->getMondoString($disease->disease->iri) }}" >{{ $disease->disease->label }}</a></h3>
 					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -100,11 +100,11 @@
 									</td>
 
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
 									</td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block" href="/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->report_date) }}</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->report_date) }}</a></td>
 								</tr>
 								@php ($first = false) @endphp
 						@endforeach
@@ -125,7 +125,7 @@
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">{{ $record->displayActionType($actionability->source) }} View Report </a></td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>
 								</tr>
 								@php ($first = false) @endphp
 						@endforeach
@@ -150,7 +150,7 @@
 											@endif
 										</strong></a>
 									</td>
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
 								</tr>
 								@php ($first = false) @endphp
 						@endforeach
@@ -201,7 +201,7 @@
 
 
 									</td>
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
 								</tr>
 								@php ($first = false) @endphp
 					@endforeach

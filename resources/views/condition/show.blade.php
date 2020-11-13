@@ -59,7 +59,7 @@
 							</td>
 
 							<td class=" @if(!$loop->first) border-0 @endif ">
-								<a class="text-dark" href="/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+								<a class="text-dark" href="/kb/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
 							<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information"><i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 							</td>
 
@@ -69,7 +69,7 @@
 
 							<td class=" @if(!$loop->first) border-0 @endif  text-center">{{ $record->displayDate($validity->report_date) }} </td>
 
-							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/gene-validity/{{ $validity->curie }}">View report</a></td>
+							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="/kb/gene-validity/{{ $validity->curie }}">View report</a></td>
 						</tr>
 
 					@endforeach
@@ -142,7 +142,7 @@
 							</td>
 							<td class=" @if(!$loop->first) border-0 @endif " colspan="2"><strong>{{ \App\GeneLib::dosageAssertionString($dosage->dosage_classification->ordinal) }}</strong></td>
 							<td class=" @if(!$loop->first) border-0 @endif  text-center">{{ $record->displayDate($dosage->report_date) }}</td>
-							<!--<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/gene-dosage/{{ $dosage->curie }}">View report</a></td>-->
+							<!--<td class="col-sm-1"><a class="btn btn-xs btn-success" href="/kb/gene-dosage/{{ $dosage->curie }}">View report</a></td>-->
 							<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success" href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{  $disease->gene->label }}&subject">View report</a></td>
 						</tr>
 					@endforeach
