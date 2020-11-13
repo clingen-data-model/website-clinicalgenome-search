@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Traits\Query;
 
+use App\Metric;
+
 use Carbon\Carbon;
 
 /**
@@ -110,6 +112,8 @@ class Graphql
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
+
+			Metric::store(Metric::KEY_TOTAL_CURATED_GENES, $response->genes->count);
 			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
 		}
 		else
