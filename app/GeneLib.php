@@ -759,7 +759,7 @@ class GeneLib extends Model
          if ($str === null || $str === false || $str === 'unknown')
               return 'Not Yet Evaluated';
 
-          return self::$short_dosage_assertion_strings[$str] . ' (' . $str . ')';
+          return $str . ' (' . self::$short_dosage_assertion_strings[$str] . ')';
     }
 
 
