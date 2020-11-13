@@ -16,6 +16,7 @@
   <!-- Fonts -->
 
   <!-- Styles -->
+  @yield('script_css')
   <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
   {{-- @livewireStyles --}}
@@ -105,7 +106,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="" href="{{ route('dosage-index') }}">All Curations</a></li>
-                <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
+                {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
                 <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
                 <li class="divider"></li>
                 <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
@@ -138,14 +139,17 @@
                 </ul>
               </li>
 
-            {{--<li role="presentation" class="nav-item dropdown pull-right">
+            <li role="presentation" class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                  <i class="fas fa-cog"></i>
+                  <i class="fas fa-question-circle"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Coming soon...</a></li>
+                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">Frequently Asked Questions</a></li>
+                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/">How To Cite ClinGen</a></li>
+                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/attribution/">External Data Attribution</a></li>
+                  <li><a href="https://clinicalgenome.org/about/contact-clingen/">Contact Us</a></li>
                 </ul>
-              </li>--}}
+              </li>
             {{-- <li role="presentation" class="nav-item dropdown pull-right">
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-share-square"></i>

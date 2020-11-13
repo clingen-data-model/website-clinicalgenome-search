@@ -61,20 +61,20 @@
 
 @endsection
 
+@section('script_css')
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
+@endsection
 
 @section('script_js')
-
-<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
-
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
 <!-- load up all the local formatters and stylers -->
@@ -384,7 +384,7 @@
 					sortable: true
 				},
 				{
-					title: 'HI Score <i class="fas fa-info-circle color-white ml-1"></i>',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency score"></i></div>HI Score',
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
@@ -394,7 +394,7 @@
 					sortable: true
 				},
 				{
-					title: 'TS Score <i class="fas fa-info-circle color-white ml-1"></i>',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Triplosensitivity score"></i></div>TS Score',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
@@ -414,7 +414,7 @@
 					sortable: true
 				},
 				{
-					title: 'Morbid',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="OMIM morbid map"></i></div>Morbid',
 					field: 'morbid',
 					formatter: morbidFormatter,
 					cellStyle: cellFormatter,
@@ -424,7 +424,7 @@
 					sortable: true
 				},
 				{
-					title: '%HI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></div>%HI',
 					field: 'hi',
 					formatter: hiFormatter,
 					cellStyle: cellFormatter,
@@ -434,7 +434,7 @@
 					sortable: true
 				},
 				{
-					title: 'pLI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></div>pLI',
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
@@ -444,7 +444,7 @@
 					sortable: true
 				},
 				{
-					title: 'LO<br>EUF',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></div>LOEUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,

@@ -45,20 +45,20 @@
 </div>
 @endsection
 
+@section('script_css')
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
+@endsection
 
 @section('script_js')
-
-<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
-
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
 <!-- load up all the local formatters and stylers -->
@@ -103,7 +103,7 @@
 			sortable: true
 		},
 		{
-			title: 'Location on<br>GRCh37',
+			title: 'Location on GRCh37',
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
@@ -114,28 +114,26 @@
 			//visible: false
         },
         {
-			title: 'Haploinsufficiency',
+			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency Score"></i></div>HI Score',
 			field: 'haplo_assertion',
 			filterControl: 'select',
 			formatter: cnvhaploFormatter,
 			cellStyle: cellFormatter,
-			align: "center",
 			searchFormatter: false,
 			sortable: true
         },
 		{
-			title: 'Triplosensitivity',
+			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Triplosensitivity Score"></i></div>TS Score',
 			field: 'cnvtriplo_assertion',
 			filterControl: 'select',
 			formatter: cnvtriploFormatter,
 			cellStyle: cellFormatter,
-			align: "center",
 			searchFormatter: false,
 			sortable: true
         },
 		{
 			field: 'date',
-			title: 'Last Eval.',
+      title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
 			sortable: true,
 			filterControl: 'input',
 			cellStyle: cellFormatter,

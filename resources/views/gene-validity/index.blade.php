@@ -43,9 +43,13 @@
 </div>
 @endsection
 
-@section('script_js')
+@section('script_css')
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
+@endsection
 
-<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+@section('script_js')
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
@@ -55,7 +59,6 @@
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
 
 <!-- load up all the local formatters and stylers -->
@@ -115,7 +118,7 @@
           sortable: true
         },
         {
-          title: 'MONDO',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mondo Disease Ontology"></i></div> MONDO',
           field: 'mondo',
           formatter: asmondoFormatter,
           cellStyle: cellFormatter,
@@ -125,7 +128,7 @@
           visible: false
         },
         {
-          title: 'MOI',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mode Of Inheritance"></i></div> MOI',
           field: 'moi',
           sortable: true,
           filterControl: 'select',
@@ -135,7 +138,7 @@
           cellStyle: cellFormatter,
         },
         {
-          title: 'Expert Panel',
+            title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
           field: 'ep',
           cellStyle: cellFormatter,
           searchFormatter: false,
@@ -143,7 +146,7 @@
           sortable: true
         },
         {
-          title: 'SOP',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Gene Curation Standard Operating Procedure"></i></div> SOP',
           field: 'sop',
           cellStyle: cellFormatter,
           searchFormatter: false,
@@ -151,7 +154,7 @@
           sortable: true
         },
 		    {
-          title: 'Classification',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Clinical Validity Classification"></i></div> Classification',
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
@@ -162,7 +165,7 @@
         },
 		    {
           field: 'released',
-          title: 'Last Eval.',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
           cellStyle: cellFormatter,
           formatter: datebadgeFormatter,
           searchFormatter: false,
