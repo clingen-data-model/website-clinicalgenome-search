@@ -21,7 +21,7 @@ Route::get('/', function () {
  * Test route - remove for production
  */
 // Route::get('/test/test', 'TestController@test')->name('test-test');
- Route::get('/test', 'TestController@index')->name('test-index');
+// Route::get('/test', 'TestController@index')->name('test-index');
 // Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
 // Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
 // Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
@@ -31,7 +31,7 @@ Route::get('/', function () {
 /*
  * Gene display routes
  */
-Route::group(['prefix' => 'genes'], function () {
+Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/', 'GeneController@index')->name('gene-index');
 
@@ -61,7 +61,7 @@ Route::group(['prefix' => 'genes'], function () {
 /*
  * Drug display routes
  */
-Route::group(['prefix' => 'drugs'], function () {
+Route::group(['prefix' => 'kb/drugs'], function () {
 
 		Route::get('/', 'DrugController@index')->name('drug-index');
 
@@ -79,7 +79,7 @@ Route::group(['prefix' => 'drugs'], function () {
 /*
  * Gene Validity display routes
  */
-Route::group(['prefix' => 'gene-validity'], function () {
+Route::group(['prefix' => 'kb/gene-validity'], function () {
 
 		Route::get('/', 'ValidityController@index')->name('validity-index');
 
@@ -97,7 +97,7 @@ Route::group(['prefix' => 'gene-validity'], function () {
 /*
  * Region display routes
  */
-Route::group(['prefix' => 'regions'], function () {
+Route::group(['prefix' => 'kb/regions'], function () {
 
 	Route::get('/', 'RegionController@index')->name('region-index');
 
@@ -108,7 +108,7 @@ Route::group(['prefix' => 'regions'], function () {
 /*
  * Conditions display routes
  */
-Route::group(['prefix' => 'conditions'], function () {
+Route::group(['prefix' => 'kb/conditions'], function () {
 
 		Route::get('/', 'ConditionController@index')->name('condition-index');
 
@@ -129,7 +129,7 @@ Route::group(['prefix' => 'conditions'], function () {
 /*
  * Affiliates display routes
  */
-Route::group(['prefix' => 'affiliate'], function () {
+Route::group(['prefix' => 'kb/affiliate'], function () {
 
 	Route::get('/', 'AffiliateController@index')->name('affiliate-index');
 
@@ -140,7 +140,7 @@ Route::group(['prefix' => 'affiliate'], function () {
 /*
  * Dosage display routes
  */
-Route::group(['prefix' => 'gene-dosage'], function () {
+Route::group(['prefix' => 'kb/gene-dosage'], function () {
 
 	Route::get('/', 'DosageController@index')->name('dosage-index');
 
@@ -167,7 +167,7 @@ Route::group(['prefix' => 'gene-dosage'], function () {
 /*
  * Actionability display routes
  */
-Route::group(['prefix' => 'actionability'], function () {
+Route::group(['prefix' => 'kb/actionability'], function () {
 
 	Route::get('/', 'ActionabilityController@index')->name('actionability-index');
 
@@ -177,7 +177,7 @@ Route::group(['prefix' => 'actionability'], function () {
 // ************************************************************************************************
 // DEMO ROUTES
 // ************************************************************************************************
-
+Route::group(['prefix' =>'kb'], function () {
 		// Variant Path demo route
 		// NOT FOR MVP
 		Route::get('/variant-pathogenicity/all/', 'VariantPathController@index')->name('variant-path-index');
@@ -192,7 +192,7 @@ Route::group(['prefix' => 'actionability'], function () {
 		Route::get('/new-dosage', 'DosageController@newindex')->name('new-dosage-index');
 		Route::get('/new-dosage/reports', 'DosageController@newreports')->name('dosage-reports');
 		Route::get('/new-dosage/stats', 'DosageController@newstats')->name('dosage-stats');
-
+});
 // ************************************************************************************************
 // DEMO ROUTES END
 // ************************************************************************************************
