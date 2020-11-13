@@ -14283,6 +14283,15 @@ button.close {
   }
 }
 
+.progress.progress-no-bg {
+  background-color: #fff !important;
+  box-shadow: none;
+}
+
+.progress-no-bg .progress-bar {
+  border-radius: 1rem;
+}
+
 section.section-heading {
   padding-top: 1.5em;
   padding-bottom: 1.5em;
@@ -15033,8 +15042,24 @@ h6,
   font-size: 1rem;
 }
 
+.font-weight-light {
+  font-weight: normal;
+}
+
 .text-normal {
   font-weight: normal;
+}
+
+.text-size-lg {
+  font-size: 3rem;
+}
+
+.text-size-md {
+  font-size: 1.6rem;
+}
+
+.lineheight-tight {
+  line-height: normal !important;
 }
 
 .text-10px {

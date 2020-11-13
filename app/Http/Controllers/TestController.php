@@ -33,6 +33,16 @@ class TestController extends Controller
 		return DosageResource::collection($c);*/
 	}
 
+	public function statistics()
+	{
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "stats",
+			'title' => "ClinGen Gene Level Summary Statistics"
+		]);
+		return view('reports.stats.index', compact('display_tabs'));
+	}
+
 
 	public function reports()
     {
@@ -55,18 +65,18 @@ class TestController extends Controller
     {
 		return view('new-dosage.downloads');
 	}
-	
-	
+
+
 	/**
 	 * 	Run a test sequence against genegraph
-	 * 
+	 *
 	 */
 	public function test(Request $request)
 	{
 		$queryResponse = GeneLib::actionabilityList(['iri' => "HGNC:6407"]);
-		
+
 		dd($queryResponse);
-		
+
 		/*
 			foreach ($queryResponse->users as $user) {
 				// Do something with the data
@@ -74,7 +84,7 @@ class TestController extends Controller
 				$user->email;
 			}
 		*/
-		
+
 		return;
 	}
 }

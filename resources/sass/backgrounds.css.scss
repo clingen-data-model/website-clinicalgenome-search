@@ -1,3 +1,11 @@
+.progress.progress-no-bg {
+  background-color: #fff !important;
+  box-shadow: none;
+}
+.progress-no-bg .progress-bar {
+  border-radius: 1rem;
+}
+
 section.section-heading {
   padding-top: 1.5em;
   padding-bottom: 1.5em;

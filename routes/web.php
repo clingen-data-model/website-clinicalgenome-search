@@ -16,6 +16,10 @@ Route::view('/message', 'error.message-standard');
 //Route::get('/', 'HomeController@index')->name('home');
 Route::get('/', function () {
 	return redirect()->route('gene-curations');
+});
+
+Route::get('/kb', function () {
+	return redirect()->route('gene-curations');
 })->name('home');
 /*
  * Test route - remove for production
@@ -170,6 +174,16 @@ Route::group(['prefix' => 'kb/gene-dosage'], function () {
 Route::group(['prefix' => 'kb/actionability'], function () {
 
 	Route::get('/', 'ActionabilityController@index')->name('actionability-index');
+
+	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
+});
+
+/*
+ * Stats & Others display routes
+ */
+Route::group(['prefix' => 'kb/reports'], function () {
+
+	Route::get('/stats', 'TestController@statistics')->name('stats-index');
 
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });

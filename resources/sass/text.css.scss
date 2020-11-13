@@ -33,10 +33,22 @@ h6, .h6 {
   font-size: 1rem; }
 
 
-.text-normal {
+.font-weight-light {
   font-weight: normal;
 }
 
+  .text-normal {
+  font-weight: normal;
+}
+.text-size-lg {
+  font-size: 3rem;
+}
+.text-size-md {
+  font-size: 1.6rem;
+}
+.lineheight-tight {
+  line-height: normal !important;
+}
 .text-10px {
   font-size: 10px;
 }
