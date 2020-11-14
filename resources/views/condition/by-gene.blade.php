@@ -1,15 +1,16 @@
 @extends('layouts.app')
+@php ($currations_set = false) @endphp
 
 @section('content-heading')
 <div class="row mb-1 mt-1">
 	<div class="col-md-5">
 			<table class="mt-3 mb-4">
         <tr>
-          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+          <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
 						<h1 class="h2 p-0 m-0">{{ $record->label }}</h1>
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-							<i class="far fa-caret-square-down"></i> View Gene Facts
+							<i class="far fa-caret-square-down"></i> View Disease Facts
 						</a>
           </td>
         </tr>
@@ -22,13 +23,13 @@
 
 	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
 		  <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid or "XX" }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br /> Clinical Actionability<br />Assertions</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction or "XX" }}</span><br /> Clinical Actionability<br />Assertions</li>
 			</ul>
 
 </div>
-			@include("_partials.facts.gene-panel")
+			@include("_partials.facts.condition-panel")
 
 			</div>
 			<ul class="nav nav-tabs mt-1" style="">
@@ -38,15 +39,15 @@
             </a>
 					</li> --}}
 					<li class="active" style="">
-            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="">
+            <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="">
               Curation Summaries
             </a>
           </li>
           <li class="" style="">
-            <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
+            <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>
           <li class="" style="">
-            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
           </li>
 		</ul>
 
@@ -58,16 +59,16 @@
 		<div class="col-md-12">
 
 <div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
-  <a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-default">Group By Activity</a>
-  <a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
+  <a  href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="btn btn-default">Group By Activity</a>
+  <a  href="{{ route('disease-by-gene', $record->getMondoString($record->iri, true)) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
 </div>
 
-		@forelse ($record->genetic_conditions as $disease)
+			@forelse ($record->genetic_conditions as $disease)
 
 
 
-				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i>{{ $record->symbol }}</i> -
-					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" >{{ $disease->disease->label }}</a></h3>
+				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i><a class="text-dark" href="{{ route('gene-show', $disease->gene->hgnc_id) }}" >{{ $disease->gene->label }}</a></i> -
+					{{ $record->label }}</h3>
 					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -139,7 +140,7 @@
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Gene Dosage Sensitivity rating system"><strong>
-											@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
+											@if ($key == "haploinsufficiency_assertion")
 											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 												{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
 											</a>

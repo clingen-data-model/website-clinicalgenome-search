@@ -270,51 +270,51 @@ class Graphql
 			}
 		}
 
-		$by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
-			if (!empty($node->genetic_conditions))
-			{
-				//dd($node->genetic_conditions);
-				$i = -1;
-				foreach($node->genetic_conditions as $genetic_condition) {
-					$i++;
-					$ii = -1;
-					foreach ($genetic_condition->gene_validity_assertions as $gene_validity_assertion) {
-						$ii++;
-						$curie = explode("/", $genetic_condition->disease->iri);
-						$by_activity['gene_validity'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-						$by_activity['gene_validity'][end($curie)][$ii]['curation'] = $gene_validity_assertion;
-					}
-					$ii = -1;
-					foreach ($genetic_condition->gene_dosage_assertions as $gene_dosage_assertion) {
-						$ii++;
-						$curie = explode("/", $genetic_condition->disease->iri);
-						$by_activity['dosage_curation'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-						$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
-					}
-					$ii = -1;
-					foreach ($genetic_condition->actionability_curations as $actionability_curation) {
-						$ii++;
-						$curie = explode("/", $genetic_condition->disease->iri);
-						$by_activity['actionability'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-						$by_activity['actionability'][end($curie)][$ii]['curation'] = $actionability_curation;
-					}
-					//$i++;
-					//$curations_by_activity[$i]	=	$by_activity;
-				}
-				$ii++;
-				if($node->dosage_curation){
-					$by_activity['dosage_curation']['null'][$ii]['curation'] = $node->dosage_curation;
-				}
+		// $by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
+		// 	if (!empty($node->genetic_conditions))
+		// 	{
+		// 		//dd($node->genetic_conditions);
+		// 		$i = -1;
+		// 		foreach($node->genetic_conditions as $genetic_condition) {
+		// 			$i++;
+		// 			$ii = -1;
+		// 			foreach ($genetic_condition->gene_validity_assertions as $gene_validity_assertion) {
+		// 				$ii++;
+		// 				$curie = explode("/", $genetic_condition->disease->iri);
+		// 				$by_activity['gene_validity'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+		// 				$by_activity['gene_validity'][end($curie)][$ii]['curation'] = $gene_validity_assertion;
+		// 			}
+		// 			$ii = -1;
+		// 			foreach ($genetic_condition->gene_dosage_assertions as $gene_dosage_assertion) {
+		// 				$ii++;
+		// 				$curie = explode("/", $genetic_condition->disease->iri);
+		// 				$by_activity['dosage_curation'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+		// 				$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
+		// 			}
+		// 			$ii = -1;
+		// 			foreach ($genetic_condition->actionability_curations as $actionability_curation) {
+		// 				$ii++;
+		// 				$curie = explode("/", $genetic_condition->disease->iri);
+		// 				$by_activity['actionability'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
+		// 				$by_activity['actionability'][end($curie)][$ii]['curation'] = $actionability_curation;
+		// 			}
+		// 			//$i++;
+		// 			//$curations_by_activity[$i]	=	$by_activity;
+		// 		}
+		// 		$ii++;
+		// 		if($node->dosage_curation){
+		// 			$by_activity['dosage_curation']['null'][$ii]['curation'] = $node->dosage_curation;
+		// 		}
 
 
-			} elseif ($node->dosage_curation) {
-				$by_activity 							= [];
-				$by_activity['dosage_curation']['null'][0]['curation'] = $node->dosage_curation;
-			}
-			//dd($by_activity);
-			$curations_by_activity = json_decode(json_encode($by_activity));
-			//dd($curations_by_activity);
-			$node->curations_by_activity = $curations_by_activity;
+		// 	} elseif ($node->dosage_curation) {
+		// 		$by_activity 							= [];
+		// 		$by_activity['dosage_curation']['null'][0]['curation'] = $node->dosage_curation;
+		// 	}
+		// 	//dd($by_activity);
+		// 	$curations_by_activity = json_decode(json_encode($by_activity));
+		// 	//dd($curations_by_activity);
+		// 	$node->curations_by_activity = $curations_by_activity;
 
 
 		$node->naction = $naction;
@@ -1168,8 +1168,58 @@ class Graphql
 
 		$node = new Nodal((array) $response->disease);
 
-		return $node;
+		$naction = 0;
+		$nvalid = 0;
+		$ndosage = 0;
 
+		// currently, there is no easy way to track what needs dosage_curation entries belong in
+		// the catch all, so we need to process the genetic conditions and add some flags.
+		$dosage_curation_map = ["haploinsufficiency_assertion" => true, "triplosensitivity_assertion" => true];
+
+		if (empty($node->dosage_curation->triplosensitivity_assertion))
+		unset($dosage_curation_map["triplosensitivity_assertion"]);
+
+		if (empty($node->dosage_curation->haploinsufficiency_assertion))
+		unset($dosage_curation_map["haploinsufficiency_assertion"]);
+
+		if (!empty($node->genetic_conditions)) {
+			foreach ($node->genetic_conditions as $condition) {
+				//$nodeCollect = collect($node);
+				//dd($nodeCollect);
+				//dd(count($condition->gene_validity_assertions));
+				$naction = $naction + count($condition->actionability_curations);
+				$nvalid = $nvalid + count($condition->gene_validity_assertions);
+				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
+
+				//dd($naction);
+				//dd($nvalid);
+				//dd($ndosage);
+				foreach ($condition->gene_dosage_assertions as $dosage) {
+					if(!empty($dosage->assertion_type)) {
+						switch ($dosage->assertion_type) {
+							case "HAPLOINSUFFICIENCY_ASSERTION":
+								unset($dosage_curation_map["haploinsufficiency_assertion"]);
+								break;
+							case "TRIPLOSENSITIVITY_ASSERTION":
+								unset($dosage_curation_map["triplosensitivity_assertion"]);
+								break;
+						}
+					}
+				}
+			}
+		}
+
+
+		$node->naction = $naction;
+		$node->nvalid = $nvalid;
+		$node->ndosage = $ndosage;
+
+		//dd($node);
+
+		$node->dosage_curation_map = $dosage_curation_map;
+
+		//dd($node);
+		return $node;
 	}
 
 
@@ -1235,7 +1285,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function conditionList($args, $page = 0, $pagesize = 20)
+    static function conditionList($args, $curated = false, $page = 0, $pagesize = 20)
     {
 		// break out the args
 		foreach ($args as $key => $value)
@@ -1244,10 +1294,39 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 
+		if ($curated === true) {
 
-		$query = '{
+			// note:  we don't currently use last_curated_date
+			$query = '{
+					diseases('
+			. self::optionList($page, $pagesize, $sort, $direction, $search, 'ALL')
+				. ') {
+						count
+						disease_list {
+							label
+							hgnc_id
+							last_curated_date
+							curation_activities
+							dosage_curation {
+								triplosensitivity_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+							}
+						}
+					}
+				}';
+		}
+		else {
+			$query = '{
 				diseases('
-				. self::optionList($page, $pagesize, $sort, $direction, $search, $curated)
+			. self::optionList($page, $pagesize, $sort, $direction, $search, $curated)
 				. ') {
 					count
 					disease_list {
@@ -1259,6 +1338,7 @@ class Graphql
 					}
 				}
 			}';
+		}
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
@@ -1272,8 +1352,23 @@ class Graphql
 
 		$ncurated = $collection->where('last_curated_date', '!=', null)->count();
 
+		if ($curated) {
+			$naction = $collection->where('has_actionability', true)->count();
+			$nvalid = $collection->where('has_validity', true)->count();
+			$ndosage = $collection->where('has_dosage', true)->count();
+
+			Metric::store(Metric::KEY_TOTAL_CURATED_DISEASE, $response->diseases->count);
+			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
+		} else {
+			// right now we only use these counts on the curated page.  Probably should get triggered
+			// by a call option so as not to bury things to deep.
+			$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;
+		}
+
 		return (object) ['count' => $response->diseases->count, 'collection' => $collection,
-						'ncurated' => $ncurated];
+						'ncurated' => $ncurated, 'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
 	}
 
 

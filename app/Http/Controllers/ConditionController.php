@@ -87,10 +87,47 @@ class ConditionController extends Controller
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "condition",
-			'title' => $record->label . " curation results"
+			'title' => $record->label . " curation results by ClinGen activity"
 		]);
 
-		return view('condition.show', compact('display_tabs', 'record'));
+		return view('condition.by-activity', compact('display_tabs', 'record'));
+	}
+
+
+	/**
+	 * Display the specified condition.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show_by_gene(Request $request, $id = null)
+	{
+
+
+		$record = GeneLib::conditionDetail([
+			'page' => 0,
+			'pagesize' => 200,
+			'condition' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true
+		]);
+
+		if ($record === null)
+		return view('error.message-standard')
+		->with('title', 'Error retrieving Disease details')
+		->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+		->with('back', url()->previous());
+
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "condition",
+			'title' => $record->label . " curation results organized by gene"
+		]);
+
+		return view('condition.by-gene', compact('display_tabs', 'record'));
 	}
 
 
@@ -146,7 +183,7 @@ class ConditionController extends Controller
 			$$key = $value;
 
 		// the way layouts is set up, everything is named search.  Condition is the second
-		
+
 		return redirect()->route('condition-index', ['page' => 1, 'size' => 50, 'search' => $search[1] ]);
 	}
 }
