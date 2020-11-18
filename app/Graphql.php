@@ -113,7 +113,7 @@ class Graphql
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
 
-			Metric::store(Metric::KEY_TOTAL_CURATED_GENES, $response->genes->count);
+			//Metric::store(Metric::KEY_TOTAL_CURATED_GENES, $response->genes->count);
 			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
 		}
 		else
@@ -1449,6 +1449,147 @@ class Graphql
 		$node = new Nodal((array) $response->drug);
 
 		return $node;
+	}
+
+
+	/**
+     * Get gene list with curation flags and last update
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneMetrics($args)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$query = '{
+				genes(limit: null, curation_activity: ALL) {
+					count
+					gene_list {
+						curation_activities
+						dosage_curation {
+							triplosensitivity_assertion {
+								dosage_classification {
+									ordinal
+								}
+							}
+							haploinsufficiency_assertion {
+								dosage_classification {
+									ordinal
+								}
+							}
+						}
+					}
+				}
+			}';
+
+		// query genegraph
+		$response = self::query($query, __METHOD__);
+
+		if (empty($response))
+			return $response;
+
+		$total_genes = $response->genes->count;
+
+		$hapcounters = ['0' => 0, '1' => 0, '2' => 0, '3' => 0,
+					'30' => 0, '40' => 0];
+
+		$tripcounters = ['0' => 0, '1' => 0, '2' => 0, '3' => 0,
+					'30' => 0, '40' => 0];
+
+		foreach($response->genes->gene_list as $record)
+		{
+			if ($record->dosage_curation !== null)
+			{
+				if (isset($record->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal))
+					$tripcounters[$record->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal]++;
+				if (isset($record->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal))
+					$hapcounters[$record->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal]++;
+			}
+			$collection->push(new Nodal((array) $record));
+		}
+
+		$actionability_genes = $collection->where('has_actionability', true)->count();
+		$validity_genes = $collection->where('has_validity', true)->count();
+		$dosage_genes = $collection->where('has_dosage', true)->count();
+
+		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count,
+					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
+					Metric::KEY_TOTAL_VALIDITY_GENES => $validity_genes,
+				  	Metric::KEY_TOTAL_DOSAGE_GENES => $dosage_genes,
+					Metric::KEY_TOTAL_DOSAGE_HAP_AR => $hapcounters['30'],
+					Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING => $hapcounters['2'],
+					Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE => $hapcounters['1'],
+					Metric::KEY_TOTAL_DOSAGE_HAP_NONE => $hapcounters['0'],
+					Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT => $hapcounters['3'],
+					Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY => $hapcounters['40'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING => $tripcounters['2'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE => $tripcounters['1'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_NONE => $tripcounters['0'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT => $tripcounters['3'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY => $tripcounters['40'],
+					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
+					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters)
+				];
+
+		$query = '{
+			gene_validity_assertions(limit: null) {
+				count
+				curation_list {
+					classification {
+						label
+					}
+					specified_by {
+						label
+					}
+					attributed_to {
+						label
+					}
+				}
+			}
+		}';
+
+		// query genegraph
+		$response = self::query($query, __METHOD__);
+
+		if (empty($response))
+			return $response;
+
+		$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] = 
+									$response->gene_validity_assertions->count;
+
+		$counters = ['definitive evidence' => 0,
+					'strong evidence' => 0, 'moderate evidence' => 0,
+					'limited evidence' => 0, 'disputing' => 0,
+					'refuting evidence' => 0, 'no evidence' => 0];
+
+		foreach($response->gene_validity_assertions->curation_list as $record)
+		{
+			if (isset($counters[$record->classification->label]))
+				$counters[$record->classification->label]++;
+		}
+		
+		$values[Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] = $counters['definitive evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_STRONG] = $counters['strong evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_MODERATE] = $counters['moderate evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_LIMITED] = $counters['limited evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_DISPUTED] = $counters['disputing'];
+		$values[Metric::KEY_TOTAL_VALIDITY_REFUTED] = $counters['refuting evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no evidence'];
+
+		$metric = new Metric([	'values' => $values,
+								'type' => Metric::TYPE_SYSTEM,
+								'status' => 1,
+								] );
+		
+		$metric->save();
+		
+		return true;
 	}
 
 

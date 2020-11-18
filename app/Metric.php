@@ -32,12 +32,11 @@ class Metric extends Model
      * @var array
      */
     public static $rules = [
-		'ident' => 'alpha_dash|max:80|required',
-		'key' => 'string',
-		'value' => 'string',
-        'type' => 'integer',
-		'status' => 'integer'
-	];
+          'ident' => 'alpha_dash|max:80|required',
+          'values' => 'json',
+          'type' => 'integer',
+          'status' => 'integer'
+    ];
 
 	/**
      * Map the json attributes to associative arrays.
@@ -45,6 +44,7 @@ class Metric extends Model
      * @var array
      */
 	protected $casts = [
+                'values' => 'json'
 		];
 
      /**
@@ -52,7 +52,7 @@ class Metric extends Model
      *
      * @var array
      */
-	protected $fillable = ['owner', 'key', 'value', 'type', 'status' ];
+	protected $fillable = ['owner', 'values', 'type', 'status' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -62,6 +62,7 @@ class Metric extends Model
     protected $appends = ['display_date', 'list_date', 'display_status'];
 
     public const TYPE_NONE = 0;
+    public const TYPE_SYSTEM = 1;
 
 
     public const STATUS_INITIALIZED = 0;
@@ -69,8 +70,34 @@ class Metric extends Model
     /*
     * Standard Metric Keys
     */
-    public const KEY_TOTAL_CURATED_GENES = "Total Curated Genes";
+    public const KEY_TOTAL_CURATED_GENES = "total_curated_genes";
+    public const KEY_TOTAL_VALIDITY_GENES = "total_validity_genes";
+    public const KEY_TOTAL_ACTIONABILITY_GENES = "total_actionability";
+    public const KEY_TOTAL_DOSAGE_GENES = "total_dosage_genes";
+    
+    public const KEY_TOTAL_VALIDITY_CURATIONS = "total_validity_curations";
+    public const KEY_TOTAL_VALIDITY_DEFINITIVE = "total_validity_definitive";
+    public const KEY_TOTAL_VALIDITY_STRONG = "total_validity_strong";
+    public const KEY_TOTAL_VALIDITY_MODERATE = "total_validity_moderate";
+    public const KEY_TOTAL_VALIDITY_LIMITED = "total_validity_limited";
+    public const KEY_TOTAL_VALIDITY_DISPUTED = "total_validity_disputed";
+    public const KEY_TOTAL_VALIDITY_REFUTED = "total_validity_refuted";
+    public const KEY_TOTAL_VALIDITY_NONE = "total_validity_none";
 
+    public const KEY_TOTAL_DOSAGE_CURATIONS = "total_dosage_curations";
+    public const KEY_TOTAL_DOSAGE_HAP_NONE = "total_dosage_hap_none";
+    public const KEY_TOTAL_DOSAGE_HAP_LITTLE = "total_dosage_hap_little";
+    public const KEY_TOTAL_DOSAGE_HAP_EMERGING = "total_dosage_hap_emerging";
+    public const KEY_TOTAL_DOSAGE_HAP_SUFFICIENT = "total_dosage_hap_sufficient";
+    public const KEY_TOTAL_DOSAGE_HAP_AR = "total_dosage_hap_ar";
+    public const KEY_TOTAL_DOSAGE_HAP_UNLIKELY = "total_dosage_hap_unlikely";
+
+    public const KEY_TOTAL_DOSAGE_TRIP_NONE = "total_dosage_trip_none";
+    public const KEY_TOTAL_DOSAGE_TRIP_LITTLE = "total_dosage_trip_little";
+    public const KEY_TOTAL_DOSAGE_TRIP_EMERGING = "total_dosage_trip_emerging";
+    public const KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT = "total_dosage_trip_sufficient";
+    public const KEY_TOTAL_DOSAGE_TRIP_AR = "total_dosage_trip_ar";
+    public const KEY_TOTAL_DOSAGE_TRIP_UNLIKELY = "total_dosage_trip_unlikely";
 
     /*
     * Status strings for display methods
@@ -116,28 +143,145 @@ class Metric extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeKey($query, $key)
-    {
+  {
 		return $query->where('key', $key);
-    }
-
-  /**
-   * Add or update a metric
-   * 
-   */
-  public static function store($key, $value)
-  {
-    self::updateOrCreate(['key' => $key], ['value' => $value]);
   }
 
 
   /**
-   * Add or update a metric
-   * 
+   * Get the definitive percentage of total validity curations
+   *
+   * @@param
+   * @return
    */
-  public static function show($key, $default = null)
+  public function getValidityPercentDefinitiveAttribute()
   {
-    $metric = self::key($key)->first();
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_DEFINITIVE])))
+            return 0;
 
-    return ($metric === null ? $default : $metric->value);
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_DEFINITIVE] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
   }
+
+
+  /**
+   * Get the strong percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentStrongAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_STRONG])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_STRONG] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the moderate percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentModerateAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_MODERATE])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_MODERATE] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+  /**
+   * Get the limited percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentLimitedAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_LIMITED])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_LIMITED] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+  /**
+   * Get the disputed percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentDisputedAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_DISPUTED])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_DISPUTED] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the disputed percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentRefutedAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_REFUTED])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_REFUTED] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total validity curations
+   *
+   * @@param
+   * @return
+   */
+  public function getValidityPercentNoneAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_VALIDITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_VALIDITY_NONE])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_NONE] /
+                $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the percentage of total dosage genes
+   *
+   * @@param
+   * @return
+   */
+  public function graphDosagePercentage($a = null)
+  {
+    if ($a == null)
+      return 0;
+      
+    if (!(isset($this->values[self::KEY_TOTAL_DOSAGE_GENES]) &&
+          isset($this->values[$a])))
+            return 0;
+
+    return (int) ($this->values[$a] /
+                $this->values[self::KEY_TOTAL_DOSAGE_GENES] * 100);
+  }
+
 }

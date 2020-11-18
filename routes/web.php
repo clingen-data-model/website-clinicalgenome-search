@@ -180,12 +180,13 @@ Route::group(['prefix' => 'kb/actionability'], function () {
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });
 
+
 /*
  * Stats & Others display routes
  */
 Route::group(['prefix' => 'kb/reports'], function () {
 
-	Route::get('/stats', 'TestController@statistics')->name('stats-index');
+	Route::get('/stats', 'ReportController@statistics')->name('stats-index');
 
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });

@@ -13,12 +13,13 @@ class CreateMetricsTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('metrics');
+        
         Schema::create('metrics', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('ident')->unique();
             $table->nullableMorphs('owner');
-            $table->string('key');
-            $table->string('value')->nullable();
+            $table->json('values')->nullable();
             $table->tinyInteger('type')->default(0);
             $table->tinyInteger('status')->default(0);
 			$table->timestamps();
