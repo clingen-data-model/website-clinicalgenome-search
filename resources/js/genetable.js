@@ -510,7 +510,31 @@ function hasvalidityFormatter(index, row) {
   }
 
 
-  function hashaploFormatter(index, row) {
+function hashaploortriploFormatter(index, row) {
+
+    if (row.has_dosage_haplo) {
+        // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+        //      + row.hgnc_id
+        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+        //     + row.has_dosage_haplo + '</span></a>';
+        return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+            + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+    }
+    if (row.has_dosage_triplo) {
+        // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+        //      + row.hgnc_id
+        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+        //     + row.has_dosage_haplo + '</span></a>';
+        return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+            + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+    }
+
+    return '';
+}
+
+function hashaploFormatter(index, row) {
 
     if (row.has_dosage_haplo)
     {
