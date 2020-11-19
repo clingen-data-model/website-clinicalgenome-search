@@ -86,6 +86,9 @@ class Metric extends Model
     public const KEY_TOTAL_VALIDITY_REFUTED = "total_validity_refuted";
     public const KEY_TOTAL_VALIDITY_NONE = "total_validity_none";
 
+    public const KEY_EXPERT_PANELS = "expert_panels";
+
+    public const KEY_TOTAL_DOSAGE_REGIONS = "total_dosage_regions";
     public const KEY_TOTAL_DOSAGE_CURATIONS = "total_dosage_curations";
     public const KEY_TOTAL_DOSAGE_HAP_NONE = "total_dosage_hap_none";
     public const KEY_TOTAL_DOSAGE_HAP_LITTLE = "total_dosage_hap_little";
@@ -102,6 +105,8 @@ class Metric extends Model
     public const KEY_TOTAL_DOSAGE_TRIP_UNLIKELY = "total_dosage_trip_unlikely";
 
     public const KEY_TOTAL_ACTIONABILITY_CURATIONS = "total_actionability_curations";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS = "total_actionability_adult_curations";
+    public const KEY_TOTAL_ACTIONABILITY_PED_CURATIONS = "total_actionability_ped_curations";
 
 
     /*
@@ -280,13 +285,18 @@ class Metric extends Model
   {
     if ($a == null)
       return 0;
+
+    $total = $this->values[self::KEY_TOTAL_DOSAGE_GENES] ?? 0;
+    $total += $this->values[self::KEY_TOTAL_DOSAGE_REGIONS] ?? 0;
+
+    if ($total == 0)
+      return 0;
+
       
-    if (!(isset($this->values[self::KEY_TOTAL_DOSAGE_GENES]) &&
-          isset($this->values[$a])))
+    if (!(isset($this->values[$a])))
             return 0;
 
-    return (int) ($this->values[$a] /
-                $this->values[self::KEY_TOTAL_DOSAGE_GENES] * 100);
+    return (int) ($this->values[$a] / $total * 100);
   }
 
 }

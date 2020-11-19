@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Traits\Query;
 
 use App\Metric;
+use App\Jira;
 
 use Carbon\Carbon;
 
@@ -1519,6 +1520,8 @@ class Graphql
 					'30' => 0, '40' => 0];
 
 		$action_curations = 0;
+		$adultcounter = 0;
+		$pedscounter = 0;
 
 		foreach($response->genes->gene_list as $record)
 		{
@@ -1535,6 +1538,15 @@ class Graphql
 				if (!empty($condition->actionability_curations))
 				{
 					$action_curations += count($condition->actionability_curations);
+
+					foreach ($condition->actionability_curations as $ac)
+					{
+						if (strpos($ac->iri, 'Adult') > 0)
+							$adultcounter++;
+						
+						if (strpos($ac->iri, 'Pediatric') > 0)
+							$pedscounter++;
+					}
 				}
 			}
 			$collection->push(new Nodal((array) $record));
@@ -1562,7 +1574,9 @@ class Graphql
 					Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY => $tripcounters['40'],
 					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
 					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters),
-					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations
+					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations,
+					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
+					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
 				];
 //dd($values);
 		$query = '{
@@ -1577,6 +1591,7 @@ class Graphql
 						label
 					}
 					attributed_to {
+						curie
 						label
 					}
 				}
@@ -1597,16 +1612,26 @@ class Graphql
 					'limited evidence' => 0, 'disputing' => 0,
 					'refuting evidence' => 0, 'no evidence' => 0];
 
+		$panelcounters = [];
+
 		foreach($response->gene_validity_assertions->curation_list as $record)
 		{
 			// deal with the corrupted record bug in genegraph
 			if (!isset($record->classification->label))
 				continue;
 
+			if (isset($panelcounters[$record->attributed_to->curie]))
+				$panelcounters[$record->attributed_to->curie]['count']++;
+			else
+				$panelcounters[$record->attributed_to->curie] = ['count' => 1,
+									'label' => $record->attributed_to->label];
+
 			if (isset($counters[$record->classification->label]))
 				$counters[$record->classification->label]++;
 		}
 		
+		$values[Metric::KEY_EXPERT_PANELS] = $panelcounters;
+
 		$values[Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] = $counters['definitive evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_STRONG] = $counters['strong evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_MODERATE] = $counters['moderate evidence'];
@@ -1620,6 +1645,36 @@ class Graphql
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
 //dd($values);
+
+		// this should not be here, but its late
+		// pull all the regions from jira
+		$regions = Jira::regionList($args);
+
+		foreach ($regions->collection as $region)
+		{
+			if (isset($region->triplo_assertion) && isset($tripcounters[$region->triplo_assertion]))
+				$tripcounters[$region->triplo_assertion]++;
+
+			if (isset($region->haplo_assertion) && isset($hapcounters[$region->haplo_assertion]))
+				$hapcounters[$region->haplo_assertion]++;
+		}
+
+		$values[Metric::KEY_TOTAL_DOSAGE_REGIONS] = $regions->count;
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_AR] = $hapcounters['30'];
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING] = $hapcounters['2'];
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE] = $hapcounters['1'];
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_NONE] = $hapcounters['0'];
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT] = $hapcounters['3'];
+		$values[Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY] = $hapcounters['40'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_AR] = $tripcounters['30'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING] = $tripcounters['2'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE] = $tripcounters['1'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_NONE] = $tripcounters['0'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT] = $tripcounters['3'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] = $tripcounters['40'];
+		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_AR] = $tripcounters['30'];
+		$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS] = array_sum($hapcounters) + array_sum($tripcounters);
+
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
 								'status' => 1,
