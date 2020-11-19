@@ -34,7 +34,7 @@
           @foreach ($record->gain_pmids as $gain_pmid)
           <li class="mb-3 pb-3 border-bottom-1">
             <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $gain_pmid['pmid'] }}" class="">PUBMED: {{ $gain_pmid['pmid'] }}</a>
-            <div class="small  summariesShow mt-1" id="collapsesummary1">{{ $gain_pmid['desc'] ?? '' }}</div>
+            <div class="small  summariesShow mt-1 prewrap" id="collapsesummary1">{{ $gain_pmid['desc'] ?? '' }}</div>
           </li>
           @endforeach
         </ul>

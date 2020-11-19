@@ -74,6 +74,8 @@ class Metric extends Model
     public const KEY_TOTAL_VALIDITY_GENES = "total_validity_genes";
     public const KEY_TOTAL_ACTIONABILITY_GENES = "total_actionability";
     public const KEY_TOTAL_DOSAGE_GENES = "total_dosage_genes";
+
+    public const KEY_TOTAL_GENE_LEVEL_CURATIONS = "total_gene_level_curations";
     
     public const KEY_TOTAL_VALIDITY_CURATIONS = "total_validity_curations";
     public const KEY_TOTAL_VALIDITY_DEFINITIVE = "total_validity_definitive";
@@ -98,6 +100,9 @@ class Metric extends Model
     public const KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT = "total_dosage_trip_sufficient";
     public const KEY_TOTAL_DOSAGE_TRIP_AR = "total_dosage_trip_ar";
     public const KEY_TOTAL_DOSAGE_TRIP_UNLIKELY = "total_dosage_trip_unlikely";
+
+    public const KEY_TOTAL_ACTIONABILITY_CURATIONS = "total_actionability_curations";
+
 
     /*
     * Status strings for display methods

@@ -491,6 +491,8 @@ class Nodal extends Model
 			return $to;
 
 		//dd($to);
+		$to = (int) $to;
+		$from = (int) $from;
 		$sv_start =  $from - (($to - $from + 1) * 0.1);
 
 		if ($ext == 'svfrom')

@@ -1483,6 +1483,18 @@ class Graphql
 								}
 							}
 						}
+						genetic_conditions {
+							actionability_curations {
+								classification_description
+								curie
+								iri
+								label
+								report_date
+								report_id
+								source
+								wg_label
+							}
+						}
 					}
 				}
 			}';
@@ -1501,14 +1513,24 @@ class Graphql
 		$tripcounters = ['0' => 0, '1' => 0, '2' => 0, '3' => 0,
 					'30' => 0, '40' => 0];
 
+		$action_curations = 0;
+
 		foreach($response->genes->gene_list as $record)
 		{
-			if ($record->dosage_curation !== null)
+			if (!empty($record->dosage_curation))
 			{
 				if (isset($record->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal))
 					$tripcounters[$record->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal]++;
 				if (isset($record->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal))
 					$hapcounters[$record->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal]++;
+			}
+
+			foreach ($record->genetic_conditions as $condition)
+			{
+				if (!empty($condition->actionability_curations))
+				{
+					$action_curations += count($condition->actionability_curations);
+				}
 			}
 			$collection->push(new Nodal((array) $record));
 		}
@@ -1534,13 +1556,15 @@ class Graphql
 					Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT => $tripcounters['3'],
 					Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY => $tripcounters['40'],
 					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
-					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters)
+					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters),
+					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations
 				];
-
+//dd($values);
 		$query = '{
 			gene_validity_assertions(limit: null) {
 				count
 				curation_list {
+					curie
 					classification {
 						label
 					}
@@ -1570,6 +1594,10 @@ class Graphql
 
 		foreach($response->gene_validity_assertions->curation_list as $record)
 		{
+			// deal with the corrupted record bug in genegraph
+			if (!isset($record->classification->label))
+				continue;
+
 			if (isset($counters[$record->classification->label]))
 				$counters[$record->classification->label]++;
 		}
@@ -1582,6 +1610,11 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_REFUTED] = $counters['refuting evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no evidence'];
 
+		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] = 
+						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
+						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
+						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
+//dd($values);
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
 								'status' => 1,

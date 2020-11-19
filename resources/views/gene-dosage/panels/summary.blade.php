@@ -38,6 +38,12 @@
             @endif
           </div>
         </div>
+        @if ($record->issue_type == "ISCA Region Curation" && !empty($record->description))
+        <div class="row pb-2 pt-3">
+          <div class="col-sm-3 text-right">Description:</div>
+          <div class="col-sm-9 border-left-4 border-info bold prewrap" >{{ $record->description }}</div>
+        </div>
+        @endif
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Haploinsufficiency:</div>
           <div class="col-sm-9 border-left-4 border-info bold">

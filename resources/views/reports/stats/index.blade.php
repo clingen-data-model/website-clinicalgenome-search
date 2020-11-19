@@ -30,7 +30,7 @@
             <div class=" lineheight-tight">Total unique genes<br /> with any curation</div>
           </div>
           <div class="col-sm-4">
-            <div class="text-size-lg lineheight-tight">XXXX</div>
+            <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] ?? '' }}</div>
             <div class=" lineheight-tight">Total gene level<br /> curations</div>
           </div>
         </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="panel-body row px-2 py-0">
                   <div class="col-sm-6 lineheight-tight py-3 px-4">
-                    <div class="text-size-md lineheight-tight">XXXX</div>
+                    <div class="text-size-md lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }}</div>
                     <div class="small lineheight-tight">Total curations</div>
                   </div>
                   <div class="col-sm-6 lineheight-tight py-3 px-4 border-left-1">

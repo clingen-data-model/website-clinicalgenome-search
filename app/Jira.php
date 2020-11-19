@@ -218,7 +218,7 @@ class Jira extends Model
               $$key = $value;
 
          $response = self::getIssue($gene);
-         //dd($response);
+         //dd($response->description);
          // map the jira response into a somewhat sane structure
          $node = new Nodal([
               'summary' => $response->summary,
@@ -237,9 +237,14 @@ class Jira extends Model
               'gain_comments' => $response->customfield_10199 ?? null,
               'gain_pheno_omim' => $response->customfield_10201 ?? null,
               'label' => $response->customfield_10202 ?? null,
+              //'description' => $response->customfield_12030 ?? '',
+              //'description' => str_replace(["\r\n", "\r", "\n"], "<br/>",
+               //       $response->description ?? ''),
+               'description' => $response->description ?? '',
               'resolution' => $response->resolution->name ?? 'In Review',
               'issue_type' => $response->issuetype->name
          ]);
+//dd($response);
 
          $node->date = $node->displayDate($response->resolutiondate ?? '');
 
@@ -275,7 +280,7 @@ class Jira extends Model
          if (isset($response->customfield_12236))
               $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242];
          $node->gain_pmids = $pmids;
-
+//dd($node);
          // for the omim fields, transform into structure and add title
          $omims = [];
          if (!empty($node->loss_pheno_omim))

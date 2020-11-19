@@ -499,7 +499,7 @@ class GeneLib extends Model
               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
               'GRCh37_position', 'GRCh38_position', 'chromosome_band',
-              'resolution', 'issue_type',
+              'resolution', 'issue_type', 'description',
               'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
               {
                    if ($field == 'genetype' && !empty($response->locus_group))
