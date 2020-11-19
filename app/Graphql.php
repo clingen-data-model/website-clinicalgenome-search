@@ -1623,7 +1623,7 @@ class Graphql
 			if (isset($panelcounters[$record->attributed_to->curie]))
 				$panelcounters[$record->attributed_to->curie]['count']++;
 			else
-				$panelcounters[$record->attributed_to->curie] = ['count' => 0,
+				$panelcounters[$record->attributed_to->curie] = ['count' => 1,
 									'label' => $record->attributed_to->label];
 
 			if (isset($counters[$record->classification->label]))
