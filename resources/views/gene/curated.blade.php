@@ -104,7 +104,6 @@
         },
         {
           title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="fas fa-info-circle text-muted"></i></span>',
-          colspan: 2,
           align: 'center',
         },
 		    {
@@ -112,7 +111,7 @@
           align: 'center',
         }],
 		    [{
-          title: 'Clinical Validity<br />Classifications',
+          title: 'Clinical Validity Classification',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
           align: 'center',
@@ -121,25 +120,34 @@
           sortable: true
         },
         {
-          title: 'Haploinsufficiency<br />Score',
+          title: 'Dosage Sensitivity Score',
           field: 'has_dosage_haplo',
-          formatter: hashaploFormatter,
+          formatter: hashaploortriploFormatter,
           align: 'center',
           filterControl: 'select',
           searchFormatter: false,
           sortable: true
         },
+        // {
+        //   title: 'Haploinsufficiency<br />Score',
+        //   field: 'has_dosage_haplo',
+        //   formatter: hashaploFormatter,
+        //   align: 'center',
+        //   filterControl: 'select',
+        //   searchFormatter: false,
+        //   sortable: true
+        // },
+        // {
+        //   title: 'Triplosensitivity<br />Score',
+        //   field: 'has_dosage_triplo',
+        //   formatter: hastriploFormatter,
+        //   align: 'center',
+        //   filterControl: 'select',
+        //   searchFormatter: false,
+        //   sortable: true
+        // },
         {
-          title: 'Triplosensitivity<br />Score',
-          field: 'has_dosage_triplo',
-          formatter: hastriploFormatter,
-          align: 'center',
-          filterControl: 'select',
-          searchFormatter: false,
-          sortable: true
-        },
-        {
-          title: 'Evidence-Based<br />Summary',
+          title: 'Evidence-Based Summary',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
           align: 'center',
