@@ -91,7 +91,7 @@
 
 
 
-
+<!--
         <hr class="mt-4 pb-4" />
         <h2 id="variant" class="h1 text-center font-weight-light">ClinGen Variant Level Summary Statistics</h2>
         <div class="row text-center">
@@ -149,7 +149,7 @@
               </div>
             </div>
         </div>
-
+      -->
 
         <hr class="mt-4 pb-4" />
         <h2 id="gene-disease-validity">Gene-Disease Clinical Validity Statistics</h2>
@@ -250,16 +250,18 @@
         <div class="row  mt-4">
           <h5 class="col-sm-12">Gene Curation Expert Panels Stats</h5>
 
+          @foreach ($metrics->values[App\Metric::KEY_EXPERT_PANELS] as $panel)
           <div class="col-sm-2 text-center">
             <div class="panel panel-default border-0">
                 <div class="panel-body p-2">
                   <a href="#link-to-ep-page" class="text-dark">
-                    <div class="text-size-lg lineheight-tight">XX</div>
-                    <div class="mb-2 lineheight-tight">ABC E</div>
+                    <div class="text-size-lg lineheight-tight">{{ $panel['count'] }}</div>
+                    <div class="mb-2 lineheight-tight">{{ $panel['label'] }}</div>
                   </a>
                 </div>
               </div>
           </div>
+          @endforeach
 
         </div>
 
@@ -270,7 +272,7 @@
         <hr class="mt-4 pb-4" />
         <h2 id="dosage-sensitivity">Dosage Sensitivity Statistics</h2>
         <p>The ClinGen Dosage Sensitivity curation process collects evidence supporting/refuting the haploinsufficiency and triplosensitivity of genes and genomic regions.</p>
-        <h4>XXXX Total Dosage Sensitivity Curations</h4>
+        <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }} Total Dosage Sensitivity Curations</h4>
         <div class="row text-center mt-4">
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
@@ -283,11 +285,12 @@
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <div class="text-size-lg lineheight-tight">XXXX</div>
+                  <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_REGIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total Regions With <br />Dosage Sensitivity Curation</div>
                 </div>
               </div>
           </div>
+          <!--
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
@@ -295,7 +298,7 @@
                   <div class="mb-2 lineheight-tight">Something Else <br />Dosage Sensitivity Curation</div>
                 </div>
               </div>
-          </div>
+          </div> -->
         </div>
         <div class="row mt-2">
           <div class="col-sm-6">
@@ -435,12 +438,12 @@
         <hr class="mt-4 pb-4" />
         <h2 id="clinical-actionability">Clinical Actionability</h2>
         <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated </p>
-        <h4>XXXX Total Clinical Actionability Reports</h4>
+        <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} Total Clinical Actionability Reports</h4>
 <div class="row text-center mt-4">
           <div class="col-sm-3">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <div class="text-size-lg lineheight-tight">XXXX</div>
+                  <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total Actionability <br />Curations</div>
                 </div>
               </div>
@@ -448,7 +451,7 @@
           <div class="col-sm-3">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <div class="text-size-lg lineheight-tight">XXXX</div>
+                  <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total Unique Gene-Disease Pairs in Actionability Reports</div>
                 </div>
               </div>
@@ -456,7 +459,7 @@
           <div class="col-sm-3">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <div class="text-size-lg lineheight-tight">XXXX</div>
+                  <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total Adult Outcome-intervention pairs scored</div>
                 </div>
               </div>
@@ -464,12 +467,15 @@
           <div class="col-sm-3">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <div class="text-size-lg lineheight-tight">XXXX</div>
+                  <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total Pediatric Outcome-intervention </div>
                 </div>
               </div>
           </div>
         </div>
+
+        <!--
+
         <div class="row mt-2">
           <div class="col-sm-6">
             <h5>Adult Context</h5>
@@ -646,8 +652,9 @@
         </div>
         </div>
         </div>
+      -->
 
-
+      <!--
         <hr class="mt-4 pb-4" />
         <h2 id="variant-pathogenicity">Variant Pathogenicity</h2>
         <p>ClinGen variant curation utilizes the 2015 American College of Medical Genetics and Genomics (ACMG) guideline for sequence variant interpretation, which provides an evidence-based framework to classify variants. The results of these analyses will be deposited in ClinVar for community access.</p>
@@ -702,7 +709,7 @@
               </div>
           </div>
         </div>
-
+      -->
 {{--
 
         <hr class="mt-4 pb-4" />
