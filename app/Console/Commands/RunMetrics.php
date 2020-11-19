@@ -8,7 +8,7 @@ use App\Gene;
 use App\Metric;
 use App\Graphql;
 
-class UpdateGenenames extends Command
+class RunMetrics extends Command
 {
     /**
      * The name and signature of the console command.
