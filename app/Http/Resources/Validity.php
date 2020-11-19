@@ -16,7 +16,6 @@ class Validity extends JsonResource
      */
     public function toArray($request)
     {
-
         return [
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,

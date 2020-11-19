@@ -895,7 +895,12 @@ class Graphql
 
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
+		{
+			if ($record->gene === null)
+				continue;
+
 			$collection->push(new Nodal((array) $record));
+		}
 
 		$ngenes = $collection->unique('gene')->count();
 		$npanels = $collection->unique('attributed_to')->count();
