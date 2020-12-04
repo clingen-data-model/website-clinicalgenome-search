@@ -178,7 +178,7 @@ function location38Formatter(index, row) {
 
 function regionFormatter(index, row) {
 
-    var url = "/gene-dosage/region/";
+    var url = "/kb/gene-dosage/region/";
 
     return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
 }
@@ -512,16 +512,7 @@ function hasvalidityFormatter(index, row) {
 
 function hashaploortriploFormatter(index, row) {
 
-    if (row.has_dosage_haplo) {
-        // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-        //      + row.hgnc_id
-        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
-        //     + row.has_dosage_haplo + '</span></a>';
-        return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-            + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
-    if (row.has_dosage_triplo) {
+    if (row.has_dosage_haplo || row.has_dosage_triplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
         //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
@@ -533,7 +524,7 @@ function hashaploortriploFormatter(index, row) {
 
     return '';
 }
-
+/*
 function hashaploFormatter(index, row) {
 
     if (row.has_dosage_haplo)
@@ -566,7 +557,7 @@ function hashaploFormatter(index, row) {
 
 	  return '';
   }
-
+*/
 
   function region_listener()
   {
@@ -666,7 +657,7 @@ function cnvtriploFormatter(index, row) {
 
   function acmsymbolFormatter(index, row) {
 
-    var url = "/gene-dosage/";
+    var url = "/kb/gene-dosage/";
 
     return '<a href="' + url + row.hgnc_id + '"><b>' + row.gene + '</b></a>';
 }

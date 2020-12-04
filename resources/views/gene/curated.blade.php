@@ -90,37 +90,47 @@
       sortName:  "symbol",
 			sortOrder: "asc",
       columns: [
-        [{
-          title: 'Gene',
+        // [{
+        //   title: 'Gene',
+        //   field: 'symbol',
+        //   //rowspan: 2,
+        //   formatter: geneFormatter,
+        //   filterControl: 'input',
+        //   sortable: true
+        // },
+        // {
+        //   title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><br> Gene-Disease Validity <i class="fas fa-info-circle text-muted"></i></span>',
+			  //   align: 'center'
+        // },
+        // {
+        //   title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="fas fa-info-circle text-muted"></i></span>',
+        //   align: 'center',
+        // },
+		    // {
+        //   title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="fas fa-info-circle text-muted"></i></span>',
+        //   align: 'center',
+        // }],
+          {
+            title: 'Gene',
           field: 'symbol',
-          rowspan: 2,
+          //rowspan: 2,
           formatter: geneFormatter,
           filterControl: 'input',
           sortable: true
-        },
+          },
         {
+          //title: 'Clinical Validity Classification',
           title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><br> Gene-Disease Validity <i class="fas fa-info-circle text-muted"></i></span>',
-			    align: 'center'
-        },
-        {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="fas fa-info-circle text-muted"></i></span>',
-          align: 'center',
-        },
-		    {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="fas fa-info-circle text-muted"></i></span>',
-          align: 'center',
-        }],
-		    [{
-          title: 'Clinical Validity Classification',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
           align: 'center',
           filterControl: 'input',
-          searchFormatter: true,
+          searchFormatter: false,
           sortable: true
         },
         {
-          title: 'Dosage Sensitivity Score',
+          //title: 'Dosage Sensitivity Score',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br> Dosage Sensitivity <i class="fas fa-info-circle text-muted"></i></span>',
           field: 'has_dosage_haplo',
           formatter: hashaploortriploFormatter,
           align: 'center',
@@ -147,14 +157,15 @@
         //   sortable: true
         // },
         {
-          title: 'Evidence-Based Summary',
+          //title: 'Evidence-Based Summary',
+          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br> Clinical Actionability <i class="fas fa-info-circle text-muted"></i></span>',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
           align: 'center',
           filterControl: 'input',
           searchFormatter: true,
           sortable: true
-        }]
+        }
       ]
     })
 
