@@ -124,8 +124,8 @@
           field: 'has_dosage_haplo',
           formatter: hashaploortriploFormatter,
           align: 'center',
-          filterControl: 'input',
-          searchFormatter: true,
+          filterControl: 'select',
+          searchFormatter: false,
           sortable: true
         },
         // {

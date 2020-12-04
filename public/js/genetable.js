@@ -336,6 +336,7 @@ function hashaploortriploFormatter(index, row) {
     //      + row.hgnc_id
     //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
     //     + row.has_dosage_haplo + '</span></a>';
+    //return 'Curated111';
     return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
   }
 
