@@ -111,7 +111,7 @@ function location38Formatter(index, row) {
 }
 
 function regionFormatter(index, row) {
-  var url = "/kb/gene-dosage/region/";
+  var url = "/gene-dosage/region/";
   return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
 }
 /*
@@ -331,52 +331,48 @@ function hasactionabilityFormatter(index, row) {
 }
 
 function hashaploortriploFormatter(index, row) {
-  if (row.has_dosage_haplo || row.has_dosage_triplo) {
+  if (row.has_dosage_haplo) {
     // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
     //      + row.hgnc_id
     //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
     //     + row.has_dosage_haplo + '</span></a>';
-    //return 'Curated111';
+    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+  }
+
+  if (row.has_dosage_triplo) {
+    // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+    //      + row.hgnc_id
+    //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+    //     + row.has_dosage_haplo + '</span></a>';
     return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
   }
 
   return '';
 }
-/*
+
 function hashaploFormatter(index, row) {
-
-    if (row.has_dosage_haplo)
-    {
-        // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-        //      + row.hgnc_id
-        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
-        //     + row.has_dosage_haplo + '</span></a>';
-        return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-            + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
-
-	  return '';
+  if (row.has_dosage_haplo) {
+    // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+    //      + row.hgnc_id
+    //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+    //     + row.has_dosage_haplo + '</span></a>';
+    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
   }
 
+  return '';
+}
 
-  function hastriploFormatter(index, row) {
-
-    if (row.has_dosage_triplo)
-    {
-        // return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-        //      + row.hgnc_id
-        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
-        //     + row.has_dosage_triplo + '</span></a>';
-        return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
-            + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs"> Curated</span></a>';
-    }
-
-	  return '';
+function hastriploFormatter(index, row) {
+  if (row.has_dosage_triplo) {
+    // return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+    //      + row.hgnc_id
+    //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+    //     + row.has_dosage_triplo + '</span></a>';
+    return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/kb/gene-dosage/' + row.hgnc_id + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs"> Curated</span></a>';
   }
-*/
 
+  return '';
+}
 
 function region_listener() {
   $('.fixed-table-toolbar').on('click', '.action-select-grch', function () {
@@ -446,7 +442,7 @@ function cnvreportFormatter(index, row) {
 }
 
 function acmsymbolFormatter(index, row) {
-  var url = "/kb/gene-dosage/";
+  var url = "/gene-dosage/";
   return '<a href="' + url + row.hgnc_id + '"><b>' + row.gene + '</b></a>';
 }
 

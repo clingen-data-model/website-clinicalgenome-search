@@ -26,8 +26,7 @@ function detailFormatter(index, row) {
  * Show the advanced filter toolbar button if the showadvanced
  * global is set.
  */
-function table_buttons ()
-{
+function table_buttons() {
     if (typeof showadvanced !== 'undefined' && showadvanced)
         return {
             btnUsersAdd: {
@@ -42,7 +41,7 @@ function table_buttons ()
             }
         }
     else
-        return { }
+        return {}
 }
 
 
@@ -67,8 +66,7 @@ function typeFormatter(index, row) {
         return { classes: 'global_table_cell region' };
 }
 
-function nullFormatter(index, row)
-{
+function nullFormatter(index, row) {
     if (row.type == 0)
         return '<span title="Gene">G</span>';
     else
@@ -92,7 +90,7 @@ function hgncFormatter(index, row) {
 function location01Formatter(index, row) {
 
     //if (row.type == 0)
-     //   return row.location;
+    //   return row.location;
 
     if (row.location == null)
         return '';
@@ -107,12 +105,12 @@ function location01Formatter(index, row) {
     var pos = name.indexOf('-');
 
     var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
-            + name.substring(0, chr)
-            + '</td><td class="text-10px line-height-normal">'
-            + name.substring(chr + 1, pos)
-            + '</td></tr><tr><td class="text-10px line-height-normal">'
-            + name.substring(pos + 1)
-            + '</td></tr></table>';
+        + name.substring(0, chr)
+        + '</td><td class="text-10px line-height-normal">'
+        + name.substring(chr + 1, pos)
+        + '</td></tr><tr><td class="text-10px line-height-normal">'
+        + name.substring(pos + 1)
+        + '</td></tr></table>';
 
     return html;
 }
@@ -121,7 +119,7 @@ function location01Formatter(index, row) {
 function locationFormatter(index, row) {
 
     //if (row.type == 0)
-     //   return row.location;
+    //   return row.location;
 
     if (row.GRCh37_position == null)
         return '';
@@ -136,12 +134,12 @@ function locationFormatter(index, row) {
     var pos = name.indexOf('-');
 
     var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
-            + name.substring(0, chr)
-            + '</td><td class="text-10px line-height-normal">'
-            + name.substring(chr + 1, pos)
-            + '</td></tr><tr><td class="text-10px line-height-normal">'
-            + name.substring(pos + 1)
-            + '</td></tr></table>';
+        + name.substring(0, chr)
+        + '</td><td class="text-10px line-height-normal">'
+        + name.substring(chr + 1, pos)
+        + '</td></tr><tr><td class="text-10px line-height-normal">'
+        + name.substring(pos + 1)
+        + '</td></tr></table>';
 
     return html;
 }
@@ -150,7 +148,7 @@ function locationFormatter(index, row) {
 function location38Formatter(index, row) {
 
     //if (row.type == 0)
-     //   return row.location;
+    //   return row.location;
 
     if (row.GRCh38_position == null)
         return '';
@@ -165,12 +163,12 @@ function location38Formatter(index, row) {
     var pos = name.indexOf('-');
 
     var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
-            + name.substring(0, chr)
-            + '</td><td class="text-10px line-height-normal">'
-            + name.substring(chr + 1, pos)
-            + '</td></tr><tr><td class="text-10px line-height-normal">'
-            + name.substring(pos + 1)
-            + '</td></tr></table>';
+        + name.substring(0, chr)
+        + '</td><td class="text-10px line-height-normal">'
+        + name.substring(chr + 1, pos)
+        + '</td></tr><tr><td class="text-10px line-height-normal">'
+        + name.substring(pos + 1)
+        + '</td></tr></table>';
 
     return html;
 }
@@ -178,7 +176,7 @@ function location38Formatter(index, row) {
 
 function regionFormatter(index, row) {
 
-    var url = "/kb/gene-dosage/region/";
+    var url = "/gene-dosage/region/";
 
     return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
 }
@@ -270,7 +268,7 @@ function haploFormatter(index, row) {
         return html;
 
     return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="'
-                + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+        + row.haplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
 
 }
 
@@ -282,13 +280,13 @@ function triploFormatter(index, row) {
     if (row.triplo_assertion == 'Not Yet Evaluated')
         return '<span class="text-muted">Not Yet Evaluated</span>';
 
-        //var html = row.triplo_assertion.replace(' (', '<br />(');
-        var html = row.triplo_assertion;
+    //var html = row.triplo_assertion.replace(' (', '<br />(');
+    var html = row.triplo_assertion;
 
-        if (row.triplo_history === null)
-            return html;
+    if (row.triplo_history === null)
+        return html;
 
-        return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
+    return '<span class="pointer text-danger" data-toggle="tooltip" data-placement="top" title="' + row.triplo_history + '"><b>' + html + '</b>  <i class="fas fa-comment"></i></span>';
 
 }
 
@@ -312,23 +310,21 @@ function reportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
 
-    if (row.type == 0)
-    {
+    if (row.type == 0) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         return '<a class="btn btn-xs btn-success btn-block btn-report" href="'
             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
     }
-    else
-    {
+    else {
         return '<a class="btn btn-xs btn-success btn-block btn-report" href="'
             + '/kb/gene-dosage/region/' + row.hgnc_id
             + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
     }
-  }
+}
 
 
-  function iscaFormatter(index, row) {
+function iscaFormatter(index, row) {
 
     if (row.type == 0)
         return '<a href="'
@@ -340,25 +336,25 @@ function reportFormatter(index, row) {
             + '">' + row.isca + '</a>';
     else
         return row.isca;
-  }
+}
 
 
-  /**
-   *
-   * @param {*} index
-   * @param {*} row
-   */
+/**
+ *
+ * @param {*} index
+ * @param {*} row
+ */
 function cellFormatter(index, row) {
     return { classes: 'global_table_cell' };
-  }
+}
 
 
-  /**
-   * The global header style set in the genetable partial.  If the lightstyle
-   * global is set, leave the default style, else go dark.
-   *
-   * @param {*} column
-   */
+/**
+ * The global header style set in the genetable partial.  If the lightstyle
+ * global is set, leave the default style, else go dark.
+ *
+ * @param {*} column
+ */
 function headerStyle(column) {
     if (typeof lightstyle !== 'undefined' && lightstyle)
         return {}
@@ -366,36 +362,36 @@ function headerStyle(column) {
         return {
             classes: 'bg-secondary text-light header_class'
         }
-  }
+}
 
 
-  function affiliateFormatter(index, row) {
-	var html = '<a href="/kb/affiliate/' + row.agent + '">' + row.label + '</a>';
-	return html;
-  }
+function affiliateFormatter(index, row) {
+    var html = '<a href="/kb/affiliate/' + row.agent + '">' + row.label + '</a>';
+    return html;
+}
 
-  function badgeFormatter(index, row) {
-	var html = '';
-	if (row.has_validity)
-    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+function badgeFormatter(index, row) {
+    var html = '';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
 
-	if (row.has_dosage)
-    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    if (row.has_dosage)
+        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
 
-      if (row.has_actionability)
-          html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
-      else
-          html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+    if (row.has_actionability)
+        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
 
-	return html;
-  }
+    return html;
+}
 
-  function ashgncFormatter(index, row) {
-      return '<a href="/kb/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
+function ashgncFormatter(index, row) {
+    return '<a href="/kb/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
 }
 
 function asdiseaseFormatter(index, row) {
@@ -408,7 +404,7 @@ function asmondoFormatter(index, row) {
 
 function asbadgeFormatter(index, row) {
     return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
-          + '' + row.classification + '</a>';
+        + '' + row.classification + '</a>';
 }
 
 function datebadgeFormatter(index, row) {
@@ -419,40 +415,40 @@ function datebadgeFormatter(index, row) {
 }
 
 function conditionFormatter(index, row) {
-	// var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-  //           + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
+    // var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
+    //           + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
     var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-            + '<div class="small text-muted">' + row.curie + '</div>';
+        + '<div class="small text-muted">' + row.curie + '</div>';
 
-  //if (row.description != null)
-  //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
+    //if (row.description != null)
+    //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
 
-	return html;
-  }
+    return html;
+}
 
-  function cbadgeFormatter(index, row) {
-	var html = '';
+function cbadgeFormatter(index, row) {
+    var html = '';
 
-	if (row.has_validity)
-    	html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
 
-		if (row.has_dosage)
-    	html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    if (row.has_dosage)
+        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
 
-      if (row.has_actionability)
-          html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
-      else
-          html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+    if (row.has_actionability)
+        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
 
-	return html;
-  }
+    return html;
+}
 
-  function drsymbolFormatter(index, row) {
-      return '<a href="/kb/drugs/' + row.curie + '">' + row.curie + '</a>';
+function drsymbolFormatter(index, row) {
+    return '<a href="/kb/drugs/' + row.curie + '">' + row.curie + '</a>';
 }
 
 function drugFormatter(index, row) {
@@ -460,27 +456,27 @@ function drugFormatter(index, row) {
 }
 
 function drbadgeFormatter(index, row) {
-  var html = '';
+    var html = '';
 
-  if (row.has_validity)
-      html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
-  else
-      html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
 
-      if (row.has_dosage)
-      html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
-  else
-      html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+    if (row.has_dosage)
+        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
 
     if (row.has_actionability)
         html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
 
-  return html;
+    return html;
 }
 
-var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked", "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD":  "Semidominant"};
+var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked", "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant" };
 
 function moiFormatter(index, row) {
     return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';
@@ -488,36 +484,42 @@ function moiFormatter(index, row) {
 
 function hasvalidityFormatter(index, row) {
 
-    if (row.has_validity)
-    {
+    if (row.has_validity) {
         return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
     }
 
-	  return '';
-  }
+    return '';
+}
 
 
-  function hasactionabilityFormatter(index, row) {
+function hasactionabilityFormatter(index, row) {
 
-    if (row.has_actionability)
-    {
+    if (row.has_actionability) {
         return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
             + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
     }
 
-	  return '';
-  }
+    return '';
+}
 
 
 function hashaploortriploFormatter(index, row) {
 
-    if (row.has_dosage_haplo || row.has_dosage_triplo) {
+    if (row.has_dosage_haplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
         //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
         //     + row.has_dosage_haplo + '</span></a>';
-        //return 'Curated111';
+        return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+            + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+    }
+    if (row.has_dosage_triplo) {
+        // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+        //      + row.hgnc_id
+        //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
+        //     + row.has_dosage_haplo + '</span></a>';
         return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
             + row.hgnc_id
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
@@ -525,11 +527,10 @@ function hashaploortriploFormatter(index, row) {
 
     return '';
 }
-/*
+
 function hashaploFormatter(index, row) {
 
-    if (row.has_dosage_haplo)
-    {
+    if (row.has_dosage_haplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
         //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
@@ -539,14 +540,13 @@ function hashaploFormatter(index, row) {
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
     }
 
-	  return '';
-  }
+    return '';
+}
 
 
-  function hastriploFormatter(index, row) {
+function hastriploFormatter(index, row) {
 
-    if (row.has_dosage_triplo)
-    {
+    if (row.has_dosage_triplo) {
         // return '<a class="btn btn-success  btn-wrap btn-report btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
         //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
@@ -556,20 +556,19 @@ function hashaploFormatter(index, row) {
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs"> Curated</span></a>';
     }
 
-	  return '';
-  }
-*/
+    return '';
+}
 
-  function region_listener()
-  {
-      $('.fixed-table-toolbar').on('click', '.action-select-grch', function () {
+
+function region_listener() {
+    $('.fixed-table-toolbar').on('click', '.action-select-grch', function () {
 
         var uuid = $(this).attr('data-uuid');
 
         $('.action-select-text').html(uuid);
         $('#select-gchr').val(uuid);
-      });
-  }
+    });
+}
 
 
 function cnvlocationFormatter(index, row) {
@@ -618,8 +617,7 @@ function cnvhaploFormatter(index, row) {
     else
         return score_assertion_strings[row.haplo_assertion];*/
 
-    if (row.haplo_assertion == "Not yet evaluated")
-    {
+    if (row.haplo_assertion == "Not yet evaluated") {
         return '<span class="text-muted">Not Yet Evaluated</span>';
     }
 
@@ -636,29 +634,28 @@ function cnvtriploFormatter(index, row) {
     else
         return score_assertion_strings[row.triplo_assertion];*/
 
-    if (row.triplo_assertion == "Not yet evaluated")
-    {
+    if (row.triplo_assertion == "Not yet evaluated") {
         return '<span class="text-muted">Not Yet Evaluated</span>';
     }
 
     //return score_assertion_strings[row.triplo_assertion] + '<br />(' + row.triplo_assertion + ')';
-    return row.triplo_assertion + ' (' +  score_assertion_strings[row.triplo_assertion] + ')';
+    return row.triplo_assertion + ' (' + score_assertion_strings[row.triplo_assertion] + ')';
 }
 
-  function cnvreportFormatter(index, row) {
+function cnvreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
     if (row.rawdate === "")
         return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
-        + row.key + '"><i class="fas fa-file"></i>  Under Review</a>';
+            + row.key + '"><i class="fas fa-file"></i>  Under Review</a>';
 
-      return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
-            + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
-  }
+    return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
+        + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+}
 
-  function acmsymbolFormatter(index, row) {
+function acmsymbolFormatter(index, row) {
 
-    var url = "/kb/gene-dosage/";
+    var url = "/gene-dosage/";
 
     return '<a href="' + url + row.hgnc_id + '"><b>' + row.gene + '</b></a>';
 }
@@ -678,7 +675,7 @@ function acmomimsFormatter(index, row) {
 
     var addcomma = false;
 
-    list.forEach(function(item) {
+    list.forEach(function (item) {
         var trimmed = item.trim();
         if (addcomma)
             html += ', ';
@@ -699,7 +696,7 @@ function acmpmidsFormatter(index, row) {
 
     var addcomma = false;
 
-    list.forEach(function(item) {
+    list.forEach(function (item) {
         var trimmed = item.trim();
         if (addcomma)
             html += ', ';
@@ -738,37 +735,35 @@ function acmtriploFormatter(index, row) {
     return score_assertion_strings[row.triplo_assertion] + ' (' + row.triplo_assertion + ')';
 }
 
-  function acmreportFormatter(index, row) {
+function acmreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
     return '<a class="btn btn-block btn btn-default btn-xs" href="'
-            + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
-  }
+        + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+}
 
 
-  function dsreportFormatter(index, row) {
+function dsreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
 
     var bclass = (row.workflow == "Awaiting Review" ? "default" : "success");
 
-    if (row.type == 0)
-    {
+    if (row.type == 0) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
-    else
-    {
+    else {
         return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
             + '/kb/gene-dosage/region/' + row.isca
             + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
-  }
+}
 
 
-  function dssymbolFormatter(index, row) {
+function dssymbolFormatter(index, row) {
 
     if (row.type == 0)
         return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
@@ -788,7 +783,7 @@ function relationFormatter(index, row) {
     if (row.relationship === null)
         return html;
 
-    var c = row.relationship.substring(0,1);
+    var c = row.relationship.substring(0, 1);
 
     html += '<div class="global_table_cell font-weight-bold carryover mt-1 mb-1" title="' + row.relationship + '">' + c + '</div>';
 
@@ -796,40 +791,37 @@ function relationFormatter(index, row) {
 
 }
 
-function locationSorter(one, two)
-	{
-		var oneloc = one.match(/\d+|X|Y/g);
-		var twoloc = two.match(/\d+|X|Y/g);
+function locationSorter(one, two) {
+    var oneloc = one.match(/\d+|X|Y/g);
+    var twoloc = two.match(/\d+|X|Y/g);
 
-		// deal with X or Y first
-		if (oneloc[0] == 'X') oneloc[0] = 23;
-		else if (oneloc[0] == 'Y') oneloc[0] = 24;
-		else oneloc[0] = parseInt(oneloc[0]);
+    // deal with X or Y first
+    if (oneloc[0] == 'X') oneloc[0] = 23;
+    else if (oneloc[0] == 'Y') oneloc[0] = 24;
+    else oneloc[0] = parseInt(oneloc[0]);
 
-		if (twoloc[0] == 'X') twoloc[0] = 23;
-		else if (twoloc[0] == 'Y') twoloc[0] = 24;
-		else twoloc[0] = parseInt(twoloc[0]);
+    if (twoloc[0] == 'X') twoloc[0] = 23;
+    else if (twoloc[0] == 'Y') twoloc[0] = 24;
+    else twoloc[0] = parseInt(twoloc[0]);
 
-		if (oneloc[0] < twoloc[0])
-			return -1;
-		else if (oneloc[0] > twoloc[0])
-			return 1;
-		else
-		{
-			oneloc[1] = parseInt(oneloc[1]);
-			twoloc[1] = parseInt(twoloc[1]);
-			if (oneloc[1] < twoloc[1])
-				return -1;
-			else if (oneloc[1] > twoloc[1])
-				return 1;
-			else
-			{
-				oneloc[2] = parseInt(oneloc[2]);
-				twoloc[2] = parseInt(twoloc[2]);
-				return (oneloc[2] < twoloc[2] ? -1 : 1);
+    if (oneloc[0] < twoloc[0])
+        return -1;
+    else if (oneloc[0] > twoloc[0])
+        return 1;
+    else {
+        oneloc[1] = parseInt(oneloc[1]);
+        twoloc[1] = parseInt(twoloc[1]);
+        if (oneloc[1] < twoloc[1])
+            return -1;
+        else if (oneloc[1] > twoloc[1])
+            return 1;
+        else {
+            oneloc[2] = parseInt(oneloc[2]);
+            twoloc[2] = parseInt(twoloc[2]);
+            return (oneloc[2] < twoloc[2] ? -1 : 1);
 
-			}
-		}
-
-		return 0;
+        }
     }
+
+    return 0;
+}
