@@ -10,8 +10,8 @@
  * @param {} index
  * @param {*} row
  */
-function detailFormatter(index, row) {
-    console.log('default Formatter fired');
+function detailFormatter(index, row)
+{
     var html = [];
 
     /*$.each(row, function (key, value) {
@@ -123,10 +123,10 @@ function locationFormatter(index, row) {
     //if (row.type == 0)
      //   return row.location;
 
-    if (row.GRCh37_position == null)
+    if (row.grch37 == null)
         return '';
 
-    var name = row.GRCh37_position.trim();
+    var name = row.grch37.trim();
 
     // strip off chr
     if (name.toLowerCase().indexOf("chr") === 0)
@@ -152,10 +152,10 @@ function location38Formatter(index, row) {
     //if (row.type == 0)
      //   return row.location;
 
-    if (row.GRCh38_position == null)
+    if (row.grch38 == null)
         return '';
 
-    var name = row.GRCh38_position.trim();
+    var name = row.grch38.trim();
 
     // strip off chr
     if (name.toLowerCase().indexOf("chr") === 0)
@@ -178,7 +178,7 @@ function location38Formatter(index, row) {
 
 function regionFormatter(index, row) {
 
-    var url = "/gene-dosage/region/";
+    var url = "/kb/gene-dosage/region/";
 
     return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
 }
@@ -666,7 +666,7 @@ function cnvtriploFormatter(index, row) {
 
   function acmsymbolFormatter(index, row) {
 
-    var url = "/gene-dosage/";
+    var url = "/kb/gene-dosage/";
 
     return '<a href="' + url + row.hgnc_id + '"><b>' + row.gene + '</b></a>';
 }

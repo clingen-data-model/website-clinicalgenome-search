@@ -32,15 +32,15 @@ class Location extends Model
      * @var array
      */
     public static $rules = [
-		'ident' => 'alpha_dash|max:80|required',
-        'gene_id' => 'integer|nullable',
-        'cytoband' => 'string|nullable',
-        'chromosome' => 'integer|nullable',
-        'start' => 'integer|nullable',
-		'stop' => 'integer|nullable',
-		'stain' => 'integer|nullable',
-		'type' => 'integer',
-		'status' => 'integer'
+          'ident' => 'alpha_dash|max:80|required',
+          'gene_id' => 'integer|nullable',
+          'cytoband' => 'string|nullable',
+          'chromosome' => 'integer|nullable',
+          'start' => 'integer|nullable',
+          'stop' => 'integer|nullable',
+          'stain' => 'integer|nullable',
+          'type' => 'integer',
+          'status' => 'integer'
 	];
 
 	/**
@@ -111,10 +111,10 @@ class Location extends Model
      * 
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function gene()
-    {
-		return $this->belongsTo('App\Gene');
-	}
+     public function gene()
+     {
+          return $this->belongsTo('App\Gene');
+     }
 
 	/**
      * Query scope by ident
@@ -122,10 +122,10 @@ class Location extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeIdent($query, $ident)
-    {
-		return $query->where('ident', $ident);
-    }
+     public function scopeIdent($query, $ident)
+     {
+          return $query->where('ident', $ident);
+     }
 
 
      /**
@@ -135,8 +135,8 @@ class Location extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeCytoband($query, $name)
-    {
-		return $query->where('cytoband', $name);
-    }
+     {
+          return $query->where('cytoband', $name);
+     }
 
 }

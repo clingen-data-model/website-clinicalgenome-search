@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
 
-use App\GeneLib;
-
 class AffiliateController extends Controller
 {
+    private $api = '/api/affiliates';
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $size = 100)
+    public function index(Request $request, $page = 1, $size = 50)
     {
         // process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -27,7 +27,7 @@ class AffiliateController extends Controller
         ]);
 
         return view('affiliate.index', compact('display_tabs'))
-                        ->with('apiurl', '/api/affiliates')
+                        ->with('apiurl', $this->api)
                         ->with('pagesize', $size)
                         ->with('page', $page);
 
@@ -40,7 +40,7 @@ class AffiliateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id, $page = 1, $size = 100)
+    public function show(Request $request, $id, $page = 1, $size = 50)
     {
         // set display context for view
         $display_tabs = collect([
@@ -53,7 +53,7 @@ class AffiliateController extends Controller
             $id = 0;
 
         return view('affiliate.show', compact('display_tabs'))
-                        ->with('apiurl', '/api/affiliates/' . $id)
+                        ->with('apiurl', $this->api . "/${id}")
                         ->with('pagesize', $size)
                         ->with('page', $page);
     }

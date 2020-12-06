@@ -27,6 +27,8 @@ use App\GeneLib;
  * */
 class ValidityController extends Controller
 {
+    private $api = '/api/validity';
+
 	/**
      * Create a new controller instance.
      *
@@ -43,7 +45,7 @@ class ValidityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $size = 100)
+    public function index(Request $request, $page = 1, $size = 50)
     {
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -56,7 +58,7 @@ class ValidityController extends Controller
         ]);
 
 		return view('gene-validity.index', compact('display_tabs'))
-						->with('apiurl', '/api/validity')
+						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page);
     }

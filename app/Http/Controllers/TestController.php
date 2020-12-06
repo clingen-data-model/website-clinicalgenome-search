@@ -31,6 +31,8 @@ class TestController extends Controller
 
 		dd($b);
 		return DosageResource::collection($c);*/
+		$a = Jira::regionLoad([]);
+		dd($a);
 	}
 
 	public function statistics()

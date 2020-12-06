@@ -53,11 +53,19 @@ trait Query
 				GeneLib::putError($errors['error']);
 				return null;
 			}
-			
+	
 			$code = $response->getStatusCode();
 			$reason = $response->getReasonPhrase();
 			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
+
+			if (is_array($errors) && isset($errors["errors"]))
+			{
+				// check if there is a message bag
+				$messages = array_column($errors["errors"], 'message');
+				if (is_array($messages))
+					$errors = implode($messages);
+			}
+
 			GeneLib::putError($errors);
 			
 			return null;

@@ -39,7 +39,7 @@ class DrugController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-    public function index(Request $request, $page = 0, $size = 6000)
+    public function index(Request $request, $page = 0, $size = 50)
     {
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -85,6 +85,7 @@ class DrugController extends Controller
 			'active' => "drug",
 			'title' => $record->label . " drug information"
 		]);
+		
         return view('drug.show', compact('display_tabs', 'record'));
 	}
 	

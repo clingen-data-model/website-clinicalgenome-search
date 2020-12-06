@@ -34,13 +34,22 @@ class Region extends Model
     public static $rules = [];
 
     /**
+     * Map the json attributes to associative arrays.
+     *
+     * @var array
+     */
+	  protected $casts = [
+              'history' => 'array'
+    ];
+
+    /**
      * The attributes that are mass assignable.  Remember to fill it
      * in when all the attributes are known.
      *
      * @var array
      */
      protected $fillable = ['location', 'chr', 'start', 'stop', 'issue', 'curation',
-                            'workflow',
+                            'workflow', 'history',
                             'name', 'gain', 'loss', 'pli', 'status', 'omim', 'type' ];
 
 	  /**

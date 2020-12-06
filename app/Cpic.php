@@ -32,18 +32,18 @@ class Cpic extends Model
      * @var array
      */
     public static $rules = [
-		'ident' => 'alpha_dash|max:80|required',
-		'gene' => 'name|max:80|required',
-		'drug' => 'string|nullable',
-        'guideline' => 'string|nullable',
-        'cpic_level' => 'string|nullable',
-		'cpic_level_status' => 'json|nullable',
-		'pharmgkb_level_of_evidence' => 'json|nullable',
-        'pgx_on_fda_label' => 'string|nullable',
-        'cpic_publications_pmid' => 'string|nullable',
-        'notes' => 'string|nullable',
-		'type' => 'integer',
-		'status' => 'integer'
+          'ident' => 'alpha_dash|max:80|required',
+          'gene' => 'name|max:80|required',
+          'drug' => 'string|nullable',
+          'guideline' => 'string|nullable',
+          'cpic_level' => 'string|nullable',
+          'cpic_level_status' => 'json|nullable',
+          'pharmgkb_level_of_evidence' => 'json|nullable',
+          'pgx_on_fda_label' => 'string|nullable',
+          'cpic_publications_pmid' => 'string|nullable',
+          'notes' => 'string|nullable',
+          'type' => 'integer',
+          'status' => 'integer'
 	];
 
 	/**
@@ -107,17 +107,6 @@ class Cpic extends Model
 	}
 
 
-     /**
-     * Access the devices associated with this clinic
-     * 
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     /*public function location()
-     {
-		return $this->hasOne('App\Location');
-     }*/
-     
-
 	/**
      * Query scope by ident
      *
@@ -125,9 +114,9 @@ class Cpic extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeIdent($query, $ident)
-    {
-    return $query->where('ident', $ident);
-    }
+     {
+          return $query->where('ident', $ident);
+     }
 
 
      /**
@@ -137,9 +126,9 @@ class Cpic extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeGene($query, $gene)
-    {
-    return $query->where('gene', $gene)->orderBy('guideline')->orderBy('drug');
-    }
+     {
+          return $query->where('gene', $gene)->orderBy('guideline')->orderBy('drug');
+     }
 
 
     /**
@@ -150,7 +139,6 @@ class Cpic extends Model
      */
 	public function scopeDrug($query, $drug)
      {
-     return $query->where('drug', $drug);
+          return $query->where('drug', $drug);
      }
-
 }

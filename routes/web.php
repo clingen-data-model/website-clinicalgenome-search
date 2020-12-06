@@ -13,23 +13,17 @@
 
 Route::view('/message', 'error.message-standard');
 
-//Route::get('/', 'HomeController@index')->name('home');
 Route::get('/', function () {
+
 	return redirect()->route('gene-curations');
+
 });
 
 Route::get('/kb', function () {
-	return redirect()->route('gene-curations');
-})->name('home');
-/*
- * Test route - remove for production
- */
-// Route::get('/test/test', 'TestController@test')->name('test-test');
-// Route::get('/test', 'TestController@index')->name('test-index');
-// Route::get('/test/reports', 'TestController@reports')->name('dosage-reports');
-// Route::get('/test/stats', 'TestController@stats')->name('dosage-stats');
-// Route::get('/test/show', 'TestController@show')->name('gene-dosage-show');
 
+	return redirect()->route('gene-curations');
+
+})->name('home');
 
 
 /*
@@ -56,8 +50,6 @@ Route::group(['prefix' => 'kb/genes'], function () {
 		Route::get('/{id?}/by-disease', 'GeneController@show_by_disease')->name('gene-by-disease');
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
-
-
 
 });
 
@@ -108,6 +100,7 @@ Route::group(['prefix' => 'kb/regions'], function () {
 	Route::post('/', 'RegionController@search')->name('region-search');
 
 });
+
 
 /*
  * Conditions display routes
@@ -191,27 +184,16 @@ Route::group(['prefix' => 'kb/reports'], function () {
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });
 
-// ************************************************************************************************
-// DEMO ROUTES
-// ************************************************************************************************
-Route::group(['prefix' =>'kb'], function () {
-		// Variant Path demo route
-		// NOT FOR MVP
-		Route::get('/variant-pathogenicity/all/', 'VariantPathController@index')->name('variant-path-index');
-		Route::get('/variant-pathogenicity/detail/', 'VariantPathController@show')->name('variant-path-show');
 
-		// Variant Path demo route
-		// NOT FOR MVP
-		Route::get('/publication/all/', 'PublicationController@index')->name('publication-index');
-		Route::get('/publication/detail/', 'PublicationController@show')->name('publication-show');
+// Variant pathogenicity routes
+Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
+	// Variant Path demo route
+	// NOT FOR MVP
+	Route::get('/all/', 'VariantPathController@index')->name('variant-path-index');
+	Route::get('/detail/', 'VariantPathController@show')->name('variant-path-show');
 
-		// New dosagw index page
-		Route::get('/new-dosage', 'DosageController@newindex')->name('new-dosage-index');
-		Route::get('/new-dosage/reports', 'DosageController@newreports')->name('dosage-reports');
-		Route::get('/new-dosage/stats', 'DosageController@newstats')->name('dosage-stats');
 });
-// ************************************************************************************************
-// DEMO ROUTES END
-// ************************************************************************************************
+
+Route::get('/test', 'TestController@index')->name('test');
 
 Auth::routes();

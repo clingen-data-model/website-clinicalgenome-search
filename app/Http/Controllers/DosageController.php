@@ -8,13 +8,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use GuzzleHttp\Client;
 
-use Session;
-
-use App\Imports\Excel;
 use App\Exports\DosageExport;
-
 use App\GeneLib;
-use App\Jira;
 
 /**
 *
@@ -33,23 +28,13 @@ use App\Jira;
 * */
 class DosageController extends Controller
 {
-	/**
-	* Create a new controller instance.
-	*
-	* @return void
-	*/
-	public function __construct()
-	{
-		//$this->middleware('auth');
-	}
-
-
+	private $api = '/api/dosage';
     /**
      * Display a listing of curated genes with a dosage sensitivity.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $size = 100)
+    public function index(Request $request, $page = 1, $size = 50)
     {
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
@@ -63,7 +48,7 @@ class DosageController extends Controller
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
-						->with('apiurl', '/api/dosage')
+						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page);
     }
@@ -84,35 +69,26 @@ class DosageController extends Controller
 										'validity' => true,
 										'dosage' => true
 									]);
-
+									
 		if ($record === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
 						->with('back', url()->previous());
 
-//dd($record);
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
 		$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
         $record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
         $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
 		$record->date = $record->displayDate($record->dosage_report_date);
-
-		// some data just to test the ideogram and sequence viewer
-		$record->chromosome = $record->formatPosition($record->GRCh37_position, 'chr');
-
-		$record->start_location=$record->formatPosition($record->GRCh37_position, 'from');
-		$record->stop_location=$record->formatPosition($record->GRCh37_position, 'to');
-		//$record->GRCh38_loc = 'chr22: 42,692,115-42,721,301';
-		//$record->seqID = 'NC_000022.10';
-		$record->sv_start = $record->formatPosition($record->GRCh37_position, 'svfrom');
-		$record->sv_stop = $record->formatPosition($record->GRCh37_position, 'svto');
-		//$record->loc = 'chr22: 43,088,121-43,117,307';
-		//$record->GRCh38_seqID = 'NC_000022.11';
-		$record->GRCh38_sv_start = $record->formatPosition($record->GRCh38_position, 'svfrom');
-		$record->GRCh38_sv_stop = $record->formatPosition($record->GRCh38_position, 'svto');
-		//dd($record);
+		$record->chromosome = $record->formatPosition($record->grch37, 'chr');
+		$record->start_location=$record->formatPosition($record->grch37, 'from');
+		$record->stop_location=$record->formatPosition($record->grch37, 'to');
+		$record->sv_start = $record->formatPosition($record->grch37, 'svfrom');
+		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
+		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
+		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
 
 
 		// set display context for view
@@ -133,40 +109,29 @@ class DosageController extends Controller
      */
     public function region_show(Request $request, $id = '')
     {
-
 		$record = GeneLib::dosageRegionDetail([ 'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
 										'validity' => true,
 										'dosage' => true
 									]);
-//dd($record);
+
 		if ($record === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
 						->with('back', url()->previous());
 
-//dd($record);
-		// since we don't run through resources, we add some helpers here for now.  To be eventually
-		// moved back into the library
 		$record->haplo_assertion = GeneLib::haploAssertionString($record->haplo_score);
         $record->triplo_assertion = GeneLib::triploAssertionString($record->triplo_score);
-        //$record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
-		//$record->date = $record->displayDate($record->dosage_report_date);
-
-		// some data just to test the ideogram and sequence viewer
-		$record->chromosome = $record->formatPosition($record->GRCh37_position, 'chr');
-
-		$record->start_location=$record->formatPosition($record->GRCh37_position, 'from');
-		$record->stop_location=$record->formatPosition($record->GRCh37_position, 'to');
-		$record->sv_start = $record->formatPosition($record->GRCh37_position, 'svfrom');
-		$record->sv_stop = $record->formatPosition($record->GRCh37_position, 'svto');
-		$record->GRCh38_sv_start = $record->formatPosition($record->GRCh38_position, 'svfrom');
-		$record->GRCh38_sv_stop = $record->formatPosition($record->GRCh38_position, 'svto');
-		//dd($record);
-
-
+		$record->chromosome = $record->formatPosition($record->grch37, 'chr');
+		$record->start_location=$record->formatPosition($record->grch37, 'from');
+		$record->stop_location=$record->formatPosition($record->grch37, 'to');
+		$record->sv_start = $record->formatPosition($record->grch37, 'svfrom');
+		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
+		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
+		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
+	
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "dosage",
@@ -236,7 +201,8 @@ class DosageController extends Controller
 						->with('page', $page);
     }
 
-/**
+
+	/**
      * Redisplay the results of a region search.
      *
      * @return \Illuminate\Http\Response
@@ -297,9 +263,10 @@ class DosageController extends Controller
 						->with('pagesize', $size)
 						->with('page', $page);
 	}
-			
+	
+	
 	/**
-     * Display the specified resource.
+     * Download the specified file.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -328,10 +295,6 @@ class DosageController extends Controller
         ]);
 
 		return view('new-dosage.index', compact('display_tabs'));
-		//				->with('count', $results->count)
-		//				->with('apiurl', '/api/dosage')
-		//				->with('pagesize', $size)
-		//				->with('page', $page);
 	}
 
 
@@ -341,6 +304,7 @@ class DosageController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+	/*
     public function newshow(Request $request, $id = '')
     {
 
@@ -386,6 +350,7 @@ class DosageController extends Controller
 
 		return view('new-dosage.show', compact('display_tabs', 'record'));
 	}
+	*/
 
 	/**
      * Show the ftp downloads page.
@@ -473,6 +438,7 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+	/*
     public function newreports(Request $request, $page = 1, $size = 100)
     {
 
@@ -498,7 +464,7 @@ class DosageController extends Controller
      * Demo page for new dosage listing.
      *
      * @return \Illuminate\Http\Response
-     */
+     *//*
     public function newstats(Request $request, $page = 1, $size = 100)
     {
 
@@ -517,5 +483,5 @@ class DosageController extends Controller
 						->with('apiurl', '/api/dosage')
 						->with('pagesize', $size)
 						->with('page', $page);
-	}
+	}*/
 }

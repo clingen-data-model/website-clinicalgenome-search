@@ -31,7 +31,7 @@ class RegionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $size = 20)
+    public function index(Request $request, $page = 1, $size = 50)
     {
         // set display context for view
         $display_tabs = collect([

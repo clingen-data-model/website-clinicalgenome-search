@@ -396,7 +396,7 @@
 				},
 				{
 					title: 'GRCh37',
-					field: 'GRCh37_position',
+					field: 'grch37',
 					formatter: locationFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
@@ -406,7 +406,7 @@
 				},
 				{
 					title: 'GRCh38',
-					field: 'GRCh38_position',
+					field: 'grch38',
 					formatter: location38Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

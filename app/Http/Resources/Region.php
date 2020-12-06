@@ -19,7 +19,7 @@ class Region extends JsonResource
         return [
             'key' => $this->key,
             'name' => $this->summary,
-            'location' => $this->GRCh37_position,
+            'location' => $this->grch37,
             'haplo_assertion' => $this->haplo_score,
             'triplo_assertion' => $this->triplo_score,
             'date' => $this->displayDate($this->jira_report_date),

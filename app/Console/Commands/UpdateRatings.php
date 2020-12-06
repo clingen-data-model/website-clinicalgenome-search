@@ -75,7 +75,8 @@ class UpdateRatings extends Command
                     $gene->update(['history' => $history]);
                     break;
                 case 'ISCA Region Curation':
-                    $region = Region::issue($update->issue)->first();
+                    echo "Looking up region  " . $update->key . "\n";
+                    $region = Region::issue($update->key)->first();
                     if ($region === null)
                         continue 2;
                     if ($region->history === null)
@@ -85,6 +86,7 @@ class UpdateRatings extends Command
                         $history = $region->history;
                         $history[] = $update->attributesToArray();
                     }
+                    echo "Updating region history " . "\n";
                     $region->update(['history' => $history]);
                     break;
             }

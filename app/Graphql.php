@@ -673,8 +673,8 @@ class Graphql
 
 			if ($gene !== null)
 			{
-				$node->GRCh37_position = $gene->grch37;
-            	$node->GRCh38_position = $gene->grch38;
+				$node->grch37 = $gene->grch37;
+            	$node->grch38 = $gene->grch38;
 				$node->hi = $gene->hi;
 				$node->pli = $gene->pli;
 				$node->plof = $gene->plof;
@@ -801,8 +801,8 @@ class Graphql
 			$node->ucsc_id = $localgene->ucsc_id;
 			$node->uniprot_id = $localgene->uniprot_id;
 			$node->function = $localgene->function;
-			$node->GRCh37_position = $localgene->grch37;
-            $node->GRCh38_position = $localgene->grch38;
+			$node->grch37 = $localgene->grch37;
+            $node->grch38 = $localgene->grch38;
 		}
 
 		// currently, there is no easy way to track what needs dosage_curation entries belong in
@@ -1116,7 +1116,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function conditionDetail($args, $page = 0, $pagesize = 20)
+    static function conditionDetail($args)
     {
 		// break out the args
 		foreach ($args as $key => $value)

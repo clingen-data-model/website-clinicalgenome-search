@@ -57,8 +57,8 @@ class Iscamap extends Model
      */
     public function __construct(array $attributes = array())
     {
-        $this->attributes['ident'] = (string) Uuid::generate(4);
-        parent::__construct($attributes);
+      $this->attributes['ident'] = (string) Uuid::generate(4);
+      parent::__construct($attributes);
   	}
 
 

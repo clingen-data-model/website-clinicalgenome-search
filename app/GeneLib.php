@@ -498,7 +498,7 @@ class GeneLib extends Model
               'triplo_score', 'haplo_score', 'cytoband', 'key',
               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
-              'GRCh37_position', 'GRCh38_position', 'chromosome_band',
+              'grch37', 'grch38', 'chromosome_band',
               'resolution', 'issue_type', 'description',
               'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
               {

@@ -25,6 +25,9 @@ use App\Gene;
 * */
 class GeneController extends Controller
 {
+	private $api = '/api/genes';
+	private $api_curated = '/api/curations';
+
 	/**
 	* Create a new controller instance.
 	*
@@ -41,7 +44,7 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(GeneListRequest $request, $page = 1, $size = 100)
+	public function index(GeneListRequest $request, $page = 1, $size = 50)
 	{
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -54,7 +57,7 @@ class GeneController extends Controller
         ]);
 
 		return view('gene.index', compact('display_tabs'))
-						->with('apiurl', '/api/genes')
+						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page);
 	}
@@ -64,7 +67,10 @@ class GeneController extends Controller
 	 * Display a listing of all genes via HGNC Database.
 	 *
 	 * @return \Illuminate\Http\Response
+	 * 
+	 * No longer used
 	 */
+	/*
 	public function all()
 	{
 		// set display context for view
@@ -76,7 +82,7 @@ class GeneController extends Controller
 		$all = Gene::where("locus_group", "protein-coding gene")->Paginate(1000);
 
 		return view('gene.all', compact('display_tabs', 'all'));
-	}
+	}*/
 
 
 	/**
@@ -84,7 +90,7 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function curated(GeneListRequest $request, $page = 1, $size = 200)
+	public function curated(GeneListRequest $request, $page = 1, $size = 50)
 	{
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -97,14 +103,14 @@ class GeneController extends Controller
         ]);
 
 		return view('gene.curated', compact('display_tabs'))
-						->with('apiurl', '/api/curations')
+						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
 						->with('page', $page);
 	}
 
 
 	/**
-	* Display the specified gene.
+	* Display the specified gene, organized by disease.
 	*
 	* @param  int  $id
 	* @return \Illuminate\Http\Response
@@ -141,6 +147,13 @@ class GeneController extends Controller
 		return view('gene.by-disease', compact('display_tabs', 'record'));
 	}
 
+
+	/**
+	* Display the specified gene, organized by condition.
+	*
+	* @param  int  $id
+	* @return \Illuminate\Http\Response
+	*/
 	public function show_by_activity(Request $request, $id = null)
 	{
 		if ($id === null)
@@ -170,7 +183,7 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-			//dd($record);
+
 		return view('gene.by-activity', compact('display_tabs', 'record'));
 	}
 
@@ -192,8 +205,6 @@ class GeneController extends Controller
 
 
 		$record = GeneLib::geneDetail([
-										'page' => 0,
-										'pagesize' => 200,
 										'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
@@ -212,6 +223,7 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " external resources"
 		]);
+		
 		return view('gene.show-external-resources', compact('display_tabs', 'record'));
 	}
 

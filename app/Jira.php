@@ -49,7 +49,7 @@ class Jira extends Model
      *
      * @var array
      */
-     protected $fillable = ['summary', 'issuetype', 'GRCh37_position', 'GRCh38_position',
+     protected $fillable = ['summary', 'issuetype', 'grch37', 'grch38',
                               'triplo_score', 'haplo_score', 'cytoband' ];
 
 	/**
@@ -120,8 +120,8 @@ class Jira extends Model
                'summary' => $response->summary,
                'key' => $issue->issue,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
-               'GRCh37_position' => $response->customfield_10160,
-               'GRCh38_position' => $response->customfield_10532,
+               'grch37' => $response->customfield_10160,
+               'grch38' => $response->customfield_10532,
                'GRCh37_seqid' => $response->customfield_10158,
                'GRCh38_seqid' => $response->customfield_10537,
                'triplo_score' => $response->customfield_10166->value ?? 'unknown',
@@ -224,8 +224,8 @@ class Jira extends Model
               'summary' => $response->summary,
               'key' => $gene,
               'genetype' => $response->customfield_10156->value ?? 'unknown',
-              'GRCh37_position' => $response->customfield_10160 ?? null,
-              'GRCh38_position' => $response->customfield_10532 ?? null,
+              'grch37' => $response->customfield_10160 ?? null,
+              'grch38' => $response->customfield_10532 ?? null,
               'GRCh37_seqid' => $response->customfield_10158 ?? null,
               'GRCh38_seqid' => $response->customfield_10537 ?? null,
               'triplo_score' => $response->customfield_10166->value ?? 'unknown',
@@ -249,7 +249,7 @@ class Jira extends Model
          $node->date = $node->displayDate($response->resolutiondate ?? '');
 
          // some of the region fields for G37 have commas in them, remove them
-         $node->GRCh37_position = str_replace(',', '', $node->GRCh37_position);
+         $node->grch37 = str_replace(',', '', $node->grch37);
 
          // create the structures for pmid.  Jira will not send the fields if empty
          $pmids = [];
@@ -345,7 +345,7 @@ class Jira extends Model
                $node = new Nodal([
                     'key' => $issue->key,
                     'summary' => $issue->fields->summary,
-                    'GRCh37_position' => trim($issue->fields->customfield_10160),
+                    'grch37' => trim($issue->fields->customfield_10160),
                     'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
                     'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown',
                     'jira_report_date' => $issue->fields->resolutiondate ?? ''
@@ -408,7 +408,6 @@ class Jira extends Model
                                    $created = new Carbon($history->created);
                                    if (Carbon::now()->diffInWeeks($created) <= 52)
                                    {
-                                        //dd($issue->fields);
                                         if ($issue->fields->issuetype->name == "ISCA Gene Curation")
                                              $title = $issue->fields->customfield_10030;
                                         else if ($issue->fields->issuetype->name == "ISCA Region Curation")
@@ -426,16 +425,18 @@ class Jira extends Model
                                              'to' => $item->toString,
                                              'age' => Carbon::now()->diffInWeeks($created)
                                         ]);
-                                        // for 30 and 40, Jira also sends text
-               if ($node->from == "30: Gene associated with autosomal recessive phenotype")
-               $node->from = 30;
-          else if ($node->from == "40: Dosage sensitivity unlikely")
-               $node->from = 40;
 
-          if ($node->to == "30: Gene associated with autosomal recessive phenotype")
-               $node->to = 30;
-          else if ($node->to == "40: Dosage sensitivity unlikely")
-               $node->to = 40;
+                                        // for 30 and 40, Jira also sends text
+                                        if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+                                             $node->from = 30;
+                                         else if ($node->from == "40: Dosage sensitivity unlikely")
+                                             $node->from = 40;
+
+                                         if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+                                             $node->to = 30;
+                                        else if ($node->to == "40: Dosage sensitivity unlikely")
+                                             $node->to = 40;
+
                                         $collection->push($node);
                                    }
                               }
@@ -483,6 +484,7 @@ class Jira extends Model
                     }
                }
           }
+
          return $collection;
      }
      
@@ -550,8 +552,9 @@ class Jira extends Model
          foreach ($args as $key => $value)
               $$key = $value;
               
-          $collection = collect();
+          $collection = Dosage::type(1)->get();
 
+          /** the old direct method.  Want to save this for later
           // filter 10632 is the region selection filter
           //$response = self::getIssues('filter=10632');
           $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Region Curation") AND Resolution = Complete');
@@ -591,6 +594,116 @@ class Jira extends Model
                else if ($node->haplo_assertion == "40: Dosage sensitivity unlikely")
                     $node->haplo_assertion = 40;
 
+               $check = Region::issue($issue->key)->first();
+               if ($check !== null && $check->history !== null)
+               {
+                    //dd($gene->history);
+                    foreach ($check->history as $item)
+                    {
+                         //dd($item["what"]);
+                         if ($item['what'] == 'Triplosensitivity Score')
+                              $node->triplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                            . ' to ' . $item['to'] . ' on ' . $item['when'];
+                         else if ($item['what'] == 'Haploinsufficiency Score')
+                              $node->haplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                            . ' to ' . $item['to'] . ' on ' . $item['when'];
+                    }
+               }
+
+               $collection->push($node);
+          }
+
+          $nhaplo = $collection->where('haplo_assertion', '>', 0)->count();
+          $ntriplo = $collection->where('triplo_assertion', '>', 0)->count();
+          */
+
+          $nhaplo = $collection->where('haplo', '>', 0)->count();
+          $ntriplo = $collection->where('triplo', '>', 0)->count();
+
+          return (object) ['count' => $collection->count(), 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
+
+
+    /**
+     * Get a list of regions
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionLoad($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+              
+          $collection = collect();
+
+          // filter 10632 is the region selection filter
+          //$response = self::getIssues('filter=10632');
+          $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Region Curation") AND Resolution = Complete');
+
+          if (empty($response))
+               return $collection;
+;
+          foreach ($response->issues as $issue)
+          {
+               //dd($issue);
+               // map the jira response into a somewhat sane structure
+               $node = new Nodal([
+                    'issue' => $issue->key,
+                    'type' => 1,
+                    'label' => $issue->fields->customfield_10202,
+                    'curation' => $issue->fields->issuetype->name ?? '',
+                    'description' => $issue->fields->description ?? null,
+                    'cytoband' => $issue->fields->customfield_10145 ?? null,
+                    'omim' => $issue->fields->customfield_10147 ?? null,
+                    'grch37' => $issue->fields->customfield_10160 ?? null,
+                    'grch38' => $issue->fields->customfield_10532 ?? null,
+                    'pli' => $issue->fields->customfield_11635 ?? null,
+                    'hi' => null,
+                    'triplo' => $issue->fields->customfield_10166->value ?? 'unknown',
+                    'haplo' => $issue->fields->customfield_10165->value ?? 'unknown',
+                    'workflow' => $issue->fields->resolution->name ?? '',
+                    'resolved' => $issue->fields->resolutiondate ?? ''
+               ]);
+
+               // some of the region fields for G37 have commas in them, remove them
+               $node->grch37 = str_replace(',', '', $node->grch37);
+               $node->grch38 = str_replace(',', '', $node->grch38);
+
+               //break out the location to distinct parts
+               list($node->chr, $node->start, $node->stop) = self::regionMap($node->grch37);
+               list($temp, $node->start38, $node->stop38) = self::regionMap($node->grch38);
+
+               // for 30 and 40, Jira also sends text
+               if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo = 30;
+               else if ($node->triplo == "40: Dosage sensitivity unlikely")
+                    $node->triplo = 40;
+
+               if ($node->haplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo = 30;
+               else if ($node->haplo == "40: Dosage sensitivity unlikely")
+                    $node->haplo = 40;
+
+               $node->haplo_history = null;
+               $node->triplo_history = null;
+               
+               $check = self::getHistory($issue);
+
+               if ($check->isNotEmpty())
+               {
+                    foreach ($check as $item)
+                    {
+                         if ($item->what == 'Triplosensitivity Score')
+                              $node->triplo_history = $item->what . ' changed from ' . $item->from
+                                                            . ' to ' . $item->to . ' on ' . $item->when;
+                         else if ($item->what == 'Haploinsufficiency Score')
+                              $node->haplo_history = $item->what . ' changed from ' . $item->from
+                                                            . ' to ' . $item->to . ' on ' . $item->when;
+                    }
+               }
+
                $collection->push($node);
           }
 
@@ -599,6 +712,140 @@ class Jira extends Model
 
           return (object) ['count' => $response->total, 'collection' => $collection,
                'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
+
+
+    /**
+     * Get and format the history of an issue
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function getHistory($issue)
+    {
+         $collection = collect();
+
+          $changelog = self::getIssue($issue->key, 'changelog');
+
+          foreach ($changelog->histories as $history)
+          {
+               foreach ($history->items as $item)
+               {
+                    if ($item->field == 'ISCA Triplosensitivity score')
+                    {
+                         if ($item->fromString !== null 
+                              && trim($item->fromString) != 'Not yet evaluated'
+                              && $item->toString !== null)
+                         {
+                              $created = new Carbon($history->created);
+                              if (Carbon::now()->diffInWeeks($created) <= 52)
+                              {
+                                   //dd($item);
+                                   if ($issue->fields->issuetype->name == "ISCA Gene Curation")
+                                        $title = $issue->fields->customfield_10030;
+                                   else if ($issue->fields->issuetype->name == "ISCA Region Curation")
+                                        $title = $issue->fields->customfield_10202;
+                                   else
+                                        $title = 'Unknown Issue Type';
+
+                                   $node = new Nodal([
+                                        'key' => $issue->key,
+                                        'title' => $title,
+                                        'type' => $issue->fields->issuetype->name,
+                                        'what' => 'Triplosensitivity Score',
+                                        'when' => $created->format('m/d/Y'),
+                                        'from' => $item->fromString,
+                                        'to' => $item->toString,
+                                        'age' => Carbon::now()->diffInWeeks($created)
+                                   ]);
+
+                                   // for 30 and 40, Jira also sends text
+                                   if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->from = 30;
+                                   else if ($node->from == "40: Dosage sensitivity unlikely")
+                                        $node->from = 40;
+
+                                   if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->to = 30;
+                                   else if ($node->to == "40: Dosage sensitivity unlikely")
+                                        $node->to = 40;
+
+                                   $collection->push($node);
+
+                              }
+                         }
+                    }
+                    else if ($item->field == 'ISCA Haploinsufficiency score')
+                    {
+                         if ($item->fromString !== null 
+                              && trim($item->fromString) != 'Not yet evaluated'
+                              && $item->toString !== null)
+                         {
+                              $created = new Carbon($history->created);
+                              if (Carbon::now()->diffInWeeks($created) <= 52)
+                              {
+                                   //dd($issue);
+                                   if ($issue->fields->issuetype->name == "ISCA Gene Curation")
+                                        $title = $issue->fields->customfield_10030;
+                                   else if ($issue->fields->issuetype->name == "ISCA Region Curation")
+                                        $title = $issue->fields->customfield_10202;
+                                   else
+                                        $title = 'Unknown Issue Type';
+
+                                   $node = new Nodal([
+                                        'key' => $issue->key,
+                                        'title' => $title,
+                                        'type' => $issue->fields->issuetype->name,
+                                        'what' => 'Haploinsufficiency Score',
+                                        'when' => $created->format('m/d/Y'),
+                                        'from' => $item->fromString,
+                                        'to' => $item->toString,
+                                        'age' => Carbon::now()->diffInWeeks($created)
+                                   ]);
+
+                                   // for 30 and 40, Jira also sends text
+                                   if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->from = 30;
+                                   else if ($node->from == "40: Dosage sensitivity unlikely")
+                                        $node->from = 40;
+
+                                   if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->to = 30;
+                                   else if ($node->to == "40: Dosage sensitivity unlikely")
+                                        $node->to = 40;
+
+                                   $collection->push($node);
+                              }
+                         }
+                    }
+               }
+          }
+
+          return $collection;
+     }
+
+
+     /**
+     * Split the location into an array of three parts
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionMap($region)
+    {
+         if ($region === null)
+          return [null, null, null];
+
+          // break out the location and clean it up
+          $temp = preg_split('/[:-]/', trim($region), 3);
+
+          $chr = strtoupper($temp[0]);
+                
+          if (strpos($chr, 'CHR') == 0)   // strip out the chr
+               $chr = substr($chr, 3);
+
+          $start = (isset($temp[1]) ? str_replace(',', '', $temp[1]) : null);
+          $stop = (isset($temp[2]) ? str_replace(',', '', $temp[2]) : null);
+
+          return [$chr, $start, $stop];
     }
 
 

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\GeneLib;
-use App\Helper;
 
 /**
  *
@@ -23,23 +22,14 @@ use App\Helper;
  * */
 class ConditionController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //$this->middleware('auth');
-    }
-
+	private $api = '/api/conditions';
 
     /**
      * Display a listing of all gene validity assertions.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 0, $size = 20)
+    public function index(Request $request, $page = 1, $size = 50)
     {
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -52,7 +42,7 @@ class ConditionController extends Controller
         ]);
 
 		return view('condition.index', compact('display_tabs'))
-						->with('apiurl', '/api/conditions')
+						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page);
     }
@@ -66,10 +56,7 @@ class ConditionController extends Controller
 	*/
 	public function show(Request $request, $id = null)
 	{
-
-
-		$record = GeneLib::conditionDetail([ 'page' => 0,
-										'pagesize' => 200,
+		$record = GeneLib::conditionDetail([ 
 										'condition' => $id,
 										'curations' => true,
 										'action_scores' => true,
@@ -102,11 +89,7 @@ class ConditionController extends Controller
 	 */
 	public function show_by_gene(Request $request, $id = null)
 	{
-
-
 		$record = GeneLib::conditionDetail([
-			'page' => 0,
-			'pagesize' => 200,
 			'condition' => $id,
 			'curations' => true,
 			'action_scores' => true,
@@ -115,10 +98,10 @@ class ConditionController extends Controller
 		]);
 
 		if ($record === null)
-		return view('error.message-standard')
-		->with('title', 'Error retrieving Disease details')
-		->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-		->with('back', url()->previous());
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Disease details')
+						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+						->with('back', url()->previous());
 
 
 		// set display context for view
@@ -146,8 +129,7 @@ class ConditionController extends Controller
 				->with('back', url()->previous());
 
 
-		$record = GeneLib::conditionDetail(['page' => 0,
-											'pagesize' => 200,
+		$record = GeneLib::conditionDetail([
 											'condition' => $id,
 											'curations' => true,
 											'action_scores' => true,
@@ -170,6 +152,7 @@ class ConditionController extends Controller
 		return view('condition.show-external-resources', compact('display_tabs', 'record'));
 	}
 
+
 	/**
 	* Display a listing of all genes.
 	*
@@ -177,7 +160,6 @@ class ConditionController extends Controller
 	*/
 	public function search(Request $request)
 	{
-
 		// process request args
 		foreach ($request->only(['search']) as $key => $value)
 			$$key = $value;
