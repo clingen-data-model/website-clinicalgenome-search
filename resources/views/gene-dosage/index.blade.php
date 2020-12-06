@@ -325,7 +325,7 @@
 		}
 	});
 
-	var timestamp = new Date().getTime() - (12 * 30 * 24 * 60 * 60 * 1000);
+	var timestamp = new Date().getTime() - (9 * 24 * 60 * 60 * 1000);		// 90 days
 
 	function monthFilter(rows, filters)
 	{

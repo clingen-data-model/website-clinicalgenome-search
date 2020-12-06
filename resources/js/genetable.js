@@ -484,29 +484,36 @@ function moiFormatter(index, row) {
 
 function hasvalidityFormatter(index, row) {
 
-    if (row.has_validity) {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
+    if (row.has_validity == null)
+        return '';
 
-    return '';
+
+    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
 
 function hasactionabilityFormatter(index, row) {
 
-    if (row.has_actionability) {
-        return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
-    }
+    if (row.has_actionability == null)
+        return '';
 
-    return '';
+    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
 
-function hashaploortriploFormatter(index, row) {
+function hasdosageFormatter(index, row) {
 
-    if (row.has_dosage_haplo) {
+    if (row.has_dosage == null)
+        return '';
+
+
+    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+            + row.hgnc_id
+            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+   
+    /*if (row.has_dosage_haplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
         //     + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">'
@@ -525,7 +532,7 @@ function hashaploortriploFormatter(index, row) {
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
     }
 
-    return '';
+    return '';*/
 }
 
 function hashaploFormatter(index, row) {

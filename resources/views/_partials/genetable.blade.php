@@ -35,7 +35,7 @@
     data-pagination="true"
     data-id-field="id"
     data-page-list="[10, 25, 50, 100, 250, all]"
-    data-page-size="50"
+    data-page-size="25"
     data-show-footer="true"
     data-side-pagination="client"
     data-pagination-v-align="both"

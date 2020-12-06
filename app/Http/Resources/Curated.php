@@ -20,10 +20,9 @@ class Curated extends JsonResource
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
             'name' => $this->name,
-            'has_actionability' => $this->has_actionability,
-            'has_validity' => $this->has_validity,
-            'has_dosage_haplo' => GeneLib::dosageAssertionString($this->has_dosage_haplo),
-            'has_dosage_triplo' => GeneLib::dosageAssertionString($this->has_dosage_triplo)
+            'has_actionability' => $this->has_actionability ? 'Curated' : null,
+            'has_validity' => $this->has_validity ? 'Curated' : null,
+            'has_dosage' => $this->has_dosage_haplo || $this->has_dosage_triplo ? 'Curated' : null
         ];
     }
     
