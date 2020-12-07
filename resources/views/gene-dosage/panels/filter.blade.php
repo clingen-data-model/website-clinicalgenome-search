@@ -13,31 +13,31 @@
                 <span class="ml-4 hgnc text-muted action-show-regions-text">On</span>
             </div>
         </div>-->
-        <label for="gene" class="col-sm-6 ml-5 col-form-label">Show only Genes/Regions with Known HI </label>
-        <div class="col-sm-4">
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with known HI </label>
+        <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-hiknown"></i>
-                <span class="ml-4 hgnc text-muted action-show-hiknown-text">Off</span>
+                <span class="ml-2 hgnc text-muted action-show-hiknown-text">Off</span>
             </div>
         </div>
-        <label for="gene" class="col-sm-6 ml-5 col-form-label">Show only Genes/Regions with Known TS </label>
-        <div class="col-sm-4">
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with known TS </label>
+        <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-tsknown"></i>
-                <span class="ml-4 hgnc text-muted action-show-tsknoqn-text">Off</span>
+                <span class="ml-2 hgnc text-muted action-show-tsknown-text">Off</span>
             </div>
         </div>
-        <label for="gene" class="col-sm-6 ml-5 col-form-label">Show only Genes/Regions with Updated Scores </label>
-        <div class="col-sm-4">
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with scores updated in the past year </label>
+        <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-new"></i>
-                <span class="ml-4 hgnc text-muted action-show-new-text">Off</span>
+                <span class="ml-2 hgnc text-muted action-show-new-text">Off</span>
             </div>
-        </div><label for="gene" class="col-sm-6 ml-5 col-form-label">Show only recently reviewed Genes/Regions </label>
-        <div class="col-sm-4">
+        </div><label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions reviewed in the past 90 days</label>
+        <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-recent"></i>
-                <span class="ml-4 hgnc text-muted action-show-recent-text">Off</span>
+                <span class="ml-2 hgnc text-muted action-show-recent-text">Off</span>
             </div>
         </div>
     </div>

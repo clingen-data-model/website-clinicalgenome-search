@@ -20,7 +20,7 @@ class UpdateGenenames extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Update the system with the latest genenames data';
 
     /**
      * Create a new command instance.
@@ -79,11 +79,10 @@ class UpdateGenenames extends Command
 			// change doc name and symbol to description and name
 			$doc['description'] = $doc['name'];
             $doc['name'] = $doc['symbol'];
-            //dd($doc);
 			
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['name' => $doc['symbol']], $doc);
-            
+            //$gene = Gene::updateOrCreate(['hgnc_id' => $doc['hgnc_id']], $doc);
 		}
     }
 }

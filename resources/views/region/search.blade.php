@@ -367,6 +367,8 @@
     	$('[data-toggle="tooltip"]').tooltip();
 		$('[data-toggle="popover"]').popover();
 
+		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
+		$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
 
 		//$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
         //$(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");

@@ -40,12 +40,16 @@ class QueryExac extends Command
      */
     public function handle()
     {
+		/* full path is 
+
+			ftp://ftp.broadinstitute.org/pub/ExAC_release/release1/manuscript_data/forweb_cleaned_exac_r03_march16_z_data_pLI.txt.gz
+		
+			*/
+
 		echo "Loading Exac data ...\n";
 			
 		try {
 					
-			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
-			//$file = fopen(base_path() . "/data/ExAC.r1.sites.vep.gene.table","r");
 			$file = fopen(base_path() . "/data/forweb_cleaned_exac_r03_march16_z_data_pLI.txt","r");
 
 		} catch (\Exception $e) {

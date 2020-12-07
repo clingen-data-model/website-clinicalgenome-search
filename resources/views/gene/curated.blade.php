@@ -216,6 +216,9 @@ $(function() {
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
 
+  $("button[name='filterControlSwitch']").attr('title', 'Column Search');
+	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+
 });
 
 

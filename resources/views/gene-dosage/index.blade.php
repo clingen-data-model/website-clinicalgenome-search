@@ -285,7 +285,7 @@
 			$table.bootstrapTable('filterBy', {thr: 1, hhr: 1}, {'filterAlgorithm': 'or'});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
-			$('.action-show-regions-text').html('On');
+			$('.action-show-new-text').html('On');
 
 		}
 		else
@@ -293,7 +293,7 @@
 			$table.bootstrapTable('filterBy', {thr: [0, 1]}, {'filterAlgorithm': 'or'});
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
-			$('.action-show-regions-text').html('Off');
+			$('.action-show-new-text').html('Off');
 
 		}
 
@@ -570,6 +570,9 @@
 		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
         $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
 		$(".fixed-table-toolbar .search .input-group:first").after(html);
+
+		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
+		$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
 
 		region_listener();
 
