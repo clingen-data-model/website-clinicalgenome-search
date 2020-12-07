@@ -897,8 +897,8 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
 		{
-			if ($record->gene === null)
-				continue;
+			if ($record->gene === null || $record->disease === null)
+				continue;	// TODO:  Log as gg error
 
 			$collection->push(new Nodal((array) $record));
 		}
@@ -1104,7 +1104,13 @@ class Graphql
 
 		// add each gene to the collection
 		foreach($response->affiliation->gene_validity_assertions->curation_list as $record)
+		{
+			// make sure the record is properly formed
+			if ($record->gene === null || $record->disease === null)
+				continue;	// TODO:  Log this as a gg error
+
 			$collection->push(new Nodal((array) $record));
+		}
 
 		return (object) ['count' => $response->affiliation->gene_validity_assertions->count,
 						 'collection' => $collection, 'label' => $response->affiliation->label];

@@ -5,6 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
 
+/**
+*
+* @category   Web
+* @package    Search
+* @author     P. Weller <pweller1@geisinger.edu>
+* @author     S. Goehringer <scottg@creationproject.com>
+* @copyright  2020 ClinGen
+* @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+* @version    Release: @package_version@
+* @link       http://pear.php.net/package/PackageName
+* @see        NetOther, Net_Sample::Net_Sample()
+* @since      Class available since Release 1.2.0
+*
+* */
 class AffiliateController extends Controller
 {
     private $api = '/api/affiliates';

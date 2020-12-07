@@ -22,9 +22,9 @@ class AffiliateDetail extends JsonResource
             'href' => $this->href,
             'disease' => $this->disease->label,
             'mondo' => $this->disease->curie,
-            'moi' => $this->displayMoi($this->mode_of_inheritance->curie),
-            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
-            'classification' => Genelib::ValidityClassificationString($this->classification->label),
+            'moi' => $this->displayMoi($this->mode_of_inheritance->curie ?? ''),
+            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
+            'classification' => Genelib::ValidityClassificationString($this->classification->label ?? ''),
             'perm_id' => $this->curie,
             'released' => $this->displayDate($this->report_date),
             'date' => $this->report_date

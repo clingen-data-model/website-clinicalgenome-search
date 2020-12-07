@@ -64,28 +64,6 @@ class GeneController extends Controller
 
 
 	/**
-	 * Display a listing of all genes via HGNC Database.
-	 *
-	 * @return \Illuminate\Http\Response
-	 * 
-	 * No longer used
-	 */
-	/*
-	public function all()
-	{
-		// set display context for view
-		$display_tabs = collect([
-			'active' => "gene",
-			'title' => "Listing of HGNC Genes"
-		]);
-
-		$all = Gene::where("locus_group", "protein-coding gene")->Paginate(1000);
-
-		return view('gene.all', compact('display_tabs', 'all'));
-	}*/
-
-
-	/**
 	* Show all of the curated genes
 	*
 	* @return \Illuminate\Http\Response
