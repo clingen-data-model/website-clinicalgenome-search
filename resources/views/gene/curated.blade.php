@@ -119,7 +119,7 @@
           align: 'center',
         },*/
 		    {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><br>Gene Disease Validity <i class="fas fa-info-circle text-muted"></i></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"><div><img src="/images/clinicalValidity-on.png" width="40" height="40"></div>Gene Disease Validity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
          // title: 'Gene Disease Validity',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
@@ -129,7 +129,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><br>Dosage Sensitivity <i class="fas fa-info-circle text-muted"></i></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"><div><img src="/images/dosageSensitivity-on.png" width="40" height="40"></div>Dosage Sensitivity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Dosage Sensitivity',
           field: 'has_dosage',
           formatter: hasdosageFormatter,
@@ -157,7 +157,7 @@
         //   sortable: true
         // },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><br>Clinical Actionability <i class="fas fa-info-circle text-muted"></i></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/clinicalActionability-on.png" width="40" height="40"></div>Clinical Actionability <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Clinical Actionability',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
