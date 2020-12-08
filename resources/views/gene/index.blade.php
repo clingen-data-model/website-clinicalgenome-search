@@ -109,7 +109,7 @@
         {
           title: 'Curations',
           field: 'curations',
-          align: 'center',
+          //align: 'center',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
@@ -118,7 +118,7 @@
         {
           field: 'date',
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
-          align: 'right',
+          //align: 'right',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,

@@ -338,13 +338,13 @@
 					field: 'relationship',
 					formatter: relationFormatter,
 					//cellStyle: typeFormatter,
-					align: 'center',
+					//align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: false
 				},
 				{
-					title: 'Gene/<br>Region',
+					title: 'Gene/Region',
 					field: 'symbol',
 					formatter: dssymbolFormatter,
 					cellStyle: cellFormatter,
@@ -388,7 +388,7 @@
 					field: 'haplo_assertion',
 					formatter: haploFormatter,
 					cellStyle: cellFormatter,
-					align: 'center',
+					//align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
@@ -398,7 +398,7 @@
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
 					cellStyle: cellFormatter,
-					align: 'center',
+					//align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
@@ -408,7 +408,7 @@
 					field: 'omimlimk',
 					formatter: omimFormatter,
 					cellStyle: cellFormatter,
-					align: 'center',
+					//align: 'center',
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
@@ -419,7 +419,7 @@
 					formatter: morbidFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
-					align: 'center',
+					//align: 'center',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -429,7 +429,7 @@
 					formatter: hiFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					align: 'center',
+					//align: 'center',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -439,7 +439,7 @@
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					align: 'center',
+					//align: 'center',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -449,7 +449,7 @@
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					align: 'center',
+					//align: 'center',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -465,10 +465,10 @@
 				}*/
 				{
 					field: 'workflow',
-					title: 'View<br>Report',
+					title: 'Report',
 					formatter: dsreportFormatter,
 					cellStyle: cellFormatter,
-					align: 'center',
+					//align: 'center',
 					filterControl: 'input',
 					searchFormatter: false,
 					sortable: true,
