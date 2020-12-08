@@ -123,11 +123,11 @@
                 Curated Variants <i class="fas fa-external-link-alt small"></i>
               </a>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "stats") active @endif ">
+            {{-- <li class="nav-item @if ($display_tabs['active'] == "stats") active @endif ">
               <a class="nav-link" href="{{ route('stats-index') }}">
                 Statistics
               </a>
-            </li>
+            </li> --}}
             <li class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
                 <a class="nav-link dropdown-toggle"  href="#" >
                  More
