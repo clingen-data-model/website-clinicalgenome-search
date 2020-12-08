@@ -17,7 +17,6 @@
       </table>
 
 			</h1>
-			{{-- <strong></strong> --}}
 
 </div>
 

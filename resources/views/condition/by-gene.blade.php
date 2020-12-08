@@ -17,7 +17,6 @@
       </table>
 
 			</h1>
-			{{-- <strong></strong> --}}
 
 </div>
 
@@ -104,7 +103,7 @@
 									</td>
 
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}">{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</a>
 									</td>
 
 
@@ -142,7 +141,7 @@
 									<td class=" @if(!$loop->first) border-0 @endif "><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system"><strong>
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system">
 											@if ($key == "haploinsufficiency_assertion")
 											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 												{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
@@ -152,7 +151,7 @@
 												{{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
 											</a>
 											@endif
-										</strong></a>
+										</a>
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
 								</tr>
@@ -192,7 +191,7 @@
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system"><strong>
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system">
 											@if ($key == "haploinsufficiency_assertion")
 											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 												{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}

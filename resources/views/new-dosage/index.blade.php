@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        
+
         <div class="col-md-12">
             <h1 class="display-4 mb-1">Dosage Sensitivity Curations</h1>
             <p class="mb-4 small"><strong>1434 genes and regions</strong> have been assesses whether there is evidence to support if it is dosage sensitive and should be targeted on a cytogenomic array.</p>
@@ -234,7 +234,7 @@
                     </tr>
                 </table>
             </div>
-            
+
                     <nav class="text-center" aria-label="Page navigation">
                       <ul class="pagination pagination-sm">
                         <li>
