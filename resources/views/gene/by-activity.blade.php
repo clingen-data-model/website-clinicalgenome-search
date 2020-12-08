@@ -338,7 +338,7 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="30"></a></h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="30"></a></h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
@@ -389,7 +389,7 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="25"></a> </h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="25"></a> </h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
