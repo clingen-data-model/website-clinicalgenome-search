@@ -57,10 +57,12 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
-<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
-  <a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-default">Group By Activity</a>
-  <a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
-</div>
+@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR (!empty($record->genetic_conditions))  OR (!empty($record->pharma)))
+				<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
+					<a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-default">Group By Activity</a>
+					<a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
+				</div>
+			@endif
 
 		@forelse ($record->genetic_conditions as $disease)
 

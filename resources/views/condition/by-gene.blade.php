@@ -58,10 +58,13 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
+@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR !empty($record->genetic_conditions))
 <div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
-  <a  href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="btn btn-default">Group By Activity</a>
+  <a  href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="btn btn-default ">Group By Activity</a>
   <a  href="{{ route('disease-by-gene', $record->getMondoString($record->iri, true)) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
 </div>
+
+@endif
 
 			@forelse ($record->genetic_conditions as $disease)
 
