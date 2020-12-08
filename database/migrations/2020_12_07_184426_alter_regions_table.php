@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRegionsToGenesTable extends Migration
+class AlterRegionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class AddRegionsToGenesTable extends Migration
      */
     public function up()
     {
-        Schema::table('genes', function (Blueprint $table) {
-            $table->string('chr')->nullable()->after('location');
-            $table->integer('start37')->nullable()->after('chr');
-            $table->integer('stop37')->nullable()->after('start37');
+        Schema::table('regions', function (Blueprint $table) {
+            $table->string('pli')->nullable()->change();
+            $table->string('omim')->nullable()->change();
         });
     }
 
@@ -27,7 +26,7 @@ class AddRegionsToGenesTable extends Migration
      */
     public function down()
     {
-        Schema::table('genes', function (Blueprint $table) {
+        Schema::table('dosages', function (Blueprint $table) {
             //
         });
     }

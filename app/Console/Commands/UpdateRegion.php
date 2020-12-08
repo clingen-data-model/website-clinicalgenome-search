@@ -72,8 +72,8 @@ class UpdateRegion extends Command
                                                  'name' => trim($value[4]),
                                                  'gain' => trim($value[5]),
                                                  'loss' => trim($value[6]),
-                                                 'pli' => trim($value[7]),
-                                                 'omim' => trim($value[8])
+                                                 'pli' => empty(trim($value[7])) ? null : trim($value[7]),
+                                                 'omim' => empty(trim($value[8])) ? null :  trim($value[8])
                                                 ] );
             }
 
@@ -115,8 +115,8 @@ class UpdateRegion extends Command
                                                  'name' => trim($value[4]),
                                                  'gain' => trim($value[5]),
                                                  'loss' => trim($value[6]),
-                                                 'pli' => trim($value[7]),
-                                                 'omim' => trim($value[8])
+                                                 'pli' => empty(trim($value[7])) ? null : trim($value[7]),
+                                                 'omim' => empty(trim($value[8])) ? null :  trim($value[8])
                                                 ] );
             }
 

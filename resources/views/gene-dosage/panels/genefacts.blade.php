@@ -39,7 +39,7 @@
         <dd>{{ $record->prev_symbols }}</dd>
         <dt>Alias symbols</dt>
         <dd>{{ $record->alias_symbols }}</dd>
-        @if($record->hi)
+        @if(isset($record->hi))
         <dt>%HI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></dt>
         <dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
         @endif

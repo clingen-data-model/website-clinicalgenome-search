@@ -344,12 +344,18 @@ class Gene extends Model
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 
+          if ($chr == 'X')
+               $chr = 23;
+
+          if ($chr == 'Y')
+               $chr = 24;
+
           if ($type == 'GRCh37')
-               $regions = self::where('chr', $chr)
+               $regions = self::where('chr', (int) $chr)
                          ->where('start37', '<=', (int) $stop)
                          ->where('stop37', '>=', (int) $start)->get();
           else if ($type == 'GRCh38')
-               $regions = self::where('chr', $chr)
+               $regions = self::where('chr', (int) $chr)
                          ->where('start38', '<=', (int) $stop)
                          ->where('stop38', '>=', (int) $start)->get();
 

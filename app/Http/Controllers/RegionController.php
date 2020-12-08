@@ -60,7 +60,7 @@ class RegionController extends Controller
             'title' => "Gene Curations"
         ]);
         
-        // figure out what the search bar sent you
+		// figure out what the search bar sent you
 
         $region = $search[3];
 

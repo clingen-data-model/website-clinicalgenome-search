@@ -9,6 +9,9 @@ use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectionException;
 
+use EUAutomation\GraphQL\Exceptions\GraphQLMissingData;
+
+
 use Exception;
 
 use Carbon\Carbon;
@@ -69,11 +72,21 @@ trait Query
 			GeneLib::putError($errors);
 			
 			return null;
+		
+		} catch (GraphQLMissingData $exception) {		// graphql one
+	
+			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
+
+			$errors = $exception->getMessage();
+			
+			GeneLib::putError($errors);
+			
+			return null;
 			
 		} catch (Exception $exception) {		// everything else
 	
 			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
-
+dd($exception);
 			$response = $exception->getResponse();
 			$code = $response->getStatusCode();
 			$reason = $response->getReasonPhrase();

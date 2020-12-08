@@ -759,8 +759,12 @@ function dsreportFormatter(index, row) {
     if (row.type == 0) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-        return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
-            + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+        if (row.hgnc_id == null)
+          return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
+            + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+        else
+            return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
+             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
     else {
         return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
@@ -773,7 +777,12 @@ function dsreportFormatter(index, row) {
 function dssymbolFormatter(index, row) {
 
     if (row.type == 0)
-        return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+    {
+        if (row.hgnc_id == null)
+            return '<a href="/kb/genes/' + row.isca + '"><b>' + row.symbol + '</b></a>';
+        else
+            return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+    }
     else
         return '<a href="/kb/gene-dosage/region/' + row.isca + '"><b>' + row.symbol + '</b></a>';
 }

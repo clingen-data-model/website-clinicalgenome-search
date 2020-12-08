@@ -671,6 +671,9 @@ class Jira extends Model
                $node->grch37 = str_replace(',', '', $node->grch37);
                $node->grch38 = str_replace(',', '', $node->grch38);
 
+               if(empty($node->pli))
+                    $node->pli = null;
+
                //break out the location to distinct parts
                list($node->chr, $node->start, $node->stop) = self::regionMap($node->grch37);
                list($temp, $node->start38, $node->stop38) = self::regionMap($node->grch38);

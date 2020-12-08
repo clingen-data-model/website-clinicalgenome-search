@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
 
+require app_path() .  '/Helpers/helper.php';
+
 use App\GeneLib;
 
 /**
