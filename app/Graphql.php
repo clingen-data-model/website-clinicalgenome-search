@@ -733,13 +733,11 @@ class Graphql
 							dosage_classification {
 								ordinal
 							}
-							score
 						}
 						haploinsufficiency_assertion {
 							dosage_classification {
 								ordinal
 							}
-							score
 						}
 					}
 					genetic_conditions {
@@ -769,7 +767,6 @@ class Graphql
 						  dosage_classification {
 							ordinal
 							}
-						  score
 						  curie
 						}
 					}
