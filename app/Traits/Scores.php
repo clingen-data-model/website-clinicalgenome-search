@@ -36,8 +36,10 @@ trait Scores
 
 		if (isset($j->scoreJson))
 			$k = $j->scoreJson->ValidContradictoryEvidence->Value ?? '';
-		else
+		elseif (isset($j->ValidContradictoryEvidence->Value))
 			$k = $j->ValidContradictoryEvidence->Value ?? '';
+		else
+			$k = $j->ValidContradictoryEvidence->YesNo ?? '';
 
 		return (empty($k) ? "NO" : $k);
 
@@ -351,7 +353,7 @@ trait Scores
 
 		foreach ($t as $publication)
 		{
-			$records[] = $publication->author . ' et al. ' . $publication->pubdate . ' (PMID:' 
+			$records[] = $publication->author . ' et al. ' . $publication->pubdate . ' (PMID:'
 							. $publication->pmid . ')';
 		}
 		return implode('; ', $records);
