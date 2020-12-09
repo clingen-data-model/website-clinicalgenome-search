@@ -62,6 +62,8 @@ function symbolFormatter(index, row) {
 function typeFormatter(index, row) {
     if (row.type == 0)
         return { classes: 'global_table_cell gene' };
+    else if (row.type == 3)
+        return { classes: 'global_table_cell gene' };
     else
         return { classes: 'global_table_cell region' };
 }
@@ -69,6 +71,8 @@ function typeFormatter(index, row) {
 function nullFormatter(index, row) {
     if (row.type == 0)
         return '<span title="Gene">G</span>';
+    else if (row.type == 3)
+    return '<span title="Gene">P</span>';
     else
         return '<span title="Region">R</span>';
 }
@@ -79,7 +83,7 @@ function geneFormatter(index, row) {
 
 function hgncFormatter(index, row) {
 
-    if (row.type == 0)
+    if (row.type == 0 || row.type == 3)
         return '<a href="/kb/gene-dosage/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
     else
         return '<a href="/kb/gene-dosage/region/' + row.hgnc_id + '"><b>' + row.hgnc_id + '</b></a>';
@@ -310,7 +314,7 @@ function reportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
 
-    if (row.type == 0) {
+    if (row.type == 0 || row.type == 3) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         return '<a class="btn btn-xs btn-success btn-block btn-report" href="'
@@ -326,7 +330,7 @@ function reportFormatter(index, row) {
 
 function iscaFormatter(index, row) {
 
-    if (row.type == 0)
+    if (row.type == 0 || row.type ==3)
         return '<a href="'
             + '/kb/gene-dosage/' + row.hgnc_id
             + '">' + row.isca + '</a>';
@@ -756,7 +760,13 @@ function dsreportFormatter(index, row) {
 
     var bclass = (row.workflow == "Awaiting Review" ? "default" : "success");
 
-    if (row.type == 0) {
+    if (row.type == 3)
+    {
+        bclass = 'unreviewable';
+        row.workflow = "Not Reviewable";
+    }
+
+    if (row.type == 0 || row.type == 3) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         if (row.hgnc_id == null)
@@ -776,7 +786,7 @@ function dsreportFormatter(index, row) {
 
 function dssymbolFormatter(index, row) {
 
-    if (row.type == 0)
+    if (row.type == 0 || row.type == 3)
     {
         if (row.hgnc_id == null)
             return '<a href="/kb/genes/' + row.isca + '"><b>' + row.symbol + '</b></a>';
@@ -793,8 +803,10 @@ function relationFormatter(index, row) {
 
     if (row.type == 0)
         html += '<div class="global_table_cell font-weight-bold gene" title="Gene">G</div>';
-    else
+    else if (row.type == 1)
         html += '<div class="global_table_cell font-weight-bold region" title="Region">R</div>';
+    else
+        html += '<div class="global_table_cell font-weight-bold psuedogene" title="Psuedogene">P</div>';
 
     if (row.relationship === null)
         return html;

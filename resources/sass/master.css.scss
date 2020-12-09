@@ -47,11 +47,19 @@
 .format-hi-low {
   color: green;
 }
-.dosage-box.region, td.region span, .dosage-box.gene, td.gene span, div.global_table_cell.region, div.global_table_cell.gene {
+.dosage-box.region, td.region span, .dosage-box.gene, td.gene span, div.global_table_cell.region, div.global_table_cell.gene
+{
   padding: 0px 3px;
   font-size: 11px;
   border-radius: 10rem;
   color: #fff;
+}
+.dosage-box.psuedogene, td.psuedogene span, div.global_table_cell.psuedogene
+{
+  padding: 0px 3px;
+  font-size: 11px;
+  border-radius: 10rem;
+  color: #000;
 }
 .dosage-box.carryover, .global_table_cell.carryover {
   padding: 0px 3px;
@@ -60,6 +68,7 @@
   color: #000;
 }
 .bootstrap-table table.table > tbody > tr > td.global_table_cell.region,
+.bootstrap-table table.table > tbody > tr > td.global_table_cell.psuedogene,
 .bootstrap-table table.table > tbody > tr > td.global_table_cell.gene {
   padding-right: 0rem !important;
   padding-left: .2rem !important;
@@ -72,9 +81,20 @@
    background-color: #A9CCE3;
    background-color: #417279;
  }
+.dosage-box.psuedogene, td.psuedogene span, div.global_table_cell.psuedogene {
+
+   background-color: #ccff99;
+ }
  .global_table_cell.carryover {
   background-color: #A9CCE3;
 }
+
+.btn-unreviewable {
+    color: #fff;
+    background-color: #ff9900;
+    border-color: #ff9900;
+}
+
 // .dosage-box {
 //   display: inline-block;
 //   //float: left;
