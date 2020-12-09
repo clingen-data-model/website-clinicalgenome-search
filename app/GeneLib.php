@@ -60,6 +60,7 @@ class GeneLib extends Model
      * */
 
     protected static $short_dosage_assertion_strings = [
+         '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -146,6 +147,7 @@ class GeneLib extends Model
      ];
 
 	protected static $dosage_score_assertion_strings = [
+          '-1' => 'Psuedogene',
           '0' => 'No Evidence for ####',
           '1' => 'Little Evidence for ####',
           '2' => 'Emerging Evidence for ####',
@@ -155,6 +157,7 @@ class GeneLib extends Model
      ];
 
      protected static $curated_score_assertion_strings = [
+          '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -224,11 +227,101 @@ class GeneLib extends Model
 		// Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
 
+          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage psuedogene
+		{
+               $gene = self::geneNotCurated($args);
+               $issue = Iscamap::issue($args['gene'])->first();
+               if ($issue !== null)
+               {
+                    $gene->label = $issue->symbol;
+                    $gene->hgnc_id = $issue->symbol;
+               }
+
+               return $gene;
+
+          }
+          
 		//...but actionability is now in genegraph
-		$response = Graphql::geneDetail($args);
+          $response = Graphql::geneDetail($args);
+          
+          // This is a real ugly characteristic of genegraph that requires a really ugly workaround
+          if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
+          {
+               // gene not found, create a dummy one and see if that worls
+               $response = self::geneNotCurated($args);
+
+               // add additional information from local db
+               $localgene = Gene::where('hgnc_id', $args['gene'])->first();
+
+               if ($localgene !== null)
+               {
+                    $response->label = $localgene->name;
+                    $response->alternative_label = $localgene->description;
+                    $response->hgnc_id = $localgene->hgnc_id;
+                    $response->chromosome_band = $localgene->location;
+                    $response->alias_symbols = $localgene->display_aliases;
+                    $response->prev_symbols = $localgene->display_previous;
+                    $response->hi = isset($localgene->hi) ? round($localgene->hi, 2) : null;
+                    $response->pli = isset($localgene->pli) ? round($localgene->pli, 2) : null;
+                    $response->plof = isset($localgene->plof) ? round($localgene->plof, 2) : null;
+                    $response->locus_type = $localgene->locus_type;
+                    $response->locus_group = $localgene->locus_group;
+                    $response->ensembl_id = $localgene->ensembl_gene_id;
+                    $response->entrez_id = $localgene->entrez_id;
+                    $response->omim_id = $localgene->omim_id;
+                    $response->ucsc_id = $localgene->ucsc_id;
+                    $response->uniprot_id = $localgene->uniprot_id;
+                    $response->function = $localgene->function;
+               }
+          }
 
 		return $response;
      }
+
+
+     /**
+     * special case where we want to return a structure that triggers
+     * the not curated message
+     *
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneNotCurated($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+          $response = new Nodal([
+                              "label" => $args['gene'],
+                              "alternative_label" => '',
+                              "hgnc_id" => null,
+                              "chromosome_band" => "",
+                              "curation_activities" => [],
+                              "last_curated_date" => null,
+                              "dosage_curation" => null,
+                              "genetic_conditions" => [],
+                              "alias_symbols" => "",
+                              "prev_symbols" => "No previous names found",
+                              "hi" => null,
+                              "pli" => null,
+                              "plof" => null,
+                              "locus_type" => "pseudogene",
+                              "locus_group" => "pseudogene",
+                              "ensembl_id" => "",
+                              "entrez_id" => null,
+                              "omim_id" => null,
+                              "ucsc_id" => null,
+                              "uniprot_id" => null,
+                              "function" => "",
+                              "naction" => 0,
+                              "nvalid" => 0,
+                              "ndosage" => 0,
+                              "pharma" => [],
+                              "dosage_curation_map" => []
+          ]);
+
+         return $response;
+    }
 
 
      /**
@@ -435,14 +528,55 @@ class GeneLib extends Model
 
           // Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
+          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage psuedogene
+		{
+               $response = self::geneNotCurated($args);
+               $expand = true;
+          }
+          else
+          {
+               // Much of the data is in graphql....
+               $response = Graphql::dosageDetail($args);
+               $expand = false;
+               
+               // This is a real ugly characteristic of genegraph that requires a really ugly workaround
+               if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
+               {
+                    // gene not found, create a dummy one and see if that worls
+                    $response = self::geneNotCurated($args);
 
-          // Much of the data is in graphql....
-          $response = Graphql::dosageDetail($args);
+                    // add additional information from local db
+                    $localgene = Gene::where('hgnc_id', $args['gene'])->first();
+
+                    if ($localgene !== null)
+                    {
+                         $response->label = $localgene->name;
+                         $response->alternative_label = $localgene->description;
+                         $response->hgnc_id = $localgene->hgnc_id;
+                         $response->chromosome_band = $localgene->location;
+                         $response->alias_symbols = $localgene->display_aliases;
+                         $response->prev_symbols = $localgene->display_previous;
+                         $response->hi = isset($localgene->hi) ? round($localgene->hi, 2) : null;
+                         $response->pli = isset($localgene->pli) ? round($localgene->pli, 2) : null;
+                         $response->plof = isset($localgene->plof) ? round($localgene->plof, 2) : null;
+                         $response->locus_type = $localgene->locus_type;
+                         $response->locus_group = $localgene->locus_group;
+                         $response->ensembl_id = $localgene->ensembl_gene_id;
+                         $response->entrez_id = $localgene->entrez_id;
+                         $response->omim_id = $localgene->omim_id;
+                         $response->ucsc_id = $localgene->ucsc_id;
+                         $response->uniprot_id = $localgene->uniprot_id;
+                         $response->function = $localgene->function;
+                    }
+
+               }
+          }
+
           if ($response === null)
                return null;
 
           // ... but a lot is still in Jira
-          $supplement = Jira::dosageDetail($args);
+          $supplement = Jira::dosageDetail($args, $expand);
 
           if ($supplement !== null)
           {
@@ -461,6 +595,16 @@ class GeneLib extends Model
                          continue;
                     }
                     $response->$field = $supplement->$field;
+               }
+
+               // special case for psudogenes
+               if ($supplement->genetype == "pseudo")
+               {
+                    //dd($supplement);
+                    $response->label = $supplement->label;
+                    $response->chromosome_band = $supplement->cytoband;
+                    $response->grch37 = $supplement->grch37;
+                    $response->grch38 = $supplement->grch38;
                }
           }
 
@@ -870,7 +1014,21 @@ class GeneLib extends Model
      public static function validityAssertionID($str)
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
-	}
+     }
+     
+
+     /**
+     * Return a displayable validity criteria description
+     *
+     * @return string
+     */
+    public static function conditionLastSynonym($record)
+    {
+         if (empty($record) || empty($record->synonyms))
+              return null;
+
+          return is_array($record->synonyms) ? $record->synonyms[0] : null;
+    }
 
 
 	 /*

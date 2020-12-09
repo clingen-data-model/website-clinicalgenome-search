@@ -19,6 +19,10 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        '/kb/gene-dosage/region_search',
+        '/kb/genes',
+        '/kb/drugs',
+        '/kb/regions',
+        '/kb/conditions'
     ];
 }

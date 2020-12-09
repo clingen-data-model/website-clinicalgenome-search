@@ -25,7 +25,7 @@ class ConditionController extends Controller
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => null, // $input['search'] ?? null,
                                         'curated' => false ]);
-                                        
+
 		if ($results === null)
             return GeneLib::getError();
 

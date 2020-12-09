@@ -96,7 +96,7 @@ class Jira extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-     static function dosageDetail($args, $page = 0, $pagesize = 20)
+     static function dosageDetail($args, $expanded = false, $page = 0, $pagesize = 20)
      {
 		// break out the args
 		foreach ($args as $key => $value)
@@ -105,20 +105,28 @@ class Jira extends Model
           // get the issue number
           $symbol = Gene::where('hgnc_id', $gene)->first();
 
-          if ($symbol === null)
+          if ($symbol === null && !$expanded)
                return null;
 
-          $issue = Iscamap::symbol($symbol->name)->first();
+          if (!$expanded)
+          {
+               $issue = Iscamap::symbol($symbol->name)->first();
 
-          if ($issue === null)
-               return null;
+               if ($issue === null)
+                    return null;
 
-          $response = self::getIssue($issue->issue);
-//dd($response);
+               $issue = $issue->issue;
+          }
+          else
+               $issue = $gene;
+
+          $response = self::getIssue($issue);
+
           // map the jira response into a somewhat sane structure
 		$node = new Nodal([
+               'label' => $response->customfield_10030 ?? 'unknown',
                'summary' => $response->summary,
-               'key' => $issue->issue,
+               'key' => $issue,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
                'grch37' => $response->customfield_10160,
                'grch38' => $response->customfield_10532,

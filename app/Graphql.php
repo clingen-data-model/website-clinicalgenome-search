@@ -733,13 +733,11 @@ class Graphql
 							dosage_classification {
 								ordinal
 							}
-							score
 						}
 						haploinsufficiency_assertion {
 							dosage_classification {
 								ordinal
 							}
-							score
 						}
 					}
 					genetic_conditions {
@@ -769,7 +767,6 @@ class Graphql
 						  dosage_classification {
 							ordinal
 							}
-						  score
 						  curie
 						}
 					}
@@ -1317,6 +1314,7 @@ class Graphql
 						disease_list {
 							label
 							hgnc_id
+							synonyms
 							last_curated_date
 							curation_activities
 							dosage_curation {
@@ -1345,6 +1343,7 @@ class Graphql
 						curie
 						label
 						description
+						synonyms
 						last_curated_date
 						curation_activities
 					}

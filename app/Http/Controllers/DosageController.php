@@ -64,12 +64,6 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
-		// confirm this is not a psuedogene
-		if (strpos($id, 'ISCA-') === 0)
-		{
-			die('psuedogene in progress');
-		}
-		
 		$record = GeneLib::dosageDetail([ 'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
@@ -85,8 +79,16 @@ class DosageController extends Controller
 
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
-		$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
-        $record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
+		if ($record->genetype == "pseudogene")
+		{
+			$record->haplo_assertion = GeneLib::haploAssertionString($record->haplo_score);
+			$record->triplo_assertion = GeneLib::triploAssertionString($record->triplo_score);
+		}
+		else
+		{
+			$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
+			$record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
+		}
         $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
 		$record->date = $record->displayDate($record->dosage_report_date);
 		$record->chromosome = $record->formatPosition($record->grch37, 'chr');

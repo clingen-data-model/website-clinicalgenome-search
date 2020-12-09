@@ -133,26 +133,25 @@
 	$('.action-show-genes').on('click', function() {
 		var viz = [];
 
-		if ($(this).hasClass('active'))
+		if ($(this).hasClass('btn-success'))
 		{
-			$(this).removeClass('btn-info active').addClass('btn-warning');
-			$(this).html('<b>Show Genes</b>');
+			$(this).removeClass('btn-success').addClass('btn-default active');
+			$(this).html('<b>Genes: Off</b>');
 		}
 		else
 		{
 			viz.push(0);
-			$(this).addClass('btn-info active').removeClass('btn-warning');
-			$(this).html('<b>Hide Genes</b>')
+			$(this).addClass('btn-success').removeClass('btn-default active');
+			$(this).html('<b>Genes: On</b>')
 		}
 
-		if ($('.action-show-regions').hasClass('active'))
+		if ($('.action-show-regions').hasClass('btn-success'))
 			viz.push(1);
 
 		$table.bootstrapTable('filterBy', {
 				type: viz
 		});
 	});
-
 
 	/**
 	 *
@@ -182,19 +181,19 @@
 	});*/
 	$('.action-show-regions').on('click', function() {
 		var viz = [];
-		if ($('.action-show-genes').hasClass('active'))
+		if ($('.action-show-genes').hasClass('btn-success'))
 			viz.push(0);
 
-		if ($(this).hasClass('active'))
+		if ($(this).hasClass('btn-success'))
 		{
-			$(this).removeClass('btn-info active').addClass('btn-warning');
-			$(this).html('<b>Show Regions</b>');
+			$(this).removeClass('btn-success').addClass('btn-default active');
+			$(this).html('<b>Regions: Off</b>');
 		}
 		else
 		{
 			viz.push(1);
-			$(this).addClass('btn-info active').removeClass('btn-warning');
-			$(this).html('<b>Hide Regions</b>')
+			$(this).addClass('btn-success').removeClass('btn-default active');
+			$(this).html('<b>Regions: On</b>')
 		}
 
 		$table.bootstrapTable('filterBy', {
