@@ -1014,7 +1014,21 @@ class GeneLib extends Model
      public static function validityAssertionID($str)
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
-	}
+     }
+     
+
+     /**
+     * Return a displayable validity criteria description
+     *
+     * @return string
+     */
+    public static function conditionLastSynonym($record)
+    {
+         if (empty($record) || empty($record->synonyms))
+              return null;
+
+          return is_array($record->synonyms) ? $record->synonyms[0] : null;
+    }
 
 
 	 /*

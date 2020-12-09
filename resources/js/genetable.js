@@ -416,12 +416,12 @@ function datebadgeFormatter(index, row) {
 
 function conditionFormatter(index, row) {
     // var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-    //           + '<div class="small text-muted">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
+    //           + '<div class="small text-dark">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
     var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-        + '<div class="small text-muted">' + row.curie + '</div>';
+        + '<div class="small text-dark">' + row.curie + '</div>';
 
-    //if (row.description != null)
-    //  html += '<div class="text-sm text-muted">' + row.description + '</div>';
+    if (row.synonym != null)
+      html += '<div class="text-sm text-muted">' + row.synonym + '</div>';
 
     return html;
 }

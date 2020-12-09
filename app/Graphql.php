@@ -1343,6 +1343,7 @@ class Graphql
 						curie
 						label
 						description
+						synonyms
 						last_curated_date
 						curation_activities
 					}
@@ -1355,7 +1356,7 @@ class Graphql
 
 		if (empty($response))
 			return $response;
-dd($response);
+
 		// add each gene to the collection
 		foreach($response->diseases->disease_list as $record)
 			$collection->push(new Nodal((array) $record));
