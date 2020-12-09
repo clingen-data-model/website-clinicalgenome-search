@@ -467,7 +467,7 @@
           @endif
           @endforeach
           <div class="text-center mb-4">
-            <a class="btn btn-default" href="#" role="button">Load more Gene Curation Expert Panels</a>
+            <a class="btn btn-default btn-lg btn-primary" href="#" role="button">Load more Gene Curation Expert Panels</a>
           </div>
         </div>
       </div>
@@ -519,31 +519,11 @@
           <div class="col-sm-6">
             <h5>Haploinsufficiency Classifications Visualized</h4>
             <table class="table table-condensed">
-              <tr class="">
-                <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY] ?? '' }}</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class=" border-0">Autosomal Recessive</td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.8">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_AR] ?? '' }}</span>
-                  </div>
-                </td>
-              </tr>
               <tr>
                 <td class="col-sm-4 border-0">Sufficient Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:.6">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -553,7 +533,7 @@
                 <td class="col-sm-4 border-0">Emerging Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.5">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.8">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING] ?? '' }}</span>
                   </div>
@@ -563,7 +543,7 @@
                 <td class="col-sm-4 border-0">Little Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.4">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.6">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE] ?? '' }}</span>
                   </div>
@@ -573,9 +553,29 @@
                 <td class="col-sm-4 border-0">No Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.3">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.5">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE] ?? '' }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class=" border-0">Autosomal Recessive</td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.4">
+                    </div>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_AR] ?? '' }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr class="">
+                <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-1 mt-2">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:.3">
+                    </div>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -584,31 +584,11 @@
           <div class="col-sm-6 border-left-1">
             <h5>Triplosensitivity  Classifications Visualized</h4>
             <table class="table table-condensed">
-              <tr class="">
-                <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] ?? '' }}</span>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class=" border-0">Autosomal Recessive</td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.8">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR] ?? '' }}</span>
-                  </div>
-                </td>
-              </tr>
               <tr>
                 <td class="col-sm-4 border-0">Sufficient Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:.6">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -618,7 +598,7 @@
                 <td class="col-sm-4 border-0">Emerging Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.5">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.8">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING] ?? '' }}</span>
                   </div>
@@ -628,7 +608,7 @@
                 <td class="col-sm-4 border-0">Little Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.4">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.6">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE] ?? '' }}</span>
                   </div>
@@ -638,9 +618,29 @@
                 <td class="col-sm-4 border-0">No Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.6">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.5">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE] ?? '' }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class=" border-0">Autosomal Recessive</td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.4">
+                    </div>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR] ?? '' }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr class="">
+                <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-1 mt-2">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:.3">
+                    </div>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1371,7 +1371,7 @@
 
                       <br clear="all">
           <div class="text-center mb-4">
-            <a class="btn btn-default" href="#" role="button">Load more Variant Curation Expert Panels</a>
+            <a class="btn btn-default btn-lg btn-primary" href="#" role="button">Load more Variant Curation Expert Panels</a>
           </div>
 
 
