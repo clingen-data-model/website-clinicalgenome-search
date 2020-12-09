@@ -6,7 +6,7 @@
       <div class="col-md-7 curated-genes-table">
       <table class="mt-3 mb-2">
         <tr>
-          <td class="valign-top"><a href="{{ route('gene-all') }}"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></a></td>
+          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
           <td class="pl-2"><h1 class="h2 p-0 m-0">Genes</h1>
           </td>
         </tr>
