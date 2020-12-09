@@ -1317,6 +1317,7 @@ class Graphql
 						disease_list {
 							label
 							hgnc_id
+							synonyms
 							last_curated_date
 							curation_activities
 							dosage_curation {
@@ -1357,7 +1358,7 @@ class Graphql
 
 		if (empty($response))
 			return $response;
-
+dd($response);
 		// add each gene to the collection
 		foreach($response->diseases->disease_list as $record)
 			$collection->push(new Nodal((array) $record));

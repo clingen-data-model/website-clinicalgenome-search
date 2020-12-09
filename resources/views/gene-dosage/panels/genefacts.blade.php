@@ -4,6 +4,7 @@
       <h4 class="border-bottom-1">Gene Facts</h4>
 
       <dl class="dl-horizontal">
+        @if ($record->hgnc_id)
         <dt>HGNC Symbol</dt>
         <dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
           <a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer">HGNC <i class="fas fa-external-link-alt"></i></a>
@@ -31,6 +32,7 @@
         </dd>
         <dt>HGNC Name</dt>
         <dd>{{ $record->name }}</dd>
+        @endif
         <dt>Gene type</dt>
         <dd>{{ $record->genetype }}</dd>
         <dt>Locus type</dt>

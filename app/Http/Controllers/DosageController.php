@@ -64,12 +64,6 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
-		// confirm this is not a psuedogene
-		if (strpos($id, 'ISCA-') === 0)
-		{
-			die('psuedogene in progress');
-		}
-		
 		$record = GeneLib::dosageDetail([ 'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,

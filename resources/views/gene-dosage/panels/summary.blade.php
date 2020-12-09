@@ -25,7 +25,12 @@
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Curation Status:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
-            {{ $record->resolution }}
+            @if ($record->resolution != "Complete")
+            <span class="text-danger">
+            @else
+            <span class="text-success">
+            @endif
+            {{ $record->resolution }}</span>
           </div>
         </div>
         <div class="row pb-2 pt-3">

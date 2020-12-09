@@ -86,7 +86,7 @@ trait Query
 		} catch (Exception $exception) {		// everything else
 	
 			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
-dd($exception);
+
 			$response = $exception->getResponse();
 			$code = $response->getStatusCode();
 			$reason = $response->getReasonPhrase();
