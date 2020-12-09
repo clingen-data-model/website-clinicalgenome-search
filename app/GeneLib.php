@@ -60,6 +60,7 @@ class GeneLib extends Model
      * */
 
     protected static $short_dosage_assertion_strings = [
+         '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -146,6 +147,7 @@ class GeneLib extends Model
      ];
 
 	protected static $dosage_score_assertion_strings = [
+          '-1' => 'Psuedogene',
           '0' => 'No Evidence for ####',
           '1' => 'Little Evidence for ####',
           '2' => 'Emerging Evidence for ####',
@@ -155,6 +157,7 @@ class GeneLib extends Model
      ];
 
      protected static $curated_score_assertion_strings = [
+          '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
