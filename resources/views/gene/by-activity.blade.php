@@ -58,10 +58,12 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
-<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
-  <a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-primary active">Group By Activity</a>
-  <a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-default">Group By Gene-Disease Pair</a>
-</div>
+			@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR (!empty($record->genetic_conditions))  OR (!empty($record->pharma)))
+				<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
+					<a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-primary active">Group By Activity</a>
+					<a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-default">Group By Gene-Disease Pair</a>
+				</div>
+			@endif
 
 			@php ($header_val = true) @endphp
 			@forelse ($record->genetic_conditions as $key => $disease)
@@ -336,7 +338,7 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="30"></a></h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="30"></a></h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">
@@ -365,7 +367,7 @@
 								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
 								@if (isset($border) && $border == "")
 									@if (empty($entry['guideline']))
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  None</span></a></td>
+									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
 									@else
 									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="{{ $entry['guideline'] }}"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
 									@endif
@@ -387,7 +389,7 @@
 				<div class="row justify-content-center">
 					<div class="col-md-12">
 					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
-						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogene  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="25"></a> </h3>
+						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="25"></a> </h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 						  <table class="panel-body table mb-0">

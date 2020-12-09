@@ -57,17 +57,19 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
-<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
-  <a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-default">Group By Activity</a>
-  <a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
-</div>
+@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR (!empty($record->genetic_conditions))  OR (!empty($record->pharma)))
+				<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
+					<a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-default">Group By Activity</a>
+					<a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-primary active">Group By Gene-Disease Pair</a>
+				</div>
+			@endif
 
 		@forelse ($record->genetic_conditions as $disease)
 
 
 
 				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i>{{ $record->symbol }}</i> -
-					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" >{{ $disease->disease->label }}</a></h3>
+					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}" >{{ $disease->disease->label }}</a></h3>
 					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -100,7 +102,7 @@
 									</td>
 
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}"><strong>{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</strong></a>
+										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}">{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</a>
 									</td>
 
 
@@ -138,7 +140,7 @@
 									<td class=" @if(!$loop->first) border-0 @endif "><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content=" Dosage Sensitivity rating system"><strong>
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content=" Dosage Sensitivity rating system">
 											@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
 											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 												{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
@@ -148,7 +150,7 @@
 												{{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
 											</a>
 											@endif
-										</strong></a>
+										</a>
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
 								</tr>
@@ -188,7 +190,7 @@
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system"><strong>
+										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system">
 											@if ($key == "haploinsufficiency_assertion")
 											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
 												{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
