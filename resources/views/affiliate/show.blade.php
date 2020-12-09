@@ -140,22 +140,24 @@
           sortable: true
         },
         {
-          field: 'released',
-          title: 'Released',
-          cellStyle: cellFormatter,
-          sortable: true,
-          filterControl: 'input',
-          searchFormatter: false,
-          sortName: 'date'
-        },
-        {
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Clinical Validity Classification"></i></div> Classification',
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          filterControl: 'input',
+          //align: 'center',
           searchFormatter: false,
+          filterControl: 'input',
           sortable: true
+        },
+		    {
+          field: 'released',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          cellStyle: cellFormatter,
+          formatter: datebadgeFormatter,
+          searchFormatter: false,
+          sortable: true,
+          filterControl: 'input',
+          sortName: 'date'
         }
       ]
     })
