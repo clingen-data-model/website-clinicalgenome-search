@@ -527,14 +527,14 @@
 		</tr>
 		<tr>
 			<td colspan="2" valign="top" class="table-heading-bg table-heading text-right
-			@if ( !$score_json->summary->CuratorClassificationNotes)
+			@if ( isset($score_json->summary->CuratorClassificationNotes))
 				table-border-thin
 			@endif
 			">
 				MODIFIED CLASSIFICATION (DATE)
 			</td>
 			<td colspan="3" class="table-heading-bg table-heading
-			@if ( !$score_json->summary->CuratorClassificationNotes)
+			@if ( isset($score_json->summary->CuratorClassificationNotes))
 				table-border-thin
 			@endif
 			 CalculatedClassificationsActive">
