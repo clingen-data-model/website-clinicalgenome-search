@@ -14,7 +14,7 @@ class QueryExac extends Command
      *
      * @var string
      */
-    protected $signature = 'exac:query';
+    protected $signature = 'exac:queryDONOTUSE';
 
     /**
      * The console command description.

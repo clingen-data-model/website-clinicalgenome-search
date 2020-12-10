@@ -67,7 +67,7 @@ class UpdatePlof extends Command
 		{
 			$parts = explode("\t", $line);
 			
-			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . "\n";
+			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
 
 			// what we want is in the second and 20th sections...
 			if (isset($parts[0]))
@@ -79,6 +79,7 @@ class UpdatePlof extends Command
 				
 				// observed is 16, expected is 19
 				$gene->plof = $parts[29];
+				$gene->pli = $parts[20];
 				$gene->save();
 			}
 			
