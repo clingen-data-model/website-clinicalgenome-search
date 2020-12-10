@@ -146,31 +146,31 @@ class Jira extends Model
           // create the structures for pmid.  Jira will not send the fields if empty
           $pmids = [];
           if (isset($response->customfield_10183))
-               $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184];
+               $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184 ?? null];
           if (isset($response->customfield_10185))
-               $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186];
+               $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186  ?? null];
           if (isset($response->customfield_10187))
-               $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188];
+               $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188 ?? null];
           if (isset($response->customfield_12231))
-               $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237];
+               $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237 ?? null];
           if (isset($response->customfield_12232))
-               $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238];
+               $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238 ?? null];
           if (isset($response->customfield_12233))
-               $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239];
+               $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239 ?? null];
           $node->loss_pmids = $pmids;
           $pmids = [];
           if (isset($response->customfield_10189))
-               $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190];
+               $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190 ?? null];
           if (isset($response->customfield_10191))
-               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192];
+               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null];
           if (isset($response->customfield_10193))
-               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193];
+               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193 ?? null];
           if (isset($response->customfield_12234))
-               $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240];
+               $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null];
           if (isset($response->customfield_12235))
-               $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241];
+               $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241 ?? null];
           if (isset($response->customfield_12236))
-               $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242];
+               $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242 ?? null];
           $node->gain_pmids = $pmids;
 
           // for the omim fields, transform into structure and add title
@@ -262,31 +262,31 @@ class Jira extends Model
          // create the structures for pmid.  Jira will not send the fields if empty
          $pmids = [];
          if (isset($response->customfield_10183))
-              $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184];
+              $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184 ?? null];
          if (isset($response->customfield_10185))
-              $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186];
+              $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186 ?? null];
          if (isset($response->customfield_10187))
-              $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188];
+              $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188 ?? null];
           if (isset($response->customfield_12231))
-              $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237];
+              $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237 ?? null];
          if (isset($response->customfield_12232))
-              $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238];
+              $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238 ?? null];
          if (isset($response->customfield_12233))
-              $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239];
+              $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239 ?? null];
          $node->loss_pmids = $pmids;
          $pmids = [];
          if (isset($response->customfield_10189))
-              $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190];
+              $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190 ?? null];
          if (isset($response->customfield_10191))
-              $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192];
+              $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null];
          if (isset($response->customfield_10193))
-              $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193];
+              $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193 ?? null];
           if (isset($response->customfield_12234))
-              $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240];
+              $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null];
          if (isset($response->customfield_12235))
-              $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241];
+              $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241 ?? null];
          if (isset($response->customfield_12236))
-              $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242];
+              $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242 ?? null];
          $node->gain_pmids = $pmids;
 //dd($node);
          // for the omim fields, transform into structure and add title
