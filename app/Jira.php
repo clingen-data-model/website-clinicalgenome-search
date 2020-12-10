@@ -128,13 +128,13 @@ class Jira extends Model
                'summary' => $response->summary,
                'key' => $issue,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
-               'grch37' => $response->customfield_10160,
-               'grch38' => $response->customfield_10532,
-               'GRCh37_seqid' => $response->customfield_10158,
-               'GRCh38_seqid' => $response->customfield_10537,
+               'grch37' => $response->customfield_10160 ?? null,
+               'grch38' => $response->customfield_10532 ?? null,
+               'GRCh37_seqid' => $response->customfield_10158 ?? null,
+               'GRCh38_seqid' => $response->customfield_10537 ?? null,
                'triplo_score' => $response->customfield_10166->value ?? 'unknown',
                'haplo_score' => $response->customfield_10165->value ?? 'unknown',
-               'cytoband' => $response->customfield_10145,
+               'cytoband' => $response->customfield_10145 ?? null,
                'loss_comments' => $response->customfield_10198 ?? null,
                'loss_pheno_omim' => $response->customfield_10200 ?? null,
                'gain_comments' => $response->customfield_10199 ?? null,
@@ -521,8 +521,8 @@ class Jira extends Model
                // map the jira response into a somewhat sane structure
                $node = new Nodal([
                     'key' => $issue->key,
-                    'label' => $issue->fields->customfield_10030,
-                    'omim' => $issue->fields->customfield_10147,
+                    'label' => $issue->fields->customfield_10030 ?? null,
+                    'omim' => $issue->fields->customfield_10147 ?? null,
                     'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
                     'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown'
                ]);
@@ -660,7 +660,7 @@ class Jira extends Model
                $node = new Nodal([
                     'issue' => $issue->key,
                     'type' => 1,
-                    'label' => $issue->fields->customfield_10202,
+                    'label' => $issue->fields->customfield_10202 ?? '',
                     'curation' => $issue->fields->issuetype->name ?? '',
                     'description' => $issue->fields->description ?? null,
                     'cytoband' => $issue->fields->customfield_10145 ?? null,
