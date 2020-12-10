@@ -759,25 +759,27 @@ function dsreportFormatter(index, row) {
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
 
     var bclass = (row.workflow == "Awaiting Review" ? "default" : "success");
+    var title = '';
 
     if (row.type == 3)
     {
         bclass = 'unreviewable';
         row.workflow = "Not Reviewable";
+        title = "This gene will not be reviewed because it is a pseudogene";
     }
 
     if (row.type == 0 || row.type == 3) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         if (row.hgnc_id == null)
-          return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
+          return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
             + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
         else
-            return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
+            return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
              + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
     else {
-        return '<a class="btn btn-xs btn-' + bclass + ' btn-block" href="'
+        return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
             + '/kb/gene-dosage/region/' + row.isca
             + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
     }
