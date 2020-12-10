@@ -164,7 +164,7 @@ class Jira extends Model
           if (isset($response->customfield_10191))
                $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null];
           if (isset($response->customfield_10193))
-               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10194 ?? null];
           if (isset($response->customfield_12234))
                $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null];
           if (isset($response->customfield_12235))
@@ -280,7 +280,7 @@ class Jira extends Model
          if (isset($response->customfield_10191))
               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null];
          if (isset($response->customfield_10193))
-              $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10193 ?? null];
+              $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10194 ?? null];
           if (isset($response->customfield_12234))
               $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null];
          if (isset($response->customfield_12235))

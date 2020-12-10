@@ -89,7 +89,9 @@ class GeneLib extends Model
 
      protected static $validity_classification_strings = [
           'gene associated with autosomal recessive phenotype' => 'Autosomal Recessive',
-          'no evidence' => 'No Reported Evidence',
+          //'no evidence' => 'No Reported Evidence',
+          'no evidence' => 'No Known Disease Relationship',
+          'no known disease relationship' => 'No Known Disease Relationship',
           'sufficient evidence' => 'Sufficient',
           'limited evidence' => 'Limited',
           'disputing' => 'Disputing',
