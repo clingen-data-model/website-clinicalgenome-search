@@ -445,6 +445,7 @@
           @foreach ($array as $key => $panel)
           @php
             $i++;
+            $num = rand(1, 3);
           @endphp
 
           @if($i <= 9)
@@ -452,10 +453,70 @@
               <div class="panel panel-default border-0">
                   <div class="panel-body">
                     <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
+                      {{-- <div class="text-size-lg lineheight-tight">
                         <span style="border: 6px #13a89e solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#0e665c">{{ $panel['count'] }}</span>
-                      </div>
+                      </div> --}}
+                      @if($num == 1)
+                      <svg width="50%" height="50%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#718096" stroke-width="3"></circle>
+
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#276749" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#68d391" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="85"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fc8181" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="65"></circle>
+                        <!-- unused 10% -->
+                        <g class="chart-text">
+                          <text x="50%" y="50%" class="chart-number">
+                            {{ $panel['count'] }}
+                          </text>
+                          <text x="50%" y="50%" class="chart-label">
+                            Curations
+                          </text>
+                        </g>
+                      </svg>
+                      @endif
+                      @if($num == 2)
+                      <svg width="50%" height="50%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#276749" stroke-width="3"></circle>
+
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#718096" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fc8181" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="85"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#68d391" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="65"></circle>
+                        <!-- unused 10% -->
+                        <g class="chart-text">
+                          <text x="50%" y="50%" class="chart-number">
+                            {{ $panel['count'] }}
+                          </text>
+                          <text x="50%" y="50%" class="chart-label">
+                            Curations
+                          </text>
+                        </g>
+                      </svg>
+                      @endif
+                      @if($num == 3)
+                      <svg width="50%" height="50%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fc8181" stroke-width="3"></circle>
+
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#68d391" stroke-width="3" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#276749" stroke-width="3" stroke-dasharray="20 80" stroke-dashoffset="85"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#718096" stroke-width="3" stroke-dasharray="30 70" stroke-dashoffset="65"></circle>
+                        <!-- unused 10% -->
+                        <g class="chart-text">
+                          <text x="50%" y="50%" class="chart-number">
+                            {{ $panel['count'] }}
+                          </text>
+                          <text x="50%" y="50%" class="chart-label">
+                            Curations
+                          </text>
+                        </g>
+                      </svg>
+                      @endif
                       <div class="mb-2 lineheight-tight">{{ $panel['label'] }}</div>
+
+
+
                     </a>
                   </div>
                 </div>
@@ -656,53 +717,63 @@
         <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated </p>
         <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} Total Clinical Actionability Reports</h4>
 <div class="row text-center mt-4">
-          <div class="col-sm-2" style="width:20%">
+          <div class="col-sm-2 px-1" style="">
             <div class="panel panel-default border-primary">
-                <div class="panel-body p-2">
+                <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Actionability <br />Reports</div>
+                  <div class="mb-2 lineheight-tight">Total Actionability <br />Reports<br />&nbsp;</div>
                 </div>
               </div>
           </div>
-          <div class="col-sm-2" style="width:20%">
+          <div class="col-sm-2 px-1" style="">
             <div class="panel panel-default border-primary">
-                <div class="panel-body p-2">
+                <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Actionability <br />Updated Reports</div>
+                  <div class="mb-2 lineheight-tight">Total Actionability <br />Updated Reports<br />&nbsp;</div>
                 </div>
               </div>
           </div>
-          <div class="col-sm-2" style="width:20%">
+          <div class="col-sm-2 px-1" style="">
             <div class="panel panel-default border-primary">
-                <div class="panel-body p-2">
+                <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Genes Included in Actionability Reports</div>
+                  <div class="mb-2 lineheight-tight">Total Genes Included in <br>Actionability Reports<br />&nbsp;</div>
                 </div>
               </div>
           </div>
-          <div class="col-sm-2" style="width:20%">
+          <div class="col-sm-2 px-1" style="">
             <div class="panel panel-default border-primary">
-                <div class="panel-body p-2">
+                <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Unique Gene-Disease Pairs</div>
+                  <div class="mb-2 lineheight-tight">Total Unique <br>Gene-Disease<br> Pairs</div>
                 </div>
               </div>
           </div>
-          <div class="col-sm-2" style="width:20%">
+          <div class="col-sm-2 px-1" style="">
             <div class="panel panel-default border-primary">
-                <div class="panel-body p-2">
+                <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Outcome-Intervention Pairs</div>
+                  <div class="mb-2 lineheight-tight">Total Outcome-Intervention<br> Pairs</div>
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-2 px-1">
+            <div class="panel panel-default border-primary">
+                <div class="panel-body p-1">
+                  <div class="text-size-lg lineheight-tight">XXX
+                    {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
+                  </div>
+                  <div class="mb-2 lineheight-tight">Total Failed <br>Early Rule-out<br>&nbsp;</div>
                 </div>
               </div>
           </div>
@@ -1178,7 +1249,7 @@
         <hr class="mt-4 pb-4">
         <h2 id="gene-disease-validity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" style="margin-top:-10px; margin-left:-50px"  /> Variant Pathogenicity Statistics</h2>
-        <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated if the risk were known.</p>
+        <p>ClinGen variant curation utilizes the 2015 American College of Medical Genetics and Genomics (ACMG) guideline for sequence variant interpretation, which provides an evidence-based framework to classify variants.</p>
 
         <div class="row mt-4 mb-4">
           <div class="col-sm-5">
