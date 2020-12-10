@@ -235,6 +235,7 @@ class Region extends Model
           $map = Iscamap::issue($region->issue)->first();
           if ($map !== null)
             $region->symbol = $map->symbol;
+            //dd($region);
           $region->type = 0;  //gene
 
           // rats, we need the hgnc_id until jira supports it directly
@@ -247,6 +248,9 @@ class Region extends Model
             $region->pli = $g->pli;
             $region->morbid = $g->morbid;
           }
+          if ($g === null || $g->locus_type == 'pseudogene')
+            $region->type = 3;
+
           $gene_count++;
         }
         else
@@ -277,6 +281,12 @@ class Region extends Model
               $region->gain = 30;
         else if ($region->gain == "40: Dosage sensitivity unlikely")
               $region->gain = 40;
+
+        if ($region->type == 3)
+        {
+          $region->loss = -1;
+          $region->gain = -1;
+        }
 
         $collection->push($region);
 
