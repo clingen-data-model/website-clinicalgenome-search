@@ -717,7 +717,7 @@
         <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated </p>
         <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} Total Clinical Actionability Reports</h4>
 <div class="row text-center mt-4">
-          <div class="col-sm-2 px-1" style="">
+          <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
@@ -727,7 +727,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-sm-2 px-1" style="">
+          <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
@@ -737,7 +737,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-sm-2 px-1" style="">
+          <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
@@ -747,7 +747,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-sm-2 px-1" style="">
+          <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
@@ -757,26 +757,25 @@
                 </div>
               </div>
           </div>
-          <div class="col-sm-2 px-1" style="">
+          <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
                     {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Outcome-Intervention<br> Pairs</div>
+                  <div class="mb-2 lineheight-tight">Total Outcome-Intervention<br> Pairs<br />&nbsp;</div>
                 </div>
               </div>
           </div>
-          <div class="col-sm-2 px-1">
+          {{-- <div class="col-sm-2 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">XXX
-                    {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Failed <br>Early Rule-out<br>&nbsp;</div>
                 </div>
               </div>
-          </div>
+          </div> --}}
           {{-- <div class="col-sm-3">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
@@ -822,7 +821,7 @@
 
             <table class="table table-condensed">
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>12</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#a2cb50; opacity:1">
@@ -833,7 +832,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>11</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#65ba59; opacity:1">
@@ -844,7 +843,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>10</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 80%; background-color:#469c50; opacity:1">
@@ -855,7 +854,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>9</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background-color:#4fb0a8; opacity:1">
@@ -866,7 +865,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>8</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#55b2e3; opacity:1">
@@ -877,7 +876,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>7</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#367fc2; opacity:1">
@@ -887,7 +886,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>6</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#69399a; opacity:1">
@@ -897,13 +896,24 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>5</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">XX</span>
                   </div>
+                </td>
+              </tr>
+              <tr class="">
+                <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#666; opacity:1">
+                    </div>
+                    <span class="ml-2">XX</span>
+
+                  </div>Failed Early Rule-out
                 </td>
               </tr>
             </table>
@@ -916,7 +926,7 @@
               <p><strong>Total Scores Visualized</strong></p>
             <table class="table table-condensed">
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>12</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#a2cb50; opacity:1">
@@ -927,7 +937,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>11</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#65ba59; opacity:1">
@@ -938,7 +948,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>10</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 80%; background-color:#469c50; opacity:1">
@@ -949,7 +959,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>9</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background-color:#4fb0a8; opacity:1">
@@ -960,7 +970,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>8</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#55b2e3; opacity:1">
@@ -971,7 +981,7 @@
               </tr>
 
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>7</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#367fc2; opacity:1">
@@ -981,7 +991,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>6</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#69399a; opacity:1">
@@ -991,13 +1001,24 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-1 border-0"><strong>5</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">XX</span>
                   </div>
+                </td>
+              </tr>
+              <tr class="">
+                <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#666; opacity:1">
+                    </div>
+                    <span class="ml-2">XX</span>
+
+                  </div>Failed Early Rule-out
                 </td>
               </tr>
             </table>
