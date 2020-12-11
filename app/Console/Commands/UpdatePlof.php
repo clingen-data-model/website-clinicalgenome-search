@@ -75,6 +75,12 @@ class UpdatePlof extends Command
 				$gene = Gene::where('name', $parts[0])->first();
 				
 				if (empty($gene))
+				{
+					// check previous sympols
+					$gene = Gene::whereJsonContains('prev_symbol', $parts[0])->first();
+				}
+
+				if (empty($gene))
 					continue;
 				
 				// observed is 16, expected is 19

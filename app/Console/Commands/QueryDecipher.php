@@ -75,6 +75,12 @@ class QueryDecipher extends Command
 					$gene = Gene::where('name', $subparts[0])->first();
 					
 					if (empty($gene))
+					{
+						// check previous sympols
+						$gene = Gene::whereJsonContains('prev_symbol', $parts[0])->first();
+					}
+					
+					if (empty($gene))
 						continue;
 					
 					// remove the percent sign

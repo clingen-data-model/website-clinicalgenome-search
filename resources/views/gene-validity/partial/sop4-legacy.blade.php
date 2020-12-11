@@ -350,7 +350,11 @@
   <tr>
     <td colspan="2" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
     <td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 "><div class='col-sm-8'> <span style="font-size: 145%;">
-      {{ $record->score_data->summary->FinalClassification ?? null }}
+      @if (isset($record->score_data->summary->FinalClassification) && strtoupper($record->score_data->summary->FinalClassification) == "NO REPORTED EVIDENCE")
+						No Known Disease Relationship
+					@else
+						{{ $record->score_data->summary->FinalClassification ?? null }}
+					@endif
       </span> </div>
       <div class='col-sm-4'>
       {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null) }}
