@@ -83,6 +83,18 @@
     return res
   }
 
+  var choices=[
+                'Definitive',
+                'Strong',
+                'Moderate',
+                'Supportive',
+                'Limited',
+                'Disputed',
+                'Refuted',
+                'Animal',
+                'No Known Disease Relationship'
+  ];
+
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
@@ -160,8 +172,10 @@
           cellStyle: cellFormatter,
           //align: 'center',
           searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
+          filterControl: 'select',
+          filterData: 'var:choices',
+          sortable: true,
+          sortName: 'order'
         },
 		    {
           field: 'released',

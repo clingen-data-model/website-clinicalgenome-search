@@ -94,13 +94,26 @@ class GeneLib extends Model
           'no known disease relationship' => 'No Known Disease Relationship',
           'sufficient evidence' => 'Sufficient',
           'limited evidence' => 'Limited',
-          'disputing' => 'Disputing',
+          'disputing' => 'Disputed',
+          'disputed' => 'Disputed',
           'definitive evidence' => 'Definitive',
           'minimal evidence' => 'Minimal',
           'met' => 'Met',
           'strong evidence' => 'Strong',
           'refuting evidence' => 'Refuted',
           'moderate evidence' => 'Moderate'
+     ];
+
+     protected static $validity_sort_value = [
+               'Definitive' => 20,
+               'Strong' => 19,
+               'Moderate' => 18,
+               'Supportive' => 17,
+               'Limited' => 16,
+               'Disputed' => 15,
+               'Refuted' => 14,
+               'Animal' => 13,
+               'No Known Disease Relationship' => 12
      ];
 
      protected static $validity_assertion_strings = [
@@ -992,6 +1005,20 @@ class GeneLib extends Model
 
 		 return self::$validity_classification_strings[$str] ?? 'ERROR';
      }
+
+
+     /**
+     * Return a displayable validity classification description
+     *
+     * @return string
+     */
+    public static function validitySortOrder($str)
+    {
+         if (empty($str))
+              return 0;
+
+          return self::$validity_sort_value[$str] ?? 0;
+    }
 
 
      /**
