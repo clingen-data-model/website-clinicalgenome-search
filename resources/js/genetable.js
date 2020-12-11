@@ -53,7 +53,7 @@ function table_buttons() {
  */
 function symbolFormatter(index, row) {
 
-    if (row.type == 0 || type == 3)
+    if (row.type == 0 || row.type == 3)
         return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
     else
         return '<a href="/kb/gene-dosage/region/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
