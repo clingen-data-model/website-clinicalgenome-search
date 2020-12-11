@@ -376,7 +376,7 @@
 				},
 				{
 					title: 'HGNC/<br>Dosage ID',
-					field: 'hgnc',
+					field: 'hgnc_id',
 					formatter: hgncFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

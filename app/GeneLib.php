@@ -60,6 +60,7 @@ class GeneLib extends Model
      * */
 
     protected static $short_dosage_assertion_strings = [
+         '-5' => 'Not yet evaluated',
          '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
@@ -162,6 +163,7 @@ class GeneLib extends Model
      ];
 
 	protected static $dosage_score_assertion_strings = [
+          '-5' => 'Not yet evaluated',
           '-1' => 'Psuedogene',
           '0' => 'No Evidence for ####',
           '1' => 'Little Evidence for ####',
@@ -172,6 +174,7 @@ class GeneLib extends Model
      ];
 
      protected static $curated_score_assertion_strings = [
+          '-5' => 'Not yet evaluated',
           '-1' => 'Psuedogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
@@ -932,7 +935,7 @@ class GeneLib extends Model
           if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Haploinsufficiency', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
+		 return str_replace('####', 'Haploinsufficiency', self::$dosage_score_assertion_strings[$str] ?? '');
      }
 
 
@@ -946,7 +949,7 @@ class GeneLib extends Model
           if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Triplosensitivity', self::$dosage_score_assertion_strings[$str] ?? 'ERROR');
+		 return str_replace('####', 'Triplosensitivity', self::$dosage_score_assertion_strings[$str] ?? '');
      }
 
 
@@ -960,8 +963,8 @@ class GeneLib extends Model
           if ($str === null || $str === false)
                return '';
 
-          return self::$curated_score_assertion_strings[$str] ?? 'ERROR';
-          //return self::$curated_assertion_strings[$str] ?? 'ERROR';
+          return self::$curated_score_assertion_strings[$str] ?? '';
+          //return self::$curated_assertion_strings[$str] ?? '';
      }
 
 
@@ -975,7 +978,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$validity_moi_strings[$str] ?? 'ERROR';
+		 return self::$validity_moi_strings[$str] ?? '';
      }
 
 
@@ -989,7 +992,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$validity_assertion_strings[$str] ?? 'ERROR';
+		 return self::$validity_assertion_strings[$str] ?? '';
      }
 
 
@@ -1003,7 +1006,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$validity_classification_strings[$str] ?? 'ERROR';
+		 return self::$validity_classification_strings[$str] ?? '';
      }
 
 
@@ -1031,7 +1034,7 @@ class GeneLib extends Model
           if (empty($str))
                return '';
 
-		 return self::$validity_criteria_strings[$str] ?? 'ERROR';
+		 return self::$validity_criteria_strings[$str] ?? 'ERRR';
      }
 
 

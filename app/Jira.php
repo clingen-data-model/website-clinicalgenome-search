@@ -226,7 +226,7 @@ class Jira extends Model
               $$key = $value;
 
          $response = self::getIssue($gene);
-         //dd($response->description);
+         //dd($response);
          // map the jira response into a somewhat sane structure
          $node = new Nodal([
               'summary' => $response->summary,

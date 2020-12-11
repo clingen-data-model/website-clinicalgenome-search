@@ -5,7 +5,7 @@
   <div class="row justify-content-center">
 
     <!-- Header -->
-    <div class="col-md-8">
+    <div class="col-md-6">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
@@ -20,7 +20,7 @@
       </table>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">

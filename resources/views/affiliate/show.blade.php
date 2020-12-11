@@ -96,7 +96,7 @@
           sortable: true
         },{
           title: 'HGNC',
-          field: 'hgnc',
+          field: 'hgnc_id',
           formatter: ashgncFormatter,
           cellStyle: cellFormatter,
           filterControl: 'input',
