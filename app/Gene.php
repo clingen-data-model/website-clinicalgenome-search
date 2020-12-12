@@ -66,7 +66,9 @@ class Gene extends Model
                'prev_symbol' => 'array',
                'omim_id' => 'array',
                'history' => 'array',
-               'activity' => 'array'
+               'activity' => 'array',
+               'mane_select' => 'array',
+               'mane_plus' => 'array'
 		];
 
      /**
@@ -77,7 +79,8 @@ class Gene extends Model
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type', 'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
-                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status' ];
+                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status',
+                            'mane_select', 'mane_plus' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -86,7 +89,7 @@ class Gene extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status',
                            'display_aliases', 'display_previous',
-                           'display_omim', 'grch37', 'grch38'];
+                           'display_omim', 'grch37', 'grch38', 'mane'];
 
      public const TYPE_NONE = 0;
 
@@ -241,7 +244,7 @@ class Gene extends Model
 
 
     /**
-     * Get a display formatted form of aliases
+     * Get a display formatted form of grch37
      *
      * @@param
      * @return
@@ -268,7 +271,7 @@ class Gene extends Model
 
 
     /**
-     * Get a display formatted form of aliases
+     * Get a display formatted form of grch38
      *
      * @@param
      * @return

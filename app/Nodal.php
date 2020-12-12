@@ -307,6 +307,32 @@ class Nodal extends Model
 					in_array('ACTIONABILITY', $this->curation_activities) :
 					false); 
 	}
+
+	/**
+     * Get a display formatted form of mane 
+     *
+     * @@param
+     * @return
+     */
+	public function displayManeString($type = 'select', $t = null)
+	{
+		 switch ($type)
+		 {
+			  case 'select':
+				   if (empty($this->mane_select))
+						return '';
+				   $t = $this->mane_select;
+				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . ' ' . $t['strand'];
+				   break;
+			  case 'plus': 
+				   if (empty($this->mane_plus))
+						return '';
+				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . ' ' . $t['strand'];
+				   break;
+			  default: 
+				   return '';
+		 }
+	}
 	
 	
 	/**

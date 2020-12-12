@@ -212,6 +212,7 @@ class Graphql
 
 		// add additional information from local db
 		$localgene = Gene::where('hgnc_id', $gene)->first();
+
 		if ($localgene !== null)
 		{
 			$node->alias_symbols = $localgene->display_aliases;
@@ -227,6 +228,10 @@ class Graphql
 			$node->ucsc_id = $localgene->ucsc_id;
 			$node->uniprot_id = $localgene->uniprot_id;
 			$node->function = $localgene->function;
+			$node->grch37 = $localgene->grch37;
+			$node->grch38 = $localgene->grch38;
+			$node->mane_select = $localgene->mane_select;
+			$node->mane_plus = $localgene->mane_plus;
 		}
 
 		$naction = 0;
@@ -799,7 +804,9 @@ class Graphql
 			$node->uniprot_id = $localgene->uniprot_id;
 			$node->function = $localgene->function;
 			$node->grch37 = $localgene->grch37;
-            $node->grch38 = $localgene->grch38;
+			$node->grch38 = $localgene->grch38;
+			$node->mane_select = $localgene->mane_select;
+            $node->mane_plus = $localgene->mane_plus;
 		}
 
 		// currently, there is no easy way to track what needs dosage_curation entries belong in

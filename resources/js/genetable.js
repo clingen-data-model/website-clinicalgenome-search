@@ -303,7 +303,7 @@ function omimFormatter(index, row) {
 
 
 function morbidFormatter(index, row) {
-    if (row.morbid)
+    if (row.morbid == "Yes")
         return '<span class="text-success"><i class="fas fa-check"></i></span>';
     else
         return '';

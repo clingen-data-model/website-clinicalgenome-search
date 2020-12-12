@@ -348,6 +348,39 @@
 		return res
 	}
 
+	var choices=['Yes', 'No'];
+
+	var hibin=['<= 10', '> 10'];
+	var plibin=['< .9', '>= .9'];
+	var plofbin=['<= .35', '> .35'];
+
+	function checkbin(text, value, field, data)
+	{
+		if (text == '<= 10')
+			return value <= 10;
+		else
+			return value > 10;
+	}
+
+
+	function checkpli(text, value, field, data)
+	{
+		if (text == '< .9')
+			return value < .9;
+		else
+			return value >= .9;
+	}
+
+
+	function checkplof(text, value, field, data)
+	{
+		//console.log(value);
+		if (text == '> .35')
+			return value > .35;
+		else
+			return value <= .35;
+	}
+
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
@@ -435,10 +468,11 @@
 				},
 				{
 					title: 'OMIM',
-					field: 'omimlimk',
+					field: 'omim',
 					formatter: omimFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
+					filterData: 'var:choices',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -448,6 +482,7 @@
 					formatter: morbidFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
+					filterData: 'var:choices',
 					searchFormatter: false,
 					sortable: true
 				},
@@ -456,7 +491,9 @@
 					field: 'hi',
 					formatter: hiFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'input',
+					filterControl: 'select',
+					filterData: 'var:hibin',
+					filterCustomSearch: checkbin,
 					searchFormatter: false,
 					sortable: true
 				},
@@ -465,7 +502,9 @@
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'input',
+					filterControl: 'select',
+					filterData: 'var:plibin',
+					filterCustomSearch: checkpli,
 					searchFormatter: false,
 					sortable: true
 				},
@@ -474,7 +513,9 @@
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'input',
+					filterControl: 'select',
+					filterData: 'var:plofbin',
+					filterCustomSearch: checkplof,
 					searchFormatter: false,
 					sortable: true
 				},

@@ -51,40 +51,65 @@
 						@endif
 						@if(isset($record->hi))
 						<dt>%HI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></dt>
-						<dd>{{ $record->hi }}</dd>
+						<dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
 						@endif
 						@if(isset($record->pli))
 						<dt>pLI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></dt>
-						<dd>{{  $record->pli }}</dd>
+						<dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD pLI score)</a></dd>
 						@endif
 						@if($record->plof)
-						<dt>LOEUF</dt>
-						<dd>{{  $record->plof }}</dd>
+						<dt>LOEUF <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></dt>
+						<dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD LOEUF score)</a></dd>
 						@endif
 						@if($record->chromosome_band)
 						<dt>Cytoband</dt>
 						<dd>{{ $record->chromosome_band }}</dd>
 						@endif
-						{{-- <dt>Genomic Coordinate</dt>
+						<dt>Genomic Coordinates</dt>
 						<dd>
-							<table>
-									<tr>
-											<td>GRCh37/hg19</td>
-											<td>chr17: 41,196,312-41,277,500
-													<a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
-													<a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> NCBI</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> Ensembl</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> UCSC</span>
-											</td>
-									</tr>
-									<tr>
-											<td class="pr-3">GRCh38/hg38</td>
-											<td>chr17: 43,044,295-43,125,483
-													<a href="" class="badge-info badge pointer"><i class="fas fa-search"></i> ClinGen</a>
-													<a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> NCBI</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> Ensembl</a> <a href="" class="badge-info badge pointer"><i class="fas fa-external-link"></i> UCSC</span>
-											</td>
-									</tr>
-							</table>
+						<table>
+							<tr>
+								<td>GRCh37/hg19</td>
+								<td>{{ $record->grch37 }}</td>
+								<td>
+								<a href="{{ $record->formatNcbi($record->grch37, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+								<a href="{{ $record->formatEnsembl($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+								<a href="{{ $record->formatUcsc19($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+								</td>
+							</tr>
+							<tr>
+								<td class="pr-3">GRCh38/hg38</td>
+								<td>{{  $record->grch38 }}</td>
+								<td>
+								<a href="{{ $record->formatNcbi($record->grch38, $record->GRCh38_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+								<a href="{{ $record->formatEnsembl($record->grch38) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+								<a href="{{ $record->formatUcsc38($record->grch38) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+								</td>
+							</tr>
+							@if (!empty($record->mane_select))
+							<tr>
+							<td class="pr-3">MANE Select</td>
+							<td class="pr-2">{{  $record->displayManeString('select') }}
+							</td>
+							<td>
+								<a href="{{ $record->formatUcsc38($record->displayManeString('select')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+							</td>
+							</tr>
+							@endif
+							@if (!empty($record->mane_plus))
+							@foreach ($record->mane_plus as $plus)
+							<tr>
+							<td class="pr-3">MANE Plus Clinical</td>
+							<td class="pr-2">{{  $record->displayManeString('plus', $plus) }}
+							</td>
+							<td>
+								<a href="{{ $record->formatUcsc38($record->displayManeString('plus', $plus)) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+							</td>
+							</tr>
+							@endforeach
+							@endif
+						</table>
 						</dd>
-					--}}
 						@if($record->function)
 						<dt>Function</dt>
 						<dd>{{ $record->function }}  <i>(Source: <a href="https://www.uniprot.org/uniprot/{{ $record->uniprot_id }}">Uniprot</a>)</i></dd>

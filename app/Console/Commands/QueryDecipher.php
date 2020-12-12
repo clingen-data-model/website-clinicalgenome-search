@@ -77,7 +77,7 @@ class QueryDecipher extends Command
 					if (empty($gene))
 					{
 						// check previous sympols
-						$gene = Gene::whereJsonContains('prev_symbol', $parts[0])->first();
+						$gene = Gene::whereJsonContains('prev_symbol', $subparts[0])->first();
 					}
 					
 					if (empty($gene))

@@ -62,7 +62,8 @@
           <table>
             <tr>
                 <td>GRCh37/hg19</td>
-                <td>{{ $record->grch37 }}
+                <td>{{ $record->grch37 }}</td>
+                <td>
                   <a href="{{ $record->formatNcbi($record->grch37, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
                   <a href="{{ $record->formatEnsembl($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
                   <a href="{{ $record->formatUcsc19($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
@@ -70,12 +71,35 @@
             </tr>
             <tr>
                 <td class="pr-3">GRCh38/hg38</td>
-                <td>{{  $record->grch38 }}
+                <td>{{  $record->grch38 }}</td>
+                <td>
                   <a href="{{ $record->formatNcbi($record->grch38, $record->GRCh38_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
                   <a href="{{ $record->formatEnsembl($record->grch38) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
                   <a href="{{ $record->formatUcsc38($record->grch38) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
                 </td>
             </tr>
+            @if (!empty($record->mane_select))
+            <tr>
+            <td class="pr-3">MANE Select</td>
+            <td class="pr-2">{{  $record->displayManeString('select') }}
+            </td>
+            <td>
+              <a href="{{ $record->formatUcsc38($record->displayManeString('select')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+            </td>
+            </tr>
+            @endif
+            @if (!empty($record->mane_plus))
+            @foreach ($record->mane_plus as $plus)
+            <tr>
+            <td class="pr-3">MANE Plus Clinical</td>
+            <td class="pr-2">{{  $record->displayManeString('plus', $plus) }}
+            </td>
+            <td>
+              <a href="{{ $record->formatUcsc38($record->displayManeString('plus', $plus)) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+            </td>
+            </tr>
+            @endforeach
+            @endif
           </table>
         </dd>
         @if($record->function)
