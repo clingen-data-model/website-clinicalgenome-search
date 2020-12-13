@@ -534,7 +534,6 @@
 		});
 
 		$table.on('load-error.bs.table', function (e, name, args) {
-			console.log("error fired");
 
 			$("body").css("cursor", "default");
 
@@ -546,7 +545,6 @@
 		})
 
 		$table.on('load-success.bs.table', function (e, name, args) {
-			console.log("success fired");
 
 			$("body").css("cursor", "default");
 
