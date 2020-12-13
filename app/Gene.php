@@ -237,7 +237,7 @@ class Gene extends Model
     public function getDisplayOmimAttribute()
     {
          if (empty($this->omim_id))
-              return 'No ids found';
+              return '';
 
          return implode(', ', $this->omim_id);
     }

@@ -322,12 +322,12 @@ class Nodal extends Model
 				   if (empty($this->mane_select))
 						return '';
 				   $t = $this->mane_select;
-				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . ' ' . $t['strand'];
+				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
 				   break;
 			  case 'plus': 
 				   if (empty($this->mane_plus))
 						return '';
-				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . ' ' . $t['strand'];
+				   return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
 				   break;
 			  default: 
 				   return '';

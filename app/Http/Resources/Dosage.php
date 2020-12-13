@@ -30,7 +30,7 @@ class Dosage extends JsonResource
             'triplo_assertion' => GeneLib::shortAssertionString(($this->triplo_assertion ?? $this->has_dosage_triplo)),
             'omim' => isset($this->omimlink) ? 'Yes' : 'No',
             'omimlink' => $this->omimlink ?? null,
-            'morbid' => !empty($this->morbid) == 1 ? 'Yes' : 'No',
+            'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
             'haplo_history' => $this->haplo_history ?? null,
             'hhr' => empty($this->haplo_history) ? 0 : 1,
             'triplo_history' => $this->triplo_history ?? null,
