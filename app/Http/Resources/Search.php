@@ -32,7 +32,7 @@ class Search extends JsonResource
             'relationship' => $this->relationship,
             'pli' => is_null($this->pli) ? null : round($this->pli, 2),
             'hi' => is_null($this->hi) ? null : round($this->hi, 2),
-            'morbid' => isset($this->morbid) ? 'Yes' : 'No',
+            'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
             'plof' => is_null($this->plof) ? null : round($this->plof, 2),
             'type' => $this->type,
             'workflow' => $this->workflow,
