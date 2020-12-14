@@ -327,16 +327,46 @@
 
 	var choices=['Yes', 'No'];
 
-	var hibin=['<= 10', '> 10'];
-	var plibin=['< .9', '>= .9'];
-	var plofbin=['<= .35', '> .35'];
+	var hibin=['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'];
+	var plibin=['< 0.9', '>= 0.9'];
+	//var plofbin=['<= .35', '> .35'];
+	var plofbin=['<= 0.2', '> 0.2 - 0.35', '> 0.35 - 1', '> 1'];
 
+	// HI bin
 	function checkbin(text, value, field, data)
 	{
+		switch (text)
+		{
+			case '0-10': 
+				return value <= 10;
+			case '11-20':
+				return value >= 11 && value < 21;
+			case '21-30':
+				return value >= 21 && value < 31;
+			case '31-40':
+				return value >= 31 && value < 41;
+			case '41-50':
+				return value >= 41 && value < 51;
+			case '51-60':
+				return value >= 51 && value < 61;
+			case '61-70':
+				return value >= 61 && value < 71;
+			case '71-80':
+				return value >= 71 && value < 81;
+			case '81-90':
+				return value >= 81 && value < 91;
+			case '91-100':
+				return value >= 91;
+			default:
+				return true;
+		}
+
+		/*
 		if (text == '<= 10')
 			return value <= 10;
 		else
 			return value > 10;
+		*/
 	}
 
 
@@ -351,11 +381,25 @@
 
 	function checkplof(text, value, field, data)
 	{
+		switch (text)
+		{
+			case '<= 0.2':
+				return value <= .2;
+			case '> 0.2 - 0.35':
+				return value > .2 && value <= .35;
+			case  '> 0.35 - 1':
+				return value > .35 && value <= 1;
+			case '> 1':
+				return value > 1;
+			default:
+				return true;
+		}
+		
 		//console.log(value);
-		if (text == '> .35')
+		/*if (text == '> .35')
 			return value > .35;
 		else
-			return value <= .35;
+			return value <= .35;*/
 	}
 
 	function inittable() {
