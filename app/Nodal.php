@@ -323,13 +323,13 @@ class Nodal extends Model
 						return '';
 				   $t = $this->mane_select;
 				   //return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
-				   return $t['refseq_nuc'] . ' / ' . $t['ensembl_nuc'];
+				   return $t['refseq_nuc'] . ' <i class="fas fa-info-circle color-white mr-4" data-toggle="tooltip" data-placement="top" title="NCBI"></i>' . $t['ensembl_nuc'] . ' <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Ensembl"></i>';
 				   break;
 			  case 'plus': 
 				   if (empty($this->mane_plus))
 						return '';
 				   //return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
-				   return $t['refseq_nuc'] . ' / ' . $t['ensembl_nuc'];  
+				   return $t['refseq_nuc'] . ' <i class="fas fa-info-circle color-white mr-4" data-toggle="tooltip" data-placement="top" title="NCBI"></i>' . $t['ensembl_nuc'] . ' <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Ensembl"></i>';
 				   break;
 			  default: 
 				   return '';

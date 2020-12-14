@@ -6,7 +6,7 @@
 					<dl class="dl-horizontal">
 						<dt>HGNC Symbol</dt>
 						<dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
-							<a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer">HGNC <i class="fas fa-external-link-alt"></i></a>
+							<a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer ml-2">HGNC <i class="fas fa-external-link-alt"></i></a>
 							@if($record->entrez_id)
 							<a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">Entrez <i class="fas fa-external-link-alt"></i> </a>
 							@endif
@@ -69,7 +69,7 @@
 						<dd>
 						<table>
 							<tr>
-								<td class='pr-3'>GRCh37/hg19:</td>
+								<td class='pr-2'><u>GRCh37/hg19:</u></td>
 								<td class='pr-3'>{{ $record->grch37 }}</td>
 								<td>
 								<a href="{{ $record->formatNcbi($record->grch37, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
@@ -78,7 +78,7 @@
 								</td>
 							</tr>
 							<tr>
-								<td class="pr-3">GRCh38/hg38:</td>
+								<td class="pr-2"><u>GRCh38/hg38:</u></td>
 								<td class='pr-3'>{{  $record->grch38 }}</td>
 								<td>
 								<a href="{{ $record->formatNcbi($record->grch38, $record->GRCh38_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
@@ -89,25 +89,19 @@
 						</table>
 						</dd>
 						@if (!empty($record->mane_select))
-						<dt>MANE Select transcript</dt>
+						<dt>MANE Select Transcript</dt>
 						<dd>
-							{{  $record->displayManeString('select') }}
-							<!--<a href="{{ $record->formatUcsc38($record->displayManeString('select')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
-							-->
+							{!!  $record->displayManeString('select') !!}
 						</dd>
 						@endif
 						@if (!empty($record->mane_plus))
-						<dt>MANE Plus Clinical transcript(s)</dt>
+						<dt>MANE Plus Clinical Transcript(s)</dt>
 						<dd>
 							<table>
 							@foreach ($record->mane_plus as $plus)
 								<tr>
-								<td >{{  $record->displayManeString('plus', $plus) }}
+								<td >{!!  $record->displayManeString('plus', $plus) !!}
 								</td>
-								<!--
-								<td>
-									<a href="{{ $record->formatUcsc38($record->displayManeString('plus', $plus)) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
-								</td>-->
 								</tr>
 							@endforeach
 							</table>

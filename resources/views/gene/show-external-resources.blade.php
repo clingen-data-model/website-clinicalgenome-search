@@ -21,11 +21,7 @@
 </div>
 
 	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
-		  <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ count((array)$record->curations_by_activity->gene_validity) }}</span><br />Gene-Disease Validity<br />Classifications</li>
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ !empty($record->dosage_curation_map) ? '1' : '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ count((array)$record->curations_by_activity->actionability) }}</span><br /> Clinical Actionability<br />Assertions</li>
-			</ul>
+		  
 
 </div>
 			@include("_partials.facts.gene-panel")
