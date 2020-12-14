@@ -109,6 +109,8 @@ class ValidityController extends Controller
      */
     public function download(Request $request)
     {
-		return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary.csv');
+        $date = date('Y-m-d');
+
+		return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
     }
 }

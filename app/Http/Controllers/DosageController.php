@@ -282,7 +282,9 @@ class DosageController extends Controller
      */
     public function download(Request $request)
     {
-		return Gexcel::download(new DosageExport, 'Clingen-Dosage-Sensitivity.csv');
+		$date = date('Y-m-d');
+
+		return Gexcel::download(new DosageExport, 'Clingen-Dosage-Sensitivity-' . $date . '.csv');
 	}
 
 
