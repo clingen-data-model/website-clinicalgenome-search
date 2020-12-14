@@ -86,7 +86,9 @@ class UpdateMane extends Command
 					'chr' => $parts[10],
 					'start' => $parts[11],
 					'stop' => $parts[12],
-					'strand' => $parts[13]
+					'strand' => $parts[13],
+					'refseq_nuc' => $parts[5],
+					'ensembl_nuc' => $parts[7]
 				];
 
 			if ($parts[9] == 'MANE Select')
