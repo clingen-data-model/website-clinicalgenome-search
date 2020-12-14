@@ -80,7 +80,7 @@ class Gene extends Model
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type', 'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status',
-                            'mane_select', 'mane_plus' ];
+                            'seqid37', 'seqid38', 'mane_select', 'mane_plus' ];
 
 	/**
      * Non-persistent storage model attributes.

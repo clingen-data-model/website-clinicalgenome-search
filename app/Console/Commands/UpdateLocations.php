@@ -85,7 +85,7 @@ class UpdateLocations extends Command
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
-                    $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop]);
+                    $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
 
                         
             }
@@ -141,7 +141,7 @@ class UpdateLocations extends Command
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
-                    $record->update(['start38' => $start, 'stop38' => $stop]);
+                    $record->update(['start38' => $start, 'stop38' => $stop, 'seqid38' => $parts[0]]);
 
                         
             }

@@ -230,6 +230,8 @@ class Graphql
 			$node->function = $localgene->function;
 			$node->grch37 = $localgene->grch37;
 			$node->grch38 = $localgene->grch38;
+			$node->GRCh37_seqid = $localgene->seqid37;
+			$node->GRCh38_seqid = $localgene->seqid38;
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
 		}

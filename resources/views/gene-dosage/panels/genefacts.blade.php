@@ -7,7 +7,7 @@
         @if ($record->hgnc_id)
         <dt>HGNC Symbol</dt>
         <dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
-          <a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer ml-1">HGNC <i class="fas fa-external-link-alt"></i></a>
+          <a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer ml-2">HGNC <i class="fas fa-external-link-alt"></i></a>
           @if($record->entrez_id)
           <a target='external' href="{{env('CG_URL_NCBI_GENE')}}{{ $record->entrez_id }}" class="badge-info badge pointer">Entrez <i class="fas fa-external-link-alt"></i> </a>
           @endif
