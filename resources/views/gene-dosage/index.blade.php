@@ -4,13 +4,14 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-5">
-      <table class="mt-3 mb-2">
-        <tr>
-          <td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0">  Dosage Sensitivity</h1>
-          </td>
-        </tr>
-      </table>
+			<table class="mt-3 mb-2">
+				<tr>
+					<td class="valign-top"><img src="/images/dosageSensitivity-on.png" width="40" height="40"></td>
+					<td class="pl-2">
+						<h1 class="h2 p-0 m-0"> Dosage Sensitivity</h1>
+					</td>
+				</tr>
+			</table>
 		</div>
 
 		<div class="col-md-4 mt-3">
@@ -23,22 +24,33 @@
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
-					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions</li>
-					{{-- <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span
+								class="countCurations text-18px"><i
+									class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations
+						</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i
+									class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes
+						</li>
+						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i
+									class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions
+						</li>
+						{{-- <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
 					</a>
 						<ul class="dropdown-menu dropdown-menu-left">
 							<li><a href="{{ route('dosage-download') }}">Summary Data (CSV)</a></li>
-							<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
-						</ul>
+						<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
+					</ul>
 					</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />ACMG<br />CNV
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
-							<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
-						</ul>
+					<li class="text-stats line-tight text-center pl-3 pr-3">
+						<div class="btn-group p-0 m-0" style="display: block"><a
+								class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false"><i
+									class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />ACMG<br />CNV
+							</a>
+							<ul class="dropdown-menu dropdown-menu-left">
+								<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
+								<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
+							</ul>
 					</li> --}}
 					</ul>
 				</div>
@@ -75,22 +87,24 @@
 
 @section('heading')
 <div class="content ">
-		<div class="section-heading-content">
-		</div>
+	<div class="section-heading-content">
+	</div>
 </div>
 @endsection
 
 @section('modals')
 
-	@include('modals.filter')
+@include('modals.filter')
 
 @endsection
 
 
 @section('script_css')
-	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
-	<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/group-by-v2/bootstrap-table-group-by.css" rel="stylesheet">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.css">
+<link href="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/group-by-v2/bootstrap-table-group-by.css"
+	rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -101,13 +115,13 @@
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js">
+</script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
 
 <script>
-
 	/**
 	**
 	**		Globals
@@ -229,7 +243,7 @@
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
-			$table.bootstrapTable('filterBy', {haplo_assertion: 'Sufficient Evidence (3)'});
+			$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-hiknown-text').html('On');
@@ -255,7 +269,7 @@
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
-			$table.bootstrapTable('filterBy', {triplo_assertion: 'Sufficient Evidence (3)'});
+			$table.bootstrapTable('filterBy', {triplo_assertion: '3 (Sufficient Evidence)'});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-tsknown-text').html('On');
@@ -325,7 +339,7 @@
 		}
 	});
 
-	var timestamp = new Date().getTime() - (9 * 24 * 60 * 60 * 1000);		// 90 days
+	var timestamp = new Date().getTime() - (90 * 24 * 60 * 60 * 1000);		// 90 days
 
 	function monthFilter(rows, filters)
 	{

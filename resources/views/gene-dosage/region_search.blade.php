@@ -211,7 +211,7 @@
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
-			$table.bootstrapTable('filterBy', {haplo_assertion: 'Sufficient Evidence (3)'});
+			$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-hiknown-text').html('On');
@@ -237,7 +237,7 @@
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
-			$table.bootstrapTable('filterBy', {triplo_assertion: 'Sufficient Evidence (3)'});
+			$table.bootstrapTable('filterBy', {triplo_assertion: '3 (Sufficient Evidence)'});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-tsknown-text').html('On');
@@ -304,7 +304,7 @@
 		}
 	});
 
-	var timestamp = new Date().getTime() - (12 * 30 * 24 * 60 * 60 * 1000);
+	var timestamp = new Date().getTime() - (90 * 24 * 60 * 60 * 1000);
 
 	function monthFilter(rows, filters)
 	{
