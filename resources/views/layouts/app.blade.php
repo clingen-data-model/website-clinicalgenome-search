@@ -85,7 +85,7 @@
             </li> --}}
             <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
               <a class="nav-link" href="{{ route('gene-curations') }}">
-                Curated Genes
+                All Curated Genes
               </a>
             </li>
 
