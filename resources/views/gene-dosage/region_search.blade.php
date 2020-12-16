@@ -327,36 +327,23 @@
 
 	var choices=['Yes', 'No'];
 
-	var hibin=['0-10', '11-20', '21-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81-90', '91-100'];
+	var hibin=['<= 10%', '<= 25%', '<= 50%', '<= 75%'];
 	var plibin=['< 0.9', '>= 0.9'];
-	//var plofbin=['<= .35', '> .35'];
-	var plofbin=['<= 0.2', '> 0.2 - 0.35', '> 0.35 - 1', '> 1'];
+	var plofbin=['<= 0.2', '<= 0.35', '<= 1'];
 
 	// HI bin
 	function checkbin(text, value, field, data)
 	{
 		switch (text)
 		{
-			case '0-10': 
+			case '<= 10%': 
 				return value <= 10;
-			case '11-20':
-				return value >= 11 && value < 21;
-			case '21-30':
-				return value >= 21 && value < 31;
-			case '31-40':
-				return value >= 31 && value < 41;
-			case '41-50':
-				return value >= 41 && value < 51;
-			case '51-60':
-				return value >= 51 && value < 61;
-			case '61-70':
-				return value >= 61 && value < 71;
-			case '71-80':
-				return value >= 71 && value < 81;
-			case '81-90':
-				return value >= 81 && value < 91;
-			case '91-100':
-				return value >= 91;
+			case '<= 25%':
+				return value <= 25;
+			case '<= 50%':
+				return value <= 50;
+			case '<= 75%':
+				return value <= 75;
 			default:
 				return true;
 		}
@@ -385,12 +372,10 @@
 		{
 			case '<= 0.2':
 				return value <= .2;
-			case '> 0.2 - 0.35':
-				return value > .2 && value <= .35;
-			case  '> 0.35 - 1':
-				return value > .35 && value <= 1;
-			case '> 1':
-				return value > 1;
+			case '<= 0.35':
+				return value <= .35;
+			case  '<= 1':
+				return value <= 1;
 			default:
 				return true;
 		}
@@ -499,7 +484,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></div>%HI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index.  Values less than 10% predict that a gene is more likely to exhibit haploinsufficiency."></i></div>%HI',
 					field: 'hi',
 					formatter: hiFormatter,
 					cellStyle: cellFormatter,
@@ -510,7 +495,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></div>pLI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score.  Values greater than or equal to 0.9 indicate that a gene appears to be intolerant of loss of function variation."></i></div>pLI',
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
@@ -521,7 +506,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></div>LOEUF',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function.  Values less than 0.35 indicate that a gene appears to be intolerant of loss of function variation."></i></div>LOEUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,

@@ -114,6 +114,31 @@ class Gene extends Model
 	];
 
 
+     /*
+     From genegraph:
+     {"immunoglobulin gene" "http://purl.obolibrary.org/obo/SO_0002122"
+                  "T cell receptor gene" "http://purl.obolibrary.org/obo/SO_0002099"
+                  "RNA, micro" "http://purl.obolibrary.org/obo/SO_0000276"
+                  "gene with protein product" "http://purl.obolibrary.org/obo/SO_0001217"
+                  "RNA, transfer" "http://purl.obolibrary.org/obo/SO_0000253"
+                  "pseudogene" "http://purl.obolibrary.org/obo/SO_0000336"
+                  "RNA, long non-coding" "http://purl.obolibrary.org/obo/SO_0001877"
+                  "virus integration site" "http://purl.obolibrary.org/obo/SO_0000946?"
+                  "RNA, vault" "http://purl.obolibrary.org/obo/SO_0000404"
+                  "endogenous retrovirus" "http://purl.obolibrary.org/obo/SO_0000100"
+                  "RNA, small nucleolar" "http://purl.obolibrary.org/obo/SO_0000275"
+                  "T cell receptor pseudogene" "http://purl.obolibrary.org/obo/SO_0002099"
+                  "immunoglobulin pseudogene" "http://purl.obolibrary.org/obo/SO_0002098"
+                  "RNA, small nuclear" "http://purl.obolibrary.org/obo/SO_0000274"
+                  "readthrough" "http://purl.obolibrary.org/obo/SO_0000883"
+                  "RNA, ribosomal" "http://purl.obolibrary.org/obo/SO_0000252"
+                  "RNA, misc" "http://purl.obolibrary.org/obo/SO_0000356"})
+     From Jira: 
+               miscRNA, mcRNA, other, protein-coding, psuedo, rRNA, scRNA,
+               snoRNA, snRNA, tRNA, unknown, withdrawn
+     */
+
+     
 	/**
      * Automatically assign an ident on instantiation
      *

@@ -91,7 +91,7 @@
 						@if (!empty($record->mane_select))
 						<dt>MANE Select Transcript</dt>
 						<dd>
-							{!!  $record->displayManeString('select') !!}
+							{!!  $record->displayManeString('select') !!}<a href="https://www.ncbi.nlm.nih.gov/refseq/MANE" class="ml-3">(Read more about MANE Select)</a>
 						</dd>
 						@endif
 						@if (!empty($record->mane_plus))
@@ -100,7 +100,7 @@
 							<table>
 							@foreach ($record->mane_plus as $plus)
 								<tr>
-								<td >{!!  $record->displayManeString('plus', $plus) !!}
+								<td >{!!  $record->displayManeString('plus', $plus) !!}<a href="https://www.ncbi.nlm.nih.gov/refseq/MANE" class="ml-3">(Read more about MANE Plus Clinical)</a>
 								</td>
 								</tr>
 							@endforeach
