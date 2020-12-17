@@ -98,6 +98,12 @@ class Graphql
 				}';
 		}
 
+		/*
+		type {
+			label
+			curie
+		}*/
+
 		// query genegraph
 		$response = self::query($query, __METHOD__);
 

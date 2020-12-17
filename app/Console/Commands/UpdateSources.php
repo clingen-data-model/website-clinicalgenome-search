@@ -46,12 +46,27 @@ class UpdateSources extends Command
 
 		switch ($schedule)
 		{
+      case 'daily': 
+        $this->call('update:acmg59');     // local file
+        $this->call('update:activiity');
+        $this->call('update:cytobands');  // local file
+        $this->call('update:dosages');
+        $this->call('update:map');        // local file
+        $this->call('update:ratings');
+        $this->call('update:region');     // local file
+        break;
 			case 'weekly':
-				$this->call('update:Genenames');
+        $this->call('update:Genenames');
+        $this->call('update:cpic');       // local file
+        $this->call('update:locations');  // local file
+        $this->call('update:mane');
+        $this->call('update:omim');       // local file
+        $this->call('update:morbid');     // local file
+        $this->call('update:plof');       // local file
+        $this->call('update:uniprot');       // local file
 				break;
 			case 'monthly':
 				$this->call('decipher:query');
-				$this->call('exac:query');
 				break;
 		}
 

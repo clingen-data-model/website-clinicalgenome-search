@@ -296,7 +296,7 @@ function triploFormatter(index, row) {
 
 function omimFormatter(index, row) {
     if (row.omimlink)
-        return '<a href="https://omim.org/entry/' + row.omimlink + '" <span class="text-success"><i class="fas fa-check"></i></span></a>';
+        return '<a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a>';
     else
         return '';
 }
@@ -304,7 +304,7 @@ function omimFormatter(index, row) {
 
 function morbidFormatter(index, row) {
     if (row.morbid == "Yes")
-        return '<span class="text-success"><i class="fas fa-check"></i></span>';
+        return '<a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a>';
     else
         return '';
 }
