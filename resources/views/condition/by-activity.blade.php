@@ -163,13 +163,13 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-													{{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 													@if ($key != "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-													{{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
@@ -195,12 +195,12 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-														{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@else
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-														{{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
@@ -254,12 +254,12 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-														{{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@else
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">
-														{{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+														({{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
