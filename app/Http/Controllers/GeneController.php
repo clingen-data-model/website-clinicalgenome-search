@@ -44,7 +44,7 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(GeneListRequest $request, $page = 1, $size = 50)
+	public function index(GeneListRequest $request, $page = 1, $size = 25)
 	{
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)

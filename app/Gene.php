@@ -67,8 +67,10 @@ class Gene extends Model
                'omim_id' => 'array',
                'history' => 'array',
                'activity' => 'array',
+               'curation_activities' => 'array',
                'mane_select' => 'array',
-               'mane_plus' => 'array'
+               'mane_plus' => 'array',
+               'genegraph' => 'array'
 		];
 
      /**
@@ -80,7 +82,7 @@ class Gene extends Model
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type', 'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status',
-                            'seqid37', 'seqid38', 'mane_select', 'mane_plus' ];
+                            'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph' ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -267,6 +269,45 @@ class Gene extends Model
          return implode(', ', $this->omim_id);
     }
 
+
+    /**
+     * Flag indicating if gene has any dosage curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasDosageAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+			$this->curation_activities['dosage'] : false); 
+     }
+     
+
+     /**
+     * Flag indicating if gene has any actionability curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasActionabilityAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+			$this->curation_activities['actionability'] : false); 
+     }
+     
+
+     /**
+     * Flag indicating if gene has any validity curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasValidityAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+			$this->curation_activities['validity'] : false); 
+     }
+     
 
     /**
      * Get a display formatted form of grch37

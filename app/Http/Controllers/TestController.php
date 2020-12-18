@@ -7,6 +7,7 @@ use App\Http\Resources\Dosage as DosageResource;
 
 use App\GeneLib;
 use App\Jira;
+use App\Gene;
 
 class TestController extends Controller
 {
@@ -27,12 +28,23 @@ class TestController extends Controller
      */
     public function index()
     {
-		/*$b = Jira::updateIssue("ISCA-21328");
+			/*$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
+			// add each gene to the collection
+//dd($genes);
+			
+				$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;*/
 
-		dd($b);
-		return DosageResource::collection($c);*/
-		$a = Jira::regionLoad([]);
-		dd($a);
+			$results = GeneLib::geneList([	'page' =>  0,
+										'pagesize' => "null",
+										'sort' => 'GENE_LABEL',
+                                        'direction' => 'ASC',
+                                        'search' =>  null,
+										'curated' => false ]);
+										
+			dd($results->collection->first());
+			return view('new-dosage.reports');
 	}
 
 	public function statistics()

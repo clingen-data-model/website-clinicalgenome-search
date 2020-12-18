@@ -82,6 +82,18 @@ class Graphql
 		}
 		else
 		{
+			/*
+			$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
+			// add each gene to the collection
+
+			
+				$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;
+
+		return (object) ['count' => $genes->count(), 'collection' => $genes,
+						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
+*/
 			$query = '{
 					genes('
 					. self::optionList($page, $pagesize, $sort, $direction, $search, $curated)
@@ -863,6 +875,9 @@ class Graphql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
+
+		
+		//$search = null;
 
 		// initialize the collection
 		$collection = collect();

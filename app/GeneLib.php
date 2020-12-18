@@ -8,6 +8,7 @@ use App\Neo4j;
 use App\Graphql;
 use App\Jira;
 use App\Region;
+use App\Mysql;
 
 
 /**
@@ -223,8 +224,11 @@ class GeneLib extends Model
 		// Gene data is currently in neo4j
 		//$response = Neo4j::geneList($args);
 
-		// Gene listing using Graphql
-		$response = Graphql::geneList($args);
+          // Gene listing using Graphql
+          //if ($args['curated'])
+               $response = Graphql::geneList($args);
+          //else
+          //     $response = Mysql::geneList($args);
 
 		return $response;
 	}
@@ -796,7 +800,11 @@ class GeneLib extends Model
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
-		$response = Graphql::drugList($args);
+          $response = Graphql::drugList($args);
+          
+          // Drug data is now local
+		//$response = Mysql::drugList($args);
+
 
 		return $response;
 	}
@@ -861,8 +869,11 @@ class GeneLib extends Model
 		// Gene data is currently in neo4j
           //$response = Neo4j::conditionList($args);
 
-          // Gene data is currently in neo4j
-		$response = Graphql::conditionList($args);
+          // Gene data is currently in genegraph
+          $response = Graphql::conditionList($args);
+          
+          // Gene data is currently local
+		//$response = Mysql::conditionList($args);
 
 		return $response;
 	}
