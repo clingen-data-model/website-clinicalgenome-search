@@ -36,20 +36,19 @@
     </td>
   </tr>
   <tr style="font-size:14px">
-    <td style="border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">Expert Panel:</td>
-    <td style="border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid">
+    <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">Expert Panel:</td>
+    <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid">
       {{ $record->sop7_affiliation_name }}
     </td>
-    <td style="border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">
+    <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">
     @if ($record->sop7_contributors ?? null)
       Contributors:
     @endif
     </td>
     <td style="border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid">
-
-     @if ($record->sop7_contributor ?? null)
-      @foreach ($record->sop7_contributor as $contributor)
-          {{ $contributor["name"] }}
+     @if ($record->sop7_contributors ?? null)
+      @foreach ($record->sop7_contributors as $contributor)
+          <div>{{ $contributor->name ?? null }} <span style="color:#999; text-transform: capitalize;">({{ $contributor->role ?? null }})</span></div>
       @endforeach
     @endif
     </td>

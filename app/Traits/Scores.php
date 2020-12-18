@@ -74,7 +74,7 @@ trait Scores
 	{
 		$j = json_decode($this->legacy_json);
 
-		return $j->scoreJson->summary->Contributors ?? null;
+		return $j->scoreJson->summary->contributors ?? null;
 
 	}
 
