@@ -6,17 +6,17 @@ use Illuminate\Console\Command;
 
 use Carbon\Carbon;
 
-use App\Gene;
+use App\Drug;
 use App\GeneLib;
 
-class UpdateActivity extends Command
+class UpdateDrug extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update:activity';
+    protected $signature = 'update:drug';
 
     /**
      * The console command description.
@@ -42,9 +42,9 @@ class UpdateActivity extends Command
      */
     public function handle()
     {
-        echo "Importing curation activity from genegraph ...\n";
+        echo "Importing drug data from genegraph ...\n";
         
-        $results = GeneLib::geneList([	'page' =>  0,
+        $results = GeneLib::drugList([	'page' =>  0,
 										'pagesize' => "null",
 										'sort' => 'GENE_LABEL',
                                         'direction' => 'ASC',
@@ -54,22 +54,20 @@ class UpdateActivity extends Command
         if ($results === null)
             die( GeneLib::getError() );
 
-        foreach($results->collection as $gene)
+        foreach($results->collection as $drug)
         {
-            echo "Updating  " . $gene->hgnc_id . "\n";
+            echo "Updating  " . $drug->curie . "\n";
 
-            $flags = ['actionability' => $gene->has_actionability,
-                        'validity' => $gene->has_validity,
-                        'dosage' => $gene->has_dosage
+            $flags = ['actionability' => $drug->has_actionability,
+                        'validity' => $drug->has_validity,
+                        'dosage' => $drug->has_dosage
                     ];
 
-            $record = Gene::hgnc($gene->hgnc_id)->first();
-
-            if ($record !== null)
-                $record->update(['activity' => $flags, 'date_last_curated' => $gene->last_curated_date,
-                                'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
-            else
-                echo "Gene " . $gene->symbol . "not in local table\n";
+            $record = drug::updateOrCreate(['curie' => $drug->curie], [
+                                        'label' => $drug->label,
+                                        'last_curated_date' => $drug->last_curated_date,
+                                        'curation_activities' => $flags,
+                                        'type' => 1, 'status' => 1]);
         }
 
     }

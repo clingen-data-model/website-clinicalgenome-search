@@ -22,7 +22,7 @@ class Curated extends JsonResource
             'name' => $this->name,
             'has_actionability' => $this->has_actionability ? 'Curated' : null,
             'has_validity' => $this->has_validity ? 'Curated' : null,
-            'has_dosage' => $this->has_dosage_haplo || $this->has_dosage_triplo ? 'Curated' : null
+            'has_dosage' => $this->has_dosage ? 'Curated' : null
         ];
     }
     

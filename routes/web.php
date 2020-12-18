@@ -192,6 +192,6 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 
 });
 
-Route::get('/test', 'DosageController@newindex')->name('test');
+Route::get('/test', 'TestController@index')->name('test');
 
 Auth::routes();
