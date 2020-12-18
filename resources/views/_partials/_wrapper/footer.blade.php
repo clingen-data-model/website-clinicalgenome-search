@@ -18,7 +18,7 @@
 
   <div class="col-12">
     <hr />
-    <p><i class="fas fa-question-circle"></i> <a href='https://clinicalgenome.org/tools/clingen-website-faq/'>Click here to access the FAQ for this website,</a> <a href='https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/'>how to cite ClinGen</a>, and a list of the <a href='https://clinicalgenome.org/tools/clingen-website-faq/attribution/'>external resources utilized.</a></p>
+    <p><i class="fas fa-question-circle"></i> <a target="_blank" href='https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/'>Click here to how to cite ClinGen</a>, and a list of the <a target="_blank" href='https://clinicalgenome.org/tools/clingen-website-faq/attribution/'>external resources utilized.</a></p>
     <hr />
     <p>The information on this website is not intended for direct diagnostic use or medical decision-making without review by a genetics professional. Individuals should not change their health behavior solely on the basis of information contained on this website. If you have questions about the information contained on this website, please see a healthcare professional.</p>
     <hr />
