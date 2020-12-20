@@ -222,13 +222,16 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Gene data is currently in neo4j
-		//$response = Neo4j::geneList($args);
+          //$response = Neo4j::geneList($args);
+          /*
+          SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name) 
+          */
 
           // Gene listing using Graphql
-          //if ($args['curated'])
+          if ($args['curated'] || !empty($args['forcegg']))
                $response = Graphql::geneList($args);
-          //else
-          //     $response = Mysql::geneList($args);
+          else
+               $response = Mysql::geneList($args);
 
 		return $response;
 	}
@@ -800,10 +803,10 @@ class GeneLib extends Model
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
-          $response = Graphql::drugList($args);
+          // $response = Graphql::drugList($args);
           
           // Drug data is now local
-		//$response = Mysql::drugList($args);
+		$response = Mysql::drugList($args);
 
 
 		return $response;
@@ -870,10 +873,10 @@ class GeneLib extends Model
           //$response = Neo4j::conditionList($args);
 
           // Gene data is currently in genegraph
-          $response = Graphql::conditionList($args);
+          //$response = Graphql::conditionList($args);
           
           // Gene data is currently local
-		//$response = Mysql::conditionList($args);
+		$response = Mysql::conditionList($args);
 
 		return $response;
 	}

@@ -108,13 +108,21 @@ function location01Formatter(index, row) {
     var chr = name.indexOf(':');
     var pos = name.indexOf('-');
 
-    var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
         + name.substring(0, chr)
         + '</td><td class="text-10px line-height-normal">'
         + name.substring(chr + 1, pos)
         + '</td></tr><tr><td class="text-10px line-height-normal">'
         + name.substring(pos + 1)
-        + '</td></tr></table>';
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+    + '</div>';
 
     return html;
 }
@@ -137,13 +145,21 @@ function locationFormatter(index, row) {
     var chr = name.indexOf(':');
     var pos = name.indexOf('-');
 
-    var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
         + name.substring(0, chr)
         + '</td><td class="text-10px line-height-normal">'
         + name.substring(chr + 1, pos)
         + '</td></tr><tr><td class="text-10px line-height-normal">'
         + name.substring(pos + 1)
-        + '</td></tr></table>';
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+    + '</div>';
 
     return html;
 }
@@ -166,13 +182,21 @@ function location38Formatter(index, row) {
     var chr = name.indexOf(':');
     var pos = name.indexOf('-');
 
-    var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
         + name.substring(0, chr)
         + '</td><td class="text-10px line-height-normal">'
         + name.substring(chr + 1, pos)
         + '</td></tr><tr><td class="text-10px line-height-normal">'
         + name.substring(pos + 1)
-        + '</td></tr></table>';
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+    + '</div>';
 
     return html;
 }
@@ -596,13 +620,21 @@ function cnvlocationFormatter(index, row) {
     var chr = name.indexOf(':');
     var pos = name.indexOf('-');
 
-    var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
         + name.substring(0, chr)
         + '</td><td class="text-10px line-height-normal">'
         + name.substring(chr + 1, pos)
         + '</td></tr><tr><td class="text-10px  line-height-normal">'
         + name.substring(pos + 1)
-        + '</td></tr></table>';
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+    + '</div>';
 
     return html;
 }

@@ -9,6 +9,7 @@
           <td class="valign-top"><img src="/images/drugmed.png" width="40" height="40">  </td>
           <td class="pl-2"><h1 class="h2 p-0 m-0">Drugs & Medications</h1>
           </td>
+          <td class="text-xl text-gray-600 pl-3 pt-2">matching search term "{{ $search }}"</td>
         </tr>
       </table>
     </div>
@@ -17,7 +18,7 @@
       <div class="">
         <div class="text-right p-2">
           <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Drugs<br />& Medications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Matching Drugs<br />& Medications</li>
           </ul>
         </div>
       </div>
@@ -76,6 +77,23 @@
     return res
   }
 
+  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity'];
+
+function checkactive(text, value, field, data)
+{
+  switch (text)
+  {
+    case 'actionability': 
+      return value.indexOf('A') != -1;
+    case 'dosage sensitivity':
+      return value.indexOf('D') != -1;
+    case 'gene validity':
+      return value.indexOf('V') != -1;
+    default:
+      return true;
+  }
+
+}
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
@@ -102,6 +120,9 @@
           field: 'application',
           formatter: drbadgeFormatter,
           searchFormatter: false,
+          filterControl: 'select',
+					filterData: 'var:activelist',
+					filterCustomSearch: checkactive,
           cellStyle: cellFormatter,
         }
       ]

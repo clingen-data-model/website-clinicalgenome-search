@@ -29,7 +29,7 @@ class ConditionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, $page = 1, $size = 50)
+    public function index(Request $request, $page = 1, $size = 50, $search="")
     {
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -44,7 +44,8 @@ class ConditionController extends Controller
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('search', $search);
     }
 
 

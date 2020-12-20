@@ -44,8 +44,28 @@ class Mysql
 			$$key = $value;
 
 		// initialize the collection
-		$collection = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
-	
+		$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+
+		// manipulate the return order per Erin
+		if ($search !== null && $search != "")
+		{
+			//$match = $collection->where('symbol', $search)->first();
+			$search = strtolower($search);
+			$match = $collection->first(function ($item) use ($search) {
+				return strtolower($item->symbol) == $search;
+			});
+
+			if ($match !== null)
+			{
+				//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
+				$collection = $collection->filter(function ($item) use ($search) {
+					return strtolower($item->symbol) != $search;
+				})->prepend($match);
+			}
+		}
+
+		$ncurated = $collection->where('last_curated_date', '!=', null)->count();
+
 		if ($curated)
 		{
 			$naction = $collection->where('has_actionability', true)->count();
@@ -62,7 +82,8 @@ class Mysql
 		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
-						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
+						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
+						'ncurated' => $ncurated];
 	}
 
 
@@ -163,7 +184,25 @@ class Mysql
 			$$key = $value;
 
 		// initialize the collection
-		$collection = Disease::all();
+		$collection = Disease::where('label', 'like', '%' . $search . '%')->get();
+
+		// manipulate the return order per Erin
+		if ($search !== null && $search != "")
+		{
+			//$match = $collection->where('symbol', $search)->first();
+			$search = strtolower($search);
+			$match = $collection->first(function ($item) use ($search) {
+				return strtolower($item->symbol) == $search;
+			});
+
+			if ($match !== null)
+			{
+				//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
+				$collection = $collection->filter(function ($item) use ($search) {
+					return strtolower($item->symbol) != $search;
+				})->prepend($match);
+			}
+		}
 
 		$ncurated = $collection->where('last_curated_date', '!=', null)->count();
 
@@ -196,7 +235,25 @@ class Mysql
 			$$key = $value;
 
 		// initialize the collection
-		$collection = Drug::all();
+		$collection = Drug::where('label', 'like', '%' . $search . '%')->get();
+
+		// manipulate the return order per Erin
+		if ($search !== null && $search != "")
+		{
+			//$match = $collection->where('symbol', $search)->first();
+			$search = strtolower($search);
+			$match = $collection->first(function ($item) use ($search) {
+				return strtolower($item->symbol) == $search;
+			});
+
+			if ($match !== null)
+			{
+				//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
+				$collection = $collection->filter(function ($item) use ($search) {
+					return strtolower($item->symbol) != $search;
+				})->prepend($match);
+			}
+		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection];
 	}
