@@ -37,7 +37,7 @@
 			<td>2</td>
 			<td>0-3</td>
 			<td>12</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->sop7_variant_is_de_novo }}</span></td>
+			<td class="input-width-numbers"><span class="form-group">{{ $record->sop7_variant_is_de_novo_count }}</span></td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 						{{ $record->sop7_variant_is_de_novo_total }}
