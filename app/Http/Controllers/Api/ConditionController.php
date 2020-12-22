@@ -23,7 +23,7 @@ class ConditionController extends Controller
 										'pagesize' => $input['limit'] ?? "null",
 										'sort' => $sort ?? 'GENE_LABEL',
                                         'direction' => $input['order'] ?? 'ASC',
-                                        'search' => null, // $input['search'] ?? null,
+                                        'search' => $input['search'] ?? null,
                                         'curated' => false ]);
 
 		if ($results === null)

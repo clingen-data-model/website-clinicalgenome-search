@@ -49,6 +49,7 @@ class UpdateActivity extends Command
 										'sort' => 'GENE_LABEL',
                                         'direction' => 'ASC',
                                         'search' => null,
+                                        'forcegg' => true,
                                         'curated' => false ]);
                                         
         if ($results === null)

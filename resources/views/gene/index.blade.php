@@ -9,6 +9,7 @@
           <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
           <td class="pl-2"><h1 class="h2 p-0 m-0">Genes</h1>
           </td>
+          <td class="text-xl text-gray-600 pl-3 pt-2">matching search term "{{ $search }}"</td>
         </tr>
       </table>
       </div>
@@ -17,7 +18,8 @@
         <div class="">
           <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">
-              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Genes<br /> In Database </li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Matched Genes<br /> In Database </li>
+              <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurated text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Matched Curated<br /> In Database</li>
             </ul>
           </div>
         </div>
@@ -71,11 +73,30 @@
 	var $table = $('#table');
 
   function responseHandler(res) {
-
+console.log(res)
     $('.countGenes').html(res.total);
+    $('.countCurated').html(res.ncurated);
 
     return res
   }
+
+  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity'];
+
+  function checkactive(text, value, field, data)
+	{
+		switch (text)
+		{
+			case 'actionability': 
+				return value.indexOf('A') != -1;
+			case 'dosage sensitivity':
+				return value.indexOf('D') != -1;
+			case 'gene validity':
+				return value.indexOf('V') != -1;
+			default:
+				return true;
+		}
+
+	}
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
@@ -107,12 +128,23 @@
           sortable: true
         },
         {
+          title: 'Gene Type',
+          field: 'locus_type',
+          cellStyle: cellFormatter,
+          filterControl: 'select',
+          searchFormatter: false,
+          sortable: true
+        },
+        {
           title: 'Curations',
-          field: 'curations',
+          field: 'curation',
           //align: 'center',
           cellStyle: cellFormatter,
-          filterControl: 'input',
+          filterControl: 'select',
+					filterData: 'var:activelist',
+					filterCustomSearch: checkactive,
           searchFormatter: false,
+          sortable: true,
           formatter: badgeFormatter
         },
         {

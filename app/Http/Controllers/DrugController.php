@@ -39,7 +39,7 @@ class DrugController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-    public function index(Request $request, $page = 0, $size = 50)
+    public function index(Request $request, $page = 0, $size = 50, $search="")
     {
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -54,7 +54,8 @@ class DrugController extends Controller
 		return view('drug.index', compact('display_tabs'))
 						->with('apiurl', '/api/drugs')
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('search', $search);
     }
 
 

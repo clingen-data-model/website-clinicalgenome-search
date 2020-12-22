@@ -17,13 +17,14 @@ class GeneController extends Controller
      */
     public function index(ApiRequest $request)
     {
+    
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
         $results = GeneLib::geneList([	'page' => $input['offset'] ?? 0,
 										'pagesize' => $input['limit'] ?? "null",
 										'sort' => $sort ?? 'GENE_LABEL',
                                         'direction' => $input['order'] ?? 'ASC',
-                                        'search' => $search ?? null,
+                                        'search' => $input['search'] ?? null,
                                         'curated' => false ]);
                                         
         if ($results === null)
@@ -34,7 +35,8 @@ class GeneController extends Controller
                 'rows'=> GeneResource::collection($results->collection),
                 'naction' => $results->naction,
                 'ndosage' => $results->ndosage,
-                'nvalid' => $results->nvalid];
+                'nvalid' => $results->nvalid,
+                'ncurated' => $results->ncurated];
     }
 
 
