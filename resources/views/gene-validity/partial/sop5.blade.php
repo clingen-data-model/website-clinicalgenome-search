@@ -142,7 +142,22 @@
 		  <td>0.5</td>
 		  <td>1</td>
 		  <td class="input-width-pmid">
-		  	{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX1->Evidence ?? null) !!}
+				@php
+					if(isset($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies)){
+						$myArray = (array) $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies;
+						if(isset($myArray[1])){
+							$object1 = (object) $myArray[1];
+						}
+						if(isset($myArray[2])){
+							$object2 = (object) $myArray[2];
+						}
+						if(isset($myArray[3])){
+							$object3 = (object) $myArray[3];
+						}
+					}
+				@endphp
+
+		  	{!! PrintWrapperPmidSop5Gci($object1->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -151,7 +166,10 @@
 		  <td>1</td>
 		  <td>2</td>
 		  <td class="input-width-pmid">
-		  	{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX2->Evidence ?? null) !!}
+
+
+
+		  	{!! PrintWrapperPmidSop5($object2->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -160,7 +178,7 @@
 		  <td class="table-heading-line-normal">1.5</td>
 		  <td class="table-heading-line-normal">3</td>
 		  <td class="input-width-pmid table-heading-line-normal ">
-		  	{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX3->Evidence ?? null) !!}
+		  	{!! PrintWrapperPmidSop5($object3->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
