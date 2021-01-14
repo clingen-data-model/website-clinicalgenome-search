@@ -30,7 +30,10 @@
 		<div class="col-sm-12">
 			<div class="content-space content-border">
 				{{ $record->animalmode ?? '' }}
-				@if(strpos($record->specified_by->label,"SOP7"))
+				@if(strpos($record->specified_by->label,"SOP8"))
+					@include('gene-validity.partial.report-heading')
+					@include('gene-validity.partial.sop7')
+				@elseif(strpos($record->specified_by->label,"SOP7"))
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop7')
 				@elseif (strpos($record->specified_by->label,"SOP6"))

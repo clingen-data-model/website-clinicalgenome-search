@@ -96,6 +96,7 @@
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												<a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ $disease->disease->label }}</a>
+												<div class="text-muted small">{{ $record->getMondoString($disease->disease->iri, true) }}</div>
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
@@ -156,6 +157,7 @@
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												<a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ $disease->disease->label }}</a>
+												<div class="text-muted small">{{ $record->getMondoString($disease->disease->iri, true) }}</div>
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
@@ -234,7 +236,7 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 text-left"> </th>
+								<th class="col-sm-4 text-left">Disease</th>
 								<th class="col-sm-2 text-center"></th>
 								<th class="col-sm-2">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -252,13 +254,16 @@
 												@endif
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+											<!--<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												No evidence for
 												@if ($key == "haploinsufficiency_assertion")
 												 	haploinsufficiency
 												@else
 													triplosensitivity
 												@endif
+											</td>-->
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
@@ -320,7 +325,8 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												@if($first == true) <a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ $disease->disease->label }}</a> @endif
+												@if($first == true) <a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ $disease->disease->label }}</a>
+												<div class="text-muted small">{{ $record->getMondoString($disease->disease->iri, true) }}</div> @endif
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
