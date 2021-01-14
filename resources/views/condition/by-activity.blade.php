@@ -163,18 +163,18 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 													@if ($key != "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($dosage->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@empty
@@ -195,17 +195,17 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@else
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach
@@ -254,17 +254,17 @@
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
 													@if ($key == "haploinsufficiency_assertion")
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::haploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@else
-													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $record->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
+													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $record->dosage_curation->$key->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::triploAssertionString($record->dosage_curation->$key->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
 											</td>
 
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $record->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($record->dosage_curation->report_date) }}</a></td>
 										</tr>
 								@php ($first = false) @endphp
 								@endforeach

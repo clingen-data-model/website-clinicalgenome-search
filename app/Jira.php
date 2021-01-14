@@ -137,8 +137,14 @@ class Jira extends Model
                'cytoband' => $response->customfield_10145 ?? null,
                'loss_comments' => $response->customfield_10198 ?? null,
                'loss_pheno_omim' => $response->customfield_10200 ?? null,
+               'loss_pheno_name' => $response->customfield_11830 ?? null,
+               'loss_pheno_ontology' => $response->customfield_11630 ?? null,
+               'loss_pheno_ontology_id' => $response->customfield_11631 ?? null,
                'gain_comments' => $response->customfield_10199 ?? null,
                'gain_pheno_omim' => $response->customfield_10201 ?? null,
+               'gain_pheno_name' => $response->customfield_11831 ?? null,
+               'gain_pheno_ontology' => $response->customfield_11632 ?? null,
+               'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
                'resolution' => $response->resolution->name ?? 'In Review',
                'issue_type' => $response->issuetype->name
           ]);

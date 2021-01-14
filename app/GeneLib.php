@@ -611,8 +611,9 @@ class GeneLib extends Model
                foreach(['summary', 'genetype',
                'triplo_score', 'haplo_score', 'cytoband', 'key',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids',
-               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
-               'resolution', 'issue_type',
+               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
+               'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name',
+               'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
                'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
                {
                     // Prefer the NIH wording over the local Jira one.

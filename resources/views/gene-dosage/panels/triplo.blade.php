@@ -13,18 +13,38 @@
       <div class="col-sm-9 border-left-4"><span class="bold">{{ $record->triplo_assertion }}</span> <a data-toggle="popover" title="DISCLAIMER" data-placement="bottom" data-trigger="hover"> (Disclaimer)</a>
       </div>
     </div>
-    @if (!empty($record->gain_pheno_omim))
-    <div class="row pb-3"> 
-      <div class="col-sm-3 text-muted text-right bold">TS Disease:</div>
-      <div class="col-sm-9 border-left-4">
-        <ul class="list-unstyled">
-          <!-- loss_pheno_omim -->
-          @foreach($record->gain_pheno_omim as $item)
-            <li>{{ $item['titles'] }}
-              <a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $item['id'] }}" class="badge-info badge pointer ml-1">OMIM <i class="fas fa-external-link-alt"></i> </a></li>
-          @endforeach        </ul>
+    @if (!empty($record->gain_pheno_omim) || !empty($record->gain_pheno_ontology_id))
+      <div class="row pb-3">
+        <div class="col-sm-3 text-muted text-right bold">TS Disease:</div>
+        <div class="col-sm-9 border-left-4">
+          <ul class="list-unstyled">
+            @if (!empty($record->gain_pheno_omim))
+              @foreach($record->gain_pheno_omim as $item)
+                <li>{{ $item['titles'] }}
+                <a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $item['id'] }}" class="badge-info badge pointer ml-1">OMIM <i class="fas fa-external-link-alt"></i> </a></li>
+              @endforeach
+            @endif
+            @if (!empty($record->gain_pheno_ontology_id))
+              <li>{{ $record->gain_pheno_name }}
+              @switch ($record->gain_pheno_ontology->value)
+                @case ('Monarch')
+                  <a target='external' href="{{env('CG_URL_MONARCH')}}{{ $record->gain_pheno_ontology_id }}" class="badge-info badge pointer ml-1">Monarch <i class="fas fa-external-link-alt"></i> </a>
+                  @break
+                @case ('OrhaNet')
+                  <a target='external' href="{{env('CG_URL_ORPHANET')}}{{ $record->gain_pheno_ontology_id }}" class="badge-info badge pointer ml-1">OrphaNet <i class="fas fa-external-link-alt"></i> </a>
+                  @break
+                @case ('Disease Ontology')
+                  <a target='external' href="{{env('CG_URL_DISEASEONTOLOGY')}}{{ $record->gain_pheno_ontology_id }}" class="badge-info badge pointer ml-1">Disease Ontology <i class="fas fa-external-link-alt"></i> </a>
+                  @break
+                @case ('MedGen')
+                  <a target='external' href="{{env('CG_URL_MEDGEN')}}{{ $record->gain_pheno_ontology_id }}" class="badge-info badge pointer ml-1">MedGen <i class="fas fa-external-link-alt"></i> </a>
+                  @break
+              @endswitch
+              </li>
+            @endif
+            </ul>
+        </div>
       </div>
-    </div>
     @endif
     @if (!empty($record->gain_pmids))
     <div class="row pb-3"> 
