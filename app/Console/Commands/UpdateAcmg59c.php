@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 use App\Gene;
 
-class UpdateAcmg59 extends Command
+class UpdateAcmg59c extends Command
 {
     /**
      * The name and signature of the console command.
