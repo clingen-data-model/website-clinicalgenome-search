@@ -108,6 +108,19 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS = "total_actionability_adult_curations";
     public const KEY_TOTAL_ACTIONABILITY_PED_CURATIONS = "total_actionability_ped_curations";
 
+    public const KEY_TOTAL_PATHOGENICITY_CURATIONS = "total_pathogenicity_curations";
+    public const KEY_TOTAL_PATHOGENICITY_UNIQUE = "total_pathogenicity_unique";
+    public const KEY_TOTAL_PATHOGENICITY_PATHOGENIC = "total_pathogenicity_pathogenic";
+    public const KEY_TOTAL_PATHOGENICITY_LIKELY = "total_pathogenicity_likely";
+    public const KEY_TOTAL_PATHOGENICITY_UNCERTAIN = "total_pathogenicity_uncertain";
+    public const KEY_TOTAL_PATHOGENICITY_BENIGN = "total_pathogenicity_benign";
+    public const KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN = "total_pathogenicity_likelybenign";
+
+    public const KEY_EXPERT_PANELS_PATHOGENICITY = "pathogenicity_expert_panels";
+    
+
+
+
 
     /*
     * Status strings for display methods
@@ -297,6 +310,91 @@ class Metric extends Model
             return 0;
 
     return (int) ($this->values[$a] / $total * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total pathogenic curations
+   *
+   * @@param
+   * @return
+   */
+  public function getPathogenicityPercentPathogenicAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_PATHOGENICITY_PATHOGENIC])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] /
+                $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total likelypathogenic curations
+   *
+   * @@param
+   * @return
+   */
+  public function getPathogenicityPercentLikelyAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELY])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELY] /
+                $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total uncertain significance curations
+   *
+   * @@param
+   * @return
+   */
+  public function getPathogenicityPercentUncertainAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_PATHOGENICITY_UNCERTAIN])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] /
+                $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total likely benign curations
+   *
+   * @@param
+   * @return
+   */
+  public function getPathogenicityPercentLikelyBenignAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] /
+                $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+  }
+
+
+  /**
+   * Get the no evidence percentage of total benign curations
+   *
+   * @@param
+   * @return
+   */
+  public function getPathogenicityPercentBenignAttribute()
+  {
+    if (!(isset($this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS]) &&
+          isset($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN])))
+            return 0;
+
+    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN] /
+                $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
   }
 
 }

@@ -8,6 +8,7 @@ use App\Traits\Query;
 
 use App\Metric;
 use App\Jira;
+use App\Variant;
 
 use Carbon\Carbon;
 
@@ -1709,6 +1710,62 @@ class Graphql
 		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] = $tripcounters['40'];
 		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_AR] = $tripcounters['30'];
 		$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS] = array_sum($hapcounters) + array_sum($tripcounters);
+
+		$paths = Variant::all();
+
+		$npathogenic = 0;
+		$nlikely = 0;
+		$nuncertain = 0;
+		$nbenign = 0;
+		$nlikelybenign = 0;
+		$epanels = [];
+		$varunique = [];
+
+		foreach($paths as $variant)
+		{
+			switch ($variant->guidelines[0]["outcome"]["label"])
+			{
+				case 'Pathogenic':
+					$npathogenic++;
+					break;
+				case 'Likely Pathogenic': 
+					$nlikely++;
+					break;
+				case 'Uncertain Significance': 
+					$nuncertain++;
+					break;
+				case 'Likely Benign': 
+					$nlikelybenign++;
+					break;
+				case 'Benign': 
+					$nbenign++;
+					break;
+			}
+
+			// count the expertpanels (@id would yield the ep number but for now just use string)
+			$ep = $variant->guidelines[0]["agents"][0]["affiliation"];
+			$ep = str_replace(' VCEP', '', $ep);
+			if (isset($epanels[$ep]))
+				$epanels[$ep]++;
+			else
+				$epanels[$ep] = 1;
+
+			$ustr = $variant->condition['@id'] . ',' . $variant->gene['NCBI_id'];
+			echo $ustr . "\n";
+			if (!in_array($ustr, $varunique))
+				$varunique[] = $ustr;
+		}
+
+		ksort($epanels);
+
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = count($varunique);
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] = $npathogenic;
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] = $nlikely;
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $nuncertain;
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] = $nbenign;
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $nlikelybenign;
+		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;
 
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,

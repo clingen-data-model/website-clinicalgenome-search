@@ -7,6 +7,7 @@
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statitics</h1>
+            <h6><em>Last updated: {{ $metrics->display_date }}</em></h6>
           </td>
         </tr>
       </table>
@@ -31,7 +32,7 @@
             <div class=" lineheight-tight">Unique genes  with<br /> at least one curation</div>
           </div>
           <div class="col-sm-4">
-            <div class="text-size-lg lineheight-tight">XXXX</div>
+            <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] ?? '' }}</div>
             <div class=" lineheight-tight">Unique variants  with<br /> at least one curation</div>
           </div>
         </div>
@@ -98,15 +99,13 @@
                 <div class="panel-body row px-2 py-0">
                   <div class="col-xs-6 lineheight-tight py-3 px-2">
                     <div class="text-size-md lineheight-tight">
-                      XXX
-                      {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
+                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }}
                     </div>
                     <div class="small lineheight-tight">Total reports <div class="text-10px">(Number of reports<br /> for this activity)</div></div>
                   </div>
                   <div class="col-xs-6 lineheight-tight py-3 px-2 border-left-1">
                     <div class="text-size-md">
-                      XXX
-                      {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }} --}}
+                      {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}
                     </div>
                     <div class="small lineheight-tight">Unique genes <div class="text-10px">(Total genes with at<br /> least one report)</div></div>
                   </div>
@@ -127,11 +126,11 @@
                 </div>
                 <div class="panel-body row px-2 py-0">
                   <div class="col-xs-6 lineheight-tight py-3 px-2">
-                    <div class="text-size-md lineheight-tight">XXX</div>
+                    <div class="text-size-md lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] ?? '' }}</div>
                     <div class="small lineheight-tight">Total reports <div class="text-10px">(Number of curations<br /> for this activity)</div></div>
                   </div>
                   <div class="col-xs-6 lineheight-tight py-3 px-2 border-left-1">
-                    <div class="text-size-md">XXX</div>
+                    <div class="text-size-md">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] ?? '' }}</div>
                     <div class="small lineheight-tight">Unique variants <div class="text-10px">(Total variants with at<br /> least one curation)</div></div>
                   </div>
                 </div>
@@ -720,8 +719,8 @@
           <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <div class="text-size-lg lineheight-tight">XXX
-                    {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
+                  <div class="text-size-lg lineheight-tight">
+                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Actionability <br />Reports<br />&nbsp;</div>
                 </div>
@@ -740,8 +739,8 @@
           <div class="col-sm-2 px-1" style="width:20%">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <div class="text-size-lg lineheight-tight">XXX
-                    {{-- {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] ?? '' }} --}}
+                  <div class="text-size-lg lineheight-tight">
+                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Genes Included in <br>Actionability Reports<br />&nbsp;</div>
                 </div>
@@ -1280,9 +1279,9 @@
                 <td class="col-sm-3 border-0">Pathogenic</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" style="width: 81%;">
+                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_pathogenic }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_pathogenic * 1.5 }}%;">
                     </div>
-                    <span class="ml-2">XXX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1290,9 +1289,9 @@
                 <td class=" border-0">Likely Pathogenic</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1.5%;">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="1" aria-valuemin="{{ $metrics->pathogenicity_percent_likely }}" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely * 1.5 }}%;">
                     </div>
-                    <span class="ml-2">XXX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1300,9 +1299,9 @@
                 <td class="col-sm-4 border-0">Uncertain Significance</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 15%;">
+                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_uncertain }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_uncertain * 1.5 }}%;">
                     </div>
-                    <span class="ml-2">XXX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1310,9 +1309,9 @@
                 <td class="col-sm-4 border-0">Likely Benign</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" style="width: 27%;background-color: mediumseagreen;">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_likely_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely_benign * 1.5 }}%;background-color: mediumseagreen;">
                     </div>
-                    <span class="ml-2">XXX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1320,9 +1319,9 @@
                 <td class="col-sm-4 border-0">Benign</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100" style="width: 9%;">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_benign * 1.5 }}%;">
                     </div>
-                    <span class="ml-2">XXX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] ?? '' }}</span>
                   </div>
                 </td>
               </tr>
@@ -1333,13 +1332,13 @@
             <div class="row">
               <div class="col-sm-6">
                 <div style="height:300px; width:300px; margin-left:auto; margin-right:auto; background-image:url('/images/sample-chart-v.png'); background-size: cover;">
-                  <div class="text-size-lg lineheight-tight" style="padding-top: 90px">XXX</div>
+                  <div class="text-size-lg lineheight-tight" style="padding-top: 90px">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] ?? '' }}</div>
                   <div class="">Total Variant <br>Pathogenicity Curations</div>
                 </div>
               </div>
               <div class="col-sm-6">
                 <div style="height:300px; width:300px; margin-left:auto; margin-right:auto; background-image:url('/images/sample-chart-solid-v.png'); background-size: cover;">
-                  <div class="text-size-lg lineheight-tight" style="padding-top: 90px">XXX</div>
+                  <div class="text-size-lg lineheight-tight" style="padding-top: 90px">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] ?? '' }}</div>
                   <div class="">Total Unique <br>Variants Curated</div>
                 </div>
               </div>
@@ -1347,119 +1346,22 @@
         </div>
 
         <div class="row  mt-4">
-          <h4 class="col-sm-12">XX ClinGen Variant Curation Expert Panels</h4>
+          <h4 class="col-sm-12">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} ClinGen Variant Curation Expert Panels</h4>
 
+          @foreach($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY] as $key => $value)
                                           <div class="col-sm-3 text-center">
               <div class="panel panel-default border-0">
                   <div class="panel-body">
                     <a href="#link-to-ep-page" class="text-dark">
                       <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
+                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">{{ $value }}</span>
                       </div>
-                      <div class="mb-2 lineheight-tight">ACADVL</div>
+                      <div class="mb-2 lineheight-tight">{{ $key }}</div>
                     </a>
                   </div>
                 </div>
              </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">Brain Malformations</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">Cardiomyopathy</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">CDH1</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-                      <br clear="all">
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">Cerebral Creatine Deficiency Syndromes</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">Coagulation Factor Deficiency</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">DICER1 and miRNA-Processing</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
-
-
-                                <div class="col-sm-3 text-center">
-              <div class="panel panel-default border-0">
-                  <div class="panel-body">
-                    <a href="#link-to-ep-page" class="text-dark">
-                      <div class="text-size-lg lineheight-tight">
-                        <span style="border: 6px #8cc63f solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#61933f">XX</span>
-                      </div>
-                      <div class="mb-2 lineheight-tight">Familial Hypercholesterolemia</div>
-                    </a>
-                  </div>
-                </div>
-             </div>
+          @endforeach
 
                       <br clear="all">
           <div class="text-center mb-4">
