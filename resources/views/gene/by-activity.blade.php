@@ -387,9 +387,9 @@
 								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
 								@if (isset($border) && $border == "")
 									@if (empty($entry['guideline']))
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
+									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class=""><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
 									@else
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="{{ $entry['guideline'] }}"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
+									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><span class=""><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
 									@endif
 								@else
 								<td class="{{ $border ?? '' }}"></td>
@@ -437,7 +437,7 @@
 									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
 									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '10/14/2020' : ''  }}</td>
 								@if (isset($border) && $border == "")
-									<td class="border-0 text-center"><a class="btn btn-xs btn-success" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
+									<td class="border-0 text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
 								@else
 								<td class="{{ $border ?? '' }}"></td>
 								@endif
