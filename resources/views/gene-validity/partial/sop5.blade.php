@@ -133,7 +133,7 @@
 	  </tr>
 		<tr>
 			<td class="">Total LOD Score</td>
-			<td>Canditate Gene Sequencing</td>
+			<td>Candidate Gene Sequencing</td>
 			<td>Exome/Genome or all genes sequenced in linkage region</td>
 		  <td class="" style="border-style: none">&nbsp;</td>
 		</tr>
