@@ -32,7 +32,7 @@ return [
      * Matches the request origin. `['*']` allows all origins. Wildcards can be used, eg `*.mydomain.com`
      */
     //'allowed_origins' => ['*'],
-    'allowed_origins' => ['clingen.info', '*.clingen.info', 'clingen.us', '*.clingen.us', '*.clinicalgenome.org', 'clinicalgenome.org'],
+    'allowed_origins' => ['https://*.clingen.info', 'https://clingen.info', 'https://*.clingen.us', 'https://clingen.us', 'https://*.clinicalgenome.org', 'https://clinicalgenome.org'],
     
 
     /*
