@@ -8,7 +8,7 @@
     <div class="col-md-5">
       <table class="mt-3 mb-2">
         <tr>
-          <td class="valign-top"><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="40" height="40"><img src="/images/dosageSensitivity-on.png" width="40" height="40" style="margin-left: -6px"><img src="/images/clinicalActionability-on.png" width="40" height="40" style="margin-left: -6px"></td>
+          <td class="valign-top"><span id="gene-count"></span><span class='hidden-sm hidden-xs'><img src="/images/clinicalValidity-on.png" width="40" height="40"><img src="/images/dosageSensitivity-on.png" width="40" height="40" style="margin-left: -6px"><img src="/images/clinicalActionability-on.png" width="40" height="40" style="margin-left: -6px"></span></td>
           <td class="pl-2"><h1 class="h2 p-0 m-0"> All Curated Genes </h1>
           </td>
         </tr>

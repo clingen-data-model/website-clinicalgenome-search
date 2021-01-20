@@ -40,7 +40,7 @@
 					</li> --}}
 					<li class="active" style="">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class="">
-              Curation Summaries
+              <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
           </li>
           <li class="" style="">
