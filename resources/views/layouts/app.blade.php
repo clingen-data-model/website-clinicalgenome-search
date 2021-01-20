@@ -36,7 +36,7 @@
 </head>
 <body>
   <div id="app">
-    <div style=" background-color:#000; padding:3px; color:gold; font-weight:bold; text-align:center; font-size:10px;">CLINGEN DEMO WEBSITE</div>
+    {{-- <div style=" background-color:#000; padding:3px; color:gold; font-weight:bold; text-align:center; font-size:10px;">CLINGEN DEMO WEBSITE</div> --}}
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
