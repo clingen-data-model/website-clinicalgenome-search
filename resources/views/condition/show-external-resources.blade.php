@@ -16,11 +16,11 @@
 			<ul class="nav nav-tabs">
           <li class="">
             <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}">
-              ClinGen's Curation Summaries
+              <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
           </li>
           <li class="active">
-            <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white">External Genomic Resources </a>
+            <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white"><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>
           <li class="">
             <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>

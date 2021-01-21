@@ -78,7 +78,7 @@ class GeneController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "gene-curations",
-            'title' => "ClinGen Curatated Genes"
+            'title' => "ClinGen Curated Genes"
         ]);
 
 		return view('gene.curated', compact('display_tabs'))

@@ -133,7 +133,7 @@
 	  </tr>
 		<tr>
 			<td class="">Total LOD Score</td>
-			<td>Canditate Gene Sequencing</td>
+			<td>Candidate Gene Sequencing</td>
 			<td>Exome/Genome or all genes sequenced in linkage region</td>
 		  <td class="" style="border-style: none">&nbsp;</td>
 		</tr>
@@ -507,7 +507,7 @@
 					{{ $record->score_data->summary->CalculatedClassification ?? null }}
 				</div>
 				<div class='col-sm-4'>
-					{{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null) }}
+					{{-- {{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null) }} --}}
 				</div>
 					</td>
 		</tr>
@@ -538,7 +538,7 @@
 				</div>
 				<div class='col-sm-4'>
 
-          {{ displayDate($record->score_data->summary->CuratorClassificationDate ?? null) }}
+          {{-- {{ displayDate($record->score_data->summary->CuratorClassificationDate ?? null) }} --}}
 				</div>
 				<div class='col-sm-12'>
           {{ $record->score_data->summary->CuratorClassificationNotes ?? null }}</div>

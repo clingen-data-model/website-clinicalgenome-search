@@ -21,10 +21,22 @@
 
   {{-- @livewireStyles --}}
 
+    <script>
+     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+     ga('create', 'UA-49947422-1', 'auto');
+     ga('set', 'dimension7', 'KB Curations - Index');  
+     //Page type
+     ga('send', 'pageview');
+    </script>
+
 
 </head>
 <body>
   <div id="app">
+    {{-- <div style=" background-color:#000; padding:3px; color:gold; font-weight:bold; text-align:center; font-size:10px;">CLINGEN DEMO WEBSITE</div> --}}
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
@@ -398,5 +410,36 @@
 
     </script>
     {{-- @livewireScripts --}}
+
+    <script type="text/javascript">
+      
+      // Tracking for google of the onclicks
+      $( ".externallink" ).on( "click", function() {
+          var title = $(this).attr("title");
+          //console.log( "externallink" );
+          //console.log( title );
+          ga('send', 'event', 'external_link', 'click', title );
+      });
+
+      $( ".externalresource" ).on( "click", function() {
+          var title = $(this).attr("title");
+          //console.log( "externallink" );
+          //console.log( title );
+          ga('send', 'event', 'external_resource', 'click', title );
+      });
+      $( ".watchreportclick" ).on( "click", function() {
+          var title = $(this).attr("title");
+          //console.log( "watchreportclick" );
+          //console.log( title );
+          ga('send', 'event', 'track_report_click', 'click', title );
+      });
+      $( ".watchdownloadclick" ).on( "click", function() {
+          var title = $(this).attr("title");
+          //console.log( "watchdownloadclick" );
+          //console.log( title );
+          ga('send', 'event', 'track_download_click', 'click', title );
+      });
+      
+    </script>
   </body>
   </html>

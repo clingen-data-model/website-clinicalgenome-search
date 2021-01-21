@@ -42,7 +42,7 @@
 					</li> --}}
 					<li class="active" style="">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class="">
-              Curation Summaries
+              <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
           </li>
           <li class="" style="">
@@ -72,7 +72,7 @@
 				@if(count($disease->gene_validity_assertions))
 				@if($header_val == true)
 				@php ($currations_set = true) @endphp
-					<h3  id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Gene-Disease Validity</h3>
+					<h3  id="link-gene-validity" class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Gene-Disease Validity</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -131,7 +131,7 @@
 				@if(count($disease->gene_dosage_assertions))
 				@php ($currations_set = true) @endphp
 				@if($header_dos == true)
-					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
+					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 
@@ -228,7 +228,7 @@
 					@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map))
 					@if($header_dos == true)
 					@php ($currations_set = true) @endphp
-					<h3 id="link-dosage-curation" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
+					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 
@@ -301,7 +301,7 @@
 					@if(count($disease->actionability_curations))
 				  @if($header_aci == true)
 					@php ($currations_set = true) @endphp
-					<h3 id="link-actionability" style="margin-left: -45px" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
+					<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
 					<div class="card mb-3">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">
@@ -357,7 +357,7 @@
 				@php ($currations_set = true) @endphp
 				<div class="row justify-content-center">
 					<div class="col-md-12">
-					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
+					  <h3 id="link-gene-validity" class=" mt-3 mb-0"><img
 						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics - <a href="https://cpicpgx.org/"><img src="/images/cpic-200.png" class="mb-2" height="30"></a></h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
@@ -387,9 +387,9 @@
 								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '01/13/2021' : ''  }}</td>
 								@if (isset($border) && $border == "")
 									@if (empty($entry['guideline']))
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
+									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class=""><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
 									@else
-									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success" target="_pharma" href="{{ $entry['guideline'] }}"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
+									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="{{ $entry['guideline'] }}"><span class=""><i class="glyphicon glyphicon-file"></i>  Guideline</span></a></td>
 									@endif
 								@else
 								<td class="{{ $border ?? '' }}"></td>
@@ -408,7 +408,7 @@
 				@php ($currations_set = true) @endphp
 				<div class="row justify-content-center">
 					<div class="col-md-12">
-					  <h3 id="link-gene-validity" style="margin-left: -45px " class=" mt-3 mb-0"><img
+					  <h3 id="link-gene-validity" class=" mt-3 mb-0"><img
 						  src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Pharmacogenetics  - <a href="https://www.pharmgkb.org/"><img src="/images/pharmgkb.png" height="25"></a> </h3>
 					  <div class="card mb-4">
 						<div class="card-body p-0 m-0">
@@ -437,7 +437,7 @@
 									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
 									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '01/13/2021' : ''  }}</td>
 								@if (isset($border) && $border == "")
-									<td class="border-0 text-center"><a class="btn btn-xs btn-success" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
+									<td class="border-0 text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
 								@else
 								<td class="{{ $border ?? '' }}"></td>
 								@endif
