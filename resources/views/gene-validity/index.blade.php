@@ -90,7 +90,6 @@
                 'Definitive',
                 'Strong',
                 'Moderate',
-                'Supportive',
                 'Limited',
                 'Animal Model Only',
                 'Disputed',

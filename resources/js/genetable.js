@@ -546,7 +546,7 @@ function hasdosageFormatter(index, row) {
         return '';
 
 
-    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
+    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/genes/'
             + row.hgnc_id
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
    
