@@ -214,175 +214,291 @@
       </div>
       <div class="col-12">
 
-      <a class='' href='https://www.clinicalgenome.org/affiliation/'><h6>Expert Panels</h6></a>
+      <a class="" href="https://clinicalgenome.org/affiliation/"><h6>Expert Panels</h6></a>
 
-      <ul class='list-unstyled row'>
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/acadvl-variant-curation-expert-panel/'><span class=' d-inline-block '>ACADVL Variant Curation Expert Panel</span></a>
+      <ul class="list-unstyled row">
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50048/"><span class=" d-inline-block ">ACADVL Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40011/'><span class=' d-inline-block '>Aminoacidopathy Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40011/"><span class=" d-inline-block ">Aminoacidopathy Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40003/'><span class=' d-inline-block '>Arrhythmogenic Right Ventricular Cardiomyopathy Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40003/"><span class=" d-inline-block ">Arrhythmogenic Right Ventricular Cardiomyopathy Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40020/'><span class=' d-inline-block '>Brain Malformations Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40020/"><span class=" d-inline-block ">Brain Malformations Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50020/'><span class=' d-inline-block '>Brain Malformations Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50020/"><span class=" d-inline-block ">Brain Malformations Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40042/'><span class=' d-inline-block '>Breast/Ovarian Cancer Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40042/"><span class=" d-inline-block ">Breast/Ovarian Cancer Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40045/'><span class=' d-inline-block '>Brugada Syndrome Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40045/"><span class=" d-inline-block ">Brugada Syndrome Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50002/'><span class=' d-inline-block '>Cardiomyopathy Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50002/"><span class=" d-inline-block ">Cardiomyopathy Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50014/'><span class=' d-inline-block '>CDH1 Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50014/"><span class=" d-inline-block ">CDH1 Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50047/'><span class=' d-inline-block '>Cerebral Creatine Deficiency Syndromes Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50047/"><span class=" d-inline-block ">Cerebral Creatine Deficiency Syndromes Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40043/'><span class=' d-inline-block '>Colon Cancer Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40063/"><span class=" d-inline-block ">Charcot-Marie-Tooth Disease Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40005/'><span class=' d-inline-block '>Epilepsy Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50041/"><span class=" d-inline-block ">Coagulation Factor Deficiency Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50004/'><span class=' d-inline-block '>Familial Hypercholesterolemia Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40043/"><span class=" d-inline-block ">Colon Cancer Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40044/'><span class=' d-inline-block '>Familial Thoracic Aortic Aneurysm and Dissection Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40031/"><span class=" d-inline-block ">Congenital Myopathies Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40010/'><span class=' d-inline-block '>Fatty Acid Oxidation Disorders Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50031/"><span class=" d-inline-block ">Congenital Myopathies Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50046/'><span class=' d-inline-block '>FBN1 Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40059/"><span class=" d-inline-block ">Craniofacial Malformations Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40007/'><span class=' d-inline-block '>Hearing Loss Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50050/"><span class=" d-inline-block ">DICER1 and miRNA-Processing Gene Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50007/'><span class=' d-inline-block '>Hearing Loss Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40035/"><span class=" d-inline-block ">Dilated Cardiomyopathy Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40028/'><span class=' d-inline-block '>Hemostasis Thrombosis Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40005/"><span class=" d-inline-block ">Epilepsy Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50039/'><span class=' d-inline-block '>Hereditary Breast, Ovarian and Pancreatic Cancer Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50004/"><span class=" d-inline-block ">Familial Hypercholesterolemia Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40023/'><span class=' d-inline-block '>Hereditary Cancer Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40044/"><span class=" d-inline-block ">Familial Thoracic Aortic Aneurysm and Dissection Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50037/'><span class=' d-inline-block '>Hereditary Hemorrhagic Telangiectasia Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40010/"><span class=" d-inline-block ">Fatty Acid Oxidation Disorders Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40008/'><span class=' d-inline-block '>Hypertrophic Cardiomyopathy Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50046/"><span class=" d-inline-block ">FBN1 Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40006/'><span class=' d-inline-block '>Intellectual Disability and Autism Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40026/"><span class=" d-inline-block ">General Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50001/'><span class=' d-inline-block '>KCNQ1 Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50053/"><span class=" d-inline-block ">Glaucoma Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40025/'><span class=' d-inline-block '>Long QT Syndrome Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50078/"><span class=" d-inline-block ">GRIN Disorders Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50038/'><span class=' d-inline-block '>Malignant Hyperthermia Susceptibility Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40007/"><span class=" d-inline-block ">Hearing Loss Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50027/'><span class=' d-inline-block '>Mitochondrial Disease Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50007/"><span class=" d-inline-block ">Hearing Loss Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40027/'><span class=' d-inline-block '>Mitochondrial Diseases Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50052/"><span class=" d-inline-block ">Hemoglobinopathy Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50016/'><span class=' d-inline-block '>Monogenic Diabetes Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40028/"><span class=" d-inline-block ">Hemostasis/Thrombosis Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/10034/'><span class=' d-inline-block '>Myeloid Malignancy Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50039/"><span class=" d-inline-block ">Hereditary Breast, Ovarian and Pancreatic Cancer Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50015/'><span class=' d-inline-block '>Phenylketonuria Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40023/"><span class=" d-inline-block ">Hereditary Cancer Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50040/'><span class=' d-inline-block '>Platelet Disorder Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50037/"><span class=" d-inline-block ">Hereditary Hemorrhagic Telangiectasia Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50012/'><span class=' d-inline-block '>PTEN Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40080/"><span class=" d-inline-block ">Humoral Defects Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/40021/'><span class=' d-inline-block '>RASopathy Gene Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40008/"><span class=" d-inline-block ">Hypertrophic Cardiomyopathy Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50021/'><span class=' d-inline-block '>RASopathy Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40006/"><span class=" d-inline-block ">Intellectual Disability and Autism Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50022/'><span class=' d-inline-block '>Rett and Angelman-like Disorders Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50001/"><span class=" d-inline-block ">KCNQ1 Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/somatic-germline-variant-curation-group/'><span class=' d-inline-block '>Somatic/Germline Variant Curation Group</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40066/"><span class=" d-inline-block ">Kidney Cystic and Ciliopathy Disorders Gene Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50009/'><span class=' d-inline-block '>Storage Diseases Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50066/"><span class=" d-inline-block ">Kidney Cystic and Ciliopathy Disorders Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50013/'><span class=' d-inline-block '>TP53 Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50082/"><span class=" d-inline-block ">Leber Congenital Amaurosis/early onset Retinal Dystrophy Variant Curation Expert Panel</span></a>
         </li>
 
-        <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/affiliation/50036/'><span class=' d-inline-block '>VHL Variant Curation Expert Panel</span></a>
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40061/"><span class=" d-inline-block ">Limb Girdle Muscular Dystrophy Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50061/"><span class=" d-inline-block ">Limb Girdle Muscular Dystrophy Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40025/"><span class=" d-inline-block ">Long QT Syndrome Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50009/"><span class=" d-inline-block ">Lysosomal Storage Disorders Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50038/"><span class=" d-inline-block ">Malignant Hyperthermia Susceptibility Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50027/"><span class=" d-inline-block ">Mitochondrial Disease Nuclear and Mitochondrial Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40027/"><span class=" d-inline-block ">Mitochondrial Diseases Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40016/"><span class=" d-inline-block ">Monogenic Diabetes Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50016/"><span class=" d-inline-block ">Monogenic Diabetes Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50034/"><span class=" d-inline-block ">Myeloid Malignancy Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50089/"><span class=" d-inline-block ">NTRK Fusions Somatic Cancer Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40079/"><span class=" d-inline-block ">Parkinson's Disease Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40049/"><span class=" d-inline-block ">Peroxisomal Disorders Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50049/"><span class=" d-inline-block ">Peroxisomal Disorders Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50015/"><span class=" d-inline-block ">Phenylketonuria Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50040/"><span class=" d-inline-block ">Platelet Disorders Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50012/"><span class=" d-inline-block ">PTEN Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40071/"><span class=" d-inline-block ">Pulmonary Hypertension Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40021/"><span class=" d-inline-block ">RASopathy Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50021/"><span class=" d-inline-block ">RASopathy Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40072/"><span class=" d-inline-block ">Retina Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50022/"><span class=" d-inline-block ">Rett and Angelman-like Disorders Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40081/"><span class=" d-inline-block ">SCID-CID Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40065/"><span class=" d-inline-block ">Skeletal Disorders Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/40060/"><span class=" d-inline-block ">Syndromic Disorders Gene Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50064/"><span class=" d-inline-block ">Thrombosis Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50013/"><span class=" d-inline-block ">TP53 Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50036/"><span class=" d-inline-block ">VHL Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50051/"><span class=" d-inline-block ">von Willebrand Disease Variant Curation Expert Panel</span></a>
+        </li>
+
+        <li class="col-md-6 text-truncate">
+          <a class="text-dark small" href="https://clinicalgenome.org/affiliation/50086/"><span class=" d-inline-block ">X-linked Inherited Retinal Disease Variant Curation Expert Panel</span></a>
         </li>
       </ul>
 
-        <hr />
+        <hr>
       </div>
       <div class="col-12">
 

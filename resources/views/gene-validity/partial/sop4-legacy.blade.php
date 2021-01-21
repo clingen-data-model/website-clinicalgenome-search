@@ -317,7 +317,7 @@
       </div></td>
   </tr>
   <tr>
-    <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION (DATE)</td>
+    <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION</td>
     <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive "><div class='col-sm-8 '>
       {{ $record->score_data->summary->CalculatedClassification ?? null }}
       </div>
@@ -334,7 +334,7 @@
       </div></td>
   </tr>
   <tr>
-    <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin"> CURATOR CLASSIFICATION (DATE) </td>
+    <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin"> CURATOR CLASSIFICATION</td>
     <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive-2 "><div class='col-sm-8'>
       {{ $record->score_data->summary->CuratorClassification ?? null }}
       </div>
