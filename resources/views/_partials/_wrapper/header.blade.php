@@ -28,7 +28,9 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/clingen-clinvar-collaboration/'><span class=' d-inline-block text-truncate'>ClinGen &amp; ClinVar Collaboration</span></a>
               </li>
-
+              <li class="nav-item ">
+                <a class="nav-link nav-link-header" href="https://www.clinicalgenome.org/about/clingen-cpic-pharmgkb/"><span class=" d-inline-block text-truncate">ClinGen, CPIC and PharmGKB Partnership&nbsp;</span></a>
+              </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/terms-of-use/'><span class=' d-inline-block text-truncate'>ClinGen Terms of Use</span></a>
               </li>
