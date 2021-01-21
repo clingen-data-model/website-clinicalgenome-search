@@ -40,32 +40,34 @@ class UpdateErepo extends Command
      */
     public function handle()
     {
-		echo "downloading erepo data ...\n";
-				
-			
-		try {
-					
-			$results = file_get_contents("http://erepo.genome.network/evrepo/api/interpretations?matchLogic=and&matchMode=keyword&matchLimit=all");
+      echo "downloading erepo data ...\n";
+          
+        
+      try {
+            
+        $results = file_get_contents("http://erepo.genome.network/evrepo/api/interpretations?matchLogic=and&matchMode=keyword&matchLimit=all");
 
-		} catch (\Exception $e) {
-		
-			echo "(E001) Error retreiving erepo data\n";
-			
-		}
-	
-		$dd = json_decode($results);
-		
-		foreach($dd->variantInterpretations as $variant)
-		{
-			//echo $variant->{'@id'} . " " . $variant->guidelines[0]["outcome"]["label"] . "\n";
-			Variant::updateOrCreate(['iri' => $variant->{'@id'}, 'variant_id' => $variant->variationId],
-									['caid' => $variant->caid,
-									'condition' => $variant->condition,
-									'evidence_links' => $variant->evidenceLinks,
-									'gene' => $variant->gene,
-									'guidelines' => $variant->guidelines,
-									'hgvs' => $variant->hgvs]);
-		}		
+      } catch (\Exception $e) {
+      
+        echo "(E001) Error retreiving erepo data\n";
+        
+      }
+    
+      $dd = json_decode($results);
+      
+      Variant::query()->forceDelete();
+      
+      foreach($dd->variantInterpretations as $variant)
+      {
+        //echo $variant->{'@id'} . " " . $variant->guidelines[0]["outcome"]["label"] . "\n";
+        Variant::create(['iri' => $variant->{'@id'}, 'variant_id' => $variant->variationId,
+                    'caid' => $variant->caid,
+                    'condition' => $variant->condition,
+                    'evidence_links' => $variant->evidenceLinks,
+                    'gene' => $variant->gene,
+                    'guidelines' => $variant->guidelines,
+                    'hgvs' => $variant->hgvs]);
+      }		
 
     }
 }

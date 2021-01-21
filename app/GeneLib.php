@@ -112,9 +112,9 @@ class GeneLib extends Model
                'Moderate' => 18,
                'Supportive' => 17,
                'Limited' => 16,
-               'Disputed' => 15,
-               'Refuted' => 14,
-               'Animal' => 13,
+               'Animal Model Only' => 15,
+               'Disputed' => 14,
+               'Refuted' => 13,
                'No Known Disease Relationship' => 12
      ];
 

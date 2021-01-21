@@ -40,8 +40,10 @@ class UpdateOmim extends Command
     public function handle()
     {
         echo "Importing omim titles ...\n";
-		
-		$handle = fopen(base_path() . '/data/mimTitles', "r");
+        
+        // https://data.omim.org/downloads/gnEYXJE_RtCzjSCNEOWFHg/mimTitles.txt
+
+		$handle = fopen(base_path() . '/data/mimTitles.txt', "r");
         if ($handle)
         {
             while (($line = fgets($handle)) !== false)

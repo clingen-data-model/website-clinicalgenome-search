@@ -34,6 +34,7 @@ class CurationController extends Controller
                 'rows'=> CuratedResource::collection($results->collection),
                 'naction' => $results->naction,
                 'ndosage' => $results->ndosage,
+                'npharma' => $results->npharma,
                 'nvalid' => $results->nvalid];
     }
 }

@@ -8,7 +8,11 @@
     <div class="col-md-5">
       <table class="mt-3 mb-2">
         <tr>
-          <td class="valign-top"><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="40" height="40"><img src="/images/dosageSensitivity-on.png" width="40" height="40" style="margin-left: -6px"><img src="/images/clinicalActionability-on.png" width="40" height="40" style="margin-left: -6px"></td>
+          <td class="valign-top"><span id="gene-count"></span><img src="/images/clinicalValidity-on.png" width="40" height="40">
+            <img src="/images/dosageSensitivity-on.png" width="40" height="40" style="margin-left: -6px">
+            <img src="/images/clinicalActionability-on.png" width="40" height="40" style="margin-left: -6px">
+            <!--<img src="/images/Pharmacogenomics-on.png" width="40" height="40" style="margin-left: -6px">-->
+          </td>
           <td class="pl-2"><h1 class="h2 p-0 m-0"> All Curated Genes </h1>
           </td>
         </tr>
@@ -23,7 +27,9 @@
               <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Gene-Disease<br />Validity Genes</li>
               <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Sensitivity Genes</li>
               <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
-            </ul>
+              <!--<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countPharma text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Pharmacogenomics<br />Genes</li>          
+              -->
+              </ul>
 				</div>
 			</div>
     </div>
@@ -52,14 +58,19 @@
 @section('script_js')
 
 <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table-locale-all.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/export/bootstrap-table-export.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF/jspdf.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/js-xlsx/xlsx.core.min.js"></script>
+<script src="https://unpkg.com/tableexport.jquery.plugin/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/addrbar/bootstrap-table-addrbar.min.js"></script>
+
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-<script src="https://unpkg.com/bootstrap-table@1.18.0/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+
+<script src="https://unpkg.com/bootstrap-table@1.18.1/dist/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -80,6 +91,7 @@
     $('.countValidity').html(res.nvalid);
     $('.countActionability').html(res.naction);
     $('.countDosage').html(res.ndosage);
+    $('.countPharma').html(res.npharma);
 
     return res
   }
@@ -165,7 +177,16 @@
           filterControl: 'select',
           searchFormatter: false,
           sortable: true
-        }
+        }/*,
+        {
+          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/Pharmacogenomics-on.png" width="40" height="40"></div>Pharmacogenomics <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          field: 'has_pharma',
+          formatter: hasPharmaFormatter,
+          align: 'center',
+          filterControl: 'select',
+          searchFormatter: false,
+          sortable: true
+        }*/
       ]
     })
 

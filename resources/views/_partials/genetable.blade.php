@@ -26,6 +26,7 @@
     data-search-formatter="false"
     {{-- data-detail-view="true" --}}
     data-show-export="true"
+    data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']""
     {{-- data-click-to-select="true" --}}
     {{-- data-detail-view-icon="false" --}}
     {{-- data-detail-view-by-click="true" --}}

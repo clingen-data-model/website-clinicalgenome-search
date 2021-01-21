@@ -71,6 +71,7 @@ class Mysql
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
+			$npharma = 0;
 		}
 		else
 		{
@@ -79,11 +80,12 @@ class Mysql
 			$naction = 0;
 			$nvalid = 0;
 			$ndosage = 0;
+			$npharma = 0;
 		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
-						'ncurated' => $ncurated];
+						'npharma' => $npharma, 'ncurated' => $ncurated];
 	}
 
 

@@ -213,6 +213,18 @@ class Gene extends Model
      }
 
 
+     /**
+     * Query scope by cytoband
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAcmg59($query)
+     {
+		return $query->where('acmg59', 1);
+     }
+
+
     /**
      * Set all names to uppercase
      *

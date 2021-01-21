@@ -9,6 +9,7 @@ use App\Traits\Query;
 use App\Metric;
 use App\Jira;
 use App\Variant;
+use App\Cpic;
 
 use Carbon\Carbon;
 
@@ -123,15 +124,42 @@ class Graphql
 		if (empty($response))
 			return $response;
 
+		// get list of pharma genes
+		/*$pharma = Cpic::select('hgnc_id', 'gene')->distinct()->orderBy('hgnc_id')->get();
+		$cpics = $pharma->pluck('hgnc_id')->toArray();
+		$excludes = [];*/
+
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
-			$collection->push(new Nodal((array) $record));
+		{
+			$node = new Nodal((array) $record);
+			/*if (in_array($node->hgnc_id, $cpics))
+			{
+				$t = $node->curation_activities;
+				array_push($t, "GENE_PHARMA");
+				$node->curation_activities = $t;
+				$excludes[] = $node->hgnc_id;
+			}*/
+
+			$collection->push($node);
+		}
+
+		// TODO:  add genes where pharma is the only curattiion
+		/*foreach(array_diff($cpics, $excludes) as $k)
+		{
+			if (empty($k))
+				continue;
+
+			$node = new Nodal(['label' => $pharma->where('hgnc_id', $k)->pluck('gene')->first(), 'hgnc_id' => $k, 'curation_activities' => ["GENE_PHARMA"]]);
+			$collection->push($node);
+		}*/
 
 		if ($curated)
 		{
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
+			$npharma = 0; //$collection->where('has_pharma', true)->count();
 
 			//Metric::store(Metric::KEY_TOTAL_CURATED_GENES, $response->genes->count);
 			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
@@ -143,10 +171,12 @@ class Graphql
 			$naction = 0;
 			$nvalid = 0;
 			$ndosage = 0;
+			$npharma = 0;
 		}
 
-		return (object) ['count' => $response->genes->count, 'collection' => $collection,
-						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage];
+		return (object) ['count' => $collection->count(), 	//$response->genes->count, 
+						'collection' => $collection,
+						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage, 'npharma' => $npharma];
 	}
 
 
@@ -1750,16 +1780,14 @@ class Graphql
 			else
 				$epanels[$ep] = 1;
 
-			$ustr = $variant->condition['@id'] . ',' . $variant->gene['NCBI_id'];
-			echo $ustr . "\n";
-			if (!in_array($ustr, $varunique))
-				$varunique[] = $ustr;
 		}
 
 		ksort($epanels);
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
-		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = count($varunique);
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = $paths->unique(function ($item) {
+				return $item['caid'].$item['variant_id'];
+		})->count();
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] = $npathogenic;
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] = $nlikely;
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $nuncertain;

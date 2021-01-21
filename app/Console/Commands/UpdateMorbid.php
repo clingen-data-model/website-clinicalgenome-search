@@ -40,7 +40,8 @@ class UpdateMorbid extends Command
     public function handle()
     {
         echo "Importing omim morbid flags ...\n";
-		
+        
+        // https://data.omim.org/downloads/gnEYXJE_RtCzjSCNEOWFHg/morbidmap.txt
 		$handle = fopen(base_path() . '/data/morbidmap.txt', "r");
         if ($handle)
         {

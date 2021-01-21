@@ -11,6 +11,7 @@ use App\Imports\ExcelGKB;
 
 use App\Cpic;
 use App\GeneLib;
+use App\Gene;
 
 class UpdateCpic extends Command
 {
@@ -131,6 +132,22 @@ class UpdateCpic extends Command
             foreach($records as $record)
                 $record->update(['pa_id_drug' => $row[0]]);
 
+        }
+
+        // update the main gene table
+        $list = Cpic::select('hgnc_id')->distinct('hgnc_id')->get();
+        
+        foreach($list as $record)
+        {
+            $gene = Gene::hgnc($record->hgnc_id)->first();
+
+            if ($gene !== null)
+            {
+                $activity = $gene->activity;
+                $activity['pharma'] = true;
+                $gene->activity = $activity;
+                $gene->save();
+            }
         }
 
     }

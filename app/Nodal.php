@@ -293,6 +293,20 @@ class Nodal extends Model
 					in_array('GENE_VALIDITY', $this->curation_activities) :
 					false); 
 	}
+
+
+	/**
+     * Flag indicating if gene has any pharma curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasPharmaAttribute()
+    {
+		return (isset($this->curation_activities) ? 
+					in_array('GENE_PHARMA', $this->curation_activities) :
+					false); 
+	}
 	
 	
 	/**

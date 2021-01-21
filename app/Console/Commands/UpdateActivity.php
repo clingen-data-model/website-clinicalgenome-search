@@ -61,7 +61,9 @@ class UpdateActivity extends Command
 
             $flags = ['actionability' => $gene->has_actionability,
                         'validity' => $gene->has_validity,
-                        'dosage' => $gene->has_dosage
+                        'dosage' => $gene->has_dosage,
+                        'pharma' => false,
+                        'varpath' => false,
                     ];
 
             $record = Gene::hgnc($gene->hgnc_id)->first();
