@@ -1,2 +1,26 @@
 User-agent: *
-Disallow:
+Disallow: /
+
+User-agent: Googlebot
+Allow: /
+Crawl-Delay: 10
+
+User-agent: Googlebot-Image
+Allow: /
+Crawl-Delay: 10
+
+User-agent: Bingbot
+Allow: /
+Crawl-Delay: 10
+
+User-agent: Slurp
+Allow: /
+Crawl-Delay: 10
+
+User-agent: Baiduspider
+Allow: /
+Crawl-Delay: 10
+
+User-agent: DuckDuckBot
+Allow: /
+Crawl-Delay: 10
