@@ -8,7 +8,7 @@
           <span class="sr-only">Toggle navigation</span>
           Navigation <i class="fas fa-bars"></i>
         </button>
-        <a class="navbar-brand" href="/kb/"><img style="height:80px" src="/brand/logo/logo-clinical-genome-logo-vector.svg" class="img-fluid p-0" alt="Responsive image"></a>
+        <a class="navbar-brand" href="https://www.clinicalgenome.org/"><img style="height:80px" src="/brand/logo/logo-clinical-genome-logo-vector.svg" class="img-fluid p-0" alt="Responsive image"></a>
       </div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
