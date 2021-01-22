@@ -101,6 +101,7 @@
           title: 'Gene',
           field: 'symbol',
           formatter: geneFormatter,
+          cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
           sortable: true
@@ -109,29 +110,18 @@
           title: 'HGNC ID',
           field: 'hgnc_id',
           filterControl: 'input',
+          cellStyle: cellFormatter,
           searchFormatter: false,
           sortable: true,
           visible: false
         },
-        /*{
-          title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"> <img src="/images/clinicalValidity-on.png" width="40" height="40"><i class="fas fa-info-circle text-muted"></i></span>',
-			    align: 'center'
-        },
-        {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?" aria-describedby="tooltip"> <img src="/images/dosageSensitivity-on.png" width="40" height="40"><i class="fas fa-info-circle text-muted"></i></span>',
-          align: 'center',
-        },
-		    {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"> <img src="/images/clinicalActionability-on.png" width="40" height="40"><i class="fas fa-info-circle text-muted"></i></span>',
-          align: 'center',
-        },*/
 		    {
           title: '<span data-toggle="tooltip" data-placement="top" title="Can variation in this gene cause disease?" aria-describedby="tooltip"><div><img src="/images/clinicalValidity-on.png" width="40" height="40"></div>Gene Disease Validity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
-         // title: 'Gene Disease Validity',
           field: 'has_validity',
           formatter: hasvalidityFormatter,
+          cellStyle: cellFormatter,
           align: 'center',
-          filterControl: 'select',
+          filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
@@ -140,48 +130,23 @@
           //title: 'Dosage Sensitivity',
           field: 'has_dosage',
           formatter: hasdosageFormatter,
+          cellStyle: cellFormatter,
           align: 'center',
-          filterControl: 'select',
+          filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
-        // {
-        //   title: 'Haploinsufficiency<br />Score',
-        //   field: 'has_dosage_haplo',
-        //   formatter: hashaploFormatter,
-        //   align: 'center',
-        //   filterControl: 'select',
-        //   searchFormatter: false,
-        //   sortable: true
-        // },
-        // {
-        //   title: 'Triplosensitivity<br />Score',
-        //   field: 'has_dosage_triplo',
-        //   formatter: hastriploFormatter,
-        //   align: 'center',
-        //   filterControl: 'select',
-        //   searchFormatter: false,
-        //   sortable: true
-        // },
         {
           title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/clinicalActionability-on.png" width="40" height="40"></div>Clinical Actionability <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Clinical Actionability',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
+          cellStyle: cellFormatter,
           align: 'center',
-          filterControl: 'select',
+          filterControl: 'input',
           searchFormatter: false,
           sortable: true
-        }/*,
-        {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/Pharmacogenomics-on.png" width="40" height="40"></div>Pharmacogenomics <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
-          field: 'has_pharma',
-          formatter: hasPharmaFormatter,
-          align: 'center',
-          filterControl: 'select',
-          searchFormatter: false,
-          sortable: true
-        }*/
+        }
       ]
     })
 
