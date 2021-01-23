@@ -1028,6 +1028,14 @@ class Graphql
 		if (empty($response))
 			return $response;
 
+		// genegraph does return an error condition on an invalid assertion id, so handle it here
+		if (empty($response->gene_validity_assertion->specified_by))
+		{
+			Log::info("Validty Detail Error:  No specified by field in iri: " . $perm);
+			GeneLib::putError("Invalid gene validity assertion identifier");
+			return null;
+		}
+
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
