@@ -1059,10 +1059,6 @@ class Graphql
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
-		//dd($node);
-		// genegraph is not distinguishing gene express origin from others
-		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
-		&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion) 
