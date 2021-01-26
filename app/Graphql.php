@@ -88,7 +88,7 @@ class Graphql
 			$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
 			// add each gene to the collection
 
-			
+
 				$naction = 0;
 			$nvalid = 0;
 			$ndosage = 0;
@@ -174,7 +174,7 @@ class Graphql
 			$npharma = 0;
 		}
 
-		return (object) ['count' => $collection->count(), 	//$response->genes->count, 
+		return (object) ['count' => $collection->count(), 	//$response->genes->count,
 						'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage, 'npharma' => $npharma];
 	}
@@ -907,7 +907,7 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		
+
 		//$search = null;
 
 		// initialize the collection
@@ -1039,6 +1039,10 @@ class Graphql
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
+		//dd($node);
+		// genegraph is not distinguishing gene express origin from others
+		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
+		&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
 		return $node;
 
@@ -1617,7 +1621,7 @@ class Graphql
 					{
 						if (strpos($ac->iri, 'Adult') > 0)
 							$adultcounter++;
-						
+
 						if (strpos($ac->iri, 'Pediatric') > 0)
 							$pedscounter++;
 					}
@@ -1678,7 +1682,7 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-		$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] = 
+		$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] =
 									$response->gene_validity_assertions->count;
 
 		$counters = ['definitive evidence' => 0,
@@ -1703,7 +1707,7 @@ class Graphql
 			if (isset($counters[$record->classification->label]))
 				$counters[$record->classification->label]++;
 		}
-		
+
 		$values[Metric::KEY_EXPERT_PANELS] = $panelcounters;
 
 		$values[Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] = $counters['definitive evidence'];
@@ -1714,7 +1718,7 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_REFUTED] = $counters['refuting evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no evidence'];
 
-		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] = 
+		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] =
 						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
@@ -1766,16 +1770,16 @@ class Graphql
 				case 'Pathogenic':
 					$npathogenic++;
 					break;
-				case 'Likely Pathogenic': 
+				case 'Likely Pathogenic':
 					$nlikely++;
 					break;
-				case 'Uncertain Significance': 
+				case 'Uncertain Significance':
 					$nuncertain++;
 					break;
-				case 'Likely Benign': 
+				case 'Likely Benign':
 					$nlikelybenign++;
 					break;
-				case 'Benign': 
+				case 'Benign':
 					$nbenign++;
 					break;
 			}
@@ -1807,9 +1811,9 @@ class Graphql
 								'type' => Metric::TYPE_SYSTEM,
 								'status' => 1,
 								] );
-		
+
 		$metric->save();
-		
+
 		return true;
 	}
 
