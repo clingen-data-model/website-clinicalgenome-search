@@ -33,11 +33,19 @@
                 <i class="fas fa-toggle-off fa-lg action-show-new"></i>
                 <span class="ml-2 hgnc text-muted action-show-new-text">Off</span>
             </div>
-        </div><label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions reviewed in the past 90 days</label>
+        </div>
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions reviewed in the past 90 days</label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-recent"></i>
                 <span class="ml-2 hgnc text-muted action-show-recent-text">Off</span>
+            </div>
+        </div>
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Protein-coding Genes</label>
+        <div class="col-sm-3">
+            <div class="form-inline p-0 m-0 col-sm-12">
+                <i class="fas fa-toggle-off fa-lg action-show-protein"></i>
+                <span class="ml-2 hgnc text-muted action-show-protein-text">Off</span>
             </div>
         </div>
     </div>

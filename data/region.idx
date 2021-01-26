@@ -135,7 +135,7 @@ chr1:2938046-2939467	ISCA-27181	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.01
 chr1:2976181-2984289	ISCA-472	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:2985742-3355185	ISCA-18401	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	605557
 chr1:2986222-2987261	ISCA-19300	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr1:3044539-3044599	ISCA-27311	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:3044539-3044599	ISCA-27311	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:3371147-3397677	ISCA-36101	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr1:3404506-3528059	ISCA-13027	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604266
 chr1:3477259-3477354	ISCA-12874	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -606,7 +606,7 @@ chr1:25071760-25170815	ISCA-1741	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0
 chr1:25104364-25104470	ISCA-42039	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:25226002-25291501	ISCA-29821	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.674	600210
 chr1:25245836-25245907	ISCA-41579	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr1:25349994-25350077	ISCA-40738	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:25349994-25350077	ISCA-40738	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:25451384-25451948	ISCA-20323	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:25548767-25559013	ISCA-21056	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.038	607090
 chr1:25568728-25664745	ISCA-9705	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -745,7 +745,7 @@ chr1:30486799-30510459	ISCA-44705	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr1:31184124-31196432	ISCA-8817	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.005	115437
 chr1:31191619-31199593	ISCA-19429	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:31205315-31230683	ISCA-35981	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.736	601476
-chr1:31212003-31212079	ISCA-40735	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:31212003-31212079	ISCA-40735	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:31316672-31316909	ISCA-45634	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:31342313-31381480	ISCA-16031	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.528	601665
 chr1:31404353-31538564	ISCA-15346	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	607204
@@ -1563,7 +1563,7 @@ chr1:85279086-85358896	ISCA-16671	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr1:85391266-85462805	ISCA-31294	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	607399
 chr1:85483765-85514223	ISCA-21232	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	607400
 chr1:85527981-85598821	ISCA-21303	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
-chr1:85599477-85599556	ISCA-40736	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:85599477-85599556	ISCA-40736	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:85623356-85666728	ISCA-22893	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr1:85715636-85725355	ISCA-23679	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.359	
 chr1:85731459-85742587	ISCA-24887	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.118	603517
@@ -3095,7 +3095,7 @@ chr1:178463491-178464192	ISCA-3763	ISCA Gene Curation	Reopened		N/A	N/A
 chr1:178482212-178492635	ISCA-16049	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	
 chr1:178511931-178518024	ISCA-35314	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:178530048-178530164	ISCA-38535	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr1:178646884-178646969	ISCA-40739	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:178646884-178646969	ISCA-40739	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:178694282-178890977	ISCA-31859	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.922	
 chr1:178715479-178716965	ISCA-8318	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:178818670-178840215	ISCA-17992	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	603874
@@ -3598,7 +3598,7 @@ chr1:218458629-218511325	ISCA-28923	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr1:218511888-218512173	ISCA-16395	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:218517538-218519020	ISCA-41153	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:218518626-218617961	ISCA-28763	ISCA Gene Curation	Reopened		N/A	N/A	0.989	190220
-chr1:218615968-218617337	ISCA-43174	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr1:218615968-218617337	ISCA-43174	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr1:219017104-219055893	ISCA-35544	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:219254315-219347130	ISCA-40917	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:219347173-219386207	ISCA-31470	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -4841,7 +4841,7 @@ chr2:66585381-66585460	ISCA-42918	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr2:66610438-66619582	ISCA-40075	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:66650474-66660602	ISCA-3858	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:66662532-66799891	ISCA-36257	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.991	601739
-chr2:66666219-66667462	ISCA-40485	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr2:66666219-66667462	ISCA-40485	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr2:66801162-66922720	ISCA-3262	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:66924162-66930359	ISCA-40223	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:67047057-67048649	ISCA-21793	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -5357,7 +5357,7 @@ chr2:98000700-98001604	ISCA-34730	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr2:98021380-98021916	ISCA-3372	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:98037040-98038079	ISCA-39772	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:98041194-98042288	ISCA-43034	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:98081774-98089620	ISCA-14335	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr2:98081774-98089620	ISCA-14335	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr2:98121261-98206428	ISCA-18892	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:98253048-98254228	ISCA-19500	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:98262521-98264657	ISCA-1951	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.413	123866
@@ -5662,7 +5662,7 @@ chr2:120975047-120980984	ISCA-34016	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr2:121010414-121052286	ISCA-1994	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.194	179551
 chr2:121103718-121109384	ISCA-32052	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.917	147390
 chr2:121221911-121223925	ISCA-34826	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:121554867-121750229	ISCA-2903	ISCA Gene Curation	Under Group Review		N/A	N/A	0.999	610829
+chr2:121554867-121750229	ISCA-2903	ISCA Gene Curation	Complete		0	3	0.999	610829
 chr2:121974163-122042778	ISCA-539	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.999	609785
 chr2:122067572-122067992	ISCA-1839	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:122095352-122407052	ISCA-19853	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	605852
@@ -7940,7 +7940,7 @@ chr3:57785781-57787176	ISCA-7904	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr3:57927503-57928241	ISCA-10097	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:57994127-58157982	ISCA-18155	ISCA Gene Curation	Complete		0	0	0.002	603381
 chr3:58148274-58156345	ISCA-33781	ISCA Gene Curation	Reopened		N/A	N/A		
-chr3:58148274-58156362	ISCA-43826	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr3:58148274-58156362	ISCA-43826	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr3:58178353-58196730	ISCA-35163	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.155	602244
 chr3:58223229-58280463	ISCA-2767	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	
 chr3:58291972-58305920	ISCA-9271	ISCA Gene Curation	Awaiting Review		N/A	N/A		606112
@@ -8220,7 +8220,7 @@ chr3:98451080-98514689	ISCA-35053	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr3:98501057-98502234	ISCA-26166	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:98514814-98620533	ISCA-33632	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	608698
 chr3:98523822-98523928	ISCA-39967	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr3:98627303-98627408	ISCA-46284	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr3:98627303-98627408	ISCA-46284	ISCA Gene Curation	Closed		N/A	N/A		
 chr3:98699902-98701940	ISCA-11184	ISCA Gene Curation	Reopened		N/A	N/A		
 chr3:98934070-98934877	ISCA-2326	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:99357440-99515577	ISCA-9358	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.038	120251
@@ -8546,7 +8546,7 @@ chr3:125879126-125879288	ISCA-39060	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr3:125898908-125929012	ISCA-41770	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:125985645-126010368	ISCA-16840	ISCA Gene Curation	Reopened		N/A	N/A		
 chr3:126061478-126076236	ISCA-31347	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.435	606465
-chr3:126111875-126113641	ISCA-10136	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr3:126111875-126113641	ISCA-10136	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr3:126113782-126155398	ISCA-21722	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr3:126156444-126194762	ISCA-20825	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	
 chr3:126200008-126236616	ISCA-9866	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	613012
@@ -8729,7 +8729,7 @@ chr3:136455138-136456097	ISCA-21840	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr3:136537433-136538363	ISCA-27575	ISCA Gene Curation	Reopened		N/A	N/A		
 chr3:136537861-136574734	ISCA-21067	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.066	
 chr3:136560818-136580902	ISCA-9294	ISCA Gene Curation	Reopened		N/A	N/A		
-chr3:136560818-136580905	ISCA-37908	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr3:136560818-136580905	ISCA-37908	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr3:136581050-136670452	ISCA-34269	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	600508
 chr3:136617718-136619014	ISCA-19581	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:136676707-136729927	ISCA-14161	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	605621
@@ -9616,7 +9616,7 @@ chr4:4508772-4509560	ISCA-27148	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr4:4543858-4712665	ISCA-10171	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:4763487-4789101	ISCA-38674	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:4846164-4852554	ISCA-43435	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr4:4861392-4865663	ISCA-5109	ISCA Gene Curation	Reopened		N/A	N/A	0.275	608874
+chr4:4861392-4865663	ISCA-5109	ISCA Gene Curation	Complete		0	3	0.17	608874
 chr4:4895351-4896995	ISCA-5466	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:4922535-4990398	ISCA-40856	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:4922555-4922791	ISCA-46110	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -10925,7 +10925,7 @@ chr4:147030607-147043065	ISCA-18662	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr4:147096835-147111213	ISCA-10990	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.868	607286
 chr4:147138105-147151665	ISCA-24429	ISCA Gene Curation	Reopened		N/A	N/A		
 chr4:147175139-147443123	ISCA-11912	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.029	611459
-chr4:147329735-147329840	ISCA-43171	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr4:147329735-147329840	ISCA-43171	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr4:147501200-147501362	ISCA-43264	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:147560045-147563623	ISCA-35837	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.18	113725
 chr4:147627790-147867038	ISCA-29999	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -12201,7 +12201,7 @@ chr5:92225079-92226626	ISCA-30821	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr5:92355369-92387484	ISCA-30977	ISCA Gene Curation	Reopened		N/A	N/A		
 chr5:92603044-92604390	ISCA-31199	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:92745062-92917026	ISCA-13982	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr5:92919043-92930317	ISCA-31161	ISCA Gene Curation	Complete		0	0		132890
+chr5:92919043-92930317	ISCA-31161	ISCA Gene Curation	Reopened		N/A	N/A		132890
 chr5:92953431-93447404	ISCA-13166	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.018	
 chr5:92956402-92956494	ISCA-27333	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:93018225-93019522	ISCA-17818	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -14229,7 +14229,7 @@ chr6:32485151-32498006	ISCA-26236	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr6:32517717-32517867	ISCA-45997	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:32520490-32527779	ISCA-32455	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:32544054-32544200	ISCA-39130	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr6:32546546-32557562	ISCA-10262	ISCA Gene Curation	Awaiting Review		N/A	N/A		181000
+chr6:32546546-32557562	ISCA-10262	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		181000
 chr6:32546546-32557613	ISCA-5	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	181000
 chr6:32605183-32611429	ISCA-33225	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.167	212750
 chr6:32627241-32634466	ISCA-30834	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.353	604305
@@ -15618,7 +15618,7 @@ chr6:155411423-155578857	ISCA-7779	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr6:155577264-155635617	ISCA-8277	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	607033
 chr6:155585147-155597682	ISCA-36371	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	
 chr6:155716502-155777037	ISCA-28879	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	607105
-chr6:155835978-155847152	ISCA-43178	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr6:155835978-155847152	ISCA-43178	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr6:155976097-155976160	ISCA-46172	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:156267931-156268013	ISCA-29812	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:156869046-156869120	ISCA-14394	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -16008,7 +16008,7 @@ chr7:18166843-18166932	ISCA-23297	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr7:18618284-18618939	ISCA-7364	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:18847616-18847902	ISCA-45903	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:18988214-18989485	ISCA-17530	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr7:19155091-19157295	ISCA-2704	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.34	601622
+chr7:19155091-19157295	ISCA-2704	ISCA Gene Curation	Complete		0	3	0.34	601622
 chr7:19184405-19185044	ISCA-9538	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.258	
 chr7:19735085-19748660	ISCA-1976	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.309	608312
 chr7:19744981-19745059	ISCA-21984	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -16140,7 +16140,7 @@ chr7:29019583-29052985	ISCA-26615	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr7:29034847-29235067	ISCA-28212	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	609780
 chr7:29164649-29167788	ISCA-43986	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:29186163-29553951	ISCA-3920	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.026	602857
-chr7:29238656-29248586	ISCA-40484	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr7:29238656-29248586	ISCA-40484	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr7:29251729-29253503	ISCA-34145	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:29591126-29591860	ISCA-22277	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:29603427-29606911	ISCA-36551	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.447	
@@ -16300,7 +16300,7 @@ chr7:41004277-41019537	ISCA-44166	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr7:41141202-41173099	ISCA-43350	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:41724712-41742706	ISCA-35655	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.556	147290
 chr7:41733514-41818976	ISCA-12386	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr7:42000547-42276618	ISCA-30236	ISCA Gene Curation	Under Primary Review		N/A	N/A	1.0	165240
+chr7:42000547-42276618	ISCA-30236	ISCA Gene Curation	Complete		0	3	1.0	165240
 chr7:42152855-42154038	ISCA-24479	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:42701325-42746046	ISCA-39899	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:42834371-42836458	ISCA-33475	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -17706,7 +17706,7 @@ chr7:142239537-142240011	ISCA-7187	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr7:142242281-142242747	ISCA-26503	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:142245303-142245763	ISCA-10031	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:142247109-142247565	ISCA-14822	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr7:142250703-142251137	ISCA-27314	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr7:142250703-142251137	ISCA-27314	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr7:142259058-142259498	ISCA-30772	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:142273056-142273342	ISCA-22605	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:142326571-142327046	ISCA-14514	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -18055,7 +18055,7 @@ chr8:6261077-6264069	ISCA-37063	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr8:6264113-6506026	ISCA-18258	ISCA Gene Curation	Complete		Not yet evaluated	30: Gene associated with autosomal recessive phenotype	0.0	607117
 chr8:6357172-6420784	ISCA-12097	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.455	601922
 chr8:6473124-6565730	ISCA-13686	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr8:6479645-6479741	ISCA-43283	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr8:6479645-6479741	ISCA-43283	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr8:6565878-6619024	ISCA-16942	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.006	
 chr8:6575848-6578531	ISCA-22868	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:6602685-6602765	ISCA-44446	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -18321,7 +18321,7 @@ chr8:20472367-20472437	ISCA-476	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr8:20790083-20792374	ISCA-24338	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:20811144-20826449	ISCA-39149	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:20831497-20852630	ISCA-33484	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr8:21155750-21166960	ISCA-43829	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr8:21155750-21166960	ISCA-43829	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr8:21549530-21646346	ISCA-29799	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.337	601956
 chr8:21654598-21655408	ISCA-26112	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:21766384-21771219	ISCA-4396	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604997
@@ -19428,7 +19428,7 @@ chr8:128098507-128099755	ISCA-30532	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr8:128200030-128209872	ISCA-41862	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:128219627-128231513	ISCA-34864	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:128256882-128404876	ISCA-45776	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr8:128301921-128494384	ISCA-1637	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr8:128301921-128494384	ISCA-1637	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr8:128412644-128414395	ISCA-40701	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:128427857-128429455	ISCA-13600	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr8:128712853-128746213	ISCA-46072	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -19472,7 +19472,7 @@ chr8:133787604-133861052	ISCA-21766	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr8:133879205-134147143	ISCA-15896	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	608175
 chr8:134014822-134015360	ISCA-8908	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:134048973-134115310	ISCA-24263	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.723	601099
-chr8:134058726-134058826	ISCA-43170	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr8:134058726-134058826	ISCA-43170	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr8:134203282-134243933	ISCA-23127	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	603398
 chr8:134249414-134309547	ISCA-20450	ISCA Gene Curation	Complete		Not yet evaluated	30: Gene associated with autosomal recessive phenotype	0.054	605262
 chr8:134338240-134338647	ISCA-5440	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -19994,7 +19994,7 @@ chr9:33638035-33638506	ISCA-25952	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr9:33649129-33649611	ISCA-16447	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:33662201-33662662	ISCA-30050	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:33673502-33677418	ISCA-32856	ISCA Gene Curation	Awaiting Review		N/A	N/A		613531
-chr9:33677266-33688009	ISCA-43825	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr9:33677266-33688009	ISCA-43825	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr9:33682268-33682721	ISCA-9409	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:33695578-33696059	ISCA-12060	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:33732973-33738414	ISCA-41773	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -22835,7 +22835,7 @@ chr10:105062553-105110891	ISCA-25128	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr10:105072193-105072325	ISCA-40534	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr10:105127710-105148822	ISCA-23431	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	601787
 chr10:105148807-105156270	ISCA-19773	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.243	
-chr10:105154010-105154158	ISCA-15233	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr10:105154010-105154158	ISCA-15233	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr10:105156412-105206019	ISCA-35985	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.468	612333
 chr10:105206543-105212162	ISCA-32118	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	612235
 chr10:105212603-105222452	ISCA-6688	ISCA Gene Curation	Reopened		N/A	N/A		
@@ -23732,7 +23732,7 @@ chr11:22644079-22647387	ISCA-31571	ISCA Gene Curation	Complete		0	30: Gene assoc
 chr11:22688160-22834547	ISCA-29217	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.026	602835
 chr11:22709897-22709981	ISCA-43140	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:22841809-22851408	ISCA-20983	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.011	
-chr11:22868468-22881972	ISCA-37900	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr11:22868468-22881972	ISCA-37900	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr11:23391662-23399247	ISCA-11791	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:23425828-23427843	ISCA-19777	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:23440651-23440736	ISCA-39884	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -23910,7 +23910,7 @@ chr11:45376922-45378208	ISCA-39864	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:45392948-45410059	ISCA-22926	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:45535635-45536201	ISCA-38280	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:45669239-45687206	ISCA-21602	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.821	603797
-chr11:45713254-45713326	ISCA-43179	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr11:45713254-45713326	ISCA-43179	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr11:45743858-45746106	ISCA-19999	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:45792983-45793909	ISCA-15144	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:45825623-45834567	ISCA-3081	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.147	605881
@@ -24919,7 +24919,7 @@ chr11:82612737-82645701	ISCA-9575	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr11:82668435-82669315	ISCA-20626	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:82684175-82782965	ISCA-8697	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.959	605693
 chr11:82752506-82752640	ISCA-31229	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr11:82783108-82784754	ISCA-27317	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr11:82783108-82784754	ISCA-27317	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr11:82789752-82790924	ISCA-33473	ISCA Gene Curation	Reopened		N/A	N/A		
 chr11:82817530-82818025	ISCA-40230	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:82822102-82822484	ISCA-42065	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -25418,7 +25418,7 @@ chr11:119314947-119316264	ISCA-26448	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:119473331-119475092	ISCA-923	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:119508808-119599435	ISCA-24100	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.503	600644
 chr11:119527021-119527126	ISCA-45180	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr11:119600293-119610333	ISCA-38906	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr11:119600293-119610333	ISCA-38906	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr11:119610421-119617424	ISCA-18037	ISCA Gene Curation	Reopened		N/A	N/A		
 chr11:119691921-119693029	ISCA-18988	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:119981983-120008863	ISCA-10034	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	610658
@@ -26045,7 +26045,7 @@ chr12:15094949-15114704	ISCA-6680	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr12:15125956-15134799	ISCA-16194	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.007	610024
 chr12:15154767-15159617	ISCA-39328	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:15260716-15374411	ISCA-25414	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	612664
-chr12:15304857-15308217	ISCA-41852	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr12:15304857-15308217	ISCA-41852	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr12:15407674-15408757	ISCA-29564	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:15475191-15751265	ISCA-26708	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.305	600579
 chr12:15592438-15593384	ISCA-32232	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -26462,7 +26462,7 @@ chr12:51745833-51785200	ISCA-6868	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr12:51785101-51909547	ISCA-15314	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	605024
 chr12:51985020-52206648	ISCA-33566	ISCA Gene Curation	Complete		0	0	1.0	600702
 chr12:52106271-52107440	ISCA-14173	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr12:52211676-52225701	ISCA-30670	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr12:52211676-52225701	ISCA-30670	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr12:52238457-52246513	ISCA-4902	ISCA Gene Curation	Reopened		N/A	N/A		
 chr12:52242007-52246513	ISCA-45537	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:52281793-52285505	ISCA-33999	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -27128,7 +27128,7 @@ chr12:97294872-97296476	ISCA-6548	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr12:97301001-97347469	ISCA-21465	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.222	600372
 chr12:97490691-97490764	ISCA-747	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:97858799-97927544	ISCA-6463	ISCA Gene Curation	Awaiting Review		N/A	N/A		607045
-chr12:97885687-97885756	ISCA-1630	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr12:97885687-97885756	ISCA-1630	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr12:97957590-97957689	ISCA-31263	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:98107190-98150295	ISCA-8433	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:98115494-98115599	ISCA-41382	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -27755,7 +27755,7 @@ chr13:21676944-21678660	ISCA-41743	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:21714653-21723224	ISCA-5916	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.046	602949
 chr13:21727734-21750741	ISCA-4985	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr13:21750372-21753223	ISCA-1643	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.15	611997
-chr13:21808707-21809343	ISCA-41855	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:21808707-21809343	ISCA-41855	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:21834230-21836501	ISCA-846	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:21872264-21967062	ISCA-18501	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:21877651-21918998	ISCA-45647	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -28274,7 +28274,7 @@ chr13:60054204-60054266	ISCA-40329	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:60239717-60738119	ISCA-7839	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	609129
 chr13:60586852-60618491	ISCA-41647	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:60608599-60608896	ISCA-39125	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr13:60718832-60727639	ISCA-38909	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:60718832-60727639	ISCA-38909	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:60761872-60761964	ISCA-38464	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:60788481-60842238	ISCA-44556	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:60843438-60850271	ISCA-742	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -28472,7 +28472,7 @@ chr13:88888817-88889224	ISCA-10523	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:89193084-89197764	ISCA-44576	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:89279107-89282651	ISCA-40770	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:89630604-89631050	ISCA-44818	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr13:89867101-89889144	ISCA-41856	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:89867101-89889144	ISCA-41856	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:89887545-89932494	ISCA-39085	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:89901114-89902925	ISCA-510	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:90012007-90015756	ISCA-12434	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -28596,7 +28596,7 @@ chr13:100377922-100381255	ISCA-38141	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:100393124-100609419	ISCA-39070	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:100615275-100624178	ISCA-18392	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:100634026-100639019	ISCA-2954	ISCA Gene Curation	Complete		0	3		603073
-chr13:100647153-100650163	ISCA-40483	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:100647153-100650163	ISCA-40483	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:100680023-100680428	ISCA-43830	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:100714523-100715871	ISCA-28083	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:100738285-100741197	ISCA-38988	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -28623,7 +28623,7 @@ chr13:102669303-102669419	ISCA-46063	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:102698284-102698354	ISCA-37743	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:102915195-102915603	ISCA-27136	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:102944670-103046869	ISCA-13151	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr13:103019880-103026016	ISCA-43172	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:103019880-103026016	ISCA-43172	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:103046928-103048055	ISCA-23801	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:103249286-103332308	ISCA-19310	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	190470
 chr13:103338097-103346871	ISCA-17883	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -28699,8 +28699,8 @@ chr13:112721913-112726020	ISCA-33483	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr13:112809471-112815024	ISCA-16381	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:112851647-112855314	ISCA-37639	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:112911039-112927314	ISCA-40019	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr13:112967781-112976080	ISCA-41859	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr13:112976881-112985539	ISCA-41857	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr13:112967781-112976080	ISCA-41859	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
+chr13:112976881-112985539	ISCA-41857	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr13:113030651-113089009	ISCA-575	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr13:113139319-113242499	ISCA-33583	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.953	
 chr13:113301358-113338811	ISCA-18429	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	
@@ -28927,7 +28927,7 @@ chr14:22192136-22192568	ISCA-36886	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr14:22204501-22205264	ISCA-9728	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:22217474-22217989	ISCA-8635	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:22218496-22219914	ISCA-14081	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr14:22236793-22237320	ISCA-27319	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr14:22236793-22237320	ISCA-27319	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr14:22251210-22251720	ISCA-17614	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:22265591-22266058	ISCA-30723	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:22279674-22280149	ISCA-24539	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -29550,7 +29550,7 @@ chr14:62037258-62121431	ISCA-37216	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr14:62147759-62162541	ISCA-37518	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:62162119-62214977	ISCA-29615	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.981	603348
 chr14:62182276-62217815	ISCA-38449	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr14:62213757-62215807	ISCA-43820	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr14:62213757-62215807	ISCA-43820	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr14:62229075-62263146	ISCA-12371	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	600591
 chr14:62298457-62299140	ISCA-7488	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:62330929-62332867	ISCA-8900	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -30108,7 +30108,7 @@ chr14:101433389-101433459	ISCA-20566	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr14:101434448-101434521	ISCA-33715	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101435285-101435358	ISCA-29535	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101436216-101436288	ISCA-5884	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr14:101438440-101438513	ISCA-19956	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr14:101438440-101438513	ISCA-19956	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr14:101439007-101439077	ISCA-5662	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101439932-101440000	ISCA-18733	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101441143-101441216	ISCA-31655	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -30165,7 +30165,7 @@ chr14:101526910-101527011	ISCA-10942	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr14:101528387-101528455	ISCA-2736	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101530832-101530915	ISCA-27443	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101531637-101531715	ISCA-36833	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr14:101531784-101531874	ISCA-8878	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr14:101531784-101531874	ISCA-8878	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr14:101531935-101532004	ISCA-1199	ISCA Gene Curation	Awaiting Review		N/A	N/A		611794
 chr14:101532249-101532328	ISCA-13760	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:101533061-101533138	ISCA-30362	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -30595,7 +30595,7 @@ chr15:23675986-23680366	ISCA-32512	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr15:23684533-23692390	ISCA-4004	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr15:23747996-28379874	ISCA-37478	ISCA Region Curation	Complete	15q11q13 recurrent (PWS/AS) region (BP2-BP3, Class 2)	3	3		
 chr15:23807209-23807278	ISCA-42471	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr15:23810454-23813167	ISCA-12789	ISCA Gene Curation	Complete		0	0	0.024	603856
+chr15:23810454-23813167	ISCA-12789	ISCA Gene Curation	Reopened		N/A	N/A	0.024	603856
 chr15:23888696-23892993	ISCA-16618	ISCA Gene Curation	Complete		0	1	0.922	605283
 chr15:23930554-23932450	ISCA-34489	ISCA Gene Curation	Complete		0	0	0.47	602117
 chr15:24022584-24022690	ISCA-43738	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -31517,7 +31517,7 @@ chr15:75613923-75615047	ISCA-6500	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr15:75628337-75634268	ISCA-21621	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.238	
 chr15: 75631787-75972909	ISCA-46300	ISCA Region Curation	Complete	15q24 recurrent region (C-D) (includes SIN3A)	0	3		
 chr15:75639331-75647592	ISCA-9622	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	608844
-chr15:75645952-75646026	ISCA-8873	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr15:75645952-75646026	ISCA-8873	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr15:75648133-75660968	ISCA-27858	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	154580
 chr15:75661720-75748124	ISCA-10595	ISCA Gene Curation	Complete		0	3	1.0	607776
 chr15:75680577-75681217	ISCA-35352	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -32933,7 +32933,7 @@ chr16:50776216-50776288	ISCA-38119	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr16:50903366-50903486	ISCA-44639	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:51051669-51069688	ISCA-44435	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:51141491-51141931	ISCA-40635	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr16:51169886-51185183	ISCA-11145	ISCA Gene Curation	Complete		0	3	0.995	602218
+chr16:51169886-51185183	ISCA-11145	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.995	602218
 chr16:51183150-51183730	ISCA-21280	ISCA Gene Curation	Reopened		N/A	N/A		
 chr16:51312585-51313616	ISCA-13493	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:51679667-51681027	ISCA-29048	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -34466,7 +34466,7 @@ chr17:35849951-35873588	ISCA-18494	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr17:35874900-35969486	ISCA-12052	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.973	607291
 chr17:35969787-36003493	ISCA-36023	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	612500
 chr17:35974976-35975084	ISCA-45268	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:36046434-36105069	ISCA-3955	ISCA Gene Curation	Under Group Review		N/A	N/A	0.999	189907
+chr17:36046434-36105069	ISCA-3955	ISCA Gene Curation	Complete		0	3	0.999	189907
 chr17:36202573-36244363	ISCA-8145	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:36267501-36267607	ISCA-43220	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:36283960-36294915	ISCA-21547	ISCA Gene Curation	Reopened		N/A	N/A	0.62	610809
@@ -35032,7 +35032,7 @@ chr17:53796988-53809482	ISCA-21569	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr17:53828340-53900451	ISCA-5187	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	606055
 chr17:54230836-54560007	ISCA-28504	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr17:54650356-54650749	ISCA-3377	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:54671060-54672951	ISCA-19445	ISCA Gene Curation	Reopened		N/A	N/A	0.683	611377
+chr17:54671060-54672951	ISCA-19445	ISCA Gene Curation	Complete		0	3	0.683	611377
 chr17:54869274-54911256	ISCA-7922	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr17:54911460-54946036	ISCA-4236	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.001	601440
 chr17:54948531-54948637	ISCA-45714	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -35222,7 +35222,7 @@ chr17:62473902-62493184	ISCA-8347	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr17:62487635-62488043	ISCA-9220	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:62494372-62503156	ISCA-857	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.997	180630
 chr17:62496892-62496957	ISCA-39224	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:62497332-62497431	ISCA-43822	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr17:62497332-62497431	ISCA-43822	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr17:62502854-62534069	ISCA-8548	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr17:62540735-62658386	ISCA-37271	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	605532
 chr17:62743153-62743658	ISCA-3987	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -35314,7 +35314,7 @@ chr17:68163102-68165543	ISCA-7042	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr17:68165676-68176185	ISCA-20070	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.82	609622
 chr17:68237448-68238519	ISCA-28501	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:69008700-69009730	ISCA-3722	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:69093915-69198320	ISCA-41858	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr17:69093915-69198320	ISCA-41858	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr17:69294297-69294359	ISCA-40609	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:69617079-69617772	ISCA-7587	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:70017992-70022120	ISCA-41102	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -36105,7 +36105,7 @@ chr18:48340758-48341909	ISCA-16938	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr18:48349947-48350474	ISCA-5618	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr18:48405432-48476165	ISCA-9843	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	610064
 chr18:48494387-48514490	ISCA-32738	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.895	608079
-chr18:48556583-48611412	ISCA-1866	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.967	600993
+chr18:48556583-48611412	ISCA-1866	ISCA Gene Curation	Complete		0	3	0.967	600993
 chr18:48684572-48685813	ISCA-17480	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr18:48700920-48724051	ISCA-14136	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.946	611014
 chr18:48810103-48810260	ISCA-42966	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -36729,7 +36729,7 @@ chr19:9945883-9960365	ISCA-34047	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.3
 chr19:9964394-10047228	ISCA-15759	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.965	
 chr19:10070237-10121147	ISCA-23745	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	120216
 chr19:10123925-10132954	ISCA-34565	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	608575
-chr19:10149030-10149089	ISCA-40489	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr19:10149030-10149089	ISCA-40489	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr19:10152032-10184814	ISCA-12610	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr19:10196795-10203928	ISCA-32318	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.931	
 chr19:10203013-10213425	ISCA-17030	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	609336
@@ -38909,7 +38909,7 @@ chr20:22197692-22213906	ISCA-34271	ISCA Gene Curation	Reopened		N/A	N/A
 chr20:22260866-22263439	ISCA-40845	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:22380971-22401281	ISCA-25549	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:22541191-22559280	ISCA-36958	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr20:22561642-22566101	ISCA-14606	ISCA Gene Curation	Awaiting Review		N/A	N/A		600288
+chr20:22561642-22566101	ISCA-14606	ISCA Gene Curation	Reopened		N/A	N/A		600288
 chr20:22568160-22588155	ISCA-38893	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:22713371-22714729	ISCA-9004	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:22866128-22866706	ISCA-13156	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -39114,7 +39114,7 @@ chr20:33873054-33873575	ISCA-41898	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr20:33873534-33880225	ISCA-4764	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr20:33890369-33999945	ISCA-22497	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.005	612228
 chr20:34020829-34023278	ISCA-33097	ISCA Gene Curation	Reopened		N/A	N/A	0.042	
-chr20:34021145-34042568	ISCA-6296	ISCA Gene Curation	Complete		0	3	0.923	601146
+chr20:34021145-34042568	ISCA-6296	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.923	601146
 chr20:34041776-34041919	ISCA-31602	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:34043223-34099804	ISCA-10617	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	609689
 chr20:34108569-34117481	ISCA-1546	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -39414,7 +39414,7 @@ chr20:48657244-48658166	ISCA-43323	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr20:48697661-48732496	ISCA-1782	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	602995
 chr20:48697661-48770335	ISCA-17781	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.005	
 chr20:48740274-48770335	ISCA-3878	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.005	610994
-chr20:48789107-48793208	ISCA-37905	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr20:48789107-48793208	ISCA-37905	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		
 chr20:48801140-48808606	ISCA-41294	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:48807120-48809227	ISCA-16535	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.184	189965
 chr20:48884023-48896332	ISCA-1161	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -39444,7 +39444,7 @@ chr20:50003494-50179370	ISCA-12868	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr20:50069442-50069514	ISCA-33099	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:50213314-50384950	ISCA-34828	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	609126
 chr20:50351079-50351603	ISCA-21096	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr20:50399256-50419062	ISCA-19618	ISCA Gene Curation	Under Group Review		N/A	N/A	1.0	607343
+chr20:50399256-50419062	ISCA-19618	ISCA Gene Curation	Complete		0	3	1.0	607343
 chr20:50448336-50479452	ISCA-40851	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:50518830-50518934	ISCA-37656	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr20:50521508-50521569	ISCA-10653	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -40017,7 +40017,7 @@ chr21:38559913-38566227	ISCA-37772	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr21:38580804-38594037	ISCA-34082	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr21:38587906-38588204	ISCA-42643	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr21:38595721-38640409	ISCA-4507	ISCA Gene Curation	Complete		0	0	0.506	605298
-chr21:38737875-38887679	ISCA-36235	ISCA Gene Curation	Under Primary Review		N/A	N/A	1.0	600855
+chr21:38737875-38887679	ISCA-36235	ISCA Gene Curation	Complete		0	3	1.0	600855
 chr21:38996525-39288741	ISCA-6292	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.812	600877
 chr21:39426313-39493454	ISCA-31941	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	604829
 chr21:39493545-39528605	ISCA-22441	ISCA Gene Curation	Awaiting Review		N/A	N/A		613396
@@ -41292,7 +41292,7 @@ chrX:9983795-10112518	ISCA-21209	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0
 chrX:10124985-10205700	ISCA-9681	ISCA Gene Curation	Complete		0	2	0.989	302910
 chrX:10413350-10851809	ISCA-6632	ISCA Gene Curation	Complete		0	3	0.501	300552
 chrX:10550857-10550959	ISCA-45057	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:11129406-11141206	ISCA-20454	ISCA Gene Curation	Complete		0	3	0.951	300056
+chrX:11129406-11141206	ISCA-20454	ISCA Gene Curation	Complete		0	3	0.89	300056
 chrX:11155663-11683821	ISCA-23783	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.992	300118
 chrX:11311533-11318881	ISCA-6949	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.188	301200
 chrX:11336734-11336806	ISCA-38164	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -41409,7 +41409,7 @@ chrX:20158086-20158562	ISCA-38030	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:20168029-20284750	ISCA-36806	ISCA Gene Curation	Complete		0	3	1.0	300075
 chrX:20470226-20470549	ISCA-45581	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:21232755-21232861	ISCA-40967	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:21392416-21672813	ISCA-31317	ISCA Gene Curation	Complete		0	2	1.0	300724
+chrX:21392416-21672813	ISCA-31317	ISCA Gene Curation	Complete		0	3	1.0	300724
 chrX:21439940-21440412	ISCA-38206	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:21673467-21676505	ISCA-19660	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chrX:21724090-21776278	ISCA-4216	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.594	300226
@@ -41773,9 +41773,9 @@ chrX:49188081-49195369	ISCA-4385	ISCA Gene Curation	Awaiting Review		N/A	N/A		30
 chrX:49197598-49204859	ISCA-38380	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:49197607-49204923	ISCA-24609	ISCA Gene Curation	Reopened		N/A	N/A		300736
 chrX:49207116-49214420	ISCA-7726	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.403	300735
-chrX:49216677-49223943	ISCA-28412	ISCA Gene Curation	Awaiting Review		N/A	N/A		300637
-chrX:49226171-49233491	ISCA-3888	ISCA Gene Curation	Awaiting Review		N/A	N/A		300595
-chrX:49235708-49242997	ISCA-10337	ISCA Gene Curation	Awaiting Review		N/A	N/A		300726
+chrX:49216677-49223943	ISCA-28412	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		300637
+chrX:49226171-49233491	ISCA-3888	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		300595
+chrX:49235708-49242997	ISCA-10337	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		300726
 chrX:49296780-49304144	ISCA-23351	ISCA Gene Curation	Awaiting Review		N/A	N/A		300727
 chrX:49306325-49313710	ISCA-30765	ISCA Gene Curation	Awaiting Review		N/A	N/A		300728
 chrX:49315892-49323252	ISCA-9263	ISCA Gene Curation	Awaiting Review		N/A	N/A		300729
@@ -42242,7 +42242,7 @@ chrX:84498997-84528368	ISCA-28450	ISCA Gene Curation	Complete		0	2	0.989	314990
 chrX:84532395-84634748	ISCA-32515	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	300604
 chrX:85090785-85090863	ISCA-1868	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:85104248-85105165	ISCA-28067	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:85116185-85302569	ISCA-29081	ISCA Gene Curation	Under Group Review		N/A	N/A	0.998	300390
+chrX:85116185-85302569	ISCA-29081	ISCA Gene Curation	Complete		0	3	0.998	300390
 chrX:85158641-85158712	ISCA-14718	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:85321231-85321472	ISCA-41884	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:85339300-85341402	ISCA-10414	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -42463,7 +42463,7 @@ chrX:106594517-106596204	ISCA-12856	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:106671857-106672750	ISCA-11779	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:106756213-106789051	ISCA-46253	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:106765680-106848474	ISCA-1372	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.911	
-chrX:106871654-106894256	ISCA-24399	ISCA Gene Curation	Complete		0	3	0.872	311850
+chrX:106871654-106894256	ISCA-24399	ISCA Gene Curation	Under Group Review		N/A	N/A	0.872	311850
 chrX:106956451-107019218	ISCA-27205	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.772	300506
 chrX:107037491-107037907	ISCA-3141	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.13	
 chrX:107069084-107174867	ISCA-14014	ISCA Gene Curation	Complete		0	0	0.985	300204
@@ -42624,7 +42624,7 @@ chrX:119370305-119379122	ISCA-4680	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:119384607-119392251	ISCA-26069	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.893	300329
 chrX:119392505-119445391	ISCA-26143	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.47	
 chrX:119495940-119517104	ISCA-10204	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	
-chrX:119560003-119603204	ISCA-17531	ISCA Gene Curation	Complete		0	3	0.95	309060
+chrX:119560003-119603204	ISCA-17531	ISCA Gene Curation	Reopened		N/A	N/A	0.95	309060
 chrX:119636896-119636952	ISCA-37966	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:119658444-119709684	ISCA-27615	ISCA Gene Curation	Complete		0	3	1.0	300304
 chrX:119737744-119755014	ISCA-17249	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.825	300587
@@ -42667,7 +42667,7 @@ chrX:123306585-123308548	ISCA-1551	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:123338582-123339726	ISCA-37089	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:123414285-123415472	ISCA-29388	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:123466768-123467760	ISCA-32164	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:123480132-123507010	ISCA-2171	ISCA Gene Curation	Complete		0	3	0.083	300490
+chrX:123480132-123507010	ISCA-2171	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.083	300490
 chrX:123509753-124097666	ISCA-21474	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	300588
 chrX:123822354-123822688	ISCA-5839	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:124453969-124456950	ISCA-44197	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -42750,7 +42750,7 @@ chrX:132350697-132352376	ISCA-3674	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chrX:132372685-132372844	ISCA-40623	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:132435064-132549205	ISCA-8864	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.948	300168
 chrX:132665751-132665854	ISCA-45454	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:132669773-133119673	ISCA-32790	ISCA Gene Curation	Complete		0	3	0.988	300037
+chrX:132669773-133119673	ISCA-32790	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.988	300037
 chrX:132804960-132805488	ISCA-29407	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:132896747-132897780	ISCA-26997	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:133300696-133301112	ISCA-42410	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -42763,8 +42763,8 @@ chrX:133304228-133304308	ISCA-13570	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chrX:133337739-133338903	ISCA-7114	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:133371077-133379808	ISCA-24457	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.029	
 chrX:133406317-133407671	ISCA-23090	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:133507342-133562822	ISCA-3118	ISCA Gene Curation	Complete		0	3	0.972	300414
-chrX:133594175-133634698	ISCA-16833	ISCA Gene Curation	Under Group Review		N/A	N/A	0.917	308000
+chrX:133507342-133562822	ISCA-3118	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.972	300414
+chrX:133594175-133634698	ISCA-16833	ISCA Gene Curation	Complete		0	3	0.917	308000
 chrX:133656730-133657030	ISCA-24860	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:133674215-133674292	ISCA-2791	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:133674371-133674461	ISCA-16648	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -42863,7 +42863,7 @@ chrX:137794269-137798767	ISCA-42097	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:137888536-137889292	ISCA-24881	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:138444099-138444641	ISCA-2512	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:138528978-138531132	ISCA-20697	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:138612895-138645617	ISCA-25959	ISCA Gene Curation	Under Group Review		N/A	N/A	0.99	300746
+chrX:138612895-138645617	ISCA-25959	ISCA Gene Curation	Complete		0	3	0.99	300746
 chrX:138663930-138790381	ISCA-20739	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.943	311030
 chrX:138802738-138802934	ISCA-15897	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:138808505-138914447	ISCA-2157	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	300516
@@ -42954,7 +42954,7 @@ chrX:146366159-146366246	ISCA-27268	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:146882490-146882871	ISCA-27407	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:146908797-146908902	ISCA-40661	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:146990949-146993335	ISCA-6223	ISCA Gene Curation	Awaiting Review		N/A	N/A		300805
-chrX:146993469-147032647	ISCA-21763	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.127	309550
+chrX:146993469-147032647	ISCA-21763	ISCA Gene Curation	Complete		0	3	0.127	309550
 chrX:147062849-147108187	ISCA-9761	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.18	
 chrX:147133532-147134443	ISCA-35404	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:147279348-147280499	ISCA-8304	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -42988,7 +42988,7 @@ chrX:149282597-149285052	ISCA-19435	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:149396239-149396318	ISCA-12517	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:149399291-149438002	ISCA-4028	ISCA Gene Curation	Reopened		N/A	N/A		
 chrX:149531545-149682448	ISCA-29659	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.84	300758
-chrX:149737047-149841616	ISCA-11551	ISCA Gene Curation	Under Group Review		N/A	N/A	0.999	300415
+chrX:149737047-149841616	ISCA-11551	ISCA Gene Curation	Complete		0	3	0.999	300415
 chrX:149861837-149933576	ISCA-588	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.982	300171
 chrX:149934809-150067289	ISCA-13313	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	300846
 chrX:150124025-150124118	ISCA-44933	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -43163,7 +43163,7 @@ chrX:155255323-155257848	ISCA-11572	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:155258216-155258772	ISCA-5088	ISCA Gene Curation	Reopened		N/A	N/A		
 chrY:2620337-2643037	ISCA-9667	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrY:2652790-2652894	ISCA-44793	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrY:2654896-2655782	ISCA-27033	ISCA Gene Curation	Reopened		N/A	N/A	0.416	480000
+chrY:2654896-2655782	ISCA-27033	ISCA Gene Curation	Complete		0	3	0.416	480000
 chrY:2657847-2658480	ISCA-32531	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrY:2696023-2696259	ISCA-12356	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrY:2709623-2734997	ISCA-10152	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.502	470000

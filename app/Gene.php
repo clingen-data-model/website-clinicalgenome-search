@@ -165,6 +165,15 @@ class Gene extends Model
      }
      
 
+     /*
+     * The roles that belong to this user
+     */
+     public function users()
+     {
+        return $this->belongsToMany('App\User');
+     }
+
+
 	/**
      * Query scope by ident
      *

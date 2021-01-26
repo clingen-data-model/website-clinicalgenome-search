@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\GeneListRequest;
 
 use App\GeneLib;
+use App\User;
 use App\Gene;
 
 /**
@@ -157,13 +158,29 @@ class GeneController extends Controller
 			->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
 			->with('back', url()->previous());
 
+		$follow = false;
+		$email = '';
+
+		$cookie = $request->cookie('clingenfollow');
+
+		if ($cookie !== null)
+		{
+			$user = User::cookie($cookie)->first();
+
+			if ($user !== null)
+			{
+				$follow = $user->genes->contains('hgnc_id', $id);
+				$email = $user->email;
+			}
+		}
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
 
-		return view('gene.by-activity', compact('display_tabs', 'record'));
+		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email'));
 	}
 
 

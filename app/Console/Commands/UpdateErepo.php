@@ -67,6 +67,17 @@ class UpdateErepo extends Command
                     'gene' => $variant->gene,
                     'guidelines' => $variant->guidelines,
                     'hgvs' => $variant->hgvs]);
+
+        // update the main gene table
+        $gene = Gene::name($variant->gene->label)->first();
+
+        if ($gene !== null)
+        {
+            $activity = $gene->activity;
+            $activity['varpath'] = true;
+            $gene->activity = $activity;
+            $gene->save();
+        }
       }		
 
     }

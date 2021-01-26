@@ -36,7 +36,8 @@ class GeneController extends Controller
                 'naction' => $results->naction,
                 'ndosage' => $results->ndosage,
                 'nvalid' => $results->nvalid,
-                'npharma' => $results->npharma,
+                'npharma' => $results->npharma ?? 0,
+                'nvariant' => $results->nvariant ?? 0,
                 'ncurated' => $results->ncurated];
     }
 

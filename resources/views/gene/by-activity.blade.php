@@ -26,9 +26,12 @@
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br /> Clinical Actionability<br />Assertions</li>
-			<!--<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star"></i></span><br /> Follow<br />Gene</li>
-			-->
-			</ul>
+			@if ($follow)
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
+			@else
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:lightgray"></i></span><br /> Follow<br />Gene</li>
+			@endif
+		</ul>
 
 </div>
 			@include("_partials.facts.gene-panel")
@@ -468,19 +471,166 @@
 
 @section('modals')
 
-	@include('modals.followgene')
+	@include('modals.followgene', ['gene' => $record->hgnc_id])
+	@include('modals.unfollowgene', ['gene' => $record->hgnc_id])
 
 @endsection
 
 @section('script_js')
 
+<script src="/js/jquery.validate.min.js" ></script>
+<script src="/js/additional-methods.min.js" ></script>
+
 <script>
 $(function() {
 
-	/*$('.action-follow-gene').on('click', function() {
-		$('#modalFollowGene').modal('toggle');
-		$(this).find('.fa-star').css('color', 'green');
-	});*/
+	$('.action-follow-gene').on('click', function() {
+		var color = $(this).find('.fa-star').css('color');
+
+		if (color == "rgb(0, 128, 0)")
+			$('#modalUnFollowGene').modal('show');
+		else
+			$('#modalFollowGene').modal('show');
+	});
+
+	$( '#follow_form' ).validate( {
+		submitHandler: function(form) {
+			
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true
+			});
+			
+			var url = "/api/genes/follow";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//alert(JSON.stringify(response));
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								$('.action-follow-gene').find('.fa-star').css('color', 'green');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalFollowGene').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+
+	$( '#unfollow_form' ).validate( {
+		submitHandler: function(form) {
+			
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true
+			});
+			
+			var url = "/api/genes/unfollow";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//alert(JSON.stringify(response));
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalUnFollowGene').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
 
 });
 </script>

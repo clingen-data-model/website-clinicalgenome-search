@@ -35,6 +35,7 @@ class CurationController extends Controller
                 'naction' => $results->naction,
                 'ndosage' => $results->ndosage,
                 'npharma' => $results->npharma,
+                'nvariant' => $results->nvariant,
                 'nvalid' => $results->nvalid];
     }
 }

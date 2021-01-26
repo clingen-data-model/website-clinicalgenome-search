@@ -58,7 +58,64 @@ class UpdateJira extends Command
 		** GRCh38 Genomic Position:  10532
 		*/
 
-		$db = DB::connection('jira');
+		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
+		
+		foreach ($results->issues as $issue)
+		{
+			$record = Jira::getIssue($issue->key);
+
+			$symbol = $record->customfield_10030;
+
+			echo "Checking " . $symbol . "\n";
+
+			// verify that this gene is not current
+			$gene = Gene::name($symbol)->first();
+
+			if ($gene !== null)
+			{
+				echo $symbol . " is a current symbol issue  " . $issue->key . "\n";
+				continue;
+			}
+
+			// check for previous symbols
+			$gene = Gene::whereJsonContains('prev_symbol', [$symbol])->first();
+
+			if ($gene === null)
+			{
+				echo $symbol . " has no previous symbol  " . $issue->key . "\n";
+				continue;
+			}
+
+			echo $symbol . " has a symbol of " . $gene->name . " key: " . $issue->key . "\n";
+		}
+
+		echo "Update Complete\n";
+	}
+
+
+	public function addorupdate($db, $issue, $values)
+	{
+		foreach ($values as $field => $value)
+		{
+			$record = $db->select('select * from customfieldvalue where customfield = ? and issue = ?', [ (int) $field, $issue]);
+
+			$ts = time() . '000';
+
+			// add/update HGNC, pLI, PLEUF, and HI
+			if (empty($record))
+			{
+				$maxValue = $db->table('customfieldvalue')->max('id');
+				$db->insert('insert into customfieldvalue (id, issue, customfield, stringvalue, updated) values (?, ?, ?, ?, ?)', [$maxValue + 1, $issue, (int) $field, $value, $ts]);
+			}
+			else
+			{
+				$db->update('update customfieldvalue set stringvalue = ? where id = ?', [$value, $record[0]->ID]);
+			}
+		}
+	}
+	
+	/*
+$db = DB::connection('jira');
 
 		$genes = Gene::where('locus_group', "protein-coding gene")->get();
 		
@@ -91,27 +148,5 @@ class UpdateJira extends Command
 		}
 
 		echo "Update Complete\n";
-	}
-
-
-	public function addorupdate($db, $issue, $values)
-	{
-		foreach ($values as $field => $value)
-		{
-			$record = $db->select('select * from customfieldvalue where customfield = ? and issue = ?', [ (int) $field, $issue]);
-
-			$ts = time() . '000';
-
-			// add/update HGNC, pLI, PLEUF, and HI
-			if (empty($record))
-			{
-				$maxValue = $db->table('customfieldvalue')->max('id');
-				$db->insert('insert into customfieldvalue (id, issue, customfield, stringvalue, updated) values (?, ?, ?, ?, ?)', [$maxValue + 1, $issue, (int) $field, $value, $ts]);
-			}
-			else
-			{
-				$db->update('update customfieldvalue set stringvalue = ? where id = ?', [$value, $record[0]->ID]);
-			}
-		}
-    }
+	*/
 }

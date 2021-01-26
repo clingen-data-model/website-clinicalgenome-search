@@ -530,6 +530,15 @@ function hasPharmaFormatter(index, row) {
             + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
+
+function hasVariantFormatter(index, row) {
+
+    if (row.has_variant == null)
+        return '';
+
+    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://erepo.clinicalgenome.org/evrepo"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
+}
+
 function hasactionabilityFormatter(index, row) {
 
     if (row.has_actionability == null)

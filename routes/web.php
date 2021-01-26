@@ -26,6 +26,10 @@ Route::get('/kb', function () {
 })->name('home');
 
 
+Route::group(['prefix' => '/dashboard'], function () {
+	Route::get('/', 'HomeController@index')->name('dashboard-index');
+});
+
 /*
  * Gene display routes
  */

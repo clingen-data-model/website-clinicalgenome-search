@@ -140,29 +140,6 @@
 	 * Listener for displaying only genes
 	 *
 	 * */
-	/*$('.action-show-genes-btn').on('click', function() {
-		var viz = [];
-
-		if ($(this).find('.action-show-genes').hasClass('fa-toggle-on'))
-		{
-			$(this).find('.action-show-genes').removeClass('fa-toggle-on').addClass('fa-toggle-off');
-			$('.action-show-genes-text').html('Off')
-		}
-		else
-		{
-			viz.push(0);
-			$(this).find('.action-show-genes').removeClass('fa-toggle-off').addClass('fa-toggle-on');
-			$('.action-show-genes-text').html('On')
-		}
-
-		if ($('.action-show-regions').hasClass('fa-toggle-on'))
-			viz.push(1);
-
-		$table.bootstrapTable('filterBy', {
-				type: viz
-		});
-	});*/
-
 	$('.action-show-genes').on('click', function() {
 		var viz = [];
 
@@ -192,28 +169,6 @@
 	 * Listener for displaying only regions
 	 *
 	 * */
-	/*$('.action-show-regions-btn').on('click', function() {
-		var viz = [];
-		if ($('.action-show-genes').hasClass('fa-toggle-on'))
-			viz.push(0);
-
-		if ($(this).find('.action-show-regions').hasClass('fa-toggle-on'))
-		{
-			$(this).find('.action-show-regions').removeClass('fa-toggle-on').addClass('fa-toggle-off');
-			$('.action-show-regions-text').html('Off')
-		}
-		else
-		{
-			viz.push(1);
-			$(this).find('.action-show-regions').removeClass('fa-toggle-off').addClass('fa-toggle-on');
-			$('.action-show-regions-text').html('On')
-		}
-
-		$table.bootstrapTable('filterBy', {
-					type: viz
-		});
-	});*/
-
 	$('.action-show-regions').on('click', function() {
 		var viz = [];
 		if ($('.action-show-genes').hasClass('btn-success'))
@@ -284,6 +239,32 @@
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-tsknown-text').html('Off');
+
+		}
+	});
+
+
+	/**
+	 *
+	 * Listener for displaying only protein coding genes
+	 *
+	 * */
+	$('.action-show-protein').on('click', function() {
+
+		if ($(this).hasClass('fa-toggle-off'))
+		{
+			$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-protein-text').html('On');
+
+		}
+		else
+		{
+			$table.bootstrapTable('filterBy', {type: [0, 1]});
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-protein-text').html('Off');
 
 		}
 	});
@@ -657,7 +638,7 @@
 		$(".fixed-table-toolbar .search .input-group:first").after(html);
 
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
-		$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');
 
 		region_listener();
 

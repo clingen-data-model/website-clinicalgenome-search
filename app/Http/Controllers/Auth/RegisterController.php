@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/dashboard';
 
     /**
      * Create a new controller instance.
@@ -63,9 +64,28 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // first check if an anonymous account exists
+        $user = User::email($data['email'])->first();
+
+        if ($user !== null)
+        {
+            if ($user->name == "ClinGen User")
+            {
+                $user->update(['name' => $data['name'],
+                                'password' => Hash::make($data['password'])
+                ]);
+
+                return $user;
+            }
+            else
+                return null;
+        }
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'api_token' => Str::random(60),
+            'device_token' => Str::random(40),
             'password' => Hash::make($data['password']),
         ]);
     }

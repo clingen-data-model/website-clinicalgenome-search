@@ -124,45 +124,62 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-		// get list of pharma genes
-		/*$pharma = Cpic::select('hgnc_id', 'gene')->distinct()->orderBy('hgnc_id')->get();
-		$cpics = $pharma->pluck('hgnc_id')->toArray();
-		$excludes = [];*/
+		// get the list of acmg59 genes
+		$acmg59s = Gene::select('hgnc_id')->where('acmg59', 1)->get()->pluck('hgnc_id')->toArray();
 
-		// add each gene to the collection
+		// get list of pharma and variant pathogenicity genes
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+		
+		// build list of genes not known by genegraph
+		$excludes = [];
+
+		// create node list and add pharma and variant curation indicators to the current gene list
 		foreach($response->genes->gene_list as $record)
 		{
 			$node = new Nodal((array) $record);
-			/*if (in_array($node->hgnc_id, $cpics))
+			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
+			if ($extra !== null)
 			{
 				$t = $node->curation_activities;
-				array_push($t, "GENE_PHARMA");
+				if (!empty($extra->activity["pharma"]))
+					array_push($t, "GENE_PHARMA");
+				if (!empty($extra->activity["varpath"]))
+					array_push($t, "VAR_PATH");
 				$node->curation_activities = $t;
 				$excludes[] = $node->hgnc_id;
-			}*/
+			}
+
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
 
 			$collection->push($node);
 		}
 
-		// TODO:  add genes where pharma is the only curattiion
-		/*foreach(array_diff($cpics, $excludes) as $k)
+		// add genes not tagged by genegraph
+		foreach($extras as $extra)
 		{
-			if (empty($k))
+			if (in_array($extra->hgnc_id, $excludes))
 				continue;
 
-			$node = new Nodal(['label' => $pharma->where('hgnc_id', $k)->pluck('gene')->first(), 'hgnc_id' => $k, 'curation_activities' => ["GENE_PHARMA"]]);
+			$t = [];
+			if (!empty($extra->activity["pharma"]))
+				array_push($t, "GENE_PHARMA");
+			if (!empty($extra->activity["varpath"]))
+				array_push($t, "VAR_PATH");
+
+			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
+			
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+			
 			$collection->push($node);
-		}*/
+		}
 
 		if ($curated)
 		{
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
-			$npharma = 0; //$collection->where('has_pharma', true)->count();
-
-			//Metric::store(Metric::KEY_TOTAL_CURATED_GENES, $response->genes->count);
-			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
+			$npharma = $collection->where('has_pharma', true)->count();
+			$nvariant = $collection->where('has_variant', true)->count();;
 		}
 		else
 		{
@@ -172,11 +189,13 @@ class Graphql
 			$nvalid = 0;
 			$ndosage = 0;
 			$npharma = 0;
+			$nvariant = 0;
 		}
 
 		return (object) ['count' => $collection->count(), 	//$response->genes->count, 
 						'collection' => $collection,
-						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage, 'npharma' => $npharma];
+						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
+						'nvariant' => $nvariant, 'npharma' => $npharma];
 	}
 
 
@@ -736,6 +755,7 @@ class Graphql
 				$node->plof = $gene->plof;
 				$node->omimlink = $gene->display_omim;
 				$node->morbid = $gene->morbid;
+				$node->locus = $gene->locus_group;
 				if ($gene->history !== null)
 				{
 					//dd($gene->history);
@@ -1039,6 +1059,10 @@ class Graphql
 		$node = new Nodal((array) $response->gene_validity_assertion);
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
+
+		// genegraph is not distinguishing gene express origin from others
+		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion) 
+							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
 		return $node;
 

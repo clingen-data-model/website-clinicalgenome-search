@@ -28,23 +28,40 @@ class TestController extends Controller
      */
     public function index()
     {
-			/*$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
-			// add each gene to the collection
-//dd($genes);
 			
-				$naction = 0;
-			$nvalid = 0;
-			$ndosage = 0;*/
+		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
+		
+		foreach ($results->issues as $issue)
+		{
+			$record = Jira::getIssue($issue->key);
 
-			$results = GeneLib::geneList([	'page' =>  0,
-										'pagesize' => "null",
-										'sort' => 'GENE_LABEL',
-                                        'direction' => 'ASC',
-                                        'search' =>  null,
-										'curated' => false ]);
-										
-			dd($results->collection->first());
-			return view('new-dosage.reports');
+			$symbol = $record->customfield_10030;
+
+			echo "Checking " . $symbol . "\n";
+
+			// verify that this gene is not current
+			$gene = Gene::name($symbol)->first();
+
+			if ($gene !== null)
+			{
+				echo $symbol . " is a current symbol issue  " . $issue->key . "\n";
+				continue;
+			}
+
+			// check for previous symbols
+			$gene = Gene::whereJsonContains('prev_symbol', [$symbol])->first();
+
+			if ($gene === null)
+			{
+				echo $symbol . " has no previous symbol  " . $issue->key . "\n";
+				continue;
+			}
+
+			echo $symbol . " has a symbol of " . $gene->name . " key: " . $issue->key . "\n";
+		}
+
+		die("done");
+		return view('new-dosage.reports');
 	}
 
 	public function statistics()

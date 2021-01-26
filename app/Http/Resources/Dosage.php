@@ -20,7 +20,7 @@ class Dosage extends JsonResource
             'type' => $this->type,
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
-            //'name' => $this->name,
+            'locus' => $this->locus,
             'location' => $this->chromosome_band ?? null,
             'grch37' => $this->grch37 ?? null,
             'grch38' => $this->grch38 ?? null,

@@ -31,6 +31,8 @@ Route::resource('affiliates', 'Api\AffiliateController')->only(['index', 'show']
 // genes
 Route::resource('genes', 'Api\GeneController')->only(['index']);
 Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
+Route::post('/genes/follow', 'Api\FollowController@create')->name('follows.create');
+Route::post('/genes/unfollow', 'Api\FollowController@remove')->name('follows.remove');
 
 // curated genes
 Route::resource('curations', 'Api\CurationController')->only(['index']);

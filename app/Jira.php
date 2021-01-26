@@ -964,7 +964,7 @@ class Jira extends Model
      * 
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function updateIssue($issue, $field = 'fields')
+    static function updateIssue($issue, $field, $value)
     {
          return;
          
@@ -985,7 +985,7 @@ class Jira extends Model
 
               $issueField = new IssueField(true);
 
-               $issueField->addCustomField('customfield_12431', '59');
+               $issueField->addCustomField($field, $value);
 
                 // optionally set some query params
                 $editParams = [
@@ -993,9 +993,12 @@ class Jira extends Model
                 ];
 
                 $begin = Carbon::now();
+
                 // You can set the $paramArray param to disable notifications in example
-                $issue = $issueService->update($issue, $issueField, $editParams);
-              $end = Carbon::now();
+
+               $issue = $issueService->update($issue, $issueField, $editParams);
+              
+               $end = Carbon::now();
               $record = new Minute([
                    'system' => 'Search',
                    'subsystem' => __METHOD__,
