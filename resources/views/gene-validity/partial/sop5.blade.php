@@ -1,4 +1,3 @@
-
 <table class="table table-compact table-bordered table-border-normal">
 	<tbody>
 		<tr>
@@ -46,6 +45,7 @@
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Evidence ?? null) !!}
+
 			</span></td>
 		</tr>
 		<tr>
@@ -169,7 +169,7 @@
 
 
 
-		  	{!! PrintWrapperPmidSop5($object2->Evidence ?? null) !!}
+		  	{!! PrintWrapperPmidSop5Gci($object2->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -178,7 +178,7 @@
 		  <td class="table-heading-line-normal">1.5</td>
 		  <td class="table-heading-line-normal">3</td>
 		  <td class="input-width-pmid table-heading-line-normal ">
-		  	{!! PrintWrapperPmidSop5($object3->Evidence ?? null) !!}
+		  	{!! PrintWrapperPmidSop5Gci($object3->Evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -506,7 +506,7 @@
 				@endif
 								</td>
 								<td class="col-sm-10">
-				{!! PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->Evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5Gci($record->score_data->ValidContradictoryEvidence->Evidence ?? null) !!}
 								</td>
 							</tr>
 						</table>

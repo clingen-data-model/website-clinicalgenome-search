@@ -1,4 +1,3 @@
-
 <table class="table table-compact table-bordered table-border-normal">
 	<tbody>
 		<tr>
@@ -38,14 +37,15 @@
 			<td>12</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-						{{  $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Value ?? '' }}
+						{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Value ?? null }}
 				</div>
 			</td>
 			<td class="points-tally-bg">
-				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? null}}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->Tally ?? '' }}
 			</td>
 			<td class="input-width-pmid"><span class="input-width-pmid ">
-				{!!  App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->evidence ?? null)  !!}
+				{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->evidence ?? null) !!}
+
 			</span></td>
 		</tr>
 		<tr>
@@ -55,12 +55,12 @@
 			<td id="GeneticEvidence3Max">10</td>
 			<td class="input-width-numbers points-given-bg">
 				<span class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value ?? null}}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value ?? null }}
 			</span>								</td>
 			<td class="points-tally-bg">
-				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Tally ?? null}}
+				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Tally ?? ''}}
 			<td class="input-width-pmid ">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->evidence ?? null) !!}
 		  </td>
 		</tr>
 		<tr>
@@ -75,10 +75,10 @@
 				</div>
 			</td>
 			<td class=" points-tally-bg table-border-thin">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Tally ?? null }}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->Tally ?? '' }}
 
 			<td class="input-width-pmid table-border-thin">
-					{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->evidence ?? null) !!}
+					{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithOtherVariantTypeWithSomeEvidenceOfGeneImpact->evidence ?? null) !!}
 
 
 			  </td>
@@ -98,7 +98,7 @@
 					{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->Tally ?? null }}
 			</td>
 			<td class="input-width-pmid">
-					{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->evidence ?? null) !!}
+					{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsInTransAndAtLeastOneDeNovoOrAPredictedProvenNullVariant->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -109,7 +109,7 @@
 				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->Value ?? null }}
 			</div></td>
 			<td class="input-width-pmid  table-border-thin">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->TwoVariantsNotPredictedProvenNullWithSomeEvidenceOfGeneImpactInTrans->evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -122,7 +122,7 @@
 		  <td rowspan="5" class="table-heading-line-normal" id="GeneticEvidence5Max2">3</td>
 		  <td rowspan="5" class="table-heading-line-normal input-width-numbers  points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Value ?? null}}
+					{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->Value ?? null }}
 
 				</div></td>
 		  <td rowspan="5" class="table-heading-line-normal points-tally-bg">
@@ -142,7 +142,22 @@
 		  <td>0.5</td>
 		  <td>1</td>
 		  <td class="input-width-pmid">
-		  	{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX1->evidence ?? null) !!}
+				@php
+					if(isset($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies)){
+						$myArray = (array) $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies;
+						if(isset($myArray[1])){
+							$object1 = (object) $myArray[1];
+						}
+						if(isset($myArray[2])){
+							$object2 = (object) $myArray[2];
+						}
+						if(isset($myArray[3])){
+							$object3 = (object) $myArray[3];
+						}
+					}
+				@endphp
+
+		  	{!! PrintWrapperPmidSop5($object1->evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -151,7 +166,10 @@
 		  <td>1</td>
 		  <td>2</td>
 		  <td class="input-width-pmid">
-		  	{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX2->evidence ?? null) !!}
+
+
+
+		  	{!! PrintWrapperPmidSop5($object2->evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -160,7 +178,7 @@
 		  <td class="table-heading-line-normal">1.5</td>
 		  <td class="table-heading-line-normal">3</td>
 		  <td class="input-width-pmid table-heading-line-normal ">
-		  	{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->EvidenceOfSegregationInOneOrMoreFamilies->XX3->evidence ?? null) !!}
+		  	{!! PrintWrapperPmidSop5($object3->evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -192,16 +210,16 @@
 			<td rowspan="2" id="GeneticEvidence6Max">12</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Value ?? null}}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Value ?? null }}
 
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg">
-					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Tally ?? null}}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Tally ?? '' }}
 
 			</td>
 			<td class="input-width-pmid">
-					{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->evidence ?? null) !!}
+					{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -210,18 +228,18 @@
 			<td colspan="2">0-6</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Value ?? null}}
+					{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Value ?? null }}
 
 				</div>
 			</td>
 			<td class="input-width-pmid">
-					{!! App\Helper::PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->evidence ?? null) !!}
+					{!! PrintWrapperPmidSop5($record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
 			<td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Genetic Evidence Points (Maximum <span id="GeneticEvidenceMax">12</span>)</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">
-					{{ $record->score_data->GeneticEvidence->TotalGeneticEvidencePoints->Tally ?? null}}
+					{{ $record->score_data->GeneticEvidence->TotalGeneticEvidencePoints->Tally ?? '' }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total">
 			<div class="form-group total-notes">
@@ -256,7 +274,7 @@
 			<td rowspan="3" class='table-border-thin' id="ExperimentalEvidence1Max">2</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Value ?? null}}
+					{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Value ?? null }}
 
 				</div>
 			</td>
@@ -264,7 +282,7 @@
 					{{ $record->score_data->ExperimentalEvidence->Function->Tally ?? ''}}
 			</td>
 			<td class="input-width-pmid">
-			  {!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->evidence ?? null) !!}
+			  {!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -273,10 +291,10 @@
 			<td>0.5</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-				{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Value ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -284,10 +302,10 @@
 			<td class=' table-border-thin'>0.5</td>
 			<td class=' table-border-thin'>0 - 2</td>
 			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-				{{ $record->score_data->ExperimentalEvidence->Function->Expression->Value ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->Function->Expression->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->Expression->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Function->Expression->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -298,14 +316,14 @@
 			<td rowspan="2" class=' table-border-thin' id="ExperimentalEvidence2Max">2</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Value ?? null}}
+					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Value ?? null }}
 				</div>
 			</td>
 			<td rowspan="2" class=" points-tally-bg table-border-thin">
-					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->Tally ?? null}}
+					{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->Tally ?? '' }}
 			</td>
 			<td class="input-width-pmid">
-			  {!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->evidence ?? null) !!}
+			  {!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -313,10 +331,10 @@
 			<td class='table-border-thin'>0.5</td>
 			<td class='table-border-thin'>0 - 1</td>
 			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Value ?? null}}
+						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid table-border-thin">
-			  {!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->evidence ?? null) !!}
+			  {!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -326,13 +344,13 @@
 		  <td class=''>0 - 4</td>
 		  <td rowspan="6" class='' id="">4</td>
 		  <td class="input-width-numbers points-given-bg"><span class="form-group">
-						{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->Value ?? null}}
+						{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->Value ?? null }}
 		  </span></td>
 		  <td rowspan="6" class=" points-tally-bg">
 						{{ $record->score_data->ExperimentalEvidence->ModelsRescue->Tally ?? ''}}
 		  </td>
 		  <td class="input-width-pmid">
-		  	{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->evidence ?? null) !!}
+		  	{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->ModelsRescue->NonHumanModelOrganism->evidence ?? null) !!}
 			</td>
 	  </tr>
 		<tr>
@@ -340,10 +358,10 @@
 		  <td class='table-border-thin'>1</td>
 		  <td class='table-border-thin'>0 - 2</td>
 		  <td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
-				{{ $record->score_data->ExperimentalEvidence->Models->CellCultureModel->Value ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->Models->CellCultureModel->Value ?? null }}
 		  </span></td>
 		  <td class="input-width-pmid  table-border-thin">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Models->CellCultureModel->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Models->CellCultureModel->evidence ?? null) !!}
 
 		  </td>
 	  </tr>
@@ -354,11 +372,11 @@
 			<td>0 - 4</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
-					{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->Value ?? null}}
+					{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->Value ?? null }}
 				</div>
 			</td>
 			<td class="input-width-pmid">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInHuman->evidence ?? null) !!}
 
 			</td>
 		</tr>
@@ -367,10 +385,10 @@
 			<td>2</td>
 			<td>0 - 4</td>
 			<td class="input-width-numbers points-given-bg"><div class="form-group">
-				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Value ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->Value ?? null }}
 				</div></td>
 			<td class="input-width-pmid">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInNonHumanModelOrganism->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -378,10 +396,10 @@
 			<td>1</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Value ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInCellCultureModel->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
@@ -389,16 +407,16 @@
 			<td>1</td>
 			<td>0 - 2</td>
 			<td class="input-width-numbers points-given-bg"><span class="form-group">
-						{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Value ?? null}}
+						{{ $record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->Value ?? null }}
 			</span></td>
 			<td class="input-width-pmid">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ExperimentalEvidence->Rescue->RescueInPatientCell->evidence ?? null) !!}
 			</td>
 		</tr>
 		<tr>
 			<td colspan="10" class="table-heading-line-thick table-heading-bg table-heading table-total text-right">Total Experimental Evidence Points (Maximum <span id="ExperimentalEvidenceMax">6</span>)</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total points-tally-bg">
-				{{ $record->score_data->ExperimentalEvidence->TotalExperimentalEvidencePoints->Tally ?? null}}
+				{{ $record->score_data->ExperimentalEvidence->TotalExperimentalEvidencePoints->Tally ?? '' }}
 			</td>
 			<td class="table-heading-line-thick table-heading-bg table-heading table-total">
 			<div class="form-group total-notes">
@@ -488,7 +506,7 @@
 				@endif
 								</td>
 								<td class="col-sm-10">
-				{!! App\Helper::PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->evidence ?? null) !!}
+				{!! PrintWrapperPmidSop5($record->score_data->ValidContradictoryEvidence->evidence ?? null) !!}
 								</td>
 							</tr>
 						</table>
@@ -546,18 +564,17 @@
 		</tr>
 		@endif
 
-		@if (($record->score_data->summary->FinalClassification ?? null))
+		@if ($record->score_data->summary->FinalClassification ?? null)
 		<tr>
 			<td colspan="2" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
 			<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
 				<div class='col-sm-8'><span style="font-size: 145%;">
 					@if (isset($record->score_data->summary->FinalClassification) && strtoupper($record->score_data->summary->FinalClassification) == "NO REPORTED EVIDENCE")
-					No Known Disease Relationship
-				@else
-					{{ $record->score_data->summary->FinalClassification ?? null }}
-				@endif
-          </span>
-				</div>
+						No Known Disease Relationship
+					@else
+						{{ $record->score_data->summary->FinalClassification ?? null }}
+					@endif
+				</span></div>
 				<div class='col-sm-4'>
           {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null) }}
 				</div>
