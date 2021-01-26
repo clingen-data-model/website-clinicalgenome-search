@@ -53,6 +53,12 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 
+		//Route::get('/{id?}/external_resources_genes', 'GeneController@external');
+
+		Route::get('/{id?}/external_resources_genes', function ($id) {
+		 	return redirect(route('gene-external', $id), 301);
+		 });
+
 });
 
 
@@ -196,6 +202,7 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 
 });
 
-Route::get('/test', 'TestController@index')->name('test');
+// Redirect and/or legacy routes
+Route::get('/kb/home', 'HomeController@home');
 
 Auth::routes();

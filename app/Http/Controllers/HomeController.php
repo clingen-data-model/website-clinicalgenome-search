@@ -35,4 +35,18 @@ class HomeController extends Controller
          //exit();
         return view('home', compact('display_tabs'));
     }
+
+    /**
+     * Providing legacy home query a landing page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function home()
+    {
+        return view('error.message-standard')
+        ->with('title', 'Sorry, this page has moved...')
+        ->with('message', 'Please use the search or navigation bar above.')
+        ->with('back', url()->previous());
+
+    }
 }

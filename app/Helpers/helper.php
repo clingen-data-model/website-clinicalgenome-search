@@ -44,7 +44,7 @@
 			}
 
 			$varEnd = $note . "</div>";
-			
+
 			return $varStart . $varInner . $varEnd;
 		}
 		else
@@ -61,6 +61,7 @@
    function PrintWrapperPmidSop5($data = null)
     {
 
+			//dd($data);
 		  // "<div class=\"WrapperPmid\" >"
 		  // "<div class=\"form-group\">"
 		  // "<div class=\"WrapperPmidResults\">"
@@ -73,19 +74,19 @@
 			else
 			  $note = "";
 			//dd($data->Publications);
-			if (isset($data->Publications))
+			if (isset($data->publications))
 			{
-				foreach ($data->Publications as $pubs)
+				foreach ($data->publications as $pubs)
 				{
 					// ##varInner += pubs.last.inspect
 					if (!isset($pubs->last))
 					{
-						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->pmid . "); ";
+						$varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
 					}
 					else
 					{
-						dd($pubs);
-						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["pmid"] . "); ";
+						//dd($pubs);
+						$varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
 					}
 				}
 

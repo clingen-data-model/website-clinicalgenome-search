@@ -59,7 +59,7 @@ class Helper
           if (!isset($pubs->last)) {
             $varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
           } else {
-            dd($pubs);
+            //dd($pubs);
             $varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
           }
         }
@@ -101,7 +101,7 @@ class Helper
           if (!isset($pubs->last)) {
             $varInner .= $pubs->author . " et al. " . $pubs->pubdate . " (PMID:" . $pubs->uid . "); ";
           } else {
-            dd($pubs);
+            //dd($pubs);
             $varInner .= $pubs->last["author"] . " et al. " . $pubs->last["pubdate"] . " (PMID:" . $pubs->last["uid"] . "); ";
           }
         }

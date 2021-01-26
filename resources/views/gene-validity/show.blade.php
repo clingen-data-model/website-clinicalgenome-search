@@ -29,6 +29,7 @@
 	<div class="row geneValidityScoresWrapper">
 		<div class="col-sm-12">
 			<div class="content-space content-border">
+
 				{{ $record->animalmode ?? '' }}
 				@if(strpos($record->specified_by->label,"SOP8"))
 					@include('gene-validity.partial.report-heading')
@@ -39,6 +40,9 @@
 				@elseif (strpos($record->specified_by->label,"SOP6"))
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop6')
+				@elseif (strpos($record->specified_by->label,"SOP5") && $record->origin == true)
+					@include('gene-validity.partial.report-heading')
+					@include('gene-validity.partial.sop5-legacy')
 				@elseif (strpos($record->specified_by->label,"SOP5"))
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop5')

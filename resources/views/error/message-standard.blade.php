@@ -1,3 +1,8 @@
+@php
+  $display_tabs['active'] = "";
+  $display_tabs['active'] = "Sorry, this page has moved";
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -16,7 +21,7 @@
         <p>{{ $message ?? '' }}</p>
       </div>
     </div>
-    
+
     <div class="col-md-12">
       <a href="{{ $back ?? '/' }}">Return to previous page</a>
     </div>
