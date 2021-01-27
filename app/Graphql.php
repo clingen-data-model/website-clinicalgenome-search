@@ -327,6 +327,9 @@ class Graphql
 			}
 		}
 
+		if (!empty($dosage_curation_map["haploinsufficiency_assertion"]) || !empty($dosage_curation_map["triplosensitivity_assertion"]))
+			$ndosage++;
+
 		// $by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
 		// 	if (!empty($node->genetic_conditions))
 		// 	{
