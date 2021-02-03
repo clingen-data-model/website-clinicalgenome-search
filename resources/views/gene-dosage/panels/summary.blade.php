@@ -52,21 +52,33 @@
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Haploinsufficiency:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
+            @if ($record->resolution == "Complete")
             {{ $record->haplo_assertion }} ({{ $record->haplo_score }})
             <div class="small"><a href="#report_details_haploinsufficiency">Read full report...</a></div>
+            @else
+            {{ $record->resolution }}
+            @endif
           </div>
         </div>
         <div class="row pb-2 pt-2">
           <div class="col-sm-3 text-right">Triplosensitivity:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
+            @if ($record->resolution == "Complete")
             {{  $record->triplo_assertion }} ({{ $record->triplo_score }})
             <div class="small"><a href="#report_details_triplosensitivity">Read full report...</a></div>
+            @else
+            {{ $record->resolution }}
+            @endif
           </div>
         </div>
         <div class="row pb-2 pt-2">
           <div class="col-sm-3 text-right">Last Evaluated:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
+            @if ($record->resolution == "Complete")
             {{ $record->date }}<br />
+            @else
+            {{ $record->resolution }}
+            @endif
           </div>
         </div>
         <!--

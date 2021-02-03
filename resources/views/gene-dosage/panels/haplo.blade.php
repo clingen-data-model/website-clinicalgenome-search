@@ -3,6 +3,13 @@
   <div class="col-sm-12 pt-3">
     <h3 class="h4 mb-1 border-bottom-2">Haploinsufficiency (HI) Score Details</h3>
   </div>
+  @if ($record->resolution != "Complete")
+  <div class="col-sm-12">
+    <div class="row pb-3 pt-2">
+      <div class="col-sm-3 text-muted text-right bold">Review not yet complete.</div>
+    </div>
+  </div>
+  @else 
   <div class="col-sm-12">
     <div class="row pb-3 pt-2">
       <div class="col-sm-3 text-muted text-right bold">HI Score:</div>
@@ -77,4 +84,5 @@
     </div>
     @endif
   </div>
+  @endif
 </div>

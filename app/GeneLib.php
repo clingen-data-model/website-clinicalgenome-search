@@ -139,6 +139,7 @@ class GeneLib extends Model
           'Autosomal dominant inheritance' => 'Autosomal Dominant',
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
+          'Undetermined mode of inheritance' => 'Other',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
           'Semidominant mode of inheritance' => 'Semidomimant'
      ];

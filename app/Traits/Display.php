@@ -169,8 +169,12 @@ trait Display
 
 		//if (!isset($amoi[1]))
 		//	return 'Other';
-			
+	
 		switch($moi){
+			case "HP:0000005":
+				$text = "Undetermined mode of inheritance";
+				$abr = "Other";
+				break;
 			case "HP:0000006":
 				$text = "Autosomal Dominant";
 				$abr = "AD";
@@ -180,7 +184,7 @@ trait Display
 				$abr = "AR";
 				break;
 			case "HP:0001417":
-				$text = "X-Linked";
+				$text = "X-linked";
 				$abr = "XL";
 				break;
 			case "HP:0001419":

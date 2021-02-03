@@ -19,7 +19,7 @@
   <tr style="font-size:14px">
     <td style="" nowrap class="text-left">Mode of Inheritance:</td>
     <td style="">
-      {{ $record->displayMoi($record->mode_of_inheritance->label, 'long') }}
+      {{ $record->displayMoi($record->mode_of_inheritance->label, true) }}
       &nbsp;({{ $record->mode_of_inheritance->curie }})
       </td>
   </tr>

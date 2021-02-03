@@ -24,10 +24,12 @@
 			<div class="">
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
+            @if ($record->resolution == "Complete")
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countHaplo text-18px">{{ $record->haplo_score }}</span><br />Haplo<br />Score</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countTriplo text-18px">{{ $record->triplo_score }}</span><br />Triplo<br />Score</li>
             <!--<li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('dosage-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Dosage Listing</a></li>-->
-					</ul>
+            @endif
+          </ul>
 				</div>
 			</div>
     </div>

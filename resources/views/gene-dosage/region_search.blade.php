@@ -259,6 +259,32 @@
 		}
 	});
 
+
+	/**
+	 *
+	 * Listener for displaying only protein coding genes
+	 *
+	 * */
+	 $('.action-show-protein').on('click', function() {
+
+if ($(this).hasClass('fa-toggle-off'))
+{
+	$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
+
+	$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+	$('.action-show-protein-text').html('On');
+
+}
+else
+{
+	$table.bootstrapTable('filterBy', {type: [0, 1]});
+
+	$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-protein-text').html('Off');
+
+}
+});
+
 	/**
 	 *
 	 * Listener for displaying only the recent score changes
