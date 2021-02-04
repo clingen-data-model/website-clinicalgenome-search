@@ -13,7 +13,7 @@
                 <span class="ml-4 hgnc text-muted action-show-regions-text">On</span>
             </div>
         </div>-->
-        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only ACMG59 Curated Genes </label>
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only ACMG Secondary Finding (2.0) Genes </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
                 <i class="fas fa-toggle-off fa-lg action-show-acmg59"></i>

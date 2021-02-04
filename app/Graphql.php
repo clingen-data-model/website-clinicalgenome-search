@@ -1830,6 +1830,29 @@ class Graphql
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $nlikelybenign;
 		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;
 
+		// new actionability statistics
+		/*
+		$query = '{
+				statistics {
+					actionability_tot_reports
+					actionability_tot_updated_reports
+					actionability_tot_adult_gene_disease_pairs
+					actionability_tot_pediatric_gene_disease_pairs
+					actionability_tot_adult_outcome_intervention_pairs
+					actionability_tot_outcome_intervention_pairs
+					actionability_tot_pediatric_outcome_intervention_pairs
+					actionability_tot_adult_score_counts
+					actionability_tot_pediatric_score_counts
+			 	}
+		 }';
+
+		// query genegraph
+		$response = self::query($query, __METHOD__);
+
+		if (empty($response))
+			return $response;
+		 */
+		
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
 								'status' => 1,

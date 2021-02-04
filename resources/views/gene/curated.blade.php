@@ -191,7 +191,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/Pharmacogenomics-on.png" width="40" height="40"></div>Pharmacogenomics <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="How do variations in this gene affect variations in drug response?"><div><img src="/images/Pharmacogenomics-on.png" width="40" height="40"></div>Pharmacogenomics <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Phamogenetics',
           field: 'has_pharma',
           formatter: hasPharmaFormatter,
