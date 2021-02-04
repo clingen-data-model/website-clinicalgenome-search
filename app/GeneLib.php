@@ -637,6 +637,9 @@ class GeneLib extends Model
                }
           }
 
+          if ($response->locus_type == 'pseudogene')
+               $response->issue_status = "Not Reviewable";
+
           // need the titles from Omim
           $omim = null; //Omim::omimid($)->first();
 
