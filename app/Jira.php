@@ -146,8 +146,34 @@ class Jira extends Model
                'gain_pheno_ontology' => $response->customfield_11632 ?? null,
                'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
                'resolution' => $response->resolution->name ?? 'In Review',
-               'issue_type' => $response->issuetype->name
+               'issue_type' => $response->issuetype->name,
+               'jira_status' => $response->status->name
           ]);
+
+          // create a custom status string based on legacy comparisons
+          if ($node->jira_status == "Open")
+          {
+               $node->issue_status = "Awaiting Review";
+          }
+          else if ($node->jira_status == "Closed")
+          {
+               switch ($node->resolution)
+               {
+                    case "Won't Fix":
+                         $node->issue_status = "Won't Fix";
+                         break;
+                    case 'Complete':
+                         $node->issue_status = "Complete";
+                         break;
+                    default:
+                         $node->issue_status = "Awaiting Review";
+                         break;
+               }
+          }
+          else
+          {
+               $node->issue_status = $node->jira_status;
+          }
 
           // create the structures for pmid.  Jira will not send the fields if empty
           $pmids = [];
@@ -256,10 +282,37 @@ class Jira extends Model
                //       $response->description ?? ''),
                'description' => $response->description ?? '',
               'resolution' => $response->resolution->name ?? 'In Review',
-              'issue_type' => $response->issuetype->name
+              'issue_type' => $response->issuetype->name,
+              'issue_type' => $response->issuetype->name,
+               'jira_status' => $response->status->name
          ]);
 //dd($response);
 
+          // create a custom status string based on legacy comparisons
+          if ($node->jira_status == "Open")
+          {
+               $node->issue_status = "Awaiting Review";
+          }
+          else if ($node->jira_status == "Closed")
+          {
+               switch ($node->resolution)
+               {
+                    case "Won't Fix":
+                         $node->issue_status = "Won't Fix";
+                         break;
+                    case 'Complete':
+                         $node->issue_status = "Complete";
+                         break;
+                    default:
+                         $node->issue_status = "Awaiting Review";
+                         break;
+               }
+          }
+          else
+          {
+               $node->issue_status = $node->jira_status;
+          }
+          
          $node->date = $node->displayDate($response->resolutiondate ?? '');
 
          // some of the region fields for G37 have commas in them, remove them

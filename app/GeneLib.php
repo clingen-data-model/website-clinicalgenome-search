@@ -615,7 +615,7 @@ class GeneLib extends Model
                'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-               'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
+               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
                {
                     // Prefer the NIH wording over the local Jira one.
                     if ($field == 'genetype' && !empty($response->locus_group))
@@ -673,7 +673,7 @@ class GeneLib extends Model
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
               'grch37', 'grch38', 'chromosome_band',
               'resolution', 'issue_type', 'description',
-              'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
+              'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
               {
                    if ($field == 'genetype' && !empty($response->locus_group))
                    {

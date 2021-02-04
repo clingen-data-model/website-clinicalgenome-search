@@ -10,7 +10,7 @@
           @else
           (Region)
           @endif
-          <!--<span class="float-right">Curation Status:  {{ $record->resolution }}</span>-->
+          <!--<span class="float-right">Curation Status:  {{ $record->issue_status }}</span>-->
         </h3>
         <div class="row pt-2">
           <div class="col-sm-3 text-right mt-3">Dosage ID:</div>
@@ -30,7 +30,7 @@
             @else
             <span class="text-success">
             @endif
-            {{ $record->resolution }}</span>
+            {{ $record->issue_status }}</span>
           </div>
         </div>
         <div class="row pb-2 pt-3">
@@ -56,7 +56,7 @@
             {{ $record->haplo_assertion }} ({{ $record->haplo_score }})
             <div class="small"><a href="#report_details_haploinsufficiency">Read full report...</a></div>
             @else
-            {{ $record->resolution }}
+            {{ $record->issue_status }}
             @endif
           </div>
         </div>
@@ -67,7 +67,7 @@
             {{  $record->triplo_assertion }} ({{ $record->triplo_score }})
             <div class="small"><a href="#report_details_triplosensitivity">Read full report...</a></div>
             @else
-            {{ $record->resolution }}
+            {{ $record->issue_status }}
             @endif
           </div>
         </div>
@@ -77,7 +77,7 @@
             @if ($record->resolution == "Complete")
             {{ $record->date }}<br />
             @else
-            {{ $record->resolution }}
+            {{ $record->issue_status }}
             @endif
           </div>
         </div>
