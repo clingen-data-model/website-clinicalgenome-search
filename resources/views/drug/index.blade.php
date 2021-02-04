@@ -18,7 +18,7 @@
       <div class="">
         <div class="text-right p-2">
           <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Matching Drugs<br />& Medications</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Drugs & Medications<br />Matched by Search</li>
           </ul>
         </div>
       </div>
