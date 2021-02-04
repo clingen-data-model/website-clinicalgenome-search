@@ -137,7 +137,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/clinicalActionability-on.png" width="40" height="40"></div>Clinical Actionability <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Does this genetic diagnosis impact clinical management in the context of secondary findings?"><div><img src="/images/clinicalActionability-on.png" width="40" height="40"></div>Clinical Actionability <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Clinical Actionability',
           field: 'has_actionability',
           formatter: hasactionabilityFormatter,
