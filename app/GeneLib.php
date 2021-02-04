@@ -139,6 +139,7 @@ class GeneLib extends Model
           'Autosomal dominant inheritance' => 'Autosomal Dominant',
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
+          'Undetermined mode of inheritance' => 'Other',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
           'Semidominant mode of inheritance' => 'Semidomimant'
      ];
@@ -614,7 +615,7 @@ class GeneLib extends Model
                'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-               'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
+               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
                {
                     // Prefer the NIH wording over the local Jira one.
                     if ($field == 'genetype' && !empty($response->locus_group))
@@ -635,6 +636,9 @@ class GeneLib extends Model
                     $response->grch38 = $supplement->grch38;
                }
           }
+
+          if ($response->locus_type == 'pseudogene')
+               $response->issue_status = "Not Reviewable";
 
           // need the titles from Omim
           $omim = null; //Omim::omimid($)->first();
@@ -672,7 +676,7 @@ class GeneLib extends Model
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
               'grch37', 'grch38', 'chromosome_band',
               'resolution', 'issue_type', 'description',
-              'GRCh37_seqid', 'GRCh38_seqid' ] as $field)
+              'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
               {
                    if ($field == 'genetype' && !empty($response->locus_group))
                    {
