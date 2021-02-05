@@ -8,6 +8,7 @@ use App\Http\Resources\Dosage as DosageResource;
 use App\GeneLib;
 use App\Jira;
 use App\Gene;
+use App\Graphql;
 
 class TestController extends Controller
 {
@@ -28,8 +29,8 @@ class TestController extends Controller
      */
     public function index()
     {
-			
-		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
+		Graphql::geneMetrics([]);
+		/*$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
 		
 		foreach ($results->issues as $issue)
 		{
@@ -59,6 +60,7 @@ class TestController extends Controller
 
 			echo $symbol . " has a symbol of " . $gene->name . " key: " . $issue->key . "\n";
 		}
+		*/
 
 		die("done");
 		return view('new-dosage.reports');

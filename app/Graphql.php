@@ -1708,10 +1708,13 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] =
 									$response->gene_validity_assertions->count;
 
-		$counters = ['definitive evidence' => 0,
+		$template = ['definitive evidence' => 0,
 					'strong evidence' => 0, 'moderate evidence' => 0,
 					'limited evidence' => 0, 'disputing' => 0,
-					'refuting evidence' => 0, 'no evidence' => 0];
+					'refuting evidence' => 0, 'no evidence' => 0,
+					'no known disease relationship' => 0];
+
+		$counters = $template;
 
 		$panelcounters = [];
 
@@ -1722,13 +1725,31 @@ class Graphql
 				continue;
 
 			if (isset($panelcounters[$record->attributed_to->curie]))
+			{
 				$panelcounters[$record->attributed_to->curie]['count']++;
+				$panelcounters[$record->attributed_to->curie]['classtotals'][$record->classification->label]++;
+			}
 			else
+			{
 				$panelcounters[$record->attributed_to->curie] = ['count' => 1,
-									'label' => $record->attributed_to->label];
+									'label' => $record->attributed_to->label,
+									'classtotals' => $template,
+									'classoffsets' => $template,
+									'classlength' => $template];
+				$panelcounters[$record->attributed_to->curie]['classtotals'][$record->classification->label] = 1;
+			}
 
 			if (isset($counters[$record->classification->label]))
 				$counters[$record->classification->label]++;
+		}
+
+		// calculate the segment size and offsets
+		foreach ($panelcounters as &$panel)
+		{
+			foreach ($panel['classlength'] as $key => &$value)
+			{
+				$value = round($panel['classtotals'][$key] / $panel['count'] * 100, 2);
+			}
 		}
 
 		$values[Metric::KEY_EXPERT_PANELS] = $panelcounters;
@@ -1745,7 +1766,7 @@ class Graphql
 						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
-//dd($values);
+dd($values);
 
 		// this should not be here, but its late
 		// pull all the regions from jira
