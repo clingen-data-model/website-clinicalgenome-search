@@ -127,7 +127,7 @@ class Cpic extends Model
      */
 	public function scopeGene($query, $gene)
      {
-          return $query->where('gene', $gene)->orderBy('guideline')->orderBy('drug');
+          return $query->where('gene', $gene);
      }
 
 
@@ -140,5 +140,29 @@ class Cpic extends Model
 	public function scopeDrug($query, $drug)
      {
           return $query->where('drug', $drug);
+     }
+
+
+     /**
+     * Query scope by cpic type only
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeCpic($query)
+     {
+          return $query->where('type', 1)->orderBy('cpic_level_status')->orderBy('guideline')->orderBy('cpic_level')->orderBy('drug');
+     }
+
+
+     /**
+     * Query scope by prarmgkb type only
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeGkb($query)
+     {
+          return $query->where('type', 2)->orderBy('pharmgkb_level_of_evidence')->orderBy('drug');
      }
 }

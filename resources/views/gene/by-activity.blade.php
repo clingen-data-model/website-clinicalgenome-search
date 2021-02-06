@@ -370,7 +370,7 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
 								<th class="col-sm-2">CPIC Level</th>
-								<th class="col-sm-2">Date</th>
+								<th class="col-sm-2">Last Updated</th>
 								<th class="col-sm-1 text-center">CPIC Clinical Guidelines</th>
 							  </tr>
 							</thead>
@@ -387,7 +387,7 @@
 									<a href="https://cpicpgx.org/genes-drugs/">Level {{ $entry['cpic_level'] }}</a>
 									@endif
 								</td>
-								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '01/13/2021' : ''  }}</td>
+								<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? $record->displayDate($entry['updated_at']) : ''  }}</td>
 								@if (isset($border) && $border == "")
 									@if (empty($entry['guideline']))
 									<td class=" text-center {{ $border ?? '' }}"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://cpicpgx.org/genes-drugs">  <span class=""><i class="glyphicon glyphicon-file"></i>  Provisional</span></a></td>
@@ -407,7 +407,7 @@
 				  </div>
 				@endif
 
-				@if (!empty($record->pharma))
+				@if (!empty($record->pharmagkb))
 				@php ($currations_set = true) @endphp
 				<div class="row justify-content-center">
 					<div class="col-md-12">
@@ -421,12 +421,12 @@
 								<th class="col-sm-1 ml-3 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
 								<th class="col-sm-2">Highest Level of Evidence</th>
-								<th class="col-sm-2">Date</th>
+								<th class="col-sm-2">Last Updated</th>
 								<th class="col-sm-1 text-center">Information</th>
 							  </tr>
 							</thead>
 							<tbody class="">
-							  @foreach($record->pharma as $idx => $entry)
+							  @foreach($record->pharmagkb as $idx => $entry)
 							  @php $border = (isset($first) && $first  ? "border-0" : ""); @endphp
 							  @if ($entry['pharmgkb_level_of_evidence'] == null)
 								@continue;
@@ -438,7 +438,7 @@
 								<td class="border-0"><a href="https://www.pharmgkb.org/chemical/{{ $entry['pa_id_drug'] }}">{{ $entry['drug'] }}</a></td>
 								<td class="border-0">
 									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
-									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? '01/13/2021' : ''  }}</td>
+									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? $record->displayDate($entry['updated_at']) : ''  }}</td>
 								@if (isset($border) && $border == "")
 									<td class="border-0 text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
 								@else

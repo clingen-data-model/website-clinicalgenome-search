@@ -85,6 +85,8 @@ class Metric extends Model
     public const KEY_TOTAL_VALIDITY_DISPUTED = "total_validity_disputed";
     public const KEY_TOTAL_VALIDITY_REFUTED = "total_validity_refuted";
     public const KEY_TOTAL_VALIDITY_NONE = "total_validity_none";
+    public const KEY_TOTAL_VALIDITY_GRAPH = "total_validity_graph";
+
 
     public const KEY_EXPERT_PANELS = "expert_panels";
 
@@ -107,6 +109,15 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_CURATIONS = "total_actionability_curations";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS = "total_actionability_adult_curations";
     public const KEY_TOTAL_ACTIONABILITY_PED_CURATIONS = "total_actionability_ped_curations";
+    public const KEY_TOTAL_ACTIONABILITY_REPORTS = "total_actionability_reports";
+    public const KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS = "total_actionability_updated_reports";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS = "total_actionability_adult_pairs";
+    public const KEY_TOTAL_ACTIONABILITY_PED_PAIRS = "total_actionability_ped_pairs";
+    public const KEY_TOTAL_ACTIONABILITY_OUTCOME = "total_actionability_outcome";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME = "total_actionability_adult_outcome";
+    public const KEY_TOTAL_ACTIONABILITY_PED_OUTCOME = "total_actionability_ped_outcome";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_SCORE = "total_actionability_adult_score";
+    public const KEY_TOTAL_ACTIONABILITY_PED_SCORE = "total_actionability_ped_score";
 
     public const KEY_TOTAL_PATHOGENICITY_CURATIONS = "total_pathogenicity_curations";
     public const KEY_TOTAL_PATHOGENICITY_UNIQUE = "total_pathogenicity_unique";
@@ -117,10 +128,8 @@ class Metric extends Model
     public const KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN = "total_pathogenicity_likelybenign";
 
     public const KEY_EXPERT_PANELS_PATHOGENICITY = "pathogenicity_expert_panels";
+    public const KEY_TOTAL_PATHOGENICITY_GRAPH = "total_pathogenicity_graph";
     
-
-
-
 
     /*
     * Status strings for display methods

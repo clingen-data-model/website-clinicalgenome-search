@@ -49,89 +49,101 @@ class UpdateCpic extends Command
     
         echo "Importing pharma data from CPIC ...\n";
 
-        $file = base_path() . '/data/cpicPairs.csv';
+        try {
+					
+			$results = file_get_contents("https://api.cpicpgx.org/v1/pair_view?order=genesymbol,provisional,guidelineurl,cpiclevel,drugname&select=*,gene(hgncid)");
 
-        $worksheets = (new Excel)->toArray($file);
-        
-        foreach($worksheets[0] as $row)
+		} catch (\Exception $e) {
+		
+			echo "(E001) Error retreiving CPIC data\n";
+			
+		}
+
+        $dd = json_decode($results);
+      
+        Cpic::query()->forceDelete();
+
+        // Type 1 is cpic row
+        foreach($dd as $row)
         {
-            echo "Updating  " . $row['gene'] . "\n";
+            $record = new Cpic([ 'gene' => $row->genesymbol,
+                                'hgnc_id' => $row->gene->hgncid,
+                                'drug' => $row->drugname,
+                                'guideline' => $row->guidelineurl,
+                                'cpic_level' => $row->cpiclevel,
+                                'cpic_level_status' => $row->provisional ? "Provisional" : "Final",
+                                'pharmgkb_level_of_evidence' => $row->pgkbcalevel,
+                                'pa_id' => null,
+                                'pa_id_drug' => null,
+                                'is_vip' => $row->usedforrecommendation,
+                                'has_va' => null,
+                                'had_cpic_gudeline' => null,
+                                'pgx_on_fda_label' => $row->pgxtesting,
+                                'cpic_publications_pmid' => !empty($row->pmids) ? implode(':', $row->pmids) : null,
+                                'notes' => $row->guidelinename,
+                                'type' => 1,
+                                'status' => 1
 
-            $stat = Cpic::updateOrCreate(['gene' => $row['gene'], 'drug' => $row['drug']], $row);
+            ]);
 
+            $record->save();
         }
 
-        echo "Augmenting pharma data from pharmGKB ...\n";
 
-        $file = base_path() . '/data/pharmgkb/genes.tsv';
-			
-		try {
-					
-			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
-			$file = fopen($file,"r");
+        echo "Importing pharma data from PharmGKB ...\n";
 
-		} catch (\Exception $e) {
-		
-			echo "(E001) Error accessing pharmGKB data\n";
-			exit;
-			
-		}
-	
-		// discard the header
-		$line = fgets($file);
-		
-		
-		// parse the remaining file
-		while (($line = fgets($file)) !== false)
-		{
-			$row = explode("\t", $line);
+        try {
+                    
+            $results = file_get_contents("https://api.pharmgkb.org/v1/collaborator/clingen/pair");
+
+        } catch (\Exception $e) {
         
-            echo "Updating  " . $row[5] . "\n";
-
-            $records = Cpic::gene($row[5])->get();
-
-            foreach($records as $record)
-                $record->update(['hgnc_id' => $row[2], 'pa_id' => $row[0], 'is_vip' => $row[8],
-                    'has_va' => $row[9], 'had_cpic_guideline' => $row[11]]);
-
+            echo "(E001) Error retreiving PharmKGB data\n";
+            
         }
+    
+        $dd = json_decode($results);
+       
+        // Type 2 is pharmGKB row
+        foreach($dd->data as $row)
+        {
+            $record = new Cpic([ 'gene' => $row->gene->name,
+                                'hgnc_id' => null,
+                                'drug' => $row->drug->name,
+                                'guideline' => $row->url,
+                                'cpic_level' => null,
+                                'cpic_level_status' => null,
+                                'pharmgkb_level_of_evidence' => $row->level,
+                                'pa_id' => $row->gene->id,
+                                'pa_id_drug' => $row->drug->id,
+                                'is_vip' => null,
+                                'has_va' => null,
+                                'had_cpic_gudeline' => null,
+                                'pgx_on_fda_label' => $row->drug->url,
+                                'cpic_publications_pmid' => $row->gene->url,
+                                'notes' => $row->lastModified,
+                                'type' => 2,
+                                'status' => 1
 
-        echo "Augmenting drug data from pharmGKB ...\n";
+            ]);
 
-        $file = base_path() . '/data/pharmgkb/drugs.tsv';
-			
-		try {
-					
-			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
-			$file = fopen($file,"r");
-
-		} catch (\Exception $e) {
-		
-			echo "(E001) Error accessing pharmGKB data\n";
-			exit;
-			
-		}
-	
-		// discard the header
-		$line = fgets($file);
-		
-		/*$parts = explode("\t", $line);
-			
-		echo $parts[29];
-		exit;*/
-		
-		// parse the remaining file
-		while (($line = fgets($file)) !== false)
-		{
-			$row = explode("\t", $line);
+            $record->save();
+        }
         
-            echo "Updating  " . $row[1] . "\n";
+        // for entries where we don't yet have an hgnc_id, populate it
+        $list = Cpic::whereNull('hgnc_id')->get();
 
-            $records = Cpic::drug($row[1])->get();
+        foreach ($list as $record)
+        {
+            $gene = Gene::name($record->gene)->first();
 
-            foreach($records as $record)
-                $record->update(['pa_id_drug' => $row[0]]);
+            if ($gene === null)
+            {
+                echo "Could not find an hgncid for " . $record->gene . "\n";
+                continue;
+            }
 
+            $record->update(['hgnc_id' => $gene->hgnc_id]);
         }
 
         // update the main gene table

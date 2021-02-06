@@ -13,14 +13,14 @@ use App\Cpic;
 use App\GeneLib;
 use App\Gene;
 
-class UpdateNewCpic extends Command
+class UpdateOldCpic extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update:ncpic';
+    protected $signature = 'update:oldcpic';
 
     /**
      * The console command description.
@@ -49,53 +49,18 @@ class UpdateNewCpic extends Command
     
         echo "Importing pharma data from CPIC ...\n";
 
-        try {
-					
-			$results = file_get_contents("https://api.cpicpgx.org/v1/pair_view?order=cpiclevel,drugname,genesymbol");
+        $file = base_path() . '/data/cpicPairs.csv';
 
-		} catch (\Exception $e) {
-		
-			echo "(E001) Error retreiving decipher data\n";
-			
-		}
-
-        $dd = json_decode($results);
-      
-        Cpic::query()->forceDelete();
-
-        // Type 1 is cpic row
-        foreach($dd as $row)
-        {
-            dd($row);
-            $stat = new Cpic([ 'gene' => $row->genesymbol,
-                                'hgnc_id' => null,
-                                'drug' => $row->drugname,
-                                'guideline' => $row->guidelineurl,
-                                'cpic_level' => $row->cliplevel,
-                                'cpic_level_status' => $row->provisional ? "Provisional" : "Final",
-                                'pharmgkb_level_of_evidence' => $row->pgkbcalevel,
-                                'pa_id' => null,
-                                'pa_id_drug' => null,
-                                'is_vip' => $row->usedforrecommendation,
-                                'has_va' => null,
-                                'had_cpic_gudeline' => null,
-                                'pgx_on_fda_label' => $row->pgxtesting,
-                                'cpic_publications_pmid' => implode(':', $row->pmids),
-                                'notes' => $row->guidelinename,
-                                'type' => 1,
-                                'status' => 1
-
-            ]);
-        }
+        $worksheets = (new Excel)->toArray($file);
         
-        /*foreach($worksheets[0] as $row)
+        foreach($worksheets[0] as $row)
         {
             echo "Updating  " . $row['gene'] . "\n";
 
             $stat = Cpic::updateOrCreate(['gene' => $row['gene'], 'drug' => $row['drug']], $row);
 
-        }*/
-exit;
+        }
+
         echo "Augmenting pharma data from pharmGKB ...\n";
 
         $file = base_path() . '/data/pharmgkb/genes.tsv';

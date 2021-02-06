@@ -404,8 +404,11 @@ class Graphql
 
 		if (!empty($pharma))
 		{
-			$entries = Cpic::gene($node->label)->get();
+			$entries = Cpic::gene($node->label)->cpic()->get();
 			$node->pharma = $entries->toArray();
+	
+			$entries = Cpic::gene($node->label)->gkb()->get();
+			$node->pharmagkb = $entries->toArray();
 		}
 
 
@@ -1066,7 +1069,7 @@ class Graphql
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion) 
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
-
+dd($node);
 		return $node;
 
 	}
@@ -1679,6 +1682,9 @@ class Graphql
 					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
 					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
 				];
+
+
+		// gene validity
 //dd($values);
 		$query = '{
 			gene_validity_assertions(limit: null) {
@@ -1746,13 +1752,41 @@ class Graphql
 		// calculate the segment size and offsets
 		foreach ($panelcounters as &$panel)
 		{
+			$offset = 0;
+
 			foreach ($panel['classlength'] as $key => &$value)
 			{
 				$value = round($panel['classtotals'][$key] / $panel['count'] * 100, 2);
 			}
+
+			foreach ($panel['classoffsets'] as $key => &$value)
+			{
+				$value = -$offset;
+				$offset += $panel['classlength'][$key];
+			}
+		}
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		foreach ($counters as $key => $value)
+			$topcounters['classtotals'][$key] = $value;
+
+		$offset = 0;
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
 		}
 
 		$values[Metric::KEY_EXPERT_PANELS] = $panelcounters;
+		$values[Metric::KEY_TOTAL_VALIDITY_GRAPH] = $topcounters;
 
 		$values[Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] = $counters['definitive evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_STRONG] = $counters['strong evidence'];
@@ -1760,13 +1794,13 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_LIMITED] = $counters['limited evidence'];
 		$values[Metric::KEY_TOTAL_VALIDITY_DISPUTED] = $counters['disputing'];
 		$values[Metric::KEY_TOTAL_VALIDITY_REFUTED] = $counters['refuting evidence'];
-		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no evidence'];
+		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no known disease relationship'];
 
 		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] =
 						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
-dd($values);
+//dd($values);
 
 		// this should not be here, but its late
 		// pull all the regions from jira
@@ -1797,8 +1831,91 @@ dd($values);
 		$values[Metric::KEY_TOTAL_DOSAGE_TRIP_AR] = $tripcounters['30'];
 		$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS] = array_sum($hapcounters) + array_sum($tripcounters);
 
+		// Variant pathogenicity
+
 		$paths = Variant::all();
 
+		$template = ['Pathogenic' => 0,
+					'Likely Pathogenic' => 0, 'Uncertain Significance' => 0,
+					'Likely Benign' => 0, 'Benign' => 0
+					];
+
+		$counters = $template;
+
+		$panelcounters = [];
+
+		foreach($paths as $variant)
+		{
+			// strip off the VCEP suffix
+			$panel_name = $variant->guidelines[0]["agents"][0]["affiliation"];
+			$panel_name = str_replace(' VCEP', '', $panel_name);
+
+			// strip off the prefix and suffix
+			$panel_id = $variant->guidelines[0]["agents"][0]["label"];
+			$panel_id = str_replace(' EP', '', $panel_id);
+			$panel_id = str_replace('CG_', '', $panel_id);
+
+			if (isset($panelcounters[$panel_name]))
+			{
+				$panelcounters[$panel_name]['count']++;
+				$panelcounters[$panel_name]['classtotals'][$variant->guidelines[0]["outcome"]["label"]]++;
+			}
+			else
+			{
+				$panelcounters[$panel_name] = ['count' => 1,
+									'label' => $panel_name,
+									'pid' => $panel_id,
+									'classtotals' => $template,
+									'classoffsets' => $template,
+									'classlength' => $template];
+				$panelcounters[$panel_name]['classtotals'][$variant->guidelines[0]["outcome"]["label"]] = 1;
+			}
+
+			if (isset($counters[$variant->guidelines[0]["outcome"]["label"]]))
+				$counters[$variant->guidelines[0]["outcome"]["label"]]++;
+		}
+
+		// calculate the segment size and offsets
+		foreach ($panelcounters as &$panel)
+		{
+			$offset = 0;
+
+			foreach ($panel['classlength'] as $key => &$value)
+			{
+				$value = round($panel['classtotals'][$key] / $panel['count'] * 100, 2);
+			}
+
+			foreach ($panel['classoffsets'] as $key => &$value)
+			{
+				$value = -$offset;
+				$offset += $panel['classlength'][$key];
+			}
+		}
+
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		foreach ($counters as $key => $value)
+			$topcounters['classtotals'][$key] = $value;
+
+		$offset = 0;
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_GRAPH] = $topcounters;
+
+		/*
 		$npathogenic = 0;
 		$nlikely = 0;
 		$nuncertain = 0;
@@ -1837,7 +1954,7 @@ dd($values);
 				$epanels[$ep] = 1;
 
 		}
-
+		
 		ksort($epanels);
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
@@ -1849,8 +1966,22 @@ dd($values);
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $nuncertain;
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] = $nbenign;
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $nlikelybenign;
-		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;
+		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;*/
 
+
+
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = $paths->unique(function ($item) {
+				return $item['caid'].$item['variant_id'];
+		})->count();
+		
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] = $counters['Pathogenic'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] = $counters['Likely Pathogenic'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $counters['Uncertain Significance'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] = $counters['Likely Benign'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $counters['Benign'];
+
+		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $panelcounters;
+dd($values);
 		// new actionability statistics
 		/*
 		$query = '{
@@ -1873,7 +2004,42 @@ dd($values);
 		if (empty($response))
 			return $response;
 		 */
+
+		$response = '{
+			"data": {
+			  "statistics": {
+				"actionability_tot_reports": 141,
+				"actionability_tot_updated_reports": 23,
+				"actionability_tot_adult_gene_disease_pairs": 160,
+				"actionability_tot_pediatric_gene_disease_pairs": 69,
+				"actionability_tot_adult_outcome_intervention_pairs": "N/A",
+				"actionability_tot_outcome_intervention_pairs": "N/A",
+				"actionability_tot_pediatric_outcome_intervention_pairs": "N/A",
+				"actionability_tot_adult_score_counts": "5=6 6=21 7=36 8=56 9=92 10=108 11=41 12=9",
+				"actionability_tot_pediatric_score_counts": "3=2 4=2 7=11 8=23 9=48 10=36 11=21 12=6"
+			  }
+			}
+		  }';
+
+		$response = json_decode($response);
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->data->statistics->actionability_tot_reports;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->data->statistics->actionability_tot_updated_reports;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->data->statistics->actionability_tot_adult_gene_disease_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->data->statistics->actionability_tot_pediatric_gene_disease_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->data->statistics->actionability_tot_outcome_intervention_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->data->statistics->actionability_tot_adult_outcome_intervention_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->data->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
 		
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_adult_score_counts, $r); 
+		$result = array_combine($r[1], $r[2]);
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE] = $result;
+		
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_pediatric_score_counts, $r); 
+		$result = array_combine($r[1], $r[2]);
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE] = $result;
+		
+
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
 								'status' => 1,
