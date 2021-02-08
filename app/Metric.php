@@ -111,6 +111,7 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_PED_CURATIONS = "total_actionability_ped_curations";
     public const KEY_TOTAL_ACTIONABILITY_REPORTS = "total_actionability_reports";
     public const KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS = "total_actionability_updated_reports";
+    public const KEY_TOTAL_ACTIONABILITY_GD_PAIRS = "total_actionability_genedis_pairs";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS = "total_actionability_adult_pairs";
     public const KEY_TOTAL_ACTIONABILITY_PED_PAIRS = "total_actionability_ped_pairs";
     public const KEY_TOTAL_ACTIONABILITY_OUTCOME = "total_actionability_outcome";

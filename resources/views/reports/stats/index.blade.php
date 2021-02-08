@@ -734,7 +734,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">
-                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] + $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS]}}
+                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Unique <br>Gene-Disease<br> Pairs</div>
                 </div>
