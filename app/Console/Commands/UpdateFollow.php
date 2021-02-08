@@ -9,7 +9,7 @@ use DB;
 use App\Gene;
 use App\User;
 
-class UpdateRatings extends Command
+class UpdateFollow extends Command
 {
     /**
      * The name and signature of the console command.
