@@ -26,11 +26,11 @@
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br /> Clinical Actionability<br />Assertions</li>
-			@if ($follow)
+			<!--@if ($follow)
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
 			@else
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:lightgray"></i></span><br /> Follow<br />Gene</li>
-			@endif
+			@endif-->
 		</ul>
 
 </div>
@@ -370,7 +370,7 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
 								<th class="col-sm-2">CPIC Level</th>
-								<th class="col-sm-2">Last Updated</th>
+								<th class="col-sm-2">Date Accessed</th>
 								<th class="col-sm-1 text-center">CPIC Clinical Guidelines</th>
 							  </tr>
 							</thead>
@@ -421,7 +421,7 @@
 								<th class="col-sm-1 ml-3 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 ">Drug</th>
 								<th class="col-sm-2">Highest Level of Evidence</th>
-								<th class="col-sm-2">Last Updated</th>
+								<th class="col-sm-2">Last Curated</th>
 								<th class="col-sm-1 text-center">Information</th>
 							  </tr>
 							</thead>
@@ -438,7 +438,7 @@
 								<td class="border-0"><a href="https://www.pharmgkb.org/chemical/{{ $entry['pa_id_drug'] }}">{{ $entry['drug'] }}</a></td>
 								<td class="border-0">
 									<a href="https://www.pharmgkb.org/page/clinAnnLevels">Level {{ $entry['pharmgkb_level_of_evidence'] }}</a></td>
-									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? $record->displayDate($entry['updated_at']) : ''  }}</td>
+									<td class="{{ $border ?? '' }}">{{ isset($border) && $border == "" ? $record->displayDate($entry['notes']) : ''  }}</td>
 								@if (isset($border) && $border == "")
 									<td class="border-0 text-center"><a class="btn btn-xs btn-success btn-block" target="_pharma" href="https://www.pharmgkb.org/gene/{{ $entry['pa_id'] }}/clinicalAnnotation"><span class="pl-3 pr-3"><i class="glyphicon glyphicon-file"></i>  View</span></a></td>
 								@else

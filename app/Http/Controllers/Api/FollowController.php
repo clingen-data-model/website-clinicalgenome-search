@@ -69,7 +69,7 @@ class FollowController extends Controller
         return response()->json(['success' => 'true',
 								 'status_code' => 200,
 							 	 'message' => 'Gene Followed'],
-							 	 200)->withCookie(cookie()->forever('clingenfollow',$user->device_token));
+							 	 200)->withCookie(cookie('clingenfollow',$user->device_token, 0));
 
     }
 

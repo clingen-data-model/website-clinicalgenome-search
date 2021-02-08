@@ -19,7 +19,15 @@
 				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl text-white'>
 					|
 				</li> --}}
+				@auth
+				<!--<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
+					<a class=' text-white' href="/dashboard">Dashboard</a>
+				</li>-->
+				@endauth
 				@guest
+				<!--<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
+					<a class=' text-white action-login' href='#'>Login</a>
+				</li>-->
 				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl'>
 					<a class=' text-white' href='{{ route('login') }}'><i class="fas fa-user-circle"></i> Login</a>
 				</li>

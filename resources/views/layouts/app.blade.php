@@ -213,6 +213,7 @@
             @yield('content')
 
             @yield('modals')
+            @include('modals.login')
           </div>
         </section>
       </main>
@@ -228,6 +229,86 @@
     <!-- Placed at the end of the document so the pages load faster -->
 
 
+    <script src="/js/jquery.validate.min.js" ></script>
+    <script src="/js/additional-methods.min.js" ></script>
+
+
+    <script>
+      $(function() {
+      
+      
+        $( '#login-form' ).validate( {
+          submitHandler: function(form) {
+            
+            $.ajaxSetup({
+              cache: true,
+              contentType: "application/x-www-form-urlencoded",
+              processData: true
+            });
+            
+            var url = "/login";
+            
+            var formData = $(form).serialize();
+      
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+              //alert(JSON.stringify(response));
+          
+              /*if (response['message'])
+              {
+                swal("Done!", response['message'], "success")
+                  .then((answer2) => {
+                    if (answer2){*/
+                      $('#modalLogin').modal('hide');
+                      //swap login for dashboard
+                      $('.action-login').html('Dashboard').attr('href', '/dashboard').removeClass('action-login');
+                    /*}
+                });
+              }*/
+            }).fail(function(response)
+            {
+              //handle failed validation
+              alert("Error Logging in");
+            });
+      
+            $('#modalFollowGene').modal('hide');
+          },
+          rules: {
+            email: {
+              required: true,
+              email: true,
+              maxlength: 80
+            }
+          },
+          messages: {
+            email:  {
+              required: "Please enter your email address",
+              email: "Please enter a valid email address",
+              maxlength: "Section names must be less than 80 characters"
+            },	
+          },
+          errorElement: 'em',
+          errorClass: 'invalid-feedback',
+          errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+      
+            if ( element.prop( "type" ) === "checkbox" ) {
+              error.insertAfter( element.parent( "label" ) );
+            } else {
+              error.insertAfter( element );
+            }
+          },
+          highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+          }
+        });
+      });
+        </script>
     @yield('script_js')
 
     <script>
@@ -250,6 +331,12 @@
     document.documentElement.scrollTop = 0;
   }
 </script>
+    <script>
+      $(".action-login").click(function() {
+
+        $('#modalLogin').modal('show');
+      });
+
 
     </script>
     <script src="/js/typeahead.js"></script>

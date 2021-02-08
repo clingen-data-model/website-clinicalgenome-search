@@ -23,7 +23,7 @@
 				</div>
 				<div class="modal-footer">
 					@if (!Auth::check())
-					<button type="button" class="btn btn-outline-secondary float-left">
+					<button type="button" class="btn btn-outline-secondary float-left" data-toggle="collapse" data-target="#collapselogin" aria-expanded="false" aria-controls="collapselogin">
 						Login
 						</button>
 					<button type="button" class="btn btn-outline-secondary float-left">
@@ -31,10 +31,30 @@
 							</button>
 					@endif
 					<button type="submit" class="btn btn-primary mr-auto">Submit
+						
 					</button>
 					<button type="button" class="btn btn-outline-secondary" data-dismiss="modal" aria-label="Close">
 					Close
 					</button>
+					<div class="collapse nt-2" id="collapselogin">
+						<div class="card card-body">
+							<p class="login-card-description">Sign into ClinicalGenome.org</p>
+							<form action="/login" method="POST" id="login-form">
+								@csrf
+								  <div class="form-group">
+									<label for="email" class="sr-only">Email</label>
+									<input type="email" name="email" id="email" class="form-control" placeholder="Email address">
+								  </div>
+								  <div class="form-group mb-4">
+									<label for="password" class="sr-only">Password</label>
+									<input type="password" name="password" id="password" class="form-control" placeholder="***********">
+								  </div>
+								  <button type="submit" class="btn btn-block login-btn mb-4">Login</button>
+			  
+								</form>
+								<a href="#!" class="forgot-password-link">Forgot password?</a>
+						</div>
+					  </div>
 				</div>
 			</form>
 		</div>
