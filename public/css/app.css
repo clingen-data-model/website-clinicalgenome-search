@@ -14423,6 +14423,10 @@ button.close {
   background-color: #d9534f !important;
 }
 
+.progress-bar-left-radius-0 {
+  border-radius: 0 1rem 1rem 0 !important;
+}
+
 section.section-heading {
   padding-top: 1.5em;
   padding-bottom: 1.5em;
