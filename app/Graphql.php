@@ -1996,6 +1996,7 @@ class Graphql
 					actionability_tot_pediatric_outcome_intervention_pairs
 					actionability_tot_adult_score_counts
 					actionability_tot_pediatric_score_counts
+					actionability_tot_failed_early_rule_out
 			 	}
 		 }';
 
@@ -2018,7 +2019,8 @@ class Graphql
 				"actionability_tot_outcome_intervention_pairs": 518,
 				"actionability_tot_pediatric_outcome_intervention_pairs": 149,
 				"actionability_tot_adult_score_counts": "5=6 6=21 7=36 8=56 9=92 10=108 11=41 12=9",
-				"actionability_tot_pediatric_score_counts": "3=2 4=2 7=11 8=23 9=48 10=36 11=21 12=6"
+				"actionability_tot_pediatric_score_counts": "3=2 4=2 7=11 8=23 9=48 10=36 11=21 12=6",
+				"actionability_tot_failed_early_rule_out": 13
 			  }
 			}
 		  }';

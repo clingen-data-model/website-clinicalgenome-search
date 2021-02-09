@@ -30,6 +30,9 @@
       </div>
 
       <div class="col-md-12">
+        <span class="badge action-af-badge">Advanced Filters:  None</span>
+      </div>
+      <div class="col-md-12">
         @include('_partials.genetable')
       </div>
     </div>
@@ -110,6 +113,7 @@
 
       $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
       $('.action-show-acmg59-text').html('On');
+      $('.action-af-badge').html('Advanced Filter:  ACMG59');
 
     }
     else
@@ -118,6 +122,7 @@
 
       $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
       $('.action-show-acmg59-text').html('Off');
+      $('.action-af-badge').html('Advanced Filter:  None')
 
     }
   });

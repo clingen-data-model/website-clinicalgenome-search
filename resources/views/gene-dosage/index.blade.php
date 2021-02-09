@@ -69,7 +69,9 @@
 			</div>
 		</div> --}}
 
-
+		<div class="col-md-12">
+			<span class="badge action-af-badge">Advanced Filters:  None</span>
+		</div>
 		<div class="col-md-12 light-arrows">
 
 			@include('_partials.genetable')
