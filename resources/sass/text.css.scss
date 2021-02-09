@@ -363,6 +363,10 @@ sup {
 }
 
 
+
+a.svg-link:hover {
+  text-decoration: none !important;
+}
 .chart-text {
   font: 16px/1.4em Arial, sans-serif;
   fill: #000;
@@ -382,6 +386,11 @@ sup {
   transform: translateY(-0.25em);
 }
 
+.chart-small .chart-label{
+  font-size: 0.15em;
+  text-transform: uppercase;
+}
+
 .chart-label {
   font-size: 0.2em;
   text-transform: uppercase;
@@ -390,4 +399,16 @@ sup {
   -ms-transform: translateY(0.7em);
   -webkit-transform: translateY(0.7em);
   transform: translateY(0.7em);
+}
+
+#svgtooltip {
+  background: black;
+  border: 1px solid #fff;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.donut-segment:hover {
+  cursor: crosshair;
 }

@@ -129,7 +129,7 @@ class Graphql
 
 		// get list of pharma and variant pathogenicity genes
 		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
-		
+
 		// build list of genes not known by genegraph
 		$excludes = [];
 
@@ -167,9 +167,9 @@ class Graphql
 				array_push($t, "VAR_PATH");
 
 			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
-			
+
 			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
-			
+
 			$collection->push($node);
 		}
 
@@ -406,7 +406,7 @@ class Graphql
 		{
 			$entries = Cpic::gene($node->label)->cpic()->get();
 			$node->pharma = $entries->toArray();
-	
+
 			$entries = Cpic::gene($node->label)->gkb()->get();
 			$node->pharmagkb = $entries->toArray();
 		}
@@ -1067,7 +1067,7 @@ class Graphql
 		$node->score_data = $node->json->scoreJson ?? $node->json;
 
 		// genegraph is not distinguishing gene express origin from others
-		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion) 
+		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 //dd($node);
 		return $node;
@@ -1737,8 +1737,10 @@ class Graphql
 			}
 			else
 			{
+				// NOTE the ep_id line below takes the CURIE and drop out the text and the 1 which is sent and replaces with a 4 because that is what ClinGen uses as the public affilicaiton ID... not sure why the GCI sends it as a 1.
 				$panelcounters[$record->attributed_to->curie] = ['count' => 1,
 									'label' => $record->attributed_to->label,
+									'ep_id' => str_replace("CGAGENT:1", "4", $record->attributed_to->curie),
 									'classtotals' => $template,
 									'classoffsets' => $template,
 									'classlength' => $template];
@@ -1865,6 +1867,7 @@ class Graphql
 				$panelcounters[$panel_name] = ['count' => 1,
 									'label' => $panel_name,
 									'pid' => $panel_id,
+									'ep_id' => $panel_id,
 									'classtotals' => $template,
 									'classoffsets' => $template,
 									'classlength' => $template];
@@ -1954,7 +1957,7 @@ class Graphql
 				$epanels[$ep] = 1;
 
 		}
-		
+
 		ksort($epanels);
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
@@ -1973,7 +1976,7 @@ class Graphql
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = $paths->unique(function ($item) {
 				return $item['caid'].$item['variant_id'];
 		})->count();
-		
+
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] = $counters['Pathogenic'];
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] = $counters['Likely Pathogenic'];
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $counters['Uncertain Significance'];
@@ -2035,15 +2038,15 @@ class Graphql
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->data->statistics->actionability_tot_outcome_intervention_pairs;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->data->statistics->actionability_tot_adult_outcome_intervention_pairs;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->data->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
-		
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_adult_score_counts, $r); 
+
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_adult_score_counts, $r);
 		$result = array_combine($r[1], $r[2]);
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE] = $result;
-		
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_pediatric_score_counts, $r); 
+
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_pediatric_score_counts, $r);
 		$result = array_combine($r[1], $r[2]);
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE] = $result;
-		
+
 
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
