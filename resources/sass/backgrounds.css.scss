@@ -6,6 +6,94 @@
   border-radius: 1rem;
 }
 
+.chart-stroke-definitive {
+  stroke: #276749 !important;
+}
+.chart-stroke-strong {
+  stroke: #38a169 !important;
+}
+.chart-stroke-moderate {
+  stroke: #68d391 !important;
+}
+.chart-stroke-limited {
+  stroke: #fc8181 !important;
+}
+.chart-stroke-disputed-evidence {
+  stroke: #e53e3e !important;
+}
+.chart-stroke-refuted-evidence {
+  stroke: #9b2c2c !important;
+}
+.chart-stroke-animal-model-only {
+  stroke: #f6ad55 !important;
+}
+.chart-stroke-no-known-disease-relationship {
+  stroke: #718096 !important;
+}
+.chart-stroke-benign {
+  stroke: #1a9641 !important;
+}
+.chart-stroke-likely-benign {
+  stroke: #a6d96a !important;
+}
+.chart-stroke-uncertain-significance {
+  stroke: #5bc0de !important;
+}
+.chart-stroke-likely-pathogenic {
+  stroke: #f0ad4e !important;
+}
+.chart-stroke-pathogenic {
+  stroke: #d9534f !important;
+}
+
+.chart-stroke-actionability-peds {
+  stroke: #ff7300 !important;
+}
+.chart-stroke-actionability-adult {
+  stroke: #ffd000 !important;
+}
+
+.chart-bg-definitive {
+  background-color: #276749 !important;
+}
+.chart-bg-strong {
+  background-color: #38a169 !important;
+}
+.chart-bg-moderate {
+  background-color: #68d391 !important;
+}
+.chart-bg-limited {
+  background-color: #fc8181 !important;
+}
+.chart-bg-disputed-evidence {
+  background-color: #e53e3e !important;
+}
+.chart-bg-refuted-evidence {
+  background-color: #9b2c2c !important;
+}
+.chart-bg-animal-model-only {
+  background-color: #f6ad55 !important;
+}
+.chart-bg-no-known-disease-relationship {
+  background-color: #718096 !important;
+}
+.chart-bg-benign {
+  background-color: #1a9641 !important;
+}
+.chart-bg-likely-benign {
+  background-color: #a6d96a !important;
+}
+.chart-bg-uncertain-significance {
+  background-color: #5bc0de !important;
+}
+.chart-bg-likely-pathogenic {
+  background-color: #f0ad4e !important;
+}
+.chart-bg-pathogenic {
+  background-color: #d9534f !important;
+}
+
+
 section.section-heading {
   padding-top: 1.5em;
   padding-bottom: 1.5em;
