@@ -1991,6 +1991,7 @@ class Graphql
 				statistics {
 					actionability_tot_reports
 					actionability_tot_updated_reports
+					actionability_tot_gene_disease_pairs
 					actionability_tot_adult_gene_disease_pairs
 					actionability_tot_pediatric_gene_disease_pairs
 					actionability_tot_adult_outcome_intervention_pairs
@@ -2013,11 +2014,12 @@ class Graphql
 			  "statistics": {
 				"actionability_tot_reports": 141,
 				"actionability_tot_updated_reports": 23,
+				"actionability_tot_gene_disease_pairs": 179,
 				"actionability_tot_adult_gene_disease_pairs": 160,
 				"actionability_tot_pediatric_gene_disease_pairs": 69,
-				"actionability_tot_adult_outcome_intervention_pairs": "N/A",
-				"actionability_tot_outcome_intervention_pairs": "N/A",
-				"actionability_tot_pediatric_outcome_intervention_pairs": "N/A",
+				"actionability_tot_adult_outcome_intervention_pairs": 369,
+				"actionability_tot_outcome_intervention_pairs": 518,
+				"actionability_tot_pediatric_outcome_intervention_pairs": 149,
 				"actionability_tot_adult_score_counts": "5=6 6=21 7=36 8=56 9=92 10=108 11=41 12=9",
 				"actionability_tot_pediatric_score_counts": "3=2 4=2 7=11 8=23 9=48 10=36 11=21 12=6"
 			  }
@@ -2028,7 +2030,8 @@ class Graphql
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->data->statistics->actionability_tot_reports;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->data->statistics->actionability_tot_updated_reports;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->data->statistics->actionability_tot_adult_gene_disease_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->data->statistics->actionability_tot_gene_disease_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->data->statistics->actionability_tot_adult_gene_disease_pairs;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->data->statistics->actionability_tot_pediatric_gene_disease_pairs;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->data->statistics->actionability_tot_outcome_intervention_pairs;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->data->statistics->actionability_tot_adult_outcome_intervention_pairs;
