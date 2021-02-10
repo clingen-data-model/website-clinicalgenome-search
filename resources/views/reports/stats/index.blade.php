@@ -6,7 +6,7 @@
       <div class="col-md-12 curated-genes-table">
       <table class="mt-3 mb-2">
         <tr>
-          <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statitics</h1>
+          <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statistics</h1>
             <h6><em>Last updated: {{ $metrics->display_date_time }}</em></h6>
           </td>
         </tr>
@@ -384,7 +384,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }}</div>
-                  <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
+                  <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
                 </div>
               </div>
           </div>
@@ -552,7 +552,7 @@
         <hr class="mt-4 pb-4" />
         <h2 id="clinical-actionability">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1144/untitled-1_icon-actionability-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Clinical Actionability</h2>
-        <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated </p>
+        <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated.</p>
 <div class="row text-center mt-4">
     <div class="col-md-7">
 
@@ -735,7 +735,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercentOrLess() }}%; background-color:#913699; opacity:1">
@@ -840,7 +840,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercentOrLess() }}%; background-color:#913699; opacity:1">

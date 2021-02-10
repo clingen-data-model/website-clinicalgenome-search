@@ -30,7 +30,7 @@
       </div>
 
       <div class="col-md-12">
-        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks"></i> Avanced Filters:  </small></span><span class="badge action-af-badge">None</span>
+        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Avanced Filters:  </small></span><span class="badge action-af-badge">None</span>
       </div>
       <div class="col-md-12">
         @include('_partials.genetable')
@@ -185,7 +185,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="How does this genetic diagnosis impact medical management?"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Which variants within this gene cause disease?"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Variant Pathogenicity',
           field: 'has_variant',
           formatter: hasVariantFormatter,
