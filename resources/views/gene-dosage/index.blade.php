@@ -70,7 +70,7 @@
 		</div> --}}
 
 		<div class="col-md-12">
-			<span class="badge action-af-badge">Advanced Filters:  None</span>
+			<span class="text-muted font-weight-bold mr-1"><small>Avanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 		</div>
 		<div class="col-md-12 light-arrows">
 
@@ -208,6 +208,11 @@
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-hiknown-text').html('On');
 
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">Known HI</span>');
+			$('.filter-container').append(newbadge);
+
 		}
 		else
 		{
@@ -215,6 +220,14 @@
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-hiknown-text').html('Off');
+
+			$('.action-hi-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
 		}
 	});
@@ -234,6 +247,11 @@
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-tsknown-text').html('On');
 
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-ts-badge bg-primary mr-1">Known TS</span>');
+			$('.filter-container').append(newbadge);
+
 		}
 		else
 		{
@@ -241,6 +259,14 @@
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-tsknown-text').html('Off');
+
+			$('.action-ts-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
 		}
 	});
@@ -260,6 +286,11 @@
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-protein-text').html('On');
 
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1">Protien Coding</span>');
+			$('.filter-container').append(newbadge);
+
 		}
 		else
 		{
@@ -267,6 +298,15 @@
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-protein-text').html('Off');
+
+			$('.action-pc-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
+
 
 		}
 	});
@@ -287,6 +327,11 @@
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-new-text').html('On');
 
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Updated 365</span>');
+			$('.filter-container').append(newbadge);
+
 		}
 		else
 		{
@@ -294,6 +339,14 @@
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-new-text').html('Off');
+
+			$('.action-new-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
 		}
 
@@ -315,12 +368,25 @@
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-recent-text').html('On');
 
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-nine-badge bg-primary">Recently Reviewed</span>');
+			$('.filter-container').append(newbadge);
+
 		}
 		else
 		{
 			$table.bootstrapTable('filterBy', {thr: [0, 1]}, {'filterAlgorithm': 'or'});
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-recent-text').html('Off');
+
+			$('.action-nine-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
 		}
 	});

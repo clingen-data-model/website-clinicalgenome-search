@@ -27,6 +27,22 @@ trait Display
      * @param
      * @return string
      */
+	public function getDisplayDateTimeAttribute()
+	{
+		if (empty($this->updated_at))
+			return '';
+
+		return $this->updated_at->timezone('America/New_York')
+					->format(DATE_RFC2822);
+	}
+
+
+	/**
+     * Return a displayable string of update
+     *
+     * @param
+     * @return string
+     */
 	public function getListDateAttribute()
 	{
 		if (empty($this->updated_at))

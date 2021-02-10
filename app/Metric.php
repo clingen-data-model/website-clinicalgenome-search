@@ -119,6 +119,9 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_PED_OUTCOME = "total_actionability_ped_outcome";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_SCORE = "total_actionability_adult_score";
     public const KEY_TOTAL_ACTIONABILITY_PED_SCORE = "total_actionability_ped_score";
+    public const KEY_TOTAL_ACTIONABILITY_GRAPH = "total_actionability_graph";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT = "total_actionability_adult_ruleout";
+    public const KEY_TOTAL_ACTIONABILITY_PED_RULEOUT = "total_actionability_ped_ruleout";
 
     public const KEY_TOTAL_PATHOGENICITY_CURATIONS = "total_pathogenicity_curations";
     public const KEY_TOTAL_PATHOGENICITY_UNIQUE = "total_pathogenicity_unique";
@@ -193,8 +196,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_DEFINITIVE])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_DEFINITIVE] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_DEFINITIVE] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -210,8 +215,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_STRONG])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_STRONG] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_STRONG] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -227,8 +234,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_MODERATE])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_MODERATE] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_MODERATE] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
   /**
@@ -243,8 +252,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_LIMITED])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_LIMITED] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_LIMITED] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
   /**
@@ -259,8 +270,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_DISPUTED])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_DISPUTED] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_DISPUTED] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -276,8 +289,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_REFUTED])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_REFUTED] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_REFUTED] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -293,8 +308,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_VALIDITY_NONE])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_VALIDITY_NONE] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_VALIDITY_NONE] /
                 $this->values[self::KEY_TOTAL_VALIDITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -319,7 +336,9 @@ class Metric extends Model
     if (!(isset($this->values[$a])))
             return 0;
 
-    return (int) ($this->values[$a] / $total * 100);
+    $pct = (int) ($this->values[$a] / $total * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -335,8 +354,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_PATHOGENICITY_PATHOGENIC])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -352,8 +373,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELY])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELY] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELY] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -369,8 +392,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_PATHOGENICITY_UNCERTAIN])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -386,8 +411,10 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 
@@ -403,8 +430,172 @@ class Metric extends Model
           isset($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN])))
             return 0;
 
-    return (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN] /
+    $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityAdultPercent($value = 0)
+  {
+  
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
+      return 0;
+    
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityAdultPercentOrLess()
+  {
+    $orless = [4, 3, 2, 1, 0];
+
+    $sum = $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][5] ?? 0;
+
+    foreach($orless as $value)
+      $sum += $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][$value] ?? 0;
+
+    if (empty($sum) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
+      return 0;
+    
+    $pct = (int) ($sum / $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityAdultOrLess()
+  {
+    $orless = [4, 3, 2, 1, 0];
+
+    $sum = $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][5] ?? 0;
+
+    foreach($orless as $value)
+      $sum += $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][$value] ?? 0;
+
+    return $sum;
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityAdultRuleout()
+  {
+    
+    if (!(isset($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]) &&
+        isset($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT])))
+          return 0;
+
+    $pct = (int) ($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] /
+              $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityPedPercent($value = 0)
+  {
+  
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]))
+      return 0;
+    
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityPedPercentOrLess()
+  {
+    $orless = [4, 3, 2, 1, 0];
+
+    $sum = $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_SCORE][5] ?? 0;
+
+    foreach($orless as $value)
+      $sum += $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_SCORE][$value] ?? 0;
+
+    if (empty($sum) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]))
+      return 0;
+    
+    $pct = (int) ($sum / $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityPedOrLess()
+  {
+    $orless = [4, 3, 2, 1, 0];
+
+    $sum = $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_SCORE][5] ?? 0;
+
+    foreach($orless as $value)
+      $sum += $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_SCORE][$value] ?? 0;
+
+    return $sum;
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityPedRuleout()
+  {
+    
+    if (!(isset($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]) &&
+        isset($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT])))
+          return 0;
+
+    $pct = (int) ($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] /
+              $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
   }
 
 }

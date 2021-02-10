@@ -7,7 +7,7 @@
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statitics</h1>
-            <h6><em>Last updated: {{ $metrics->display_date }}</em></h6>
+            <h6><em>Last updated: {{ $metrics->display_date_time }}</em></h6>
           </td>
         </tr>
       </table>
@@ -18,7 +18,7 @@
         <a href="#gene-disease-validity" class="pr-2">Gene-Disease Validity <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#dosage-sensitivity" class="pr-2">Dosage Sensitivity <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#clinical-actionability" class="pr-2">Clinical Actionability <i class="fas fa-arrow-circle-down"></i></a>
-        <a href="#variant-vathogenicity" class="pr-2">Variant Pathogenicity	<i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#variant-pathogenicity" class="pr-2">Variant Pathogenicity	<i class="fas fa-arrow-circle-down"></i></a>
         {{-- <a href="#download">DOWNLOAD <i class="fas fa-arrow-circle-down"></i></a> --}}
       </div>
       <hr />
@@ -153,7 +153,7 @@
                 <td class="col-sm-3 border-0">Definitive</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive *1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] ?? '' }}</span>
                   </div>
@@ -163,7 +163,7 @@
                 <td class=" border-0">Strong</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-strong"role="progressbar" aria-valuenow="{{ $metrics->validity_percent_strong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_strong *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-strong"role="progressbar" aria-valuenow="{{ $metrics->validity_percent_strong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_strong *1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_STRONG] ?? '' }}</span>
                   </div>
@@ -173,7 +173,7 @@
                 <td class="col-sm-4 border-0">Moderate</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-moderate" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_moderate }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_moderate *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-moderate" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_moderate }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_moderate *1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_MODERATE] ?? '' }}</span>
                   </div>
@@ -183,7 +183,7 @@
                 <td class="col-sm-4 border-0">Limited</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-limited" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_limited }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_limited *1.5 }}%; ">
+                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-limited" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_limited }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_limited *1.5 }}%; ">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_LIMITED] ?? '' }}</span>
                   </div>
@@ -193,7 +193,7 @@
                 <td class="col-sm-4 border-0">Disputed Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.5 }}%; ">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.5 }}%; ">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_DISPUTED] ?? '' }}</span>
                   </div>
@@ -203,8 +203,7 @@
                 <td class="col-sm-4 border-0">Refuted Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    {{-- <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_refuted *1.5 }}%;"> --}}
-                    <div class="progress-bar chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_REFUTED] ?? '' }}</span>
                   </div>
@@ -214,7 +213,7 @@
                 <td class="col-sm-4 border-0">Animal Model Only</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar chart-bg-animal-model-only " role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;>
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-animal-model-only " role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;>
                     </div>
                     <span class="ml-2">0</span>
                   </div>
@@ -224,7 +223,7 @@
                 <td class="col-sm-4 border-0 lineheight-tight">No Known Disease relationship</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mt-2 mb-1">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_NONE] ?? '' }}</span>
                   </div>
@@ -241,22 +240,22 @@
 
                       <svg width="110%" height="110%" viewBox="0 0 42 42" class="donut">
 
-                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" fill="none"/>
-                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#000" stroke-width="3"/>
+                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" transform="rotate(-90 21 21)" fill="none"/>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
 
-                        <circle class="donut-segment chart-stroke-definitive" cx="21" cy="21" r="15.91549430918954" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['definitive evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['definitive evidence'] }} Definitive');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-definitive" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['definitive evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['definitive evidence'] }} Definitive');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-strong" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['strong evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['strong evidence'] }} Strong');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-strong" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['strong evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['strong evidence'] }} Strong');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-moderate" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['moderate evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['moderate evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['moderate evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['moderate evidence'] }} Moderate');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-moderate" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['moderate evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['moderate evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['moderate evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['moderate evidence'] }} Moderate');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
@@ -310,22 +309,22 @@
 
                       <svg width="50%" height="50%" viewBox="0 0 42 42" class="donut">
 
-                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" fill="none"/>
-                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#000" stroke-width="3"/>
+                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" transform="rotate(-90 21 21)" fill="none"/>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
 
-                        <circle class="donut-segment chart-stroke-definitive" cx="21" cy="21" r="15.91549430918954"  fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['definitive evidence'] }} {{ 100.00 - $panel['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['definitive evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['definitive evidence'] }} Definitive');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-definitive" cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['definitive evidence'] }} {{ 100.00 - $panel['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['definitive evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['definitive evidence'] }} Definitive');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-strong" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['strong evidence'] }} {{ 100.00 - $panel['classlength']['strong evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['strong evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['strong evidence'] }} Strong');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-strong" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['strong evidence'] }} {{ 100.00 - $panel['classlength']['strong evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['strong evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['strong evidence'] }} Strong');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-moderate" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['moderate evidence'] }} {{ 100.00 - $panel['classlength']['moderate evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['moderate evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['moderate evidence'] }} Moderate');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-moderate" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['moderate evidence'] }} {{ 100.00 - $panel['classlength']['moderate evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['moderate evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['moderate evidence'] }} Moderate');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['limited evidence'] }} {{ 100.00 - $panel['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['limited evidence'] }} {{ 100.00 - $panel['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['disputing'] }} {{ 100.00 - $panel['classlength']['disputing'] }}" stroke-dashoffset="{{ $panel['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['disputing'] }} {{ 100.00 - $panel['classlength']['disputing'] }}" stroke-dashoffset="{{ $panel['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['refuting evidence'] }} {{ 100.00 - $panel['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['refuting evidence'] }} {{ 100.00 - $panel['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['no known disease relationship'] }} {{ 100.00 - $panel['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $panel['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['no known disease relationship'] }} {{ 100.00 - $panel['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $panel['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
 
 
                         {{-- <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-text="Definitive" data-value="{{ $panel['classtotals']['definitive evidence'] }}" fill="transparent" stroke="#276749" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['definitive evidence'] }} {{ 100.00 - $panel['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['definitive evidence'] }}"/>
@@ -423,7 +422,7 @@
                 <td class="col-sm-4 border-0">Sufficient Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:1">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -433,7 +432,7 @@
                 <td class="col-sm-4 border-0">Emerging Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.8">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.8">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING] ?? '' }}</span>
                   </div>
@@ -443,7 +442,7 @@
                 <td class="col-sm-4 border-0">Little Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.6">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.6">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE] ?? '' }}</span>
                   </div>
@@ -453,7 +452,7 @@
                 <td class="col-sm-4 border-0">No Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.5">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.5">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE] ?? '' }}</span>
                   </div>
@@ -463,7 +462,7 @@
                 <td class=" border-0">Autosomal Recessive</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.4">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.4">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_AR] ?? '' }}</span>
                   </div>
@@ -473,7 +472,7 @@
                 <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:.3">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:.3">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY] ?? '' }}</span>
                   </div>
@@ -488,7 +487,7 @@
                 <td class="col-sm-4 border-0">Sufficient Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -498,7 +497,7 @@
                 <td class="col-sm-4 border-0">Emerging Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.8">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.8">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING] ?? '' }}</span>
                   </div>
@@ -508,7 +507,7 @@
                 <td class="col-sm-4 border-0">Little Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.6">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.6">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE] ?? '' }}</span>
                   </div>
@@ -518,7 +517,7 @@
                 <td class="col-sm-4 border-0">No Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.5">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.5">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE] ?? '' }}</span>
                   </div>
@@ -528,7 +527,7 @@
                 <td class=" border-0">Autosomal Recessive</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.4">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.4">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR] ?? '' }}</span>
                   </div>
@@ -538,7 +537,7 @@
                 <td class="col-sm-3 border-0">Dosage Sensitivity Unlikely</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:.3">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:.3">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] ?? '' }}</span>
                   </div>
@@ -557,8 +556,7 @@
 <div class="row text-center mt-4">
     <div class="col-md-7">
 
-          {{-- <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</h4></div> --}}
-          <div class="col-sm-12 text-left"><h4>Clinical Actionability Reports Summarized</h4></div>
+          <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</h4></div>
 
           {{-- <div class="col-sm-4 px-1">
             <div class="panel panel-default border-primary">
@@ -626,26 +624,26 @@
           <div class="col-md-4">
             <svg width="110%" height="110%" viewBox="0 0 42 42" class="donut">
 
-                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" fill="none"/>
-                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#000" stroke-width="3"/>
+                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" transform="rotate(-90 21 21)" fill="none"/>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
 
-                        <circle class="donut-segment chart-stroke-actionability-peds" cx="21" cy="21" r="15.91549430918954" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['definitive evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['definitive evidence'] }} Pediatric Context');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-actionability-peds" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Adult'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Adult'] }} Adult Context');" onmouseout="hideSvgTooltip();"/>
 
-                        <circle class="donut-segment chart-stroke-actionability-adult" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['strong evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['strong evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['strong evidence'] }} Adult Context');" onmouseout="hideSvgTooltip();"/>
+                        <circle class="donut-segment chart-stroke-actionability-adult" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Ped'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Ped'] }} Pediatric Context');" onmouseout="hideSvgTooltip();"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
                           <text x="50%" y="45%" class="chart-number">
-                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }}
+                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] ?? '' }}
                           </text>
                           <text x="50%" y="45%" class="chart-label">
-                            Total Clinical
+                            Total Outcome-
                           </text>
                           <text x="50%" y="52%" class="chart-label">
-                            Actionability
+                            Intervention
                           </text>
                           <text x="50%" y="59%" class="chart-label">
-                            Reports
+                            Pairs
                           </text>
                         </g>
                       </svg>
@@ -665,7 +663,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#a2cb50; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0 }}</span>
                   </div>
@@ -676,7 +674,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#65ba59; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0 }}</span>
                   </div>
@@ -687,7 +685,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 80%; background-color:#469c50; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0 }}</span>
                   </div>
@@ -698,7 +696,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background-color:#4fb0a8; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0 }}</span>
                   </div>
@@ -709,7 +707,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#55b2e3; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0 }}</span>
                   </div>
@@ -720,7 +718,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#367fc2; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0 }}</span>
                   </div>
@@ -730,29 +728,29 @@
                 <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#69399a; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0 }}</span>
                   </div>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5&le; Score</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#913699; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][5] ?? 0 }}</span>
-                  </div>  <small>Score of 5 or less</small>
+                    <span class="ml-2">{{ $metrics->actionabilityAdultOrLess() }}</span>
+                  </div>
                 </td>
               </tr>
               <tr class="">
                 <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#666; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultRuleout() }}%; background-color:#666; opacity:1">
                     </div>
-                    <span class="ml-2">XX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] ?? 0 }}</span>
 
                   </div><small>Failed Early Rule-out</small>
                 </td>
@@ -770,7 +768,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#a2cb50; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0 }}</span>
                   </div>
@@ -781,7 +779,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#65ba59; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0 }}</span>
                   </div>
@@ -792,7 +790,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 80%; background-color:#469c50; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0 }}</span>
                   </div>
@@ -803,7 +801,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 90%; background-color:#4fb0a8; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0 }}</span>
                   </div>
@@ -814,7 +812,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#55b2e3; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0 }}</span>
                   </div>
@@ -825,7 +823,7 @@
                 <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 70%; background-color:#367fc2; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0 }}</span>
                   </div>
@@ -835,29 +833,29 @@
                 <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 60%; background-color:#69399a; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0 }}</span>
                   </div>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5&le; Score</strong></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#913699; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][5] ?? 0 }}</span>
-                  </div>  <small>Score of 5 or less</small>
+                    <span class="ml-2">{{ $metrics->actionabilityPedOrLess() }}</span>
+                  </div>
                 </td>
               </tr>
               <tr class="">
                 <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: 50%; background-color:#666; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedRuleout() }}%; background-color:#666; opacity:1">
                     </div>
-                    <span class="ml-2">XX</span>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] ?? 0 }}</span>
 
                   </div><small>Failed Early Rule-out</small>
                 </td>
@@ -867,7 +865,7 @@
         </div>
 
 
-        <div id="gene-disease-validity-wrapper" class="">
+        <div id="variant-pathogenicity" class="">
         <hr class="mt-4 pb-4">
         <h2 id="gene-disease-validity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" style="margin-top:-10px; margin-left:-50px"  /> Variant Pathogenicity Statistics</h2>
@@ -881,7 +879,7 @@
                 <td class="col-sm-3 border-0">Pathogenic</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-danger chart-bg-pathogenic" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_pathogenic }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_pathogenic * 1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 progress-bar-danger chart-bg-pathogenic" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_pathogenic }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_pathogenic * 1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] ?? '' }}</span>
                   </div>
@@ -891,7 +889,7 @@
                 <td class=" border-0">Likely Pathogenic</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-warning chart-bg-likely-pathogenic"  role="progressbar" aria-valuenow="1" aria-valuemin="{{ $metrics->pathogenicity_percent_likely }}" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely * 1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 progress-bar-warning chart-bg-likely-pathogenic"  role="progressbar" aria-valuenow="1" aria-valuemin="{{ $metrics->pathogenicity_percent_likely }}" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely * 1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] ?? '' }}</span>
                   </div>
@@ -901,7 +899,7 @@
                 <td class="col-sm-4 border-0">Uncertain Significance</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-info chart-bg-uncertain-significance" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_uncertain }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_uncertain * 1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 progress-bar-info chart-bg-uncertain-significance" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_uncertain }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_uncertain * 1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] ?? '' }}</span>
                   </div>
@@ -911,7 +909,7 @@
                 <td class="col-sm-4 border-0">Likely Benign</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success chart-bg-likely-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_likely_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely_benign * 1.5 }}%;background-color: mediumseagreen;">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0 chart-bg-likely-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_likely_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely_benign * 1.5 }}%;background-color: mediumseagreen;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] ?? '' }}</span>
                   </div>
@@ -921,7 +919,7 @@
                 <td class="col-sm-4 border-0">Benign</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success chart-bg-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_benign * 1.5 }}%;">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0 chart-bg-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_benign * 1.5 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] ?? '' }}</span>
                   </div>
@@ -939,17 +937,17 @@
 
                   <svg width="110%" height="110%" viewBox="0 0 42 42" class="donut">
                     <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="none"/>
-                    <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#000" stroke-width="3"/>
+                    <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
 
-                    <circle class="donut-segment chart-stroke-pathogenic" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Pathogenic'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Pathogenic'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Pathogenic'] }} Pathogenic');" onmouseout="hideSvgTooltip();"/>
+                    <circle class="donut-segment chart-stroke-pathogenic" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Pathogenic'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Pathogenic'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Pathogenic'] }} Pathogenic');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-likely-pathogenic" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Pathogenic'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Pathogenic'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Likely Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Likely Pathogenic'] }} Likely Pathogenic');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-likely-pathogenic" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Pathogenic'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Pathogenic'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Likely Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Likely Pathogenic'] }} Likely Pathogenic');" onmouseout="hideSvgTooltip();"/>
 
-                    <circle class="donut-segment chart-stroke-uncertain-significance" cx="21" cy="21" r="15.91549430918954"  fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Uncertain Significance'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Uncertain Significance'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Uncertain Significance'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Uncertain Significance'] }} Uncertain Significance');" onmouseout="hideSvgTooltip();"/>
+                    <circle class="donut-segment chart-stroke-uncertain-significance" cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Uncertain Significance'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Uncertain Significance'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Uncertain Significance'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Uncertain Significance'] }} Uncertain Significance');" onmouseout="hideSvgTooltip();"/>
 
-                    <circle class="donut-segment chart-stroke-likely-benign " cx="21" cy="21" r="15.91549430918954"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Benign'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Benign'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Likely Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Likely Benign'] }} Likely Benign');" onmouseout="hideSvgTooltip();"/>
+                    <circle class="donut-segment chart-stroke-likely-benign " cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Benign'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Likely Benign'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Likely Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Likely Benign'] }} Likely Benign');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-benign" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Benign'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Benign'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Benign'] }} Benign');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-benign" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Benign'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classlength']['Benign'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classoffsets']['Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_GRAPH]['classtotals']['Benign'] }} Benign');" onmouseout="hideSvgTooltip();"/>
                     <!-- unused 10% -->
                     <g class="chart-text chart-small">
                       <text x="50%" y="45%" class="chart-number">
@@ -997,15 +995,15 @@
                       <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="none"/>
                       <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="none" stroke="#000" stroke-width="3"/>
 
-                      <circle class="donut-segment chart-stroke-pathogenic" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Pathogenic'] }} {{ 100.00 - $panel['classlength']['Pathogenic'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Pathogenic'] }} Pathogenic');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-pathogenic" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Pathogenic'] }} {{ 100.00 - $panel['classlength']['Pathogenic'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Pathogenic'] }} Pathogenic');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-likely-pathogenic" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Likely Pathogenic'] }} {{ 100.00 - $panel['classlength']['Likely Pathogenic'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Likely Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Likely Pathogenic'] }} Likely Pathogenic');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-likely-pathogenic" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Likely Pathogenic'] }} {{ 100.00 - $panel['classlength']['Likely Pathogenic'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Likely Pathogenic'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Likely Pathogenic'] }} Likely Pathogenic');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-uncertain-significance" cx="21" cy="21" r="15.91549430918954"  fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Uncertain Significance'] }} {{ 100.00 - $panel['classlength']['Uncertain Significance'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Uncertain Significance'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Uncertain Significance'] }} Uncertain Significance');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-uncertain-significance" cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Uncertain Significance'] }} {{ 100.00 - $panel['classlength']['Uncertain Significance'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Uncertain Significance'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Uncertain Significance'] }} Uncertain Significance');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-likely-benign " cx="21" cy="21" r="15.91549430918954"  fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Likely Benign'] }} {{ 100.00 - $panel['classlength']['Likely Benign'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Likely Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Likely Benign'] }} Likely Benign');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-likely-benign " cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Likely Benign'] }} {{ 100.00 - $panel['classlength']['Likely Benign'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Likely Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Likely Benign'] }} Likely Benign');" onmouseout="hideSvgTooltip();"/>
 
-                      <circle class="donut-segment chart-stroke-benign" cx="21" cy="21" r="15.91549430918954" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Benign'] }} {{ 100.00 - $panel['classlength']['Benign'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Benign'] }} Benign');" onmouseout="hideSvgTooltip();"/>
+                      <circle class="donut-segment chart-stroke-benign" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['Benign'] }} {{ 100.00 - $panel['classlength']['Benign'] }}" stroke-dashoffset="{{ $panel['classoffsets']['Benign'] }}"  onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['Benign'] }} Benign');" onmouseout="hideSvgTooltip();"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text">

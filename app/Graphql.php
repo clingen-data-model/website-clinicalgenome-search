@@ -258,6 +258,16 @@ class Graphql
 						  report_date
 						  source
 						}
+						actionability_assertions {
+							classification {
+							  label
+							  curie
+							}
+							attributed_to {
+							  label
+							  curie
+							}
+						}
 						gene_dosage_assertions {
 						  report_date
 						  assertion_type
@@ -1896,20 +1906,20 @@ class Graphql
 		}
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
-
+		
 		// calculate top level graph size and offsets
 		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
 
-		foreach ($counters as $key => $value)
-			$topcounters['classtotals'][$key] = $value;
+		foreach ($counters as $key => $nvalue)
+			$topcounters['classtotals'][$key] = $nvalue;
 
 		$offset = 0;
-
-		foreach ($topcounters['classlength'] as $key => &$value)
+		
+		foreach ($topcounters['classlength'] as $key => &$jvalue)
 		{
-			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100, 2);
+			$jvalue = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100, 2);
 		}
-
+		
 		foreach ($topcounters['classoffsets'] as $key => &$value)
 		{
 			$value = -$offset;
@@ -1917,7 +1927,7 @@ class Graphql
 		}
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_GRAPH] = $topcounters;
-
+		
 		/*
 		$npathogenic = 0;
 		$nlikely = 0;
@@ -1972,7 +1982,7 @@ class Graphql
 		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;*/
 
 
-
+		
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = $paths->unique(function ($item) {
 				return $item['caid'].$item['variant_id'];
 		})->count();
@@ -1984,9 +1994,8 @@ class Graphql
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $counters['Benign'];
 
 		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $panelcounters;
-//dd($values);
+
 		// new actionability statistics
-		/*
 		$query = '{
 				statistics {
 					actionability_tot_reports
@@ -1999,7 +2008,8 @@ class Graphql
 					actionability_tot_pediatric_outcome_intervention_pairs
 					actionability_tot_adult_score_counts
 					actionability_tot_pediatric_score_counts
-					actionability_tot_failed_early_rule_out
+					actionability_tot_adult_failed_early_rule_out
+					actionability_tot_pediatric_failed_early_rule_out
 			 	}
 		 }';
 
@@ -2008,44 +2018,70 @@ class Graphql
 
 		if (empty($response))
 			return $response;
-		 */
 
-		$response = '{
+		/*$response = '{
 			"data": {
 			  "statistics": {
-				"actionability_tot_reports": 141,
+				"actionability_tot_reports": 142,
 				"actionability_tot_updated_reports": 23,
-				"actionability_tot_gene_disease_pairs": 179,
-				"actionability_tot_adult_gene_disease_pairs": 160,
+				"actionability_tot_gene_disease_pairs": 180,
+				"actionability_tot_adult_gene_disease_pairs": 161,
 				"actionability_tot_pediatric_gene_disease_pairs": 69,
-				"actionability_tot_adult_outcome_intervention_pairs": 369,
-				"actionability_tot_outcome_intervention_pairs": 518,
+				"actionability_tot_adult_outcome_intervention_pairs": 371,
+				"actionability_tot_outcome_intervention_pairs": 520,
 				"actionability_tot_pediatric_outcome_intervention_pairs": 149,
-				"actionability_tot_adult_score_counts": "5=6 6=21 7=36 8=56 9=92 10=108 11=41 12=9",
+				"actionability_tot_adult_score_counts": "5=6 6=21 7=36 8=56 9=94 10=108 11=41 12=9",
 				"actionability_tot_pediatric_score_counts": "3=2 4=2 7=11 8=23 9=48 10=36 11=21 12=6",
-				"actionability_tot_failed_early_rule_out": 13
+				"actionability_tot_adult_failed_early_rule_out": 18,
+				"actionability_tot_pediatric_failed_early_rule_out": 10
 			  }
 			}
 		  }';
 
-		$response = json_decode($response);
+		$response = json_decode($response);*/
+	
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->statistics->actionability_tot_adult_gene_disease_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->statistics->actionability_tot_pediatric_gene_disease_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->statistics->actionability_tot_outcome_intervention_pairs;
+    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->statistics->actionability_tot_adult_outcome_intervention_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] = $response->statistics->actionability_tot_adult_failed_early_rule_out;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
 
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->data->statistics->actionability_tot_reports;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->data->statistics->actionability_tot_updated_reports;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->data->statistics->actionability_tot_gene_disease_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->data->statistics->actionability_tot_adult_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->data->statistics->actionability_tot_pediatric_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->data->statistics->actionability_tot_outcome_intervention_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->data->statistics->actionability_tot_adult_outcome_intervention_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->data->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
-
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_adult_score_counts, $r);
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
 		$result = array_combine($r[1], $r[2]);
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE] = $result;
 
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->data->statistics->actionability_tot_pediatric_score_counts, $r);
+		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_pediatric_score_counts, $r);
 		$result = array_combine($r[1], $r[2]);
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE] = $result;
+
+		$template = ['Adult' => 0, 'Ped' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		$topcounters['classtotals']['Adult'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME];
+		$topcounters['classtotals']['Ped'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME];
+
+		$offset = 0;
+		
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+	
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
 
 
 		$metric = new Metric([	'values' => $values,
