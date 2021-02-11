@@ -40,7 +40,7 @@
 		</div>
 
 		<div class="col-md-12">
-			<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Avanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
+			<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 		</div>
 		<div class="col-md-12 light-arrows">
 				@include('_partials.genetable')
@@ -435,7 +435,7 @@
 	{
 		switch (text)
 		{
-			case '<= 10%': 
+			case '<= 10%':
 				return value <= 10;
 			case '<= 25%':
 				return value <= 25;
@@ -478,7 +478,7 @@
 			default:
 				return true;
 		}
-		
+
 		//console.log(value);
 		/*if (text == '> .35')
 			return value > .35;
