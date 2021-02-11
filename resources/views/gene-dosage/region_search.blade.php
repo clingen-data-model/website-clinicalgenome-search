@@ -343,7 +343,7 @@
 
 			$('.action-af-badge').remove();
 
-			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Updated 365</span>');
+			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Score Change 365</span>');
 			$('.filter-container').append(newbadge);
 
 		}

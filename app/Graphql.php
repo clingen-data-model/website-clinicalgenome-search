@@ -1726,9 +1726,10 @@ class Graphql
 
 		$template = ['definitive evidence' => 0,
 					'strong evidence' => 0, 'moderate evidence' => 0,
-					'limited evidence' => 0, 'disputing' => 0,
+					'limited evidence' => 0, 'no known disease relationship' => 0,
+					'disputing' => 0,
 					'refuting evidence' => 0, 'no evidence' => 0,
-					'no known disease relationship' => 0];
+					];
 
 		$counters = $template;
 

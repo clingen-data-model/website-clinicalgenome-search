@@ -20,6 +20,7 @@ class Search extends JsonResource
             'symbol' => $this->symbol,
             'isca' => $this->issue,
             'hgnc_id' => $this->hgnc_id,
+            'locus' => $this->locus,
             'location' => $this->location,
             'triplo_assertion' => (is_numeric($this->gain) ? GeneLib::shortAssertionString($this->gain) : $this->gain),
             'haplo_assertion' => (is_numeric($this->loss) ? GeneLib::shortAssertionString($this->loss) : $this->loss),
