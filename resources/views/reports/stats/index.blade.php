@@ -299,7 +299,8 @@
             <div class="col-sm-3 text-center">
               <div class="panel panel-default border-0">
                   <div class="panel-body">
-                    <a href="https://www.clinicalgenome.org/affiliation/{{ $panel['ep_id'] }}" class="text-dark svg-link">
+                    {{-- <a href="https://www.clinicalgenome.org/affiliation/{{ $panel['ep_id'] }}" class="text-dark svg-link"> --}}
+                    <a href="{{ route('affiliate-show', $panel['ep_id']) }}" class="text-dark svg-link">
 
                       {{-- <div class="text-size-lg lineheight-tight">
                         <span style="border: 6px #13a89e solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#0e665c">{{ $panel['count'] }}</span>

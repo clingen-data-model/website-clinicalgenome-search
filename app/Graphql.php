@@ -1730,9 +1730,11 @@ class Graphql
 			else
 			{
 				// NOTE the ep_id line below takes the CURIE and drop out the text and the 1 which is sent and replaces with a 4 because that is what ClinGen uses as the public affilicaiton ID... not sure why the GCI sends it as a 1.
+
+				// 'ep_id' => str_replace("CGAGENT:1", "4", $record->attributed_to->curie),
 				$panelcounters[$record->attributed_to->curie] = ['count' => 1,
 									'label' => $record->attributed_to->label,
-									'ep_id' => str_replace("CGAGENT:1", "4", $record->attributed_to->curie),
+									'ep_id' => str_replace("CGAGENT:", "", $record->attributed_to->curie),
 									'classtotals' => $template,
 									'classoffsets' => $template,
 									'classlength' => $template];
@@ -1888,7 +1890,7 @@ class Graphql
 		}
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] = $paths->count();
-		
+
 		// calculate top level graph size and offsets
 		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
 
@@ -1896,12 +1898,12 @@ class Graphql
 			$topcounters['classtotals'][$key] = $nvalue;
 
 		$offset = 0;
-		
+
 		foreach ($topcounters['classlength'] as $key => &$jvalue)
 		{
 			$jvalue = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100, 2);
 		}
-		
+
 		foreach ($topcounters['classoffsets'] as $key => &$value)
 		{
 			$value = -$offset;
@@ -1909,7 +1911,7 @@ class Graphql
 		}
 
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_GRAPH] = $topcounters;
-		
+
 		/*
 		$npathogenic = 0;
 		$nlikely = 0;
@@ -1964,7 +1966,7 @@ class Graphql
 		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $epanels;*/
 
 
-		
+
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] = $paths->unique(function ($item) {
 				return $item['caid'].$item['variant_id'];
 		})->count();
@@ -2021,7 +2023,7 @@ class Graphql
 		  }';
 
 		$response = json_decode($response);*/
-	
+
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
     	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
@@ -2051,7 +2053,7 @@ class Graphql
 		$topcounters['classtotals']['Ped'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME];
 
 		$offset = 0;
-		
+
 		foreach ($topcounters['classlength'] as $key => &$value)
 		{
 			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] * 100, 2);
@@ -2062,7 +2064,7 @@ class Graphql
 			$value = -$offset;
 			$offset += $topcounters['classlength'][$key];
 		}
-	
+
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
 
 
