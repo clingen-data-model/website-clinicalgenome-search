@@ -145,7 +145,7 @@
               </div>
             </div>
 
-            <div class="row  padding-bottom-lg">
+            {{-- <div class="row  padding-bottom-lg">
               <div class="col-sm-1 hidden-xs clear-left">
               <img class="margin-left-lg img img-responsive img-rounded" src="{{ asset('/external-resources/genetics_home_reference.png') }}" alt="Genetics home reference">
               </div>
@@ -160,7 +160,7 @@
                   <a id="external_gene_genetics_home_reference" class="btn btn-default btn-xs externalresource" title="Genetics Home Reference" href="https://ghr.nlm.nih.gov/search?query={{ $record->symbol }}" target="_blank">Genetics Home Reference</a>
                 </div>
               </div>
-            </div>
+            </div> --}}
 
             <div class="row  padding-bottom-lg">
               <div class="col-sm-1 hidden-xs clear-left">
