@@ -400,7 +400,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_REGIONS] ?? '' }}</div>
-                  <div class="mb-2 lineheight-tight">Regions Evaluated<br />&nbsp;</div>
+                  <div class="mb-2 lineheight-tight">Genomic Regions <br />Evaluated</div>
                 </div>
               </div>
           </div>
@@ -869,7 +869,9 @@
         <hr class="mt-4 pb-4">
         <h2 id="gene-disease-validity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" style="margin-top:-10px; margin-left:-50px"  /> Variant Pathogenicity Statistics</h2>
-        <p>ClinGen variant curation utilizes the 2015 American College of Medical Genetics and Genomics (ACMG) guideline for sequence variant interpretation, which provides an evidence-based framework to classify variants.</p>
+        <p> 
+          ClinGen’s Variant Curation Expert Panels (VCEPs) classify variants using ACMG/AMP sequence variant interpretation guidelines specified for the genes and/or diseases within their scope.  These specifications are reviewed and approved as part of the ClinGen VCEP application process.
+        </p>
 
         <div class="row mt-4 mb-4">
           <div class="col-sm-7">
