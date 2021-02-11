@@ -684,11 +684,11 @@ class Jira extends Model
           $ntriplo = $collection->where('triplo_assertion', '>', 0)->count();
           */
 
-          $nhaplo = $collection->where('haplo', '>', 0)->count();
-          $ntriplo = $collection->where('triplo', '>', 0)->count();
+          $nhaplo = $collection->where('haplo', '!=', 'unknown')->count();
+          $ntriplo = $collection->where('triplo', '!=', 'unknown')->count();
 
           return (object) ['count' => $collection->count(), 'collection' => $collection,
-               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo, 'ncurations' => $nhaplo + $ntriplo];
     }
 
 

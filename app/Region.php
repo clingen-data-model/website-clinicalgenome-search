@@ -247,6 +247,7 @@ class Region extends Model
             $region->hi = $g->hi;
             $region->pli = $g->pli;
             $region->morbid = $g->morbid;
+            $region->locus = $g->locus_group;
             $region->omim = $g->display_omim; // override jira with genenames for consistency
           }
           if ($g === null || $g->locus_type == 'pseudogene')

@@ -3,15 +3,11 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-      <div class="col-md-12 curated-genes-table">
-      <table class="mt-3 mb-2">
-        <tr>
-          <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statitics</h1>
-            <h6><em>Last updated: {{ $metrics->display_date_time }}</em></h6>
-          </td>
-        </tr>
-      </table>
-      <div class="small">
+      <div class="col-md-12 curated-genes-table mt-3 mb-3">
+        <h1 class="h1 p-0 m-0 float-left">ClinGen Summary Statistics</h1>
+        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="text-danger">{{ $metrics->display_date_time }}</span></em></strong></h6>
+      </div>  
+      <div class="small text-center">
         {{-- <a href="#gene" class="pr-2">Gene Level <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#variant" class="pr-2">Variant Level <i class="fas fa-arrow-circle-down"></i></a> --}}
         <a href="#summary" class="pr-2">Curation Summary Statistics <i class="fas fa-arrow-circle-down"></i></a>
@@ -29,7 +25,9 @@
         <div class="row text-center">
           <div class="col-sm-4 col-sm-offset-2">
             <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_CURATED_GENES] ?? '' }}</div>
-            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation</div>
+            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation 
+              <span data-toggle="tooltip" data-placement="top" title="Includes only the genes curated by the activities listed below." aria-describedby="tooltip"><i class="fas fa-info-circle text-muted"></i></span>
+            </div>
           </div>
           <div class="col-sm-4">
             <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] ?? '' }}</div>
@@ -145,9 +143,9 @@
         <p>The ClinGen Gene-Disease Clinical Validity curation process involves evaluating the strength of evidence supporting or refuting a claim that variation in a particular gene causes a particular disease. </p>
         {{-- <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} Total Gene-Disease Validity Curations</h4> --}}
         <div class="row mt-4 mb-4">
-          <div class="col-sm-7">
+          <div class="col-sm-8">
             <h4 class="mb-0">Classification Statistics</h4>
-            <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> about <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
+            <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
             <table class="table table-condensed">
               <tr class="">
                 <td class="col-sm-3 border-0">Definitive</td>
@@ -190,6 +188,16 @@
                 </td>
               </tr>
               <tr>
+                <td class="col-sm-4 border-0 lineheight-tight">No Known Disease Relationship</td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
+                    </div>
+                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_NONE] ?? '' }}</span>
+                  </div>
+                </td>
+              </tr>
+              <tr>
                 <td class="col-sm-4 border-0">Disputed Evidence</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
@@ -209,7 +217,7 @@
                   </div>
                 </td>
               </tr>
-              <tr>
+              <!--<tr>
                 <td class="col-sm-4 border-0">Animal Model Only</td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0">
@@ -218,17 +226,7 @@
                     <span class="ml-2">0</span>
                   </div>
                 </td>
-              </tr>
-              <tr>
-                <td class="col-sm-4 border-0 lineheight-tight">No Known Disease relationship</td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mt-2 mb-1">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_NONE] ?? '' }}</span>
-                  </div>
-                </td>
-              </tr>
+              </tr>-->
             </table>
           </div>
           <div class="col-sm-4 text-center">
@@ -251,11 +249,11 @@
 
                         <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
 
+                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
+
                         <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
 
                         <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
-
-                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
@@ -321,11 +319,11 @@
 
                         <circle class="donut-segment chart-stroke-limited " cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['limited evidence'] }} {{ 100.00 - $panel['classlength']['limited evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['limited evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['limited evidence'] }} Limited');" onmouseout="hideSvgTooltip();"/>
 
+                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['no known disease relationship'] }} {{ 100.00 - $panel['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $panel['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
+
                         <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['disputing'] }} {{ 100.00 - $panel['classlength']['disputing'] }}" stroke-dashoffset="{{ $panel['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();"/>
 
                         <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['refuting evidence'] }} {{ 100.00 - $panel['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();"/>
-
-                        <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $panel['classlength']['no known disease relationship'] }} {{ 100.00 - $panel['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $panel['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $panel['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();"/>
 
 
                         {{-- <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-text="Definitive" data-value="{{ $panel['classtotals']['definitive evidence'] }}" fill="transparent" stroke="#276749" stroke-width="3" stroke-dasharray="{{ $panel['classlength']['definitive evidence'] }} {{ 100.00 - $panel['classlength']['definitive evidence'] }}" stroke-dashoffset="{{ $panel['classoffsets']['definitive evidence'] }}"/>
@@ -385,7 +383,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }}</div>
-                  <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
+                  <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
                 </div>
               </div>
           </div>
@@ -393,7 +391,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_GENES] ?? '' }}</div>
-                  <div class="mb-2 lineheight-tight">Total Single Gene <br />Dosage Sensitivity Curations</div>
+                  <div class="mb-2 lineheight-tight">Single Genes <br />Evaluated</div>
                 </div>
               </div>
           </div>
@@ -401,7 +399,7 @@
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_REGIONS] ?? '' }}</div>
-                  <div class="mb-2 lineheight-tight">Total Region <br />Dosage Sensitivity Curations</div>
+                  <div class="mb-2 lineheight-tight">Genomic Regions <br />Evaluated</div>
                 </div>
               </div>
           </div>
@@ -553,7 +551,7 @@
         <hr class="mt-4 pb-4" />
         <h2 id="clinical-actionability">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1144/untitled-1_icon-actionability-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Clinical Actionability</h2>
-        <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated </p>
+        <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated.</p>
 <div class="row text-center mt-4">
     <div class="col-md-7">
 
@@ -736,7 +734,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercentOrLess() }}%; background-color:#913699; opacity:1">
@@ -841,7 +839,7 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 Score</strong><br><small><i>or less</i></small></td>
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
                 <td class="border-0">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercentOrLess() }}%; background-color:#913699; opacity:1">
@@ -870,7 +868,9 @@
         <hr class="mt-4 pb-4">
         <h2 id="gene-disease-validity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" style="margin-top:-10px; margin-left:-50px"  /> Variant Pathogenicity Statistics</h2>
-        <p>ClinGen variant curation utilizes the 2015 American College of Medical Genetics and Genomics (ACMG) guideline for sequence variant interpretation, which provides an evidence-based framework to classify variants.</p>
+        <p> 
+          ClinGen’s Variant Curation Expert Panels (VCEPs) classify variants using ACMG/AMP sequence variant interpretation guidelines specified for the genes and/or diseases within their scope.  These specifications are reviewed and approved as part of the ClinGen VCEP application process.
+        </p>
 
         <div class="row mt-4 mb-4">
           <div class="col-sm-7">
@@ -971,7 +971,8 @@
         </div>
 
         <div class="row  mt-4">
-          <h4 class="col-sm-12">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} ClinGen Variant Curation Expert Panels</h4>
+          <h4 class="col-sm-12 mb-0">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} Approved ClinGen Variant Curation Expert Panels</h4>
+          <div class="col-sm-12"><small><i>(For a complete list of VCEPs at different stages of the approval process, click <a href="https://clinicalgenome.org/affiliation"><u>here</u>)</a></i></small></div>
 
 
           @php
@@ -1095,10 +1096,8 @@ function hideSvgTooltip() {
 }
 
   $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip({
-        'placement': 'auto',
-        'html' : true
-      });
+      
+      $('[data-toggle="tooltip"]').tooltip();
   });
 
 </script>

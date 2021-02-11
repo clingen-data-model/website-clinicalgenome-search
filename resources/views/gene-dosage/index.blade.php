@@ -70,7 +70,7 @@
 		</div> --}}
 
 		<div class="col-md-12">
-			<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks"></i> Avanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
+			<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Avanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 		</div>
 		<div class="col-md-12 light-arrows">
 
@@ -288,7 +288,7 @@
 
 			$('.action-af-badge').remove();
 
-			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1">Protien Coding</span>');
+			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1">Protein Coding</span>');
 			$('.filter-container').append(newbadge);
 
 		}
@@ -306,8 +306,6 @@
 				var newbadge = $('<span class="badge action-af-badge">None</span>');
 				$('.filter-container').append(newbadge);
 			}
-
-
 		}
 	});
 
@@ -329,7 +327,7 @@
 
 			$('.action-af-badge').remove();
 
-			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Updated 365</span>');
+			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Score Change 365</span>');
 			$('.filter-container').append(newbadge);
 
 		}
@@ -407,7 +405,7 @@
 	function responseHandler(res) {
 
 		// update the counters
-		$('.countCurations').html(res.total);
+		$('.countCurations').html(res.ncurations);
 		$('.countGenes').html(res.ngenes);
 		$('.countRegions').html(res.nregions);
 		//$('.countTriplo').html(res.ntriplo);

@@ -49,7 +49,8 @@ class DosageController extends Controller
                 'totalNotFiltered' => $results->count + $jresults->count,
                 'rows'=> DosageResource::collection($results->collection->concat($jresults->collection)),
                 'ngenes' => $results->count,
-                'nregions' => $jresults->count];
+                'nregions' => $jresults->count,
+                'ncurations' => $results->ncurations + $jresults->ncurations];
     }
 
 
