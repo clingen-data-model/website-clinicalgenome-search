@@ -405,7 +405,7 @@
 	function responseHandler(res) {
 
 		// update the counters
-		$('.countCurations').html(res.total);
+		$('.countCurations').html(res.ncurations);
 		$('.countGenes').html(res.ngenes);
 		$('.countRegions').html(res.nregions);
 		//$('.countTriplo').html(res.ntriplo);

@@ -3,15 +3,11 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-      <div class="col-md-12 curated-genes-table">
-      <table class="mt-3 mb-2">
-        <tr>
-          <td class="valign-top"><h1 class="h2 p-0 m-0">ClinGen Summary Statistics</h1>
-            <h6><em>Last updated: {{ $metrics->display_date_time }}</em></h6>
-          </td>
-        </tr>
-      </table>
-      <div class="small">
+      <div class="col-md-12 curated-genes-table mt-3 mb-3">
+        <h1 class="h1 p-0 m-0 float-left">ClinGen Summary Statistics</h1>
+        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="text-danger">{{ $metrics->display_date_time }}</span></em></strong></h6>
+      </div>  
+      <div class="small text-center">
         {{-- <a href="#gene" class="pr-2">Gene Level <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#variant" class="pr-2">Variant Level <i class="fas fa-arrow-circle-down"></i></a> --}}
         <a href="#summary" class="pr-2">Curation Summary Statistics <i class="fas fa-arrow-circle-down"></i></a>
@@ -29,7 +25,9 @@
         <div class="row text-center">
           <div class="col-sm-4 col-sm-offset-2">
             <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_CURATED_GENES] ?? '' }}</div>
-            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation</div>
+            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation 
+              <span data-toggle="tooltip" data-placement="top" title="Includes only the genes curated by the activities listed below." aria-describedby="tooltip"><i class="fas fa-info-circle text-muted"></i></span>
+            </div>
           </div>
           <div class="col-sm-4">
             <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_UNIQUE] ?? '' }}</div>
@@ -147,7 +145,7 @@
         <div class="row mt-4 mb-4">
           <div class="col-sm-8">
             <h4 class="mb-0">Classification Statistics</h4>
-            <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> about <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
+            <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
             <table class="table table-condensed">
               <tr class="">
                 <td class="col-sm-3 border-0">Definitive</td>
@@ -1097,10 +1095,8 @@ function hideSvgTooltip() {
 }
 
   $(document).ready(function(){
-      $('[data-toggle="tooltip"]').tooltip({
-        'placement': 'auto',
-        'html' : true
-      });
+      
+      $('[data-toggle="tooltip"]').tooltip();
   });
 
 </script>

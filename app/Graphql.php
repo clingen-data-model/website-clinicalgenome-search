@@ -331,16 +331,10 @@ class Graphql
 		{
 			foreach($node->genetic_conditions as $condition)
 			{
-				//$nodeCollect = collect($node);
-				//dd($nodeCollect);
-				//dd(count($condition->gene_validity_assertions));
 				$naction = $naction + count($condition->actionability_curations);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);
 				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
 
-				//dd($naction);
-				//dd($nvalid);
-				//dd($ndosage);
 				foreach($condition->gene_dosage_assertions as $dosage)
 				{
 					switch ($dosage->assertion_type)
@@ -356,61 +350,14 @@ class Graphql
 			}
 		}
 
-		if ($ndosage == 0 && (!empty($dosage_curation_map["haploinsufficiency_assertion"]) || !empty($dosage_curation_map["triplosensitivity_assertion"])))
-			$ndosage++;
+		//if ($ndosage == 0 && (!empty($dosage_curation_map["haploinsufficiency_assertion"]) || !empty($dosage_curation_map["triplosensitivity_assertion"])))
+		//	$ndosage++;
 
-		// $by_activity = ['gene_validity' => [], 'dosage_curation' => [], 'actionability' => []];
-		// 	if (!empty($node->genetic_conditions))
-		// 	{
-		// 		//dd($node->genetic_conditions);
-		// 		$i = -1;
-		// 		foreach($node->genetic_conditions as $genetic_condition) {
-		// 			$i++;
-		// 			$ii = -1;
-		// 			foreach ($genetic_condition->gene_validity_assertions as $gene_validity_assertion) {
-		// 				$ii++;
-		// 				$curie = explode("/", $genetic_condition->disease->iri);
-		// 				$by_activity['gene_validity'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-		// 				$by_activity['gene_validity'][end($curie)][$ii]['curation'] = $gene_validity_assertion;
-		// 			}
-		// 			$ii = -1;
-		// 			foreach ($genetic_condition->gene_dosage_assertions as $gene_dosage_assertion) {
-		// 				$ii++;
-		// 				$curie = explode("/", $genetic_condition->disease->iri);
-		// 				$by_activity['dosage_curation'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-		// 				$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
-		// 			}
-		// 			$ii = -1;
-		// 			foreach ($genetic_condition->actionability_curations as $actionability_curation) {
-		// 				$ii++;
-		// 				$curie = explode("/", $genetic_condition->disease->iri);
-		// 				$by_activity['actionability'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
-		// 				$by_activity['actionability'][end($curie)][$ii]['curation'] = $actionability_curation;
-		// 			}
-		// 			//$i++;
-		// 			//$curations_by_activity[$i]	=	$by_activity;
-		// 		}
-		// 		$ii++;
-		// 		if($node->dosage_curation){
-		// 			$by_activity['dosage_curation']['null'][$ii]['curation'] = $node->dosage_curation;
-		// 		}
-
-
-		// 	} elseif ($node->dosage_curation) {
-		// 		$by_activity 							= [];
-		// 		$by_activity['dosage_curation']['null'][0]['curation'] = $node->dosage_curation;
-		// 	}
-		// 	//dd($by_activity);
-		// 	$curations_by_activity = json_decode(json_encode($by_activity));
-		// 	//dd($curations_by_activity);
-		// 	$node->curations_by_activity = $curations_by_activity;
-
+		$ndosage += count($dosage_curation_map);
 
 		$node->naction = $naction;
 		$node->nvalid = $nvalid;
 		$node->ndosage = $ndosage;
-
-		//dd($node);
 
 		if (!empty($pharma))
 		{
@@ -421,12 +368,8 @@ class Graphql
 			$node->pharmagkb = $entries->toArray();
 		}
 
-
-
-
 		$node->dosage_curation_map = $dosage_curation_map;
 
-		//dd($node);
 		return $node;
 	}
 
@@ -754,6 +697,9 @@ class Graphql
 		if (empty($response))
 			return $response;
 
+		$hapcounters = 0;
+		$tripcounters = 0;
+
 		// add each gene to the collection
 		foreach($response->genes->gene_list as $record)
 		{
@@ -790,11 +736,18 @@ class Graphql
 
 			$node->type = 0;
 
+			if (!is_null($record->dosage_curation->triplosensitivity_assertion))
+				$tripcounters++;
+
+			if (!is_null($record->dosage_curation->haploinsufficiency_assertion))
+				$hapcounters++;
+
 			$collection->push($node);
 		}
 
 		return (object) ['count' => $response->genes->count, 'collection' => $collection,
-						'ngenes' => $response->genes->count, 'nregions' => 0];
+						'ngenes' => $response->genes->count, 'nregions' => 0,
+						'ncurations' => $tripcounters + $hapcounters];
 	}
 
 
@@ -1590,6 +1543,7 @@ class Graphql
 				genes(limit: null, curation_activity: ALL) {
 					count
 					gene_list {
+						hgnc_id
 						curation_activities
 						dosage_curation {
 							triplosensitivity_assertion {
@@ -1637,6 +1591,13 @@ class Graphql
 		$adultcounter = 0;
 		$pedscounter = 0;
 
+		// get list of pharma and variant pathogenicity genes
+		//$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->get();
+
+		// build list of genes not known by genegraph
+		$excludes = [];
+
 		foreach($response->genes->gene_list as $record)
 		{
 			if (!empty($record->dosage_curation))
@@ -1664,13 +1625,33 @@ class Graphql
 				}
 			}
 			$collection->push(new Nodal((array) $record));
+
+			// check if genegraph record is part of extras
+			$extra = $extras->where('hgnc_id', $record->hgnc_id)->first();
+			if ($extra !== null)
+			{
+				$excludes[] = $record->hgnc_id;
+			}
+
 		}
 
 		$actionability_genes = $collection->where('has_actionability', true)->count();
 		$validity_genes = $collection->where('has_validity', true)->count();
 		$dosage_genes = $collection->where('has_dosage', true)->count();
 
-		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count,
+		$extracount = 0;
+
+		// count extra genes not tagged by genegraph
+		foreach($extras as $extra)
+		{
+			if (in_array($extra->hgnc_id, $excludes))
+				continue;
+
+			$extracount++;
+		}
+
+		
+		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count + $extracount,
 					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
 					Metric::KEY_TOTAL_VALIDITY_GENES => $validity_genes,
 				  	Metric::KEY_TOTAL_DOSAGE_GENES => $dosage_genes,
