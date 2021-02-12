@@ -70,7 +70,9 @@
 		</div> --}}
 
 		<div class="col-md-12">
+        <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
 			<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
+			</button>
 		</div>
 		<div class="col-md-12 light-arrows">
 
