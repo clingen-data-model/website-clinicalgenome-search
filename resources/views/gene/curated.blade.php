@@ -30,7 +30,9 @@
       </div>
 
       <div class="col-md-12">
-        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Avanced Filters:  </small></span><span class="badge action-af-badge">None</span>
+        {{-- <button type="button" class="btn-link" data-toggle="modal" data-target="#modalFilter"> --}}
+        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="badge action-af-badge">None</span>
+        {{-- </button> --}}
       </div>
       <div class="col-md-12">
         @include('_partials.genetable')
