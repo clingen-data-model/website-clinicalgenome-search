@@ -1344,7 +1344,7 @@ class Graphql
 		$array = [];
 		foreach($response->suggest as $record)
 		{
-			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$ctag = '';		//(empty($record->curations) ? '' : '        CURATED');
 			$array[] = ['label' => $record->text . '  (' . $record->curie . ')'
 							. $ctag,
 						'url' => route('condition-show', $record->curie)];
