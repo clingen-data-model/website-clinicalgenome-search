@@ -9,7 +9,7 @@
 
       <div class="row">
         <div class="col-sm-12 mt-4 mb-1">
-          <p>The ClinGen Resource Summary Statistics provides a high-level summary of ClinGen's curation efforts relating to Gene-Disease Validity, Variant Pathogenicity, Clinical Actionability, Dosage Sensitivity. ClinGen will be enhancing and adding additional activities so be sure to check back often. The statistics on this page are updated daily. The last update was at {{ $metrics->display_date_time }}.</p>
+          <p>The ClinGen Resource Summary Statistics provides a high-level summary of ClinGen's curation efforts relating to Gene-Disease Validity, Variant Pathogenicity, Clinical Actionability, and Dosage Sensitivity.  ClinGen will be enhancing and adding additional activities so be sure to check back often.  The statistics on this page are updated daily.  The last update was at {{ $metrics->display_date_time }}.</p>
         </div>
       </div>
       <div class="small text-left">
