@@ -142,8 +142,8 @@
         <h2 id="gene-disease-validity"><img src="https://www.clinicalgenome.org/site/assets/files/1142/untitled-1_icon-gene-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  /> Gene-Disease Clinical Validity Statistics</h2>
         <p>The ClinGen Gene-Disease Clinical Validity curation process involves evaluating the strength of evidence supporting or refuting a claim that variation in a particular gene causes a particular disease. </p>
         {{-- <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} Total Gene-Disease Validity Curations</h4> --}}
-        <div class="row mt-4 mb-4">
-          <div class="col-sm-8">
+        <div class="row mb-4">
+          <div class="col-sm-8 pt-4">
             <h4 class="mb-0">Classification Statistics</h4>
             <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
             <table class="table table-condensed">
@@ -552,12 +552,12 @@
         <h2 id="clinical-actionability">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1144/untitled-1_icon-actionability-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Clinical Actionability</h2>
         <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated.</p>
-<div class="row text-center mt-4">
-    <div class="col-md-7">
+<div class="row text-center">
+    <div class="col-md-7 mt-4">
 
           <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</h4></div>
 
-          {{-- <div class="col-sm-4 px-1">
+          <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">
@@ -566,7 +566,7 @@
                   <div class="mb-2 lineheight-tight">Total Actionability <br />Reports</div>
                 </div>
               </div>
-          </div> --}}
+          </div>
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
@@ -597,7 +597,7 @@
                 </div>
               </div>
           </div>
-          <div class="col-sm-6 px-1">
+          <!--<div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">
@@ -606,7 +606,7 @@
                   <div class="mb-2 lineheight-tight">Total Outcome-Intervention<br> Pairs</div>
                 </div>
               </div>
-          </div>
+          </div>-->
 
           {{-- <div class="col-sm-4 px-1">
             <div class="panel panel-default border-primary">
@@ -872,8 +872,8 @@
           ClinGen’s Variant Curation Expert Panels (VCEPs) classify variants using ACMG/AMP sequence variant interpretation guidelines specified for the genes and/or diseases within their scope.  These specifications are reviewed and approved as part of the ClinGen VCEP application process.
         </p>
 
-        <div class="row mt-4 mb-4">
-          <div class="col-sm-7">
+        <div class="row mb-4">
+          <div class="col-sm-7 mt-5">
             <h4 class="mb-0">Classification Statistics</h4>
             <div class="mb-3">Variant Pathogenicity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] ?? '' }} curations</strong>.</div>            <table class="table table-condensed">
               <tbody><tr class="">

@@ -52,6 +52,8 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 
+		$search = null;
+
 		// set up query for either all genes or just curated ones
 		if ($curated === true)
 		{
@@ -665,6 +667,8 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 
+		$search = null;
+
 		$query = '{
 				genes('
 				. self::optionList($page, $pagesize, $sort, $direction, $search, "GENE_DOSAGE")
@@ -897,7 +901,7 @@ class Graphql
 			$$key = $value;
 
 
-		//$search = null;
+		$search = null;
 
 		// initialize the collection
 		$collection = collect();
