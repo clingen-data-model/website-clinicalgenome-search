@@ -5,9 +5,14 @@
 	<div class="row justify-content-center">
       <div class="col-md-12 curated-genes-table mt-3 mb-3">
         <h1 class="h1 p-0 m-0 float-left">ClinGen Summary Statistics</h1>
-        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="text-danger">{{ $metrics->display_date_time }}</span></em></strong></h6>
-      </div>  
-      <div class="small text-center">
+        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="" style="color: #7a0000">{{ $metrics->display_date_time }}</span></em></strong></h6>
+
+      <div class="row">
+        <div class="col-sm-12 mt-4 mb-1">
+          <p>The ClinGen Resource Summary Statistics provides a high-level summary of ClinGen's curation efforts relating to Gene-Disease Validity, Variant Pathogenicity, Clinical Actionability, Dosage Sensitivity. ClinGen will be enhancing and adding additional activities so be sure to check back often. The statistics on this page are updated daily. The last update was at {{ $metrics->display_date_time }}.</p>
+        </div>
+      </div>
+      <div class="small text-left">
         {{-- <a href="#gene" class="pr-2">Gene Level <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#variant" class="pr-2">Variant Level <i class="fas fa-arrow-circle-down"></i></a> --}}
         <a href="#summary" class="pr-2">Curation Summary Statistics <i class="fas fa-arrow-circle-down"></i></a>
@@ -19,13 +24,14 @@
       </div>
       <hr />
       </div>
+      </div>
 
       <div class="col-md-12">
         <h2 id="summary" class="text-center h1  font-weight-light">ClinGen Curation Summary Statistics</h2>
         <div class="row text-center">
           <div class="col-sm-4 col-sm-offset-2">
             <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_CURATED_GENES] ?? '' }}</div>
-            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation 
+            <div class=" lineheight-tight">Unique genes  with<br /> at least one curation
               <span data-toggle="tooltip" data-placement="top" title="Includes only the genes curated by the activities listed below." aria-describedby="tooltip"><i class="fas fa-info-circle text-muted"></i></span>
             </div>
           </div>
@@ -868,7 +874,7 @@
         <hr class="mt-4 pb-4">
         <h2 id="gene-disease-validity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" style="margin-top:-10px; margin-left:-50px"  /> Variant Pathogenicity Statistics</h2>
-        <p> 
+        <p>
           ClinGen’s Variant Curation Expert Panels (VCEPs) classify variants using ACMG/AMP sequence variant interpretation guidelines specified for the genes and/or diseases within their scope.  These specifications are reviewed and approved as part of the ClinGen VCEP application process.
         </p>
 
@@ -1096,7 +1102,7 @@ function hideSvgTooltip() {
 }
 
   $(document).ready(function(){
-      
+
       $('[data-toggle="tooltip"]').tooltip();
   });
 
