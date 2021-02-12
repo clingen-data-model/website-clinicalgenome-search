@@ -25,7 +25,14 @@
           </div>
 
         <div class="col-md-12 pt-3">
-
+            <div class="row mb-3">
+                <div class="col-md-9">
+                    <a target="_blank" class="text-primary" href="https://visitor.r20.constantcontact.com/d.jsp?llr=dagk4ypab&p=oi&m=dagk4ypab&sit=crnqtbqib&f=9d0e9a0e-a316-452d-9078-4b40e00dd3a6" >Sign-up for the 'ClinGen Website File Format Change Notification List' to be emailed when one of the following file formats is updated or new files are available.</a>
+                </div>
+                <div class="col-md-3">
+                    <a target="_blank" class="btn btn-block btn-primary mt-2" href="https://visitor.r20.constantcontact.com/d.jsp?llr=dagk4ypab&p=oi&m=dagk4ypab&sit=crnqtbqib&f=9d0e9a0e-a316-452d-9078-4b40e00dd3a6" >Sign-up</a>
+                </div>
+            </div>
             <div class="card">
                 <table class="table table-striped table-hover">
                     <tr>
