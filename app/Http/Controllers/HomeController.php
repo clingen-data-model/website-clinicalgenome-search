@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Ahsan\Neo4j\Facade\Cypher;
 
+use Auth;
+
+use App\Gene;
+
 class HomeController extends Controller
 {
     /**
@@ -23,17 +27,25 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-        public function index()
+    public function index()
     {
 
-            $display_tabs = collect([
-                'active'                            => "home",
-                'title' => "titlehere"
-            ]);
+        $display_tabs = collect([
+            'active' => "home",
+            'title' => "Dashboard"
+        ]);
 
-         //print_r($display_tabs);
-         //exit();
-        return view('home', compact('display_tabs'));
+        $genes = collect();
+
+        if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+
+            $genes = $user->genes;
+
+        }
+
+        return view('home', compact('display_tabs', 'genes'));
     }
 
     /**

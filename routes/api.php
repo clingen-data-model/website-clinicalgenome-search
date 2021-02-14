@@ -20,6 +20,8 @@ use Illuminate\Http\Request;
 
 //Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
 
+Route::post('login', 'Api\AuthController@login');
+Route::post('logout', 'Api\AuthController@logout');
 
 /*
 ** Provide an api interface between processwire and various databases

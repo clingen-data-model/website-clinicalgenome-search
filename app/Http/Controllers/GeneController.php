@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests\GeneListRequest;
 
+use Auth;
+
 use App\GeneLib;
 use App\User;
 use App\Gene;
@@ -160,17 +162,28 @@ class GeneController extends Controller
 
 		$follow = false;
 		$email = '';
+		$user = Auth::guard('api')->user();
 
-		$cookie = $request->cookie('clingenfollow');
-
-		if ($cookie !== null)
+		if (Auth::guard('api')->check())
 		{
-			$user = User::cookie($cookie)->first();
+			$user = Auth::guard('api')->user();
+			//dd($user);
+			$follow = $user->genes->contains('hgnc_id', $id);
+		}
+		else
+		{
 
-			if ($user !== null)
+			$cookie = $request->cookie('clingenfollow');
+
+			if ($cookie !== null)
 			{
-				$follow = $user->genes->contains('hgnc_id', $id);
-				$email = $user->email;
+				$user = User::cookie($cookie)->first();
+
+				if ($user !== null)
+				{
+					$follow = $user->genes->contains('hgnc_id', $id);
+					$email = $user->email;
+				}
 			}
 		}
 
@@ -180,7 +193,7 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email'));
+		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user'));
 	}
 
 

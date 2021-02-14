@@ -15,15 +15,28 @@
                     @endif
 
                     You are logged in!
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                        Logout
-                    </a>    
-                    <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
+                    <div>
+                        <a href="/api/logout" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                            Logout
+                        </a>    
+                        <form id="frm-logout" action="/api/logout" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('script_js')
+<script>
+	window.token = "{{ csrf_token() }}";
+	window.bearer_token = Cookies.get('laravel_token');
+</script>
+
+<script src="/js/jquery.validate.min.js" ></script>
+<script src="/js/additional-methods.min.js" ></script>
+
 @endsection

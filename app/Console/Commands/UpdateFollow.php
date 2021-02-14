@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use DB;
+use Carbon\Carbon;
 
 use App\Gene;
 use App\User;
@@ -44,7 +45,25 @@ class UpdateFollow extends Command
     {
         echo "Get list of followed genes ...\n";
 
-        $genes = DB::table('gene_user')->select('gene_id')->distinct()->get();
+        $users = User::has('genes')->with('genes')->get();
+
+        foreach ($users as $user)
+        {
+            // has last_updated changed in the past 24 hours?
+            foreach ($user->genes as $gene)
+            {
+                $last = Carbon::parse($gene->date_last_curated);
+                $now = Carbon::now();
+
+                $diff = $last->diffInHours($now);
+                echo $gene->date_last_curated . " -- $diff" . "\n";
+
+                // iif less than 24 hours send email
+            }
+        }
+
+
+        /*$genes = DB::table('gene_user')->select('gene_id')->distinct()->get();
 
         foreach ($genes as $geneid)
         {
@@ -70,6 +89,6 @@ class UpdateFollow extends Command
             // pharma
 
             // if any changed in the past period, send email to all users
-        }
+        }*/
     }
 }

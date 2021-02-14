@@ -2,8 +2,45 @@
 @php ($currations_set = false) @endphp
 
 @section('content-heading')
+<div class="row collapse" id="follow-gene-id">
+	<div class="col-md-5 m-3">
+		@if (!Auth::check())
+			<p>ClinGen recommends you login or create an account.  A ClinGen account allows you complete control over your notifications.</p>
+			<div class="text-center">
+				<button type="button" class="btn btn-outline-secondary action-login mt-2">
+					Login -or- Create Account
+				</button>
+			</div>
+		@endif
+	</div>
+	<div class="col-md-5 m-3">
+		<p>Or, if you cannot login at this time, enter your email address and click on submit.  ClinGen will save your requests pending confirmation. </p>	
+		<form id="follow_form" method="POST" action="" class="form-horizontal">
+			@csrf
+			<div class="input-group">
+				<span class="input-group-addon">Email: </span>
+				<input type="email" id="follow-gene-email" class="form-control" name="email" value="" placeholder="Enter your email address">
+				<input type="hidden" name="gene" value="{{ $record->hgnc_id }}">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="submit">Submit</button>
+				</span>
+				<!--<span class="input-group-addon">Submit</span>-->
+			</div>
+		</form>
+	</div>
+	<div class="col-md-12">
+		<button type="button" class="btn btn-outline-secondary float-right action-follow-cancel" >
+		Cancel
+		</button>
+	</div>
+	<div class="col-md-12 mt-3 mb-3">
+		<hr>
+	</div>
+	
+</div>
+
 <div class="row mb-1 mt-1">
-	<div class="col-md-5">
+	<div class="col-md-4">
 			<table class="mt-3 mb-4">
         <tr>
           <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
@@ -21,16 +58,17 @@
 
 </div>
 
-	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
+	<div class="col-md-8 text-right mt-2 hidden-sm  hidden-xs stats-banner">
 		  <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
-			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br /> Clinical Actionability<br />Assertions</li>
-			<!--@if ($follow)
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br />Clinical Actionability<br />Assertions</li>
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPC / PharmGKB<br />Annotations</li>
+			@if ($follow)
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
 			@else
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:lightgray"></i></span><br /> Follow<br />Gene</li>
-			@endif-->
+			@endif
 		</ul>
 
 </div>
@@ -477,21 +515,59 @@
 @endsection
 
 @section('script_js')
+<script>
+	window.token = "{{ csrf_token() }}";
+	window.bearer_token = Cookies.get('laravel_token');
+</script>
 
 <script src="/js/jquery.validate.min.js" ></script>
 <script src="/js/additional-methods.min.js" ></script>
 
 <script>
+	
 $(function() {
+	var auth = {{ Auth::guard('api')->check() ? 1 : 0 }};
+	var context = false;
+	var gene = "{{ $record->hgnc_id ?? ''}}";
 
 	$('.action-follow-gene').on('click', function() {
+
 		var color = $(this).find('.fa-star').css('color');
 
-		if (color == "rgb(0, 128, 0)")
-			$('#modalUnFollowGene').modal('show');
+		if (color == "rgb(0, 128, 0)"){
+			if (auth)
+			{
+				// TODO:  create fake form and post it
+				$('#unfollow_form').submit();
+				$(this).find('.fa-star').css('color', 'lightgray');
+				return;
+			}
+			$(this).find('.fa-star').css('color', 'lightgray');
+		}
 		else
-			$('#modalFollowGene').modal('show');
+		{
+			if (auth)
+			{
+				// TODO:  create fake form and post it
+				$('#follow_form').submit();
+				$(this).find('.fa-star').css('color', 'green');
+				return;
+			}
+			context = true;
+			
+			$('#login-context-value').val(gene);
+			$('#follow-gene-id').collapse("show");
+		}
 	});
+
+
+	$('.action-follow-cancel').on('click', function() {
+		context = false;
+		$('#follow-gene-email').val('');
+		$('#login-context-value').val('');
+		$('#follow-gene-id').collapse("hide");
+	});
+
 
 	$( '#follow_form' ).validate( {
 		submitHandler: function(form) {
@@ -499,7 +575,12 @@ $(function() {
 			$.ajaxSetup({
 				cache: true,
 				contentType: "application/x-www-form-urlencoded",
-				processData: true
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
 			});
 			
 			var url = "/api/genes/follow";
@@ -516,17 +597,19 @@ $(function() {
 					swal("Done!", response['message'], "success")
 						.then((answer2) => {
 							if (answer2){*/
+								$('#follow-gene-id').collapse("hide");
+								$('#follow-gene-email').val('');
 								$('.action-follow-gene').find('.fa-star').css('color', 'green');
+
 							/*}
 					});
 				}*/
 			}).fail(function(response)
 			{
 				//handle failed validation
-				alert("Error following gene");
+				alert("Error following gene.  Bad email address?");
 			});
 
-			$('#modalFollowGene').modal('hide');
 		},
 		rules: {
 			email: {
@@ -569,9 +652,14 @@ $(function() {
 			$.ajaxSetup({
 				cache: true,
 				contentType: "application/x-www-form-urlencoded",
-				processData: true
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
 			});
-			
+
 			var url = "/api/genes/unfollow";
 			
 			var formData = $(form).serialize();

@@ -20,6 +20,7 @@
         <a href="#dosage-sensitivity" class="pr-2">Dosage Sensitivity <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#clinical-actionability" class="pr-2">Clinical Actionability <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#variant-pathogenicity" class="pr-2">Variant Pathogenicity	<i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#pharmacogenomics" class="pr-2">Pharmacogenomics	<i class="fas fa-arrow-circle-down"></i></a>
         {{-- <a href="#download">DOWNLOAD <i class="fas fa-arrow-circle-down"></i></a> --}}
       </div>
       <hr />
@@ -117,6 +118,7 @@
               </div>
             </div>
 
+
             <div class="col-md-3 col-sm-6">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
@@ -140,6 +142,34 @@
                 </div>
               </div>
             </div>
+        </div>
+
+        <div class="row text-center mt-4">
+          <div class="col-md-3 col-sm-6">
+            <div class="panel panel-default border-primary">
+              <div class="panel-body border-bottom-1 p-2">
+                <a href="#gene-disease-validity" class="pr-2 text-dark">
+                  <div class="">
+                    <img src="https://search.clinicalgenome.org/images/Pharmacogenomics-on.png" width="50px" />
+                  </div>
+                  <strong>Pharmacogenomics</strong>
+                  {{-- <i class="fas fa-arrow-circle-down"></i> --}}
+                </a>
+              </div>
+              <div class="panel-body row px-2 py-0">
+                <div class="col-xs-6 lineheight-tight py-3 px-2">
+                  <div class="text-size-md lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] ?? '' }}</div>
+                  {{-- <div class="small lineheight-tight">Total number of curations</div> --}}
+                  <div class="small lineheight-tight">Total reports <div class="text-10px">(Number of annotations<br /> for this activity)</div></div>
+
+                </div>
+                <div class="col-xs-6 lineheight-tight py-3 px-2 border-left-1">
+                  <div class="text-size-md">{{ $metrics->values[App\Metric::KEY_TOTAL_GENES_PHARMACOGENOMIICS] ?? '' }}</div>
+                  <div class="small lineheight-tight">Unique genes <div class="text-10px">(Total genes with at<br /> least one annotation)</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
 
@@ -1042,6 +1072,9 @@
 
 
         </div>
+
+        @include('reports.stats.includes.pharmacogenomics')
+        
       </div>
 		</div>
 	</div>

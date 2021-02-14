@@ -19,6 +19,7 @@
                 <p class="login-card-description">Sign into ClinicalGenome.org</p>
                 <form action="/login" method="POST" id="login-form">
                   @csrf
+                  <input type="hidden" id="login-context-value" name="context" value="">
                     <div class="form-group">
                       <label for="email" class="sr-only">Email</label>
                       <input type="email" name="email" id="email" class="form-control" placeholder="Email address">

@@ -12,6 +12,7 @@ class EncryptCookies extends Middleware
      * @var array
      */
     protected $except = [
-        'clingenfollow'
+        'clingenfollow',
+        'laravel_token'
     ];
 }

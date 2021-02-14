@@ -23,12 +23,13 @@ class FollowController extends Controller
     {
         $input = $request->only(['gene', 'email']);
     
-        if (Auth::check())
+        if (Auth::guard('api')->user())
         {
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
         }
         else
         {
+            die("a");
             // is this an existing user?
             $user = User::where('email', $input["email"])->first();
 
@@ -83,9 +84,13 @@ class FollowController extends Controller
     {
         $input = $request->only(['gene']);
 
-        if (Auth::check())
+        /*if(auth('api')->check()){
+dd("loggedit");  } else {
+dd("not logged in");  }*/
+
+        if (Auth::guard('api')->user())
         {
-            $user = Auth::user();
+            $user = Auth::guard('api')->user();
         }
         else
         {
@@ -119,7 +124,7 @@ class FollowController extends Controller
 
         return response()->json(['success' => 'true',
 								 'status_code' => 200,
-							 	 'message' => 'Gene Followed'],
+							 	 'message' => 'Gene UnFollowed'],
 							 	 200);
 
     }

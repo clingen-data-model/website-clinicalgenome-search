@@ -360,14 +360,18 @@ class Graphql
 		$node->naction = $naction;
 		$node->nvalid = $nvalid;
 		$node->ndosage = $ndosage;
+		$node->ncpc = 0;
+		$node->npharmgkb = 0;
 
 		if (!empty($pharma))
 		{
 			$entries = Cpic::gene($node->label)->cpic()->get();
 			$node->pharma = $entries->toArray();
+			$node->ncpc = $entries->count();
 
 			$entries = Cpic::gene($node->label)->gkb()->get();
 			$node->pharmagkb = $entries->toArray();
+			$node->npharmgkb = $entries->count();
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
@@ -2077,6 +2081,50 @@ class Graphql
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
 
+		// Pharmacogenomics
+		
+		$cpics = Cpic::where('type', 1)->get();
+		$gkb = Cpic::where('type', 2)->get();
+
+    	$values[Metric::KEY_TOTAL_GENES_CPC_PHARMACOGENOMIICS] = $cpics->unique(['gene'])->count();
+    	$values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] = $cpics->count();
+    	$values[Metric::KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS] = $gkb->unique(['gene'])->count();;
+		$values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] = $gkb->count();
+		$values[Metric::KEY_TOTAL_GENES_PHARMACOGENOMIICS] = Cpic::all()->unique(['gene'])->count();
+		$values[Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] = $values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS]
+															+ $values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS];
+
+		$template = ['Cpic' => 0, 'PharmGKB' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template, 'scores' => $template];
+
+		$topcounters['classtotals']['Cpic'] = $values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS];
+		$topcounters['classtotals']['PharmGKB'] = $values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS];
+
+		$offset = 0;
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$topcounters['scores']['Cpic'] = $cpics->groupBy('cpic_level')->map(function ($level) {
+			return $level->count();
+		});
+
+		$topcounters['scores']['PharmGKB'] = $gkb->groupBy('pharmgkb_level_of_evidence')->map(function ($level) {
+			return $level->count();
+		});
+
+		$values[Metric::KEY_TOTAL_PHARMACOGENOMICS_GRAPH] = $topcounters;
 
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,

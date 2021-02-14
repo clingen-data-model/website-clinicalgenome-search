@@ -11,6 +11,7 @@
 
   <!-- Scripts -->
 
+  <script src="{{ asset('js/js.cookie.min.js') }}"></script>
   <script src="{{ asset('js/app.js') }}"></script>
 
   <!-- Fonts -->
@@ -237,16 +238,22 @@
       $(function() {
       
       
-        $( '#login-form' ).validate( {
+        $( '#frm-logout' ).validate( {
           submitHandler: function(form) {
+            
             
             $.ajaxSetup({
               cache: true,
               contentType: "application/x-www-form-urlencoded",
-              processData: true
+              processData: true,
+              headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('laravel_token')
+              }
             });
             
-            var url = "/login";
+            var url = "/api/logout";
             
             var formData = $(form).serialize();
       
@@ -260,9 +267,27 @@
                 swal("Done!", response['message'], "success")
                   .then((answer2) => {
                     if (answer2){*/
-                      $('#modalLogin').modal('hide');
+                      alert("cp2");
+                      Cookies.remove('laravel_token');
+                      //$('#modalLogin').modal('hide');
                       //swap login for dashboard
-                      $('.action-login').html('Dashboard').attr('href', '/dashboard').removeClass('action-login');
+                      $('.action-login').html('Login').attr('href', '#')
+                                  .on('click', function() {
+                                    $('#modalLogin').modal('show');
+                                  });
+
+                      // we allow login to equate to conformation of an action, so check if there is anything we need to do
+                      /*if (response.context)
+                      {
+                        var color = $('.stats-banner').find('.fa-star').css('color');
+
+		                    if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
+                        { 
+                          $('.stats-banner').find('.fa-star').css('color', 'green');
+                        }
+
+                        $('#follow-gene-id').collapse("hide");
+                      }*/
                     /*}
                 });
               }*/
@@ -272,7 +297,90 @@
               alert("Error Logging in");
             });
       
-            $('#modalFollowGene').modal('hide');
+            //$('#modalFollowGene').modal('hide');
+          },
+          rules: {
+            email: {
+              email: true,
+              maxlength: 80
+            }
+          },
+          messages: {
+            email:  {
+              email: "Please enter a valid email address",
+              maxlength: "Section names must be less than 80 characters"
+            },	
+          },
+          errorElement: 'em',
+          errorClass: 'invalid-feedback',
+          errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+      
+            if ( element.prop( "type" ) === "checkbox" ) {
+              error.insertAfter( element.parent( "label" ) );
+            } else {
+              error.insertAfter( element );
+            }
+          },
+          highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+          },
+          unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+          }
+        });
+
+        $( '#login-form' ).validate( {
+          submitHandler: function(form) {
+            
+            $.ajaxSetup({
+              cache: true,
+              contentType: "application/x-www-form-urlencoded",
+              processData: true
+            });
+            
+            var url = "/api/login";
+            
+            var formData = $(form).serialize();
+      
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+              //alert(JSON.stringify(response));
+          
+              /*if (response['message'])
+              {
+                swal("Done!", response['message'], "success")
+                  .then((answer2) => {
+                    if (answer2){*/
+                      Cookies.set('laravel_token', response.access_token);
+                      $('#modalLogin').modal('hide');
+                      //swap login for dashboard
+                      $('.action-login').html('Dashboard').attr('href', '/dashboard').off();
+
+                      // we allow login to equate to conformation of an action, so check if there is anything we need to do
+                      if (response.context)
+                      {
+                        var color = $('.stats-banner').find('.fa-star').css('color');
+
+		                    if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
+                        { 
+                          $('.stats-banner').find('.fa-star').css('color', 'green');
+                        }
+
+                        $('#follow-gene-id').collapse("hide");
+                      }
+                    /*}
+                });
+              }*/
+            }).fail(function(response)
+            {
+              //handle failed validation
+              alert("Error Logging in");
+            });
+      
+            //$('#modalFollowGene').modal('hide');
           },
           rules: {
             email: {
