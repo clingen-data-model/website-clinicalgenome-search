@@ -63,10 +63,13 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
-			@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR (!empty($record->genetic_conditions))  OR (!empty($record->pharma)))
+			@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR (!empty($record->genetic_conditions))  OR (!empty($record->pharma)) OR (!empty($record->pharmagkb)))
 				<div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
 					<a  href="{{ route('gene-show', $record->hgnc_id) }}" class="btn btn-primary active">Group By Activity</a>
+					<!-- only show the disease switch if there is a disease related activity -->
+					@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) || (!empty($record->genetic_conditions)) )
 					<a  href="{{ route('gene-by-disease', $record->hgnc_id) }}" class="btn btn-default">Group By Gene-Disease Pair</a>
+					@endif
 				</div>
 			@endif
 
