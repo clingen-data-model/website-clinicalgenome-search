@@ -4,13 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
 use Auth;
 use Session;
 
 use App\Gene;
+use App\User;
 
 class AuthController extends Controller
 {

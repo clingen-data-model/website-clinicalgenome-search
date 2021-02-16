@@ -20,8 +20,10 @@ use Illuminate\Http\Request;
 
 //Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
 
+// Auth routes for passport
 Route::post('login', 'Api\AuthController@login');
 Route::post('logout', 'Api\AuthController@logout');
+Route::post('register', 'Api\AuthController@register');
 
 /*
 ** Provide an api interface between processwire and various databases

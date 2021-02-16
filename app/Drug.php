@@ -38,8 +38,8 @@ class Drug extends Model
 		'ident' => 'alpha_dash|max:80|required',
 		'curie' => 'name|max:80|required',
 		'label' => 'string|nullable',
-        'curation_activities' => 'json|nullable',
-        'last_curated_date' => 'string|nullable',
+          'curation_activities' => 'json|nullable',
+          'last_curated_date' => 'string|nullable',
 		'type' => 'integer',
 		'status' => 'integer'
 	];
@@ -51,7 +51,7 @@ class Drug extends Model
      */
 	protected $casts = [
 			'synonyms' => 'array',
-            'curation_activities' => 'array',
+               'curation_activities' => 'array',
 		];
 
      /**
@@ -60,7 +60,7 @@ class Drug extends Model
      * @var array
      */
 	protected $fillable = ['curie', 'label', 'curation_activities', 'last_curated_date',
-					        'type', 'status',
+					     'type', 'status',
                          ];
 
 	/**

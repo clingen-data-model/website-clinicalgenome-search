@@ -1389,22 +1389,11 @@ class Graphql
 						count
 						disease_list {
 							label
-							hgnc_id
+							curie
+							description
 							synonyms
 							last_curated_date
 							curation_activities
-							dosage_curation {
-								triplosensitivity_assertion {
-									dosage_classification {
-										ordinal
-									  }
-								}
-								haploinsufficiency_assertion {
-									dosage_classification {
-										ordinal
-									  }
-								}
-							}
 						}
 					}
 				}';

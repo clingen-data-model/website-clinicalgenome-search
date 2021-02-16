@@ -457,7 +457,7 @@ class Jira extends Model
 
          if (empty($response))
               return $collection;
-
+              
           foreach ($response->getIssues() as $issue) 
           {
                $changelog = self::getIssue($issue->key, 'changelog');

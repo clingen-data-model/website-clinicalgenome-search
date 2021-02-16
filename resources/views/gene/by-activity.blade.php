@@ -3,38 +3,37 @@
 
 @section('content-heading')
 <div class="row collapse" id="follow-gene-id">
-	<div class="col-md-5 m-3">
+	<div class="col-md-6 pl-5 pr-2 mt-3 border-right">
 		@if (!Auth::check())
-			<p>ClinGen recommends you login or create an account.  A ClinGen account allows you complete control over your notifications.</p>
+			<p>For complete control over gene update notifications, ClinGen recommends you login or create an account.  If you select "Remember Me"
+				during login, ClinGen will remember your login until you manually log out.
+			</p>
 			<div class="text-center">
 				<button type="button" class="btn btn-outline-secondary action-login mt-2">
-					Login -or- Create Account
+					Login or Register
 				</button>
 			</div>
 		@endif
 	</div>
-	<div class="col-md-5 m-3">
-		<p>Or, if you cannot login at this time, enter your email address and click on submit.  ClinGen will save your requests pending confirmation. </p>	
+	<div class="col-md-6 pr-5 pl-4 mt-3">
+		<p>If you cannot login at this time, enter your email address and click on submit.  You will not have access to your dashboard, however, 
+			ClinGen will save your requests pending confirmationo of your email address. </p>	
 		<form id="follow_form" method="POST" action="" class="form-horizontal">
 			@csrf
-			<div class="input-group">
+			<div class="input-group mt-3">
 				<span class="input-group-addon">Email: </span>
 				<input type="email" id="follow-gene-email" class="form-control" name="email" value="" placeholder="Enter your email address">
 				<input type="hidden" name="gene" value="{{ $record->hgnc_id }}">
 				<span class="input-group-btn">
 					<button class="btn btn-default" type="submit">Submit</button>
 				</span>
-				<!--<span class="input-group-addon">Submit</span>-->
 			</div>
 		</form>
 	</div>
-	<div class="col-md-12">
-		<button type="button" class="btn btn-outline-secondary float-right action-follow-cancel" >
-		Cancel
-		</button>
-	</div>
-	<div class="col-md-12 mt-3 mb-3">
-		<hr>
+	<div class="col-md-12 mt-3 border-bottom">
+		<span class="float-right action-follow-cancel" >
+		Cancel Login
+		<i class="far fa-caret-square-up"></i></span>
 	</div>
 	
 </div>
@@ -63,7 +62,7 @@
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br />Clinical Actionability<br />Assertions</li>
-			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPC / PharmGKB<br />Annotations</li>
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPIC / PharmGKB<br />Annotations</li>
 			@if ($follow)
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
 			@else
@@ -556,6 +555,7 @@ $(function() {
 			context = true;
 			
 			$('#login-context-value').val(gene);
+			$('#register-context-value').val(gene);
 			$('#follow-gene-id').collapse("show");
 		}
 	});
@@ -565,6 +565,7 @@ $(function() {
 		context = false;
 		$('#follow-gene-email').val('');
 		$('#login-context-value').val('');
+		$('#register-context-value').val('');
 		$('#follow-gene-id').collapse("hide");
 	});
 

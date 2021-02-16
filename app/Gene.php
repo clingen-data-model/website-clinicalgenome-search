@@ -80,8 +80,10 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-                            'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type', 'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
-                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status',
+                            'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
+                            'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
+                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
+                            'notes', 'activity', 'date_last_curated', 'status',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
 
 	/**
@@ -234,18 +236,6 @@ class Gene extends Model
      }
 
 
-    /**
-     * Set all names to uppercase
-     *
-     * @param
-     * @return string
-     */
-    //public function setNameAttribute($value)
-	//{
-	//	$this->attributes['name'] = strtoupper($value);
-	//}
-
-
 	/**
      * Get a display formatted form of aliases
      *
@@ -282,13 +272,13 @@ class Gene extends Model
      * @@param
      * @return
      */
-    public function getDisplayOmimAttribute()
-    {
+     public function getDisplayOmimAttribute()
+     {
          if (empty($this->omim_id))
               return null;
 
          return implode(', ', $this->omim_id);
-    }
+     }
 
 
     /**
@@ -297,8 +287,8 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasDosageAttribute()
-    {
+     public function getHasDosageAttribute()
+     {
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['dosage'] : false); 
      }
@@ -310,8 +300,8 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasActionabilityAttribute()
-    {
+     public function getHasActionabilityAttribute()
+     {
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['actionability'] : false); 
      }
@@ -323,8 +313,8 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasValidityAttribute()
-    {
+     public function getHasValidityAttribute()
+     {
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['validity'] : false); 
      }
@@ -401,12 +391,13 @@ class Gene extends Model
           $gene_count = 0;
           $region_count = 0;
 
-          // map string type to type flag
-          if ($type == 'GRCh37')
-               ;
-          else if ($type == 'GRCh38')
-               ;
-          else
+          // check the required input
+          if (!isset($type) || !isset($region))
+               return (object) ['count' => $collection->count(), 'collection' => $collection,
+                         'gene_count' => $gene_count, 'region_count' => $region_count];
+
+          // only recognize 37 and 38 at this time
+          if ($type != 'GRCh37' || $type != 'GRCh38')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 
