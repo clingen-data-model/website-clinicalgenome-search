@@ -189,7 +189,7 @@ trait Display
 		switch($moi){
 			case "HP:0000005":
 				$text = "Undetermined mode of inheritance";
-				$abr = "Other";
+				$abr = "Undetermined";
 				break;
 			case "HP:0000006":
 				$text = "Autosomal Dominant";

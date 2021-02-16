@@ -187,7 +187,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Which variants within this gene cause disease? (Denotes genes included on VCEPs)"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Which variants within this gene cause disease? (Denotes genes included on approved VCEPs)"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Variant Pathogenicity',
           field: 'has_variant',
           formatter: hasVariantFormatter,

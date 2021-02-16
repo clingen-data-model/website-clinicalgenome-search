@@ -504,7 +504,9 @@ function drbadgeFormatter(index, row) {
     return html;
 }
 
-var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked", "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant" };
+var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
+             "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
+            'Undetermined': 'Undetermined MOI' };
 
 function moiFormatter(index, row) {
     return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';
