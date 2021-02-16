@@ -247,6 +247,7 @@ class Graphql
 						gene_validity_assertions {
 						  mode_of_inheritance {
 							  label
+							  website_display_label
 							  curie
 						  }
 						  report_date
@@ -1221,6 +1222,7 @@ class Graphql
 					gene_validity_assertions {
 					mode_of_inheritance {
 						label
+						website_display_label
 						curie
 					}
 					report_date
