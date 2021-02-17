@@ -37,6 +37,42 @@ class HomeController extends Controller
     }
 
     /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function preferences()
+    {
+
+        $display_tabs = collect([
+            'active'                            => "home",
+            'title' => "titlehere"
+        ]);
+
+        //print_r($display_tabs);
+        //exit();
+        return view('dashboard-preferences', compact('display_tabs'));
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function profile()
+    {
+
+        $display_tabs = collect([
+            'active'                            => "home",
+            'title' => "titlehere"
+        ]);
+
+        //print_r($display_tabs);
+        //exit();
+        return view('dashboard-profile', compact('display_tabs'));
+    }
+
+    /**
      * Providing legacy home query a landing page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
