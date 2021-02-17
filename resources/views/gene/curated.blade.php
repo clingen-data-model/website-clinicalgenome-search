@@ -115,7 +115,7 @@
 
       $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
       $('.action-show-acmg59-text').html('On');
-      $('.action-af-badge').html('ACMG59').addClass('bg-primary');
+      $('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
 
     }
     else
