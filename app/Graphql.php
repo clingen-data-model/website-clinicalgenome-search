@@ -363,6 +363,7 @@ class Graphql
 		$node->ndosage = $ndosage;
 		$node->ncpc = 0;
 		$node->npharmgkb = 0;
+		$node->nvariant = 0;
 
 		if (!empty($pharma))
 		{
@@ -373,6 +374,18 @@ class Graphql
 			$entries = Cpic::gene($node->label)->gkb()->get();
 			$node->pharmagkb = $entries->toArray();
 			$node->npharmgkb = $entries->count();
+		}
+
+		if (!empty($variant))
+		{
+			//$entries = Variant::gene($node->label)->cpic()->get();
+			//$node->pharma = $entries->toArray();
+			//$node->ncpc = $entries->count();
+
+			//$entries = Cpic::gene($node->label)->gkb()->get();
+			//$node->pharmagkb = $entries->toArray();
+			//$node->npharmgkb = $entries->count();
+			$node->variant = [];
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
