@@ -155,6 +155,7 @@
 		else
 		{
 			viz.push(0);
+			viz.push(3);
 			$(this).addClass('btn-success').removeClass('btn-default active');
 			$(this).html('<b>Genes: On</b>')
 		}
@@ -176,7 +177,10 @@
 	$('.action-show-regions').on('click', function() {
 		var viz = [];
 		if ($('.action-show-genes').hasClass('btn-success'))
+		{
 			viz.push(0);
+			viz.push(3);
+		}
 
 		if ($(this).hasClass('btn-success'))
 		{
@@ -218,7 +222,7 @@
 		}
 		else
 		{
-			$table.bootstrapTable('filterBy', {type: [0, 1]});
+			$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-hiknown-text').html('Off');
@@ -257,7 +261,7 @@
 		}
 		else
 		{
-			$table.bootstrapTable('filterBy', {type: [0, 1]});
+			$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-tsknown-text').html('Off');
@@ -296,7 +300,7 @@
 		}
 		else
 		{
-			$table.bootstrapTable('filterBy', {type: [0, 1]});
+			$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-protein-text').html('Off');
@@ -363,7 +367,7 @@
 
 		if ($(this).hasClass('fa-toggle-off'))
 		{
-			$table.bootstrapTable('filterBy', {type: [0, 1]}, {'filterAlgorithm': monthFilter});
+			$table.bootstrapTable('filterBy', {type: [0, 1, 3]}, {'filterAlgorithm': monthFilter});
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-recent-text').html('On');
