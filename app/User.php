@@ -40,11 +40,20 @@ class User extends Authenticatable
 
 
     /*
-     * The roles that belong to this user
+     * The genes that this user is following
      */
     public function genes()
     {
        return $this->belongsToMany('App\Gene');
+    }
+
+
+    /*
+     * The notification preferences for this user
+     */
+    public function notification()
+    {
+       return $this->hasOne('App\Notification');
     }
 
 

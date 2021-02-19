@@ -67,7 +67,6 @@
                     @endif
 
                     You are logged in!
-<<<<<<< HEAD
                     <div>
                         <a href="/api/logout" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
                             Logout
@@ -76,14 +75,6 @@
                             {{ csrf_field() }}
                         </form>
                     </div>
-=======
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-                        Logout
-                    </a>
-                    <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
->>>>>>> a009082073b760e6a1db786fa25c196b11f0296e
                 </div>
             </div>
         </div>

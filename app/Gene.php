@@ -318,6 +318,32 @@ class Gene extends Model
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['validity'] : false); 
      }
+
+
+     /**
+     * Flag indicating if gene has any pharma curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasPharmaAttribute()
+    {
+         return (isset($this->curation_activities) ? 
+              $this->curation_activities['pharma'] : false); 
+    }
+
+
+    /**
+     * Flag indicating if gene has any actionability curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasVariantAttribute()
+    {
+         return (isset($this->curation_activities) ? 
+              $this->curation_activities['variant'] : false); 
+    }
      
 
     /**
@@ -372,6 +398,19 @@ class Gene extends Model
 
           return 'chr' . $chr . ':' . $this->start38 . '-' . $this->stop38;
      }
+
+
+     /**
+     * Flag indicating if gene has any dosage curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function hasActivity($activity)
+    {
+         return (isset($this->activity[$activity]) ? 
+              $this->activity[$activity] : false); 
+    }
 
 
      /**

@@ -91,7 +91,34 @@ class Notification extends Model
      protected $status_strings = [
 	 		0 => 'Initialized',
 	 		9 => 'Deleted'
-	];
+     ];
+     
+     public const FREQUENCY_NONE = 0;
+     public const FREQUENCY_DAILY = 1;
+     public const FREQUENCY_WEEKLY = 2;
+     public const FREQUENCY_SEMI_MONTHLY = 3;
+     public const FREQUENCY_MONTHLY = 4;
+     public const FREQUENCY_EVERY2MONTHS = 5;
+     public const FREQUENCY_QUARTERLY = 6;
+     public const FREQUENCY_SEMI_ANNUAL = 7;
+     public const FREQUENCY_ANNUAL = 8;
+
+
+     /*
+     * Frequency strings for display methods
+     *
+     * */
+     protected $frequency_strings = [
+          self::FREQUENCY_NONE => 'None',
+          self::FREQUENCY_DAILY => 'Daily',
+          self::FREQUENCY_WEEKLY => 'Weekly',
+          self::FREQUENCY_SEMI_MONTHLY => 'Semimonthly',
+          self::FREQUENCY_MONTHLY => 'Monthly',
+          self::FREQUENCY_EVERY2MONTHS => 'Every 2 Months',
+          self::FREQUENCY_QUARTERLY => 'Quarterly',
+          self::FREQUENCY_SEMI_ANNUAL => 'Semiannual',
+          self::FREQUENCY_ANNUAL => 'annual'
+     ];
 
      
 	/**
@@ -104,7 +131,16 @@ class Notification extends Model
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
-	}
+     }
+     
+
+     /*
+     * The owner of this notification
+     */
+    public function user()
+    {
+       return $this->belongsTo('App\User');
+    }
      
 
 	/**
@@ -114,7 +150,56 @@ class Notification extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeIdent($query, $ident)
-    {
+     {
 		return $query->where('ident', $ident);
-    }
+     }
+
+
+     /**
+     * Assert if the value is selected or not
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function checked($attribute, $value)
+     {
+          if (!isset($this->frequency[$attribute]))
+               return '';
+
+          return ($this->frequency[$attribute] == $value ? 'checked' : '');
+     }
+
+
+     /**
+     * Convert the stored constant to hours
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function chetoHourscked($value)
+     {
+          switch ($value)
+          {
+               case self::FREQUENCY_NONE:
+                    return -1;
+               case self::FREQUENCY_DAILY:
+                    return 24;
+               case self::FREQUENCY_WEEKLY:
+                    return 168;
+               case self::FREQUENCY_SEMI_MONTHLY:
+                    return 336;
+               case self::FREQUENCY_MONTHLY:
+                    return 720;
+               case self::FREQUENCY_EVERY2MONTHS:
+                    return 1440;
+               case self::FREQUENCY_QUARTERLY:
+                    return 2160;
+               case self::FREQUENCY_SEMI_ANNUAL:
+                    return 4320;
+               case self::FREQUENCY_ANNUAL:
+                    return 8790;
+               default: 
+                    return -1;
+          }
+     }
 }

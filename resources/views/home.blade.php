@@ -8,7 +8,7 @@
           <td class="valign-top"></td>
           <td class="pl-2">
 						<h1 class="h2 p-0 m-0">Your Dashboard</h1>
-            <p>Welcome back USER!</p>
+            <p>Welcome back {{ $user->name }}</p>
           </td>
         </tr>
       </table>
@@ -20,9 +20,9 @@
 
 	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
 		  <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">XX</span><br />Total Genes<br />Followed</li>
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">XX</span><br />Followed Genes <br /> With Classifications</li>
-			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">XX</span><br /> Genes Updated In <br />The Last 90 Days</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{  $total }}</span><br />Total Genes<br />Followed</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{  $curations }}</span><br />Followed Genes <br /> With Classifications</li>
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $recent }}</span><br /> Genes Updated In <br />The Last 90 Days</li>
 		</ul>
 
 </div>
@@ -53,6 +53,7 @@ Manage Your Profile</a>
         <div class="col-md-12">
             <div class="row mb-3">
                 <div class="col-sm-6">
+
                 <h3>You're Currently Following</h3>
                     </div>
 
@@ -65,26 +66,10 @@ Manage Your Profile</a>
                             <li><a href="#">Pause Notifications</a></li>
                             </ul>
                         </div>
+                        <button class="btn action-logout">
+                            Logout
+                        </button>
                         </div>
-<<<<<<< HEAD
-                    @endif
-
-                    <div>You are logged in!</div>
-
-                    <button class="btn action-logout">
-                        Logout
-                    </button>
-
-                    <p>The genes you are following:</p>
-
-                    @foreach($genes as $gene)
-                    <div>{{ $gene->name }}</div>
-                    @endforeach
-                    <form id="frm-logout" action="/api/logout" method="POST" style="display: none;">
-                        {{ csrf_field() }}
-                    </form>
-=======
->>>>>>> a009082073b760e6a1db786fa25c196b11f0296e
                 </div>
                 <div class="row mb-3">
                     <div class="col-lg-9">
@@ -107,17 +92,18 @@ Manage Your Profile</a>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($genes as $gene)
                         <tr>
-                        <th scope="row">ABC123</th>
-                        <td>HGNC:1234</td>
+                        <th scope="row">{{ $gene->name }}</th>
+                        <td>{{ $gene->hgnc_id }}</td>
                         <td>
-                            <img src="/images/clinicalValidity-on.png" width="22" height="22">
-                            <img src="/images/dosageSensitivity-off.png" width="22" height="22">
-                            <img src="/images/Pharmacogenomics-off.png" width="22" height="22">
-                            <img src="/images/variantPathogenicity-on.png" width="22" height="22">
-                            <img src="/images/clinicalActionability-on.png" width="22" height="22">
+                            <img src="/images/clinicalValidity-{{ $gene->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
+                            <img src="/images/dosageSensitivity-{{ $gene->hasActivity('dosage') ? 'on' : 'off' }}.png" width="22" height="22">
+                            <img src="/images/clinicalActionability-{{ $gene->hasActivity('actionability') ? 'on' : 'off' }}.png" width="22" height="22">
+                            <img src="/images/variantPathogenicity-{{ $gene->hasActivity('variant') ? 'on' : 'off' }}.png" width="22" height="22">
+                            <img src="/images/Pharmacogenomics-{{ $gene->hasActivity('pharma') ? 'on' : 'off' }}.png" width="22" height="22">
                         </td>
-                        <td>12/12/2020</td>
+                        <td>{{ $gene->displayDate($gene->date_last_curated) }}</td>
                         <td>
                             <div class="btn-group w-100">
                             <button type="button" class="text-left btn btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -128,65 +114,20 @@ Manage Your Profile</a>
                                 <li><a href="#">Weekly (Update Default)</a></li>
                                 <li><a href="#">Monthly</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Paused</a></li>
-                            </ul>
-                            </div>
-                        </td>
-                        </tr>
-                        <tr>
-                        <th scope="row">CCC123</th>
-                        <td>HGNC:2234</td>
-                        <td>
-                            <img src="/images/clinicalValidity-on.png" width="22" height="22">
-                            <img src="/images/dosageSensitivity-off.png" width="22" height="22">
-                            <img src="/images/Pharmacogenomics-off.png" width="22" height="22">
-                            <img src="/images/variantPathogenicity-on.png" width="22" height="22">
-                            <img src="/images/clinicalActionability-on.png" width="22" height="22">
-                        </td>
-                        <td>12/12/2020</td>
-                        <td>
-                            <div class="btn-group w-100">
-                            <button type="button" class="text-left btn btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Send Weekly (Update Default)
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Daily</a></li>
-                                <li><a href="#">Weekly (Update Default)</a></li>
-                                <li><a href="#">Monthly</a></li>
+                                <li><a href="#">Pause</a></li>
                                 <li role="separator" class="divider"></li>
-                                <li><a href="#">Paused</a></li>
+                                <li><a href="#">Remove</a></li>
                             </ul>
                             </div>
                         </td>
                         </tr>
-                        <tr>
-                        <th scope="row">123XXX</th>
-                        <td>HGNC:4234</td>
-                        <td>
-                            <img src="/images/clinicalValidity-off.png" width="22" height="22">
-                            <img src="/images/dosageSensitivity-off.png" width="22" height="22">
-                            <img src="/images/Pharmacogenomics-off.png" width="22" height="22">
-                            <img src="/images/variantPathogenicity-off.png" width="22" height="22">
-                            <img src="/images/clinicalActionability-off.png" width="22" height="22">
-                        </td>
-                        <td>Not curated...</td>
-                        <td>
-                            <div class="btn-group w-100">
-                            <button type="button" class="text-left btn btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Send Daily (New Default)
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Daily (New Default)</a></li>
-                                <li><a href="#">Weekly</a></li>
-                                <li><a href="#">Monthly</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Paused</a></li>
-                            </ul>
-                            </div>
-                        </td>
-                        </tr>
+                        @endforeach
                     </tbody>
                     </table>
+
+                    <form id="frm-logout" action="/api/logout" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
         </div>
     </div>
 </div>

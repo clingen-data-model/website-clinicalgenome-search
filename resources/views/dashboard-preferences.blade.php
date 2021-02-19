@@ -71,19 +71,20 @@ Manage Your Profile</a>
                     <div class="col-lg-12">
 
 
-                            Option 1<form class="form-horizontal">
+                        <form class="form-horizontal" method="POST" action="/dashboard/preferences">
+                            @csrf
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <h5>Your Emails Addresses</h5>
+                                    <h5>Outgoing Emails Addresses</h5>
                                     Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="row my-2">
                                         <div class="col-sm-2 text-right mt-1 pr-0">
-                                            Account Email:
+                                            Primary Email:
                                         </div>
                                         <div class="col-sm-10 pl-1">
-                                            <input type="text" class="form-control" disabled value="something@email.com">
+                                            <input type="text" class="form-control" name="primary_email" value="{{  $notification->primary['email'] }}">
                                         </div>
                                     </div>
                                     <div class="row my-2">
@@ -91,7 +92,7 @@ Manage Your Profile</a>
                                             Additional Emails:
                                         </div>
                                         <div class="col-sm-10 pl-1">
-                                            <input type="text" class="form-control" placeholder="Type in emails..." aria-label="...">
+                                            <input type="text" class="form-control" placeholder="Type in emails..." name="secondary_email" value="{{  $notification->secondary['email'] }}">
                                             <small>Add as many emails you want with a comma (,) between each.</small>
                                         </div>
                                     </div>
@@ -112,19 +113,19 @@ Manage Your Profile</a>
                                     <ul class="list-inline">
                                         <li>
                                         <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                                            <input type="radio" name="frequency" value="{{ App\Notification::FREQUENCY_DAILY }}" {{ $notification->checked('frequency', App\Notification::FREQUENCY_DAILY) }}>
                                             Send Daily
                                         </label>
                                         </li>
                                         <li>
                                         <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                                            <input type="radio" name="frequency" value="{{ App\Notification::FREQUENCY_WEEKLY }}" {{ $notification->checked('frequency', App\Notification::FREQUENCY_WEEKLY) }}>
                                             Send Weekly
                                         </label>
                                         </li>
                                         <li>
                                         <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+                                            <input type="radio" name="frequency" value="{{ App\Notification::FREQUENCY_MONTHLY }}" {{ $notification->checked('frequency', App\Notification::FREQUENCY_MONTHLY) }}>
                                             Send Monthly
                                         </label>
                                         </li>
@@ -136,32 +137,26 @@ Manage Your Profile</a>
                             <hr />
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <h5>Gene Without Activity (?????)</h5>
+                                    <h5>First Curation</h5>
                                     Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt.
                                 </div>
                                 <div class="col-sm-12">
                                     <div class="row my-2">
                                         <div class="col-sm-2 text-right pr-0">
-                                            Frequency:
+                                            Send Notice:
                                         </div>
                                         <div class="col-sm-10">
                                     <ul class="list-inline">
                                         <li>
                                         <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                                            Send Daily
+                                            <input type="radio" name="first" value="{{ App\Notification::FREQUENCY_DAILY }}" {{ $notification->checked('first', App\Notification::FREQUENCY_DAILY) }}>
+                                            Yes
                                         </label>
                                         </li>
                                         <li>
                                         <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                            Send Weekly
-                                        </label>
-                                        </li>
-                                        <li>
-                                        <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-                                            Send Monthly
+                                            <input type="radio" name="first" value="{{ App\Notification::FREQUENCY_NONE }}" {{ $notification->checked('first', App\Notification::FREQUENCY_NONE) }}>
+                                            No
                                         </label>
                                         </li>
                                     </ul>
@@ -182,23 +177,25 @@ Manage Your Profile</a>
                                         </div>
                                         <div class="col-sm-10">
                                     <ul class="list-inline">
-                                        <li>
-                                        <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-                                            Send Daily
-                                        </label>
-                                        </li>
-                                        <li>
-                                        <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-                                            Send Weekly
-                                        </label>
-                                        </li>
-                                        <li>
-                                        <label class="text-normal">
-                                            <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-                                            Send Monthly
-                                        </label>
+                                            <li>
+                                            <label class="text-normal">
+                                                <input type="radio" name="summary" value="{{ App\Notification::FREQUENCY_WEEKLY }}" {{ $notification->checked('summary', App\Notification::FREQUENCY_WEEKLY) }}>
+                                                Send Weekly
+                                            </label>
+                                            </li>
+                                            <li>
+                                            <label class="text-normal">
+                                                <input type="radio" name="summary" value="{{ App\Notification::FREQUENCY_MONTHLY }}" {{ $notification->checked('summary', App\Notification::FREQUENCY_MONTHLY) }}>
+                                                Send Monthly
+                                            </label>
+                                            <label class="text-normal">
+                                                <input type="radio" name="summary" value="{{ App\Notification::FREQUENCY_QUARTERLY }}" {{ $notification->checked('summary', App\Notification::FREQUENCY_QUARTERLY) }}>
+                                                Send Quarterly
+                                            </label>
+                                            <label class="text-normal">
+                                                <input type="radio" name="summary" value="{{ App\Notification::FREQUENCY_ANNUAL }}" {{ $notification->checked('summary', App\Notification::FREQUENCY_ANNUAL) }}>
+                                                Send Annual
+                                            </label>
                                         </li>
                                     </ul>
                                     </div>

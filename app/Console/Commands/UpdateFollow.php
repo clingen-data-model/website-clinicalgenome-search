@@ -47,6 +47,8 @@ class UpdateFollow extends Command
 
         $users = User::has('genes')->with('genes')->get();
 
+        $history = [];
+
         foreach ($users as $user)
         {
             // has last_updated changed in the past 24 hours?
@@ -58,37 +60,28 @@ class UpdateFollow extends Command
                 $diff = $last->diffInHours($now);
                 echo $gene->date_last_curated . " -- $diff" . "\n";
 
-                // iif less than 24 hours send email
+                // retrieve the frequency values for this user
+                $notification = $user->notification;
+
+                $time = ($notification->frequency['frequency'] ?? Notification::FREQUENCY_DAILY);
+
+                $time = $notification->toHours($time);
+                
+                if ($diff < $time)
+                {
+                    $history[] = "Gene " . $gene->name . " changed in the past 24 hours";
+                }
+            }
+
+            // if there is something to report, send out
+            if (!empty($history))
+            {
+                // send the email
+                Mail::to($user)
+                       // ->cc($moreUsers)
+                       // ->bcc($evenMoreUsers)
+                        ->send(new NotifyFrequency(['notes' => $history, 'name' => $user->name]));
             }
         }
-
-
-        /*$genes = DB::table('gene_user')->select('gene_id')->distinct()->get();
-
-        foreach ($genes as $geneid)
-        {
-            echo $geneid->gene_id . "\n";
-
-            $gene = Gene::find($geneid->gene_id);
-
-            if ($gene === null)
-                continue;
-
-            $record = GeneLib::geneDetail([
-                'gene' => $gene->hgnc_id,
-                'curations' => true,
-                'action_scores' => true,
-                'validity' => true,
-                'dosage' => true,
-                'pharma' => true
-            ]);
-
-            // validity
-            // dosage sensitivity
-            // actionability
-            // pharma
-
-            // if any changed in the past period, send email to all users
-        }*/
     }
 }
