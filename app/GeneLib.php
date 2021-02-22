@@ -189,6 +189,26 @@ class GeneLib extends Model
           '40' => 'Dosage Sensitivity Unlikely'
      ];
 
+     protected static $actionability_assertion_strings = [
+          'Definitive Actionability' => "Definitive Actionability",
+          'Strong Actionability' => "Strong Actionability",
+          'Moderate Actionability' => "Moderate Actionability",
+          'Limited Actionability' => "Limited Actionability",
+          'Insufficient Actionability' => "Insufficient Actionability",
+          'No Actionability' => "No Actionability",
+          'Assertion Pending' => "Assertion Pending",
+     ];
+
+     protected static $actionability_sort_value = [
+          'Definitive Actionability' => 20,
+          'Strong Actionability' => 19,
+          'Moderate Actionability' => 18,
+          'Limited Actionability' => 17,
+          'Insufficient Actionability' => 16,
+          'No Actionability' => 15,
+          'Assertion Pending' => 14
+     ];
+
 
 	/*----------------------Public Methods----------------------------*/
 
@@ -360,7 +380,7 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneActivityDetail($args)
+    /*static function geneActivityDetail($args)
     {
          if (is_null($args) || !is_array($args))
               return collect([]);
@@ -372,7 +392,7 @@ class GeneLib extends Model
          $response = Graphql::geneActivityDetail($args);
 
          return $response;
-    }
+    }*/
 
 
      /**
@@ -395,6 +415,28 @@ class GeneLib extends Model
 
 		return $response;
      }
+
+
+     /**
+     * Get a list of all the curated genes
+     *
+     * (Neo4j, Genegraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneFind($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Gene data is currently in neo4j
+         //$response = Neo4j::geneList($args);
+
+         // Gene listing using Graphql
+         $response = Graphql::geneFind($args);
+
+         return $response;
+    }
 
 
      /**
@@ -1001,6 +1043,20 @@ class GeneLib extends Model
 
 		 return self::$validity_moi_strings[$str] ?? '';
      }
+
+
+     /**
+     * Return a displayable validity assertion description
+     *
+     * @return string
+     */
+    public static function actionabilityAssertionString($str)
+    {
+         if (empty($str))
+              return '';
+
+          return self::$actionability_assertion_strings[$str] ?? '';
+    }
 
 
      /**

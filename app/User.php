@@ -17,7 +17,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token', 'device_token'
+        'name', 'lastname', 'firstname', 'email', 'password', 'avatar', 'credentials',
+        'organization', 'profile', 'preferences', 'api_token', 'device_token'
     ];
 
     /**
@@ -36,6 +37,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'preferences' => 'array',
+        'profile' => 'array',
     ];
 
 
@@ -54,6 +57,32 @@ class User extends Authenticatable
     public function notification()
     {
        return $this->hasOne('App\Notification');
+    }
+
+
+    /**
+     * Adjust full name when first name is changed
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['firstname'] = $value;
+        $this->attributes['name'] = $this->attributes['firstname'] . " " . $this->attributes['lastname'];
+    }
+
+
+    /**
+     * Adjust full name when last name is changed
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['lastname'] = $value;
+        $this->attributes['name'] = $this->attributes['firstname'] . " " . $this->attributes['lastname'];
     }
 
 

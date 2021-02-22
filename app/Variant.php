@@ -136,4 +136,37 @@ class Variant extends Model
 		return $query->where('iri', $curie);
     }
 
+
+    /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public static function sortByClassifications($symbol)
+     {
+          $classifications = [
+               'Benign' => 0,
+               'Likely Benign' => 0,
+               'Uncertain Significance' => 0,
+               'Likely Pathogenic' => 0,
+               'Pathogenic' => 0
+          ];
+
+          $records = self::where('gene->label', $symbol)->get();
+
+          if (empty($records))
+               return $classifications;
+
+          foreach ($records as $record)
+               foreach ($record->guidelines as $guideline)
+                    if (isset($classifications[$guideline["outcome"]["label"]]))
+                         $classifications[$guideline["outcome"]["label"]]++;
+
+          return $classifications;
+     }
+
+
+
+
 }

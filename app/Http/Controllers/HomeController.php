@@ -117,9 +117,31 @@ class HomeController extends Controller
             'title' => "titlehere"
         ]);
 
-        //print_r($display_tabs);
-        //exit();
-        return view('dashboard-profile', compact('display_tabs'));
+
+        $genes = collect();
+
+        if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+
+            $genes = $user->genes;
+
+        }
+
+
+        $total = $genes->count();
+        $curations = $genes->sum(function ($gene) {
+                        return (int) in_array(true, $gene->activity);
+                    });
+        $recent = $genes->sum(function ($gene) {
+                        if ($gene->date_last_curated === null)
+                            return 0;
+
+                        $last = new Carbon($gene->date_last_curated);
+                        return (int)(Carbon::now()->diffInDays($last) <= 90);
+                     });
+        
+        return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));
     }
 
     /**
@@ -183,6 +205,57 @@ class HomeController extends Controller
                      });
         
         return view('dashboard-preferences', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'notification'));
+
+    }
+
+
+    /**
+     * Temporary update method for dashboard prototype.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function update_profile(Request $request)
+    {
+        $display_tabs = collect([
+            'active' => "home",
+            'title' => "Dashboard"
+        ]);
+
+        $input = $request->only(['name', 'firstname', 'lastname', 'organization', 'display_list',
+                                'credentials', 'email', 'profile', 'preferences', 'avatar']);
+
+        $genes = collect();
+
+        if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+
+            // some of these belong in preferences
+            $preferences = $user->preferences;
+            $preferences['display_list'] = $input["display_list"];
+            $user->preferences = $preferences;
+
+            $user->update($input);
+
+            $genes = $user->genes;
+
+        }
+
+        //update the notifications
+
+        $total = $genes->count();
+        $curations = $genes->sum(function ($gene) {
+                        return (int) in_array(true, $gene->activity);
+                    });
+        $recent = $genes->sum(function ($gene) {
+                        if ($gene->date_last_curated === null)
+                            return 0;
+
+                        $last = new Carbon($gene->date_last_curated);
+                        return (int)(Carbon::now()->diffInDays($last) <= 90);
+                     });
+        
+        return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));
 
     }
 }

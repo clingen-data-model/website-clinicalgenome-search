@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="col-md-12 light-arrows">
+    <div class="col-md-12 light-arrows dark-table">
 			@include('_partials.genetable')
 		</div>
 	</div>

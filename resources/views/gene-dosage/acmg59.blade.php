@@ -27,7 +27,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-md-12 dark-table">
 				@include('_partials.genetable')
 
 		</div>

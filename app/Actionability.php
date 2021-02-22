@@ -1,0 +1,311 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\Display;
+
+use Uuid;
+use Carbon\Carbon;
+
+use App\GeneLib;
+
+/**
+ *
+ * @category   Model
+ * @package    Search
+ * @author     P. Weller <pweller1@geisinger.edu>
+ * @copyright  2020 Geisinger
+ * @license    http://www.php.net/license/3_01.txt  PHP License 3.01
+ * @version    Release: @package_version@
+ * @link       http://pear.php.net/package/PackageName
+ * @see        NetOther, Net_Sample::Net_Sample()
+ * @since      Class available since Release 1.0.0
+ *
+ * */
+class Actionability extends Model
+{
+    use HasFactory;
+
+    use SoftDeletes;
+    use Display;
+
+    /**
+     * The attributes that should be validity checked.
+     *
+     * @var array
+     */
+    public static $rules = [
+		'ident' => 'alpha_dash|max:80|required',
+        'report_date' => 'timestamp',
+        'gene_label' => 'string',
+        'gene_hgnc_id' => 'string',
+        'disease_label' => 'string',
+        'disease_mondo' => 'string',
+        'report_date' => 'timestamp',
+        'source' => 'string',
+        'other' => 'json',
+        'classification' => 'string',
+        'specified_by' => 'string',
+        'attributed_to' => 'string',
+        'version' => 'integer',
+		'type' => 'integer',
+		'status' => 'integer'
+	];
+    
+	/**
+     * Map the json attributes to associative arrays.
+     *
+     * @var array
+     */
+	protected $casts = [
+			'haplo_other' => 'array',
+            'triplo_other' => 'array'
+		];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+	protected $fillable = ['ident', 'disease_label', 'disease_mondo',
+                            'adult_report_date', 'adult_classification', 'adult_attrobuted_to', 'adult_source',
+                            'pediatric_report_date', 'pediatric_classification', 'pediatric_attrobuted_to', 'pediatric_source',
+                            'gene_label', 'gene_hgnc_id', 'other',
+                            'version', 'type', 'status',
+                         ];
+
+	/**
+     * Non-persistent storage model attributes.
+     *
+     * @var array
+     */
+    protected $appends = ['display_date', 'list_date', 'display_status'];
+
+    public const TYPE_NONE = 0;
+
+    /*
+     * Type strings for display methods
+     *
+     * */
+    protected $type_strings = [
+	 		0 => 'Unknown',
+	 		9 => 'Deleted'
+	];
+
+    public const STATUS_INITIALIZED = 0;
+
+    /*
+     * Status strings for display methods
+     *
+     * */
+    protected $status_strings = [
+	 		0 => 'Initialized',
+	 		9 => 'Deleted'
+     ];
+
+     
+	/**
+     * Automatically assign an ident on instantiation
+     *
+     * @param	array	$attributes
+     * @return 	void
+     */
+    public function __construct(array $attributes = array())
+    {
+        $this->attributes['ident'] = (string) Uuid::generate(4);
+        parent::__construct($attributes);
+    }
+     
+
+	/**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeIdent($query, $ident)
+    {
+		return $query->where('ident', $ident);
+    }
+
+
+    /**
+     * Query scope by hgnc id
+     *
+     * @@param	string	$hgnc
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeHgnc($query, $hgnc)
+    {
+		return $query->where('gene_hgnc_id', $hgnc);
+    }
+
+
+    /**
+     * Query scope by mondo
+     *
+     * @@param	string	$mondo
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeMondo($query, $mondo)
+    {
+		return $query->where('disease_mondo', $mondo);
+    }
+
+
+    /**
+     * Retrieve, compare, and load a fresh dataset
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function assertions()
+    {
+        $assertions = GeneLib::actionabilityList([
+                                            'page' => 0,
+                                            'pagesize' => "null",
+                                            'sort' => 'GENE_LABEL',
+                                            'search' => null,
+                                            'direction' => 'ASC',
+                                            'report' => true,
+                                            'curated' => false
+                                        ]);
+
+        if (empty($assertions))
+            die ("Failure to retrieve new data");
+
+        // clear out the status field 
+        
+        // compare and update
+        foreach ($assertions->collection as $gene)
+        {
+            //dd($assertion);
+            foreach($gene->genetic_conditions as $condition)
+            {
+                $current = Actionability::hgnc($gene->hgnc_id)->mondo($condition->disease->curie)->orderBy('version', 'desc')->first();
+
+                if ($current === null)          // new assertion
+                {
+                    $new = new Actionability([
+                                        'gene_label' => $gene->label,
+                                        'gene_hgnc_id' => $gene->hgnc_id,
+                                        'disease_label' => $condition->disease->label ?? null,
+                                        'disease_mondo' => $condition->disease->curie ?? null,
+                                        'adult_report_date' => null,
+                                        'adult_source' => null,
+                                        'adult_attributed_to' => null,
+                                        'adult_classification' => null,
+                                        'pediatric_report_date' => null,
+                                        'pediatric_source' => null,
+                                        'pediatric_attributed_to' => null,
+                                        'pediatric_classification' => null,
+                                        'other' => null,
+                                        'version' => 1,
+                                        'type' => 1,
+                                        'status' => 1
+                                    ]);
+
+                    // Map the proper adult and ped fields
+                    foreach ($condition->actionability_assertions as $assertion)
+                    {
+                        if ($assertion->attributed_to->label == "Adult Actionability Working Group")
+                        {
+                            $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                            $new->adult_source = $assertion->source;
+                            $new->adult_attributed_to = $assertion->attributed_to->label;
+                            $new->adult_classification = $assertion->classification->label;
+
+                        }
+                        if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
+                        {
+                            $new->pediatric_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                            $new->pediatric_source = $assertion->source;
+                            $new->pediatric_attributed_to = $assertion->attributed_to->label;
+                            $new->pediatric_classification = $assertion->classification->label;
+                        }
+                    }
+
+                    $new->save();
+
+                    continue;
+                }
+                
+                $new = new Actionability([
+                                            'gene_label' => $gene->label,
+                                            'gene_hgnc_id' => $gene->hgnc_id,
+                                            'disease_label' => $condition->disease->label ?? null,
+                                            'disease_mondo' => $condition->disease->curie ?? null,
+                                            'adult_report_date' => null,
+                                            'adult_source' => null,
+                                            'adult_attributed_to' => null,
+                                            'adult_classification' => null,
+                                            'pediatric_report_date' => null,
+                                            'pediatric_source' => null,
+                                            'pediatric_attributed_to' => null,
+                                            'pediatric_classification' => null,
+                                            'other' => null,
+                                            'version' => $current->version + 1,
+                                            'type' => 1,
+                                            'status' => 1
+                                        ]);
+
+                // Map the proper adult and ped fields
+                foreach ($condition->actionability_assertions as $assertion)
+                {
+                    if ($assertion->attributed_to->label == "Adult Actionability Working Group")
+                    {
+                        $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                        $new->adult_source = $assertion->source;
+                        $new->adult_attributed_to = $assertion->attributed_to->label;
+                        $new->adult_classification = $assertion->classification->label;
+
+                    }
+                    if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
+                    {
+                        $new->pediatric_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                        $new->pediatric_source = $assertion->source;
+                        $new->pediatric_attributed_to = $assertion->attributed_to->label;
+                        $new->pediatric_classification = $assertion->classification->label;
+                    }
+                }
+
+                if (!$this->compare($current, $new))      // update
+                {
+                    //dd($new);
+                    $new->save();
+                }
+            }
+        }
+        
+        return $assertions;
+    }
+
+
+    /**
+     * Retrieve, compare, and load a fresh dataset
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function compare($old, $new)
+    {
+        $old_array = $old->toArray();
+        $new_array = $new->toArray();
+
+        // unset a few fields we don't care about
+        unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
+              $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
+              $old_array['list_date'], $old_array['display_status']);
+        unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'], 
+              $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
+              $new_array['list_date'], $new_array['display_status']);
+
+        $diff = array_diff_assoc($new_array, $old_array);
+
+        return empty($diff);
+    }
+}

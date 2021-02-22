@@ -29,6 +29,7 @@ Route::get('/kb', function () {
 Route::group(['prefix' => '/dashboard'], function () {
 	Route::get('/', 'HomeController@index')->name('dashboard-index');
 	Route::get('/profile', 'HomeController@profile')->name('dashboard-profile');
+	Route::post('/profile', 'HomeController@update_profile')->name('dashboard-update-profile');
 	Route::get('/preferences', 'HomeController@preferences')->name('dashboard-preferences');
 	Route::post('/preferences', 'HomeController@update')->name('dashboard-update');
 });

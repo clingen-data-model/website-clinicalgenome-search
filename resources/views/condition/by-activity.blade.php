@@ -281,7 +281,7 @@
 
 				@php ($header_aci = true) @endphp
 				@forelse ($record->genetic_conditions as $key => $disease)
-					@if(count($disease->actionability_curations))
+					@if(count($disease->actionability_assertions))
 				  @if($header_aci == true)
 					@php ($currations_set = true) @endphp
 					<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
@@ -301,7 +301,7 @@
 							<tbody class="">
 					@endif
 								@php ($first = true) @endphp
-								@foreach($disease->actionability_curations as $i => $actionability)
+								@foreach($disease->actionability_assertions as $i => $actionability)
 										<tr>
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												@if($first == true) <a href="{{ route('gene-show', $disease->gene->hgnc_id) }}">{{ $disease->gene->label }}</a> @endif
@@ -316,7 +316,7 @@
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
 													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">
-													{{ $record->displayActionType($actionability->source) }}View Details
+													{{ $record->displayActionType($actionability->source) }}{{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
 													</a>
 											</td>
 

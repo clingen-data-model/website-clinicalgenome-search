@@ -415,6 +415,16 @@ function badgeFormatter(index, row) {
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
 
+    if (row.has_variant)
+        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+
+    if (row.has_pharma)
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+
     return html;
 }
 
@@ -471,6 +481,17 @@ function cbadgeFormatter(index, row) {
         html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+    
+    if (row.has_variant)
+        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+
+    if (row.has_pharma)
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+
 
     return html;
 }
@@ -500,6 +521,17 @@ function drbadgeFormatter(index, row) {
         html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+
+    if (row.has_variant)
+        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+
+    if (row.has_pharma)
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+    else
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+
 
     return html;
 }

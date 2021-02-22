@@ -9,6 +9,10 @@ use App\GeneLib;
 use App\Jira;
 use App\Gene;
 use App\Graphql;
+use App\Nodal;
+use App\Record;
+use App\Validity;
+use App\Actionability;
 
 class TestController extends Controller
 {
@@ -29,7 +33,11 @@ class TestController extends Controller
      */
     public function index()
     {
-		Graphql::geneMetrics([]);
+		//Graphql::geneMetrics([]);
+
+		$a = new Actionability();
+
+		$a->assertions();
 		/*$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
 		
 		foreach ($results->issues as $issue)

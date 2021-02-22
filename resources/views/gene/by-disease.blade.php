@@ -112,7 +112,7 @@
 						@endforeach
 
 						<!-- Actionability					-->
-						@foreach($disease->actionability_curations as $key => $actionability)
+						@foreach($disease->actionability_assertions as $key => $actionability)
 								@php ($first = true) @endphp
 								<tr>
 									<td class=" @if(!$loop->first) border-0 @endif ">
@@ -124,7 +124,7 @@
 
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">{{ $record->displayActionType($actionability->source) }} View Report </a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">{{ $record->displayActionType($actionability->source) }} {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }} </a></td>
 
 
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>

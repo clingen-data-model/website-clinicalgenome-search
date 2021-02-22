@@ -24,7 +24,7 @@
 		  <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid ?? '0' }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage ?? '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-			laravel-2021-01-22.log<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
 			</ul>
 
 </div>
@@ -113,7 +113,7 @@
 						@endforeach
 
 						<!-- Actionability					-->
-						@foreach($disease->actionability_curations as $key => $actionability)
+						@foreach($disease->actionability_assertions as $key => $actionability)
 								@php ($first = true) @endphp
 								<tr>
 									<td class=" @if(!$loop->first) border-0 @endif ">
@@ -125,7 +125,7 @@
 
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">{{ $record->displayActionType($actionability->source) }} View Report </a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">{{ $record->displayActionType($actionability->source) }} {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }} </a></td>
 
 
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>

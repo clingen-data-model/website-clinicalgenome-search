@@ -328,8 +328,9 @@ class Gene extends Model
      */
     public function getHasPharmaAttribute()
     {
+
          return (isset($this->curation_activities) ? 
-              $this->curation_activities['pharma'] : false); 
+              $this->curation_activities['pharma'] ?? false : false); 
     }
 
 
@@ -342,7 +343,7 @@ class Gene extends Model
     public function getHasVariantAttribute()
     {
          return (isset($this->curation_activities) ? 
-              $this->curation_activities['variant'] : false); 
+              $this->curation_activities['varpath'] ?? false : false); 
     }
      
 
@@ -436,7 +437,7 @@ class Gene extends Model
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 
           // only recognize 37 and 38 at this time
-          if ($type != 'GRCh37' || $type != 'GRCh38')
+          if ($type != 'GRCh37' && $type != 'GRCh38')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 

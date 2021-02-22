@@ -3,14 +3,14 @@
 .bootstrap-table .dropdown-toggle .caret {
   display: none;
 }
-.bootstrap-table .pagination-detail .btn.btn-default {
+.dark-table .bootstrap-table .pagination-detail .btn.btn-default {
   padding: 4px 12px;
 }
-.bootstrap-table .fixed-table-body {
+.dark-table .bootstrap-table .fixed-table-body {
   font-size: .9rem;
 }
 
-.bootstrap-table .fixed-table-toolbar .columns label span div {
+.dark-table .bootstrap-table .fixed-table-toolbar .columns label span div {
   display: none !important;
 }
 
@@ -23,11 +23,11 @@
   padding-right: 20px !important;
 
 }
-.bootstrap-table .fixed-table-container .table thead th:first-child .sortable {
+.dark-table .bootstrap-table .fixed-table-container .table thead th:first-child .sortable {
   padding-left: 17px !important;
   background-position: left 3px bottom .7rem !important;
 }
-.bootstrap-table .fixed-table-container .table thead th:last-child .sortable {
+.dark-table .bootstrap-table .fixed-table-container .table thead th:last-child .sortable {
   padding-right: 0px !important;
 }
 

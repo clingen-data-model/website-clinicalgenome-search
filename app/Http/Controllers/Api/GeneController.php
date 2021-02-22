@@ -58,4 +58,22 @@ class GeneController extends Controller
 
         return $results;
     }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function find(Request $request, $term = null)
+    {
+        $results = GeneLib::geneFind([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $term ?? null,
+                                        'curated' => false ]);
+
+        return $results;
+    }
 }

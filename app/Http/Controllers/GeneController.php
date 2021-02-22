@@ -11,6 +11,7 @@ use Auth;
 use App\GeneLib;
 use App\User;
 use App\Gene;
+use App\Nodal;
 
 /**
 *
@@ -30,6 +31,28 @@ class GeneController extends Controller
 {
 	private $api = '/api/genes';
 	private $api_curated = '/api/curations';
+
+	protected $validity_sort_order = [
+		'SEPIO:0004504' => 20,				// Definitive
+		'SEPIO:0004505' => 19,				// Strong
+		'SEPIO:0004506' => 18,				// Moderate
+		'Supportive' => 17,					// Supportive
+		'SEPIO:0004507' => 16,				// Limited
+		'Animal Model Only' => 15,			// Animal Mode Only
+		'SEPIO:0000404' => 14,				// Disputing
+		'SEPIO:0004510' => 13,				// Refuted
+		'SEPIO:0004508' => 12				// No Known Disease Relationship
+	];
+
+	protected $actionability_sort_value = [
+		'Definitive Actionability' => 20,
+		'Strong Actionability' => 19,
+		'Moderate Actionability' => 18,
+		'Limited Actionability' => 17,
+		'Insufficient Actionability' => 16,
+		'No Actionability' => 15,
+		'Assertion Pending' => 14
+   ];
 
 	/**
 	* Create a new controller instance.
@@ -151,7 +174,8 @@ class GeneController extends Controller
 			'action_scores' => true,
 			'validity' => true,
 			'dosage' => true,
-			'pharma' => true
+			'pharma' => true,
+			'variant' => true
 		]);
 
 		if ($record === null)
@@ -160,6 +184,7 @@ class GeneController extends Controller
 			->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
 			->with('back', url()->previous());
 
+		// the new follow stuff.  protptype wip
 		$follow = false;
 		$email = '';
 		$user = Auth::guard('api')->user();
@@ -186,6 +211,48 @@ class GeneController extends Controller
 				}
 			}
 		}
+		// end follow
+
+		//reformat the response structure for view by activity
+		$actionability_collection = collect();
+		$validity_collection = collect();
+		$dosage_collection = collect();
+		$variant_collection = collect();
+		$pharma_collection = collect();
+
+		foreach ($record->genetic_conditions as $key => $disease)
+		{
+			// actionability
+			foreach ($disease->actionability_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$actionability_collection->push($node);
+			}
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			foreach ($disease->gene_dosage_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$dosage_collection->push($node);
+			}
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
+		$actionability_collection = $actionability_collection->sortByDesc('order');
+
+		if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
 
 		// set display context for view
 		$display_tabs = collect([
@@ -193,7 +260,9 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user'));
+		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
+												'validity_collection', 'actionability_collection',
+												'variant_collection'));
 	}
 
 

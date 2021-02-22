@@ -77,7 +77,7 @@ class ConditionController extends Controller
 			'active' => "condition",
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
-//dd($record);
+
 		return view('condition.by-activity', compact('display_tabs', 'record'));
 	}
 
