@@ -860,7 +860,7 @@ function relationFormatter(index, row) {
     else if (row.type == 1)
         html += '<div class="global_table_cell font-weight-bold region" title="Region">R</div>';
     else
-        html += '<div class="global_table_cell font-weight-bold psuedogene" title="Psuedogene">P</div>';
+        html += '<div class="global_table_cell font-weight-bold psuedogene" title="Pseudogene">P</div>';
 
     if (row.relationship === null)
         return html;

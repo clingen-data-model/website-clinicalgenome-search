@@ -120,7 +120,7 @@
             <div class="col-md-3 col-sm-6">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
-                  <a href="#dosage-sensitivity" class="pr-2 text-dark ">
+                  <a href="#variant-pathogenicity" class="pr-2 text-dark ">
                     <div class="">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1143/untitled-1_icon-variant-interface_color.600x600.png" width="50px" />
                     </div>
