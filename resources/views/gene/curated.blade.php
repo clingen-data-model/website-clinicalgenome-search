@@ -22,7 +22,7 @@
                 <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countValidity text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Gene-Disease<br />Validity Genes</li>
                 <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDosage text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Dosage<br />Sensitivity Genes</li>
                 <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countActionability text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Actionability<br />Genes</li>
-                <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countVariant text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Genes Included on<br />Approved VCEPs</li>
+                <li class="text-stats line-tight text-center pl-3 pr-3" data-toggle="tooltip" data-placement="top" title="Genes within scope for approved ClinGen Variant Curation Expert Panels (VCEPs) are indicated in the 'Variant Pathogenicity' column below"><span class="countVariant text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Genes Included on<br />Approved VCEPs</li>
                 <li class="text-stats line-tight text-center pl-3 pr-3" data-toggle="tooltip" data-placement="top" title="Data provided by PharmGKB and CPIC"><span class="countPharma text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Pharmacogenomics<br />Genes</li>
                 </ul>
           </div>
@@ -115,7 +115,7 @@
 
       $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
       $('.action-show-acmg59-text').html('On');
-      $('.action-af-badge').html('ACMG59').addClass('bg-primary');
+      $('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
 
     }
     else
@@ -187,7 +187,7 @@
           sortable: true
         },
         {
-          title: '<span data-toggle="tooltip" data-placement="top" title="Which variants within this gene cause disease? (Denotes genes included on VCEPs)"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
+          title: '<span data-toggle="tooltip" data-placement="top" title="Which variants within this gene cause disease? (Denotes genes included on approved VCEPs)"><div><img src="/images/variantPathogenicity-on.png" width="40" height="40"></div>Variant Pathogenicity <div style="display:inline-block"><i class="fas fa-info-circle text-muted"></i></div></span>',
           //title: 'Variant Pathogenicity',
           field: 'has_variant',
           formatter: hasVariantFormatter,

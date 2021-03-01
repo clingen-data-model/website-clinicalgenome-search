@@ -48,6 +48,7 @@ class UpdateDrug extends Command
 										'pagesize' => "null",
 										'sort' => 'GENE_LABEL',
                                         'direction' => 'ASC',
+                                        'forcegg' => true,
                                         'search' => null,
                                         'curated' => false ]);
                                         

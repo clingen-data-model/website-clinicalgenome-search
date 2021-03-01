@@ -252,7 +252,7 @@ function hiCellStyle(value, row, index) {
 
 function pliFormatter(index, row) {
     if (row.pli === null)
-        return '-';
+        return '&hyphen;';
 
     if (row.pli >= .90)
         return '<span class="format-pli-high">' + row.pli + '</span>';
@@ -262,7 +262,7 @@ function pliFormatter(index, row) {
 
 function hiFormatter(index, row) {
     if (row.hi === null)
-        return '-';
+        return '&hyphen;';
 
     if (row.hi <= 10)
         return '<span class="format-hi-high">' + row.hi + '</span>';
@@ -273,7 +273,7 @@ function hiFormatter(index, row) {
 
 function plofFormatter(index, row) {
     if (row.plof === null)
-        return '-';
+        return '&hyphen;';
 
     if (row.plof <= .35)
         return '<span class="format-pli-high">' + row.plof + '</span>';
@@ -504,7 +504,9 @@ function drbadgeFormatter(index, row) {
     return html;
 }
 
-var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked", "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant" };
+var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
+             "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
+            'Undetermined': 'Undetermined MOI' };
 
 function moiFormatter(index, row) {
     return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';

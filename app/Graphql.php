@@ -247,6 +247,7 @@ class Graphql
 						gene_validity_assertions {
 						  mode_of_inheritance {
 							  label
+							  website_display_label
 							  curie
 						  }
 						  report_date
@@ -997,6 +998,7 @@ class Graphql
 				}
 				mode_of_inheritance {
 					label
+					website_display_label
 					curie
 				}
 				attributed_to {
@@ -1030,6 +1032,11 @@ class Graphql
 		}
 
 		$node = new Nodal((array) $response->gene_validity_assertion);
+
+		// overwrite the label with the website display label
+		if (!empty($node->mode_of_inheritance->website_display_label))
+			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
+
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
 
@@ -1211,6 +1218,7 @@ class Graphql
 					gene_validity_assertions {
 					mode_of_inheritance {
 						label
+						website_display_label
 						curie
 					}
 					report_date
@@ -1344,7 +1352,7 @@ class Graphql
 		$array = [];
 		foreach($response->suggest as $record)
 		{
-			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$ctag = '';		//(empty($record->curations) ? '' : '        CURATED');
 			$array[] = ['label' => $record->text . '  (' . $record->curie . ')'
 							. $ctag,
 						'url' => route('condition-show', $record->curie)];

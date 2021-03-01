@@ -133,6 +133,7 @@
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mode Of Inheritance"></i></div> MOI',
           field: 'moi',
           cellStyle: cellFormatter,
+          formatter: moiFormatter,
           filterControl: 'input',
           searchFormatter: false,
           sortable: true

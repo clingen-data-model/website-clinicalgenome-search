@@ -139,7 +139,8 @@ class GeneLib extends Model
           'Autosomal dominant inheritance' => 'Autosomal Dominant',
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
-          'Undetermined mode of inheritance' => 'Other',
+          'Undetermined mode of inheritance' => 'Undetermined',
+          'Undetermined' => 'Undetermined',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
           'Semidominant mode of inheritance' => 'Semidomimant'
      ];
@@ -810,12 +811,11 @@ class GeneLib extends Model
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
-          // $response = Graphql::drugList($args);
-          
-          // Drug data is now local
-		$response = Mysql::drugList($args);
-
-
+          if (!empty($args['forcegg']))
+               $response = Graphql::drugList($args);
+          else      // Drug data is now local
+               $response = Mysql::drugList($args);
+               
 		return $response;
 	}
 
@@ -880,10 +880,10 @@ class GeneLib extends Model
           //$response = Neo4j::conditionList($args);
 
           // Gene data is currently in genegraph
-          //$response = Graphql::conditionList($args);
-          
-          // Gene data is currently local
-		$response = Mysql::conditionList($args);
+          if (!empty($args['forcegg']))
+               $response = Graphql::conditionList($args);
+          else      // Gene data is currently local
+		     $response = Mysql::conditionList($args);
 
 		return $response;
 	}
