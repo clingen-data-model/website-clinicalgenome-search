@@ -9,6 +9,7 @@ use App\Graphql;
 use App\Jira;
 use App\Region;
 use App\Mysql;
+use App\Health;
 
 
 /**
@@ -195,6 +196,7 @@ class GeneLib extends Model
           'Moderate Actionability' => "Moderate Actionability",
           'Limited Actionability' => "Limited Actionability",
           'Insufficient Actionability' => "Insufficient Actionability",
+          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => "Insufficient Evidence/Early Rule-out",
           'No Actionability' => "No Actionability",
           'Assertion Pending' => "Assertion Pending",
      ];
@@ -206,7 +208,8 @@ class GeneLib extends Model
           'Limited Actionability' => 17,
           'Insufficient Actionability' => 16,
           'No Actionability' => 15,
-          'Assertion Pending' => 14
+          'Assertion Pending' => 14,
+          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
      ];
 
 
@@ -252,10 +255,20 @@ class GeneLib extends Model
           */
 
           // Gene listing using Graphql
-          if ($args['curated'] || !empty($args['forcegg']))
+          if (!empty($args['forcegg']))
+               return Graphql::geneList($args);
+
+          $health = Health::where('service', 'GeneSearch')->first();
+
+          if (empty($health->genegraph) || empty($args['curated']))
+               $response = Mysql::geneList($args);
+          else
+               $response = Graphql::geneList($args);
+
+          /*if ($args['curated'] || !empty($args['forcegg']))
                $response = Graphql::geneList($args);
           else
-               $response = Mysql::geneList($args);
+               $response = Mysql::geneList($args);*/
 
 		return $response;
 	}
@@ -716,7 +729,9 @@ class GeneLib extends Model
               foreach(['summary', 'genetype', 'label', 'date',
               'triplo_score', 'haplo_score', 'cytoband', 'key',
               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+              'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+              'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
               'grch37', 'grch38', 'chromosome_band',
               'resolution', 'issue_type', 'description',
               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)

@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
+use Illuminate\Support\Facades\Http;
+
 
 use App\GeneLib;
 use App\Jira;
 use App\Gene;
+use App\User;
 use App\Graphql;
 use App\Nodal;
-use App\Record;
-use App\Validity;
+use App\Report;
+use App\Title;
+use App\Notification;
 use App\Actionability;
 
 class TestController extends Controller
@@ -35,9 +39,74 @@ class TestController extends Controller
     {
 		//Graphql::geneMetrics([]);
 
-		$a = new Actionability();
+		
 
-		$a->assertions();
+
+$query = <<<GQL
+{
+	genes(limit: null) {
+		count
+		gene_list {
+			label
+			alternative_label
+			hgnc_id
+			last_curated_date
+			curation_activities
+		}
+	  }
+}
+GQL;
+
+try {
+	$response = Http::withHeaders([
+		'Content-Type' => 'application/json',
+	])->timeout(1)->post('http://ds-stage.clingen.info/graphql', [
+		'query' => $query
+	]);
+} catch (\Illuminate\Http\Client\ConnectionException $e) {
+	die ("timeout");
+} catch (Exception $e) {
+	die ("exception");
+
+}
+
+/*
+Illuminate\Http\Client\ConnectionException
+cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) 
+*/
+
+dd($response->json());
+
+		$users = User::has('genes')->with('genes')->get();
+		$a = new Report();
+
+		foreach ($users as $user)
+		{
+			$notify = $user->notification;
+			if ($notify === null)
+				continue;
+
+			$lists = $notify->toReport();
+
+			if (empty($lists))
+				continue;
+
+			$title = new Title(['type' => 1, 'title' => 'Change Report', 'status' => 1]);
+
+			$user->titles()->save($title);
+
+			foreach ($lists as $list)
+			{
+				$report = new Report($list);
+				$report->type = 1;
+				$report->status = 1;
+				$report->user_id = $user->id;
+				$title->reports()->save($report);
+			}
+			
+			
+		}
+
 		/*$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
 		
 		foreach ($results->issues as $issue)

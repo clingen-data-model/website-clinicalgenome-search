@@ -23,6 +23,41 @@ function detailFormatter(index, row)
 
 
 /**
+ * Format the expanded detail section
+ *
+ * @param {} index
+ * @param {*} row
+ */
+function reportDetailFormatter(index, row, element)
+{
+    var html;
+
+    $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN' : window.token,
+            'Authorization':'Bearer ' + Cookies.get('laravel_token')
+           }
+    });
+
+    $.ajax({
+        url: "/api/home/rpex/" + row.ident,
+        type: 'get',
+        dataType: 'html',
+        async: false,
+        success: function(data) {
+            html = data;
+        } 
+    });
+
+    return html;
+}
+
+
+/**
  * Show the advanced filter toolbar button if the showadvanced
  * global is set.
  */

@@ -12,6 +12,8 @@ use Uuid;
 use Carbon\Carbon;
 
 use App\GeneLib;
+use App\Change;
+use App\Gene;
 
 /**
  *
@@ -121,6 +123,24 @@ class Actionability extends Model
     }
      
 
+    /**
+     * Get the change
+     */
+    public function oldchange()
+    {
+        return $this->morphOne(Change::class, 'old');
+    }
+
+
+    /**
+     * Get the change
+     */
+    public function newchange()
+    {
+        return $this->morphOne(Change::class, 'new');
+    }
+
+
 	/**
      * Query scope by ident
      *
@@ -183,7 +203,6 @@ class Actionability extends Model
         // compare and update
         foreach ($assertions->collection as $gene)
         {
-            //dd($assertion);
             foreach($gene->genetic_conditions as $condition)
             {
                 $current = Actionability::hgnc($gene->hgnc_id)->mondo($condition->disease->curie)->orderBy('version', 'desc')->first();
@@ -231,6 +250,21 @@ class Actionability extends Model
 
                     $new->save();
 
+                    $genename = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                    Change::create([
+                                     'type' => Change::TYPE_ACTIONABILITY,
+                                     'category' => Change::CATEGORY_NONE,
+                                     'element_id' => $genename->id,
+                                     'element_type' => 'App\Gene',
+                                     'old_id' => null,
+                                     'old_type' => null,
+                                     'new_id' => $new->id,
+                                     'new_type' => 'App\Actionability',
+                                     'change_date' => $new->adult_report_date > $new->pediatric_report_date ? $new->adult_report_date : $new->pediatric_report_date,
+                                     'status' => 1
+                            ]);
+
                     continue;
                 }
                 
@@ -277,6 +311,21 @@ class Actionability extends Model
                 {
                     //dd($new);
                     $new->save();
+
+                    $genename = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                    Change::create([
+                                     'type' => Change::TYPE_ACTIONABILITY,
+                                     'category' => Change::CATEGORY_NONE,
+                                     'element_id' => $genename->id,
+                                     'element_type' => 'App\Gene',
+                                     'old_id' =>$current->id,
+                                     'old_type' => 'App\Actionability',
+                                     'new_id' => $new->id,
+                                     'new_type' => 'App\Actionability',
+                                     'change_date' => $new->adult_report_date > $new->pediatric_report_date ? $new->adult_report_date : $new->pediatric_report_date,
+                                     'status' => 1
+                            ]);
                 }
             }
         }

@@ -23,7 +23,7 @@ class UpdateActivity extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Updating GDA Activity from Genegraph';
 
     /**
      * Create a new command instance.
@@ -42,7 +42,7 @@ class UpdateActivity extends Command
      */
     public function handle()
     {
-        echo "Importing curation activity from genegraph ...\n";
+        echo "Updating GDA Activity from Genegraph ...";
         
         $results = GeneLib::geneList([	'page' =>  0,
 										'pagesize' => "null",
@@ -50,14 +50,20 @@ class UpdateActivity extends Command
                                         'direction' => 'ASC',
                                         'search' => null,
                                         'forcegg' => true,
-                                        'curated' => false ]);
+                                        'curated' => true ]);
                                         
         if ($results === null)
-            die( GeneLib::getError() );
+        {
+            echo "\n(E001) Error fetching activity data.\n";
+            exit;
+        }
+
+        // clear out the genegraph related fields
+        Gene::query()->update(['genegraph' => null, 'activity' => null, 'date_last_curated' => null]);
 
         foreach($results->collection as $gene)
         {
-            echo "Updating  " . $gene->hgnc_id . "\n";
+            //echo "Updating  " . $gene->hgnc_id . "\n";
 
             $flags = ['actionability' => $gene->has_actionability,
                         'validity' => $gene->has_validity,
@@ -72,8 +78,10 @@ class UpdateActivity extends Command
                 $record->update(['activity' => $flags, 'date_last_curated' => $gene->last_curated_date,
                                 'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
             else
-                echo "Gene " . $gene->symbol . "not in local table\n";
+                echo "\n(W001) WARN: Gene " . $gene->symbol . "not in local table\n";
         }
+
+        echo "DONE\n";
 
     }
 }

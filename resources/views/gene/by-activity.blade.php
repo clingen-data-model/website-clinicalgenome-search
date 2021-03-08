@@ -74,11 +74,11 @@
 			@include('gene.includes.pharmagkb')
 			
 
-				{{-- Check to see if curations are showing --}}
-				@if($currations_set == false)
-						<br clear="both" />
-						<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
-				@endif
+			{{-- Check to see if curations are showing --}}
+			@if($currations_set == false)
+					<br clear="both" />
+					<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
+			@endif
 
 @endsection
 
@@ -108,7 +108,7 @@
 <script>
 	
 $(function() {
-	var auth = {{ Auth::guard('api')->check() ? 1 : 0 }};
+	window.auth = {{ Auth::guard('api')->check() ? 1 : 0 }};
 	var context = false;
 	var gene = "{{ $record->hgnc_id ?? ''}}";
 
@@ -117,7 +117,7 @@ $(function() {
 		var color = $(this).find('.fa-star').css('color');
 
 		if (color == "rgb(0, 128, 0)"){
-			if (auth)
+			if (window.auth)
 			{
 				// TODO:  create fake form and post it
 				$('#unfollow_form').submit();
@@ -128,7 +128,7 @@ $(function() {
 		}
 		else
 		{
-			if (auth)
+			if (window.auth)
 			{
 				// TODO:  create fake form and post it
 				$('#follow_form').submit();

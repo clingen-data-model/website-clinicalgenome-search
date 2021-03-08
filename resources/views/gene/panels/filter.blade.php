@@ -20,6 +20,7 @@
                 <span class="ml-2 hgnc text-muted action-show-acmg59-text">Off</span>
             </div>
         </div>
+        @if ($user !== null)
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only the genes you are following </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
@@ -27,4 +28,5 @@
                 <span class="ml-2 hgnc text-muted action-show-follow-text">Off</span>
             </div>
         </div>
+        @endif
     </div>

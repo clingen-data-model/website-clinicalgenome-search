@@ -42,7 +42,7 @@ class UpdateDrug extends Command
      */
     public function handle()
     {
-        echo "Importing drug data from genegraph ...\n";
+        echo "Importing drug data from Genegraph ...";
         
         $results = GeneLib::drugList([	'page' =>  0,
 										'pagesize' => "null",
@@ -53,11 +53,14 @@ class UpdateDrug extends Command
                                         'curated' => false ]);
                                         
         if ($results === null)
-            die( GeneLib::getError() );
+        {
+            echo "\n(E001) Error reading genegraph data\n";
+            exit;
+        }
 
         foreach($results->collection as $drug)
         {
-            echo "Updating  " . $drug->curie . "\n";
+           //echo "Updating  " . $drug->curie . "\n";
 
             $flags = ['actionability' => $drug->has_actionability,
                         'validity' => $drug->has_validity,
@@ -71,5 +74,6 @@ class UpdateDrug extends Command
                                         'type' => 1, 'status' => 1]);
         }
 
+        echo "DONE\n";
     }
 }

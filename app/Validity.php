@@ -12,6 +12,8 @@ use Uuid;
 use Carbon\Carbon;
 
 use App\GeneLib;
+use App\Change;
+use App\Gene;
 
 /**
  *
@@ -119,6 +121,24 @@ class Validity extends Model
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
     }
+
+
+    /**
+     * Get the change
+     */
+    public function oldchange()
+    {
+        return $this->morphOne(Change::class, 'old');
+    }
+
+
+    /**
+     * Get the change
+     */
+    public function newchange()
+    {
+        return $this->morphOne(Change::class, 'new');
+    }
      
 
 	/**
@@ -175,7 +195,7 @@ class Validity extends Model
 
             if ($current === null)          // new assertion
             {
-                Validity::create([
+                $current = Validity::create([
                                     'curie' => $assertion->curie,
                                     'report_date' => Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'),
                                     'disease_label' => $assertion->disease->label,
@@ -190,6 +210,21 @@ class Validity extends Model
                                     'type' => 1,
                                     'status' => 1
                                 ]);
+
+                $gene = Gene::hgnc($current->gene_hgnc_id)->first();
+
+                Change::create([
+                                'type' => Change::TYPE_VALIDITY,
+                                'category' => Change::CATEGORY_NONE,
+                                'element_id' => $gene->id,
+                                'element_type' => 'App\Gene',
+                                'old_id' =>null,
+                                'old_type' => null,
+                                'new_id' => $current->id,
+                                'new_type' => 'App\Validity',
+                                'change_date' => $current->report_date,
+                                'status' => 1
+                    ]);
 
                 continue;
             }
@@ -214,6 +249,21 @@ class Validity extends Model
             {
                 //dd($new);
                 $new->save();
+
+                $gene = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                Change::create([
+                                'type' => Change::TYPE_VALIDITY,
+                                'category' => Change::CATEGORY_NONE,
+                                'element_id' => $gene->id,
+                                'element_type' => 'App\Gene',
+                                'old_id' =>$current->id,
+                                'old_type' => 'App\Validity',
+                                'new_id' => $new->id,
+                                'new_type' => 'App\Validity',
+                                'change_date' => $new->report_date,
+                                'status' => 1
+                    ]);
             }
         }
         

@@ -123,6 +123,12 @@
 	var showadvanced = true;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
+	window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+    }
+  }
+
 	/**
 	 *
 	 * Listener for displaying only genes
@@ -537,6 +543,16 @@
 					sortable: true
 				},
 				{
+					title: 'Haplo Disease',
+					field: 'haplo_disease',
+					//formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true,
+					visible: false
+				},
+				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Triplosensitivity score"></i></div>TS Score',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
@@ -544,6 +560,16 @@
 					filterControl: 'select',
 					searchFormatter: false,
 					sortable: true
+				},
+				{
+					title: 'Triplo Disease',
+					field: 'triplo_disease',
+					//formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true,
+					visible: false
 				},
 				{
 					title: 'OMIM',
@@ -646,6 +672,15 @@
 		})
 
 
+		$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
+			console.log(row);
+			//console.log(e);
+			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
+
+		});
+
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
 			// split the object
@@ -659,7 +694,7 @@
 
 
 			//$obj.addClass('detail-table-shade');
-			$obj.load( "api/dosage/expand/" + row.hgnc_id );
+			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
 
 			return false;
 		})

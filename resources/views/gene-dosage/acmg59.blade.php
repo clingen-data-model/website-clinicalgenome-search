@@ -79,6 +79,12 @@
 	var $table = $('#table')
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
+	window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+    }
+  }
+
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);
 		$('.countCurations').html(res.total);

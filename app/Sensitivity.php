@@ -12,6 +12,8 @@ use Uuid;
 use Carbon\Carbon;
 
 use App\GeneLib;
+use App\Change;
+use App\Gene;
 
 /**
  *
@@ -123,6 +125,24 @@ class Sensitivity extends Model
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
     }
+
+
+    /**
+     * Get the change
+     */
+    public function oldchange()
+    {
+        return $this->morphOne(Change::class, 'old');
+    }
+
+
+    /**
+     * Get the change
+     */
+    public function newchange()
+    {
+        return $this->morphOne(Change::class, 'new');
+    }
      
 
 	/**
@@ -176,7 +196,7 @@ class Sensitivity extends Model
         foreach ($assertions->collection as $assertion)
         {
             //dd($assertion);
-            $current = Sensitivity::curie($assertion->curie)->orderBy('version', 'desc')->first();
+            $current = Sensitivity::curie($assertion->dosage_curation->curie)->orderBy('version', 'desc')->first();
 
             if ($current === null)          // new assertion
             {
@@ -220,6 +240,21 @@ class Sensitivity extends Model
 
                 $new->save();
 
+                $gene = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                Change::create([
+                                'type' => Change::TYPE_DOSAGE,
+                                'category' => Change::CATEGORY_NONE,
+                                'element_id' => $gene->id,
+                                'element_type' => 'App\Gene',
+                                'old_id' =>null,
+                                'old_type' => null,
+                                'new_id' => $new->id,
+                                'new_type' => 'App\Sensitivity',
+                                'change_date' => $current->report_date,
+                                'status' => 1
+                    ]);
+
                 continue;
             }
 
@@ -244,7 +279,7 @@ class Sensitivity extends Model
                                 ]);
 
             // for now we need to mess around with the conditions
-            foreach ($assetion->genetic_conditions as $condition)
+            foreach ($assertion->genetic_conditions as $condition)
             {
                 foreach ($condition->gene_dosage_assertions as $dosage)
                 {
@@ -265,6 +300,21 @@ class Sensitivity extends Model
             {
                 //dd($new);
                 $new->save();
+
+                $gene = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                Change::create([
+                                'type' => Change::TYPE_DOSAGE,
+                                'category' => Change::CATEGORY_NONE,
+                                'element_id' => $gene->id,
+                                'element_type' => 'App\Gene',
+                                'old_id' => $current->id,
+                                'old_type' => 'App\Sensitivity',
+                                'new_id' => $new->id,
+                                'new_type' => 'App\Sensitivity',
+                                'change_date' => $current->report_date,
+                                'status' => 1
+                    ]);
             }
         }
         

@@ -1,125 +1,116 @@
 @extends('layouts.app')
 
+
 @section('content-heading')
 
-    @include('dashboard.includes.header', ['active' => 'following'])
+	<div class="row mb-1">
+		@include('dashboard.includes.header', ['active' => 'more'])
+	</div>
 
 @endsection
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-12 mt-3">
-            <div class="row">
-                <div class="col-sm-12">
-                    <p>This section allows you to follow a variety of elements within the ClinGen environmant.
-                        You may also override the notification defaults on a per element basis, or even unfollow an element from this screen .</p>
-                </div>
+
+    <div id="dashboard-logout" class="row justify-content-center">
+
+        <div class="col-md-9 mt-3 pl-0 pr-0 border">
+			<div class="mb-2">
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseReports">
+                    <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseReportsIcon"></i></a>
+                <h4 class="m-0 p-2 text-white" style="background:#3c79b6">Reports</h4>
             </div>
-            <div id="toolbar" class="text-right">
-                <button class="btn btn-primary btn-block action-new-gene">Add New Gene To Follow</button>  
+        
+			@include('dashboard.includes.reports')
+			
+            <div>
+                <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
+					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
+				<a class="float-right mt-2 mr-4 action-edit-settings" data-toggle="tooltip" title="Global Notifications: On">
+					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>	
+				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
-            <div class="row mb-3">  
-                <div class="col-md-12 native-table">
-                    <table class="table" id="table" data-toggle="table"
-                                    data-sort-name="symbol"
-                                    data-sort-order="asc"
-                                    data-locale="en-US"
-                                    data-classes="table table-hover"
-                                    data-toolbar="#toolbar"
-                                    data-toolbar-align="right"
-                                    data-addrbar="false"
-                                    data-sortable="true"
-                                    data-search="true"
-                                    data-header-style="background: white;"
-                                    data-filter-control="false"
-                                    data-filter-control-visible="false"
-                                    data-id-table="advancedTable"
-                                    data-search-align="left"
-                                    data-trim-on-search="false"
-                                    data-show-search-clear-button="true"
-                                    data-buttons="table_buttons"
-                                    data-show-align="left"
-                                    data-show-fullscreen="false"
-                                    data-show-columns="false"
-                                    data-show-columns-toggle-all="false"
-                                    data-search-formatter="false"
-                                    data-pagination="true"
-                                    data-id-field="id"
-                                    data-page-list="[10, 25, 50, 100, 250, all]"
-                                    data-page-size="25"
-                                    data-show-footer="true"
-                                    data-side-pagination="client"
-                                    data-pagination-v-align="bottom"
-                                    data-show-extended-pagination="false"
-                                    data-response-handler="responseHandler"
-                                    data-header-style="headerStyle"
-                                    data-show-filter-control-switch="false"
-                                    >
-                    <thead>
-                        <tr>
-                            <th class="col-sm-2" data-field="symbol" data-sortable="true">Name</th>
-                            <th class="col-sm-2" data-sortable="true">ID</th>
-                            <th class="col-sm-3">Curation Status</th>
-                            <th class="col-sm-2" data-sortable="true">Last Updated</th>
-                            <th class="col-sm-3">Notify</th>
-                            <th class="col-sm-3" data-align="center">Unfollow</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($genes as $gene)
-                        <tr>
-                            <td scope="row" class="table-symbol">{{ $gene->name }}</td>
-                            <td>{{ $gene->hgnc_id }}</td>
-                            <td>
-                                <img src="/images/clinicalValidity-{{ $gene->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
-                                <img src="/images/dosageSensitivity-{{ $gene->hasActivity('dosage') ? 'on' : 'off' }}.png" width="22" height="22">
-                                <img src="/images/clinicalActionability-{{ $gene->hasActivity('actionability') ? 'on' : 'off' }}.png" width="22" height="22">
-                                <img src="/images/variantPathogenicity-{{ $gene->hasActivity('varpath') ? 'on' : 'off' }}.png" width="22" height="22">
-                                <img src="/images/Pharmacogenomics-{{ $gene->hasActivity('pharma') ? 'on' : 'off' }}.png" width="22" height="22">
-                            </td>
-                            <td>{{ $gene->displayDate($gene->date_last_curated) }}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button" class="text-left btn btn-block btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="selection">Daily</span><span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a data-value="Daily">Daily</a></li>
-                                        <li><a data-value="Weekly">Weekly</a></li>
-                                        <li><a data-value="Monthly">Monthly</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a data-value="Default">Default</a></li>
-                                        <li role="separator" class="divider"></li>
-                                        <li><a data-value="Pause">Pause</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="action-follow-gene"><i class="fas fa-star" style="color:green"></i></span>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    </table>
-                </div>
-            </div>
+            
+            @include('dashboard.includes.follow')
+            
         </div>
+        <div class="col-md-3 mt-3">
+
+            @include('dashboard.includes.profile')
+
+        </div>
+    </div>
+</div>
+@endsection
+
+@section('heading')
+<div class="content ">
+    <div class="section-heading-content">
     </div>
 </div>
 @endsection
 
 @section('modals')
 
-    @include('modals.unfollowgene', ['gene' => ''])
+	@include('modals.unfollowgene', ['gene' => ''])
+	@include('modals.followgene', ['gene' => ''])
+    @include('modals.profile')
     @include('modals.search')
+	@include('modals.settings')
+	@include('modals.report')
 
 @endsection
 
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-    <link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="/css/gijgo.min.css" rel="stylesheet">
+    <style>
+        .profile-background
+        {
+          position: relative;
+          top: 0;
+          left: 0;
+        }
+        .avatar
+        {
+          position: absolute;
+          top: 0px;
+          left: 12px;
+        }
+        .avatar-name
+        {
+          position: absolute;
+          top: 148px;
+          left: 30px;
+          font-size: 18px;
+        }
+        .avatar-title
+        {
+          position: absolute;
+          top: 172px;
+          left: 30px;
+          font-size: 14px;
+        }
+		.size {
+			height: 100px;
+			width: 100px;
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			}
+
+		.caption {
+			font-size: 14px;
+			color: black; 
+			text-align: center;
+			width: 200px;
+		}
+		.folder-effects:hover .size {
+			opacity: 0.7;
+		}
+    </style>
     
 @endsection
 
@@ -140,29 +131,217 @@
 
 <script src="/js/sweetalert.min.js"></script>
 
+<script src="/js/gijgo.min.js"></script>
+
 <script src="/js/bootstrap-table-filter-control.js"></script>
 
 <script src="/js/genetable.js"></script>
+<script src="/js/edit.js"></script>
 
 <script>
 	
     $(function() {
-        var $table = $('#table')
+		var $table = $('#follow-table');
+		var $reporttable = $('#table');
     
-        $('.action-logout').on('click', function() {
+    
+        /*$('.action-logout').on('click', function() {
 
             $('#frm-logout').submit();
 
+		});*/
+
+        $('#startdate').datepicker({
+            uiLibrary: 'bootstrap'
         });
+
+		$('#stopdate').datepicker({
+            uiLibrary: 'bootstrap'
+        });
+		
+		/* 
+		** If a user logs out on this page, we want them to see the dead view
+		*/
+		$( "#dashboard-logout" ).on( "login", function( event, param1, param2 ) {
+  
+  			window.location.reload();
+  
+		});
 
         $('.action-new-gene').on('click', function() {
 
             $('#modalSearchGene').modal('show');
 
+		});
+
+		$('.action-new-report').on('click', function() {
+
+			$('#modalReport').modal('show');
+
+		});
+		
+
+		$('.action-remove-report').on('click', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			var row = $(this).closest('tr').attr('data-index');
+
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			swal({
+                title: "Are you sure?",
+                text: "You will not be able to restore.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+                })
+                .then((yes) => {
+                    if (yes) {
+
+						var url = "/api/reports/remove";
+			
+						//submits to the form's action URL
+						$.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
+						{
+							//alert("OK");
+							$reporttable.bootstrapTable('remove', {
+                            	field: '$index',
+                            	values: row
+                        	});
+						}).fail(function(response)
+						{
+							alert("Error following gene");
+						});
+                    } 
+            });
+
+		});
+
+
+		$('.action-toggle-notifications').on('click', function() {
+
+			var tog;
+
+			if ($(this).hasClass('fa-toggle-off'))
+			{
+				$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+				$('.action-toggle-notifications-text').html('On');
+				$('.action-light-notification').addClass('fa-lightbulb');
+				tog = 1;
+			}
+			else
+			{
+				$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+				$('.action-toggle-notifications-text').html('Off');
+				$('.action-light-notification').removeClass('fa-lightbulb')
+				tog = 0;
+			}
+
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/api/home/toggle";
+			
+			//submits to the form's action URL
+			$.post(url, { value: tog, _token: "{{ csrf_token() }}" }, function(response)
+			{
+                //alert("OK");
+			}).fail(function(response)
+			{
+				alert("Error following gene");
+			});
+
+		});
+
+
+        $('.action-edit-profile').on('click', function() {
+
+            $('#modalProfile').modal('show');
+
         });
 
-        $table.on('click', '.action-follow-gene', function() {
 
+		$('.action-select-folder').on('click', function() {
+
+			// what folder did they click on?
+			var type = $(this).find('.caption').attr('data-type');
+			// deselect previous
+			$('.action-select-folder').removeClass('border');
+			// show current selection
+			$(this).addClass('border');
+			//reload the table
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/api/home/reports/" + type;
+			
+			//submits to the form's action URL
+			$.get(url, function(response)
+			{
+                //console.log(response.data);
+				$('#table').bootstrapTable('load', response.data);
+				$('#table').bootstrapTable("resetSearch","");
+			}).fail(function(response)
+			{
+				alert("Error reloading table");
+			});
+			//var data = [{ title: "New Title", type: "Notification", display_created: "today", display_last: "yester_day", remove: 1, ident: "12345"}]
+			
+			//$('#table').bootstrapTable({ data: data });
+			//$('#table').bootstrapTable('load', data);
+			//clear the search
+		});
+
+
+        $('.action-edit-settings').on('click', function() {
+
+            $('#modalSettings').modal('show');
+
+        });
+
+		$('#collapseFollow').on('shown.bs.collapse', function () {
+			$('#collapseFollowIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+		});
+
+		$('#collapseFollow').on('hidden.bs.collapse', function () {
+			$('#collapseFollowIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+		});
+
+		$('#collapseReports').on('shown.bs.collapse', function () {
+			$('#collapseReportsIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+		});
+
+		$('#collapseReports').on('hidden.bs.collapse', function () {
+			$('#collapseReportsIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+		});
+
+        $table.on('click', '.action-follow-gene', function(element) {
             swal({
                 title: "Are you sure?",
                 text: "You can alway follow again.",
@@ -172,7 +351,7 @@
                 })
                 .then((yes) => {
                     if (yes) {
-                        var hgnc  = $(this).closest('tr').find('td:nth-child(2)').text();
+                        var hgnc  = $(this).closest('tr').data('hgnc');
                         $('#unfollow-gene-field').val(hgnc);
                         $('#unfollow_form').submit();
                         var row = $(this).closest('tr').find('td:first-child').html();
@@ -191,7 +370,14 @@
             if (typeof parent != 'undefined')
             {
                 var btngrp = $('[data-attachedUl=' + parent + ']');
+                var original = btngrp.find('.selection').text();
                 btngrp.find('.selection').text($(this).text());
+
+                var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
+
+                // save the change
+                server_update(gene, original, $(this).text());
+
             }
             else
             {
@@ -204,6 +390,31 @@
             $('.dropdown-menu[data-parent]').hide();
 
         });
+
+        function server_update(gene, oldtype, newtype)
+        {
+            $.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/api/home/notify";
+			
+			//submits to the form's action URL
+			$.post(url, { gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
+			{
+                //alert("OK");
+			}).fail(function(response)
+			{
+				alert("Error following gene");
+			});
+        }
 
         $( '#unfollow_form' ).validate( {
 		submitHandler: function(form) {
@@ -232,7 +443,7 @@
 					swal("Done!", response['message'], "success")
 						.then((answer2) => {
 							if (answer2){*/
-								$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
 							/*}
 					});
 				}*/
@@ -278,6 +489,228 @@
 		}
 	});
 
+
+	$( '#follow_form' ).validate( {
+		submitHandler: function(form) {
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/api/genes/follow";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				window.location.reload(true);
+				//alert(JSON.stringify(response));
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+
+    $( '#profile-form' ).validate( {
+		submitHandler: function(form) {
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/dashboard/profile";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//alert(JSON.stringify(response));
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalProfile').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+    $( '#settings-form' ).validate( {
+		submitHandler: function(form) {
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/dashboard/preferences";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//alert(JSON.stringify(response));
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalSettings').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+	// fix for bootstrap 3 limitation of dropdowns within a constrained area
     $(document).on('click', '.native-table [data-toggle="dropdown"]', function () {
         $buttonGroup = $(this).parent();
         if (!$buttonGroup.attr('data-attachedUl')) {
@@ -322,21 +755,25 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 
-        $("button[name='filterControlSwitch']").attr('title', 'Column Search');
-	    $("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+        //$("button[name='filterControlSwitch']").attr('title', 'Column Search');
+	    //$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
     });
     </script>
 
     <script src="/js/typeahead.js"></script>
     <script>
-      $( ".typeQueryGene" ).click(function() {
+		// suggest query stuff
+     /* $( ".typeQueryGene" ).click(function() {
+		  alert("a");
         $("#navSearchBar").attr("action", "{{ route('genes.find') }}");
         $( ".inputQueryGene" ).show();
         $( ".inputQueryGene .queryGene" ).show();
         $( ".typeQueryLabel").text("Gene");
-      });
+      });*/
 
-      var term = new Bloodhound({
+	 // $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+
+      var followterm = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
@@ -345,7 +782,7 @@
         }
       });
 
-      var termGene = new Bloodhound({
+      var followtermGene = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
@@ -354,11 +791,11 @@
         }
       });
 
-      $('.queryGene').typeahead(null,
+      $('.queryFindGene').typeahead(null,
       {
-        name: 'termGene',
+        name: 'followtermGene',
         display: 'label',
-        source: termGene,
+        source: followtermGene,
 
         limit: 20,
         minLength: 3,
@@ -366,8 +803,20 @@
         hint: false,
         autoselect:true,
       }).bind('typeahead:selected',function(evt,item){
-        // here is where we can set the follow and refresh the screen.
+		// here is where we can set the follow and refresh the screen.
+		console.log(item.hgncid);
+
+		$('#follow-gene-field').val(item.hgncid);
+		$('#follow_form').submit();
+		
       });
+
+	  function formatSymbol(value, row, index)
+	  {
+		  //console.log(row._data.hgnc);
+
+		  return '<a href="/kb/genes/' + row._data.hgnc + '">' + value + '</a></td>';
+	  }
 
 </script>
 

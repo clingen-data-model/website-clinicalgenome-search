@@ -24,6 +24,8 @@ use Illuminate\Http\Request;
 Route::post('login', 'Api\AuthController@login');
 Route::post('logout', 'Api\AuthController@logout');
 Route::post('register', 'Api\AuthController@register');
+Route::post('profile', 'Api\SettingsController@update');
+Route::post('reports/remove', 'Api\SettingsController@remove');
 
 /*
 ** Provide an api interface between processwire and various databases
@@ -63,4 +65,11 @@ Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('co
 
 // region search
 Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');
+
+// dashboard
+Route::post('/home/notify', 'Api\HomeController@notify')->name('home.notify');
+Route::get('/home/rpex/{type}', 'Api\HomeController@report_expand')->name('home.report');
+Route::get('/home/reports/{type}', 'Api\HomeController@reports')->name('home.reports');
+Route::post('/home/toggle', 'Api\HomeController@toggle')->name('home.toggle');
+
 

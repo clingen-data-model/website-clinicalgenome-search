@@ -107,5 +107,11 @@ class LoginController extends Controller
             ->withErrors([
                 $this->username() => Lang::get('auth.failed'),
             ]);
-	}
+    }
+    
+    protected function loggedOut(Request $request) {
+
+        return redirect()->back();
+
+    }
 }

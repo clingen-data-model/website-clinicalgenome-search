@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
 
+use Auth;
+
 use App\GeneLib;
 use App\Metric;
 
 class ReportController extends Controller
 {
+    private $user = null;
+
     /**
      * Create a new controller instance.
      *
@@ -17,8 +21,13 @@ class ReportController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
-    }
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+	}
+	
 
     /**
      * Show the application dashboard.
@@ -43,7 +52,8 @@ class ReportController extends Controller
 
 		$metrics = Metric::latest()->first();
 
-		return view('reports.stats.index', compact('display_tabs', 'metrics'));
+		return view('reports.stats.index', compact('display_tabs', 'metrics'))
+						->with('user', $this->user);
 	}
 
 

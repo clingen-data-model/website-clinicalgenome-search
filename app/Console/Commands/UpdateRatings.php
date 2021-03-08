@@ -41,7 +41,7 @@ class UpdateRatings extends Command
      */
     public function handle()
     {
-        echo "Checking for recent updates ...\n";
+        echo "Updating TS/HS Score Changes from DCI ...";
 
         $updates = Jira::ratingsList(['page' =>  0,
                                     'pagesize' =>  "null",
@@ -57,7 +57,7 @@ class UpdateRatings extends Command
         foreach($updates as $update)
         {
             // process the line read.
-            echo "Processing " . $update->key . "\n";
+            //echo "Processing " . $update->key . "\n";
 
             switch ($update->type)
             {
@@ -75,7 +75,7 @@ class UpdateRatings extends Command
                     $gene->update(['history' => $history]);
                     break;
                 case 'ISCA Region Curation':
-                    echo "Looking up region  " . $update->key . "\n";
+                    //echo "Looking up region  " . $update->key . "\n";
                     $region = Region::issue($update->key)->first();
                     if ($region === null)
                         continue 2;
@@ -86,10 +86,12 @@ class UpdateRatings extends Command
                         $history = $region->history;
                         $history[] = $update->attributesToArray();
                     }
-                    echo "Updating region history " . "\n";
+                   // echo "Updating region history " . "\n";
                     $region->update(['history' => $history]);
                     break;
             }
         }
+
+        echo "DONE\n";
     }
 }

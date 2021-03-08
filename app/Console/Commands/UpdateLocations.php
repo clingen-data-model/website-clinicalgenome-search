@@ -39,6 +39,8 @@ class UpdateLocations extends Command
      */
     public function handle()
     {
+        // ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_top_level_2017-01-13.gff3.gz
+        // https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
         echo "Importing ncbi location information ...\n";
 		
 		$handle = fopen(base_path() . '/data/hg19/interim_GRCh37.p13_top_level_2017-01-13.gff3', "r");
@@ -80,7 +82,7 @@ class UpdateLocations extends Command
                 $split = explode(',', $split);
                 $hgncid = $split[0];
 
-                echo "Updating 37 " . $hgncid . "\n";
+                //echo "Updating 37 " . $hgncid . "\n";
                 
                 $record = Gene::hgnc($hgncid)->first();
 
@@ -94,9 +96,11 @@ class UpdateLocations extends Command
         }
         else
         {
-            echo "Cannot access IDX file\n";
+            echo "(E001) Cannot access region37 file\n";
+            exit;
         }
 
+        // https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz
         $handle = fopen(base_path() . '/data/hg38/GCF_000001405.39_GRCh38.p13_genomic.gff', "r");
         if ($handle)
         {
@@ -136,7 +140,7 @@ class UpdateLocations extends Command
                 $split = explode(',', $split);
                 $hgncid = $split[0];
 
-                echo "Updating 38 " . $hgncid . "\n";
+                //echo "Updating 38 " . $hgncid . "\n";
                 
                 $record = Gene::hgnc($hgncid)->first();
 
@@ -150,7 +154,11 @@ class UpdateLocations extends Command
         }
         else
         {
-            echo "Cannot access IDX file\n";
+            echo "(E001) Cannot access region38 file\n";
+            exit;
         }
+
+        echo "Ncbi location information update complete\n";
+
     }
 }

@@ -40,17 +40,15 @@ class UpdateDosages extends Command
      */
     public function handle()
     {
-        echo "Accessing Jira ...\n";
+        echo "Updating Dosage Region data from DCI ...";
 
         $regions = Jira::regionLoad([]);
 
         if ($regions === null || $regions->collection->isEmpty())
         {
-            echo "ERROR:  Region Load returned an empty set\n";
+            echo "\n(E001):  Region Load returned an empty set\n";
             exit;
         }
-
-        echo "Updating Dosages Table\n";
 
         foreach ($regions->collection as $region)
         {
@@ -60,10 +58,10 @@ class UpdateDosages extends Command
 
             if (empty($status))
             {
-                echo "ERROR:  Issue {$region->issue} not updated \n";
+                echo "\n(E002):  Issue {$region->issue} not updated \n";
             }
         }
         
-        echo "Update Complete\n";
+        echo "DONE\n";
     }
 }

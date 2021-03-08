@@ -92,6 +92,12 @@
   var showadvanced = true;
   var lightstyle = true;
 
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+    }
+  }
+
   function responseHandler(res) {
     $('.countGenes').html(res.total);
     $('.countValidity').html(res.nvalid);
@@ -124,6 +130,32 @@
 
       $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
       $('.action-show-acmg59-text').html('Off');
+      $('.action-af-badge').html('None').removeClass('bg-primary');
+
+    }
+  });
+
+
+  /*
+  **  Filter control for acmg59 mode
+  */
+	$('.action-show-follow').on('click', function() {
+
+    if ($(this).hasClass('fa-toggle-off'))
+    {
+      $table.bootstrapTable('filterBy', {followed: true});
+
+      $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+      $('.action-show-follow-text').html('On');
+      $('.action-af-badge').html('Followed').addClass('bg-primary');
+
+    }
+    else
+    {
+      $table.bootstrapTable('filterBy', {followed: [false, true]});
+
+      $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+      $('.action-show-follow-text').html('Off');
       $('.action-af-badge').html('None').removeClass('bg-primary');
 
     }

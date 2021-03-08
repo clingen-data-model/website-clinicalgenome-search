@@ -8,7 +8,7 @@
 				@csrf
 				<div class="modal-body">
 					<p>Click on submit to follow this gene.</p>
-					<input type="hidden" name="gene" value="{{ $gene }}">
+					<input type="hidden" id="follow-gene-field" name="gene" value="{{ $gene }}">
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary mr-auto">Submit

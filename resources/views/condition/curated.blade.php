@@ -92,6 +92,12 @@
   var showadvanced = true;
   var lightstyle = true;
 
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+    }
+  }
+
   function responseHandler(res) {
     $('.countDiseases').html(res.total);
     $('.countValidity').html(res.nvalid);

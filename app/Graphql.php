@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Support\Facades\Log;
 
+use Auth;
+
 use App\Traits\Query;
 
 use App\Metric;
@@ -70,11 +72,20 @@ class Graphql
 							curation_activities
 							dosage_curation {
 								triplosensitivity_assertion {
+									disease {
+										label
+										curie
+									}
 									dosage_classification {
 										ordinal
 									  }
 								}
 								haploinsufficiency_assertion {
+									disease {
+										label
+										description
+										curie
+									}
 									dosage_classification {
 										ordinal
 									  }
@@ -87,6 +98,18 @@ class Graphql
 		else
 		{
 			/*
+			dosage_curation {
+								triplosensitivity_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+							}
 			$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
 			// add each gene to the collection
 
@@ -129,6 +152,17 @@ class Graphql
 		// get the list of acmg59 genes
 		$acmg59s = Gene::select('hgnc_id')->where('acmg59', 1)->get()->pluck('hgnc_id')->toArray();
 
+		// if logged in, get all followed genes
+		if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+			$followed = $user->genes->pluck('hgnc_id')->toArray();
+		}
+		else
+		{
+			$followed = [];
+		}
+
 		// get list of pharma and variant pathogenicity genes
 		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
 
@@ -139,6 +173,7 @@ class Graphql
 		foreach($response->genes->gene_list as $record)
 		{
 			$node = new Nodal((array) $record);
+			$node->followed = in_array($node->hgnc_id, $followed);
 			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
 			if ($extra !== null)
 			{
@@ -815,11 +850,21 @@ class Graphql
 							dosage_curation {
 								report_date
 								triplosensitivity_assertion {
+									report_date
+									disease {
+										label
+										curie
+									}
 									dosage_classification {
 										ordinal
 									}
 								}
 								haploinsufficiency_assertion {
+									report_date
+									disease {
+										label
+										curie
+									}
 									dosage_classification {
 										ordinal
 									}
@@ -1569,7 +1614,7 @@ class Graphql
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
 
-			Metric::store(Metric::KEY_TOTAL_CURATED_DISEASE, $response->diseases->count);
+			//Metric::store(Metric::KEY_TOTAL_CURATED_DISEASE, $response->diseases->count);
 			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
 		} else {
 			// right now we only use these counts on the curated page.  Probably should get triggered
@@ -2345,7 +2390,8 @@ class Graphql
 		{
 			$ctag = (empty($record->curations) ? '' : '        CURATED');
 			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
-							. $ctag
+							. $ctag,
+						'hgncid' => $record->alternative_curie
 						];
 		}
 

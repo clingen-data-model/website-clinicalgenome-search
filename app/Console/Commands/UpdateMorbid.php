@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use Setting;
+
 use App\Gene;
 
 class UpdateMorbid extends Command
@@ -39,39 +41,54 @@ class UpdateMorbid extends Command
      */
     public function handle()
     {
-        echo "Importing omim morbid flags ...\n";
+        echo "Updating OMIM Morbid Flags from OMIM ...";
+
+        $key = Setting::get('omim', false);
+
+        if (!$key)
+        {
+            echo "\n(E002) Error retreiving Omim key\n";
+            exit;
+        }
         
         // https://data.omim.org/downloads/gnEYXJE_RtCzjSCNEOWFHg/morbidmap.txt
-		$handle = fopen(base_path() . '/data/morbidmap.txt', "r");
-        if ($handle)
+
+        try {
+
+            $results = file_get_contents("https://data.omim.org/downloads/" . $key . "/morbidmap.txt");
+
+		} catch (\Exception $e) {
+		
+			echo "\n(E001) Error retreiving Omim Morbid data\n";
+			exit;
+		}
+	
+        $line = strtok($results, "\n");
+        
+        while ($line !== false)
         {
-            while (($line = fgets($handle)) !== false)
-            {
-                // process the line read.
-                echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
-                if (strpos($value[0], '#') === 0)
-                    continue;
-
-                $genes = $value[1];
-
-                foreach (explode(',', $genes) as $gene)
+                if (strpos($value[0], '#') !== 0)
                 {
-                    $record = Gene::name($gene)->first();
 
-                    if ($record !== null)
-                        $record->update(['morbid' => 1]);
+                    $genes = $value[1];
 
+                    foreach (explode(',', $genes) as $gene)
+                    {
+                        $record = Gene::name($gene)->first();
+
+                        if ($record !== null)
+                            $record->update(['morbid' => 1]);
+
+                    }
                 }
-            }
 
-            fclose($handle);
+            $line = strtok("\n");
         }
-        else
-        {
-            echo "Cannot access IDX file\n";
-        }
+
+        echo "DONE\n";
+
     }
 }

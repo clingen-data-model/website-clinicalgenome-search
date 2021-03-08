@@ -10,7 +10,8 @@ use App\Http\Resources\Acmg59 as Acmg59Resource;
 use App\Http\Resources\Search as SearchResource;
 
 use App\GeneLib;
-
+use App\Gene;
+use App\Omim;
 class DosageController extends Controller
 {
     /**
@@ -155,8 +156,50 @@ class DosageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function expand(ApiRequest $request)
+    public function expand(ApiRequest $request, $id = null)
     {
-        return view('gene-dosage.expand');
+        // Check if identifier is a region...
+        if (strpos($id, "ISCA-") === 0)
+        {
+            $region = GeneLib::dosageRegionDetail([ 'gene' => $id,
+                                                    'curations' => true,
+                                                    'action_scores' => true,
+                                                    'validity' => true,
+                                                    'dosage' => true
+                                                    ]);
+            if ($region === null)
+            {}
+//dd($region->label);
+            // Jira has a lot of disease mapping options.  Deal with them.
+            if (empty($region->loss_phenotype_name))   // Use name if especified
+            {
+                if (isset($region->loss_pheno_omim[0]))
+                {
+                    //$disease = Omim::omimid($region->loss_pheno_omim[0])->first();
+                    $region->loss_phenotype_name = $region->loss_pheno_omim[0]['titles'];
+                    $region->loss_omim = $region->loss_pheno_omim[0]['id'];
+                }
+            }
+
+            if (empty($region->gain_phenotype_name))   // Use name if especified
+            {
+                if (isset($region->gain_pheno_omim[0]))
+                {
+                    $region->gain_phenotype_name = $region->gain_pheno_omim[0]['titles'];
+                    $region->gain_omim = $region->gain_pheno_omim[0]['id'];
+                }
+            }
+
+            return view('gene-dosage.region_expand')
+                    ->with('region', $region);
+        }
+
+        
+
+        // ...otherwise assume gene
+        $gene = Gene::hgnc($id)->first();
+
+        return view('gene-dosage.expand')
+                    ->with('gene', $gene);
     }
 }

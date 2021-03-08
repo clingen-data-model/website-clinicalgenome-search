@@ -32,6 +32,9 @@ Route::group(['prefix' => '/dashboard'], function () {
 	Route::post('/profile', 'HomeController@update_profile')->name('dashboard-update-profile');
 	Route::get('/preferences', 'HomeController@preferences')->name('dashboard-preferences');
 	Route::post('/preferences', 'HomeController@update')->name('dashboard-update');
+	Route::get('/reports', 'HomeController@reports')->name('dashboard-reports');
+	Route::post('/reports', 'HomeController@create_reports')->name('dashboard-new-reports');
+	Route::get('/reports/{id}', 'HomeController@show_report')->name('dashboard-show-report');
 });
 
 /*

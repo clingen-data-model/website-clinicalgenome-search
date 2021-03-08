@@ -7,9 +7,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
+use App\Traits\Display;
+
 class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
+    use Display;
 
     /**
      * The attributes that are mass assignable.
@@ -60,6 +63,16 @@ class User extends Authenticatable
     }
 
 
+    /*
+     * The reports owned by this user
+     */
+    public function titles()
+    {
+       return $this->hasMany('App\Title');
+    }
+
+
+
     /**
      * Adjust full name when first name is changed
      *
@@ -69,7 +82,10 @@ class User extends Authenticatable
     public function setFirstNameAttribute($value)
     {
         $this->attributes['firstname'] = $value;
-        $this->attributes['name'] = $this->attributes['firstname'] . " " . $this->attributes['lastname'];
+        $this->attributes['name'] = $this->attributes['firstname'];
+        
+        if (isset($this->attributes['lastname']))
+            $this->attributes['name'] .= " " . $this->attributes['lastname'];
     }
 
 

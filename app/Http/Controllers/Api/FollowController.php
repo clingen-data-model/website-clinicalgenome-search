@@ -11,6 +11,7 @@ use Auth;
 
 use App\User;
 use App\Gene;
+use App\Notification;
 
 class FollowController extends Controller
 {
@@ -66,6 +67,21 @@ class FollowController extends Controller
                                     501);
 
         $user->genes()->sync([$gene->id], false);
+
+        // do some self repairing in the event notifications are lost
+        $notify = $user->notification;
+
+        if ($notify === null)
+        {
+            $notify = new Notification();
+            $notify->addDefault($user->genes);
+            $user->notification()->save($notify);
+        }
+        else
+        {
+            $notify->addDefault($gene);
+            $notify->save();
+        }
 
         return response()->json(['success' => 'true',
 								 'status_code' => 200,

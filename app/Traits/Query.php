@@ -30,7 +30,7 @@ trait Query
 	{
 		try {
 
-			$begin = Carbon::now();
+			$begin = Carbon::now();			
 			$response = Genegraph::fetch($query);
 			$end = Carbon::now();
 			$record = new Minute([

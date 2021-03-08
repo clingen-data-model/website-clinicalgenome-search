@@ -39,7 +39,7 @@ class UpdateAcmg59 extends Command
      */
     public function handle()
     {
-        echo "Reading idx file ...\n";
+        echo "Reading ACMG curation file ...\n";
             
         $handle = fopen(base_path() . '/data/acmg56_curation.ini', "r");
         if ($handle)
@@ -47,7 +47,7 @@ class UpdateAcmg59 extends Command
             while (($line = fgets($handle)) !== false)
             {
                 // process the line read.
-                echo "Processing " . $line . "\n";
+               // echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
@@ -87,7 +87,11 @@ class UpdateAcmg59 extends Command
         }
         else
         {
-            echo "Cannot access ACMG ini file\n";
+            echo "(E001) Cannot access ACMG curation file\n";
+            exit;
         } 
+
+        echo "ACMG curation update complete\n";
+
     }
 }

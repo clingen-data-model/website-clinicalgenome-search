@@ -32,13 +32,25 @@
 						</td>
 
 						<td class="text-center">
-								<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->assertion->source }}">
-								{{ $record->displayActionType($actionability->assertion->source) }}{{ App\Genelib::actionabilityAssertionString($actionability->assertion->classification->label) }}
-								</a>
+								@if ($actionability->adult_assertion)
+									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->adult_assertion->source }}">
+									{{ $record->displayActionType($actionability->adult_assertion->source) }}{{ App\Genelib::actionabilityAssertionString($actionability->adult_assertion->classification->label) }}
+									</a>
+								@endif
+								@if ($actionability->pediatric_assertion)
+									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->pediatric_assertion->source }}">
+										{{ $record->displayActionType($actionability->pediatric_assertion->source) }}{{ App\Genelib::actionabilityAssertionString($actionability->pediatric_assertion->classification->label) }}
+									</a>
+								@endif
 						</td>
 
 						<td class=" text-center">
-							<a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->assertion->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->assertion->report_date) }}</a>
+							@if ($actionability->adult_assertion)
+								<a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->adult_assertion->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->adult_assertion->report_date) }}</a>
+							@endif
+							@if ($actionability->pediatric_assertion)
+								<a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->pediatric_assertion->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->pediatric_assertion->report_date) }}</a>
+							@endif
 						</td>
 
 					</tr>

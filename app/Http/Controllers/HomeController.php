@@ -10,18 +10,27 @@ use Auth;
 use Carbon\Carbon;
 
 use App\Gene;
+use App\Title;
+use App\Report;
 
 class HomeController extends Controller
 {
+    private $user = null;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
+    
 
     /**
      * Show the application dashboard.
@@ -32,7 +41,7 @@ class HomeController extends Controller
     {
 
         $display_tabs = collect([
-            'active' => "home",
+            'active' => "more",
             'title' => "Dashboard"
         ]);
 
@@ -44,8 +53,22 @@ class HomeController extends Controller
 
             $genes = $user->genes;
 
+            $notification = $user->notification;
+
+            $reports = $user->titles;
+
+        }
+        else{
+            return view('dashboard.logout', compact('display_tabs'));
         }
 
+//dd($notification);
+    $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
+    $user_reports = $reports->where('type', Title::TYPE_USER)->count();
+    $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
+
+    // default to user reports
+    $reports = $reports->where('type', Title::TYPE_USER);
 
         $total = $genes->count();
         $curations = $genes->sum(function ($gene) {
@@ -58,8 +81,9 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
-        return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));
+
+        return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
+                    'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
     }
 
 
@@ -101,6 +125,151 @@ class HomeController extends Controller
                      });
         
         return view('dashboard-preferences', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'notification'));
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function reports()
+    {
+
+        $display_tabs = collect([
+            'active' => "home",
+            'title' => "Dashboard"
+        ]);
+
+        $genes = collect();
+
+        if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+
+            $genes = $user->genes;
+
+            $reports = $user->titles;
+
+        }
+
+        $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
+        $user_reports = $reports->where('type', Title::TYPE_USER)->count();
+        $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
+
+        $total = $genes->count();
+        $curations = $genes->sum(function ($gene) {
+                        return (int) in_array(true, $gene->activity);
+                    });
+        $recent = $genes->sum(function ($gene) {
+                        if ($gene->date_last_curated === null)
+                            return 0;
+
+                        $last = new Carbon($gene->date_last_curated);
+                        return (int)(Carbon::now()->diffInDays($last) <= 90);
+                     });
+        
+        return view('dashboard.reports', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'reports',
+                            'system_reports', 'user_reports', 'shared_reports'));
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function show_report(Request $request, $id = null)
+    {
+
+        $display_tabs = collect([
+            'active' => "home",
+            'title' => "Dashboard"
+        ]);
+
+        $records = new Collection;
+        $params = [];
+
+        if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+
+            $genes = $user->genes;
+
+            $title = $user->titles->where('ident', $id)->first();
+            
+            if ($title !== null)
+            {
+                foreach($title->reports as $report)
+                {
+                    $changes = $report->run();
+
+                    if ($changes->isNotEmpty())
+                        foreach($changes as $change)
+                        {
+                            $records->push($change);
+                        }
+
+                    // it is eaaier to catch the parameters here than in the view
+                    $params[] = ['start_date' => $report->start_date, 'stop_date' => $report->stop_date,
+                                'genes' => $report->filters['gene_label']];
+                }
+
+                // update last run date
+                $title->update(['last_run_date' => Carbon::now()]);
+
+            }
+            
+
+        }
+
+        $reports = $records;
+
+        $total = $genes->count();
+        $curations = $genes->sum(function ($gene) {
+                        return (int) in_array(true, $gene->activity);
+                    });
+        $recent = $genes->sum(function ($gene) {
+                        if ($gene->date_last_curated === null)
+                            return 0;
+
+                        $last = new Carbon($gene->date_last_curated);
+                        return (int)(Carbon::now()->diffInDays($last) <= 90);
+                     });
+
+        return view('dashboard.run', compact('display_tabs', 'genes', 'total', 'curations',
+                        'recent', 'user', 'reports', 'title', 'params'));
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function create_reports(Request $request)
+    {
+
+        $input = $request->only(['title', 'description', 'startdate', 'stopdate',
+                                'genes']);
+
+        if (!Auth::guard('api')->check())
+        {
+            die("error");
+        }
+
+        $user = Auth::guard('api')->user();
+
+        $title = new Title(['title' => $input['title'], 'description' => $input['description'],
+                            'type' => Title::TYPE_USER, 'status' => 1]);
+
+        $report = new Report(['start_date' => Carbon::parse($input['startdate']), 'stop_date' => Carbon::parse($input['stopdate'])->setTime(23, 59, 59),
+                                'type' => Title::TYPE_USER, 'status' => 1, 'user_id' => $user->id]);
+        $report->filters = ['gene_label' => explode(',', $input['genes'])];
+        $user->titles()->save($title);
+        $title->reports()->save($report);
+            
+        return redirect('/dashboard');
     }
 
 
@@ -185,10 +354,14 @@ class HomeController extends Controller
 
         }
 
+        // save the global since it is toggles elsewhere
+        $global = $notification->frequency['global'];
+
         //update the notifications
         $notification->primary = ['email' => $input['primary_email']];
         $notification->secondary = ['email' => $input['secondary_email']];
-        $notification->frequency = ['first' => $input['first'], 'frequency' => $input['frequency'], 'summary' => $input['summary']];
+        $notification->frequency = ['first' => $input['first'], 'frequency' => $input['frequency'],
+                                    'summary' => $input['summary'], 'global' => $global];
 
         $notification->save();
 
@@ -231,19 +404,24 @@ class HomeController extends Controller
             $user = Auth::guard('api')->user();
 
             // some of these belong in preferences
-            $preferences = $user->preferences;
-            $preferences['display_list'] = $input["display_list"];
-            $user->preferences = $preferences;
+            //$preferences = $user->preferences;
+            //$preferences['display_list'] = $input["display_list"];
+            //$user->preferences = $preferences;
 
             $user->update($input);
 
-            $genes = $user->genes;
+            //$genes = $user->genes;
 
         }
 
+        return response()->json(['success' => 'truue',
+                                'status_code' => 200,
+                                'message' => "Request completed"],
+                                200);
+
         //update the notifications
 
-        $total = $genes->count();
+        /*$total = $genes->count();
         $curations = $genes->sum(function ($gene) {
                         return (int) in_array(true, $gene->activity);
                     });
@@ -255,7 +433,7 @@ class HomeController extends Controller
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
         
-        return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));
+        return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));*/
 
     }
 }

@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Support\Facades\Log;
 
+use Auth;
+
 use App\Traits\Query;
 
 use App\Drug;
@@ -43,24 +45,55 @@ class Mysql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		// initialize the collection
-		$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
-
-		// manipulate the return order per Erin
-		if ($search !== null && $search != "")
+		if ($curated === true)
 		{
-			//$match = $collection->where('symbol', $search)->first();
-			$search = strtolower($search);
-			$match = $collection->first(function ($item) use ($search) {
-				return strtolower($item->symbol) == $search;
-			});
+			$collection = collect();
 
-			if ($match !== null)
+			$gene_list = Gene::whereNotNull('activity')->get(['name as label', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity', 'acmg59', 'disease']);
+
+			// if logged in, get all followed genes
+			if (Auth::guard('api')->check())
 			{
-				//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
-				$collection = $collection->filter(function ($item) use ($search) {
-					return strtolower($item->symbol) != $search;
-				})->prepend($match);
+				$user = Auth::guard('api')->user();
+				$followed = $user->genes->pluck('hgnc_id')->toArray();
+			}
+			else
+			{
+				$followed = [];
+			}
+
+			// create node list and add pharma and variant curation indicators to the current gene list
+			foreach($gene_list as $record)
+			{
+				$node = new Nodal($record->attributesToArray());
+				$node->followed = in_array($node->hgnc_id, $followed);
+				$node->acmg59 = ($node->acmg59 != 0);
+				$node->curation_activities = $record->curation;
+				$collection->push($node);
+				//dd($node);
+			}
+		}
+		else
+		{
+			// initialize the collection
+			$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+
+			// manipulate the return order per Erin
+			if ($search !== null && $search != "")
+			{
+				//$match = $collection->where('symbol', $search)->first();
+				$search = strtolower($search);
+				$match = $collection->first(function ($item) use ($search) {
+					return strtolower($item->symbol) == $search;
+				});
+
+				if ($match !== null)
+				{
+					//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
+					$collection = $collection->filter(function ($item) use ($search) {
+						return strtolower($item->symbol) != $search;
+					})->prepend($match);
+				}
 			}
 		}
 
@@ -71,7 +104,8 @@ class Mysql
 			$naction = $collection->where('has_actionability', true)->count();
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
-			$npharma = 0;
+			$npharma = $collection->where('has_pharma', true)->count();
+			$nvariant = $collection->where('has_variant', true)->count();
 		}
 		else
 		{
@@ -81,11 +115,12 @@ class Mysql
 			$nvalid = 0;
 			$ndosage = 0;
 			$npharma = 0;
+			$nvariant = 0;
 		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
-						'npharma' => $npharma, 'ncurated' => $ncurated];
+						'npharma' => $npharma, 'nvariant' => $nvariant, 'ncurated' => $ncurated];
 	}
 
 

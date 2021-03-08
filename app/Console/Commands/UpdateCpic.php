@@ -47,7 +47,7 @@ class UpdateCpic extends Command
     public function handle()
     {
     
-        echo "Importing pharma data from CPIC ...\n";
+        echo "Updating CPIC data from CPIC ...";
 
         try {
 					
@@ -55,8 +55,8 @@ class UpdateCpic extends Command
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retreiving CPIC data\n";
-			
+			echo "\n(E001) Error retreiving CPIC data\n";
+			exit;
 		}
 
         $dd = json_decode($results);
@@ -89,8 +89,9 @@ class UpdateCpic extends Command
             $record->save();
         }
 
+        echo "DONE\n";
 
-        echo "Importing pharma data from PharmGKB ...\n";
+        echo "Updating PharmGKB data from PharmGKB ...";
 
         try {
                     
@@ -98,8 +99,8 @@ class UpdateCpic extends Command
 
         } catch (\Exception $e) {
         
-            echo "(E001) Error retreiving PharmKGB data\n";
-            
+            echo "\n(E001) Error retreiving PharmKGB data\n";
+            exit;
         }
     
         $dd = json_decode($results);
@@ -161,6 +162,8 @@ class UpdateCpic extends Command
                 $gene->save();
             }
         }
+
+        echo "DONE\n";
 
     }
 }

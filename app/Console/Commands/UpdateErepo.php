@@ -21,7 +21,7 @@ class UpdateErepo extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Update variant pathogenicity data from Erepo';
 
     /**
      * Create a new command instance.
@@ -40,7 +40,7 @@ class UpdateErepo extends Command
      */
     public function handle()
     {
-      echo "downloading erepo data ...\n";
+      echo "Updating Variant Pathogenicity data from Erepo ...";
           
         
       try {
@@ -49,8 +49,8 @@ class UpdateErepo extends Command
 
       } catch (\Exception $e) {
       
-        echo "(E001) Error retreiving erepo data\n";
-        
+        echo "\n(E001) Error retreiving erepo data\n";
+        exit;
       }
     
       $dd = json_decode($results);
@@ -79,6 +79,8 @@ class UpdateErepo extends Command
             $gene->save();
         }
       }		
+
+      echo "DONE\n";
 
     }
 }

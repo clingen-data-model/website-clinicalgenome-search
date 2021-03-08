@@ -15699,10 +15699,6 @@ a.svg-link:hover {
   margin-bottom: 23px;
 }
 
-.login-card form {
-  max-width: 326px;
-}
-
 .login-card .form-control {
   border: 1px solid #d5dae2;
   padding: 15px 25px;
@@ -19968,7 +19964,7 @@ footer p {
   padding: 4px 12px;
 }
 
-.dark-table .bootstrap-table .fixed-table-body {
+.bootstrap-table .fixed-table-body {
   font-size: 0.9rem;
 }
 

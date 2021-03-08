@@ -90,11 +90,7 @@
           @isset($display_tabs['active'])
 
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1 ">
-            {{-- <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
-              <a class="nav-link" href="{{ route('home') }}">
-                Overview
-              </a>
-            </li> --}}
+            
             <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
               <a class="nav-link" href="{{ route('gene-curations') }}">
                 All Curated Genes
@@ -105,13 +101,13 @@
               <a class="nav-link  dropdown-toggle" href="{{ route('validity-index') }}"  aria-haspopup="true" aria-expanded="false">
                 Gene-Disease Validity
               </a>
-                <ul class="dropdown-menu">
-                  <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
-                  <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
-                </ul>
-              </li>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
+                <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
+              </ul>
+            </li>
             <li class="nav-item dropdown @if ($display_tabs['active'] == "dosage") active @endif ">
               <a class="nav-link  dropdown-toggle" href="{{ route('dosage-index') }}" aria-haspopup="true" aria-expanded="false">
                 Dosage Sensitivity
@@ -222,302 +218,48 @@
 
       @include('_partials._wrapper.footer',['navActive' => "summary"])
 
-
-      <div class="">
-
-      </div>
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-
     <script src="/js/jquery.validate.min.js" ></script>
     <script src="/js/additional-methods.min.js" ></script>
+    <script src="/js/additional-methods.min.js" ></script>
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/js/PassRequirements.js"></script>
 
+    <script src="/js/main.js" ></script>
 
     <script>
-      $(function() {
-      
-      
-        $('.action-login-register').on('click', function(){
-          $('#modalLogin').modal('hide');
-          $('#modalRegister').modal('show');
-        });
 
-        $('.action-register-login').on('click', function(){
-          $('#modalRegister').modal('hide');
-          $('#modalLogin').modal('show');
-        });
-
-        $( '#frm-logout' ).validate( {
-          submitHandler: function(form) {
-            
-            
-            $.ajaxSetup({
-              cache: true,
-              contentType: "application/x-www-form-urlencoded",
-              processData: true,
-              headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('laravel_token')
-              }
-            });
-            
-            var url = "/api/logout";
-            
-            var formData = $(form).serialize();
-      
-            //submits to the form's action URL
-            $.post(url, formData, function(response)
-            {
-              //alert(JSON.stringify(response));
-          
-              /*if (response['message'])
-              {
-                swal("Done!", response['message'], "success")
-                  .then((answer2) => {
-                    if (answer2){*/
-                      alert("cp2");
-                      Cookies.remove('laravel_token');
-                      //$('#modalLogin').modal('hide');
-                      //swap login for dashboard
-                      $('.action-login').html('Login').attr('href', '#')
-                                  .on('click', function() {
-                                    $('#modalLogin').modal('show');
-                                  });
-                                  auth = 0;
-
-                      // we allow login to equate to conformation of an action, so check if there is anything we need to do
-                      /*if (response.context)
-                      {
-                        var color = $('.stats-banner').find('.fa-star').css('color');
-
-		                    if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
-                        { 
-                          $('.stats-banner').find('.fa-star').css('color', 'green');
-                        }
-
-                        $('#follow-gene-id').collapse("hide");
-                      }*/
-                    /*}
-                });
-              }*/
-            }).fail(function(response)
-            {
-              //handle failed validation
-              alert("Error Logging in");
-            });
-      
-            //$('#modalFollowGene').modal('hide');
+    $('#register-password').PassRequirements({
+        popoverPlacement: 'left',
+        rules: {
+          minlength: {
+            text: "be at least minLength characters long",
+            minLength: 8,
           },
-          rules: {
-            email: {
-              email: true,
-              maxlength: 80
-            }
+          containSpecialChars: {
+            text: "Your input should contain at least minLength special character",
+            minLength: 1,
+            regex: new RegExp('([^!,%,&,@,#,$,^,*,?,_,~])', 'g')
           },
-          messages: {
-            email:  {
-              email: "Please enter a valid email address",
-              maxlength: "Section names must be less than 80 characters"
-            },	
+          containLowercase: {
+            text: "Your input should contain at least minLength lower case character",
+            minLength: 1,
+            regex: new RegExp('[^a-z]', 'g')
           },
-          errorElement: 'em',
-          errorClass: 'invalid-feedback',
-          errorPlacement: function ( error, element ) {
-            // Add the `help-block` class to the error element
-            error.addClass( "invalid-feedback" );
-      
-            if ( element.prop( "type" ) === "checkbox" ) {
-              error.insertAfter( element.parent( "label" ) );
-            } else {
-              error.insertAfter( element );
-            }
+          containUppercase: {
+            text: "Your input should contain at least minLength upper case character",
+          minLength: 1,
+            regex: new RegExp('[^A-Z]', 'g')
           },
-          highlight: function ( element, errorClass, validClass ) {
-            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-          },
-          unhighlight: function (element, errorClass, validClass) {
-            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+          containNumbers: {
+            text: "Your input should contain at least minLength number",
+            minLength: 1,
+            regex: new RegExp('[^0-9]', 'g')
           }
-        });
+        }
+    });
+        
+    </script>
 
-        $( '#login-form' ).validate( {
-          submitHandler: function(form) {
-            
-            $.ajaxSetup({
-              cache: true,
-              contentType: "application/x-www-form-urlencoded",
-              processData: true
-            });
-            
-            var url = "/api/login";
-            
-            var formData = $(form).serialize();
-      
-            //submits to the form's action URL
-            $.post(url, formData, function(response)
-            {
-              //alert(JSON.stringify(response));
-          
-              /*if (response['message'])
-              {
-                swal("Done!", response['message'], "success")
-                  .then((answer2) => {
-                    if (answer2){*/
-                      Cookies.set('laravel_token', response.access_token);
-                      $('#modalLogin').modal('hide');
-                      //swap login for dashboard
-                      $('.action-login').html('Dashboard').attr('href', '/dashboard').off();
-
-                      // we allow login to equate to conformation of an action, so check if there is anything we need to do
-                      if (response.context)
-                      {
-                        var color = $('.stats-banner').find('.fa-star').css('color');
-
-		                    if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
-                        { 
-                          $('.stats-banner').find('.fa-star').css('color', 'green');
-                        }
-
-                        $('#follow-gene-id').collapse("hide");
-                      }
-
-                      auth = 1;
-                    /*}
-                });
-              }*/
-            }).fail(function(response)
-            {
-              //handle failed validation
-              alert("Error Logging in");
-            });
-      
-            //$('#modalFollowGene').modal('hide');
-          },
-          rules: {
-            email: {
-              required: true,
-              email: true,
-              maxlength: 80
-            }
-          },
-          messages: {
-            email:  {
-              required: "Please enter your email address",
-              email: "Please enter a valid email address",
-              maxlength: "Section names must be less than 80 characters"
-            },	
-          },
-          errorElement: 'em',
-          errorClass: 'invalid-feedback',
-          errorPlacement: function ( error, element ) {
-            // Add the `help-block` class to the error element
-            error.addClass( "invalid-feedback" );
-      
-            if ( element.prop( "type" ) === "checkbox" ) {
-              error.insertAfter( element.parent( "label" ) );
-            } else {
-              error.insertAfter( element );
-            }
-          },
-          highlight: function ( element, errorClass, validClass ) {
-            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-          },
-          unhighlight: function (element, errorClass, validClass) {
-            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-          }
-        });
-
-        $( '#register-form' ).validate( {
-          submitHandler: function(form) {
-            
-            $.ajaxSetup({
-              cache: true,
-              contentType: "application/x-www-form-urlencoded",
-              processData: true
-            });
-            
-            var url = "/api/register";
-            
-            var formData = $(form).serialize();
-      
-            //submits to the form's action URL
-            $.post(url, formData, function(response)
-            {
-              //alert(JSON.stringify(response));
-          
-              /*if (response['message'])
-              {
-                swal("Done!", response['message'], "success")
-                  .then((answer2) => {
-                    if (answer2){*/
-                      Cookies.set('laravel_token', response.access_token);
-                      $('#modalRegister').modal('hide');
-                      //swap login for dashboard
-                      $('.action-login').html('Dashboard').attr('href', '/dashboard').off();
-
-                      // we allow login to equate to conformation of an action, so check if there is anything we need to do
-                      if (response.context)
-                      {
-                        var color = $('.stats-banner').find('.fa-star').css('color');
-
-		                    if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
-                        { 
-                          $('.stats-banner').find('.fa-star').css('color', 'green');
-                        }
-
-                        $('#follow-gene-id').collapse("hide");
-                      }
-
-                      auth = 1;
-                    /*}
-                });
-              }*/
-            }).fail(function(response)
-            {
-              //handle failed validation
-              alert("Error Registering");
-            });
-      
-            //$('#modalFollowGene').modal('hide');
-          },
-          rules: {
-            email: {
-              required: true,
-              email: true,
-              maxlength: 80
-            }
-          },
-          messages: {
-            email:  {
-              required: "Please enter your email address",
-              email: "Please enter a valid email address",
-              maxlength: "Section names must be less than 80 characters"
-            },	
-          },
-          errorElement: 'em',
-          errorClass: 'invalid-feedback',
-          errorPlacement: function ( error, element ) {
-            // Add the `help-block` class to the error element
-            error.addClass( "invalid-feedback" );
-      
-            if ( element.prop( "type" ) === "checkbox" ) {
-              error.insertAfter( element.parent( "label" ) );
-            } else {
-              error.insertAfter( element );
-            }
-          },
-          highlight: function ( element, errorClass, validClass ) {
-            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-          },
-          unhighlight: function (element, errorClass, validClass) {
-            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-          }
-        });
-      });
-        </script>
     @yield('script_js')
 
     <script>

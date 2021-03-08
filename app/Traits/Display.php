@@ -54,6 +54,22 @@ trait Display
 
 
 	/**
+     * Return a displayable string of update
+     *
+     * @param
+     * @return string
+     */
+	public function getDisplayYearAttribute()
+	{
+		if (empty($this->created_at))
+			return '';
+
+		return $this->created_at->timezone('America/New_York')
+					->format("Y");
+	}
+
+
+	/**
      * Return a displayable string of status
      *
      * @param
@@ -62,6 +78,18 @@ trait Display
 	public function getDisplayStatusAttribute()
 	{
 		return ($this->status_strings[$this->status] ?? 'Unknown');
+	}
+
+
+	/**
+     * Return a displayable string of type
+     *
+     * @param
+     * @return string
+     */
+	public function getDisplayTypeAttribute()
+	{
+		return ($this->type_strings[$this->type] ?? 'Unknown');
 	}
 
 

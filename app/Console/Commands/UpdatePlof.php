@@ -40,34 +40,37 @@ class UpdatePlof extends Command
      */
     public function handle()
     {
-		echo "Loading Exac data ...\n";
-			
+		echo "Updating Gnomad LOF data from GNOMAD ...";
+
+		// https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
+		
 		try {
 					
-			//echo base_path() . "/data/ExAC.r1.sites.vep.gene.table\n";
-			$file = fopen(base_path() . "/data/gnomad.v2.1.1.lof_metrics.by_gene.txt","r");
-
+			//$results = file_get_contents("https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz");
+			$data = file_get_contents(base_path() . "/data/gnomad.v2.1.1.lof_metrics.by_gene.txt","r");
+		
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error accessing ExAC plof data\n";
+			echo "\n(E001) Error retreiving Gnomad LOF data\n";
 			exit;
 			
 		}
 	
+		// unzip the data
+		//$data = gzdecode($results);
+		//dd($data);
+	
 		// discard the header
-		$line = fgets($file);
+		$line = strtok($data, "\n");
 		
-		/*$parts = explode("\t", $line);
-			
-		echo $parts[29];
-		exit;*/
 		
 		// parse the remaining file
-		while (($line = fgets($file)) !== false)
+		while (($line = strtok("\n")) !== false)
 		{
+
 			$parts = explode("\t", $line);
 			
-			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
+			//echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
 
 			// what we want is in the second and 20th sections...
 			if (isset($parts[0]))
@@ -91,6 +94,8 @@ class UpdatePlof extends Command
 			
 		}
 		
-		fclose($file);
+
+		echo "DONE\n";
+
     }
 }

@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use GuzzleHttp\Client;
 
+use Auth;
+
 use App\Exports\DosageExport;
 use App\GeneLib;
 
@@ -29,6 +31,21 @@ use App\GeneLib;
 class DosageController extends Controller
 {
 	private $api = '/api/dosage';
+	private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
 
 
     /**
@@ -52,7 +69,8 @@ class DosageController extends Controller
 		//				->with('count', $results->count)
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
     }
 
 
@@ -75,7 +93,8 @@ class DosageController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+                        ->with('user', $this->user);
 
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
@@ -106,7 +125,9 @@ class DosageController extends Controller
 			'title' => $record->label . " curation results for Dosage Sensitivity"
 		]);
 
-		return view('gene-dosage.show', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('gene-dosage.show', compact('display_tabs', 'record', 'user'));
 	}
 
 
@@ -129,7 +150,8 @@ class DosageController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+                        ->with('user', $this->user);
 
 		$record->haplo_assertion = GeneLib::haploAssertionString($record->haplo_score);
         $record->triplo_assertion = GeneLib::triploAssertionString($record->triplo_score);
@@ -147,7 +169,9 @@ class DosageController extends Controller
 			'title' => $record->label . " curation results for Dosage Sensitivity"
 		]);
 
-		return view('gene-dosage.region_show', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('gene-dosage.region_show', compact('display_tabs', 'record', 'user'));
 	}
 
 
@@ -207,7 +231,8 @@ class DosageController extends Controller
 						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
     }
 
 
@@ -270,7 +295,8 @@ class DosageController extends Controller
 						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
 	}
 	
 	
@@ -316,7 +342,8 @@ class DosageController extends Controller
         ]);
 
 		return view('gene-dosage.downloads', compact('display_tabs'))
-						->with('filelist', $filelist);
+						->with('filelist', $filelist)
+                        ->with('user', $this->user);
 	}
 
 
@@ -341,7 +368,8 @@ class DosageController extends Controller
 		return view('gene-dosage.cnv', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/cnv')
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
 	}
 
 
@@ -365,7 +393,8 @@ class DosageController extends Controller
 		return view('gene-dosage.acmg59', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/acmg59')
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
 	}
 
 }

@@ -42,33 +42,41 @@ class UpdateSources extends Command
      */
     public function handle()
     {
-		$schedule = $this->argument('schedule');
+      $schedule = $this->argument('schedule');
+      switch ($schedule)
+      {
+        case 'daily': 
+          $this->call('update:Genenames');  // HGNC
+          $this->call('update:activity');   // Genegraph
+          $this->call('update:cpic');       // CPIC and PharmGKB
+          $this->call('update:erepo');      // Erepo
+          $this->call('update:cytobands');  // UCSC (goldenpath hg19)
+          $this->call('update:dosages');    // DCI (Jira)
+          $this->call('update:map');        // local file
+          $this->call('update:ratings');    // DCI (Jira)
+          //$this->call('update:region');     // local file
+          $this->call('update:disease');    // Genephaph
+          $this->call('update:drug');       // Genegraph
+          $this->call('update:changes');
+          break;
+        case 'weekly':
+          $this->call('decipher:query');    // Decipher
+          $this->call('update:locations');  // local file from NCBI
+          $this->call('update:mane');       // NCBI MANE
+          $this->call('update:omim');       // OMIM
+          $this->call('update:morbid');     // OMIM Morbid
+          $this->call('update:plof');       // local file Gnomad EXAC
+          $this->call('update:uniprot');    // Uniprot
+          $this->call('update:mondo');      // Monarch
+          break;
+        case 'monthly':
+          $this->call('update:acmg59');     // local file
+          break;
+        case 'init': 
+          $this->call('update:acmg59c');     // local file
+          break;
 
-		switch ($schedule)
-		{
-      case 'daily': 
-        $this->call('update:acmg59');     // local file
-        $this->call('update:activiity');
-        $this->call('update:cytobands');  // local file
-        $this->call('update:dosages');
-        $this->call('update:map');        // local file
-        $this->call('update:ratings');
-        $this->call('update:region');     // local file
-        break;
-			case 'weekly':
-        $this->call('update:Genenames');
-        $this->call('update:cpic');       // local file
-        $this->call('update:locations');  // local file
-        $this->call('update:mane');
-        $this->call('update:omim');       // local file
-        $this->call('update:morbid');     // local file
-        $this->call('update:plof');       // local file
-        $this->call('update:uniprot');       // local file
-				break;
-			case 'monthly':
-				$this->call('decipher:query');
-				break;
-		}
+      }
 
     }
 }

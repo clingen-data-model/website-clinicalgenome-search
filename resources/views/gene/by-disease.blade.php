@@ -84,32 +84,30 @@
 							<tbody class="">
 
 
-						<!-- Gene-Disease Validity				-->
-						@foreach($disease->gene_validity_assertions as $validity)
-								@php ($first = true) @endphp
-								<tr>
-									<td class=" @if(!$loop->first) border-0 @endif ">
-										@if($loop->first)
-										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
-										@endif
-									</td>
+						<!-- Gene-Disease Validity -->
+						@if (isset($disease_collection->where('disease', $disease->disease->label)->first()->validity))
+							@foreach($disease_collection->where('disease', $disease->disease->label)->first()->validity as $validity)
+									@php ($first = true) @endphp
+									<tr>
+										<td class=" @if(!$loop->first) border-0 @endif ">
+											@if($loop->first)
+											<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
+											@endif
+										</td>
+										<td class=" @if(!$loop->first) border-0 @endif ">{{ \App\GeneLib::validityMoiString($validity->assertion->mode_of_inheritance->website_display_label) }}
+											<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->assertion->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
+										</td>
+
+										<td class=" @if(!$loop->first) border-0 @endif ">
+											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->assertion->curie }}">{{ \App\GeneLib::validityClassificationString($validity->assertion->classification->label) }}</a>
+										</td>
 
 
-
-
-									<td class=" @if(!$loop->first) border-0 @endif ">{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }}
-										<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
-									</td>
-
-									<td class=" @if(!$loop->first) border-0 @endif ">
-										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}">{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</a>
-									</td>
-
-
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->report_date) }}</a></td>
-								</tr>
-								@php ($first = false) @endphp
-						@endforeach
+										<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->assertion->report_date) }}</a></td>
+									</tr>
+									@php ($first = false) @endphp
+							@endforeach
+						@endif
 
 						<!-- Actionability					-->
 						@foreach($disease->actionability_assertions as $key => $actionability)

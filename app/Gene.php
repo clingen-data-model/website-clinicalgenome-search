@@ -47,6 +47,7 @@ class Gene extends Model
 		'pli' => 'string|nullable',
 		'haplo' => 'string|nullable',
           'triplo' => 'string|nullable',
+          'disease' => 'json|nullable',
           'ensemble_gene_id' => 'string|nullable',
           'entrez_id' => 'string|nullable',
           'ucsc_id' => 'string|nullable',
@@ -70,8 +71,9 @@ class Gene extends Model
                'curation_activities' => 'array',
                'mane_select' => 'array',
                'mane_plus' => 'array',
-               'genegraph' => 'array'
-		];
+               'genegraph' => 'array',
+               'disease' => 'array'
+     ];
 
      /**
      * The attributes that are mass assignable.
@@ -83,7 +85,7 @@ class Gene extends Model
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
-                            'notes', 'activity', 'date_last_curated', 'status',
+                            'notes', 'activity', 'date_last_curated', 'status', 'disease',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
 
 	/**
@@ -93,7 +95,7 @@ class Gene extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status',
                            'display_aliases', 'display_previous',
-                           'display_omim', 'grch37', 'grch38', 'mane'];
+                           'display_omim', 'grch37', 'grch38'];
 
      public const TYPE_NONE = 0;
 
@@ -345,6 +347,31 @@ class Gene extends Model
          return (isset($this->curation_activities) ? 
               $this->curation_activities['varpath'] ?? false : false); 
     }
+
+
+    /**
+     * Get a psuedo genegraph representation of the local activity field
+     */
+    public function getCurationAttribute()
+     {
+          $activities = [];
+
+          if (!isset($this->activity))
+               return $activities;
+          
+          if ($this->activity["dosage"])
+               $activities[] = "GENE_DOSAGE";
+          if ($this->activity["pharma"])
+               $activities[] = "GENE_PHARMA";
+          if ($this->activity["varpath"])
+               $activities[] = "VAR_PATH";
+          if ($this->activity["validity"])
+               $activities[] = "GENE_VALIDITY";
+          if ($this->activity["actionability"])
+               $activities[] = "ACTIONABILITY";
+
+          return $activities;
+     }
      
 
     /**
@@ -399,6 +426,66 @@ class Gene extends Model
 
           return 'chr' . $chr . ':' . $this->start38 . '-' . $this->stop38;
      }
+
+
+     /**
+     * Get the Loss disease name
+     *
+     * @@param
+     * @return
+     */
+     public function getLossDiseaseAttribute()
+     {
+          if ($this->disease === null)
+               return '';
+
+          return $this->disease['loss_disease'] ?? '';
+     }
+
+
+     /**
+     * Get the Loss disease mondo id
+     *
+     * @@param
+     * @return
+     */
+     public function getLossMondoAttribute()
+     {
+         if ($this->disease === null)
+              return '';
+
+         return $this->disease['loss_mondo'] ?? '';
+     }
+
+
+     /**
+     * Get the Gain disease name
+     *
+     * @@param
+     * @return
+     */
+    public function getGainDiseaseAttribute()
+    {
+         if ($this->disease === null)
+              return '';
+
+         return $this->disease['gain_disease'] ?? '';
+    }
+
+
+    /**
+     * Get the Gain disease mondo id
+     *
+     * @@param
+     * @return
+     */
+    public function getGainMondoAttribute()
+    {
+        if ($this->disease === null)
+             return '';
+
+        return $this->disease['gain_mondo'] ?? '';
+    }
 
 
      /**
@@ -503,5 +590,17 @@ class Gene extends Model
       
           return (object) ['count' => $collection->count(), 'collection' => $collection,
                       'gene_count' => $gene_count, 'region_count' => $region_count];
+    }
+
+
+    /**
+     * Update local table from genegraph
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function gg2local($node)
+    {
+         
     }
 }

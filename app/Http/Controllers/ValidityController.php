@@ -9,6 +9,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
 
+use Auth;
+
 require app_path() .  '/Helpers/helper.php';
 
 use App\GeneLib;
@@ -30,15 +32,20 @@ use App\GeneLib;
 class ValidityController extends Controller
 {
     private $api = '/api/validity';
+    private $user = null;
 
-	/**
+    /**
      * Create a new controller instance.
      *
      * @return void
      */
     public function __construct()
     {
-        //$this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
     }
 
 
@@ -62,7 +69,8 @@ class ValidityController extends Controller
 		return view('gene-validity.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user);
     }
 
 
@@ -78,7 +86,8 @@ class ValidityController extends Controller
             return view('error.message-standard')
                 ->with('title', 'Error retrieving Gene Validity details')
                 ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
-                ->with('back', url()->previous());
+                ->with('back', url()->previous())
+                ->with('user', $this->user);
 
 		$record = GeneLib::validityDetail(['page' => 0,
 										'pagesize' => 20,
@@ -89,7 +98,8 @@ class ValidityController extends Controller
                 return view('error.message-standard')
                             ->with('title', 'Error retrieving Gene Validity details')
                             ->with('message', 'The system was not able to retrieve details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-                            ->with('back', url()->previous());
+                            ->with('back', url()->previous())
+                            ->with('user', $this->user);
 
         // set display context for view
         $display_tabs = collect([
@@ -97,7 +107,8 @@ class ValidityController extends Controller
             'title' => $record->label . " curation results for Gene-Disease Validity"
         ]);
 
-        return view('gene-validity.show', compact('display_tabs', 'record'));
+        return view('gene-validity.show', compact('display_tabs', 'record'))
+                            ->with('user', $this->user);
 	}
 
 

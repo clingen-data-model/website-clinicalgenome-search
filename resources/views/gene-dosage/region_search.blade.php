@@ -103,6 +103,12 @@
 	var showadvanced = true;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
+	window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+    }
+  }
+
 	/* no longer used
 	var score_assertion_strings = {
 		'0': 'No Evidence',

@@ -5,10 +5,14 @@ namespace App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Collection;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Display;
 
+use Auth;
 use Uuid;
+use Carbon\Carbon;
 
 /**
  *
@@ -51,8 +55,8 @@ class Notification extends Model
      */
 	protected $casts = [
 			'primary' => 'array',
-            'secondary' => 'array',
-            'frequency' => 'array'
+               'secondary' => 'array',
+               'frequency' => 'array'
 		];
 
      /**
@@ -94,6 +98,7 @@ class Notification extends Model
      ];
      
      public const FREQUENCY_NONE = 0;
+     public const FREQUENCY_DEFAULT = 0;
      public const FREQUENCY_DAILY = 1;
      public const FREQUENCY_WEEKLY = 2;
      public const FREQUENCY_SEMI_MONTHLY = 3;
@@ -131,6 +136,19 @@ class Notification extends Model
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
+
+        // initialize the structure
+        $this->primary = ['email' => (Auth::guard('api')->check() ? Auth::guard('api')->user()->email : '')];
+        $this->secondary = ['email' => ''];
+        $this->frequency = [  'Daily' => [],
+                              'Weekly' => [],
+                              'Monthly' => [],
+                              'Default' => [],
+                              'global' => "on",
+                              'first' => self::FREQUENCY_NONE,
+                              'frequency' => self::FREQUENCY_DAILY,
+                              'summary' => self::FREQUENCY_MONTHLY
+                           ];
      }
      
 
@@ -170,13 +188,35 @@ class Notification extends Model
      }
 
 
+
+     /**
+     * Add one of more genes to the default list
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+     public function addDefault($genes)
+     {
+          if ($genes instanceof Collection)
+          {
+               foreach ($genes as $gene)
+                    $this->addDefault($gene);
+          }
+          else           // just one
+          {
+               $freq = $this->frequency;
+               array_push($freq['Default'], $genes->name);
+               $this->frequency = $freq;
+          }
+     }
+
      /**
      * Convert the stored constant to hours
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function chetoHourscked($value)
+	public function toHours($value)
      {
           switch ($value)
           {
@@ -202,4 +242,109 @@ class Notification extends Model
                     return -1;
           }
      }
+
+
+     /**
+     * Transform the stored frequency strucure
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function toReport()
+     {
+          $reports = [];
+
+          $frequency = $this->frequency;
+
+          // Daily report or First Curation
+          if ($frequency['first'] || !empty($frequency['Daily']) || ($frequency['frequency'] == self::FREQUENCY_DAILY && !empty($frequency['Default'])))
+          {
+               $genes = [];
+
+               if (isset($frequency['Daily']))
+                    $genes = array_merge($genes, $frequency['Daily']);
+               
+               if (isset($frequency['Default']))
+                    $genes = array_merge($genes, $frequency['Default']);
+
+               array_walk($genes, array($this, 'walk'));
+
+               $reports[] = ['start_date' => Carbon::yesterday(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
+          }
+
+          // Weekly Report
+          if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (!empty($frequency['Weekly']) || ($frequency['frequency'] == self::FREQUENCY_WEEKLY && !empty($frequency['Default']))))
+          {
+               $genes = [];
+
+               if (isset($frequency['Weekly']))
+                    $genes = array_merge($genes, $frequency['Weekly']);
+               
+               if (isset($frequency['Default']))
+                    $genes = array_merge($genes, $frequency['Default']);
+
+               array_walk($genes, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::yesterday()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
+          }
+
+          // Monthly Report
+          if (Carbon::now()->format('d') == '01' && (!empty($frequency['Monthly']) || ($frequency['frequency'] == self::FREQUENCY_MONTHLY && !empty($frequency['Default']))))
+          {
+               $genes = [];
+
+               if (isset($frequency['Monthly']))
+                    $genes = array_merge($genes, $frequency['Monthly']);
+               
+               if (isset($frequency['Default']))
+                    $genes = array_merge($genes, $frequency['Default']);
+
+               array_walk($genes, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::yesterday()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
+          }
+
+          return $reports;
+     }
+
+
+     /**
+     * Current notification setting for the gene
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function setting($gene)
+     {
+          $freq = $this->frequency;
+
+          if (isset($freq['Default']) && in_array($gene, $freq['Default']))
+               return 'Default';         //'$this->frequency_strings[$freq['frequency']];'
+          
+          if (isset($freq['Daily']) && in_array($gene, $freq['Daily']))
+               return 'Daily';
+
+          if (isset($freq['Weekly']) && in_array($gene, $freq['Weekly']))
+               return 'Weekly';
+          
+          if (isset($freq['Monthly']) && in_array($gene, $freq['Monthly']))
+               return 'Monthly';
+
+          if (isset($freq['Pause']) && in_array($gene, $freq['Pause']))
+               return 'Pause';
+
+          return $this->frequency_strings[$freq['frequency']]; 
+     }
+
+
+     public function walk(&$item, $key)
+     {
+          $item = '"' . $item . '"';
+     }
+
 }

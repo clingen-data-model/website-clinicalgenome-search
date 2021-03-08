@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
 
+use Auth;
+
 /**
 *
 * @category   Web
@@ -22,6 +24,22 @@ use App\Http\Resources\Affiliate as AffiliateResource;
 class AffiliateController extends Controller
 {
     private $api = '/api/affiliates';
+    private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -39,11 +57,13 @@ class AffiliateController extends Controller
             'active' => "validity",
             'title' => "Gene Curation Expert Panels"
         ]);
-
+        if (Auth::guard('api')->check())
+        $user = Auth::guard('api')->user();
         return view('affiliate.index', compact('display_tabs'))
                         ->with('apiurl', $this->api)
                         ->with('pagesize', $size)
-                        ->with('page', $page);
+                        ->with('page', $page)
+                        ->with('user', $this->user);
 
     }
 
@@ -69,7 +89,8 @@ class AffiliateController extends Controller
         return view('affiliate.show', compact('display_tabs'))
                         ->with('apiurl', $this->api . "/${id}")
                         ->with('pagesize', $size)
-                        ->with('page', $page);
+                        ->with('page', $page)
+                        ->with('user', $this->user);
     }
 
 }
