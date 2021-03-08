@@ -14,6 +14,12 @@ class AddCredentialsToUserTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('firstname')->nullable()->after('name');
+            $table->string('lastname')->nullable()->after('firstname');
+            $table->string('organization')->nullable()->after('lastname');
+            $table->json('profile')->nullable()->after('organization');
+            $table->json('preferences')->nullable()->after('profile');
+            $table->string('avatar')->nullable()->after('preferences');
             $table->string('credentials')->nullable()->after('lastname');
         });
     }
