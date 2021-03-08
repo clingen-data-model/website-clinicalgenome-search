@@ -63,7 +63,7 @@ class GeneLib extends Model
 
     protected static $short_dosage_assertion_strings = [
          '-5' => 'Not yet evaluated',
-         '-1' => 'Psuedogene',
+         '-1' => 'Pseudogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -170,7 +170,7 @@ class GeneLib extends Model
 
 	protected static $dosage_score_assertion_strings = [
           '-5' => 'Not yet evaluated',
-          '-1' => 'Psuedogene',
+          '-1' => 'Pseudogene',
           '0' => 'No Evidence for ####',
           '1' => 'Little Evidence for ####',
           '2' => 'Emerging Evidence for ####',
@@ -181,7 +181,7 @@ class GeneLib extends Model
 
      protected static $curated_score_assertion_strings = [
           '-5' => 'Not yet evaluated',
-          '-1' => 'Psuedogene',
+          '-1' => 'Pseudogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -289,7 +289,7 @@ class GeneLib extends Model
 		// Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
 
-          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage psuedogene
+          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage pseudogene
 		{
                $gene = self::geneNotCurated($args);
                $issue = Iscamap::issue($args['gene'])->first();
