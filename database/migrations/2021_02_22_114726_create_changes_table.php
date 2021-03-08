@@ -19,7 +19,7 @@ class CreateChangesTable extends Migration
             $table->tinyInteger('type')->default(0);
             $table->tinyInteger('category')->default(0);
             $table->morphs('new');
-            $table->morphs('old')->nullable();
+            $table->nullableMorphs('old');
             $table->timestamp('change_date')->nullable();
             $table->tinyInteger('status')->default(0);
 			$table->softDeletes();
