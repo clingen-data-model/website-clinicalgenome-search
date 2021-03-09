@@ -39,7 +39,7 @@ class UpdateAcmg59 extends Command
      */
     public function handle()
     {
-        echo "Updating ACMG curation file from DCI ...;
+        echo "Updating ACMG curation file from DCI ...";
             
         $handle = fopen(base_path() . '/data/acmg56_curation.ini', "r");
         if ($handle)
