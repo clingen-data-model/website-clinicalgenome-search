@@ -2,11 +2,11 @@
 <h2 id="pharmacogenomics">
     <img src="https://search.clinicalgenome.org/images/Pharmacogenomics-on.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Pharmacogenomics
 </h2>
-<p>The overarching goal of the Pharmacogenomics...</p>
+<p>The overarching goal of the Pharmacogenomics is to study the variances in genes and their effects on drug response.  </p>
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] ?? '' }} Total Pharmacogenomics Annotations</h4></div>
+          <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] ?? '' }} Combined Pharmacogenomics Gene-Drug Pairs</h4></div>
 
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
@@ -14,7 +14,7 @@
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] ?? '' }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Cpic <br />Annotations</div>
+                  <div class="mb-2 lineheight-tight">CPIC <br />Gene-Drug Pairs</div>
                 </div>
               </div>
           </div>
@@ -24,7 +24,7 @@
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] ?? '' }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total PharmGKB <br />Annotations</div>
+                  <div class="mb-2 lineheight-tight">PharmGKB <br />Gene-Drug Pairs</div>
                 </div>
               </div>
           </div>
@@ -34,7 +34,7 @@
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_GENES_CPC_PHARMACOGENOMIICS] ?? '' }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Genes Included in <br>Cpic annotations</div>
+                  <div class="mb-2 lineheight-tight">Genes Included in <br>CPIC Gene-Drug Pairs</div>
                 </div>
               </div>
           </div>
@@ -44,7 +44,7 @@
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS] }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Gene-Included in<br>PharmGKB annotations</div>
+                  <div class="mb-2 lineheight-tight">Gene-Included in<br>PharmGKB Gene-Drug Pairs</div>
                 </div>
               </div>
           </div>
@@ -66,10 +66,10 @@
                             {{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] ?? '' }}
                           </text>
                           <text x="50%" y="45%" class="chart-label">
-                            Total
+                            Combined Gene-
                           </text>
                           <text x="50%" y="52%" class="chart-label">
-                            Annotations
+                            Drug Pairs
                           </text>
                         </g>
                       </svg>
@@ -78,11 +78,11 @@
 
         <div class="row mt-2">
           <div class="col-sm-6">
-            <h5 class="mb-0">Cpic Annotations </h4>
+            <h5 class="mb-0">CPIC Gene-Drug Pairs by Highest Level of Evidence </h4>
 
-              <p>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] ?? '' }} Total Cpic Annotations</p>
+              <!--<p>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] ?? '' }} Total Cpic Annotations</p>-->
 
-              <p><strong>Total Scores Visualized</strong></p>
+              <p><strong>Highest Levels Visualized</strong></p>
 
             <table class="table table-condensed">
               <tr class="">
@@ -163,11 +163,11 @@
             </table>
           </div>
           <div class="col-sm-6 border-left-1">
-            <h5 class="mb-0">PharmGKB Annotations </h4>
+            <h5 class="mb-0">PharmGKB Gene-Drug Pairs by Highest Level of Evidence </h4>
 
-              <p>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] ?? '' }} Total PharmGKB Annotations</p>
+              <!--<p>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] ?? '' }} Total PharmGKB Annotations</p>-->
 
-              <p><strong>Total Scores Visualized</strong></p>
+              <p><strong>Highest Levels Visualized</strong></p>
             <table class="table table-condensed">
               <tr class="">
                 <td class="col-sm-2 text-right border-0"><strong>Level 1A</strong></td>
