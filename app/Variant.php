@@ -146,11 +146,11 @@ class Variant extends Model
 	public static function sortByClassifications($symbol)
      {
           $classifications = [
-               'Benign' => 0,
-               'Likely Benign' => 0,
-               'Uncertain Significance' => 0,
+               'Pathogenic' => 0,
                'Likely Pathogenic' => 0,
-               'Pathogenic' => 0
+               'Uncertain Significance' => 0,
+               'Likely Benign' => 0,
+               'Benign' => 0
           ];
 
           $records = self::where('gene->label', $symbol)->get();

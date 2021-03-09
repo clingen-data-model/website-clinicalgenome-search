@@ -39,7 +39,7 @@ class UpdateAcmg59 extends Command
      */
     public function handle()
     {
-        echo "Reading ACMG curation file ...\n";
+        echo "Updating ACMG curation file from DCI ...;
             
         $handle = fopen(base_path() . '/data/acmg56_curation.ini', "r");
         if ($handle)
@@ -87,11 +87,11 @@ class UpdateAcmg59 extends Command
         }
         else
         {
-            echo "(E001) Cannot access ACMG curation file\n";
+            echo "\n(E001) Cannot access ACMG curation file\n";
             exit;
         } 
 
-        echo "ACMG curation update complete\n";
+        echo "DONE\n";
 
     }
 }

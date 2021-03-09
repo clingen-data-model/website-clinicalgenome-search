@@ -40,9 +40,6 @@ class UpdateCytoBands extends Command
      */
     public function handle()
     {
-        // from UCSC
-        // https://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz
-        // https://hgdownload.soe.ucsc.edu/goldenPath/hg38/database/cytoBand.txt.gz
         echo "Updating hg19 Cytoband Data from UCSC ...";
         
         try {

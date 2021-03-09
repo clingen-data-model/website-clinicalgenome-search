@@ -39,7 +39,7 @@ class UpdateAcmg59c extends Command
      */
     public function handle()
     {
-        echo "Reading list of ACMG 59 genes ...\n";
+        echo "Updating ACMG 59 flag from gene list ...";
             
         $handle = fopen(base_path() . '/data/acmg59.dat', "r");
         if ($handle)
@@ -68,11 +68,11 @@ class UpdateAcmg59c extends Command
         }
         else
         {
-            echo "(E001) Cannot access ACMG data file\n";
+            echo "\n(E001) Cannot access ACMG data file\n";
             exit;
         } 
 
-        echo "ACMG 59 genes update complete\n";
+        echo "DONE\n";
 
     }
 }

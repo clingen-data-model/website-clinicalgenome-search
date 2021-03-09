@@ -64,7 +64,7 @@
 		</div>
 		<div class="col-md-12 light-arrows dark-table">
 
-			@include('_partials.genetable')
+			@include('_partials.genetable', ['expand' => true])
 
 		</div>
 	</div>
@@ -677,7 +677,6 @@
 
 
 		$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
-			console.log(row);
 			//console.log(e);
 			event.preventDefault();
 			event.stopPropagation();
@@ -688,20 +687,30 @@
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
 			// split the object
-			$obj.attr('colspan',10);
-			$obj.addClass("bg-white");
-			if (row.type == 0)
+			$obj.attr('colspan',12);
+			$obj.css('background-color', '#f5f5f5');
+			/*if (row.type == 0)
 				$obj.before('<td class="gene"></td>');
 			else
-				$obj.before('<td class="region"></td>');
-			$obj.closest('tr').css('border-bottom', '2px solid black');
+				$obj.before('<td class="region"></td>');*/
 
+			var t = $obj.closest('tr');
+
+			t.css('border-bottom', '2px solid black');
+     		t.prev().css('border-top', '2px solid black');
 
 			//$obj.addClass('detail-table-shade');
 			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
 
 			return false;
 		})
+
+		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+			$obj.closest('tr').prev().css('border-top', '1px solid #ddd');
+
+			return false;
+		});
 
 	}
 

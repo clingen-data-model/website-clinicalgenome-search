@@ -43,6 +43,8 @@ Route::post('/genes/unfollow', 'Api\FollowController@remove')->name('follows.rem
 
 // curated genes
 Route::resource('curations', 'Api\CurationController')->only(['index']);
+Route::get('/genes/expand/{id}', 'Api\GeneController@expand')->name('genes.expand');
+
 
 // dosage
 Route::resource('dosage', 'Api\DosageController')->only(['index']);

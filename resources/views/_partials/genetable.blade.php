@@ -24,12 +24,14 @@
     data-show-columns="true"
     data-show-columns-toggle-all="true"
     data-search-formatter="false"
-    data-detail-view="true"
     data-show-export="true"
     data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
     {{-- data-click-to-select="true" --}}
+    @if (isset($expand))
+    data-detail-view="true"
     data-detail-view-icon="false"
     data-detail-view-by-click="true"
+    @endif
     {{-- data-detail-formatter="detailFormatter" --}}
     data-minimum-count-columns="2"
     {{-- data-show-pagination-switch="true" --}}

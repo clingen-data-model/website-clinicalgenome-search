@@ -42,7 +42,7 @@ class UpdateDrug extends Command
      */
     public function handle()
     {
-        echo "Importing drug data from Genegraph ...";
+        echo "Updating RXNORM data from Genegraph ...";
         
         $results = GeneLib::drugList([	'page' =>  0,
 										'pagesize' => "null",
