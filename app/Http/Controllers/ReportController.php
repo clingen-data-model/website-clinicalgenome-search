@@ -50,7 +50,7 @@ class ReportController extends Controller
 			'title' => "ClinGen Gene Level Summary Statistics"
 		]);
 
-		$metrics = Metric::latest()->first();
+		$metrics = Metric::latest('id')->first();
 
 		return view('reports.stats.index', compact('display_tabs', 'metrics'))
 						->with('user', $this->user);

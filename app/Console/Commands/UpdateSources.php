@@ -58,6 +58,7 @@ class UpdateSources extends Command
           $this->call('update:disease');    // Genephaph
           $this->call('update:drug');       // Genegraph
           $this->call('update:changes');
+          $this->call('run:metrics');       // Daily stats
           break;
         case 'weekly':
           $this->call('decipher:query');    // Decipher
