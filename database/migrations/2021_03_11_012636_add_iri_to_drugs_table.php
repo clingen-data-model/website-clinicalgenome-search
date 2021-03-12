@@ -14,7 +14,7 @@ class AddIriToDrugsTable extends Migration
     public function up()
     {
         Schema::table('drugs', function (Blueprint $table) {
-           // $table->string('iri')->unique()->after('ident');
+           $table->string('iri')->unique()->after('ident');
         });
     }
 
