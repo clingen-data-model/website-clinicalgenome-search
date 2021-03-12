@@ -291,9 +291,7 @@
 
 // Condition Detail
 {
-    disease('
-    . 'iri: "' . $condition
-    . '") {
+    disease(iri: "MONDO:0009734") {
         label
         iri
         curation_activities

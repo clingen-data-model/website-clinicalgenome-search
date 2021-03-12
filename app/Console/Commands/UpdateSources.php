@@ -56,7 +56,7 @@ class UpdateSources extends Command
           $this->call('update:ratings');    // DCI (Jira)
           //$this->call('update:region');     // local file
           $this->call('update:disease');    // Genephaph
-          $this->call('update:drug');       // Genegraph
+          $this->call('update:rxnorm');       // Local file from bioontology
           $this->call('update:changes');
           $this->call('run:metrics');       // Daily stats
           break;

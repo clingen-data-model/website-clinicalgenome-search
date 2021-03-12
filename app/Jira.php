@@ -463,7 +463,7 @@ class Jira extends Model
 
          if (empty($response))
               return $collection;
-              
+
           foreach ($response->getIssues() as $issue) 
           {
                $changelog = self::getIssue($issue->key, 'changelog');
@@ -802,10 +802,18 @@ class Jira extends Model
 
           $changelog = self::getIssue($issue->key, 'changelog');
 
+          $first = true;
+
           foreach ($changelog->histories as $history)
           {
                foreach ($history->items as $item)
                {
+                    if ($item->field == 'resolution' && $item->from === null && $item->toString == "Complete")
+                         $first = false;
+
+                    if ($first)
+                         continue;
+
                     if ($item->field == 'ISCA Triplosensitivity score')
                     {
                          if ($item->fromString !== null 
@@ -1013,6 +1021,9 @@ class Jira extends Model
           } catch (JiraRestApi\JiraException $e) {
                print("Error Occured! " . $e->getMessage());
           }
+
+          if ($field == null)
+               return $issue;
 
           return $issue->$field ?? null;
      }

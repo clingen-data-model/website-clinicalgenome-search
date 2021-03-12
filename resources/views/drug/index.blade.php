@@ -135,7 +135,15 @@ function checkactive(text, value, field, data)
           filterControl: 'select',
 					filterData: 'var:activelist',
 					filterCustomSearch: checkactive,
+          cellStyle: cellFormatter
+        },
+        {
+          title: 'BioPortal',
+          field: 'curie',
+          formatter: drPortalFormatter,
+          searchFormatter: false,
           cellStyle: cellFormatter,
+          sortable: false
         }
       ]
     })

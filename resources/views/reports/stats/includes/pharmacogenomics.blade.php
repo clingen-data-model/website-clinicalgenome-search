@@ -44,7 +44,7 @@
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS] }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Gene-Included in<br>PharmGKB Gene-Drug Pairs</div>
+                  <div class="mb-2 lineheight-tight">Genes Included in<br>PharmGKB Gene-Drug Pairs</div>
                 </div>
               </div>
           </div>
@@ -78,7 +78,7 @@
 
         <div class="row mt-2">
           <div class="col-sm-6">
-            <h5 class="mb-0">CPIC Gene-Drug Pairs by Highest Level of Evidence </h4>
+            <h5 class="mb-0">CPIC Gene-Drug Pairs by Highest Level of Actionability </h4>
 
               <!--<p>{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] ?? '' }} Total Cpic Annotations</p>-->
 

@@ -1417,6 +1417,7 @@ class Graphql
 					}
 					gene_dosage_assertions {
 						report_date
+						assertion_type
 						dosage_classification {
 							ordinal
 						}

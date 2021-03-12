@@ -17,6 +17,7 @@ use App\Report;
 use App\Title;
 use App\Notification;
 use App\Actionability;
+//use App\Neo4j;
 
 class TestController extends Controller
 {
@@ -39,7 +40,11 @@ class TestController extends Controller
     {
 		//Graphql::geneMetrics([]);
 
-		
+		//$response = Neo4j::geneList(['pagesize' => null])
+
+		$issue = Jira::getIssue('ISCA-46304', null);
+		$history = Jira::getHistory($issue);
+		dd($history);
 
 
 $query = <<<GQL

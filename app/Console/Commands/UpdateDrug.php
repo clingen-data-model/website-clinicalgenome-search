@@ -16,7 +16,7 @@ class UpdateDrug extends Command
      *
      * @var string
      */
-    protected $signature = 'update:drug';
+    protected $signature = 'update:drugDONOTUSE';
 
     /**
      * The console command description.

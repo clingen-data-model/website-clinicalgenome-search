@@ -31,11 +31,11 @@
 
       <div class="col-md-12">
         <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
-        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="badge action-af-badge">None</span>
+          <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
         </button>
       </div>
       <div class="col-md-12 dark-table">
-        @include('_partials.genetable', ['expand' => true])
+        @include('_partials.genetable')
       </div>
     </div>
   </div>
@@ -121,7 +121,12 @@
 
       $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
       $('.action-show-acmg59-text').html('On');
-      $('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
+      //$('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
+
+      $('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v2.0</span>');
+			$('.filter-container').append(newbadge);
 
     }
     else
@@ -130,14 +135,22 @@
 
       $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
       $('.action-show-acmg59-text').html('Off');
-      $('.action-af-badge').html('None').removeClass('bg-primary');
+      //$('.action-af-badge').html('None').removeClass('bg-primary');
+
+      $('.action-acmg-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
     }
   });
 
 
   /*
-  **  Filter control for acmg59 mode
+  **  Filter control for follow mode
   */
 	$('.action-show-follow').on('click', function() {
 
@@ -147,7 +160,12 @@
 
       $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
       $('.action-show-follow-text').html('On');
-      $('.action-af-badge').html('Followed').addClass('bg-primary');
+      //$('.action-af-badge').html('Followed').addClass('bg-primary');
+
+      $('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-follow-badge bg-primary mr-1">Followed</span>');
+			$('.filter-container').append(newbadge);
 
     }
     else
@@ -156,8 +174,15 @@
 
       $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
       $('.action-show-follow-text').html('Off');
-      $('.action-af-badge').html('None').removeClass('bg-primary');
+      //$('.action-af-badge').html('None').removeClass('bg-primary');
 
+      $('.action-follow-badge').remove();
+
+      if ($('.filter-container').html() == '')
+      {
+        var newbadge = $('<span class="badge action-af-badge">None</span>');
+        $('.filter-container').append(newbadge);
+      }
     }
   });
 
@@ -269,39 +294,6 @@
     $table.on('post-body.bs.table', function (e, name, args) {
 			$('[data-toggle="tooltip"]').tooltip();
 		})
-
-
-    $table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
-			//console.log(row);
-			//console.log(e);
-			event.preventDefault();
-			event.stopPropagation();
-			event.stopImmediatePropagation();
-
-		});
-
-
-		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
-
-			// split the object
-			$obj.attr('colspan',12);
-			//$obj.addClass("bg-white");
-      $obj.css('background-color', '#f5f5f5');
-			/*if (row.type == 0)
-				$obj.before('<td class="gene"></td>');
-			else
-				$obj.before('<td class="region"></td>');*/
-      var t = $obj.closest('tr');
-
-			t.css('border-bottom', '2px solid black');
-      t.prev().css('border-top', '2px solid black');
-
-
-			//$obj.addClass('detail-table-shade');
-			$obj.load( "/api/genes/expand/" + row.hgnc_id );
-
-			return false;
-		});
 
 
     $table.on('collapse-row.bs.table', function (e, index, row, $obj) {

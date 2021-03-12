@@ -41,8 +41,9 @@
             <div class=" lineheight-tight">Unique variants  with<br /> at least one curation</div>
           </div>
         </div>
+
         <div class="row text-center mt-4">
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-8">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
                   <a href="#gene-disease-validity" class="pr-2 text-dark">
@@ -67,7 +68,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-8">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
                   <a href="#dosage-sensitivity" class="pr-2 text-dark">
@@ -90,7 +91,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-8">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
                   <a href="#clinical-actionability" class="pr-2 text-dark">
@@ -119,7 +120,7 @@
             </div>
 
 
-            <div class="col-md-3 col-sm-6">
+            <div class="col-md-4 col-sm-8">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
                   <a href="#variant-pathogenicity" class="pr-2 text-dark ">
@@ -142,10 +143,8 @@
                 </div>
               </div>
             </div>
-        </div>
 
-        <div class="row text-center mt-4">
-          <div class="col-md-3 col-sm-6">
+          <div class="col-md-4 col-sm-8">
             <div class="panel panel-default border-primary">
               <div class="panel-body border-bottom-1 p-2">
                 <a href="#gene-disease-validity" class="pr-2 text-dark">
@@ -160,12 +159,12 @@
                 <div class="col-xs-6 lineheight-tight py-3 px-2">
                   <div class="text-size-md lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] ?? '' }}</div>
                   {{-- <div class="small lineheight-tight">Total number of curations</div> --}}
-                  <div class="small lineheight-tight">Total reports <div class="text-10px">(Number of annotations<br /> for this activity)</div></div>
+                  <div class="small lineheight-tight">Total reports <div class="text-10px">(Number of gene-drug pairs<br />for this activity)</div></div>
 
                 </div>
                 <div class="col-xs-6 lineheight-tight py-3 px-2 border-left-1">
                   <div class="text-size-md">{{ $metrics->values[App\Metric::KEY_TOTAL_GENES_PHARMACOGENOMIICS] ?? '' }}</div>
-                  <div class="small lineheight-tight">Unique genes <div class="text-10px">(Total genes with at<br /> least one annotation)</div></div>
+                  <div class="small lineheight-tight">Unique genes <div class="text-10px">(Total genes with at<br />least one gene-drug pair)</div></div>
                 </div>
               </div>
             </div>

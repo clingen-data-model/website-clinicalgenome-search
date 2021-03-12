@@ -18,7 +18,11 @@ class Drug extends JsonResource
     {
         return [
             'label' => $this->label,
-            'curie' => $this->mapCurie()        ];
+            'curie' => $this->curie,
+            'has_pharma' => $this->curation_activities['pharma'] ? 1 : 0
+            ];
+
+            //'http://purl.bioontology.org/ontology/RXNORM/706898'
     }
     
     /**

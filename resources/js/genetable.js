@@ -532,11 +532,19 @@ function cbadgeFormatter(index, row) {
 }
 
 function drsymbolFormatter(index, row) {
-    return '<a href="/kb/drugs/' + row.curie + '">' + row.curie + '</a>';
+    return '<a href="/kb/drugs/' + row.curie + '">RXNORM:' + row.curie 
+            + '</a>';
 }
 
 function drugFormatter(index, row) {
-    return '<a href="/kb/drugs/' + row.curie + '">' + row.label + '</a>';
+    return '<a href="/kb/drugs/' + row.curie + '">' + row.label
+    + '</a>';
+}
+
+function drPortalFormatter(index, row) {
+    return '<a target="external" href="https://bioportal.bioontology.org/ontologies/RXNORM?p=classes&conceptid=' 
+    + row.curie + '" class="badge-info badge pointer ml-2">BioPortal <i class="fas fa-external-link-alt"></i></a>';
+
 }
 
 function drbadgeFormatter(index, row) {

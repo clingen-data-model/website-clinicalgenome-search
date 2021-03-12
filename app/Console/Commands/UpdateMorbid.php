@@ -51,8 +51,6 @@ class UpdateMorbid extends Command
             exit;
         }
         
-        // https://data.omim.org/downloads/gnEYXJE_RtCzjSCNEOWFHg/morbidmap.txt
-
         try {
 
             $results = file_get_contents("https://data.omim.org/downloads/" . $key . "/morbidmap.txt");

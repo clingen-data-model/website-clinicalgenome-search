@@ -1,6 +1,6 @@
 
 		<div class="row">
-			<div class="col-md-3 border-right">
+			<div class="col-md-2 border-right">
 				<table class="table-sm m-0">
 					<tr>
 						<td valign="top" class=" small text-muted pr-2">Symbol: </td>
@@ -24,19 +24,19 @@
 					</tr>
 				</table>
 			</div>
-			<div class="col-md-6 border-right">
+			<div class="col-md-7 border-right">
 				<table class="table-sm m-0">
 					<tr>
-						<td valign="top" class=" small text-muted pr-2">Loss Disease: </td>
-						<td class="small">{{ $gene->loss_disease ?? ''}}
+						<td valign="top" class=" small text-muted pr-2">Curated Loss Disease: </td>
+						<td class="small">{{ empty($gene->loss_disease) ? 'N/A' : $gene->loss_disease }}
 							@if (!empty($gene->loss_mondo))
 							<a target='external' href="{{env('CG_URL_MONARCH')}}{{ $gene->loss_mondo }}" class="badge-info badge pointer ml-2">MONDO <i class="fas fa-external-link-alt"></i></a>
 							@endif
 						</td>
 					</tr>
 					<tr>
-						<td valign="top" class=" small text-muted pr-2">Gain Disease: </td>
-						<td class="small">{{ $gene->gain_disease ?? ''}}
+						<td valign="top" class=" small text-muted pr-2">Curated Gain Disease: </td>
+						<td class="small">{{ empty($gene->gain_disease) ? 'N/A' : $gene->gain_disease }}
 							@if (!empty($gene->gain_mondo))
 							<a target='external' href="{{env('CG_URL_MONARCH')}}{{ $gene->gain_mondo }}" class="badge-info badge pointer ml-2">MONDO <i class="fas fa-external-link-alt"></i></a>
 							@endif

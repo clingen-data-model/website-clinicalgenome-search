@@ -59,7 +59,7 @@ class Drug extends Model
      *
      * @var array
      */
-	protected $fillable = ['curie', 'label', 'curation_activities', 'last_curated_date',
+	protected $fillable = ['iri', 'curie', 'label', 'curation_activities', 'last_curated_date',
 					     'type', 'status',
                          ];
 
