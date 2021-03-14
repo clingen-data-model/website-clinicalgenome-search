@@ -92,7 +92,11 @@
                         <td>{{ $report->display_created_date }}</td>
                         <td>{{ $report->display_last_date }}</td>
                         <td>
-                            <span class="action-lock-report mr-2" data-uuid="{{ $report->ident }}" title="Lock Report"><i class="fas fa-lock" style="color:lightgray"></i></span>
+                            @if ($report->status == App\Title::STATUS_ACTIVE)
+                                <span class="action-lock-report mr-2" data-uuid="{{ $report->ident }}" title="Lock Report"><i class="fas fa-unlock" style="color:lightgray"></i></span>
+                            @else
+                                <span class="action-unlock-report mr-2" data-uuid="{{ $report->ident }}" title="UnLock Report"><i class="fas fa-lock" style="color:red"></i></span>
+                            @endif
                             <span class="action-share-report mr-2" data-uuid="{{ $report->ident }}" title="Share Report"><i class="fas fa-share" style="color:lightgray"></i></span>                            
                             <span class="action-remove-report" data-uuid="{{ $report->ident }}" title="Delete Report"><i class="fas fa-trash" style="color:red"></i></span>
                         </td>

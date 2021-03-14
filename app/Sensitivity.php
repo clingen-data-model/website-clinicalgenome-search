@@ -251,7 +251,7 @@ class Sensitivity extends Model
                                 'old_type' => null,
                                 'new_id' => $new->id,
                                 'new_type' => 'App\Sensitivity',
-                                'change_date' => $current->report_date,
+                                'change_date' => $new->report_date,
                                 'status' => 1
                     ]);
 

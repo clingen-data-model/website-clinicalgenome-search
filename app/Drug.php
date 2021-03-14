@@ -167,5 +167,18 @@ class Drug extends Model
     {
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['validity'] : false); 
+     }
+     
+
+     /**
+     * Flag indicating if gene has any pharma activity 
+     * 
+     * @@param	
+     * @return 
+     */
+     public function getHasPharmaAttribute()
+     {
+		return (isset($this->curation_activities) ? 
+			$this->curation_activities['pharma'] : false); 
 	}
 }

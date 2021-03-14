@@ -25,7 +25,13 @@ Route::post('login', 'Api\AuthController@login');
 Route::post('logout', 'Api\AuthController@logout');
 Route::post('register', 'Api\AuthController@register');
 Route::post('profile', 'Api\SettingsController@update');
+
+// reports
 Route::post('reports/remove', 'Api\SettingsController@remove');
+Route::post('reports/lock', 'Api\SettingsController@lock');
+Route::post('reports/unlock', 'Api\SettingsController@unlock');
+
+
 
 /*
 ** Provide an api interface between processwire and various databases

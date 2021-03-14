@@ -152,7 +152,7 @@ class Change extends Model
                 return 'Clinical Actionability';
             case 'App\Validity':
                 return 'Gene-Disease Validity';
-            case 'App\Sensitiviity':
+            case 'App\Sensitivity':
                 return 'Dosage Sensitivity';
         }
 
@@ -227,6 +227,10 @@ class Change extends Model
         if (isset($filters['gene_label']))
         {
             $genes = $filters['gene_label'];
+
+            // wildcard all genes shortcut
+            if (in_array('*', $genes))
+                return $query;
 
             return $query->whereHas('new', function($subquery) use($genes){
                 return $subquery->whereIn('gene_label', $genes);

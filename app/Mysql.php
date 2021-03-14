@@ -76,23 +76,31 @@ class Mysql
 		else
 		{
 			// initialize the collection
-			$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
-
-			// manipulate the return order per Erin
-			if ($search !== null && $search != "")
+			if (empty($search))
 			{
-				//$match = $collection->where('symbol', $search)->first();
-				$search = strtolower($search);
-				$match = $collection->first(function ($item) use ($search) {
-					return strtolower($item->symbol) == $search;
-				});
+				$collection = Gene::all(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+			}
+			else
+			{
+				// initialize the collection
+				$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
 
-				if ($match !== null)
+				// manipulate the return order per Erin
+				if ($search !== null && $search != "")
 				{
-					//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
-					$collection = $collection->filter(function ($item) use ($search) {
-						return strtolower($item->symbol) != $search;
-					})->prepend($match);
+					//$match = $collection->where('symbol', $search)->first();
+					$search = strtolower($search);
+					$match = $collection->first(function ($item) use ($search) {
+						return strtolower($item->symbol) == $search;
+					});
+
+					if ($match !== null)
+					{
+						//$collection = $collection->where('symbol', '!=', $search)->prepend($match);
+						$collection = $collection->filter(function ($item) use ($search) {
+							return strtolower($item->symbol) != $search;
+						})->prepend($match);
+					}
 				}
 			}
 		}
@@ -220,12 +228,15 @@ class Mysql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		// initialize the collection
-		$collection = Disease::where('label', 'like', '%' . $search . '%')->get();
-
 		// manipulate the return order per Erin
-		if ($search !== null && $search != "")
+		if (empty($search))
 		{
+			$collection = Disease::all();
+		}
+		else
+		{
+			$collection = Disease::where('label', 'like', '%' . $search . '%')->get();
+
 			//$match = $collection->where('symbol', $search)->first();
 			$search = strtolower($search);
 			$match = $collection->first(function ($item) use ($search) {
@@ -272,11 +283,14 @@ class Mysql
 			$$key = $value;
 
 		// initialize the collection
-		$collection = Drug::where('label', 'like', '%' . $search . '%')->get();
-
-		// manipulate the return order per Erin
-		if ($search !== null && $search != "")
+		if (empty($search))
 		{
+			$collection = Drug::all();
+		}
+		else
+		{
+			$collection = Drug::where('label', 'like', '%' . $search . '%')->get();
+
 			//$match = $collection->where('symbol', $search)->first();
 			$search = strtolower($search);
 			$match = $collection->first(function ($item) use ($search) {

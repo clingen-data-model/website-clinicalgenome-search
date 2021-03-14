@@ -180,6 +180,74 @@ class SettingsController extends Controller
     }
 
 
+     /**
+     * Reports by folder (type).
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function lock(Request $request)
+    {
+        $ident = $request->input('id');
+
+        if (!Auth::guard('api')->check())
+            return response()->json(['success' => 'false',
+								 'status_code' => 1011,
+							 	 'message' => "Permission Denied"],
+                                  501);
+            
+        $user = Auth::guard('api')->user();
+
+        $report = $user->titles()->ident($ident);
+        
+        if ($report === null)
+            return response()->json(['success' => 'false',
+								 'status_code' => 1012,
+							 	 'message' => "Permission Denied"],
+                                  501);
+
+        $report->update(['status' => Title::STATUS_LOCKED]);
+
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'message' => "Report Locked"],
+                                200);
+    }
+
+
+     /**
+     * Reports by folder (type).
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function unlock(Request $request)
+    {
+        $ident = $request->input('id');
+
+        if (!Auth::guard('api')->check())
+            return response()->json(['success' => 'false',
+								 'status_code' => 1011,
+							 	 'message' => "Permission Denied"],
+                                  501);
+            
+        $user = Auth::guard('api')->user();
+
+        $report = $user->titles()->ident($ident);
+        
+        if ($report === null)
+            return response()->json(['success' => 'false',
+								 'status_code' => 1012,
+							 	 'message' => "Permission Denied"],
+                                  501);
+
+        $report->update(['status' => Title::STATUS_ACTIVE]);
+
+        return response()->json(['success' => 'true',
+								 'status_code' => 200,
+							 	 'message' => "Report UnLocked"],
+                                  200);
+    }
+
+
     /**
      * Reports by folder (type).
      *

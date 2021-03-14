@@ -688,7 +688,7 @@
 
 			// split the object
 			$obj.attr('colspan',12);
-			$obj.css('background-color', '#f5f5f5');
+			//$obj.css('background-color', '#f5f5f5');
 			/*if (row.type == 0)
 				$obj.before('<td class="gene"></td>');
 			else
@@ -696,8 +696,10 @@
 
 			var t = $obj.closest('tr');
 
-			t.css('border-bottom', '2px solid black');
-     		t.prev().css('border-top', '2px solid black');
+			t.addClass('dosage-row-bottom');
+			//t.css('border-bottom', '2px solid blue');
+     		//t.prev().css('border-top', '2px solid blue');
+			t.prev().addClass('dosage-row-top');
 
 			//$obj.addClass('detail-table-shade');
 			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
@@ -707,7 +709,7 @@
 
 		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
 
-			$obj.closest('tr').prev().css('border-top', '1px solid #ddd');
+			$obj.closest('tr').prev().removeClass('dosage-row-top');
 
 			return false;
 		});

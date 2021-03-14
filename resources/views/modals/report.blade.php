@@ -38,7 +38,7 @@
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-2 control-label">Genes</label>
 										<div class="col-sm-9">
-											<textarea class="form-control" name="genes" placeholder="Genes"></textarea>
+											<input id="selected-genes" type="text" class="form-control selector" data-role="tagsinput" name="genes" value="" placeholder="">
 										</div>
 									</div>
 							</div><!-- /.col-lg-8 -->				

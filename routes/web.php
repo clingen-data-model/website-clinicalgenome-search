@@ -37,6 +37,8 @@ Route::group(['prefix' => '/dashboard'], function () {
 	Route::get('/reports/{id}', 'HomeController@show_report')->name('dashboard-show-report');
 });
 
+Route::get('/reports/view/{id}', 'HomeController@view')->name('dashboard-show-report');
+
 /*
  * Gene display routes
  */

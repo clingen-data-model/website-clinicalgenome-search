@@ -14,7 +14,7 @@
 				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
 				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br />Clinical Actionability<br />Assertions</li>
 				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->nvariant }}</span><br />Variant Pathogenicity<br />Assertions</li>
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPIC / PharmGKB<br />Annotations</li>
+				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPIC / PharmGKB<br />High Level Records</li>
 				@if ($follow)
 				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
 				@else

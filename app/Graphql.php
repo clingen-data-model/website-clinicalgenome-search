@@ -2369,6 +2369,16 @@ class Graphql
 
 		$collection = collect();
 
+		if ($search == '*')
+		{
+			$array = [['label' => 'All Genes (*)',
+						'short' => 'All Genes',
+						'curated' => 2,
+						'hgncid' => '*'
+						]];
+			return json_encode($array);	
+		}
+
 		$query = '{
 				suggest(contexts: ALL, suggest: GENE, text: "'
 				. $search . '") {
@@ -2392,6 +2402,8 @@ class Graphql
 			$ctag = (empty($record->curations) ? '' : '        CURATED');
 			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
 							. $ctag,
+						'short' => $record->text,
+						'curated' => !empty($record->curations),
 						'hgncid' => $record->alternative_curie
 						];
 		}

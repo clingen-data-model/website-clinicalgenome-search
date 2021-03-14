@@ -15,7 +15,9 @@
                         <dt>Stop Date</dt>
                         <dd>{{ $param['stop_date'] }}</dd>
                         <dt>Genes</dt>
-                        <dd>{{ implode(', ', $param['genes']) }}</dd>
+                        <dd>
+                            {{ implode(', ', $param['genes']) == '*' ? 'All Genes' :  implode(', ', $param['genes']) }}
+                        </dd>
                     </dl>
                 </div>
                 @endforeach

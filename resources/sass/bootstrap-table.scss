@@ -50,3 +50,18 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
 .fixed-table-toolbar .search-input {
   min-width: 300px;
 }
+
+.dosage-row-bottom {
+    background-color: white;
+    border-bottom: 2px solid blue;
+    border-left: 2px solid blue;
+    border-right: 2px solid blue;
+
+}
+
+.dosage-row-top {
+    background-color: white;
+    border-top: 2px solid blue;
+    border-left: 2px solid blue;
+    border-right: 2px solid blue;
+}

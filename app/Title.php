@@ -92,6 +92,9 @@ class Title extends Model
 	];
 
     public const STATUS_INITIALIZED = 0;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_LOCKED = 2;
+
 
     /*
      * Status strings for display methods
@@ -143,6 +146,42 @@ class Title extends Model
 	public function scopeIdent($query, $ident)
     {
 		return $query->where('ident', $ident);
+    }
+
+
+    /**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeSystem($query)
+    {
+		return $query->where('type', self::TYPE_SYSTEM_NOTIFICATIONS);
+    }
+
+
+    /**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeExpire($query, $days)
+    {
+		return $query->where('created_at', '<', Carbon::now()->subDays($days)->toDateTimeString());
+    }
+
+
+    /**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUnlocked($query)
+    {
+		return $query->where('status', self::STATUS_ACTIVE);
     }
 
 
@@ -206,8 +245,15 @@ class Title extends Model
      */
     public function run()
     {
+        //$changes = Change::start($this->start_date)->stop($this->stop_date)->filters($this->filters)->get();
 
-        $changes = Change::start($this->start_date)->stop($this->stop_date)->filters($this->filters)->get();
+        $changes = collect();
+
+        foreach ($this->reports as $report)
+        {
+            $newchanges = $report->run();
+            $changes = $changes->concat($newchanges);
+        }
 
         return $changes;
     }

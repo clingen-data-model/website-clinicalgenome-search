@@ -66,6 +66,8 @@
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
 	<link href="/css/gijgo.min.css" rel="stylesheet">
+	<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
+
     <style>
         .profile-background
         {
@@ -110,6 +112,12 @@
 		.folder-effects:hover .size {
 			opacity: 0.7;
 		}
+		.selector {
+			width: 100%;
+		}
+		.bootstrap-tagsinput {
+ 			 width: 100% !important;
+		}
     </style>
     
 @endsection
@@ -134,7 +142,7 @@
 <script src="/js/gijgo.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
-
+<script src="/js/bootstrap-tagsinput.min.js"></script>
 <script src="/js/genetable.js"></script>
 <script src="/js/edit.js"></script>
 
@@ -181,7 +189,75 @@
 		});
 		
 
-		$('.action-remove-report').on('click', function() {
+		$('#report-view').on('click', '.action-unlock-report', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			var row = $(this).closest('tr').attr('data-index');
+
+			var obj = $(this);
+
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+					'X-CSRF-TOKEN' : window.token,
+					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+				}
+			});
+
+			var url = "/api/reports/unlock";
+			
+			//submits to the form's action URL
+			$.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
+			{
+				obj.removeClass('action-unlock-report').addClass('action-lock-report').html('<i class="fas fa-unlock" style="color:lightgray"></i>');
+
+				
+			}).fail(function(response)
+			{
+				alert("Error following gene");
+			});
+		});
+
+
+		$('#report-view').on('click', '.action-lock-report', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			var row = $(this).closest('tr').attr('data-index');
+
+			var obj = $(this);
+
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+					'X-CSRF-TOKEN' : window.token,
+					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+				}
+			});
+
+			var url = "/api/reports/lock";
+
+			//submits to the form's action URL
+			$.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
+			{
+				obj.removeClass('action-lock-report').addClass('action-unlock-report').html('<i class="fas fa-lock" style="color:red"></i>');
+
+				
+			}).fail(function(response)
+			{
+				alert("Error following gene");
+			});
+		});
+
+
+		$('#report-view').on('click', '.action-remove-report', function() {
 
 			var uuid = $(this).attr('data-uuid');
 
@@ -710,6 +786,7 @@
 		}
 	});
 
+
 	// fix for bootstrap 3 limitation of dropdowns within a constrained area
     $(document).on('click', '.native-table [data-toggle="dropdown"]', function () {
         $buttonGroup = $(this).parent();
@@ -810,6 +887,28 @@
 		$('#follow_form').submit();
 		
       });
+
+
+	  $('#selected-genes').tagsinput({
+		tagClass: function(item) {
+			//console.log(item)
+			switch (item.curated) {
+				case true   : return 'label label-primary';
+				case false  : return 'label label-default';
+				case 2: return 'label label-danger';
+				default: return 'label label-primary';
+			}
+		},
+		itemValue: 'hgncid',
+		itemText: 'short',
+  		typeaheadjs: {
+    		name: 'followtermGene',
+    		displayKey: 'short',
+    		//valueKey: 'short',
+			//value: 'hgncid',
+    		source: followtermGene
+		  }
+		});
 
 	  function formatSymbol(value, row, index)
 	  {

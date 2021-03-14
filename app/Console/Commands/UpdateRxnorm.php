@@ -61,7 +61,7 @@ class UpdateRxnorm extends Command
 
                 $value = explode(",", $line);
 
-                echo $value[38] . " " . $value[1] . "\n";
+                //echo $value[38] . " " . $value[1] . "\n";
 
                 //$issue = Iscamap::updateOrCreate(['symbol' => trim($value[0])], ['issue' => trim($value[1])] );
                 $flags = ['actionability' => null,

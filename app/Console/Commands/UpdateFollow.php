@@ -3,12 +3,17 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 use DB;
 use Carbon\Carbon;
 
 use App\Gene;
 use App\User;
+use App\Title;
+use App\Report;
+
+use App\Mail\NotifyFrequency;
 
 class UpdateFollow extends Command
 {
@@ -51,36 +56,47 @@ class UpdateFollow extends Command
 
         foreach ($users as $user)
         {
-            // has last_updated changed in the past 24 hours?
-            foreach ($user->genes as $gene)
+            // clean up old reports
+            $oldreports = $user->titles()->system()->unlocked()->expire(30)->get();
+            foreach ($oldreports as $oldreport)
+                $oldreport->delete();
+
+            $notify = $user->notification;
+            if ($notify === null)
+                continue;
+
+            $lists = $notify->toReport();
+
+            if (empty($lists))
+                continue;
+
+            $title = new Title(['type' => 1, 'title' => 'ClinGen Followed Genes Notification', 'status' => 1]);
+
+            $user->titles()->save($title);
+
+            foreach ($lists as $list)
             {
-                $last = Carbon::parse($gene->date_last_curated);
-                $now = Carbon::now();
-
-                $diff = $last->diffInHours($now);
-                echo $gene->date_last_curated . " -- $diff" . "\n";
-
-                // retrieve the frequency values for this user
-                $notification = $user->notification;
-
-                $time = ($notification->frequency['frequency'] ?? Notification::FREQUENCY_DAILY);
-
-                $time = $notification->toHours($time);
-                
-                if ($diff < $time)
-                {
-                    $history[] = "Gene " . $gene->name . " changed in the past 24 hours";
-                }
+                $report = new Report($list);
+                $report->type = 1;
+                $report->status = 1;
+                $report->user_id = $user->id;
+                $title->reports()->save($report);
             }
 
-            // if there is something to report, send out
-            if (!empty($history))
+            $changes = $title->run();
+
+            if ($changes->isNotEmpty())
             {
-                // send the email
+                $user->titles()->save($title);
+                $genes = [  'ABCD',
+                            'KFR',
+                            'SMAD3'];
+
+                // send out notification (TODO move this to a queue and link into preferences)
                 Mail::to($user)
-                       // ->cc($moreUsers)
-                       // ->bcc($evenMoreUsers)
-                        ->send(new NotifyFrequency(['notes' => $history, 'name' => $user->name]));
+                // ->cc($moreUsers)
+                // ->bcc($evenMoreUsers)
+                    ->send(new NotifyFrequency(['report' => $title->ident, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }
     }

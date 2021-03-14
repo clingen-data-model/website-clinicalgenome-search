@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
 use Illuminate\Support\Facades\Http;
 
+use Illuminate\Support\Facades\Mail;
+
 
 use App\GeneLib;
 use App\Jira;
@@ -17,6 +19,8 @@ use App\Report;
 use App\Title;
 use App\Notification;
 use App\Actionability;
+
+use App\Mail\NotifyFrequency;
 //use App\Neo4j;
 
 class TestController extends Controller
@@ -42,12 +46,16 @@ class TestController extends Controller
 
 		//$response = Neo4j::geneList(['pagesize' => null])
 
-		$issue = Jira::getIssue('ISCA-46304', null);
-		$history = Jira::getHistory($issue);
-		dd($history);
+		//$history = 'my history notes';
+		//$user = User::find(8);
 
-
-$query = <<<GQL
+		// send out notification (TODO move this to a queue)
+		//Mail::to($user)
+			// ->cc($moreUsers)
+			// ->bcc($evenMoreUsers)
+	//		->send(new NotifyFrequency(['notes' => $history, 'name' => $user->name, 'content' => 'this is the custom message']));
+	//return;
+/* $query = <<<GQL
 {
 	genes(limit: null) {
 		count
@@ -73,14 +81,14 @@ try {
 } catch (Exception $e) {
 	die ("exception");
 
-}
+}*/
 
 /*
 Illuminate\Http\Client\ConnectionException
 cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) 
 */
 
-dd($response->json());
+//dd($response->json());
 
 		$users = User::has('genes')->with('genes')->get();
 		$a = new Report();
@@ -108,8 +116,9 @@ dd($response->json());
 				$report->user_id = $user->id;
 				$title->reports()->save($report);
 			}
-			
-			
+			//dd($title->reports);
+			$a = $title->run();
+			dd($a);
 		}
 
 		/*$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');

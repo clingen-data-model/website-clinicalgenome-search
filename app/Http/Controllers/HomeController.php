@@ -72,7 +72,7 @@ class HomeController extends Controller
 
         $total = $genes->count();
         $curations = $genes->sum(function ($gene) {
-                        return (int) in_array(true, $gene->activity);
+                        return (int) ($gene->activity === null ? 0 : in_array(true, $gene->activity));
                     });
         $recent = $genes->sum(function ($gene) {
                         if ($gene->date_last_curated === null)
@@ -225,17 +225,80 @@ class HomeController extends Controller
 
         $reports = $records;
 
-        $total = $genes->count();
-        $curations = $genes->sum(function ($gene) {
-                        return (int) in_array(true, $gene->activity);
+        if (Auth::guard('api')->check())
+        {
+            $total = $genes->count();
+            $curations = $genes->sum(function ($gene) {
+                        return (int) ($gene->activity === null ? 0 : in_array(true, $gene->activity));
                     });
-        $recent = $genes->sum(function ($gene) {
+            $recent = $genes->sum(function ($gene) {
                         if ($gene->date_last_curated === null)
                             return 0;
 
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
+        }
+        else
+        {
+            $genes = null;
+            $total = 0;
+            $curations = 0;
+            $recent = 0;
+        }
+
+        return view('dashboard.run', compact('display_tabs', 'genes', 'total', 'curations',
+                        'recent', 'user', 'reports', 'title', 'params'));
+    }
+
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function view(Request $request, $id = null)
+    {
+
+        $display_tabs = collect([
+            'active' => "home",
+            'title' => "Dashboard"
+        ]);
+
+        $records = new Collection;
+        $params = [];
+
+        $title = Title::where('ident', $id)->first();
+        
+        if ($title !== null)
+        {
+            foreach($title->reports as $report)
+            {
+                $changes = $report->run();
+
+                if ($changes->isNotEmpty())
+                    foreach($changes as $change)
+                    {
+                        $records->push($change);
+                    }
+
+                // it is eaaier to catch the parameters here than in the view
+                $params[] = ['start_date' => $report->start_date, 'stop_date' => $report->stop_date,
+                            'genes' => $report->filters['gene_label']];
+            }
+
+            // update last run date
+            $title->update(['last_run_date' => Carbon::now()]);
+
+        }
+
+        $reports = $records;
+
+        $genes = null;
+        $total = 0;
+        $curations = 0;
+        $recent = 0;
+        $user = null;
 
         return view('dashboard.run', compact('display_tabs', 'genes', 'total', 'curations',
                         'recent', 'user', 'reports', 'title', 'params'));
@@ -260,12 +323,30 @@ class HomeController extends Controller
 
         $user = Auth::guard('api')->user();
 
+        // map any hgnc_id values to gene names;
+        $genenames = explode(',', $input['genes']);
+        $newgenes = [];
+
+        foreach ($genenames as $genename)
+        {
+            if (strpos($genename, 'HGNC') === 0)
+            {
+                $gene = Gene::hgnc($genename)->first();
+                if ($gene !== null)
+                    $newgenes[] = $gene->name;
+            }
+            else
+                $newgenes[] = $genename;
+        }
+
         $title = new Title(['title' => $input['title'], 'description' => $input['description'],
                             'type' => Title::TYPE_USER, 'status' => 1]);
 
         $report = new Report(['start_date' => Carbon::parse($input['startdate']), 'stop_date' => Carbon::parse($input['stopdate'])->setTime(23, 59, 59),
                                 'type' => Title::TYPE_USER, 'status' => 1, 'user_id' => $user->id]);
-        $report->filters = ['gene_label' => explode(',', $input['genes'])];
+
+        $report->filters = ['gene_label' => $newgenes];
+
         $user->titles()->save($title);
         $title->reports()->save($report);
             

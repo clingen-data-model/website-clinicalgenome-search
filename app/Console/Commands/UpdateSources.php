@@ -55,9 +55,9 @@ class UpdateSources extends Command
           $this->call('update:map');        // local file
           $this->call('update:ratings');    // DCI (Jira)
           //$this->call('update:region');     // local file
-          $this->call('update:disease');    // Genephaph
-          $this->call('update:rxnorm');       // Local file from bioontology
+          $this->call('update:disease');    // Genephap
           $this->call('update:changes');
+          $this->call('update:follow');
           $this->call('run:metrics');       // Daily stats
           break;
         case 'weekly':
@@ -72,6 +72,7 @@ class UpdateSources extends Command
           break;
         case 'monthly':
           $this->call('update:acmg59');     // local file
+          $this->call('update:rxnorm');       // Local file from bioontology
           break;
         case 'init': 
           $this->call('update:acmg59c');     // local file
