@@ -30,7 +30,6 @@ class FollowController extends Controller
         }
         else
         {
-            die("a");
             // is this an existing user?
             $user = User::where('email', $input["email"])->first();
 
@@ -58,6 +57,34 @@ class FollowController extends Controller
         }
 
         // find the gene
+
+        // handle group expressions
+        if ($input['gene'] == "*")
+        {
+            $notify = $user->notification;
+
+            if (empty($notify->frequency['Groups']))
+            {
+                $frequency = $notify->frequency;
+                $frequency['Groups'] = ['AllGenes'];
+                $notify->frequency = $frequency;
+            }
+            else
+            {
+                $frequency = $notify->frequency;
+                if (!in_array('AllGenes', $frequency['Groups']))
+                    $frequency['Groups'][] = 'AllGenes';
+                $notify->frequency = $frequency;
+            }
+                
+            $notify->addDefault($input['gene']);
+            $notify->save();
+            return response()->json(['success' => 'true',
+								 'status_code' => 200,
+							 	 'message' => 'Gene Followed'],
+							 	 200)->withCookie(cookie('clingenfollow',$user->device_token, 0));
+        }
+
         $gene = Gene::hgnc($input['gene'])->first();
 
         if ($gene === null)
@@ -128,6 +155,21 @@ dd("not logged in");  }*/
                                     'message' => "User Lookup Error"],
                                     502);
        
+        if ($input['gene'] == "*")
+        {
+            $notify = $user->notification;
+
+            $frequency = $notify->frequency;
+            $frequency['Groups'] = [];
+            $notify->frequency = $frequency;
+                
+            $notify->save();
+            return response()->json(['success' => 'true',
+								 'status_code' => 200,
+							 	 'message' => 'Gene UnFollowed'],
+							 	 200);
+        }
+
         $gene = Gene::hgnc($input['gene'])->first();
 
         if ($gene === null)

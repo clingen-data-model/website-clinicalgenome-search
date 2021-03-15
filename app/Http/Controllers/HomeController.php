@@ -63,6 +63,19 @@ class HomeController extends Controller
         }
 
 //dd($notification);
+
+    // tack on group display.  For now, only All Genes is supported
+    if (isset($user->notification->frequency['Groups']) && in_array('AllGenes', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Genes",
+                            'hgnc_id' => '*',
+                           'activity' => ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+        
+        $genes->prepend($group);
+    }
+
     $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
     $user_reports = $reports->where('type', Title::TYPE_USER)->count();
     $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
