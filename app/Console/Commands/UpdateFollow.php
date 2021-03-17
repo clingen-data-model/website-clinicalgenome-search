@@ -88,15 +88,22 @@ class UpdateFollow extends Command
             if ($changes->isNotEmpty())
             {
                 $user->titles()->save($title);
-                $genes = [  'ABCD',
-                            'KFR',
-                            'SMAD3'];
+                $genes = $changes->pluck('element.name')->unique();
+
+                // override the primary
+                if (!empty($notify->primary['email']))
+                    $user->email = $notify->primary['email'];
 
                 // send out notification (TODO move this to a queue and link into preferences)
-                Mail::to($user)
-                // ->cc($moreUsers)
-                // ->bcc($evenMoreUsers)
-                    ->send(new NotifyFrequency(['report' => $title->ident, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
+                $mail = Mail::to($user);
+
+                if (!empty($notify->secondary['email']))
+                {
+                    $cc = preg_split('/[\s,;]+/', $notify->secondary['email']);
+                    $mail->cc($cc);
+                }
+                    
+                $mail->send(new NotifyFrequency(['report' => $title->ident, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }
     }

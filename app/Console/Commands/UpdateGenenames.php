@@ -53,7 +53,8 @@ class UpdateGenenames extends Command
 			
 		try {
 					
-			$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            //$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            $results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
 
 		} catch (\Exception $e) {
 		

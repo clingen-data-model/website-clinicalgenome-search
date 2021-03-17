@@ -1,6 +1,6 @@
 @extends('mail.layout.default')
 
-@section('headling')
+@section('heading')
 
 	<h4>Changes have occured on the following genes:</h4>
 	@foreach ($genes as $gene)
