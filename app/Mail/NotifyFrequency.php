@@ -32,7 +32,7 @@ class NotifyFrequency extends Mailable
     {
         return $this->view('mail.dashboard.change-notification')
                     ->from(['address' => 'noreply@ne.clinicalgenome.org', 'name' => 'ClinGen Followed Genes Notification'])
-                    ->subject('New Gene Notifications for 3/13/2021')
+                    ->subject('New Gene Notifications for ' . $this->attributes['date'])
                     ->with($this->attributes);
     }
 }

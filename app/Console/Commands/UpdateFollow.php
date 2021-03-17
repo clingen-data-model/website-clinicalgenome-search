@@ -97,13 +97,15 @@ class UpdateFollow extends Command
                 // send out notification (TODO move this to a queue and link into preferences)
                 $mail = Mail::to($user);
 
+                $date = Carbon::now()->yesterday()->format('m/d/Y');
+
                 if (!empty($notify->secondary['email']))
                 {
                     $cc = preg_split('/[\s,;]+/', $notify->secondary['email']);
                     $mail->cc($cc);
                 }
                     
-                $mail->send(new NotifyFrequency(['report' => $title->ident, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
+                $mail->send(new NotifyFrequency(['report' => $title->ident, 'date' => $date, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }
     }
