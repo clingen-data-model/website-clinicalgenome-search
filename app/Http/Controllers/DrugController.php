@@ -59,12 +59,15 @@ class DrugController extends Controller
             'title' => "Drugs"
         ]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+		
 		return view('drug.index', compact('display_tabs'))
 						->with('apiurl', '/api/drugs')
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('search', $search)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 

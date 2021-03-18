@@ -212,6 +212,7 @@
             @yield('modals')
             @include('modals.login')
             @include('modals.register')
+            @include('modals.forgot')
           </div>
         </section>
       </main>

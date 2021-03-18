@@ -23,8 +23,10 @@ use Illuminate\Http\Request;
 // Auth routes for passport
 Route::post('login', 'Api\AuthController@login');
 Route::post('logout', 'Api\AuthController@logout');
+Route::post('forgot', 'Api\AuthController@forgot');
 Route::post('register', 'Api\AuthController@register');
 Route::post('profile', 'Api\SettingsController@update');
+Route::post('change-password', 'Api\AuthController@change_password');
 
 // reports
 Route::post('reports/remove', 'Api\SettingsController@remove');

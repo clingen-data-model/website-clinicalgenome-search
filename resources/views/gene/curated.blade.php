@@ -152,6 +152,22 @@
   /*
   **  Filter control for follow mode
   */
+	$('#curated-filter-dashboard').on('login', function() {
+    $(this).show();
+  });
+
+
+  /*
+  **  Filter control for follow mode
+  */
+	$('#curated-filter-dashboard').on('logout', function() {
+    $(this).hide();
+  });
+
+
+  /*
+  **  Filter control for follow mode
+  */
 	$('.action-show-follow').on('click', function() {
 
     if ($(this).hasClass('fa-toggle-off'))

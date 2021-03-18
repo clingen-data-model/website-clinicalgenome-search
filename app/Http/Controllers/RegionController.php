@@ -111,7 +111,9 @@ class RegionController extends Controller
 			} catch (ClientException $e) {
 				$region = 'INVALID';
 			}
-		}
+        }
+        
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('region.search', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -121,6 +123,7 @@ class RegionController extends Controller
 						->with('apiurl', '/api/region/search/' . $type . '/' . $region)
 						->with('pagesize', $size)
 						->with('page', $page)
-						->with('user', $this->user);
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
     }
 }

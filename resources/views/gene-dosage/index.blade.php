@@ -557,6 +557,16 @@
 					visible: false
 				},
 				{
+					title: 'Haplo Disease ID',
+					field: 'haplo_disease_id',
+					//formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true,
+					visible: false
+				},
+				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Triplosensitivity score"></i></div>TS Score',
 					field: 'triplo_assertion',
 					formatter: triploFormatter,
@@ -568,6 +578,16 @@
 				{
 					title: 'Triplo Disease',
 					field: 'triplo_disease',
+					//formatter: haploFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true,
+					visible: false
+				},
+				{
+					title: 'Triplo Disease ID',
+					field: 'triplo_disease_id',
 					//formatter: haploFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

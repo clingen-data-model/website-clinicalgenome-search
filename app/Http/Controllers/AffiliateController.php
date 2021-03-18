@@ -57,13 +57,18 @@ class AffiliateController extends Controller
             'active' => "validity",
             'title' => "Gene Curation Expert Panels"
         ]);
+
         if (Auth::guard('api')->check())
-        $user = Auth::guard('api')->user();
+            $user = Auth::guard('api')->user();
+
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
         return view('affiliate.index', compact('display_tabs'))
                         ->with('apiurl', $this->api)
                         ->with('pagesize', $size)
                         ->with('page', $page)
-                        ->with('user', $this->user);
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
 
     }
 
@@ -86,11 +91,14 @@ class AffiliateController extends Controller
         if (!ctype_digit($id))
             $id = 0;
 
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
         return view('affiliate.show', compact('display_tabs'))
                         ->with('apiurl', $this->api . "/${id}")
                         ->with('pagesize', $size)
                         ->with('page', $page)
-                        ->with('user', $this->user);
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
     }
 
 }

@@ -37,7 +37,7 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <a href="#!" class="forgot-password-link float-right">Forgot password?</a>
+                        <a href="#!" class="forgot-password-link float-right action-login-forgot">Forgot password?</a>
                       </div>
                     </div>
                     <div class="form-group row">
@@ -45,7 +45,7 @@
                         <button type="submit" class="btn login-btn mb-4">Login</button>
                       </div>
                       <div class="col-md-9">
-                        <div class="d-flex justify-content-center social-buttons mt-1">
+                        <!--<div class="d-flex justify-content-center social-buttons mt-1">
                           or login with
                           <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top" title="Twitter">
                             <i class="fab fa-twitter fa-2x"></i>
@@ -59,7 +59,7 @@
                           <button type="button" class="btn btn-secondary btn-round" data-toggle="tooltip" data-placement="top" title="google">
                             <i class="fab fa-google-plus-square fa-2x"></i>
                           </button>
-                        </div>
+                        </div>-->
                       </div>
                     </div>
                   </form>

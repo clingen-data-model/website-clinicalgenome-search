@@ -63,14 +63,17 @@ class DosageController extends Controller
         $display_tabs = collect([
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
-        ]);
+		]);
+		
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -224,6 +227,8 @@ class DosageController extends Controller
 		session(['dosage_region_search' => $region]);
 		session(['dosage_region_search_type' => $type]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -232,7 +237,8 @@ class DosageController extends Controller
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
 						->with('page', $page)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -288,6 +294,8 @@ class DosageController extends Controller
 			}
 		}
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -296,7 +304,8 @@ class DosageController extends Controller
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
 						->with('page', $page)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
 	
 	
@@ -365,11 +374,14 @@ class DosageController extends Controller
             'title' => "Dosage Sensitivity CNV Curations"
 		]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.cnv', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/cnv')
 						->with('pagesize', $size)
 						->with('page', $page)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
 
 
@@ -390,11 +402,14 @@ class DosageController extends Controller
             'active' => "dosage"
 		]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.acmg59', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/acmg59')
 						->with('pagesize', $size)
 						->with('page', $page)
-                        ->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
 
 }

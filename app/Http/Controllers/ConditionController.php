@@ -73,12 +73,15 @@ class ConditionController extends Controller
             'title' => "ClinGen Diseases"
         ]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('search', $search)
-						->with('user', $this->user);
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 

@@ -10,6 +10,18 @@ $('.action-register-login').on('click', function(){
     $('#modalLogin').modal('show');
 });
 
+// switch between login and register screens
+$('.action-login-forgot').on('click', function(){
+    $('#modalLogin').modal('hide');
+    $('#modalForgot').modal('show');
+});
+
+// switch between register and login screens
+$('.action-forgot-login').on('click', function(){
+    $('#modalForgot').modal('hide');
+    $('#modalLogin').modal('show');
+});
+
 $('.action-logout-now').on('click', function(){
     $('#logout-form').submit();
 });
@@ -41,6 +53,7 @@ $( '#logout-form' ).validate( {
             $('#nav-user-name').html('Member');
             $('#dashboard-menu').hide();
             $('#login-menu').show();
+            $('#curated-filter-dashboard').trigger('logout');
 
             swal({
                 title: "You have logged out!",
@@ -114,6 +127,8 @@ $( '#login-form' ).validate( {
 
             // some pages require a complete reload, so send event
             $('#dashboard-logout').trigger('logout');
+            $('#curated-filter-dashboard').trigger('login');
+
             window.auth = 1;
       }).fail(function(response)
       {
@@ -155,6 +170,76 @@ $( '#login-form' ).validate( {
       $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
     }
 });
+
+
+$( '#forgot-form' ).validate( {
+    submitHandler: function(form) {
+      
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true
+        });
+        
+        var url = "/api/forgot";
+        
+        var formData = $(form).serialize();
+
+        $.post(url, formData, function(response)
+        {
+            Cookies.set('laravel_token', response.access_token);
+
+            $('#modalForgot').modal('hide');
+
+            swal({
+                title: "Password Reset Link Sent!",
+                text: "",
+                type: "success",
+                timer: 2500,
+                buttons: false
+                });
+            
+      }).fail(function(response)
+      {
+        //handle failed validation
+        alert("Error sending link");
+      });
+
+    },
+    rules: {
+      email: {
+        required: true,
+        email: true,
+        maxlength: 80
+      }
+    },
+    messages: {
+      email:  {
+        required: "Please enter your email address",
+        email: "Please enter a valid email address",
+        maxlength: "Section names must be less than 80 characters"
+      },	
+    },
+    errorElement: 'em',
+    errorClass: 'invalid-feedback',
+    errorPlacement: function ( error, element ) {
+      // Add the `help-block` class to the error element
+      error.addClass( "invalid-feedback" );
+
+      if ( element.prop( "type" ) === "checkbox" ) {
+        error.insertAfter( element.parent( "label" ) );
+      } else {
+        error.insertAfter( element );
+      }
+    },
+    highlight: function ( element, errorClass, validClass ) {
+      $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+    }
+});
+
 
 $( '#register-form' ).validate( {
     submitHandler: function(form) {
