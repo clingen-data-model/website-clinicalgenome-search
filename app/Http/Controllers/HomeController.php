@@ -327,7 +327,7 @@ class HomeController extends Controller
     {
 
         $input = $request->only(['title', 'description', 'startdate', 'stopdate',
-                                'genes']);
+                                'genes', 'ident']);
 
         if (!Auth::guard('api')->check())
         {
@@ -352,16 +352,29 @@ class HomeController extends Controller
                 $newgenes[] = $genename;
         }
 
-        $title = new Title(['title' => $input['title'], 'description' => $input['description'],
-                            'type' => Title::TYPE_USER, 'status' => 1]);
+        if (empty($input['ident']))
+        {
+            $title = new Title(['title' => $input['title'], 'description' => $input['description'],
+                                'type' => Title::TYPE_USER, 'status' => 1]);
 
-        $report = new Report(['start_date' => Carbon::parse($input['startdate']), 'stop_date' => Carbon::parse($input['stopdate'])->setTime(23, 59, 59),
-                                'type' => Title::TYPE_USER, 'status' => 1, 'user_id' => $user->id]);
+            $report = new Report(['start_date' => Carbon::parse($input['startdate']), 'stop_date' => Carbon::parse($input['stopdate'])->setTime(23, 59, 59),
+                                    'type' => Title::TYPE_USER, 'status' => 1, 'user_id' => $user->id]);
 
-        $report->filters = ['gene_label' => $newgenes];
+            $report->filters = ['gene_label' => $newgenes];
 
-        $user->titles()->save($title);
-        $title->reports()->save($report);
+            $user->titles()->save($title);
+            $title->reports()->save($report);
+        }
+        else
+        {
+            $title = $user->titles()->ident($input['ident'])->first();
+            $title->update(['title' => $input['title'], 'description' => $input['description']]);
+            $report = $title->reports()->first();
+            $report->update(['start_date' => Carbon::parse($input['startdate']),
+                             'stop_date' => Carbon::parse($input['stopdate'])->setTime(23, 59, 59),
+                             'filters' => ['gene_label' => $newgenes]
+                             ]);
+        }
             
         return redirect('/dashboard');
     }

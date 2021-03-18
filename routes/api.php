@@ -30,6 +30,7 @@ Route::post('profile', 'Api\SettingsController@update');
 Route::post('reports/remove', 'Api\SettingsController@remove');
 Route::post('reports/lock', 'Api\SettingsController@lock');
 Route::post('reports/unlock', 'Api\SettingsController@unlock');
+Route::get('/reports/{id}', 'Api\SettingsController@edit');
 
 
 

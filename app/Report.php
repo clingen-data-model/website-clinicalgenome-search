@@ -54,7 +54,9 @@ class Report extends Model
      * @var array
      */
 	protected $casts = [
-			'filters' => 'array'
+            'filters' => 'array',
+            'start_date' => 'date',
+            'stop_date' => 'date'
 		];
 
     /**
@@ -125,6 +127,38 @@ class Report extends Model
     {
         return $this->belongsTo('App\Title');
     }
+
+
+    /**
+     * Return a displayable string of start_date
+     *
+     * @param
+     * @return string
+     */
+	public function getDisplayStartDateAttribute()
+	{
+		if (empty($this->start_date))
+			return '';
+
+		return $this->start_date->timezone('America/New_York')
+					->format("m/d/Y");
+    }
+    
+
+    /**
+     * Return a displayable string of stop date
+     *
+     * @param
+     * @return string
+     */
+	public function getDisplayStopDateAttribute()
+	{
+		if (empty($this->stop_date))
+			return '';
+
+		return $this->stop_date->timezone('America/New_York')
+					->format("m/d/Y");
+	}
      
 
 	/**

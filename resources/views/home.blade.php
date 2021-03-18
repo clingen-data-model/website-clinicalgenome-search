@@ -178,15 +178,60 @@
 
         $('.action-new-gene').on('click', function() {
 
+			$('#search_form')[0].reset();
             $('#modalSearchGene').modal('show');
 
 		});
 
 		$('.action-new-report').on('click', function() {
 
+			$('#report-form')[0].reset();
 			$('#modalReport').modal('show');
 
 		});
+
+
+		$('#report-view').on('click', '.action-edit-report', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+					'X-CSRF-TOKEN' : window.token,
+					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+				}
+			});
+
+			var url = "/api/reports/" + uuid;
+
+			//submits to the form's action URL
+			$.get(url, function(response)
+			{
+				$('#edit-report-title').html('Edit User Report');
+				$('#report-form').find("[name='title']").val(response.fields.title);
+				$('#report-form').find("[name='description']").val(response.fields.description);
+				$('#report-form').find("[name='startdate']").val(response.fields.startdate);
+				$('#report-form').find("[name='stopdate']").val(response.fields.stopdate);
+				$('#report-form').find("[name='ident']").val(uuid);
+
+				//console.log(response.fields.genes);
+				response.fields.genes.forEach(function(element) {
+					myselect.tagsinput('add', { "hgncid": element.hgnc_id , "short": element.name });
+				});
+
+				$('#modalReport').modal('show');
+
+				
+			}).fail(function(response)
+			{
+				alert("Error following gene");
+			});
+		});
+
 		
 
 		$('#report-view').on('click', '.action-unlock-report', function() {
@@ -888,8 +933,12 @@
 		
       });
 
+	  var myselect = $('#selected-genes');
 
-	  $('#selected-genes').tagsinput({
+	  $(function() {
+		  console.log(myselect);
+	  myselect.tagsinput({
+
 		tagClass: function(item) {
 			//console.log(item)
 			switch (item.curated) {
@@ -909,6 +958,9 @@
     		source: followtermGene
 		  }
 		});
+
+		//myselect.tagsinput('add', { "hgncid": 1 , "short": "Amsterdam"   });
+	  });
 
 	  function formatSymbol(value, row, index)
 	  {

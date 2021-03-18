@@ -10,6 +10,7 @@ use Auth;
 
 use App\User;
 use App\Title;
+use App\Gene;
 
 class SettingsController extends Controller
 {
@@ -210,6 +211,47 @@ class SettingsController extends Controller
         return response()->json(['success' => 'true',
                                 'status_code' => 200,
                                 'message' => "Report Locked"],
+                                200);
+    }
+
+
+    /**
+     * Retrieve for edit report
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function edit(Request $request, $id = null)
+    {
+        if (!Auth::guard('api')->check())
+            return response()->json(['success' => 'false',
+								 'status_code' => 1011,
+							 	 'message' => "Permission Denied"],
+                                  501);
+            
+        $user = Auth::guard('api')->user();
+
+        $title = $user->titles()->ident($id)->first();
+        $report = $title->reports()->first();
+        $list = $report->filters['gene_label'];
+        $genes = Gene::select('name', 'hgnc_id')->whereIn('name', $list)->get();
+
+        $fields = [ 'title' => $title->title,
+                    'description' => $title->description,
+                    'startdate' => $report->display_start_date,
+                    'stopdate' => $report->display_stop_date,
+                    'genes' => $genes
+        ];
+        
+        if ($report === null)
+            return response()->json(['success' => 'false',
+								 'status_code' => 1012,
+							 	 'message' => "Permission Denied"],
+                                  501);
+
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'fields' => $fields,
+                                'message' => "OK"],
                                 200);
     }
 

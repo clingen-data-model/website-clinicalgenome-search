@@ -92,6 +92,9 @@
                         <td>{{ $report->display_created_date }}</td>
                         <td>{{ $report->display_last_date }}</td>
                         <td>
+                            @if ($report->type == App\Title::TYPE_USER)
+                                <span class="action-edit-report mr-2" data-uuid="{{ $report->ident }}" title="Edit Report"><i class="fas fa-edit" style="color:black"></i></span>
+                            @endif
                             @if ($report->status == App\Title::STATUS_ACTIVE)
                                 <span class="action-lock-report mr-2" data-uuid="{{ $report->ident }}" title="Lock Report"><i class="fas fa-unlock" style="color:lightgray"></i></span>
                             @else

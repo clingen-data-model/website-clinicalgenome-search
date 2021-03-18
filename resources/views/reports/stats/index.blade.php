@@ -5,7 +5,7 @@
 	<div class="row justify-content-center">
       <div class="col-md-12 curated-genes-table mt-3 mb-3">
         <h1 class="h1 p-0 m-0 float-left">ClinGen Summary Statistics</h1>
-        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="" style="color: #7a0000">{{ $metrics->display_date_time }}</span></em></strong></h6>
+        <h6 class="h6 float-right mt-3"><strong><em>Last updated: <span class="" style="color: #7a0000">{{ $metrics->display_date_time ?? '' }}</span></em></strong></h6>
 
       <div class="row">
         <div class="col-sm-12 mt-4 mb-1">

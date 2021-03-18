@@ -6,10 +6,11 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true"><i class="far fa-times-circle" style="color:#fff !important;"></i></span>
 					</button>
-					<h3 class="modal-title text-white">New User Report</h3>
+					<h3 id="edit-report-title" class="modal-title text-white">New User Report</h3>
 				</div>
 				<form class="form-horizontal" id="report-form" method="POST" action="/dashboard/reports">
 					@csrf
+					<input type="hidden" name="ident" value="">
 					<div class="modal-body">
 						<div class="row mb-3">
 							<div class="col-md-12">
@@ -38,7 +39,7 @@
 									<div class="form-group">
 										<label for="inputEmail3" class="col-sm-2 control-label">Genes</label>
 										<div class="col-sm-9">
-											<input id="selected-genes" type="text" class="form-control selector" data-role="tagsinput" name="genes" value="" placeholder="">
+											<input id="selected-genes" type="text" class="form-control selector" data-role="tagsinput abc" name="genes" value="" placeholder="">
 										</div>
 									</div>
 							</div><!-- /.col-lg-8 -->				
