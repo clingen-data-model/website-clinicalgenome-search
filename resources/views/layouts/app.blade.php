@@ -144,7 +144,7 @@
               <ul class="dropdown-menu">
                 <li><a class="" href="{{ route('variant-path-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
                 <li class="divider"></li><li>
-                <li><a href="{{ route('download-index') }}#variant"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
+                <li><a href="{{ route('download-index') }}#section_variant"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
               </ul>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "stats") active @endif ">
