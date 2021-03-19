@@ -28,7 +28,7 @@
                               m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
      ga('create', 'UA-49947422-1', 'auto');
-     ga('set', 'dimension7', 'KB Curations - Index');  
+     ga('set', 'dimension7', 'KB Curations - Index');
      //Page type
      ga('send', 'pageview');
     </script>
@@ -90,7 +90,7 @@
           @isset($display_tabs['active'])
 
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1 ">
-            
+
             <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
               <a class="nav-link" href="{{ route('gene-curations') }}">
                 All Curated Genes
@@ -105,7 +105,8 @@
                 <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
                 <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
                 <li class="divider"></li>
-                <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
+                <li><a href="{{ route('download-index') }}/#section_gene-disease-validity"><i class="fas fa-download"></i> File Downloads</a></li>
+                {{-- <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li> --}}
               </ul>
             </li>
             <li class="nav-item dropdown @if ($display_tabs['active'] == "dosage") active @endif ">
@@ -117,19 +118,34 @@
                 {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
                 <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
                 <li class="divider"></li>
-                <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
-                <li><a href="{{ route('dosage-ftp') }}"><i class="fas fa-external-link-alt"></i> FTP File Downloads (BED, TSV)</a></li>
+                {{-- <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li> --}}
+                <li><a href="{{ route('download-index') }}/#section_dosage"><i class="fas fa-download"></i> FTP File Downloads (CVS, BED, TSV)</a></li>
               </ul>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
-              <a class="nav-link" target="external-actionability" href="{{ route('actionability-index') }}">
-                Clinical Actionability <i class="fas fa-external-link-alt small"></i>
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "actionability") active @endif ">
+              <a class="nav-link  dropdown-toggle" target="external-actionability" href="{{ route('actionability-index') }}" aria-haspopup="true" aria-expanded="false">
+                Clinical Actionability
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('dosage-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
+                {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
+                <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ">Curations in Adult Context <i class="fas fa-external-link-alt small"></i></a></li>
+                <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ">Curations in Pediatric Context <i class="fas fa-external-link-alt small"></i></a></li>
+                <li><a class="" target="external-actionability" href="https://www.clinicalgenome.org/docs/semi-quantitative-scoring-metric/">Scoring Metric <i class="fas fa-external-link-alt small"></i></a></li>
+                <li class="divider"></li>
+                <li><a href="{{ route('download-index') }}/#section_actionability"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
+              </ul>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
-              <a class="nav-link" target="external-erepo" href="{{ route('variant-path-index') }}">
-                Curated Variants <i class="fas fa-external-link-alt small"></i>
+
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "variant") active @endif ">
+              <a class="nav-link  dropdown-toggle" target="external-erepo" href="{{ route('variant-path-index') }}" aria-haspopup="true" aria-expanded="false">
+                Curated Variant
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('variant-path-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
+                <li class="divider"></li><li>
+                <li><a href="{{ route('download-index') }}#variant"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
+              </ul>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "stats") active @endif ">
               <a class="nav-link" href="{{ route('stats-index') }}">
@@ -147,8 +163,8 @@
                   <li><a class="@if ($display_tabs['active'] == "gene") font-weight-bold @endif" href="{{ route('gene-index') }}">All Genes</a></li>
                   <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
-                  {{-- <li role="separator" class="divider"></li>
-                  <li><a href="#">APIs and Downloads</a></li> --}}
+                  <li role="separator" class="divider"></li>
+                <li><a href="{{ route('download-index') }}"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
                 </ul>
               </li>
 
@@ -258,7 +274,7 @@
           }
         }
     });
-        
+
     </script>
 
     @yield('script_js')
@@ -451,7 +467,7 @@
     {{-- @livewireScripts --}}
 
     <script type="text/javascript">
-      
+
       // Tracking for google of the onclicks
       $( ".externallink" ).on( "click", function() {
           var title = $(this).attr("title");
@@ -478,7 +494,7 @@
           //console.log( title );
           ga('send', 'event', 'track_download_click', 'click', title );
       });
-      
+
     </script>
   </body>
   </html>

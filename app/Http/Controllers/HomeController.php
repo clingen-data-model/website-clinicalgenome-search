@@ -30,7 +30,7 @@ class HomeController extends Controller
             return $next($request);
         });
     }
-    
+
 
     /**
      * Show the application dashboard.
@@ -72,7 +72,7 @@ class HomeController extends Controller
                            'activity' => ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true],
                            'date_last_curated' => Carbon::now()
                            ]);
-        
+
         $genes->prepend($group);
     }
 
@@ -97,6 +97,40 @@ class HomeController extends Controller
 
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
                     'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
+    }
+
+
+    /**
+     * Show the ftp downloads page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function downloads(Request $request)
+    {
+        $filelist = [
+            'ClinGen recurrent CNV .aed file V1.1-hg19.aed',
+            'ClinGen recurrent CNV .aed file V1.1-hg38.aed',
+            'ClinGen recurrent CNV .bed file V1.1-hg19.bed',
+            'ClinGen recurrent CNV .bed file V1.1-hg38.bed',
+            'ClinGen_gene_curation_list_GRCh37.tsv',
+            'ClinGen_gene_curation_list_GRCh38.tsv',
+            'ClinGen_haploinsufficiency_gene_GRCh37.bed',
+            'ClinGen_haploinsufficiency_gene_GRCh38.bed',
+            'ClinGen_region_curation_list_GRCh37.tsv',
+            'ClinGen_region_curation_list_GRCh38.tsv',
+            'ClinGen_triplosensitivity_gene_GRCh37.bed',
+            'ClinGen_triplosensitivity_gene_GRCh38.bed',
+            'README'
+        ];
+
+        // set display context for view
+        $display_tabs = collect([
+            'active' => "more"
+        ]);
+
+        return view('downloads.index', compact('display_tabs'))
+        ->with('filelist', $filelist)
+            ->with('user', $this->user);
     }
 
 
@@ -136,7 +170,7 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
+
         return view('dashboard-preferences', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'notification'));
     }
 
@@ -181,7 +215,7 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
+
         return view('dashboard.reports', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'reports',
                             'system_reports', 'user_reports', 'shared_reports'));
     }
@@ -210,7 +244,7 @@ class HomeController extends Controller
             $genes = $user->genes;
 
             $title = $user->titles->where('ident', $id)->first();
-            
+
             if ($title !== null)
             {
                 foreach($title->reports as $report)
@@ -232,7 +266,7 @@ class HomeController extends Controller
                 $title->update(['last_run_date' => Carbon::now()]);
 
             }
-            
+
 
         }
 
@@ -282,7 +316,7 @@ class HomeController extends Controller
         $params = [];
 
         $title = Title::where('ident', $id)->first();
-        
+
         if ($title !== null)
         {
             foreach($title->reports as $report)
@@ -375,7 +409,7 @@ class HomeController extends Controller
                              'filters' => ['gene_label' => $newgenes]
                              ]);
         }
-            
+
         return redirect('/dashboard');
     }
 
@@ -416,7 +450,7 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
+
         return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));
     }
 
@@ -483,7 +517,7 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
+
         return view('dashboard-preferences', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user', 'notification'));
 
     }
@@ -539,7 +573,7 @@ class HomeController extends Controller
                         $last = new Carbon($gene->date_last_curated);
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
-        
+
         return view('dashboard-profile', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user'));*/
 
     }
