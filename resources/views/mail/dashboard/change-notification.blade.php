@@ -1,11 +1,10 @@
 @extends('mail.layout.default')
 
 @section('heading')
-Changes Notification
+Change Notification
 @endsection
 
 @section('content')
-
 Hello,<br/>
 You are receiving this email because we detected genes you are following have curations which have changed as of XXXXXXXXX . A full reports can be found by clicking the link below or accessing your dashboard.
 <br />
