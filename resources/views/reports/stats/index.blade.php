@@ -120,7 +120,7 @@
             </div>
 
 
-            <div class="col-md-4 col-sm-8">
+            <div class="col-md-offset-2 col-md-4 col-sm-8">
               <div class="panel panel-default border-primary">
                 <div class="panel-body border-bottom-1 p-2">
                   <a href="#variant-pathogenicity" class="pr-2 text-dark ">
@@ -180,7 +180,7 @@
         <div class="row mb-4">
           <div class="col-sm-8 pt-4">
             <h4 class="mb-0">Classification Statistics</h4>
-            <div class="mb-3">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</div>
+            <div class="mb-3"><a href="{{ route('validity-index')}}"  class="text-dark">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</a></div>
             <table class="table table-condensed">
               <tr class="">
                 <td class="col-sm-3 border-0">Definitive</td>
@@ -412,29 +412,35 @@
         <h2 id="dosage-sensitivity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1145/untitled-1_icon-dosage-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Dosage Sensitivity Statistics</h2>
         <p>The ClinGen Dosage Sensitivity curation process collects evidence supporting/refuting the haploinsufficiency and triplosensitivity of genes and genomic regions.</p>
-        <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }} Total Dosage Sensitivity Curations</h4>
+        <h4><a href="{{ route('dosage-index')}}"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }} Total Dosage Sensitivity Curations</a></h4>
         <div class="row text-center mt-4">
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
+                  <a href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
+                  </a>
                 </div>
               </div>
           </div>
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
+                  <a href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_GENES] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Single Genes <br />Evaluated</div>
+                  </a>
                 </div>
               </div>
           </div>
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
+                  <a href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_REGIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Genomic Regions <br />Evaluated</div>
+                  </a>
                 </div>
               </div>
           </div>
@@ -590,45 +596,53 @@
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><h4>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</h4></div>
+          <div class="col-sm-12 text-left"><h4><a href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</a></h4></div>
 
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
+                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
-                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }}
+                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Actionability <br />Reports</div>
+                  </a>
                 </div>
               </div>
           </div>
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
+                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] ?? '' }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Actionability <br />Updated Reports</div>
+                  </a>
                 </div>
               </div>
           </div>
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
+                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Genes Included in <br>Actionability Reports</div>
+                  </a>
                 </div>
               </div>
           </div>
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
+                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] + $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Gene-Disease<br> Pairs</div>
+                  </a>
                 </div>
               </div>
           </div>
@@ -688,7 +702,7 @@
           <div class="col-sm-6">
             <h5 class="mb-0">Adult Context </h4>
 
-              <p>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</p>
+              <p><a href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a></p>
 
               <p><strong>Total Scores Visualized</strong></p>
 
@@ -794,7 +808,7 @@
           <div class="col-sm-6 border-left-1">
             <h5 class="mb-0">Pediatric Context </h4>
 
-              <p>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</p>
+              <p><a href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ" class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a></p>
 
               <p><strong>Total Scores Visualized</strong></p>
             <table class="table table-condensed">
@@ -1073,7 +1087,7 @@
         </div>
 
         @include('reports.stats.includes.pharmacogenomics')
-        
+
       </div>
 		</div>
 	</div>
