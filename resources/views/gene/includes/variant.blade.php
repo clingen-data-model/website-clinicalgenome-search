@@ -10,8 +10,8 @@
                 <thead class="thead-labels">
                     <tr>
                         <th class="col-sm-1 th-curation-group text-left">Gene</th>
-                        <th class="col-sm-4"></th>
-                        <th class="col-sm-2"></th>
+                        <th class="col-sm-5"></th>
+                        <th class="col-sm-1"></th>
                         <th class="col-sm-2">Classification</th>
                         <th class="col-sm-1 text-center">Date</th>
                     </tr>
@@ -21,7 +21,7 @@
                     @foreach($variant_collection as $variant => $variant_count)
                     <tr class="">
                         <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0){{ $record->label  }}@endif</td>
-                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) One or more diseases curated @endif</td>
+                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) Variants approved by ClinGen Variant Curation Expert Panel(s): @endif</td>
                         <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 "></td>
                         <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
                                 <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
