@@ -57,9 +57,9 @@ $( '#logout-form' ).validate( {
 
             swal({
                 title: "You have logged out!",
-                text: "",
-                type: "success",
+                text: " ",
                 timer: 2500,
+                className: "swal-success",
                 buttons: false
                 });
                 
@@ -99,9 +99,9 @@ $( '#login-form' ).validate( {
 
             swal({
                 title: "You are now logged in!",
-                text: "",
-                type: "success",
+                text: " ",
                 timer: 2500,
+                className: "swal-success",
                 buttons: false
                 });
             
@@ -132,8 +132,12 @@ $( '#login-form' ).validate( {
             window.auth = 1;
       }).fail(function(response)
       {
-        //handle failed validation
-        alert("Error Logging in");
+        swal({
+          title: "Error",
+          text: response.responseJSON.message,
+          className: "swal-error",
+          dangerMode: true
+          });
       });
 
     },
@@ -193,9 +197,9 @@ $( '#forgot-form' ).validate( {
 
             swal({
                 title: "Password Reset Link Sent!",
-                text: "",
-                type: "success",
+                text: " ",
                 timer: 2500,
+                className: "swal-success",
                 buttons: false
                 });
             
@@ -262,9 +266,9 @@ $( '#register-form' ).validate( {
 
             swal({
                 title: "You are now logged in!",
-                text: "",
-                type: "success",
+                text: " ",
                 timer: 2500,
+                className: "swal-success",
                 buttons: false                });
                 
             // initialize user and add dashboard menu
@@ -293,8 +297,29 @@ $( '#register-form' ).validate( {
 
         }).fail(function(response)
         {
-            //handle failed validation
-            alert("Error Registering");
+          var errors = response.responseJSON.errors;
+
+          if (errors.hasOwnProperty('email'))
+          {
+            swal({
+              title: "Error",
+              text: "Email address is not available",
+              className: "swal-error",
+              dangerMode: true
+              });
+              return;
+          }
+
+          if (errors.hasOwnProperty('password'))
+          {
+            swal({
+              title: "Error",
+              text: errors.password[0],
+              className: "swal-error",
+              dangerMode: true
+              });
+              return;
+          }
         });
 
     },

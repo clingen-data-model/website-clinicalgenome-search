@@ -832,6 +832,80 @@
 	});
 
 
+	$( '#report-form' ).validate( {
+		submitHandler: function(form) {
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/dashboard/reports";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//$('#report-').bootstrapTable("load", myData);
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalUnFollowGene').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+
 	// fix for bootstrap 3 limitation of dropdowns within a constrained area
     $(document).on('click', '.native-table [data-toggle="dropdown"]', function () {
         $buttonGroup = $(this).parent();
