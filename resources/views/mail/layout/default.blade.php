@@ -119,6 +119,7 @@
 						<table class="footer" align="center" width="570" cellpadding="0" cellspacing="0">
 							<tr>
 								<td class="content-cell" align="center">
+									The information on this website is not intended for direct diagnostic use or medical decision-making without review by a genetics professional. Individuals should not change their health behavior solely on the basis of information contained on this website. If you have questions about the information contained on this website, please see a health care professional.<br />
 									&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.
 								</td>
 							</tr>

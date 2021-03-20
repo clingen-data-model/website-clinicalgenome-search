@@ -168,7 +168,12 @@ Route::group(['prefix' => 'kb/gene-dosage'], function () {
 
 	Route::get('/download', 'DosageController@download')->name('dosage-download');
 
-	Route::get('/ftp', 'DosageController@ftps')->name('dosage-ftp');
+
+	Route::get('/ftp', function () {
+		return redirect(route('download-index'), 301);
+	});
+
+	//Route::get('/ftp', 'DosageController@ftps')->name('dosage-ftp');
 
 	Route::get('/cnv', 'DosageController@cnv')->name('dosage-cnv');
 
@@ -186,6 +191,16 @@ Route::group(['prefix' => 'kb/gene-dosage'], function () {
 Route::group(['prefix' => 'kb/actionability'], function () {
 
 	Route::get('/', 'ActionabilityController@index')->name('actionability-index');
+
+	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
+});
+
+/*
+ * Actionability display routes
+ */
+Route::group(['prefix' => 'kb/downloads'], function () {
+
+	Route::get('/', 'HomeController@downloads')->name('download-index');
 
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });
@@ -214,6 +229,6 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 // Redirect and/or legacy routes
 Route::get('/kb/home', 'HomeController@home');
 
-Route::get('/test', 'TestController@index');
+//Route::get('/test', 'TestController@index');
 
 Auth::routes();

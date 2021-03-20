@@ -64,7 +64,7 @@ class DosageController extends Controller
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
 		]);
-		
+
 		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('gene-dosage.index', compact('display_tabs'))
@@ -91,7 +91,7 @@ class DosageController extends Controller
 										'validity' => true,
 										'dosage' => true
 									]);
-									
+
 		if ($record === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
@@ -165,7 +165,7 @@ class DosageController extends Controller
 		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
-	
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "dosage",
@@ -196,7 +196,7 @@ class DosageController extends Controller
 		]);
 
 		$original = $region;
-		
+
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
 		{
@@ -266,7 +266,7 @@ class DosageController extends Controller
 			return redirect()->route('dosage-index');
 
 		$original = $region;
-		
+
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
 		{
@@ -307,8 +307,8 @@ class DosageController extends Controller
 						->with('user', $this->user)
 						->with('display_list', $display_list);
 	}
-	
-	
+
+
 	/**
      * Download the specified file.
      *
@@ -323,6 +323,7 @@ class DosageController extends Controller
 	}
 
 
+// THIS MOVED TO HOME CONTROLLR AS A CENTRAL LOCATIONS - TODO CLEANUP
 	/**
      * Show the ftp downloads page.
      *
