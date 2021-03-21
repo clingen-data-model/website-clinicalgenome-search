@@ -9,7 +9,7 @@
         <div class="col-md-3 pb-2 folder-effects action-select-folder border">
             <img class="size" src="/assets/images/folder.png">
             <div class="caption center-block" data-type="10">Custom Reports
-                <span class="badge">{{ $user_reports ?? '0' }}</span>
+                <span id="custom-report-count" class="badge">{{ $user_reports ?? '0' }}</span>
             </div>
         </div>
         <div class="col-md-3 pb-2 folder-effects action-select-folder">

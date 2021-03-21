@@ -721,6 +721,8 @@
      		//t.prev().css('border-top', '2px solid blue');
 			t.prev().addClass('dosage-row-top');
 
+			console.log(row);
+
 			//$obj.addClass('detail-table-shade');
 			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
 

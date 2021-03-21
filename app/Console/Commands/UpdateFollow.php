@@ -65,6 +65,9 @@ class UpdateFollow extends Command
             if ($notify === null)
                 continue;
 
+            if ($notify->frequency['global'] == 'off')
+                continue;
+
             $lists = $notify->toReport();
 
             if (empty($lists))
