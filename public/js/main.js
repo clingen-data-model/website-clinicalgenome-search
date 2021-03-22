@@ -402,7 +402,7 @@ $('#register-form').validate({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/pweller/Projects/website-clinicalgenome-search/resources/js/main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! /Users/scottg/SitesDev/website-clinicalgenome-search/resources/js/main.js */"./resources/js/main.js");
 
 
 /***/ })
