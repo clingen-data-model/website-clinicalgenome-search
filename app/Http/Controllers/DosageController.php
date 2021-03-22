@@ -56,13 +56,18 @@ class DosageController extends Controller
     public function index(Request $request, $page = 1, $size = 50)
     {
         // process request args
-		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'sort', 'search','direction', 'col_search', 'col_search_val']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
+		]);
+
+		$col_search = collect([
+			'col_search' => $request->col_search,
+			'col_search_val' => $request->col_search_val,
 		]);
 
 		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
@@ -72,6 +77,7 @@ class DosageController extends Controller
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page)
+						->with('col_search', $col_search)
 						->with('user', $this->user)
 						->with('display_list', $display_list);
     }

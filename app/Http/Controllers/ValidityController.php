@@ -57,7 +57,7 @@ class ValidityController extends Controller
     public function index(Request $request, $page = 1, $size = 50)
     {
 		// process request args
-		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'order', 'sort','search', 'col_search', 'col_search_val']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
@@ -66,12 +66,21 @@ class ValidityController extends Controller
             'title' => "ClinGen Gene-Disease Validity Curations"
         ]);
 
+        $col_search = collect([
+            'col_search' => $request->col_search,
+            'col_search_val' => $request->col_search_val,
+        ]);
+
+
         $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
+        //dd($col_search);
 
 		return view('gene-validity.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page)
+                        ->with('col_search', $col_search)
                         ->with('user', $this->user)
                         ->with('display_list', $display_list);
     }

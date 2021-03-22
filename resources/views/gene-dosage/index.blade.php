@@ -470,12 +470,32 @@
 			return value <= .35;*/
 	}
 
+	var tripChoices=[
+                '0 (No Evidence)',
+                '1 (Little Evidence)',
+                '2 (Emerging Evidence)',
+                '3 (Sufficient Evidence)',
+                '30 (Autosomal Recessive)',
+                '40 (Dosage Sensitivity Unlikely)',
+                'Not Yet Evaluated',
+  ];
+	var hapChoices=[
+                '0 (No Evidence)',
+                '1 (Little Evidence)',
+                '2 (Emerging Evidence)',
+                '3 (Sufficient Evidence)',
+                '30 (Autosomal Recessive)',
+                '40 (Dosage Sensitivity Unlikely)',
+                'Not Yet Evaluated',
+  ];
+
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 			locale: 'en-US',
 			sortName:  "symbol",
 			sortOrder: "asc",
+      filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
 			columns: [
 				{
 					title: '',
@@ -544,6 +564,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
+          filterData: 'var:hapChoices',
+          filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
@@ -573,6 +595,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
+          filterData: 'var:tripChoices',
+          filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
