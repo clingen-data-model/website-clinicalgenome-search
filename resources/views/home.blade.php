@@ -186,6 +186,13 @@
 		$('.action-new-report').on('click', function() {
 
 			$('#report-form')[0].reset();
+
+			// deal with hidden fields
+			$("#report_form input[name=ident]").val('');
+
+			// clear the gene selector
+			myselect.tagsinput('removeAll');
+
 			$('#modalReport').modal('show');
 
 		});
@@ -339,6 +346,10 @@
                             	field: '$index',
                             	values: row
                         	});
+
+							var len = $reporttable.bootstrapTable('getData').length;
+
+							$('#custom-report-count').html(len);
 						}).fail(function(response)
 						{
 							alert("Error following gene");
@@ -796,6 +807,103 @@
 			});
 
 			$('#modalSettings').modal('hide');
+		},
+		rules: {
+			email: {
+				required: true,
+				email: true,
+				maxlength: 80
+			}
+		},
+		messages: {
+			email:  {
+				required: "Please enter your email address",
+				email: "Please enter a valid email address",
+				maxlength: "Section names must be less than 80 characters"
+			},	
+		},
+		errorElement: 'em',
+		errorClass: 'invalid-feedback',
+		errorPlacement: function ( error, element ) {
+			// Add the `help-block` class to the error element
+			error.addClass( "invalid-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+		},
+		unhighlight: function (element, errorClass, validClass) {
+			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+		}
+	});
+
+
+	$( '#report-form' ).validate( {
+		submitHandler: function(form) {
+			$.ajaxSetup({
+				cache: true,
+				contentType: "application/x-www-form-urlencoded",
+				processData: true,
+				headers:{
+					'X-Requested-With': 'XMLHttpRequest',
+    				'X-CSRF-TOKEN' : window.token,
+    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+   				}
+			});
+
+			var url = "/dashboard/reports";
+			
+			var formData = $(form).serialize();
+
+			//submits to the form's action URL
+			$.post(url, formData, function(response)
+			{
+				//$('#report-').bootstrapTable("load", myData);
+		
+				/*if (response['message'])
+				{
+					swal("Done!", response['message'], "success")
+						.then((answer2) => {
+							if (answer2){*/
+								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
+							/*}
+					});
+				}*/
+
+				// for now, only user folders can be edited
+				var url = "/api/home/reports/10";
+				
+				//submits to the form's action URL
+				$.get(url, function(response)
+				{
+					console.log(response.data);
+					$('#table').bootstrapTable('load', response.data);
+					$('#table').bootstrapTable("resetSearch","");
+
+					// reset folder count
+					$('#custom-report-count').html(response.data.length);
+
+				}).fail(function(response)
+				{
+					alert("Error reloading table");
+				});
+			//var data = [{ title: "New Title", type: "Notification", display_created: "today", display_last: "yester_day", remove: 1, ident: "12345"}]
+			
+			//$('#table').bootstrapTable({ data: data });
+			//$('#table').bootstrapTable('load', data);
+			//clear the search
+			}).fail(function(response)
+			{
+				//handle failed validation
+				alert("Error following gene");
+			});
+
+			$('#modalReport').modal('hide');
 		},
 		rules: {
 			email: {

@@ -45,7 +45,7 @@
 			</button>
 		</div>
 		<div class="col-md-12 light-arrows dark-table">
-				@include('_partials.genetable')
+				@include('_partials.genetable', ['expand' => true])
 
 		</div>
 	</div>
@@ -677,10 +677,51 @@
 		})
 
 		$table.on('post-body.bs.table', function (e, name, args) {
-			console.log("post body fired");
+			//console.log("post body fired");
 
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+
+		$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
+			//console.log(e);
+			event.preventDefault();
+			event.stopPropagation();
+			event.stopImmediatePropagation();
+
+		});
+
+		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+			// split the object
+			$obj.attr('colspan',12);
+			//$obj.css('background-color', '#f5f5f5');
+			/*if (row.type == 0)
+				$obj.before('<td class="gene"></td>');
+			else
+				$obj.before('<td class="region"></td>');*/
+
+			var t = $obj.closest('tr');
+
+			t.addClass('dosage-row-bottom');
+			//t.css('border-bottom', '2px solid blue');
+     		//t.prev().css('border-top', '2px solid blue');
+			t.prev().addClass('dosage-row-top');
+
+			if (row.hgnc_id == null)
+				$obj.load( "/api/dosage/expand/" + row.isca );
+			else
+				$obj.load( "/api/dosage/expand/" + row.hgnc_id );
+
+			return false;
+		})
+
+		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+			$obj.closest('tr').prev().removeClass('dosage-row-top');
+
+			return false;
+		});
 
 	}
 

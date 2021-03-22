@@ -85,7 +85,7 @@ class AuthController extends Controller
         ]);
 
         if (!auth()->attempt($loginData)) {
-            return response(['message' => 'Access credentials rejected'], 400);
+            return response()->json(['message' => 'Your username or password is incorrect'], 400);
         }
 
         $accessToken = auth()->user()->createToken('authToken')->accessToken;
@@ -120,7 +120,6 @@ class AuthController extends Controller
 
     public function logout (Request $request)
     {
-        dd($request);
         $accessToken = auth()->user()->token();
         $token= $request->user()->tokens->find($accessToken);
         $token->revoke();

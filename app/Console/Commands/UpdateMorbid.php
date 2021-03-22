@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Setting;
 
 use App\Gene;
+use App\Morbid;
 
 class UpdateMorbid extends Command
 {
@@ -60,7 +61,9 @@ class UpdateMorbid extends Command
 			echo "\n(E001) Error retreiving Omim Morbid data\n";
 			exit;
 		}
-	
+    
+        Morbid::query()->forceDelete();
+
         $line = strtok($results, "\n");
         
         while ($line !== false)
@@ -68,20 +71,56 @@ class UpdateMorbid extends Command
 
                 $value = explode("\t", $line);
 
-                if (strpos($value[0], '#') !== 0)
+                if (strpos($value[0], '#') === 0)
                 {
-
-                    $genes = $value[1];
-
-                    foreach (explode(',', $genes) as $gene)
-                    {
-                        $record = Gene::name($gene)->first();
-
-                        if ($record !== null)
-                            $record->update(['morbid' => 1]);
-
-                    }
+                    $line = strtok("\n");
+                    continue;
                 }
+
+                $genes = $value[1];
+
+                foreach (explode(',', $genes) as $gene)
+                {
+                    $record = Gene::name($gene)->first();
+
+                    if ($record !== null)
+                        $record->update(['morbid' => 1]);
+
+                }
+                // check for disputing flag
+                $disputing = (strpos($value[0], '?') === 0);
+                $phenotype = Morbid::parsePhenotype($value[0], true);
+
+                $primary =  $phenotype['primary'];
+
+                // check for brackets
+                $nondisease = (strpos($phenotype['primary'], '[') === 0 && strpos($phenotype['primary'], ']') !== false);
+
+                // check for braces
+                $mutations = (strpos($phenotype['primary'], '{') === 0 && strpos($phenotype['primary'], '}') !== false);
+
+                if ($nondisease || $mutations)
+                    $primary = substr($primary, 1, strlen($primary) - 2);
+
+                // check for disputing flag
+                $disputing = (strpos($primary, '?') === 0);
+
+                if ($disputing)
+                    $primary = substr($primary, 1);
+
+                $stat = Morbid::create(['phenotype' => $primary,
+                                        'secondary' => $phenotype['secondary'],
+                                        'pheno_omim' => $phenotype['omim'],
+                                        'mapkey' => $phenotype['map'],
+                                        'genes' => explode(',', $genes),
+                                        'disputing' => ($disputing ? 'Y' : 'N'),
+                                        'mutations' => ($mutations ? 'Y' : 'N'),
+                                        'nondisease' => ($nondisease ? 'Y' : 'N'),
+                                        'mim' => $value[2],
+                                        'cyto' => $value[3],
+                                        'type' => 1,
+                                        'status' => 1
+                                        ]);
 
             $line = strtok("\n");
         }
