@@ -139,7 +139,7 @@
 
             <li class="nav-item dropdown @if ($display_tabs['active'] == "variant") active @endif ">
               <a class="nav-link  dropdown-toggle" target="external-erepo" href="{{ route('variant-path-index') }}" aria-haspopup="true" aria-expanded="false">
-                Curated Variant
+                Curated Variants
               </a>
               <ul class="dropdown-menu">
                 <li><a class="" href="{{ route('variant-path-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
