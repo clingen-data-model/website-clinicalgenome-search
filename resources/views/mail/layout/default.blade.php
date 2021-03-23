@@ -110,7 +110,6 @@
 				@hasSection ('boilerplate')
 				<tr>
 					<td class="body" width="100%" cellpadding="0" cellspacing="0">
-
 									@yield('boilerplate', '')
 					</td>
 				</tr>
