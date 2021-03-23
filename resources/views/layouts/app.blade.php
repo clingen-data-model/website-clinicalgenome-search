@@ -127,7 +127,7 @@
                 Clinical Actionability
               </a>
               <ul class="dropdown-menu">
-                <li><a class="" href="{{ route('dosage-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
+                <li><a class="" href="{{ route('actionability-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
                 {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
                 <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ">Curations in Adult Context <i class="fas fa-external-link-alt small"></i></a></li>
                 <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ">Curations in Pediatric Context <i class="fas fa-external-link-alt small"></i></a></li>
