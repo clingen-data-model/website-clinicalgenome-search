@@ -273,7 +273,7 @@ class Notification extends Model
                if (isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
-               array_walk($genes, 'walk');
+               array_walk($genes, array($this, 'walk'));
 
                $reports[] = ['start_date' => Carbon::yesterday(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
@@ -290,8 +290,7 @@ class Notification extends Model
                if (isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
-               //array_walk($genes, array($this, 'walk'));
-               array_walk($genes, 'walk');
+               array_walk($genes, array($this, 'walk'));
 
 
                $reports[] = ['start_date' => Carbon::yesterday()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
@@ -309,7 +308,7 @@ class Notification extends Model
                if (isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
-                    array_walk($genes, 'walk');
+               array_walk($genes, array($this, 'walk'));
 
 
                $reports[] = ['start_date' => Carbon::yesterday()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
