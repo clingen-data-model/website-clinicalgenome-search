@@ -13,7 +13,7 @@ You are receiving this email because we detected genes you are following have cu
 	<br /><br />
 	<hr />
 	<br />
-	<strong>Changes have occured on the following genes:</strong><br/>
+	<div style="margin-bottom: 6px;"><strong>Changes have occured on the following genes:</strong></div>
 	@foreach ($genes as $gene)
 	&nbsp;&nbsp; {{ $gene }}<br/>
 	@endforeach
