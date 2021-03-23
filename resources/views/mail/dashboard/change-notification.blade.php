@@ -6,7 +6,7 @@ Change Notification
 
 @section('content')
 Hello,<br/>
-You are receiving this email because we detected genes you are following have curations which have changed as of {{ $date }} . A full report can be found by clicking the link below or accessing your dashboard.
+You are receiving this email because we detected genes you are following have curations which have changed as of {{ $date }}. A full report can be found by clicking the link below or accessing your ClinGen Dashboard.
 <br />
 <br />
 	<a href="https://search.clingen.info/reports/view/{{ $report }}" class="button">View Report</a>
@@ -19,7 +19,7 @@ You are receiving this email because we detected genes you are following have cu
 	@endforeach
 	<br /><br /><br />
 	<strong>Manage your email preferences</strong><br />
-	Manage the notifications to receive in <a href="https://search.clingen.info/dashboard/">your ClinGen Dashboard. Click here</a>
+	Manage the notifications to receive by going to <a href="https://search.clingen.info/dashboard/">your ClinGen Dashboard. Click here</a>
 
 @endsection
 
