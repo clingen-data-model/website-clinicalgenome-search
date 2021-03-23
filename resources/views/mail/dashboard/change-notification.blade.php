@@ -17,11 +17,9 @@ You are receiving this email because we detected genes you are following have cu
 	@foreach ($genes as $gene)
 	&nbsp;&nbsp; {{ $gene }}<br/>
 	@endforeach
-	<br>
-	<a href="https://search.clingen.info/reports/view/{{ $report }}">Click here to view the entire report.</a>
-	<br /><br /><br /><br />
+	<br /><br /><br />
 	<strong>Manage your email preferences</strong><br />
-	Manage the notifications to receive in <a href="https://search.clingen.info/dashboard/">your ClinGen Dashboard. Click here</a>.
+	Manage the notifications to receive in <a href="https://search.clingen.info/dashboard/">your ClinGen Dashboard. Click here</a>
 
 @endsection
 
