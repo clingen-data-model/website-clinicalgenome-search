@@ -4,10 +4,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body>
-	<style>
-	body {
+
+<style>
+	.emailbody {
 		background-color: #f5f8fa;
+		padding-top: 10px;
 	}
 	body, table, button, a, td {
 		font-family: Avenir, Helvetica, sans-serif;
@@ -77,12 +78,14 @@
 	}
 </style>
 
+<body class="emailbody">
+<div class="emailbody">
 <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" align="center">
 	<tr>
 		<td align="center">
 			<table class="content" width="100%" cellpadding="0" cellspacing="0">
 				<tr>
-					<td class="header">
+					<td class="header" align="center">
 						<a href="{{ config('app.url') }}">
 							<img src="https://search.clingen.info/brand/logo/logo-clinical-genome-logo.png" style="height: 100px;" alt="{{ config('app.name') }}">
 						</a>
@@ -131,4 +134,5 @@
 	</tr>
 </table>
 </body>
+</div>
 </html>

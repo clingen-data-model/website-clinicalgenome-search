@@ -8,16 +8,21 @@ Change Notification
 Hello,<br/>
 You are receiving this email because we detected genes you are following have curations which have changed as of {{ $date }} . A full report can be found by clicking the link below or accessing your dashboard.
 <br />
-<br /> 
+<br />
 	<a href="https://search.clingen.info/reports/view/{{ $report }}" class="button">View Report</a>
-	<br />
+	<br /><br />
 	<hr />
+	<br />
 	<strong>Changes have occured on the following genes:</strong><br/>
 	@foreach ($genes as $gene)
-	<p>{{ $gene }}</p>
+	&nbsp;&nbsp; {{ $gene }}<br/>
+	@endforeach
 	<br>
 	<a href="https://search.clingen.info/reports/view/{{ $report }}">Click here to view the entire report.</a>
-	@endforeach
+	<br /><br /><br /><br />
+	<strong>Manage your email preferences</strong><br />
+	Manage the notifications to receive in <a href="https://search.clingen.info/dashboard/">your ClinGen Dashboard. Click here</a>.
+
 @endsection
 
 @section('boilerplate')
