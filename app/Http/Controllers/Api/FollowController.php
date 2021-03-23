@@ -106,7 +106,7 @@ class FollowController extends Controller
         }
         else
         {
-            $notify->addDefault($gene->name);
+            $notify->addDefault($gene);
             $notify->save();
         }
 
@@ -179,6 +179,20 @@ dd("not logged in");  }*/
                                     501);
         
         $user->genes()->detach($gene->id);
+
+        // remove from the notification list
+        $notify = $user->notification;
+        $frequency = $notify->frequency;
+
+        foreach (["Daily", "Weekly", "Monthly", "Pause", "Default"] as $list)
+        {
+            if (($key = array_search($gene->name, $frequency[$list], true)) !== false) {
+                unset($frequency[$list][$key]);
+            }
+        }
+        
+        $notify->frequency = $frequency;        
+        $notify->save();
 
         return response()->json(['success' => 'true',
 								 'status_code' => 200,
