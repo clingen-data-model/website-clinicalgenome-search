@@ -56,6 +56,7 @@ class UpdateFollow extends Command
 
         foreach ($users as $user)
         {
+            echo "Processing " . $user->name . "\n";
             // clean up old reports
             $oldreports = $user->titles()->system()->unlocked()->expire(30)->get();
             foreach ($oldreports as $oldreport)
