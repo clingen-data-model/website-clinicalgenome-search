@@ -39,6 +39,7 @@
 @section('heading')
 <div class="content ">
     <div class="section-heading-content">
+      {{-- {{ $col_search }} --}}
     </div>
 </div>
 @endsection
@@ -109,6 +110,7 @@
       locale: 'en-US',
       sortName:  "symbol",
 			sortOrder: "asc",
+      filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
       columns: [
         {
           title: 'Gene',
@@ -183,6 +185,7 @@
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',
+          filterDefault: "{{ $col_search['col_search'] === "classification" ? $col_search['col_search_val'] : "" }}",
           sortable: true,
           sortName: 'order'
         },
@@ -245,7 +248,7 @@ $(function() {
 
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
-  
+
 });
 
 </script>

@@ -146,7 +146,7 @@ $('#modalSettings').on('change', '.api-update', function (e) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/pweller/Projects/website-clinicalgenome-search/resources/js/edit.js */"./resources/js/edit.js");
+module.exports = __webpack_require__(/*! /Users/scottg/SitesDev/website-clinicalgenome-search/resources/js/edit.js */"./resources/js/edit.js");
 
 
 /***/ })
