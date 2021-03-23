@@ -202,7 +202,7 @@ class Notification extends Model
                foreach ($genes as $gene)
                     $this->addDefault($gene);
           }
-          else if ($genes instanceof \App\User)          // just one
+          else if ($genes instanceof \App\Gene)          // just one
           {
                $freq = $this->frequency;
                array_push($freq['Default'], $genes->name);

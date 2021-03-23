@@ -180,6 +180,20 @@ dd("not logged in");  }*/
         
         $user->genes()->detach($gene->id);
 
+        // remove from the notification list
+        $notify = $user->notification;
+        $frequency = $notify->frequency;
+
+        foreach (["Daily", "Weekly", "Monthly", "Pause", "Default"] as $list)
+        {
+            if (($key = array_search($gene->name, $frequency[$list], true)) !== false) {
+                unset($frequency[$list][$key]);
+            }
+        }
+        
+        $notify->frequency = $frequency;        
+        $notify->save();
+
         return response()->json(['success' => 'true',
 								 'status_code' => 200,
 							 	 'message' => 'Gene UnFollowed'],
