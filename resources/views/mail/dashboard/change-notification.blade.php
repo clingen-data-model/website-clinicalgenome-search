@@ -6,9 +6,9 @@ Change Notification
 
 @section('content')
 Hello,<br/>
-You are receiving this email because we detected genes you are following have curations which have changed as of XXXXXXXXX . A full reports can be found by clicking the link below or accessing your dashboard.
+You are receiving this email because we detected genes you are following have curations which have changed as of {{ $date }} . A full report can be found by clicking the link below or accessing your dashboard.
 <br />
-<br />
+<br /> 
 	<a href="https://search.clingen.info/reports/view/{{ $report }}" class="button">View Report</a>
 	<br />
 	<hr />
@@ -17,6 +17,7 @@ You are receiving this email because we detected genes you are following have cu
 	<p>{{ $gene }}</p>
 	<br>
 	<a href="https://search.clingen.info/reports/view/{{ $report }}">Click here to view the entire report.</a>
+	@endforeach
 @endsection
 
 @section('boilerplate')
