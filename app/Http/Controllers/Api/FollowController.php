@@ -106,7 +106,7 @@ class FollowController extends Controller
         }
         else
         {
-            $notify->addDefault($gene);
+            $notify->addDefault($gene->name);
             $notify->save();
         }
 
