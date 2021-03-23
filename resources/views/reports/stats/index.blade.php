@@ -180,12 +180,12 @@
         <div class="row mb-4">
           <div class="col-sm-8 pt-4">
             <h4 class="mb-0">Classification Statistics</h4>
-            <div class="mb-3"><a href="{{ route('validity-index')}}"  class="text-dark">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</a></div>
+            <div class="mb-3"><a href="{{ route('validity-index')}}" target="report" class="text-dark">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</a></div>
             <table class="table table-condensed">
               <tr class="">
-                <td class="col-sm-3 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive" class="text-dark">Definitive</a></td>
+                <td class="col-sm-3 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive"  target="report" class="text-dark">Definitive</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive" class="text-dark">
+                  <a  target="report"  href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive *1.5 }}%;">
                     </div>
@@ -195,9 +195,9 @@
                 </td>
               </tr>
               <tr>
-                <td class=" border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Strong" class="text-dark">Strong</a></td>
+                <td class=" border-0"><a  target="report"  href="{{ route('validity-index') }}?col_search=classification&col_search_val=Strong" class="text-dark">Strong</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Strong" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Strong" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0  chart-bg-strong"role="progressbar" aria-valuenow="{{ $metrics->validity_percent_strong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_strong *1.5 }}%;">
                     </div>
@@ -207,9 +207,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Moderate" class="text-dark">Moderate</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Moderate" class="text-dark">Moderate</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Moderate" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Moderate" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-moderate" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_moderate }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_moderate *1.5 }}%;">
                     </div>
@@ -219,9 +219,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Limited" class="text-dark">Limited</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Limited" class="text-dark">Limited</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Limited" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Limited" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0  chart-bg-limited" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_limited }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_limited *1.5 }}%; ">
                     </div>
@@ -231,9 +231,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0 lineheight-tight"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship" class="text-dark">No Known Disease Relationship</a></td>
+                <td class="col-sm-4 border-0 lineheight-tight"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship" class="text-dark">No Known Disease Relationship</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
                     </div>
@@ -243,9 +243,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">Disputed Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">Disputed Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.5 }}%; ">
                     </div>
@@ -255,9 +255,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">Refuted Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">Refuted Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
                     </div>
@@ -349,7 +349,7 @@
               <div class="panel panel-default border-0">
                   <div class="panel-body">
                     {{-- <a href="https://www.clinicalgenome.org/affiliation/{{ $panel['ep_id'] }}" class="text-dark svg-link"> --}}
-                    <a href="{{ route('affiliate-show', $panel['ep_id']) }}" class="text-dark svg-link">
+                    <a  target="report" href="{{ route('affiliate-show', $panel['ep_id']) }}" class="text-dark svg-link">
 
                       <svg width="50%" height="50%" viewBox="0 0 42 42" class="donut">
 
@@ -411,12 +411,12 @@
         <h2 id="dosage-sensitivity">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1145/untitled-1_icon-dosage-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Dosage Sensitivity Statistics</h2>
         <p>The ClinGen Dosage Sensitivity curation process collects evidence supporting/refuting the haploinsufficiency and triplosensitivity of genes and genomic regions.</p>
-        <h4><a href="{{ route('dosage-index')}}"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }} Total Dosage Sensitivity Curations</a></h4>
+        <h4><a  target="report" href="{{ route('dosage-index')}}"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }} Total Dosage Sensitivity Curations</a></h4>
         <div class="row text-center mt-4">
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <a href="{{ route('dosage-index')}}"  class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Total <br />Dosage Sensitivity Curations</div>
                   </a>
@@ -426,7 +426,7 @@
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <a href="{{ route('dosage-index')}}"  class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_GENES] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Single Genes <br />Evaluated</div>
                   </a>
@@ -436,7 +436,7 @@
           <div class="col-sm-4">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-2">
-                  <a href="{{ route('dosage-index')}}"  class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index')}}"  class="text-dark">
                   <div class="text-size-lg lineheight-tight">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_REGIONS] ?? '' }}</div>
                   <div class="mb-2 lineheight-tight">Genomic Regions <br />Evaluated</div>
                   </a>
@@ -449,9 +449,9 @@
             <h5>Haploinsufficiency Classifications Visualized</h4>
             <table class="table table-condensed">
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">Sufficient Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">Sufficient Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:1">
                     </div>
@@ -461,9 +461,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=2 (Emerging Evidence)" class="text-dark">Emerging Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=2 (Emerging Evidence)" class="text-dark">Emerging Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.8">
                     </div>
@@ -473,9 +473,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=1 (Little Evidence)" class="text-dark">Little Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=1 (Little Evidence)" class="text-dark">Little Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=1 (Little Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=1 (Little Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.6">
                     </div>
@@ -485,9 +485,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=0 (No Evidence)" class="text-dark">No Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=0 (No Evidence)" class="text-dark">No Evidence</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=0 (No Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=0 (No Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.5">
                     </div>
@@ -497,9 +497,9 @@
                 </td>
               </tr>
               <tr>
-                <td class=" border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">Autosomal Recessive</a></td>
+                <td class=" border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">Autosomal Recessive</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.4">
                     </div>
@@ -509,9 +509,9 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-3 border-0"><a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">Dosage Sensitivity Unlikely</a></td>
+                <td class="col-sm-3 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">Dosage Sensitivity Unlikely</a></td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
                   <div class="progress progress-no-bg mb-1 mt-2">
                     <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:.3">
                     </div>
@@ -526,9 +526,9 @@
             <h5>Triplosensitivity  Classifications Visualized</h4>
             <table class="table table-condensed">
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">Sufficient Evidence</td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">Sufficient Evidence</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:1">
                     </div>
@@ -538,9 +538,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=2 (Emerging Evidence)" class="text-dark">Emerging Evidence</td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=2 (Emerging Evidence)" class="text-dark">Emerging Evidence</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.8">
                     </div>
@@ -550,9 +550,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=1 (Little Evidence)" class="text-dark">Little Evidence</td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=1 (Little Evidence)" class="text-dark">Little Evidence</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=1 (Little Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=1 (Little Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.6">
                     </div>
@@ -562,9 +562,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=0 (No Evidence)" class="text-dark">No Evidence</td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=0 (No Evidence)" class="text-dark">No Evidence</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=0 (No Evidence)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=0 (No Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.5">
                     </div>
@@ -574,9 +574,9 @@
                 </td>
               </tr>
               <tr>
-                <td class=" border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">Autosomal Recessive</td>
+                <td class=" border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">Autosomal Recessive</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.4">
                     </div>
@@ -586,9 +586,9 @@
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-3 border-0"><a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">Dosage Sensitivity Unlikely</td>
+                <td class="col-sm-3 border-0"><a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">Dosage Sensitivity Unlikely</td>
                 <td class="border-0">
-                  <a href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
+                  <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
                   <div class="progress progress-no-bg mb-1 mt-2">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:.3">
                     </div>
@@ -610,12 +610,12 @@
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><h4><a href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</a></h4></div>
+          <div class="col-sm-12 text-left"><h4><a  target="report" href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</a></h4></div>
 
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                      {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }}
                   </div>
@@ -627,7 +627,7 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] ?? '' }}
                   </div>
@@ -639,7 +639,7 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}
                   </div>
@@ -651,7 +651,7 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] + $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] }}
                   </div>
@@ -716,7 +716,7 @@
           <div class="col-sm-6">
             <h5 class="mb-0">Adult Context </h4>
 
-              <p><a href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a></p>
+              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a></p>
 
               <p><strong>Total Scores Visualized</strong></p>
 
@@ -822,7 +822,7 @@
           <div class="col-sm-6 border-left-1">
             <h5 class="mb-0">Pediatric Context </h4>
 
-              <p><a href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ" class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a></p>
+              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ" class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a></p>
 
               <p><strong>Total Scores Visualized</strong></p>
             <table class="table table-condensed">
@@ -940,9 +940,9 @@
             <h4 class="mb-0">Classification Statistics</h4>
             <div class="mb-3">Variant Pathogenicity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_PATHOGENICITY_CURATIONS] ?? '' }} curations</strong>.</div>            <table class="table table-condensed">
               <tbody><tr class="">
-                <td class="col-sm-3 border-0"><a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Pathogenic' class="text-dark">Pathogenic</a></td>
+                <td class="col-sm-3 border-0"><a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Pathogenic' class="text-dark">Pathogenic</a></td>
                 <td class="border-0">
-                  <a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Pathogenic' class="text-dark">
+                  <a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Pathogenic' class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 progress-bar-danger chart-bg-pathogenic" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_pathogenic }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_pathogenic * 1.5 }}%;">
                     </div>
@@ -952,9 +952,9 @@
                 </td>
               </tr>
               <tr>
-                <td class=" border-0"><a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Pathogenic' class="text-dark">Likely Pathogenic</a></td>
+                <td class=" border-0"><a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Pathogenic' class="text-dark">Likely Pathogenic</a></td>
                 <td class="border-0">
-                  <a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Pathogenic' class="text-dark">
+                  <a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Pathogenic' class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 progress-bar-warning chart-bg-likely-pathogenic"  role="progressbar" aria-valuenow="1" aria-valuemin="{{ $metrics->pathogenicity_percent_likely }}" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely * 1.5 }}%;">
                     </div>
@@ -964,9 +964,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Uncertain%20Significance' class="text-dark">Uncertain Significance</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Uncertain%20Significance' class="text-dark">Uncertain Significance</a></td>
                 <td class="border-0">
-                  <a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Uncertain%20Significance' class="text-dark">
+                  <a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Uncertain%20Significance' class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 progress-bar-info chart-bg-uncertain-significance" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_uncertain }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_uncertain * 1.5 }}%;">
                     </div>
@@ -976,9 +976,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Benign' class="text-dark">Likely Benign</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Benign' class="text-dark">Likely Benign</a></td>
                 <td class="border-0">
-                  <a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Benign' class="text-dark">
+                  <a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Likely%20Benign' class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0 chart-bg-likely-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_likely_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_likely_benign * 1.5 }}%;background-color: mediumseagreen;">
                     </div>
@@ -988,9 +988,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Benign' class="text-dark">Benign</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Benign' class="text-dark">Benign</a></td>
                 <td class="border-0">
-                  <a href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Benign' class="text-dark">
+                  <a  target="report" href='https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&assertion=Benign' class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0 chart-bg-benign" role="progressbar" aria-valuenow="{{ $metrics->pathogenicity_percent_benign }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->pathogenicity_percent_benign * 1.5 }}%;">
                     </div>
@@ -1045,7 +1045,7 @@
 
         <div class="row  mt-4">
           <h4 class="col-sm-12 mb-0">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} Approved ClinGen Variant Curation Expert Panels</h4>
-          <div class="col-sm-12"><small><i>(For a complete list of VCEPs at different stages of the approval process, click <a href="https://clinicalgenome.org/affiliation"><u>here</u>)</a></i></small></div>
+          <div class="col-sm-12"><small><i>(For a complete list of VCEPs at different stages of the approval process, click <a  target="report" href="https://clinicalgenome.org/affiliation"><u>here</u>)</a></i></small></div>
 
 
           @php
@@ -1060,7 +1060,7 @@
             <div class="col-sm-3 text-center">
               <div class="panel panel-default border-0">
                   <div class="panel-body">
-                    <a href="https://www.clinicalgenome.org/affiliation/{{ $panel['ep_id'] }}" class="text-dark svg-link">
+                    <a target="report" href="https://www.clinicalgenome.org/affiliation/{{ $panel['ep_id'] }}" class="text-dark svg-link">
                       {{-- <div class="text-size-lg lineheight-tight">
                         <span style="border: 6px #13a89e solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#0e665c">{{ $panel['count'] }}</span>
                       </div> --}}
@@ -1172,7 +1172,8 @@ function hideSvgTooltip() {
 }
 
 function SvgTooltipLink(link) {
-  window.location.replace(link)
+  //window.location.replace(link)
+  window.open(link, 'report');
 }
 
   $(document).ready(function(){
