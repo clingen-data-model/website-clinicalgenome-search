@@ -1,24 +1,28 @@
 // switch between login and register screens
 $('.action-login-register').on('click', function(){
     $('#modalLogin').modal('hide');
+    $('#register-form')[0].reset();
     $('#modalRegister').modal('show');
 });
 
 // switch between register and login screens
 $('.action-register-login').on('click', function(){
     $('#modalRegister').modal('hide');
+    $('#login-form')[0].reset();
     $('#modalLogin').modal('show');
 });
 
 // switch between login and register screens
 $('.action-login-forgot').on('click', function(){
     $('#modalLogin').modal('hide');
+    $('#forgot-form')[0].reset();
     $('#modalForgot').modal('show');
 });
 
 // switch between register and login screens
 $('.action-forgot-login').on('click', function(){
     $('#modalForgot').modal('hide');
+    $('#login-form')[0].reset();
     $('#modalLogin').modal('show');
 });
 

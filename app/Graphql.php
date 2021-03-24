@@ -2153,8 +2153,8 @@ class Graphql
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_PATHOGENIC] = $counters['Pathogenic'];
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELY] = $counters['Likely Pathogenic'];
 		$values[Metric::KEY_TOTAL_PATHOGENICITY_UNCERTAIN] = $counters['Uncertain Significance'];
-		$values[Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] = $counters['Likely Benign'];
-		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $counters['Benign'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_BENIGN] = $counters['Benign'];
+		$values[Metric::KEY_TOTAL_PATHOGENICITY_LIKELYBENIGN] = $counters['Likely Benign'];
 
 		$values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY] = $panelcounters;
 

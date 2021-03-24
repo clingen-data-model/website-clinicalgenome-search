@@ -1,4 +1,4 @@
- <div class="modal" id="modalForgot" tabindex="-1" role="dialog" aria-labelledby="modalForgotTitle" aria-hidden="true">
+ <div class="modal" id="modalForgot" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modalForgotTitle" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-body p-0">
