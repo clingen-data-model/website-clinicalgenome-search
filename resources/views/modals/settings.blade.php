@@ -176,7 +176,7 @@
 											<div class="panel-body">
 												<div class="form-group">
 													<div class="col-sm-8">
-														Choose whether to receive summary reports in addition to the regular change notifications.
+														Choose the global default list size for all pages.
 													</div>
 													<div class="col-sm-4 border-left" style="border-left-width: 10px !important">
 														<div class="radio">
@@ -218,12 +218,12 @@
 										<div class="panel panel-default">
 											<div class="panel-heading">Profile</div>
 											<div class="panel-body">
-												<div class="form-group">
+												<!-- <div class="form-group">
 													<label for="inputEmail3" class="col-sm-2 control-label">ClinGen ID</label>
 													<div class="col-sm-3 mt-2">
 														pweller@member.clinicalgenome.org
 													</div>
-												</div>
+												</div> -->
 												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-2 control-label">Name</label>
 													<div class="col-sm-3">
@@ -245,7 +245,7 @@
 												<div class="form-group">
 													<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
 													<div class="col-sm-10">
-														<input type="email" class="form-control" name="email" value="{{ $user->email ?? '' }}" placeholder="Email">
+														<input type="email" class="form-control" name="email" value="{{ $user->email ?? '' }}" placeholder="Email" disabled>
 													</div>
 												</div>
 												<div class="form-group">

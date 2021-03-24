@@ -147,7 +147,7 @@
           <div class="col-md-4 col-sm-8">
             <div class="panel panel-default border-primary">
               <div class="panel-body border-bottom-1 p-2">
-                <a href="#gene-disease-validity" class="pr-2 text-dark">
+                <a href="#pharmacogenomics" class="pr-2 text-dark">
                   <div class="">
                     <img src="https://search.clinicalgenome.org/images/Pharmacogenomics-on.png" width="50px" />
                   </div>
