@@ -102,7 +102,7 @@ class HomeController extends Controller
             $t = $notification[$input['old']];
             if (($key = array_search($input['gene'], $t)) !== false)
                 unset($t[$key]);
-            $notification[$input['old']] = $t;
+            $notification[$input['old']] = array_values($t);
         }
 
         $t = $user->notification;

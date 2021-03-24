@@ -43,7 +43,7 @@ class Notification extends Model
 		'ident' => 'alpha_dash|max:80|required',
 		'primary' => 'json|required',
 		'secondary' => 'json|nullable',
-        'frequency' => 'json|nullable',
+          'frequency' => 'json|nullable',
 		'type' => 'integer',
 		'status' => 'integer'
 	];

@@ -155,7 +155,7 @@ dd("not logged in");  }*/
                                     'message' => "User Lookup Error"],
                                     502);
        
-        if ($input['gene'] == "*")
+        if ($input['gene'] == '*')
         {
             $notify = $user->notification;
 
@@ -186,8 +186,10 @@ dd("not logged in");  }*/
 
         foreach (["Daily", "Weekly", "Monthly", "Pause", "Default"] as $list)
         {
-            if (($key = array_search($gene->name, $frequency[$list], true)) !== false) {
-                unset($frequency[$list][$key]);
+            if (in_array($gene->name, $frequency[$list]))
+            {
+                $frequency[$list] = array_diff($frequency[$list], array($gene->name));
+                $frequency[$list] = array_values($frequency[$list]);
             }
         }
         
