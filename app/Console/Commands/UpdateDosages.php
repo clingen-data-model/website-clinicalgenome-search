@@ -52,9 +52,15 @@ class UpdateDosages extends Command
 
         foreach ($regions->collection as $region)
         {
-            //dd($region->toArray());
-            $status = Dosage::updateOrCreate(['issue' => $region->issue, 'type' => 1],
+           // dd($region->toArray());
+            try {
+                $status = Dosage::updateOrCreate(['issue' => $region->issue, 'type' => 1],
                                                 $region->toArray());
+            } catch(\Exception $e) {
+                dd($region->toArray());
+            } catch (\Throwable $ex) {
+                dd($region->toArray());
+            }
 
             if (empty($status))
             {

@@ -138,12 +138,12 @@ class Jira extends Model
                'loss_comments' => $response->customfield_10198 ?? null,
                'loss_pheno_omim' => $response->customfield_10200 ?? null,
                'loss_pheno_name' => $response->customfield_11830 ?? null,
-               'loss_pheno_ontology' => $response->customfield_11630 ?? null,
+               'loss_pheno_ontology' => $response->customfield_11630->value ?? null,
                'loss_pheno_ontology_id' => $response->customfield_11631 ?? null,
                'gain_comments' => $response->customfield_10199 ?? null,
                'gain_pheno_omim' => $response->customfield_10201 ?? null,
                'gain_pheno_name' => $response->customfield_11831 ?? null,
-               'gain_pheno_ontology' => $response->customfield_11632 ?? null,
+               'gain_pheno_ontology' => $response->customfield_11632->value ?? null,
                'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
                'resolution' => $response->resolution->name ?? 'In Review',
                'issue_type' => $response->issuetype->name,
@@ -275,12 +275,12 @@ class Jira extends Model
               'loss_comments' => $response->customfield_10198 ?? null,
               'loss_pheno_omim' => $response->customfield_10200 ?? null,
               'loss_pheno_name' => $response->customfield_11830 ?? null,
-              'loss_pheno_ontology' => $response->customfield_11630 ?? null,
+              'loss_pheno_ontology' => $response->customfield_11630->value ?? null,
               'loss_pheno_ontology_id' => $response->customfield_11631 ?? null,
               'gain_comments' => $response->customfield_10199 ?? null,
               'gain_pheno_omim' => $response->customfield_10201 ?? null,
               'gain_pheno_name' => $response->customfield_11831 ?? null,
-              'gain_pheno_ontology' => $response->customfield_11632 ?? null,
+              'gain_pheno_ontology' => $response->customfield_11632->value ?? null,
               'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
               'label' => $response->customfield_10202 ?? null,
               //'description' => $response->customfield_12030 ?? '',
@@ -736,6 +736,16 @@ class Jira extends Model
                     'hi' => null,
                     'triplo' => $issue->fields->customfield_10166->value ?? 'unknown',
                     'haplo' => $issue->fields->customfield_10165->value ?? 'unknown',
+                    'loss_comments' => $issue->fields->customfield_10198 ?? null,
+                    'loss_pheno_omim' => $issue->fields->customfield_10200 ?? null,
+                    'loss_pheno_name' => $issue->fields->customfield_11830 ?? null,
+                    'loss_pheno_ontology' => $issue->fields->customfield_11630->value ?? null,
+                    'loss_pheno_ontology_id' => $issue->fields->customfield_11631 ?? null,
+                    'gain_comments' => $issue->fields->customfield_10199 ?? null,
+                    'gain_pheno_omim' => $issue->fields->customfield_10201 ?? null,
+                    'gain_pheno_name' => $issue->fields->customfield_11831 ?? null,
+                    'gain_pheno_ontology' => $issue->fields->customfield_11632->value ?? null,
+                    'gain_pheno_ontology_id' => $issue->fields->customfield_11633 ?? null,
                     'workflow' => $issue->fields->resolution->name ?? '',
                     'resolved' => $issue->fields->resolutiondate ?? ''
                ]);
@@ -750,6 +760,27 @@ class Jira extends Model
                //break out the location to distinct parts
                list($node->chr, $node->start, $node->stop) = self::regionMap($node->grch37);
                list($temp, $node->start38, $node->stop38) = self::regionMap($node->grch38);
+
+               // for the omim fields, transform into structure and add title
+               $omims = [];
+               if (!empty($node->loss_pheno_omim))
+               {
+                    foreach (explode(',', $node->loss_pheno_omim) as $item)
+                    {
+                         $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                    }
+               }
+               $node->loss_pheno_omim = $omims;
+
+               $omims = [];
+               if (!empty($node->gain_pheno_omim))
+               {
+                    foreach (explode(',', $node->gain_pheno_omim) as $item)
+                    {
+                         $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                    }
+               }
+               $node->gain_pheno_omim = $omims;
 
                // for 30 and 40, Jira also sends text
                if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")

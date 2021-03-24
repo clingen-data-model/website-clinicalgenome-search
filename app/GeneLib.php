@@ -752,7 +752,7 @@ class GeneLib extends Model
          {
               $response->omimtitle = $omim->titles;
          }
-//dd($response);
+
          return $response;
     }
 

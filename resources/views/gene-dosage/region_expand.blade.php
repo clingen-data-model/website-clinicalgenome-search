@@ -27,7 +27,7 @@
 					</tr>
 					<tr>
 						<td valign="top" class=" small text-muted pr-2">Curated Gain Disease: </td>
-						<td class="small">{{ empty($region->gain_disease) ? 'N/A' : $region->gain_disease }}
+						<td class="small">{{ empty($region->gain_phenotype_name) ? 'N/A' : $region->gain_phenotype_name }}
 							@if (!empty($region->gain_omim))
 							<a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $region->gain_omim }}" class="badge-info badge pointer ml-2">OMIM <i class="fas fa-external-link-alt"></i></a>
 							@endif
