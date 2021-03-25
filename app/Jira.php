@@ -1115,7 +1115,7 @@ class Jira extends Model
          } catch (JiraRestApi\JiraException $e) {
               print("Error Occured! " . $e->getMessage());
          }
-dd($issue);
+//dd($issue);
          return $issue->$field ?? null;
     }
      
