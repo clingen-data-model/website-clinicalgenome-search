@@ -8,7 +8,7 @@
 					</tr>
 					<tr>
 						<td valign="top" class="small text-muted pr-2">ClinGen DCI ID: </td>
-						<td class="small">{{ $region->issue ?? ''}}</td>
+						<td class="small">{{ $region->key ?? ''}}</td>
 					</tr>
 				</table>
 			</div>
@@ -16,7 +16,7 @@
 				<table class="table-sm m-0">
 					<tr>
 						<td valign="top" class=" small text-muted pr-2">Curated Loss Disease: </td>
-						<td class="small">{{ empty($region->loss_pheno_name) ? 'N/A' : $region->loss_pheno_name }}
+						<td class="small">{{ empty($region->loss_phenotype_name) ? 'N/A' : $region->loss_phenotype_name }}
 							@if (!empty($region->loss_omim))
 							<a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $region->loss_omim }}" class="badge-info badge pointer ml-2">OMIM <i class="fas fa-external-link-alt"></i></a>
 							@endif
@@ -27,7 +27,7 @@
 					</tr>
 					<tr>
 						<td valign="top" class=" small text-muted pr-2">Curated Gain Disease: </td>
-						<td class="small">{{ empty($region->gain_pheno_name) ? 'N/A' : $region->gain_pheno_name }}
+						<td class="small">{{ empty($region->gain_phenotype_name) ? 'N/A' : $region->gain_phenotype_name }}
 							@if (!empty($region->gain_omim))
 							<a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $region->gain_omim }}" class="badge-info badge pointer ml-2">OMIM <i class="fas fa-external-link-alt"></i></a>
 							@endif
