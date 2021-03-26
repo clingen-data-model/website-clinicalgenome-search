@@ -742,14 +742,8 @@
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
-			// split the object
 			$obj.attr('colspan',12);
-			//$obj.css('background-color', '#f5f5f5');
-			/*if (row.type == 0)
-				$obj.before('<td class="gene"></td>');
-			else
-				$obj.before('<td class="region"></td>');*/
-
+		
 			var t = $obj.closest('tr');
 
 			var stripe = t.prev().hasClass('bt-even-row');
@@ -761,22 +755,13 @@
 			else
 				t.addClass('bt-odd-row');
 
-			//t.css('border-bottom', '2px solid blue');
-     		//t.prev().css('border-top', '2px solid blue');
 			t.prev().addClass('dosage-row-top');
 
-			//console.log(row);
-
-			//$obj.addClass('detail-table-shade');
 			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
 
 			return false;
 		})
 
-		/*$table.on('mouseover', 'tr', function() {
-			console.log($this);
-		});*/
-		
 
 		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
 

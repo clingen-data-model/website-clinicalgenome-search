@@ -291,7 +291,7 @@ class Gene extends Model
      */
      public function getHasDosageAttribute()
      {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities['dosage']) ? 
 			$this->curation_activities['dosage'] : false); 
      }
      
@@ -304,7 +304,7 @@ class Gene extends Model
      */
      public function getHasActionabilityAttribute()
      {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities['actionability']) ? 
 			$this->curation_activities['actionability'] : false); 
      }
      
@@ -317,7 +317,7 @@ class Gene extends Model
      */
      public function getHasValidityAttribute()
      {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities['validity']) ? 
 			$this->curation_activities['validity'] : false); 
      }
 

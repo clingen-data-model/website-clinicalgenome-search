@@ -503,6 +503,18 @@
 			locale: 'en-US',
 			sortName:  "location",
 			sortOrder: "asc",
+			rowStyle:  function(row, index) {
+				if (index % 2 === 0) {
+     				return { 
+						classes: 'bt-even-row bt-hover-row'
+					}
+				}
+				else {
+     				return { 
+						classes: 'bt-odd-row bt-hover-row'
+					}
+				}			
+     		},
 			columns: [
 				{
 					title: '',
@@ -693,19 +705,19 @@
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
-			// split the object
 			$obj.attr('colspan',12);
-			//$obj.css('background-color', '#f5f5f5');
-			/*if (row.type == 0)
-				$obj.before('<td class="gene"></td>');
-			else
-				$obj.before('<td class="region"></td>');*/
-
+		
 			var t = $obj.closest('tr');
 
+			var stripe = t.prev().hasClass('bt-even-row');
+
 			t.addClass('dosage-row-bottom');
-			//t.css('border-bottom', '2px solid blue');
-     		//t.prev().css('border-top', '2px solid blue');
+
+			if (stripe)
+				t.addClass('bt-even-row');
+			else
+				t.addClass('bt-odd-row');
+
 			t.prev().addClass('dosage-row-top');
 
 			if (row.hgnc_id == null)
