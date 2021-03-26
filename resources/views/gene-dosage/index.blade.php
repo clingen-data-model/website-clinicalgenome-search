@@ -512,7 +512,7 @@
 					formatter: symbolFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
-					width: 200,
+					width: 190,
 					searchFormatter: false,
 					sortable: true
 				},
@@ -720,13 +720,13 @@
 		})
 
 
-		$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
+		/*$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
 			//console.log(e);
 			event.preventDefault();
 			event.stopPropagation();
 			event.stopImmediatePropagation();
 
-		});
+		});*/
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
@@ -745,7 +745,7 @@
      		//t.prev().css('border-top', '2px solid blue');
 			t.prev().addClass('dosage-row-top');
 
-			console.log(row);
+			//console.log(row);
 
 			//$obj.addClass('detail-table-shade');
 			$obj.load( "/api/dosage/expand/" + row.hgnc_id );

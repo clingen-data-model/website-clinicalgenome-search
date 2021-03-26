@@ -89,9 +89,9 @@ function table_buttons() {
 function symbolFormatter(index, row) {
 
     if (row.type == 0 || row.type == 3)
-        return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+        return '<span onclick="event.stopPropagation();" ><a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a></span>';
     else
-        return '<a href="/kb/gene-dosage/region/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+        return '<span onclick="event.stopPropagation();" ><a href="/kb/gene-dosage/region/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a></span>';
 }
 
 function typeFormatter(index, row) {
@@ -241,7 +241,7 @@ function regionFormatter(index, row) {
 
     var url = "/kb/gene-dosage/region/";
 
-    return '<a href="' + url + row.key + '"><b>' + row.name + '</b></a>';
+    return '<span onclick="event.stopPropagation();" ><a href="' + url + row.key + '"><b>' + row.name + '</b></a></span>';
 }
 
 /*
@@ -355,7 +355,7 @@ function triploFormatter(index, row) {
 
 function omimFormatter(index, row) {
     if (row.omimlink)
-        return '<a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a>';
+        return '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a></span>';
     else
         return '';
 }
@@ -363,7 +363,7 @@ function omimFormatter(index, row) {
 
 function morbidFormatter(index, row) {
     if (row.morbid == "Yes")
-        return '<a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a>';
+        return '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a></span>';
     else
         return '';
 }
@@ -376,13 +376,13 @@ function reportFormatter(index, row) {
     if (row.type == 0 || row.type == 3) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-        return '<a class="btn btn-xs btn-success btn-block btn-report" href="'
-            + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="'
+            + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
     }
     else {
-        return '<a class="btn btn-xs btn-success btn-block btn-report" href="'
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="'
             + '/kb/gene-dosage/region/' + row.hgnc_id
-            + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+            + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
     }
 }
 
@@ -409,6 +409,16 @@ function iscaFormatter(index, row) {
  */
 function cellFormatter(index, row) {
     return { classes: 'global_table_cell' };
+}
+
+
+/**
+ *
+ * @param {*} index
+ * @param {*} row
+ */
+function noExpCellFormatter(index, row) {
+    return { classes: 'global_table_cell no-expand' };
 }
 
 
@@ -784,11 +794,11 @@ function cnvreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
     if (row.rawdate === "")
-        return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
-            + row.key + '"><i class="fas fa-file"></i>  Under Review</a>';
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
+            + row.key + '"><i class="fas fa-file"></i>  Under Review</a></span>';
 
-    return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
-        + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
+    return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
+        + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
 }
 
 function acmsymbolFormatter(index, row) {
@@ -899,16 +909,16 @@ function dsreportFormatter(index, row) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         if (row.hgnc_id == null)
-          return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
-            + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+          return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
+            + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
         else
-            return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
-             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+            return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
+             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
     }
     else {
-        return '<a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
             + '/kb/gene-dosage/region/' + row.isca
-            + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a>';
+            + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
     }
 }
 
@@ -918,12 +928,12 @@ function dssymbolFormatter(index, row) {
     if (row.type == 0 || row.type == 3)
     {
         if (row.hgnc_id == null)
-            return '<a href="/kb/genes/' + row.isca + '"><b>' + row.symbol + '</b></a>';
+            return '<span onclick="event.stopPropagation();" ><a href="/kb/genes/' + row.isca + '"><b>' + row.symbol + '</b></a></span>';
         else
-            return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
+            return '<span onclick="event.stopPropagation();" ><a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a></span>';
     }
     else
-        return '<a href="/kb/gene-dosage/region/' + row.isca + '"><b>' + row.symbol + '</b></a>';
+        return '<span onclick="event.stopPropagation();" ><a href="/kb/gene-dosage/region/' + row.isca + '"><b>' + row.symbol + '</b></a></span>';
 }
 
 
