@@ -495,7 +495,19 @@
 			locale: 'en-US',
 			sortName:  "symbol",
 			sortOrder: "asc",
-      filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
+      		filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
+	  		rowStyle:  function(row, index) {
+				if (index % 2 === 0) {
+     				return { 
+						classes: 'bt-even-row bt-hover-row'
+					}
+				}
+				else {
+     				return { 
+						classes: 'bt-odd-row bt-hover-row'
+					}
+				}			
+     		},
 			columns: [
 				{
 					title: '',
@@ -740,7 +752,15 @@
 
 			var t = $obj.closest('tr');
 
+			var stripe = t.prev().hasClass('bt-even-row');
+
 			t.addClass('dosage-row-bottom');
+
+			if (stripe)
+				t.addClass('bt-even-row');
+			else
+				t.addClass('bt-odd-row');
+
 			//t.css('border-bottom', '2px solid blue');
      		//t.prev().css('border-top', '2px solid blue');
 			t.prev().addClass('dosage-row-top');
@@ -752,6 +772,11 @@
 
 			return false;
 		})
+
+		/*$table.on('mouseover', 'tr', function() {
+			console.log($this);
+		});*/
+		
 
 		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
 

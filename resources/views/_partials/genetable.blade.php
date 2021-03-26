@@ -5,7 +5,7 @@
 <!-- The table -->
 <table
     id="table"
-    data-classes="table table-striped table-hover"
+    data-classes="table"
     data-toolbar="#toolbar"
     data-addrbar="true"
     data-search="true"
