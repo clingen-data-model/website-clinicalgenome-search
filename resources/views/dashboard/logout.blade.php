@@ -2,17 +2,66 @@
 
 @section('content-heading')
 
-   
+
 @endsection
 
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-		
+
 		<div id="dashboard-logout">
-    <h4>You are now logged out.  </h4>
-    <p>This is a placeholder page for the dashboard route when there is no access token</p>
-    <p>We can turn this into billboard of events, notices, marketing, etc.</p>
+      {{-- <div class="row"> --}}
+        <div class="col-sm-12 mt-3">
+          <h2>About ClinGen's Dashboard</h2>
+        </div>
+        <div class="col-sm-8">
+            <p>This is a placeholder page for the dashboard route when there is no access token</p>
+
+            <h4>Key Features</h4>
+            <p>The following are key features available when you create your free account.</p>
+            <ul>
+              <li>
+                Follow genes of interest and see them tracked on a private dashboard.
+              </li>
+              <li>
+                Receive emails when ClinGen updates one of the genes you follow.
+              </li>
+              <li>
+                Be notified when a curation activity updates one of their curations.
+              </li>
+              <li>
+                Customize the frequency of the emails you receive.
+              </li>
+              <li>
+                Access to reports based on the genes you follow.
+              </li>
+              <li><a href="https://clinicalgenome.org/tools/clingen-website/">Learn more about these features here.</a>
+              </li>
+            </ul>
+            <hr />
+            <h4>Quick Overview</h4>
+            <img src="/images/dashboard-help-1.jpg" alt="Dashboard" class="img-fluid img-thumbnail" />
+            <ol class="mt-4">
+              <li>Once you login, you will see your name here. From here you can access your dashboard and logout.</li>
+              <li>To follow a gene from the page look for the star (<i class="fas fa-star"></i>).
+                <ul>
+                  <li>This is how you are able to quickly follow a gene.  </li>
+                  <li>You know you are following a gene when it turns green (<i class="fas fa-star" style="color:green"></i>).</li>
+                </ul>
+              </li>
+            </ol>
+        </div>
+
+        <div class="col-sm-4 border-l">
+          <div class="text-center">
+          <button class='btn-lg btn-primary action-login btn-block'>Login To Get Started</button>
+          <i class="text-sm text-muted">You are currently logged-out</i>
+          </div>
+          {{-- <hr />
+            <p>This is a placeholder page for the dashboard route when there is no access token</p>
+            <p>We can turn this into billboard of events, notices, marketing, etc.</p> --}}
+        </div>
+      {{-- </div> --}}
 		</div>
 
     </div>
@@ -65,7 +114,7 @@
 
 		.caption {
 			font-size: 14px;
-			color: black; 
+			color: black;
 			text-align: center;
 			width: 200px;
 		}
@@ -73,7 +122,7 @@
 			opacity: 0.7;
 		}
     </style>
-    
+
 @endsection
 
 @section('script_js')
@@ -98,16 +147,16 @@
 <script src="/js/genetable.js"></script>
 
 <script>
-	
+
     $(function() {
 
-		/* 
+		/*
 		** If a user logs back in on this page, we want them to see the dashboard
 		*/
 		$( "#dashboard-logout" ).on( "logout", function( event, param1, param2 ) {
-  
+
 			window.location.reload();
-			
+
 		});
 	});
 
