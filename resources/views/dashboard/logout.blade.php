@@ -15,8 +15,6 @@
           <h2>About ClinGen's Dashboard</h2>
         </div>
         <div class="col-sm-8">
-            <p>This is a placeholder page for the dashboard route when there is no access token</p>
-
             <h4>Key Features</h4>
             <p>The following are key features available when you create your free account.</p>
             <ul>
