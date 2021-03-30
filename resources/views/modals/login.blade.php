@@ -4,7 +4,7 @@
 			<div class="modal-body p-0">
         <div class="card login-card">
           <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-md-4 hidden-sm hidden-xs">
               <img src="/assets/images/dna_spiral.jpg" alt="login"   style="width:100%; height: 520px; object-fit: cover;">
             </div>
             <div class="col-md-8">
@@ -76,4 +76,4 @@
       </div>
     </div>
   </div>
-</div>     
+</div>

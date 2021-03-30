@@ -37,7 +37,7 @@
                             <div class="small">This file provides a summary of the Gene-Disease Validity curations completed by ClinGen's GCEPs. This file is built in real-time. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CVS</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>
@@ -59,7 +59,7 @@
                             <div class="small">This file provides a summary of the Dosage Sensitivity curations completed by ClinGen. This file is built in real-time. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CVS</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -142,7 +142,7 @@
                     </tr>
                     <tr>
                         <td><strong>Clinical Actionability Download </strong>
-                            <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  Both CVS and TSV formats are supported.</div>
+                            <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  Both CSV and TSV formats are supported.</div>
                         </td>
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('actionability-index') }}}"  class="btn btn-default"> Website</a></td>
                         <td class="text-10px" nowrap=""></td>
@@ -159,7 +159,7 @@
                             <div class="small">This file provides a summary of the Variant Pathogenicitycurations completed by ClinGen's VCEPs. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  class="btn btn-default"><i class="fas fa-download"></i> CVS</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>

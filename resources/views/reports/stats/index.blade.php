@@ -243,9 +243,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">Disputed Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed" class="text-dark">Disputed Evidence</a></td>
                 <td class="border-0">
-                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.5 }}%; ">
                     </div>
@@ -255,9 +255,9 @@
                 </td>
               </tr>
               <tr>
-                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">Refuted Evidence</a></td>
+                <td class="col-sm-4 border-0"><a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted" class="text-dark">Refuted Evidence</a></td>
                 <td class="border-0">
-                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence" class="text-dark">
+                  <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
                     <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
                     </div>
@@ -300,9 +300,9 @@
 
                         <circle class="donut-segment chart-stroke-no-known-disease-relationship" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['no known disease relationship'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['no known disease relationship'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['no known disease relationship'] }} No Known Disease Relationship');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship');"/>
 
-                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed Evidence');"/>
+                        <circle class="donut-segment chart-stroke-disputed-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['disputing'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['disputing'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['disputing'] }} Disputed');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed');"/>
 
-                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted Evidence');"/>
+                        <circle class="donut-segment chart-stroke-refuted-evidence" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classlength']['refuting evidence'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classoffsets']['refuting evidence'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GRAPH]['classtotals']['refuting evidence'] }} Refuted');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted');"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">

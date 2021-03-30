@@ -16,7 +16,7 @@
                         </td>
                         <td><button class="btn btn-default">View Online</button></td>
                         <td><button class="btn btn-default">Download PDF</button></td>
-                        <td><button class="btn btn-default">Download (CVS)</button></td>
+                        <td><button class="btn btn-default">Download (CSV)</button></td>
                     </tr>
                     <tr>
                         <td><strong>ACMG 59 Genes</strong>
@@ -24,7 +24,7 @@
                         </td>
                         <td><button class="btn btn-default">View Online</button></td>
                         <td><button class="btn btn-default">Download PDF</button></td>
-                        <td><button class="btn btn-default">Download (CVS)</button></td>
+                        <td><button class="btn btn-default">Download (CSV)</button></td>
                     </tr>
                     <tr>
                         <td><strong>Pathogenic CNV regions</strong>
@@ -32,7 +32,7 @@
                         </td>
                         <td><button class="btn btn-default">View Online</button></td>
                         <td><button class="btn btn-default">Download PDF</button></td>
-                        <td><button class="btn btn-default">Download (CVS)</button></td>
+                        <td><button class="btn btn-default">Download (CSV)</button></td>
                     </tr>
                     <tr>
                         <td><strong>ACMG 59 Genes</strong>
@@ -40,7 +40,7 @@
                         </td>
                         <td><button class="btn btn-default">View Online</button></td>
                         <td><button class="btn btn-default">Download PDF</button></td>
-                        <td><button class="btn btn-default">Download (CVS)</button></td>
+                        <td><button class="btn btn-default">Download (CSV)</button></td>
                     </tr>
                 </table>
             </div>
