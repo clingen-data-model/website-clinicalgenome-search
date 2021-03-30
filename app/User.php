@@ -6,14 +6,13 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Traits\Display;
 
-//implements MustVerifyEmail
-
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
     use Display;
 
     /**
@@ -23,8 +22,11 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name', 'lastname', 'firstname', 'email', 'password', 'avatar', 'credentials',
-        'organization', 'profile', 'preferences', 'api_token', 'device_token'
+        'organization', 'profile', 'preferences', 'api_token', 'device_token',
+        'activation_token', 'role', 'status', 'type'
     ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -32,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'activation_token'
     ];
 
     /**
@@ -45,6 +47,9 @@ class User extends Authenticatable
         'preferences' => 'array',
         'profile' => 'array',
     ];
+
+    public const STATUS_INITIALIZED = 0;
+    public const STATUS_ACTIVE = 1;
 
 
     /*
@@ -125,5 +130,63 @@ class User extends Authenticatable
 	public function scopeEmail($query, $email)
     {
        return $query->where('email', $email);
+    }
+
+
+    /**
+     * Add an interest item to the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function addInterest($item)
+    {
+        if ($this->profile === null)
+        {
+            $this->profile = ['interests' => [$item]];
+            return true;
+        }
+
+        if (!isset($this->profile['interests']))
+        {  
+            $this->profile['interests'] = [$item];
+            return true;
+        }
+    
+        if (!in_array($item, $this->profile['interests']))
+        {
+            $profile = $this->profile;
+            array_push($profile['interests'], $item);
+            $this->profile = $profile;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeInterest($item)
+    {
+        if ($this->profile === null)
+            return true;
+
+        if (!isset($this->profile['interests']))
+            return true;
+    
+        if (!in_array($item, $this->profile['interests']))
+            return true;
+        
+        $profile = $this->profile;
+        if (($key = array_search($item, $profile['interests'])) !== false)
+             unset($profile['interests'][$key]);
+        $profile['interests'] = array_values($profile['interests']);
+        $this->profile = $profile;
+
+        return true;
     }
 }

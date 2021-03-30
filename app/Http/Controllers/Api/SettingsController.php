@@ -11,6 +11,7 @@ use Auth;
 use App\User;
 use App\Title;
 use App\Gene;
+use App\Notification;
 
 class SettingsController extends Controller
 {
@@ -102,6 +103,34 @@ class SettingsController extends Controller
                 $preferences = $user->preferences;
                 $preferences['display_list'] = $input['value'];
                 $user->update(['preferences' => $preferences]);
+                break;
+            case 'validity_interest':
+            case 'dosage_interest':
+            case 'actionability_interest':
+                $interest = preg_split("/_interest/", $input['name']);
+                if ($input['value'] == "1")
+                    $user->addInterest($interest[0]);
+                else
+                    $user->removeInterest($interest[0]);
+                $user->save();
+                break;
+            case 'validity_notify':
+            case 'dosage_notify':
+            case 'actionability_notify':
+                $notify = preg_split("/_notify/", $input['name']);
+                $notify[0] = 'All' . ucfirst($notify[0]);
+                $notification = $user->notification;
+                if ($input['value'] == "1")
+                {
+                    $notification->addGroup($notify[0]);
+                    $notification->addDefault('@' . $notify[0]);
+                }
+                else
+                {
+                    $notification->removeGroup($notify[0]);
+                    $notification->removeDefault('@' . $notify[0]);
+                }
+                $notification->save();
                 break;
 
         }

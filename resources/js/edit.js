@@ -23,7 +23,11 @@ $('#modalSettings').on('change', '.api-update', function(e) {
     eles._token = window.token;
     //eles.arg = id;
     eles.name = $(this).attr('name');
-    eles.value = $(this).val();
+
+    if ($(this).attr('type') == "checkbox")
+        eles.value = $(this).is(":checked") ? "1" : "0";
+    else
+        eles.value = $(this).val();
     
     var save = $(this).attr('value');
     var savethis = $(this);
@@ -39,6 +43,27 @@ $('#modalSettings').on('change', '.api-update', function(e) {
         else if (response.field == 'name')
         {
             $('#profile-name').html(response.value);
+        }
+        else if (response.field == 'actionability_interest')
+        {
+            if (response.value == "1")
+                $('#profile-interest-actionability').show();
+            else
+                $('#profile-interest-actionability').hide();
+        }
+        else if (response.field == 'dosage_interest')
+        {
+            if (response.value == "1")
+                $('#profile-interest-dosage').show();
+            else
+                $('#profile-interest-dosage').hide();
+        }
+        else if (response.field == 'validity_interest')
+        {
+            if (response.value == "1")
+                $('#profile-interest-validity').show();
+            else
+                $('#profile-interest-validity').hide();
         }
 
             

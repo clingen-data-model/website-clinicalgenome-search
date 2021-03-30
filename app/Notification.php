@@ -144,6 +144,8 @@ class Notification extends Model
                               'Weekly' => [],
                               'Monthly' => [],
                               'Default' => [],
+                              'Groups' => [],
+                              'Pause' => [],
                               'global' => "on",
                               'first' => self::FREQUENCY_NONE,
                               'frequency' => self::FREQUENCY_DAILY,
@@ -216,6 +218,33 @@ class Notification extends Model
           }
      }
 
+
+     /**
+     * remove an item from the default list
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeDefault($item)
+     {
+         if ($this->frequency === null)
+             return true;
+ 
+         if (!isset($this->frequency['Default']))
+             return true;
+     
+         if (!in_array($item, $this->frequency['Default']))
+             return true;
+         
+         $frequency = $this->frequency;
+         if (($key = array_search($item, $frequency['Default'])) !== false)
+              unset($frequency['Default'][$key]);
+         $frequency['Default'] = array_values($frequency['Default']);
+         $this->frequency = $frequency;
+ 
+         return true;
+     }
+
      /**
      * Convert the stored constant to hours
      *
@@ -249,7 +278,7 @@ class Notification extends Model
           }
      }
 
-
+    
      /**
      * Transform the stored frequency strucure
      *
@@ -270,7 +299,7 @@ class Notification extends Model
                if (isset($frequency['Daily']))
                     $genes = array_merge($genes, $frequency['Daily']);
                
-               if (isset($frequency['Default']))
+               if ($frequency['frequency'] == self::FREQUENCY_DAILY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
                array_walk($genes, array($this, 'walk'));
@@ -287,13 +316,13 @@ class Notification extends Model
                if (isset($frequency['Weekly']))
                     $genes = array_merge($genes, $frequency['Weekly']);
                
-               if (isset($frequency['Default']))
+               if ($frequency['frequency'] == self::FREQUENCY_WEEKLY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
                array_walk($genes, array($this, 'walk'));
 
 
-               $reports[] = ['start_date' => Carbon::yesterday()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
           }
 
@@ -305,14 +334,74 @@ class Notification extends Model
                if (isset($frequency['Monthly']))
                     $genes = array_merge($genes, $frequency['Monthly']);
                
-               if (isset($frequency['Default']))
+               if ($frequency['frequency'] == self::FREQUENCY_MONTHLY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
                array_walk($genes, array($this, 'walk'));
 
 
-               $reports[] = ['start_date' => Carbon::yesterday()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
+          }
+
+          return $reports;
+     }
+
+
+     /**
+     * Transform the stored frequency strucure
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function toSummaryReport()
+     {
+          $reports = [];
+
+          $frequency = $this->frequency;
+
+          // Annual Summary Report
+          if (Carbon::now()->format('d') == '01' && Carbon::now()->format('m') == '01' && (($frequency['summary'] == self::FREQUENCY_ANNUAL)))
+          {
+
+               $reports[] = ['start_date' => Carbon::subYear(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["*"]}')];
+               
+               return $reports;
+          }
+
+
+          // Quartery Summary Report
+          if (Carbon::now()->format('d') == '01' && (Carbon::now()->format('m') == '01' ||
+          Carbon::now()->format('m') == '04' || Carbon::now()->format('m') == '07' ||
+          Carbon::now()->format('m') == '10') && (($frequency['summary'] == self::FREQUENCY_QUARTERLY)))
+          {
+     
+               $reports[] = ['start_date' => Carbon::subQuarter(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["*"]}')];
+
+               return $reports;
+          }
+
+
+          // Monthly Summary Report
+          if (Carbon::now()->format('d') == '01' && (($frequency['summary'] == self::FREQUENCY_MONTHLY)))
+          {
+
+               $reports[] = ['start_date' => Carbon::subMonth(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["*"]}')];
+
+               return $reports;
+          }
+
+          // Weekly Summary Report
+          if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (($frequency['summary'] == self::FREQUENCY_WEEKLY)))
+          {
+
+               $reports[] = ['start_date' => Carbon::subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["*"]}')];
+               
+               return $reports;
           }
 
           return $reports;
@@ -344,7 +433,63 @@ class Notification extends Model
           if (isset($freq['Pause']) && in_array($gene, $freq['Pause']))
                return 'Pause';
 
-          return $this->frequency_strings[$freq['frequency']]; 
+          return 'Default'; 
+     }
+
+
+     /**
+     * Add to the group
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function addGroup($group)
+     {
+          if ($this->frequency === null)
+          {
+               $this->frequency = ['Groups' => [$group]];
+               return true;
+          }
+
+          if (!isset($this->frequency['Groups']))
+          {  
+               $this->frequency['Groups'] = [$group];
+               return true;
+          }
+    
+          if (!in_array($group, $this->frequency['Groups']))
+          {
+               $frequency = $this->frequency;
+               array_push($frequency['Groups'], $group);
+               $this->frequency = $frequency;
+          }
+     }
+
+
+     /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeGroup($group)
+     {
+         if ($this->frequency === null)
+             return true;
+ 
+         if (!isset($this->frequency['Groups']))
+             return true;
+     
+         if (!in_array($group, $this->frequency['Groups']))
+             return true;
+         
+         $frequency = $this->frequency;
+         if (($key = array_search($group, $frequency['Groups'])) !== false)
+              unset($frequency['Groups'][$key]);
+         $frequency['Groups'] = array_values($frequency['Groups']);
+         $this->frequency = $frequency;
+ 
+         return true;
      }
 
 

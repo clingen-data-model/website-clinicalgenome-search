@@ -2379,6 +2379,28 @@ class Graphql
 			return json_encode($array);	
 		}
 
+		if (strpos('@', $search) === 0)
+		{
+			$array = [['label' => 'All Validity',
+						'short' => 'All Validity',
+						'curated' => 2,
+						'hgncid' => '@AllValidity'
+					],
+					['label' => 'All Dosage',
+						'short' => 'All Dosage',
+						'curated' => 2,
+						'hgncid' => '@AllDosage'
+					],
+					['label' => 'All Actionability',
+						'short' => 'All Actionability',
+						'curated' => 2,
+						'hgncid' => '@AllActionability'
+					]
+				];
+
+			return json_encode($array);	
+		}
+
 		$query = '{
 				suggest(contexts: ALL, suggest: GENE, text: "'
 				. $search . '") {

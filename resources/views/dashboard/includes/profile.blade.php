@@ -10,8 +10,24 @@
         <!--<small>Member since {{ $user->display_year }}</small>-->
         <hr>
         <h6 class="text-muted">Interests:</h6>
-        <img class="ma-4" src="/images/dosageSensitivity-on.png" heigth="50" width="50">
-        <img class="ma-4" src="/images/clinicalValidity-on.png" heigth="50" width="50">
+        @if (in_array('validity', $user->profile['interests']))
+            <span id="profile-interest-validity" style="">
+        @else
+            <span id="profile-interest-validity" style="display:none">
+        @endif
+        <img class="ma-4" src="/images/clinicalValidity-on.png" heigth="50" width="50"></span>
+        @if (in_array('dosage', $user->profile['interests']))
+            <span id="profile-interest-dosage" style="">
+        @else
+            <span id="profile-interest-dosage" style="display:none">
+        @endif
+        <img class="ma-4" src="/images/dosageSensitivity-on.png" heigth="50" width="50"></span>
+        @if (in_array('actionability', $user->profile['interests']))
+            <span id="profile-interest-actionability" style="">
+        @else
+            <span id="profile-interest-actionability" style="display:none">
+        @endif
+        <img class="ma-4" src="/images/clinicalActionability-on.png" heigth="50" width="50"></span>
         <hr>
         <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 float-right"><span class="text-18px action-edit-settings" data-toggle="tooltip" title="Edit Settings"><i class="fas fa-cog fa-lg pb-1"></i></span>

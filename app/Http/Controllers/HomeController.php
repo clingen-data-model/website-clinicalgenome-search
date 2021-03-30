@@ -75,6 +75,40 @@ class HomeController extends Controller
 
         $genes->prepend($group);
     }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllActionability', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Actionability",
+                            'hgnc_id' => '@AllActionability',
+                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllValidity', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Validity",
+                            'hgnc_id' => '@AllValidity',
+                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllDosage', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Dosage",
+                            'hgnc_id' => '@AllDosage',
+                           'activity' => ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+
+    // do a little self repair
+    if ($user->profile === null)
+        $user->update(['profile' => ['interests' => []]]);
 
     $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
     $user_reports = $reports->where('type', Title::TYPE_USER)->count();

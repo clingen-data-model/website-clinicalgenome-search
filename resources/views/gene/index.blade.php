@@ -141,7 +141,7 @@
           title: 'Gene Type',
           field: 'locus_type',
           cellStyle: cellFormatter,
-          filterControl: 'select',
+          filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
