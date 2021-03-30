@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-3 col-xs-9 col-sm-8">
     <table class="mt-3 mb-4">
         <tr>
             <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>

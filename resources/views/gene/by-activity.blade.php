@@ -5,22 +5,22 @@
 	@include('gene.includes.follow')
 
 	<div class="row mb-1 mt-1">
-		
+
 		@include('gene.includes.facts')
 
-		<div class="col-md-9 text-right mt-2 hidden-sm  hidden-xs stats-banner">
-			<ul class="list-inline pb-0 mb-0 small">
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity<br />Classifications</li>
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity<br />Classifications</li>
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction }}</span><br />Clinical Actionability<br />Assertions</li>
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->nvariant }}</span><br />Variant Pathogenicity<br />Assertions</li>
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPIC / PharmGKB<br />High Level Records</li>
+		<div class="col-md-9 col-xs-3 col-sm-4 mt-2 stats-banner">
+			<div class="pb-0 mb-0 small float-right">
+				<div class="text-stats line-tight col-md-2 hidden-sm hidden-xs text-center px-1"><span class="countCurations text-18px">{{ $record->nvalid }}</span><br />Gene-Disease Validity Classifications</div>
+				<div class="text-stats line-tight col-md-2 hidden-sm hidden-xs text-center px-1"><span class="countGenes text-18px">{{ $record->ndosage }}</span><br />Dosage Sensitivity Classifications</div>
+				<div class="text-stats line-tight col-md-2 hidden-sm hidden-xs text-center px-1"><span class="countEps text-18px">{{ $record->naction }}</span><br />Clinical Actionability Assertions</div>
+				<div class="text-stats line-tight col-md-2 hidden-sm hidden-xs text-center px-1"><span class="countEps text-18px">{{ $record->nvariant }}</span><br />Variant Pathogenicity Assertions</div>
+				<div class="text-stats line-tight col-md-2 hidden-sm hidden-xs text-center px-1"><span class="countEps text-18px">{{ $record->ncpc }} / {{ $record->npharmgkb }}</span><br />CPIC / PharmGKB High Level Records</div>
 				@if ($follow)
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow<br />Gene</li>
+				<div class="text-stats line-tight col-md-2 text-center px-1"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:green"></i></span><br /> Follow Gene</div>
 				@else
-				<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:lightgray"></i></span><br /> Follow<br />Gene</li>
+				<div class="text-stats line-tight col-md-2 text-center px-1"><span class="countEps text-18px action-follow-gene"><i class="fas fa-star" style="color:lightgray"></i></span><br /> Follow Gene</div>
 				@endif
-			</ul>
+			</div>
 		</div>
 
 		@include("_partials.facts.gene-panel")
@@ -60,7 +60,7 @@
 			@endif
 
 			@php global $currations_set; $currations_set = false; @endphp
-			
+
 			@include('gene.includes.validity')
 
 			@include('gene.includes.dosage')
@@ -72,7 +72,7 @@
 			@include('gene.includes.pharma')
 
 			@include('gene.includes.pharmagkb')
-			
+
 
 			{{-- Check to see if curations are showing --}}
 			@if($currations_set == false)
@@ -106,7 +106,7 @@
 <script src="/js/additional-methods.min.js" ></script>
 
 <script>
-	
+
 $(function() {
 	window.auth = {{ Auth::guard('api')->check() ? 1 : 0 }};
 	var context = false;
@@ -136,7 +136,7 @@ $(function() {
 				return;
 			}
 			context = true;
-			
+
 			$('#login-context-value').val(gene);
 			$('#register-context-value').val(gene);
 			$('#follow-gene-id').collapse("show");
@@ -155,7 +155,7 @@ $(function() {
 
 	$( '#follow_form' ).validate( {
 		submitHandler: function(form) {
-			
+
 			$.ajaxSetup({
 				cache: true,
 				contentType: "application/x-www-form-urlencoded",
@@ -166,16 +166,16 @@ $(function() {
     				'Authorization':'Bearer ' + Cookies.get('laravel_token')
    				}
 			});
-			
+
 			var url = "/api/genes/follow";
-			
+
 			var formData = $(form).serialize();
 
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
 				//alert(JSON.stringify(response));
-		
+
 				/*if (response['message'])
 				{
 					swal("Done!", response['message'], "success")
@@ -207,7 +207,7 @@ $(function() {
 				required: "Please enter your email address",
 				email: "Please enter a valid email address",
 				maxlength: "Section names must be less than 80 characters"
-			},	
+			},
 		},
 		errorElement: 'em',
 		errorClass: 'invalid-feedback',
@@ -232,7 +232,7 @@ $(function() {
 
 	$( '#unfollow_form' ).validate( {
 		submitHandler: function(form) {
-			
+
 			$.ajaxSetup({
 				cache: true,
 				contentType: "application/x-www-form-urlencoded",
@@ -245,14 +245,14 @@ $(function() {
 			});
 
 			var url = "/api/genes/unfollow";
-			
+
 			var formData = $(form).serialize();
 
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
 				//alert(JSON.stringify(response));
-		
+
 				/*if (response['message'])
 				{
 					swal("Done!", response['message'], "success")
@@ -282,7 +282,7 @@ $(function() {
 				required: "Please enter your email address",
 				email: "Please enter a valid email address",
 				maxlength: "Section names must be less than 80 characters"
-			},	
+			},
 		},
 		errorElement: 'em',
 		errorClass: 'invalid-feedback',
