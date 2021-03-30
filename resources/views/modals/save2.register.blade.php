@@ -5,7 +5,7 @@
 
         <div class="card login-card">
           <div class="row no-gutters">
-            <div class="col-md-5">
+            <div class="col-md-4 hidden-sm hidden-xs">
               <img src="/assets/images/dna_spiral.jpg" alt="register"   style="width:100%; height: 170px; object-fit: cover;">
             </div>
             <div class="col-md-7">
@@ -66,4 +66,4 @@
       </div>
     </div>
   </div>
-</div>     
+</div>

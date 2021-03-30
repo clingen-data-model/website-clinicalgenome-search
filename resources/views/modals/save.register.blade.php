@@ -5,7 +5,7 @@
 
         <div class="card login-card">
           <div class="row no-gutters">
-            <div class="col-md-4">
+            <div class="col-md-4 hidden-sm hidden-xs">
               <img src="/assets/images/dna_spiral.jpg" alt="register"   style="width:100%; height: 160px; object-fit: cover;">
               <div class="card-body">
                 Here is where we'll add text about password rules, etc.
@@ -58,7 +58,7 @@
                       </div>
                     </div>
                     <button type="submit" class="btn btn-block login-btn mb-4">Register</button>
-                    
+
                   </form>
                   <p class="login-card-footer-text">Already have an account? <a href="#!" class="text-reset action-register-login"><i>Login here</i></a></p>
                   <!--<nav class="register-card-footer-nav">
@@ -73,4 +73,4 @@
       </div>
     </div>
   </div>
-</div>     
+</div>
