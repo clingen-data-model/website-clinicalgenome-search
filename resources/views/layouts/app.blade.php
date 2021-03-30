@@ -119,7 +119,7 @@
                 <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
                 <li class="divider"></li>
                 {{-- <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li> --}}
-                <li><a href="{{ route('download-index') }}/#section_dosage"><i class="fas fa-download"></i> FTP File Downloads (CVS, BED, TSV)</a></li>
+                <li><a href="{{ route('download-index') }}/#section_dosage"><i class="fas fa-download"></i> FTP File Downloads (CSV, BED, TSV)</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown @if ($display_tabs['active'] == "actionability") active @endif ">
