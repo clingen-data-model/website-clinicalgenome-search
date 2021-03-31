@@ -75,6 +75,47 @@ class HomeController extends Controller
 
         $genes->prepend($group);
     }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllActionability', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Actionability",
+                            'hgnc_id' => '@AllActionability',
+                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllValidity', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Validity",
+                            'hgnc_id' => '@AllValidity',
+                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+    if (isset($user->notification->frequency['Groups']) && in_array('AllDosage', $user->notification->frequency['Groups']))
+    {
+        $group = new Gene(['name' => "All Dosage",
+                            'hgnc_id' => '@AllDosage',
+                           'activity' => ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
+                           'date_last_curated' => Carbon::now()
+                           ]);
+
+        $genes->prepend($group);
+    }
+
+    // do a little self repair
+    if ($user->profile === null)
+        $user->update(['profile' => ['interests' => []]]);
+
+    if (!isset($user->profile['interests']))
+    {
+        $p = $user->profile;
+        $p['interests'] = [];
+        $user->update(['profile' => $p]);
+    }
 
     $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
     $user_reports = $reports->where('type', Title::TYPE_USER)->count();
@@ -257,7 +298,7 @@ class HomeController extends Controller
                             $records->push($change);
                         }
 
-                    // it is eaaier to catch the parameters here than in the view
+                        // it is eaaier to catch the parameters here than in the view
                     $params[] = ['start_date' => $report->start_date, 'stop_date' => $report->stop_date,
                                 'genes' => $report->filters['gene_label']];
                 }

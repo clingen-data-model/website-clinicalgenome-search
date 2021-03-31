@@ -23,6 +23,9 @@
 							<li role="presentation" class="">
 								<a href="#profile"  data-toggle="tab">Profile</a>
 							</li>
+							<li role="interests" class="">
+								<a href="#interests"  data-toggle="tab">Interests</a>
+							</li>
 						</ul>
 						<div class="tab-content" id="myTabContent">
 
@@ -31,7 +34,7 @@
 								<div class="row mb-3">
 									<div class="col-md-12">
 										<div class="panel panel-default">
-											<div class="panel-heading">Global Notications</div>
+											<div class="panel-heading">Global Notifications</div>
 											<div class="panel-body">
 												<div class="form-group">
 													<div class="col-sm-12">
@@ -262,6 +265,86 @@
 									</div>		
 								</div>
 							</div>
+
+							<!-- Interests -->
+							<div class="tab-pane fade" id="interests">
+								<div class="row mb-3">
+									<div class="col-md-12">
+										<div class="panel panel-default">
+											<div class="panel-heading">Interests</div>
+											<div class="panel-body">
+												<div class="form-group">
+													<div class="col-sm-6">
+														<h5><img class="ma-4" src="/images/clinicalValidity-on.png" heigth="50" width="50">
+															Gene-Disease Validity
+														</h5>
+													</div>
+													<div class="col-sm-6 border-left" style="border-left-width: 10px !important">
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="validity_interest" {{ in_array('validity', $user->profile['interests']) ? 'checked' : '' }}>
+																Yes, I'm interested
+															</label>
+														</div>
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="validity_notify" {{ in_array('AllValidity', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																Notify on all Validity related updates
+															</label>
+														</div>
+													</div>
+												</div>
+												<hr />
+												<div class="form-group">
+													<div class="col-sm-6">
+														<h5><img class="ma-4" src="/images/dosageSensitivity-on.png" heigth="50" width="50">
+															Dosage Sensitivity
+														</h5>
+													</div>
+													<div class="col-sm-6 border-left" style="border-left-width: 10px !important">
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="dosage_interest" {{ in_array('dosage', $user->profile['interests']) ? 'checked' : '' }}>
+																Yes, I'm interested
+															</label>
+														</div>
+														<div class="radio">
+															<label>
+																<input type="hidden" name="dosage_notify" value="0">
+																<input type="checkbox" class="api-update" name="dosage_notify" {{ in_array('AllDosage', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																Notify on all Dosage related updates
+															</label>
+														</div>
+													</div>
+												</div>
+												<hr />
+												<div class="form-group">
+													<div class="col-sm-6">
+														<h5><img class="ma-4" src="/images/clinicalActionability-on.png" heigth="50" width="50">
+															Clinical Actionability
+														</h5>
+													</div>
+													<div class="col-sm-6 border-left" style="border-left-width: 10px !important">
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="actionability_interest" {{ in_array('actionability', $user->profile['interests']) ? 'checked' : '' }}>
+																Yes, I'm interested
+															</label>
+														</div>
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="actionability_notify" {{ in_array('AllActionability', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																Notify on all Actionability related updates
+															</label>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>		
+								</div>
+							</div>
+
 						</div>
 					</div>
 					<div class="modal-footer">

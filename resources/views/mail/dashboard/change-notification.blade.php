@@ -1,7 +1,7 @@
 @extends('mail.layout.default')
 
 @section('heading')
-Change Notification
+Followed Genes Update Notification
 @endsection
 
 @section('content')
@@ -28,5 +28,5 @@ You are receiving this email because one or more genes you are following have be
 ClinGen is a National Institutes of Health (NIH)-funded resource dedicated to building an authoritative central
 resource that defines the clinical relevance of genes and variants for use in precision medicine and research.
 </br></br>
-To learn more about ClinGen, visit <a href="https::/clinicalgenome.org">www.clinicalgenome.org</a>
+To learn more about ClinGen, visit <a href="https://clinicalgenome.org">www.clinicalgenome.org</a>
 @endsection

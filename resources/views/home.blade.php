@@ -1026,9 +1026,7 @@
         name: 'followtermGene',
         display: 'label',
         source: followtermGene,
-
-        limit: 20,
-        minLength: 3,
+        limit: 10,
         highlight: true,
         hint: false,
         autoselect:true,
@@ -1061,6 +1059,7 @@
   		typeaheadjs: {
     		name: 'followtermGene',
     		displayKey: 'short',
+			limit: Infinity,
     		//valueKey: 'short',
 			//value: 'hgncid',
     		source: followtermGene

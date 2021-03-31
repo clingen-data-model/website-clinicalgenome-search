@@ -97,7 +97,10 @@ $( '#login-form' ).validate( {
 
         $.post(url, formData, function(response)
         {
+          if (response.expires_at == 0)
             Cookies.set('laravel_token', response.access_token);
+          else
+            Cookies.set('laravel_token', response.access_token, { expires: response.expires_at});
 
             $('#modalLogin').modal('hide');
 

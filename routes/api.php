@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 //});
 
 
-//Route::get('/typeahead/{type?}/{term?}', 'QueryController@typeahead')->name('api-typeahead-gene');
 
 // Auth routes for passport
 Route::post('login', 'Api\AuthController@login');
@@ -27,6 +26,12 @@ Route::post('forgot', 'Api\AuthController@forgot');
 Route::post('register', 'Api\AuthController@register');
 Route::post('profile', 'Api\SettingsController@update');
 Route::post('change-password', 'Api\AuthController@change_password');
+Route::get('auth/signup/activate/{token}', 'Api\AuthController@signupActivate');
+
+// Auth related routes for email confirmation
+Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify'); // Make sure to keep this as your route name
+Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+
 
 // reports
 Route::post('reports/remove', 'Api\SettingsController@remove');

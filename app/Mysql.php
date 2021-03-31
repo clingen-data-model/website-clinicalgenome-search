@@ -125,7 +125,6 @@ class Mysql
 			$npharma = 0;
 			$nvariant = 0;
 		}
-
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
 						'npharma' => $npharma, 'nvariant' => $nvariant, 'ncurated' => $ncurated];
@@ -307,6 +306,24 @@ class Mysql
 		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection];
+	}
+
+
+	/**
+     * Get detail for a drug
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugDetail($args, $page = 0, $pagesize = 2000)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$record = Drug::curie($drug)->first();
+
+		return $record;
 	}
 
 

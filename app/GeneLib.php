@@ -893,7 +893,7 @@ class GeneLib extends Model
           //$response = Neo4j::drugDetail($args);
 
           // Drug details are currently in neo4j
-		$response =Graphql::drugDetail($args);
+		$response =Mysql::drugDetail($args);
 
 		return $response;
      }

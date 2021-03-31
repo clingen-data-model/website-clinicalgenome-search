@@ -15,14 +15,14 @@ use App\Report;
 
 use App\Mail\NotifyFrequency;
 
-class UpdateFollow extends Command
+class UpdateSummary extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'update:follow';
+    protected $signature = 'update:summary';
 
     /**
      * The console command description.
@@ -57,16 +57,12 @@ class UpdateFollow extends Command
         foreach ($moreusers as $moreuser)
             if (!empty($moreuser->notification->frequency["Groups"]))
                 $users->push($moreuser);
-
+                
         $history = [];
 
         foreach ($users as $user)
         {
             echo "Processing " . $user->name . "\n";
-            // clean up old reports
-            $oldreports = $user->titles()->system()->unlocked()->expire(30)->get();
-            foreach ($oldreports as $oldreport)
-                $oldreport->delete();
 
             $notify = $user->notification;
             if ($notify === null)
@@ -75,12 +71,12 @@ class UpdateFollow extends Command
             if ($notify->frequency['global'] == 'off')
                 continue;
 
-            $lists = $notify->toReport();
+            $lists = $notify->toSummaryReport();
 
             if (empty($lists))
                 continue;
 
-            $title = new Title(['type' => 1, 'title' => 'ClinGen Followed Genes Notification',
+            $title = new Title(['type' => 1, 'title' => 'ClinGen Followed Genes Summary',
                                 'description' => 'This report shows the genes that have published updates during the period shown.'
                                                 . " To view details of a specific gene, click on the gene symbol name.  In rare cases, a change"
                                                 . " may have been unpublished since this report was generated, and thus not be depicted on the"
@@ -120,7 +116,7 @@ class UpdateFollow extends Command
                     $mail->cc($cc);
                 }
                     
-                $mail->send(new NotifyFrequency(['report' => $title->ident, 'date' => $date, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
+                $mail->send(new NotifySummary(['report' => $title->ident, 'date' => $date, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }
     }

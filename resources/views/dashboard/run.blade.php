@@ -5,7 +5,7 @@
 <div class="row mb-1 mt-1">
 	<div class="col-md-12">
         <h1>{{ $title->title }}</h1>
-        <h4>{{ $title->description }}</h4>
+        <h5>{{ $title->description }}</h5>
         <h4>Report Parameters:</h4><div class="row">
             @foreach ($params as $param)
                 <div class="col-md-4 border-right">

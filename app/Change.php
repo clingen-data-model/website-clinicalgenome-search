@@ -223,7 +223,17 @@ class Change extends Model
      */
 	public function scopeFilters($query, $filters)
     {
-        // the only filter we recognize right now is the gene label
+        if (isset($filters['first']) && $filters['first'] == "on")
+        {
+    
+            $query = $query->whereHas('new', function($subquery) use($genes){
+                return $subquery->whereIn('gene_label', $genes);
+            })->groupBy('element_id');
+
+            return $query;
+        }
+       
+        
         if (isset($filters['gene_label']))
         {
             $genes = $filters['gene_label'];
@@ -232,9 +242,19 @@ class Change extends Model
             if (in_array('*', $genes))
                 return $query;
 
-            return $query->whereHas('new', function($subquery) use($genes){
+            $query = $query->whereHas('new', function($subquery) use($genes){
                 return $subquery->whereIn('gene_label', $genes);
             });
+
+            if (in_array('@AllValidity', $genes))
+                $query = $query->orWhere('new_type', 'App\Validity');
+            
+            if (in_array('@AllDosage', $genes))
+                $query = $query->orWhere('new_type', 'App\Sensitivity');
+
+            if (in_array('@AllActionability', $genes))
+                $query = $query->orWhere('new_type', 'App\Actionability');
+            
         }
 
 		return $query;

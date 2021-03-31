@@ -341,6 +341,15 @@ class Sensitivity extends Model
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
               $new_array['list_date'], $new_array['display_status']);
 
+        //modify the curies since genegraph is agressive about changing them
+        preg_match('/CGDOSAGE:(ISCA-[0-9]+)-(.*)/', $old_array['curie'], $matches);
+        if (isset($matches[1]))
+            $old_array['curie'] = $matches[1];
+
+        preg_match('/CGDOSAGE:(ISCA-[0-9]+)-(.*)/', $new_array['curie'], $matches);
+        if (isset($matches[1]))
+            $new_array['curie'] = $matches[1];
+
         $diff = array_diff_assoc($new_array, $old_array);
 
         return empty($diff);

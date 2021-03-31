@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
+use App\Notifications\RegisterActivate;
+
+use Illuminate\Support\Str;
+
 use Auth;
 use Session;
 use Validator;
+use Carbon\Carbon;
 
 use App\Gene;
 use App\User;
@@ -44,9 +49,15 @@ class AuthController extends Controller
 
         $validatedData['password'] = Hash::make($request->password);
 
+        $validatedData['activation_token'] = Str::random(60);
+
         $user = User::create($validatedData);
+
+        $user->profile = ['interests' => []];
+
+        $user->save();
     
-        $accessToken = $user->createToken('authToken')->accessToken;
+        //$accessToken = $user->createToken('authToken')->accessToken;
 
         // create a new notification recorrd for the user
         $notification = new Notification();
@@ -56,6 +67,8 @@ class AuthController extends Controller
         $context = $request->input('context');
 
         $stat = false;
+
+        $user->notify(new RegisterActivate($user));
         
         if (!empty($context))
         {
@@ -70,25 +83,59 @@ class AuthController extends Controller
             }
         }
 
-        if (empty($request->input('remember')))
+        /*if (empty($request->input('remember')))
             return response(['context' => $stat, 'access_token' => $accessToken, 'user' => $user->name])->withCookie(cookie('laravel_token',$accessToken, 0, null, null, false, false));
         else
             return response(['context' => $stat, 'access_token' => $accessToken, 'user' => $user->name])->withCookie(cookie('laravel_token',$accessToken));
+        */
 
+        return response(['message' => 'Email Confirmation Sent', 'context' => $stat, 'user' => $user->name], 201);
     }
+
+
+    public function signupActivate($token)
+    {
+        $user = User::where('activation_token', $token)->first();
+        if (!$user) {
+            return response()->json([
+                'message' => 'This activation token is invalid.'
+            ], 404);
+        }
+        $user->status = User::STATUS_ACTIVE;
+        $user->activation_token = '';
+        $user->save();
+        return $user;
+    }
+
 
     public function login(Request $request)
     {
-        $loginData = $request->validate([
+        $request->validate([
             'email' => 'email|required',
-            'password' => 'required'
+            'password' => 'required',
+            'remember_me' => 'boolean'
         ]);
+
+        $loginData = request(['email', 'password']);
+
+        $loginData['status'] = User::STATUS_ACTIVE;
+        $loginData['deleted_at'] = null;
 
         if (!auth()->attempt($loginData)) {
             return response()->json(['message' => 'Your username or password is incorrect'], 400);
         }
 
-        $accessToken = auth()->user()->createToken('authToken')->accessToken;
+        $tokenResult = auth()->user()->createToken('authToken');
+        $token = $tokenResult->token;
+
+        if ($request->remember_me)
+            $token->expires_at = Carbon::now()->addWeeks(1);
+
+        $token->save();
+
+        //$accessToken = $token->accessToken;
+
+        //$accessToken = auth()->user()->createToken('authToken')->accessToken;
 
         $context = $request->input('context');
 
@@ -111,12 +158,23 @@ class AuthController extends Controller
         // return response()->json(['redirect' => $red, 'context' => $stat], 200);
         
 
-        if (empty($request->input('remember')))
+        /*if (empty($request->input('remember')))
             return response(['context' => $stat, 'access_token' => $accessToken, 'user' => $user->name])->withCookie(cookie('laravel_token',$accessToken, 0, null, null, false, false));
         else
             return response(['context' => $stat, 'access_token' => $accessToken, 'user' => $user->name])->withCookie(cookie('laravel_token',$accessToken));
+        */
+
+        if ($request->remember_me)
+            return response(['context' => $stat, 'access_token' => $tokenResult->accessToken, 'user' => $user->name,
+                        'token_type' => 'Bearer',
+                        'expires_at' => 7]);
+        else
+            return response(['context' => $stat, 'access_token' => $tokenResult->accessToken, 'user' => $user->name,
+                        'token_type' => 'Bearer',
+                         'expires_at' => 0]);
 
     }
+
 
     public function logout (Request $request)
     {
