@@ -110,6 +110,13 @@ class HomeController extends Controller
     if ($user->profile === null)
         $user->update(['profile' => ['interests' => []]]);
 
+    if (!isset($user->profile['interests']))
+    {
+        $p = $user->profile;
+        $p['interests'] = [];
+        $user->update(['profile' => $p]);
+    }
+
     $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
     $user_reports = $reports->where('type', Title::TYPE_USER)->count();
     $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();

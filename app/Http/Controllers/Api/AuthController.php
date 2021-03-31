@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         $user = User::create($validatedData);
 
-        $user->profile = ['interests => []'];
+        $user->profile = ['interests' => []];
 
         $user->save();
     
