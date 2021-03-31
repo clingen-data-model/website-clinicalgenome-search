@@ -252,6 +252,7 @@ class Validity extends Model
 
                 $gene = Gene::hgnc($new->gene_hgnc_id)->first();
 
+                // we'll use the current date for search, since there is no concept of a reissue date in GCI
                 Change::create([
                                 'type' => Change::TYPE_VALIDITY,
                                 'category' => Change::CATEGORY_NONE,
@@ -261,7 +262,7 @@ class Validity extends Model
                                 'old_type' => 'App\Validity',
                                 'new_id' => $new->id,
                                 'new_type' => 'App\Validity',
-                                'change_date' => $new->report_date,
+                                'change_date' => Carbon::yesterday(),   // $new->report_date,
                                 'status' => 1
                     ]);
             }

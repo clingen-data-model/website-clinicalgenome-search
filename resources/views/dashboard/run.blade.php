@@ -14,10 +14,6 @@
                         <dd>{{ $param['start_date'] }}</dd>
                         <dt>Stop Date</dt>
                         <dd>{{ $param['stop_date'] }}</dd>
-                    </dl>
-                </div>
-                <div class="col-md-6">
-                    <dl>
                         <dt>Genes</dt>
                         <dd>
                             {{ implode(', ', $param['genes']) == '*' ? 'All Genes' :  implode(', ', $param['genes']) }}

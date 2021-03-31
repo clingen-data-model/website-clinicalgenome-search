@@ -41,8 +41,8 @@ class Report extends Model
     public static $rules = [
 		'ident' => 'alpha_dash|max:80|required',
         'type' => 'integer',
-        'start_date' => 'timestamp',
-        'stop_date' => 'timestamp',
+        'start_date' => 'datetime',
+        'stop_date' => 'datetime',
         'filters' => 'json',
         'notes' => 'string',
 		'status' => 'integer'
@@ -55,8 +55,8 @@ class Report extends Model
      */
 	protected $casts = [
             'filters' => 'array',
-            'start_date' => 'date',
-            'stop_date' => 'date'
+            'start_date' => 'datetime',
+            'stop_date' => 'datetime'
 		];
 
     /**

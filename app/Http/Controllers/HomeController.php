@@ -291,7 +291,7 @@ class HomeController extends Controller
                             $records->push($change);
                         }
 
-                    // it is eaaier to catch the parameters here than in the view
+                        // it is eaaier to catch the parameters here than in the view
                     $params[] = ['start_date' => $report->start_date, 'stop_date' => $report->stop_date,
                                 'genes' => $report->filters['gene_label']];
                 }
