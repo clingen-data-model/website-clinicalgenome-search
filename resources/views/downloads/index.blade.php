@@ -144,7 +144,7 @@
                         <td><strong>Clinical Actionability Download </strong>
                             <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  Both CSV and TSV formats are supported.</div>
                         </td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('actionability-index') }}}"  class="btn btn-default"> Website</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/"  class="btn btn-default" target="_blank"> Website</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>
