@@ -183,8 +183,10 @@ class Notification extends Model
           $genes = [];
 
           foreach (['Daily', 'Pause', 'Weekly', 'Default', 'Monthly'] as $bucket)
-               foreach ($this->frequency[$bucket] as $item)
-                    array_push($genes, $item);
+          {    if (isset($this->frequency[$bucket]))
+                    foreach ($this->frequency[$bucket] as $item)
+                         array_push($genes, $item);
+          }
 
           return array_unique($genes);
      }
