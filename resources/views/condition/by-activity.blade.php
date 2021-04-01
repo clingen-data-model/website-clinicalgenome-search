@@ -67,7 +67,7 @@
 			@endif
 
 			@php global $currations_set; $currations_set = false; @endphp
-			
+
 			@include('condition.includes.validity')
 
 
@@ -262,7 +262,9 @@
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
 													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">
-													{{ $record->displayActionType($actionability->source) }}{{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
+													<div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }} @if(App\Genelib::actionabilityAssertionString($actionability->classification->label) == "Assertion Pending")
+										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
+										@endif
 													</a>
 											</td>
 

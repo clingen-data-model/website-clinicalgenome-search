@@ -50,10 +50,10 @@ class Nodal extends Model
      * @var array
      */
     protected $appends = ['has_dosage', 'has_actionability', 'has_validity',
-							//'last_curated', 
-							//'description', 
+							//'last_curated',
+							//'description',
 							'symbol',
-							//'curation_flag', 
+							//'curation_flag',
 							'dosage_report_date'];
 
 
@@ -205,13 +205,13 @@ class Nodal extends Model
 
 		return $records;
 	}
-	
-	
+
+
 	/**
-     * Flag indicating if gene has any dosage curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
      */
     public function setCurationFlagAttribute($value)
     {
@@ -221,26 +221,26 @@ class Nodal extends Model
 			$this->curation_activities = array_merge($this->curation_activities,
 													[ $value ]);
 	}
-	
+
 	/**
-     * Flag indicating if gene has any dosage curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
      */
     public function getHasDosageAttribute()
     {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities) ?
 					in_array('GENE_DOSAGE', $this->curation_activities) :
-					false); 
+					false);
 	}
-	
-	
+
+
 	/**
-     * Flag indicating if gene has any dosage triplo scores 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage triplo scores
+     *
+     * @@param
+     * @return
      */
     public function getHasDosageTriploAttribute()
     {
@@ -249,95 +249,95 @@ class Nodal extends Model
 
 		return $this->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal ?? false;
 		//return $this->dosage_curation->triplosensitivity_assertion->score ?? false;
-	
+
 	}
-	
-	
+
+
 	/**
-     * Flag indicating if gene has any dosage haplo scores 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage haplo scores
+     *
+     * @@param
+     * @return
      */
     public function getHasDosageHaploAttribute()
     {
 		if (empty($this->dosage_curation))
 			return false;
-		
+
 		//return $this->dosage_curation->haploinsufficiency_assertion->score ?? false;
 		return $this->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal ?? false;
 	}
-	
-	
+
+
 	/**
      * Get the latest date
-     * 
-     * @@param	
-     * @return 
+     *
+     * @@param
+     * @return
      */
     public function getDosageReportDateAttribute()
     {
-		return $this->dosage_curation->report_date ?? '';	
+		return $this->dosage_curation->report_date ?? '';
 	}
-	
-	
+
+
 	/**
-     * Flag indicating if gene has any validity curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any validity curations
+     *
+     * @@param
+     * @return
      */
     public function getHasValidityAttribute()
     {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities) ?
 					in_array('GENE_VALIDITY', $this->curation_activities) :
-					false); 
+					false);
 	}
 
 
 	/**
-     * Flag indicating if gene has any pharma curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any pharma curations
+     *
+     * @@param
+     * @return
      */
     public function getHasPharmaAttribute()
     {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities) ?
 					in_array('GENE_PHARMA', $this->curation_activities) :
-					false); 
+					false);
 	}
 
 
 	/**
-     * Flag indicating if gene has any pharma curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any pharma curations
+     *
+     * @@param
+     * @return
      */
     public function getHasVariantAttribute()
     {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities) ?
 					in_array('VAR_PATH', $this->curation_activities) :
-					false); 
+					false);
 	}
-	
-	
+
+
 	/**
-     * Flag indicating if gene has any actionability curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any actionability curations
+     *
+     * @@param
+     * @return
      */
     public function getHasActionabilityAttribute()
     {
-		return (isset($this->curation_activities) ? 
+		return (isset($this->curation_activities) ?
 					in_array('ACTIONABILITY', $this->curation_activities) :
-					false); 
+					false);
 	}
 
 	/**
-     * Get a display formatted form of mane 
+     * Get a display formatted form of mane
      *
      * @@param
      * @return
@@ -353,35 +353,35 @@ class Nodal extends Model
 				   //return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
 				   return $t['refseq_nuc'] . ' <i class="fas fa-info-circle color-white mr-4" data-toggle="tooltip" data-placement="top" title="NCBI"></i>' . $t['ensembl_nuc'] . ' <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Ensembl"></i>';
 				   break;
-			  case 'plus': 
+			  case 'plus':
 				   if (empty($this->mane_plus))
 						return '';
 				   //return  'chr' . $t['chr'] . ':' . $t['start'] . '-' . $t['stop'] . '' . $t['strand'];
 				   return $t['refseq_nuc'] . ' <i class="fas fa-info-circle color-white mr-4" data-toggle="tooltip" data-placement="top" title="NCBI"></i>' . $t['ensembl_nuc'] . ' <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Ensembl"></i>';
 				   break;
-			  default: 
+			  default:
 				   return '';
 		 }
 	}
-	
-	
+
+
 	/**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getNameAttribute()
     {
 		return $this->alternative_label ?? '';
 	}
-	
-	
+
+
 	/**
-     * Return symbol of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return symbol of gene
+     *
+     * @@param
+     * @return
      */
     public function getSymbolAttribute()
     {
@@ -390,10 +390,10 @@ class Nodal extends Model
 
 
 	/**
-     * Return symbol of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return symbol of gene
+     *
+     * @@param
+     * @return
      */
     public function getMondoString($original, $colonflag = false)
     {
@@ -407,18 +407,25 @@ class Nodal extends Model
 
 
 	/**
-     * Return whether Actionability report is an adult or a pediatric 
-     * 
-     * @@param	
-     * @return 
+     * Return whether Actionability report is an adult or a pediatric
+     *
+     * @@param
+     * @return
      */
-    public function displayActionType($record)
+    public function displayActionType($record, $trim = false)
     {
-		
+
 		if (strpos($record, '/Adult/'))
-			return 'Adult - ';
+			if($trim == true)
+				return 'Adult';
+			else
+				return 'Adult - ';
 		else if (strpos($record, '/Pediatric/'))
-			return 'Pediatric - ';
+		//return 'Pediatric - ';
+		if ($trim == true)
+				return 'Pediatric';
+			else
+				return 'Pediatric - ';
 		else
 			return '';
 
@@ -426,10 +433,10 @@ class Nodal extends Model
 
 
 	/**
-     * Format for ensemble 
-     * 
-     * @@param	
-     * @return 
+     * Format for ensemble
+     *
+     * @@param
+     * @return
      */
     public function formatEnsembl($position)
     {
@@ -444,10 +451,10 @@ class Nodal extends Model
 
 
 	/**
-     * Format for ncbi 
-     * 
-     * @@param	
-     * @return 
+     * Format for ncbi
+     *
+     * @@param
+     * @return
      */
     public function formatNcbi($position, $seq)
     {
@@ -480,10 +487,10 @@ class Nodal extends Model
 
 
 	/**
-     * Format for ucsc 
-     * 
-     * @@param	
-     * @return 
+     * Format for ucsc
+     *
+     * @@param
+     * @return
      */
     public function formatUcsc19($position)
     {
@@ -494,10 +501,10 @@ class Nodal extends Model
 
 
 	/**
-     * Format for ucsc 
-     * 
-     * @@param	
-     * @return 
+     * Format for ucsc
+     *
+     * @@param
+     * @return
      */
     public function formatUcsc38($position)
     {
@@ -508,10 +515,10 @@ class Nodal extends Model
 
 
 	/**
-     * Format for ncbi 
-     * 
-     * @@param	
-     * @return 
+     * Format for ncbi
+     *
+     * @@param
+     * @return
      */
     public function formatPosition($position, $ext)
     {
@@ -555,13 +562,13 @@ class Nodal extends Model
 			return $sv_start;
 
 		$sv_stop = $to + (($to - $from + 1) * 0.1);
-		
+
 		if ($ext == 'svto')
 			return $sv_stop;
 
 		if ($ext == 'nice')
 			return 'chr' . $chr . ': ' . $from . '-' . $to;
-		
+
 			return '';
 
 	}
