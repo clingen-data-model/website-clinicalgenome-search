@@ -30,9 +30,9 @@ class NotifySummary extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.dashboard.change-notification')
+        return $this->view('mail.dashboard.summary-notification')
                     ->from(['address' => 'noreply@ne.clinicalgenome.org', 'name' => 'ClinGen Notification'])
-                    ->subject('Gene Notifications Summary from ClinGen for ' . $this->attributes['date'])
+                    ->subject('Gene Notifications Summary from ClinGen for Period Ending ' . $this->attributes['date'])
                     ->with($this->attributes);
 
     }

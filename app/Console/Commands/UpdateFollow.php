@@ -103,7 +103,7 @@ class UpdateFollow extends Command
             if ($changes->isNotEmpty())
             {
                 $user->titles()->save($title);
-                $genes = $changes->pluck('element.name')->unique();
+                $genes = $changes->pluck('element.name')->unique()->sort();
 
                 // override the primary
                 if (!empty($notify->primary['email']))

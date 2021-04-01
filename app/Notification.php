@@ -176,6 +176,32 @@ class Notification extends Model
 
 
      /**
+      * Get all the followed genes
+      */
+     public function getGenesAttribute()
+     {
+          $genes = [];
+
+          foreach (['Daily', 'Pause', 'Weekly', 'Default', 'Monthly'] as $bucket)
+               foreach ($this->frequency[$bucket] as $item)
+                    array_push($genes, $item);
+
+          return array_unique($genes);
+     }
+
+
+     /**
+      * Get all the followed genes
+      */
+      public function getSummaryStringAttribute()
+      {
+           $sum = $this->frequency['summary'] ?? self::FREQUENCY_NONE;
+
+           return $this->frequency_strings[$sum];
+      }
+
+
+     /**
      * Assert if the value is selected or not
      *
      * @@param	string	$ident
@@ -364,8 +390,8 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && Carbon::now()->format('m') == '01' && (($frequency['summary'] == self::FREQUENCY_ANNUAL)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subYear(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subYear()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
                
                return $reports;
           }
@@ -377,8 +403,8 @@ class Notification extends Model
           Carbon::now()->format('m') == '10') && (($frequency['summary'] == self::FREQUENCY_QUARTERLY)))
           {
      
-               $reports[] = ['start_date' => Carbon::now()->subQuarter(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subQuarter()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
 
                return $reports;
           }
@@ -388,8 +414,8 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && (($frequency['summary'] == self::FREQUENCY_MONTHLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subMonth(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
 
                return $reports;
           }
@@ -398,8 +424,8 @@ class Notification extends Model
           if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (($frequency['summary'] == self::FREQUENCY_WEEKLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subWeek()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
                
                return $reports;
           }
