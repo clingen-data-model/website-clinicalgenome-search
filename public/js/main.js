@@ -316,9 +316,8 @@ $('#register-form').validate({
       Cookies.set('laravel_token', response.access_token);
       $('#modalRegister').modal('hide');
       swal({
-        title: "You are now logged in!",
-        text: " ",
-        timer: 2500,
+        title: "You have successfully registered!",
+        text: "An confirmation email has been sent to your email address.  Please follow the directions to confirm and complete the registration.",
         className: "swal-success",
         buttons: false
       }); // initialize user and add dashboard menu

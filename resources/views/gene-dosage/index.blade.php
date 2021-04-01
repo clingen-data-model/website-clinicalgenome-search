@@ -111,6 +111,7 @@
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
+<script src="/js/filters.js"></script>
 
 <script>
 	/**
@@ -129,6 +130,9 @@
     }
   }
 
+  	var filterstack = [
+	  ];
+
 	/**
 	 *
 	 * Listener for displaying only genes
@@ -141,6 +145,8 @@
 		{
 			$(this).removeClass('btn-success').addClass('btn-default active');
 			$(this).html('<b>Genes: Off</b>');
+			//filter_push("geneswitch", "type", "1");
+			//filter_process($table);
 		}
 		else
 		{
@@ -148,6 +154,9 @@
 			viz.push(3);
 			$(this).addClass('btn-success').removeClass('btn-default active');
 			$(this).html('<b>Genes: On</b>')
+			//filter_pop("geneswitch");
+			//filter_process($table);
+
 		}
 
 		if ($('.action-show-regions').hasClass('btn-success'))
