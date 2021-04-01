@@ -104,7 +104,15 @@ class AuthController extends Controller
         $user->status = User::STATUS_ACTIVE;
         $user->activation_token = '';
         $user->save();
-        return $user;
+
+        $display_tabs = collect([
+            'active' => "more",
+            'title' => "Dashboard"
+        ]);
+
+        $show_message = true;
+
+        return view('dashboard.logout', compact('display_tabs', 'show_message'));
     }
 
 

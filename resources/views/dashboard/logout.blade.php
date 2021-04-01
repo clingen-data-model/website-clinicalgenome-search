@@ -51,6 +51,11 @@
         </div>
 
         <div class="col-sm-4 border-l">
+          @if (isset($show_message))
+          <div class="alert alert-success" role="alert"><p><b>You have activated your account!</b></p>
+            <p>You may log in at anytime using the button below, 
+            or the Login link located in the upper right corner of the page.</p></div>
+          @endif
           <div class="text-center">
           <button class='btn-lg btn-primary action-login btn-block'>Login To Get Started</button>
           <i class="text-sm text-muted">You are currently logged-out</i>

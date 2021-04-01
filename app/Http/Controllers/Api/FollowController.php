@@ -157,13 +157,14 @@ dd("not logged in");  }*/
        
         if ($input['gene'] == '*')
         {
-            $notify = $user->notification;
+            $user->notification->removeGroup('AllGenes');
+            /*$notify = $user->notification;
 
             $frequency = $notify->frequency;
             $frequency['Groups'] = [];
-            $notify->frequency = $frequency;
+            $notify->frequency = $frequency;*/
                 
-            $notify->save();
+            $user->notification->save();
             return response()->json(['success' => 'true',
 								 'status_code' => 200,
 							 	 'message' => 'Gene UnFollowed'],

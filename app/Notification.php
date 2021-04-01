@@ -364,7 +364,7 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && Carbon::now()->format('m') == '01' && (($frequency['summary'] == self::FREQUENCY_ANNUAL)))
           {
 
-               $reports[] = ['start_date' => Carbon::subYear(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subYear(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["*"]}')];
                
                return $reports;
@@ -377,7 +377,7 @@ class Notification extends Model
           Carbon::now()->format('m') == '10') && (($frequency['summary'] == self::FREQUENCY_QUARTERLY)))
           {
      
-               $reports[] = ['start_date' => Carbon::subQuarter(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subQuarter(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["*"]}')];
 
                return $reports;
@@ -388,7 +388,7 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && (($frequency['summary'] == self::FREQUENCY_MONTHLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::subMonth(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subMonth(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["*"]}')];
 
                return $reports;
@@ -398,7 +398,7 @@ class Notification extends Model
           if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (($frequency['summary'] == self::FREQUENCY_WEEKLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["*"]}')];
                
                return $reports;
