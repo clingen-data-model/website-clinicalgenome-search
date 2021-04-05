@@ -22,7 +22,7 @@ use Uuid;
  * @since      Class available since Release 1.0.0
  *
  * */
-class Health extends Model
+class Group extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -35,16 +35,10 @@ class Health extends Model
      */
     public static $rules = [
           'ident' => 'alpha_dash|max:80|required',
-          'service' => 'string|nullable',
-          'subservice' => 'string|nullable',
-          'internal' => 'string|nullable',
-          'dci' => 'string|nullable',
-          'genegraph' => 'string|nullable',
-          'spare1' => 'string|nullable',
-          'spare2' => 'string|nullable',
-          'spare3' => 'string|nullable',
-          'spare4' => 'string|nullable',
-          'spare5' => 'string|nullable',
+          'name' => 'string',
+          'display_name' => 'string|nullable',
+          'search_name' => 'string|nullable',
+          'description' => 'string|nullable',
           'type' => 'integer',
           'status' => 'integer'
 	];
@@ -62,9 +56,7 @@ class Health extends Model
      *
      * @var array
      */
-	protected $fillable = ['service', 'subservice', 'internal', 'dci', 'genegraph',
-                            'spare1', 'spare2', 'spare3', 'spare4', 'spare5',
-                            'ident', 'type', 'status' ];
+	protected $fillable = ['ident', 'name', 'display_name', 'search_name', 'description', 'type', 'status'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -93,7 +85,7 @@ class Health extends Model
      protected $status_strings = [
 	 		0 => 'Initialized',
 	 		9 => 'Deleted'
-	];
+    ];
 
 
 	/**
@@ -106,7 +98,16 @@ class Health extends Model
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
-	}
+    }
+    
+
+    /*
+     * The users following this group
+     */
+    public function users()
+    {
+       return $this->belongsToMany('App\User');
+    }
 
 
 	/**
@@ -127,27 +128,44 @@ class Health extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeGenegraph($query)
+	public function scopeName($query, $name)
     {
-        return $query->where('genegraph');
+        return $query->where('name', $name);
     }
 
 
     /**
-     * Query scope by symbol name
+     * Query scope by search name
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public static function initialize()
+	public function scopeSearch($query, $name)
     {
-        $record = new Health(['service' => 'GeneSearch',
-                                'internal' => '1',
-                                'genegraph' => '1',
-                                'dci' => '1',
-                                'type' => 1, 'status' => 1]);
+        return $query->where('search_name', $name);
+    }
 
-        return $record->save();
+    
+    /**
+     * Initialize with known groups
+     */
+    public static function intializeGroups()
+    {
+        $t = new Group(['name' => '@AllGenes', 'display_name' => 'All Genes', 'search_name' => '*',
+                        'description' => 'Follow All Genes']);
+        $t->save();
+
+        $t = new Group(['name' => '@AllDosage', 'display_name' => 'All Dosage', 'search_name' => '@All Dosage',
+                        'description' => 'Follow All Dosage Sensitivity Activity']);
+        $t->save();
+
+        $t = new Group(['name' => '@AllValidity', 'display_name' => 'All Validity', 'search_name' => '@All Validity',
+                        'description' => 'Follow All Gene-Disease Validity Activity']);
+        $t->save();
+
+        $t = new Group(['name' => '@AllActionability', 'display_name' => 'All Actionability', 'search_name' => '@All Actionability',
+                        'description' => 'Follow All Clinical Actionability Activity']);
+        $t->save();
     }
 
 }

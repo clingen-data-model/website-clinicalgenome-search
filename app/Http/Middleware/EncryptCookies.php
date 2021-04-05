@@ -13,6 +13,6 @@ class EncryptCookies extends Middleware
      */
     protected $except = [
         'clingenfollow',
-        'laravel_token'
+        'clingen_dash_token'
     ];
 }

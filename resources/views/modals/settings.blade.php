@@ -288,7 +288,7 @@
 														</div>
 														<div class="radio">
 															<label>
-																<input type="checkbox" class="api-update" name="validity_notify" {{ in_array('AllValidity', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																<input type="checkbox" class="api-update" name="validity_notify" {{ $user->notification->checkGroup('@AllValidity') ? 'checked' : '' }}>
 																Notify on all Validity related updates
 															</label>
 														</div>
@@ -311,7 +311,7 @@
 														<div class="radio">
 															<label>
 																<input type="hidden" name="dosage_notify" value="0">
-																<input type="checkbox" class="api-update" name="dosage_notify" {{ in_array('AllDosage', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																<input type="checkbox" class="api-update" name="dosage_notify" {{ $user->notification->checkGroup('@AllDosage') ? 'checked' : '' }}>
 																Notify on all Dosage related updates
 															</label>
 														</div>
@@ -333,7 +333,7 @@
 														</div>
 														<div class="radio">
 															<label>
-																<input type="checkbox" class="api-update" name="actionability_notify" {{ in_array('AllActionability', $user->notification->frequency['Groups']) ? 'checked' : '' }}>
+																<input type="checkbox" class="api-update" name="actionability_notify" {{ $user->notification->checkGroup('@AllActionability') ? 'checked' : '' }}>
 																Notify on all Actionability related updates
 															</label>
 														</div>
@@ -347,8 +347,13 @@
 
 						</div>
 					</div>
-					<div class="modal-footer">
+					<div class="modal-footer pb-0">
+						<div class=" col-md-8 alert alert-info text-left">
+							<span id="setting-alert-message"><strong>Auto-Update On:</strong>  All setting changes are automatically saved.</span>
+						</div>
+						<div class="col-md-4 mt-2">
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						</div>
 					</div>
 				</form>
 			</div>

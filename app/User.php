@@ -62,6 +62,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     /*
+     * The groups that this user is following
+     */
+    public function groups()
+    {
+       return $this->belongsToMany('App\Group');
+    }
+
+    /*
      * The notification preferences for this user
      */
     public function notification()
@@ -186,6 +194,38 @@ class User extends Authenticatable implements MustVerifyEmail
              unset($profile['interests'][$key]);
         $profile['interests'] = array_values($profile['interests']);
         $this->profile = $profile;
+
+        return true;
+    }
+
+
+    /**
+     * Add a new group for this user
+     */
+    public function addGroup($name)
+    {
+        $group = Group::name($name)->first();
+
+        if ($group === null)
+            return false;
+
+        $this->groups()->attach($group->id);
+
+        return true;
+    }
+
+
+    /**
+     * Remova a group for this user
+     */
+    public function removeGroup($name)
+    {
+        $group = Group::name($name)->first();
+
+        if ($group === null)
+            return false;
+
+        $this->groups()->detach($group->id);
 
         return true;
     }

@@ -87,5 +87,6 @@ Route::post('/home/notify', 'Api\HomeController@notify')->name('home.notify');
 Route::get('/home/rpex/{type}', 'Api\HomeController@report_expand')->name('home.report');
 Route::get('/home/reports/{type}', 'Api\HomeController@reports')->name('home.reports');
 Route::post('/home/toggle', 'Api\HomeController@toggle')->name('home.toggle');
+Route::get('/home/follow/reload', 'Api\FollowController@reload')->name('home.reload');
 
 

@@ -99,7 +99,7 @@
 @section('script_js')
 <script>
 	window.token = "{{ csrf_token() }}";
-	window.bearer_token = Cookies.get('laravel_token');
+	window.bearer_token = Cookies.get('clingen_dash_token');
 </script>
 
 <script src="/js/jquery.validate.min.js" ></script>
@@ -163,7 +163,7 @@ $(function() {
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -240,7 +240,7 @@ $(function() {
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 

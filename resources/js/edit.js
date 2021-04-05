@@ -12,7 +12,7 @@ $('#modalSettings').on('change', '.api-update', function(e) {
         headers:{
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN' : window.token,
-            'Authorization':'Bearer ' + Cookies.get('laravel_token')
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
         }
     });
   
@@ -34,7 +34,7 @@ $('#modalSettings').on('change', '.api-update', function(e) {
 
     $.post(url, eles, function(response)
     {
-        console.log(response.field);
+        // console.log(response.field);
         // update display
         if (response.field == 'credentials')
         {
@@ -64,6 +64,54 @@ $('#modalSettings').on('change', '.api-update', function(e) {
                 $('#profile-interest-validity').show();
             else
                 $('#profile-interest-validity').hide();
+        }
+        else if (response.field == 'validity_notify')
+        {
+                var url = "/api/home/follow/reload";
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+        else if (response.field == 'dosage_notify')
+        {
+                var url = "/api/home/follow/reload";
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+        else if (response.field == 'actionability_notify')
+        {
+                var url = "/api/home/follow/reload";
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
         }
 
             

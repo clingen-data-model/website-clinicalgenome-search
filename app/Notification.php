@@ -176,6 +176,34 @@ class Notification extends Model
 
 
      /**
+      * Get all the followed genes
+      */
+     public function getGenesAttribute()
+     {
+          $genes = [];
+
+          foreach (['Daily', 'Pause', 'Weekly', 'Default', 'Monthly'] as $bucket)
+          {    if (isset($this->frequency[$bucket]))
+                    foreach ($this->frequency[$bucket] as $item)
+                         array_push($genes, $item);
+          }
+
+          return array_unique($genes);
+     }
+
+
+     /**
+      * Get all the followed genes
+      */
+      public function getSummaryStringAttribute()
+      {
+           $sum = $this->frequency['summary'] ?? self::FREQUENCY_NONE;
+
+           return $this->frequency_strings[$sum];
+      }
+
+
+     /**
      * Assert if the value is selected or not
      *
      * @@param	string	$ident
@@ -364,8 +392,8 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && Carbon::now()->format('m') == '01' && (($frequency['summary'] == self::FREQUENCY_ANNUAL)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subYear(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subYear()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
                
                return $reports;
           }
@@ -377,8 +405,8 @@ class Notification extends Model
           Carbon::now()->format('m') == '10') && (($frequency['summary'] == self::FREQUENCY_QUARTERLY)))
           {
      
-               $reports[] = ['start_date' => Carbon::now()->subQuarter(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subQuarter()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
 
                return $reports;
           }
@@ -388,8 +416,8 @@ class Notification extends Model
           if (Carbon::now()->format('d') == '01' && (($frequency['summary'] == self::FREQUENCY_MONTHLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subMonth(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
 
                return $reports;
           }
@@ -398,8 +426,8 @@ class Notification extends Model
           if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (($frequency['summary'] == self::FREQUENCY_WEEKLY)))
           {
 
-               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
-                            'filters' => json_decode('{"gene_label":["*"]}')];
+               $reports[] = ['start_date' => Carbon::now()->subWeek()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
                
                return $reports;
           }
@@ -438,12 +466,33 @@ class Notification extends Model
 
 
      /**
+     * Check if name is part of any notification bucket
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function checkGroup($name)
+     {
+          foreach (['Daily', 'Weekly', 'Monthly', 'Pause', 'Default'] as $bucket)
+          {
+               if (!(isset($this->frequency[$bucket]) && is_array($this->frequency[$bucket])))
+                    continue;
+
+               if (in_array($name, $this->frequency[$bucket]))
+                    return $bucket;
+          }
+          
+          return false;
+     }
+
+
+     /**
      * Add to the group
      *
      * @@param	string	$gene
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function addGroup($group)
+	/*public function addGroup($group)
      {
           if ($this->frequency === null)
           {
@@ -463,6 +512,33 @@ class Notification extends Model
                array_push($frequency['Groups'], $group);
                $this->frequency = $frequency;
           }
+     }*/
+
+
+     /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeGroup($name, $bucket)
+     {
+         if ($this->frequency === null)
+             return false;
+ 
+         if (!isset($this->frequency[$bucket]))
+             return false;
+     
+         if (!in_array($name, $this->frequency[$bucket]))
+             return false;
+         
+         $frequency = $this->frequency;
+         if (($key = array_search($name, $frequency[$bucket])) !== false)
+              unset($frequency[$bucket][$key]);
+         $frequency[$bucket] = array_values($frequency[$bucket]);
+         $this->frequency = $frequency;
+ 
+         return true;
      }
 
 
@@ -472,7 +548,7 @@ class Notification extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function removeGroup($group)
+	/*public function removeGroup($group)
      {
          if ($this->frequency === null)
              return true;
@@ -490,7 +566,7 @@ class Notification extends Model
          $this->frequency = $frequency;
  
          return true;
-     }
+     }*/
 
 
      public function walk(&$item, $key)

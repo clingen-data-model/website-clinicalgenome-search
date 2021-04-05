@@ -78,7 +78,7 @@
   
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 
@@ -91,21 +91,23 @@
 
   var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity'];
 
-function checkactive(text, value, field, data)
-{
-  switch (text)
+  function checkactive(text, value, field, data)
   {
-    case 'actionability': 
-      return value.indexOf('A') != -1;
-    case 'dosage sensitivity':
-      return value.indexOf('D') != -1;
-    case 'gene validity':
-      return value.indexOf('V') != -1;
-    default:
-      return true;
+    switch (text)
+    {
+      case 'actionability': 
+        return value.indexOf('A') != -1;
+      case 'dosage sensitivity':
+        return value.indexOf('D') != -1;
+      case 'gene validity':
+        return value.indexOf('V') != -1;
+      default:
+        return true;
+    }
+
   }
 
-}
+  
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',

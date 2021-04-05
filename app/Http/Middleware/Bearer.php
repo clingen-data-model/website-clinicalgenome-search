@@ -14,8 +14,8 @@ class Bearer extends Middleware
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        if ($request->cookie('laravel_token')) {
-            $request->headers->set('Authorization', 'Bearer ' . $request->cookie('laravel_token'));
+        if ($request->cookie('clingen_dash_token')) {
+            $request->headers->set('Authorization', 'Bearer ' . $request->cookie('clingen_dash_token'));
             //$request->middleware('auth:api');
         }
 

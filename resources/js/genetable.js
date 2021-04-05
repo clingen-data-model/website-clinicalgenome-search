@@ -39,7 +39,7 @@ function reportDetailFormatter(index, row, element)
         headers:{
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRF-TOKEN' : window.token,
-            'Authorization':'Bearer ' + Cookies.get('laravel_token')
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
            }
     });
 

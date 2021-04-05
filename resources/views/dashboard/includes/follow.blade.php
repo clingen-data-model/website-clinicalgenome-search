@@ -39,20 +39,22 @@
                     data-response-handler="responseHandler"
                     data-header-style="headerStyle"
                     data-show-filter-control-switch="false"
+                    data-row-attributes="rowAttributes"
                     >
                 <thead>
                     <tr>
-                        <th class="col-sm-2" data-field="symbol" data-sortable="true" data-formatter="formatSymbol">Name</th>
-                        <th class="col-sm-3" data-align="center">Curation Status</th>
-                        <th class="col-sm-2" data-sortable="true">Last Updated</th>
-                        <th class="col-sm-2" data-align="center">Notify</th>
-                        <th class="col-sm-2" data-align="center">Unfollow</th>
+                        <th class="col-sm-2" data-field="symbol" data-sortable="true" data-cell-style="symbolClass" data-formatter="formatSymbol">Name</th>
+                        <th class="col-sm-3" data-field="curations" data-align="center">Curation Status</th>
+                        <th class="col-sm-2" data-field="display_last" data-sortable="true">Last Updated</th>
+                        <th class="col-sm-2" data-field="notify" data-align="center">Notify</th>
+                        <th class="col-sm-2" data-field="unfollow" data-align="center">Unfollow</th>
+                        <th data-field="hgnc" data-visible="false"></th>
                     </tr>
                 </thead>
                 <tbody>
                 @foreach ($genes as $gene)
-                    <tr data-hgnc="{{ $gene->hgnc_id }}">
-                        <td scope="row" class="table-symbol" data-value="{{ $gene->name }}">{{ $gene->name }}</td>
+                    <tr >
+                        <td scope="row" data-value="{{ $gene->name }}">{{ $gene->name }}</td>
                         <td>
                             <img src="/images/clinicalValidity-{{ $gene->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/dosageSensitivity-{{ $gene->hasActivity('dosage') ? 'on' : 'off' }}.png" width="22" height="22">
@@ -64,7 +66,7 @@
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="selection">{{ $notification->setting($gene->name) }}</span><span class="caret"></span>
+                                    <span class="selection">{{ $gene->hgnc_id == '*' || $gene->hgnc_id[0] == '@' ? $notification->setting($gene->hgnc_id) : $notification->setting($gene->name) }}</span><span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a data-value="Daily">Daily</a></li>
@@ -80,6 +82,7 @@
                         <td>
                             <span class="action-follow-gene"><i class="fas fa-star" style="color:green"></i></span>
                         </td>
+                        <td>{{ $gene->hgnc_id }}</td>
                     </tr>
                 @endforeach
                 </tbody>

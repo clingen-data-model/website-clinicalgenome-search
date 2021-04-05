@@ -68,6 +68,9 @@
 	<link href="/css/gijgo.min.css" rel="stylesheet">
 	<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+	
     <style>
         .profile-background
         {
@@ -209,7 +212,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -240,6 +243,17 @@
 		});
 
 		
+		$('#report-view').on('click', '.action-share-report', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			var row = $(this).closest('tr').attr('data-index');
+
+			var obj = $(this);
+
+			swal("The ability to share a report with others is scheduled to be released later this year.  Thank-you for your patience.")
+
+		});
 
 		$('#report-view').on('click', '.action-unlock-report', function() {
 
@@ -256,7 +270,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -290,7 +304,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -322,7 +336,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -386,7 +400,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -427,7 +441,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -505,7 +519,8 @@
                 var original = btngrp.find('.selection').text();
                 btngrp.find('.selection').text($(this).text());
 
-                var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
+                //var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
+				var gene = btngrp.closest('tr').attr('data-hgnc');
 
                 // save the change
                 server_update(gene, original, $(this).text());
@@ -532,7 +547,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -557,7 +572,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -568,17 +583,38 @@
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
-				//alert(JSON.stringify(response));
-		
-				/*if (response['message'])
-				{
-					swal("Done!", response['message'], "success")
-						.then((answer2) => {
-							if (answer2){*/
-								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-							/*}
-					});
-				}*/
+				var url = "/api/home/follow/reload";
+
+				var gene = response.gene;
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+					$('#follow-table').bootstrapTable("resetSearch","");
+
+					switch (gene)
+					{
+						case '@AllActionability':
+							$('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+							break;
+						case '@AllValidity':
+							$('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+							break;
+						case '@AllDosage':
+							$('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+							break;
+						case '*':
+							$('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+					}
+
+					$('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+				});
 			}).fail(function(response)
 			{
 				//handle failed validation
@@ -631,7 +667,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -642,18 +678,39 @@
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
-				window.location.reload(true);
-				//alert(JSON.stringify(response));
-		
-				/*if (response['message'])
-				{
-					swal("Done!", response['message'], "success")
-						.then((answer2) => {
-							if (answer2){*/
-								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-							/*}
-					});
-				}*/
+				var url = "/api/home/follow/reload";
+
+				var gene = response.gene;
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+					$('#follow-table').bootstrapTable("resetSearch","");
+					
+					switch (gene)
+					{
+						case '@AllActionability':
+							$('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+							break;
+						case '@AllValidity':
+							$('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+							break;
+						case '@AllDosage':
+							$('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+							break;
+						case '*':
+							$('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+					}
+
+					$('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+				});
+				
 			}).fail(function(response)
 			{
 				//handle failed validation
@@ -705,7 +762,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -778,7 +835,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -852,7 +909,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -881,7 +938,6 @@
 				//submits to the form's action URL
 				$.get(url, function(response)
 				{
-					console.log(response.data);
 					$('#table').bootstrapTable('load', response.data);
 					$('#table').bootstrapTable("resetSearch","");
 
@@ -1032,7 +1088,6 @@
         autoselect:true,
       }).bind('typeahead:selected',function(evt,item){
 		// here is where we can set the follow and refresh the screen.
-		console.log(item.hgncid);
 
 		$('#follow-gene-field').val(item.hgncid);
 		$('#follow_form').submit();
@@ -1042,7 +1097,7 @@
 	  var myselect = $('#selected-genes');
 
 	  $(function() {
-		  console.log(myselect);
+		  //console.log(myselect);
 	  myselect.tagsinput({
 
 		tagClass: function(item) {
@@ -1069,12 +1124,25 @@
 		//myselect.tagsinput('add', { "hgncid": 1 , "short": "Amsterdam"   });
 	  });
 
-	  function formatSymbol(value, row, index)
+	  function symbolClass(value, row, index)
 	  {
-		  //console.log(row._data.hgnc);
-
-		  return '<a href="/kb/genes/' + row._data.hgnc + '">' + value + '</a></td>';
+		  return {
+			  classes: 'table-symbol'
+		  }
 	  }
+
+	  function rowAttributes(row, index)
+	  {
+		return {
+			'data-hgnc': row.hgnc
+		}
+	  }
+
+	  function formatSymbol(value, row, index)
+	  {	
+		  return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
+	  }
+
 
 </script>
 

@@ -13,7 +13,7 @@ use App\User;
 use App\Title;
 use App\Report;
 
-use App\Mail\NotifyFrequency;
+use App\Mail\NotifySummary;
 
 class UpdateSummary extends Command
 {
@@ -52,11 +52,10 @@ class UpdateSummary extends Command
 
         $users = User::has('genes')->with('genes')->get();
 
-        $moreusers = User::doesntHave('genes')->with('notification')->get();
+        $moreusers = User::doesntHave('genes')->has('groups')->with('groups')->get();
 
         foreach ($moreusers as $moreuser)
-            if (!empty($moreuser->notification->frequency["Groups"]))
-                $users->push($moreuser);
+            $users->push($moreuser);
                 
         $history = [];
 
@@ -99,7 +98,7 @@ class UpdateSummary extends Command
             if ($changes->isNotEmpty())
             {
                 $user->titles()->save($title);
-                $genes = $changes->pluck('element.name')->unique();
+                $genes = $changes->pluck('element.name')->unique()->sort();
 
                 // override the primary
                 if (!empty($notify->primary['email']))
@@ -107,6 +106,7 @@ class UpdateSummary extends Command
 
                 // send out notification (TODO move this to a queue and link into preferences)
                 $mail = Mail::to($user);
+
 
                 $date = Carbon::now()->yesterday()->format('m/d/Y');
 
@@ -116,7 +116,8 @@ class UpdateSummary extends Command
                     $mail->cc($cc);
                 }
                     
-                $mail->send(new NotifySummary(['report' => $title->ident, 'date' => $date, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
+                $mail->send(new NotifySummary(['report' => $title->ident, 'date' => $date,
+                                                'period' => $notify->summary_string, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }
     }
