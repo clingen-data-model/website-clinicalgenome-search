@@ -18,6 +18,7 @@
 									<label for="search" class="col-sm-2 control-label">Gene</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control queryFindGene" name="search[]" size="50" value="" placeholder="Begin typing a symbol name">
+										<span class="text-muted"><small><i>(Enter * to follow all genes or @ to select a group)</i></small></span>
 									</div>
 								</div>
 							</div>

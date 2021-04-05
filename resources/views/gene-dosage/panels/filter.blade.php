@@ -27,6 +27,13 @@
                 <span class="ml-2 hgnc text-muted action-show-tsknown-text">Off</span>
             </div>
         </div>
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with TS Score 3 <u>or</u> HI Score 3 </label>
+        <div class="col-sm-3">
+            <div class="form-inline p-0 m-0 col-sm-12">
+                <i class="fas fa-toggle-off fa-lg action-show-hitsknown"></i>
+                <span class="ml-2 hgnc text-muted action-show-hitsknown-text">Off</span>
+            </div>
+        </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with scores changed in the past year </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">

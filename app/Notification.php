@@ -466,12 +466,33 @@ class Notification extends Model
 
 
      /**
+     * Check if name is part of any notification bucket
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function checkGroup($name)
+     {
+          foreach (['Daily', 'Weekly', 'Monthly', 'Pause', 'Default'] as $bucket)
+          {
+               if (!(isset($this->frequency[$bucket]) && is_array($this->frequency[$bucket])))
+                    continue;
+
+               if (in_array($name, $this->frequency[$bucket]))
+                    return $bucket;
+          }
+          
+          return false;
+     }
+
+
+     /**
      * Add to the group
      *
      * @@param	string	$gene
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function addGroup($group)
+	/*public function addGroup($group)
      {
           if ($this->frequency === null)
           {
@@ -491,6 +512,33 @@ class Notification extends Model
                array_push($frequency['Groups'], $group);
                $this->frequency = $frequency;
           }
+     }*/
+
+
+     /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeGroup($name, $bucket)
+     {
+         if ($this->frequency === null)
+             return false;
+ 
+         if (!isset($this->frequency[$bucket]))
+             return false;
+     
+         if (!in_array($name, $this->frequency[$bucket]))
+             return false;
+         
+         $frequency = $this->frequency;
+         if (($key = array_search($name, $frequency[$bucket])) !== false)
+              unset($frequency[$bucket][$key]);
+         $frequency[$bucket] = array_values($frequency[$bucket]);
+         $this->frequency = $frequency;
+ 
+         return true;
      }
 
 
@@ -500,7 +548,7 @@ class Notification extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function removeGroup($group)
+	/*public function removeGroup($group)
      {
          if ($this->frequency === null)
              return true;
@@ -518,7 +566,7 @@ class Notification extends Model
          $this->frequency = $frequency;
  
          return true;
-     }
+     }*/
 
 
      public function walk(&$item, $key)

@@ -1,10 +1,10 @@
 <div class="row mb-1 justify-content-center">
 
-    <div class="col-md-3 pr-0">
+    <div class="col-md-5 pr-0">
         <table class="mt-3 mb-2">
           <tr>
-            <td class="valign-top"><span id="gene-count"></span><span class='hidden-sm hidden-xs'><img src="/images/home-alt-512.png" width="40" height="40"></span></td>
-            <td class="pl-2"><h1 class="h2 p-0 m-0"> My ClinGen </h1>
+            <td class="valign-top"><span id="gene-count"></span><span class='hidden-sm hidden-xs'><img src="/images/dash_home.png" class="mr-2" width="50" height="50"></span></td>
+            <td class="pl-2"><h1 class="p-0 m-0" style="font-family: 'Sriracha', cursive;"> My ClinGen Dashboard</h1>
             </td>
           </tr>
         </table>

@@ -122,13 +122,21 @@ class SettingsController extends Controller
                 $notification = $user->notification;
                 if ($input['value'] == "1")
                 {
-                    $notification->addGroup($notify[0]);
-                    $notification->addDefault('@' . $notify[0]);
+                    $bucket = $notification->checkGroup('@' . $notify[0]);
+
+                    if ($bucket === false)
+                        $notification->addDefault('@' . $notify[0]);
+
+                    $user->addGroup('@' . $notify[0]);
                 }
                 else
                 {
-                    $notification->removeGroup($notify[0]);
-                    $notification->removeDefault('@' . $notify[0]);
+                    $bucket = $notification->checkGroup('@' . $notify[0]);
+
+                    if ($bucket !== false)
+                        $notification->removeGroup('@' . $notify[0], $bucket);
+                    
+                    $user->removeGroup('@' . $notify[0]);
                 }
                 $notification->save();
                 break;

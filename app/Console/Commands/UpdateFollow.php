@@ -52,11 +52,10 @@ class UpdateFollow extends Command
 
         $users = User::has('genes')->with('genes')->get();
 
-        $moreusers = User::doesntHave('genes')->with('notification')->get();
+        $moreusers = User::doesntHave('genes')->has('groups')->with('groups')->get();
 
         foreach ($moreusers as $moreuser)
-            if (!empty($moreuser->notification->frequency["Groups"]))
-                $users->push($moreuser);
+            $users->push($moreuser);
 
         $history = [];
 

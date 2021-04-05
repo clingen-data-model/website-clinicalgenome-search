@@ -68,6 +68,9 @@
 	<link href="/css/gijgo.min.css" rel="stylesheet">
 	<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+	
     <style>
         .profile-background
         {
@@ -209,7 +212,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -240,6 +243,17 @@
 		});
 
 		
+		$('#report-view').on('click', '.action-share-report', function() {
+
+			var uuid = $(this).attr('data-uuid');
+
+			var row = $(this).closest('tr').attr('data-index');
+
+			var obj = $(this);
+
+			swal("The ability to share a report with others is scheduled to be released later this year.  Thank-you for your patience.")
+
+		});
 
 		$('#report-view').on('click', '.action-unlock-report', function() {
 
@@ -256,7 +270,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -290,7 +304,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
 					'X-CSRF-TOKEN' : window.token,
-					'Authorization':'Bearer ' + Cookies.get('laravel_token')
+					'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
 				}
 			});
 
@@ -322,7 +336,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -386,7 +400,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -427,7 +441,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -505,7 +519,8 @@
                 var original = btngrp.find('.selection').text();
                 btngrp.find('.selection').text($(this).text());
 
-                var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
+                //var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
+				var gene = btngrp.closest('tr').attr('data-hgnc');
 
                 // save the change
                 server_update(gene, original, $(this).text());
@@ -532,7 +547,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -557,7 +572,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -631,7 +646,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -705,7 +720,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -778,7 +793,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -852,7 +867,7 @@
 				headers:{
 					'X-Requested-With': 'XMLHttpRequest',
     				'X-CSRF-TOKEN' : window.token,
-    				'Authorization':'Bearer ' + Cookies.get('laravel_token')
+    				'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
    				}
 			});
 
@@ -1069,12 +1084,25 @@
 		//myselect.tagsinput('add', { "hgncid": 1 , "short": "Amsterdam"   });
 	  });
 
-	  function formatSymbol(value, row, index)
+	  function symbolClass(value, row, index)
 	  {
-		  //console.log(row._data.hgnc);
-
-		  return '<a href="/kb/genes/' + row._data.hgnc + '">' + value + '</a></td>';
+		  return {
+			  classes: 'table-symbol'
+		  }
 	  }
+
+	  function rowAttributes(row, index)
+	  {
+		return {
+			'data-hgnc': row.hgnc
+		}
+	  }
+
+	  function formatSymbol(value, row, index)
+	  {	
+		  return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
+	  }
+
 
 </script>
 

@@ -82,10 +82,10 @@
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
 	window.ajaxOptions = {
-    beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
-    }
-  }
+		beforeSend: function (xhr) {
+		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+		}
+	}
 
 
 	function responseHandler(res) {

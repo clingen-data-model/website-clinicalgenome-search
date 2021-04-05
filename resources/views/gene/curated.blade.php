@@ -79,6 +79,7 @@
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
+<script src="/js/filters.js"></script>
 
 <script>
 
@@ -94,7 +95,7 @@
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('laravel_token'))
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 
@@ -111,45 +112,6 @@
 
 
   /*
-  **  Filter control for acmg59 mode
-  */
-	$('.action-show-acmg59').on('click', function() {
-
-    if ($(this).hasClass('fa-toggle-off'))
-    {
-      $table.bootstrapTable('filterBy', {acmg59: true});
-
-      $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
-      $('.action-show-acmg59-text').html('On');
-      //$('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
-
-      $('.action-af-badge').remove();
-
-			var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v2.0</span>');
-			$('.filter-container').append(newbadge);
-
-    }
-    else
-    {
-      $table.bootstrapTable('filterBy', {acmg59: [false, true]});
-
-      $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
-      $('.action-show-acmg59-text').html('Off');
-      //$('.action-af-badge').html('None').removeClass('bg-primary');
-
-      $('.action-acmg-badge').remove();
-
-			if ($('.filter-container').html() == '')
-			{
-				var newbadge = $('<span class="badge action-af-badge">None</span>');
-				$('.filter-container').append(newbadge);
-			}
-
-    }
-  });
-
-
-  /*
   **  Filter control for follow mode
   */
 	$('#curated-filter-dashboard').on('login', function() {
@@ -162,44 +124,6 @@
   */
 	$('#curated-filter-dashboard').on('logout', function() {
     $(this).hide();
-  });
-
-
-  /*
-  **  Filter control for follow mode
-  */
-	$('.action-show-follow').on('click', function() {
-
-    if ($(this).hasClass('fa-toggle-off'))
-    {
-      $table.bootstrapTable('filterBy', {followed: true});
-
-      $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
-      $('.action-show-follow-text').html('On');
-      //$('.action-af-badge').html('Followed').addClass('bg-primary');
-
-      $('.action-af-badge').remove();
-
-			var newbadge = $('<span class="badge action-follow-badge bg-primary mr-1">Followed</span>');
-			$('.filter-container').append(newbadge);
-
-    }
-    else
-    {
-      $table.bootstrapTable('filterBy', {followed: [false, true]});
-
-      $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
-      $('.action-show-follow-text').html('Off');
-      //$('.action-af-badge').html('None').removeClass('bg-primary');
-
-      $('.action-follow-badge').remove();
-
-      if ($('.filter-container').html() == '')
-      {
-        var newbadge = $('<span class="badge action-af-badge">None</span>');
-        $('.filter-container').append(newbadge);
-      }
-    }
   });
 
 

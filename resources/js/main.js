@@ -41,7 +41,7 @@ $( '#logout-form' ).validate( {
             headers:{
                 'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('laravel_token')
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
             }
         });
       
@@ -51,7 +51,7 @@ $( '#logout-form' ).validate( {
 
         $.post(url, formData, function(response)
         {
-            Cookies.remove('laravel_token');
+            Cookies.remove('clingen_dash_token');
 
             // clear user and revert to login menu
             $('#nav-user-name').html('Member');
@@ -98,9 +98,9 @@ $( '#login-form' ).validate( {
         $.post(url, formData, function(response)
         {
           if (response.expires_at == 0)
-            Cookies.set('laravel_token', response.access_token);
+            Cookies.set('clingen_dash_token', response.access_token);
           else
-            Cookies.set('laravel_token', response.access_token, { expires: response.expires_at});
+            Cookies.set('clingen_dash_token', response.access_token, { expires: response.expires_at});
 
             $('#modalLogin').modal('hide');
 
@@ -198,7 +198,7 @@ $( '#forgot-form' ).validate( {
 
         $.post(url, formData, function(response)
         {
-            Cookies.set('laravel_token', response.access_token);
+            Cookies.set('clingen_dash_token', response.access_token);
 
             $('#modalForgot').modal('hide');
 
@@ -267,7 +267,7 @@ $( '#register-form' ).validate( {
 
         $.post(url, formData, function(response)
         {
-            Cookies.set('laravel_token', response.access_token);
+            Cookies.set('clingen_dash_token', response.access_token);
 
             $('#modalRegister').modal('hide');
 

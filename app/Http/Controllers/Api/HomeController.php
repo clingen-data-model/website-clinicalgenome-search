@@ -76,31 +76,46 @@ class HomeController extends Controller
         // check if user is already participating
         $user = Auth::guard('api')->user();
 
-        if ($user->genes->where('name', $input['gene'])->first() === null)
-            return response()->json(['success' => 'false',
+        if ($input['gene'] == '*')
+        {
+            $name = $input['gene'];
+        }
+        else if ($input['gene'][0] == '@')
+        {
+            $name = $input['gene'];
+        }
+        else
+        {
+            $gene = $user->genes->where('hgnc_id', $input['gene'])->first();
+
+            if ($gene === null)
+                return response()->json(['success' => 'false',
                                 'status_code' => 1003,
                                 'message' => "Invalid Gene Symbol"],
                                 501);
+
+            $name = $gene->name;
+        }
 
         $notification = $user->notification->frequency;
 
         if (isset($notification[$input['new']]))
         {
             $new = $notification[$input['new']];
-            if (($key = array_search($input['gene'], $new)) === false)
-                $new[] = $input['gene'];
+            if (($key = array_search($name, $new)) === false)
+                $new[] = $name;
             $notification[$input['new']] = $new;
 
         }
         else
         {
-            $notification[$input['new']] = [ $input['gene'] ];
+            $notification[$input['new']] = [ $name ];
         }
 
         if (isset($notification[$input['old']]))
         {
             $t = $notification[$input['old']];
-            if (($key = array_search($input['gene'], $t)) !== false)
+            if (($key = array_search($name, $t)) !== false)
                 unset($t[$key]);
             $notification[$input['old']] = array_values($t);
         }

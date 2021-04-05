@@ -64,13 +64,45 @@ class HomeController extends Controller
 
 //dd($notification);
 
+    // Add any followed groups
+    foreach ($user->groups as $group)
+    {
+        switch ($group->name)
+        {
+            case '@AllGenes': 
+                $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
+                break;
+            case '@AllDosage': 
+                $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
+                break;
+            case '@AllValidity': 
+                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
+                break;
+            case '@AllActionability': 
+                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
+                break;
+            default: 
+                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
+                break;
+
+        }
+
+        $gene = new Gene(['name' => $group->display_name,
+                            'hgnc_id' => $group->search_name,
+                            'activity' => $a,
+                            'date_last_curated' => ''
+                        ]);
+
+        $genes->prepend($gene);
+    }
+
     // tack on group display.  For now, only All Genes is supported
-    if (isset($user->notification->frequency['Groups']) && in_array('AllGenes', $user->notification->frequency['Groups']))
+    /*if (isset($user->notification->frequency['Groups']) && in_array('AllGenes', $user->notification->frequency['Groups']))
     {
         $group = new Gene(['name' => "All Genes",
                             'hgnc_id' => '*',
                            'activity' => ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true],
-                           'date_last_curated' => Carbon::now()
+                           'date_last_curated' => ''
                            ]);
 
         $genes->prepend($group);
@@ -80,7 +112,7 @@ class HomeController extends Controller
         $group = new Gene(['name' => "All Actionability",
                             'hgnc_id' => '@AllActionability',
                            'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true],
-                           'date_last_curated' => Carbon::now()
+                           'date_last_curated' => ''
                            ]);
 
         $genes->prepend($group);
@@ -90,7 +122,7 @@ class HomeController extends Controller
         $group = new Gene(['name' => "All Validity",
                             'hgnc_id' => '@AllValidity',
                            'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false],
-                           'date_last_curated' => Carbon::now()
+                           'date_last_curated' => ''
                            ]);
 
         $genes->prepend($group);
@@ -100,11 +132,11 @@ class HomeController extends Controller
         $group = new Gene(['name' => "All Dosage",
                             'hgnc_id' => '@AllDosage',
                            'activity' => ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
-                           'date_last_curated' => Carbon::now()
+                           'date_last_curated' => ''
                            ]);
 
         $genes->prepend($group);
-    }
+    }*/
 
     // do a little self repair
     if ($user->profile === null)
@@ -371,8 +403,14 @@ class HomeController extends Controller
                     }
 
                 // it is eaaier to catch the parameters here than in the view
+
+                $list = $report->filters['gene_label'];
+
+                if (is_array($report->filters['gene_label']))
+                    sort($list);
+
                 $params[] = ['start_date' => $report->start_date, 'stop_date' => $report->stop_date,
-                            'genes' => $report->filters['gene_label']];
+                            'genes' => $list];
             }
 
             // update last run date
