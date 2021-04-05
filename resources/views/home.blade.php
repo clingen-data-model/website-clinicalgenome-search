@@ -583,17 +583,38 @@
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
-				//alert(JSON.stringify(response));
-		
-				/*if (response['message'])
-				{
-					swal("Done!", response['message'], "success")
-						.then((answer2) => {
-							if (answer2){*/
-								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-							/*}
-					});
-				}*/
+				var url = "/api/home/follow/reload";
+
+				var gene = response.gene;
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+					$('#follow-table').bootstrapTable("resetSearch","");
+
+					switch (gene)
+					{
+						case '@AllActionability':
+							$('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+							break;
+						case '@AllValidity':
+							$('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+							break;
+						case '@AllDosage':
+							$('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+							break;
+						case '*':
+							$('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+					}
+
+					$('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+				});
 			}).fail(function(response)
 			{
 				//handle failed validation
@@ -657,18 +678,39 @@
 			//submits to the form's action URL
 			$.post(url, formData, function(response)
 			{
-				window.location.reload(true);
-				//alert(JSON.stringify(response));
-		
-				/*if (response['message'])
-				{
-					swal("Done!", response['message'], "success")
-						.then((answer2) => {
-							if (answer2){*/
-								//$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-							/*}
-					});
-				}*/
+				var url = "/api/home/follow/reload";
+
+				var gene = response.gene;
+			
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+					$('#follow-table').bootstrapTable("resetSearch","");
+					
+					switch (gene)
+					{
+						case '@AllActionability':
+							$('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+							break;
+						case '@AllValidity':
+							$('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+							break;
+						case '@AllDosage':
+							$('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+							break;
+						case '*':
+							$('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+					}
+
+					$('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+				});
+				
 			}).fail(function(response)
 			{
 				//handle failed validation
@@ -896,7 +938,6 @@
 				//submits to the form's action URL
 				$.get(url, function(response)
 				{
-					console.log(response.data);
 					$('#table').bootstrapTable('load', response.data);
 					$('#table').bootstrapTable("resetSearch","");
 
@@ -1047,7 +1088,6 @@
         autoselect:true,
       }).bind('typeahead:selected',function(evt,item){
 		// here is where we can set the follow and refresh the screen.
-		console.log(item.hgncid);
 
 		$('#follow-gene-field').val(item.hgncid);
 		$('#follow_form').submit();
@@ -1057,7 +1097,7 @@
 	  var myselect = $('#selected-genes');
 
 	  $(function() {
-		  console.log(myselect);
+		  //console.log(myselect);
 	  myselect.tagsinput({
 
 		tagClass: function(item) {

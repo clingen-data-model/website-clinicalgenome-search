@@ -153,7 +153,8 @@ class FollowController extends Controller
         }
 
         return response()->json(['success' => 'true',
-								 'status_code' => 200,
+                                 'status_code' => 200,
+                                 'gene' => $name,
 							 	 'message' => 'Gene Followed'],
 							 	 200)->withCookie(cookie('clingenfollow',$user->device_token, 0));
 
@@ -213,7 +214,8 @@ dd("not logged in");  }*/
             
             $user->notification->save();
             return response()->json(['success' => 'true',
-								 'status_code' => 200,
+                                 'status_code' => 200,
+                                 'gene' => $name,
 							 	 'message' => 'Gene UnFollowed'],
 							 	 200);
         }
@@ -237,6 +239,7 @@ dd("not logged in");  }*/
             if ($gene === null)
                 return response()->json(['success' => 'false',
                                         'status_code' => 2001,
+                                        'gene' => $name,
                                         'message' => "Gene Lookup Error"],
                                         501);
             
@@ -262,7 +265,8 @@ dd("not logged in");  }*/
         $notify->save();
 
         return response()->json(['success' => 'true',
-								 'status_code' => 200,
+                                 'status_code' => 200,
+                                 'gene' => $name,
 							 	 'message' => 'Gene UnFollowed'],
 							 	 200);
 
