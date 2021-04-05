@@ -262,9 +262,8 @@
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
 													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">
-													<div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }} @if(App\Genelib::actionabilityAssertionString($actionability->classification->label) == "Assertion Pending")
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
-										@endif
+													<div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
+													@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->classification->label)))
 													</a>
 											</td>
 

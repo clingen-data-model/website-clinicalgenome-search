@@ -125,9 +125,8 @@
 
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}"><div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }} @if(App\Genelib::actionabilityAssertionString($actionability->classification->label) == "Assertion Pending")
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
-										@endif</a></td>
+									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}"><div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
+													@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->classification->label)))</a></td>
 
 
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>

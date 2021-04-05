@@ -38,18 +38,7 @@
 								@if ($actionability->adult_assertion)
 									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->adult_assertion->source }}">
 									<div class="text-muted small">Adult</div>{{ App\Genelib::actionabilityAssertionString($actionability->adult_assertion->classification->label) }}
-									@if(App\Genelib::actionabilityAssertionString($actionability->adult_assertion->classification->label) == "Assertion Pending")
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
-										@else
-
-										{{--
-											NOTE, these are hidden because they MAY be used in the future
-											<span data-toggle="tooltip" data-placement="top" title="" data-original-title="View the report to learn how Actionability assertions are determined."><i class="fas fa-info-circle text-muted"></i></span>
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="Actionability assertions are made in the context of a secondary finding and represent a known ability to intervene with specific clinical actions and thereby avert or mitigate a poor health outcome due to a previously unsuspected risk of disease. Actionability is NOT currently considered in the context of population-wide screening or the diagnostic setting. For more information, please see our protocol."><i class="fas fa-info-circle text-muted"></i></span>
-										--}}
-
-
-										@endif
+									@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->adult_assertion->classification->label)))
 									</a>
 								@endif
 						</td>
@@ -85,18 +74,7 @@
 								@if ($actionability->pediatric_assertion)
 									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->pediatric_assertion->source }}">
 										<div class="text-muted small">Pediatric</div>{{ App\Genelib::actionabilityAssertionString($actionability->pediatric_assertion->classification->label) }}
-										@if(App\Genelib::actionabilityAssertionString($actionability->pediatric_assertion->classification->label) == "Assertion Pending")
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
-										@else
-
-										{{--
-											NOTE, these are hidden because they MAY be used in the future
-											<span data-toggle="tooltip" data-placement="top" title="" data-original-title="View the report to learn how Actionability assertions are determined."><i class="fas fa-info-circle text-muted"></i></span>
-										<span data-toggle="tooltip" data-placement="top" title="" data-original-title="Actionability assertions are made in the context of a secondary finding and represent a known ability to intervene with specific clinical actions and thereby avert or mitigate a poor health outcome due to a previously unsuspected risk of disease. Actionability is NOT currently considered in the context of population-wide screening or the diagnostic setting. For more information, please see our protocol."><i class="fas fa-info-circle text-muted"></i></span>
-										--}}
-
-
-										@endif
+									@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->pediatric_assertion->classification->label)))
 									</a>
 								@endif
 						</td>

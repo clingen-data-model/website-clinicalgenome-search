@@ -196,7 +196,10 @@ class GeneLib extends Model
           'Moderate Actionability' => "Moderate Actionability",
           'Limited Actionability' => "Limited Actionability",
           'Insufficient Actionability' => "Insufficient Actionability",
-          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => "Insufficient Evidence/Early Rule-out",
+          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => "N/A - Insufficient evidence: early rule-out",
+          'N/A - Insufficient evidence: early rule-out' => "N/A - Insufficient evidence: early rule-out",
+          'Has Insufficient Evidence for Actionability Based on Expert Review' => "N/A - Insufficient evidence: expert review",
+          'N/A - Insufficient evidence: expert review' => "N/A - Insufficient evidence: expert review",
           'No Actionability' => "No Actionability",
           'Assertion Pending' => "Assertion Pending",
      ];
@@ -251,7 +254,7 @@ class GeneLib extends Model
 		// Gene data is currently in neo4j
           //$response = Neo4j::geneList($args);
           /*
-          SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name) 
+          SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name)
           */
 
           // Gene listing using Graphql
@@ -302,10 +305,10 @@ class GeneLib extends Model
                return $gene;
 
           }
-          
+
 		//...but actionability is now in genegraph
           $response = Graphql::geneDetail($args);
-          
+
           // This is a real ugly characteristic of genegraph that requires a really ugly workaround
           if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
           {
@@ -622,7 +625,7 @@ class GeneLib extends Model
                // Much of the data is in graphql....
                $response = Graphql::dosageDetail($args);
                $expand = false;
-               
+
                // This is a real ugly characteristic of genegraph that requires a really ugly workaround
                if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
                {
@@ -872,7 +875,7 @@ class GeneLib extends Model
                $response = Graphql::drugList($args);
           else      // Drug data is now local
                $response = Mysql::drugList($args);
-               
+
 		return $response;
 	}
 
@@ -1139,7 +1142,7 @@ class GeneLib extends Model
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
      }
-     
+
 
      /**
      * Return a displayable validity criteria description
