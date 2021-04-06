@@ -53,7 +53,9 @@ class GeneController extends Controller
 		'Insufficient Actionability' => 16,
 		'No Actionability' => 15,
 		'Assertion Pending' => 14,				// 0003541
-		'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13 		//0003539
+		'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
+		'N/A - Insufficient evidence: early rule-out' => 11,
+		'N/A - Insufficient evidence: expert review' => 12
    ];
 
 	/**
@@ -87,7 +89,7 @@ class GeneController extends Controller
             'active' => "gene",
             'title' => "Genes"
 		]);
-		
+
 		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('gene.index', compact('display_tabs'))
@@ -373,7 +375,7 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " external resources"
 		]);
-		
+
 		return view('gene.show-external-resources', compact('display_tabs', 'record'))
 						->with('user', $this->user);
 	}
