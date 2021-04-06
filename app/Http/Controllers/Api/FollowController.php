@@ -254,6 +254,8 @@ dd("not logged in");  }*/
 
         foreach (["Daily", "Weekly", "Monthly", "Pause", "Default"] as $list)
         {
+            if (!isset($frequency[$list]))
+                continue;
             if (in_array($name, $frequency[$list]))
             {
                 $frequency[$list] = array_diff($frequency[$list], array($name));

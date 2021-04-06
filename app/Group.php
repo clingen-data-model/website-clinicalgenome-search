@@ -155,15 +155,15 @@ class Group extends Model
                         'description' => 'Follow All Genes']);
         $t->save();
 
-        $t = new Group(['name' => '@AllDosage', 'display_name' => 'All Dosage', 'search_name' => '@All Dosage',
+        $t = new Group(['name' => '@AllDosage', 'display_name' => 'All Dosage', 'search_name' => '@AllDosage',
                         'description' => 'Follow All Dosage Sensitivity Activity']);
         $t->save();
 
-        $t = new Group(['name' => '@AllValidity', 'display_name' => 'All Validity', 'search_name' => '@All Validity',
+        $t = new Group(['name' => '@AllValidity', 'display_name' => 'All Validity', 'search_name' => '@AllValidity',
                         'description' => 'Follow All Gene-Disease Validity Activity']);
         $t->save();
 
-        $t = new Group(['name' => '@AllActionability', 'display_name' => 'All Actionability', 'search_name' => '@All Actionability',
+        $t = new Group(['name' => '@AllActionability', 'display_name' => 'All Actionability', 'search_name' => '@AllActionability',
                         'description' => 'Follow All Clinical Actionability Activity']);
         $t->save();
     }
