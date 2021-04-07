@@ -6,10 +6,12 @@
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
 </head>
-<body class="emailbody">
-    
+<body>
 <style>
 @media only screen and (max-width: 600px) {
+.inner-body {
+width: 100% !important;
+}
 
 .footer {
 width: 100% !important;
@@ -23,7 +25,6 @@ width: 100% !important;
 }
 </style>
 
-<div class="emailbody">
 <table class="wrapper" width="100%" cellpadding="0" cellspacing="0" role="presentation">
 <tr>
 <td align="center">
@@ -32,28 +33,15 @@ width: 100% !important;
 
 <!-- Email Body -->
 <tr>
-    <td class="heading" width="100%" cellpadding="0" cellspacing="0">
-        Important Message from ClinGen
-    </td>
-</tr>                
-<tr>
 <td class="body" width="100%" cellpadding="0" cellspacing="0">
 <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
 <!-- Body content -->
+<tr>
 <td class="content-cell">
 {{ Illuminate\Mail\Markdown::parse($slot) }}
 
 {{ $subcopy ?? '' }}
 </td>
-</tr>
-<tr>
-    <td class="body" width="100%" cellpadding="0" cellspacing="0">
-        <strong>About ClinGen - Clinical Genome Resource</strong><br/>
-        ClinGen is a National Institutes of Health (NIH)-funded resource dedicated to building an authoritative central
-        resource that defines the clinical relevance of genes and variants for use in precision medicine and research.
-        </br></br>
-        To learn more about ClinGen, visit <a href="https://clinicalgenome.org">www.clinicalgenome.org</a>
-    </td>
 </tr>
 </table>
 </td>
@@ -64,6 +52,5 @@ width: 100% !important;
 </td>
 </tr>
 </table>
-</div>
 </body>
 </html>

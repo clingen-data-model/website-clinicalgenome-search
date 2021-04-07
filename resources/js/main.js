@@ -273,14 +273,13 @@ $( '#register-form' ).validate( {
 
             swal({
                 title: "You have successfully registered!",
-                text: "An confirmation email has been sent to your email address.  Please follow the directions to confirm and complete the registration.",
-                className: "swal-success",
-                buttons: false                });
+                text: "An confirmation email has been sent to your email address.  Please follow the directions to verify and complete the registration.",
+                className: "swal-success"});
                 
             // initialize user and add dashboard menu
-            $('#nav-user-name').html(response.user);
-            $('#login-menu').hide();
-            $('#dashboard-menu').show();
+            //$('#nav-user-name').html(response.user);
+            //$('#login-menu').hide();
+            //$('#dashboard-menu').show();
 
             //$('.action-login').html('Dashboard').attr('href', '/dashboard').off();
 
@@ -298,8 +297,8 @@ $( '#register-form' ).validate( {
             }
 
             // some pages require a complete reload, so send event
-            $('#dashboard-logout').trigger('logout');
-            window.auth = 1;
+            //$('#dashboard-logout').trigger('logout');
+            //window.auth = 1;
 
         }).fail(function(response)
         {

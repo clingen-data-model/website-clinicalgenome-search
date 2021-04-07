@@ -53,7 +53,8 @@ class GeneController extends Controller
 		'Insufficient Actionability' => 16,
 		'No Actionability' => 15,
 		'Assertion Pending' => 14,				// 0003541
-		'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13 		//0003539
+		'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13, 		//0003539
+		'N/A - Insufficient evidence: early rule-out' => 13
    ];
 
 	/**

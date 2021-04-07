@@ -213,6 +213,7 @@ class GeneLib extends Model
           'No Actionability' => 15,
           'Assertion Pending' => 14,
           'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
+          'N/A - Insufficient evidence: early rule-out' => 13
      ];
 
 
