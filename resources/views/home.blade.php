@@ -1090,7 +1090,7 @@
         name: 'followtermGene',
         display: 'label',
         source: followtermGene,
-        limit: 10,
+        limit: Infinity,
         highlight: true,
         hint: false,
         autoselect:true,
