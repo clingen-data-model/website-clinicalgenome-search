@@ -44,10 +44,10 @@
                 <thead>
                     <tr>
                         <th class="col-sm-2" data-field="symbol" data-sortable="true" data-cell-style="symbolClass" data-formatter="formatSymbol">Name</th>
-                        <th class="col-sm-3" data-field="curations" data-align="center">Curation Status</th>
+                        <th class="col-sm-3" data-field="curations" data-searchable="false" data-align="center">Curation Status</th>
                         <th class="col-sm-2" data-field="display_last" data-sortable="true">Last Updated</th>
-                        <th class="col-sm-2" data-field="notify" data-align="center">Notify</th>
-                        <th class="col-sm-2" data-field="unfollow" data-align="center">Unfollow</th>
+                        <th class="col-sm-2" data-field="notify" data-searchable="false" data-align="center">Notify</th>
+                        <th class="col-sm-2" data-field="unfollow" data-searchable="false" data-align="center">Unfollow</th>
                         <th data-field="hgnc" data-visible="false"></th>
                     </tr>
                 </thead>

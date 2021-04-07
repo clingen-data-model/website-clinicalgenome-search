@@ -40,6 +40,7 @@
 										<label for="inputEmail3" class="col-sm-2 control-label">Genes</label>
 										<div class="col-sm-9">
 											<input id="selected-genes" type="text" class="form-control selector" data-role="tagsinput abc" name="genes" value="" placeholder="">
+											<span class="text-muted"><small><i>(Enter * to select all genes or @ to select a group)</i></small></span>
 										</div>
 									</div>
 							</div><!-- /.col-lg-8 -->				

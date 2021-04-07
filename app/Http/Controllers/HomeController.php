@@ -275,7 +275,11 @@ class HomeController extends Controller
 
             $title = $user->titles->where('ident', $id)->first();
 
-            if ($title !== null)
+            if ($title === null)
+            {
+                return view('dashboard.noreport');
+            }
+            else
             {
                 foreach($title->reports as $report)
                 {
@@ -347,7 +351,11 @@ class HomeController extends Controller
 
         $title = Title::where('ident', $id)->first();
 
-        if ($title !== null)
+        if ($title === null)
+        {
+            return view('dashboard.noreport');
+        }
+        else
         {
             foreach($title->reports as $report)
             {

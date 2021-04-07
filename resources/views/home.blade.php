@@ -26,7 +26,7 @@
             <div>
                 <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
 					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
-				<a class="float-right mt-2 mr-4 action-edit-settings" data-toggle="tooltip" title="Global Notifications: On">
+				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
 					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>	
 				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
@@ -327,8 +327,6 @@
 
 			var uuid = $(this).attr('data-uuid');
 
-			var row = $(this).closest('tr').attr('data-index');
-
 			$.ajaxSetup({
 				cache: true,
 				contentType: "application/x-www-form-urlencoded",
@@ -355,10 +353,9 @@
 						//submits to the form's action URL
 						$.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
 						{
-							//alert("OK");
 							$reporttable.bootstrapTable('remove', {
-                            	field: '$index',
-                            	values: row
+                            	field: 'ident',
+                            	values: uuid
                         	});
 
 							var len = $reporttable.bootstrapTable('getData').length;
@@ -453,6 +450,16 @@
                 //console.log(response.data);
 				$('#table').bootstrapTable('load', response.data);
 				$('#table').bootstrapTable("resetSearch","");
+
+				if (type == 1)
+				{
+					$('#report-toolbar').html('Unless locked <i class="fas fa-lock" style="color:red"></i>, Notifications are deleted after 30 days');
+				}
+				else
+				{
+					$('#report-toolbar').html('');
+				}
+					
 			}).fail(function(response)
 			{
 				alert("Error reloading table");
@@ -467,9 +474,10 @@
 
         $('.action-edit-settings').on('click', function() {
 
-            $('#modalSettings').modal('show');
+			$('#settings-tabs-global').trigger('click');
+			$('#modalSettings').modal('show');
 
-        });
+		});
 
 		$('#collapseFollow').on('shown.bs.collapse', function () {
 			$('#collapseFollowIcon').addClass('fa-minus-square').removeClass('fa-plus-square');

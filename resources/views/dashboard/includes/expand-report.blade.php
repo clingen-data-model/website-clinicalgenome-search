@@ -18,7 +18,7 @@
 				<td class="small">{{ $title->description ?? ''}}</td>
 			</tr>
 			<tr>
-				<td valign="top" class=" small text-muted pr-2">Protein: </td>
+				<td valign="top" class=" small text-muted pr-2">Report Type: </td>
 				<td class="small">{{ $title->display_type ?? ''}}</td>
 			</tr>
 		</table>

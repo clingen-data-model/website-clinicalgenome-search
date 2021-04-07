@@ -4,7 +4,7 @@
         <table class="mt-3 mb-2">
           <tr>
             <td class="valign-top"><span id="gene-count"></span><span class='hidden-sm hidden-xs'><img src="/images/dash_home.png" class="mr-2" width="50" height="50"></span></td>
-            <td class="pl-2"><h1 class="p-0 m-0" style="font-family: 'Sriracha', cursive;"> My ClinGen Dashboard</h1>
+            <td class="pl-2"><h1 class="p-0 m-0"> My ClinGen Dashboard</h1>
             </td>
           </tr>
         </table>
