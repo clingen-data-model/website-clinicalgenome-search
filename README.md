@@ -5,6 +5,7 @@ The aim of the project is to integrate ClinGen's internal data services and publ
 ## Framework - Laravel
 Laravel is a free, open-source PHP web framework intended for the development of web applications following the model–view–controller architectural pattern and based on Symfony.  https://laravel.com/
 
+
 ### Server Requirements
 The Laravel framework has a few system requirements:
 
