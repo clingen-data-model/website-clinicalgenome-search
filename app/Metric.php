@@ -133,6 +133,14 @@ class Metric extends Model
 
     public const KEY_EXPERT_PANELS_PATHOGENICITY = "pathogenicity_expert_panels";
     public const KEY_TOTAL_PATHOGENICITY_GRAPH = "total_pathogenicity_graph";
+
+    public const KEY_TOTAL_GENES_PHARMACOGENOMIICS = "total_pharmacogenomics_genes";
+    public const KEY_TOTAL_ANNOT_PHARMACOGENOMIICS = "total_pharmacogenomics_annotations";
+    public const KEY_TOTAL_GENES_CPC_PHARMACOGENOMIICS = "total_pharmacogenomics_cpc_genes";
+    public const KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS = "total_pharmacogenomics_cpc_annotations";
+    public const KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS = "total_pharmacogenomics_gkb_genes";
+    public const KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS = "total_pharmacogenomics_gkb_annotations";
+    public const KEY_TOTAL_PHARMACOGENOMICS_GRAPH = "total_pharmacogenomics_graph";
     
 
     /*
@@ -594,6 +602,42 @@ class Metric extends Model
 
     $pct = (int) ($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] /
               $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for pharma cpic score charts
+   *
+   * @@param
+   * @return
+   */
+  public function pharmaCpicPercent($value = 0)
+  {
+  
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS]))
+      return 0;
+    
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for pharma cpic score charts
+   *
+   * @@param
+   * @return
+   */
+  public function pharmaGkbPercent($value = 0)
+  {
+  
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS]))
+      return 0;
+    
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] * 100);
 
     return ($pct == 0 ? 1 : $pct);
   }

@@ -49,8 +49,39 @@
 .chart-stroke-actionability-peds {
   stroke: #ff7300 !important;
 }
+
 .chart-stroke-actionability-adult {
   stroke: #ffd000 !important;
+}
+
+.chart-stroke-pharmacogenomics-cpik {
+  stroke: #ea49a4 !important;
+}
+
+.chart-stroke-pharmacogenomics-pharmgkb {
+  stroke: #b71173 !important;
+}
+
+.chart-bg-pharmacogenomics-level-a, .chart-bg-pharmacogenomics-level-1a {
+  background-color: #009933 !important;
+}
+.chart-bg-pharmacogenomics-level-ab {
+  background-color: #009999 !important;
+}
+.chart-bg-pharmacogenomics-level-b, .chart-bg-pharmacogenomics-level-1b  {
+  background-color: #003399 !important;
+}
+.chart-bg-pharmacogenomics-level-bc {
+  background-color: #330099 !important;
+}
+.chart-bg-pharmacogenomics-level-c, .chart-bg-pharmacogenomics-level-2a  {
+  background-color: #990099 !important;
+}
+.chart-bg-pharmacogenomics-level-cd {
+  background-color: #990033 !important;
+}
+.chart-bg-pharmacogenomics-level-d, .chart-bg-pharmacogenomics-level-2b {
+  background-color: #cc6600 !important;
 }
 
 .chart-bg-definitive {

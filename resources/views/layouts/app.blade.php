@@ -11,6 +11,7 @@
 
   <!-- Scripts -->
 
+  <script src="{{ asset('js/js.cookie.min.js') }}"></script>
   <script src="{{ asset('js/app.js') }}"></script>
 
   <!-- Fonts -->
@@ -27,7 +28,7 @@
                               m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
      ga('create', 'UA-49947422-1', 'auto');
-     ga('set', 'dimension7', 'KB Curations - Index');  
+     ga('set', 'dimension7', 'KB Curations - Index');
      //Page type
      ga('send', 'pageview');
     </script>
@@ -89,11 +90,7 @@
           @isset($display_tabs['active'])
 
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1 ">
-            {{-- <li class="nav-item @if ($display_tabs['active'] == "home") active @endif ">
-              <a class="nav-link" href="{{ route('home') }}">
-                Overview
-              </a>
-            </li> --}}
+
             <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
               <a class="nav-link" href="{{ route('gene-curations') }}">
                 All Curated Genes
@@ -104,13 +101,14 @@
               <a class="nav-link  dropdown-toggle" href="{{ route('validity-index') }}"  aria-haspopup="true" aria-expanded="false">
                 Gene-Disease Validity
               </a>
-                <ul class="dropdown-menu">
-                  <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
-                  <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
-                  <li class="divider"></li>
-                  <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
-                </ul>
-              </li>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('validity-index') }}">All Curations</a></li>
+                <li><a class="f" href="{{ route('affiliate-index') }}">Curations by Expert Panel</a></li>
+                <li class="divider"></li>
+                <li><a href="{{ route('download-index') }}/#section_gene-disease-validity"><i class="fas fa-download"></i> File Downloads</a></li>
+                {{-- <li><a href="{{ route('validity-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li> --}}
+              </ul>
+            </li>
             <li class="nav-item dropdown @if ($display_tabs['active'] == "dosage") active @endif ">
               <a class="nav-link  dropdown-toggle" href="{{ route('dosage-index') }}" aria-haspopup="true" aria-expanded="false">
                 Dosage Sensitivity
@@ -120,19 +118,34 @@
                 {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
                 <li><a class="" href="{{ route('dosage-cnv') }}">Recurrent CNV</a></li>
                 <li class="divider"></li>
-                <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li>
-                <li><a href="{{ route('dosage-ftp') }}"><i class="fas fa-external-link-alt"></i> FTP File Downloads (BED, TSV)</a></li>
+                {{-- <li><a href="{{ route('dosage-download') }}"><i class="fas fa-download"></i> Summary Data Download (CSV)</a></li> --}}
+                <li><a href="{{ route('download-index') }}/#section_dosage"><i class="fas fa-download"></i> FTP File Downloads (CSV, BED, TSV)</a></li>
               </ul>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
-              <a class="nav-link" target="external-actionability" href="{{ route('actionability-index') }}">
-                Clinical Actionability <i class="fas fa-external-link-alt small"></i>
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "actionability") active @endif ">
+              <a class="nav-link  dropdown-toggle" target="external-actionability" href="{{ route('actionability-index') }}" aria-haspopup="true" aria-expanded="false">
+                Clinical Actionability
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('actionability-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
+                {{-- <li><a class="" href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li> --}}
+                <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ">Curations in Adult Context <i class="fas fa-external-link-alt small"></i></a></li>
+                <li><a class="" target="external-actionability" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ">Curations in Pediatric Context <i class="fas fa-external-link-alt small"></i></a></li>
+                <li><a class="" target="external-actionability" href="https://www.clinicalgenome.org/docs/semi-quantitative-scoring-metric/">Scoring Metric <i class="fas fa-external-link-alt small"></i></a></li>
+                <li class="divider"></li>
+                <li><a href="{{ route('download-index') }}/#section_actionability"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
+              </ul>
             </li>
-            <li class="nav-item @if ($display_tabs['active'] == "actionability") active @endif ">
-              <a class="nav-link" target="external-erepo" href="{{ route('variant-path-index') }}">
-                Curated Variants <i class="fas fa-external-link-alt small"></i>
+
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "variant") active @endif ">
+              <a class="nav-link  dropdown-toggle" target="external-erepo" href="{{ route('variant-path-index') }}" aria-haspopup="true" aria-expanded="false">
+                Curated Variants
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('variant-path-index') }}">All Curations <i class="fas fa-external-link-alt small"></i></a></li>
+                <li class="divider"></li><li>
+                <li><a href="{{ route('download-index') }}#section_variant"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
+              </ul>
             </li>
             <li class="nav-item @if ($display_tabs['active'] == "stats") active @endif ">
               <a class="nav-link" href="{{ route('stats-index') }}">
@@ -150,8 +163,8 @@
                   <li><a class="@if ($display_tabs['active'] == "gene") font-weight-bold @endif" href="{{ route('gene-index') }}">All Genes</a></li>
                   <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
-                  {{-- <li role="separator" class="divider"></li>
-                  <li><a href="#">APIs and Downloads</a></li> --}}
+                  <li role="separator" class="divider"></li>
+                <li><a href="{{ route('download-index') }}"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
                 </ul>
               </li>
 
@@ -160,7 +173,8 @@
                   <i class="fas fa-question-circle"></i>
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">Frequently Asked Questions</a></li>
+                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">About ClinGen's Website</a></li>
+                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">Learn About New Features</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/">How To Cite ClinGen</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/attribution/">External Data Attribution</a></li>
                   <li><a href="https://clinicalgenome.org/about/contact-clingen/">Contact Us</a></li>
@@ -214,101 +228,56 @@
 
             @yield('modals')
             @include('modals.login')
+            @include('modals.register')
+            @include('modals.forgot')
           </div>
         </section>
       </main>
 
       @include('_partials._wrapper.footer',['navActive' => "summary"])
 
-
-      <div class="">
-
-      </div>
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-
-
     <script src="/js/jquery.validate.min.js" ></script>
     <script src="/js/additional-methods.min.js" ></script>
+    <script src="/js/additional-methods.min.js" ></script>
+    <script src="/js/sweetalert.min.js"></script>
+    <script src="/js/PassRequirements.js"></script>
 
+    <script src="/js/main.js" ></script>
 
     <script>
-      $(function() {
-      
-      
-        $( '#login-form' ).validate( {
-          submitHandler: function(form) {
-            
-            $.ajaxSetup({
-              cache: true,
-              contentType: "application/x-www-form-urlencoded",
-              processData: true
-            });
-            
-            var url = "/login";
-            
-            var formData = $(form).serialize();
-      
-            //submits to the form's action URL
-            $.post(url, formData, function(response)
-            {
-              //alert(JSON.stringify(response));
-          
-              /*if (response['message'])
-              {
-                swal("Done!", response['message'], "success")
-                  .then((answer2) => {
-                    if (answer2){*/
-                      $('#modalLogin').modal('hide');
-                      //swap login for dashboard
-                      $('.action-login').html('Dashboard').attr('href', '/dashboard').removeClass('action-login');
-                    /*}
-                });
-              }*/
-            }).fail(function(response)
-            {
-              //handle failed validation
-              alert("Error Logging in");
-            });
-      
-            $('#modalFollowGene').modal('hide');
+
+    $('#register-password').PassRequirements({
+        popoverPlacement: 'left',
+        rules: {
+          minlength: {
+            text: "be at least minLength characters long",
+            minLength: 8,
           },
-          rules: {
-            email: {
-              required: true,
-              email: true,
-              maxlength: 80
-            }
+          containSpecialChars: {
+            text: "Your input should contain at least minLength special character",
+            minLength: 1,
+            regex: new RegExp('([^!,%,&,@,#,$,^,*,?,_,~])', 'g')
           },
-          messages: {
-            email:  {
-              required: "Please enter your email address",
-              email: "Please enter a valid email address",
-              maxlength: "Section names must be less than 80 characters"
-            },	
+          containLowercase: {
+            text: "Your input should contain at least minLength lower case character",
+            minLength: 1,
+            regex: new RegExp('[^a-z]', 'g')
           },
-          errorElement: 'em',
-          errorClass: 'invalid-feedback',
-          errorPlacement: function ( error, element ) {
-            // Add the `help-block` class to the error element
-            error.addClass( "invalid-feedback" );
-      
-            if ( element.prop( "type" ) === "checkbox" ) {
-              error.insertAfter( element.parent( "label" ) );
-            } else {
-              error.insertAfter( element );
-            }
+          containUppercase: {
+            text: "Your input should contain at least minLength upper case character",
+          minLength: 1,
+            regex: new RegExp('[^A-Z]', 'g')
           },
-          highlight: function ( element, errorClass, validClass ) {
-            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-          },
-          unhighlight: function (element, errorClass, validClass) {
-            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+          containNumbers: {
+            text: "Your input should contain at least minLength number",
+            minLength: 1,
+            regex: new RegExp('[^0-9]', 'g')
           }
-        });
-      });
-        </script>
+        }
+    });
+
+    </script>
+
     @yield('script_js')
 
     <script>
@@ -499,7 +468,7 @@
     {{-- @livewireScripts --}}
 
     <script type="text/javascript">
-      
+
       // Tracking for google of the onclicks
       $( ".externallink" ).on( "click", function() {
           var title = $(this).attr("title");
@@ -526,7 +495,7 @@
           //console.log( title );
           ga('send', 'event', 'track_download_click', 'click', title );
       });
-      
+
     </script>
   </body>
   </html>

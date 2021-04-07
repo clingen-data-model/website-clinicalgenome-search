@@ -41,7 +41,9 @@ class Dosage extends Model
      * @var array
      */
 	protected $casts = [
-              'history' => 'array'
+              'history' => 'array',
+              'gain_pheno_omim' => 'array',
+              'loss_pheno_omim' => 'array',
     ];
 
     /**
@@ -54,6 +56,10 @@ class Dosage extends Model
                             'chr', 'start', 'stop', 'start38', 'stop38', 'grch37',
                             'grch38', 'pli', 'omiim', 'haplo', 'triplo', 'history',
                             'haplo_history', 'triplo_history',
+                            'gain_pheno_omim', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
+                            'gain_pheno_name', 'gain_comments',
+                            'loss_pheno_omim', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
+                            'loss_pheno_name', 'loss_comments',
                             'workflow', 'resolved', 'notes', 'type', 'status'
                             ];
 

@@ -29,8 +29,8 @@
 			</div>
 		</div>
 
-		<div class="col-md-12 light-arrows">
-				@include('_partials.genetable')
+		<div class="col-md-12 light-arrows dark-table">
+				@include('_partials.genetable', ['expand' => true])
 
 		</div>
 	</div>
@@ -81,6 +81,12 @@
 	var $table = $('#table');
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
 
+	window.ajaxOptions = {
+		beforeSend: function (xhr) {
+		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+		}
+	}
+
 
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);
@@ -98,6 +104,18 @@
 		locale: 'en-US',
 		sortName:  "location",
 		sortOrder: "asc",
+		rowStyle:  function(row, index) {
+				if (index % 2 === 0) {
+     				return { 
+						classes: 'bt-even-row bt-hover-row'
+					}
+				}
+				else {
+     				return { 
+						classes: 'bt-odd-row bt-hover-row'
+					}
+				}			
+     		},
 		columns: [
 		{
 			title: 'Region Name',
@@ -178,6 +196,46 @@
 
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+	$table.on('click-cell.bs.table', function (event, field, value, row, $obj) {
+		//console.log(e);
+		event.preventDefault();
+		event.stopPropagation();
+		event.stopImmediatePropagation();
+
+	});
+
+	$table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+		$obj.attr('colspan',12);
+		
+		var t = $obj.closest('tr');
+
+		var stripe = t.prev().hasClass('bt-even-row');
+
+		t.addClass('dosage-row-bottom');
+
+		if (stripe)
+			t.addClass('bt-even-row');
+		else
+			t.addClass('bt-odd-row');
+
+		t.prev().addClass('dosage-row-top');
+
+		if (row.hasOwnProperty('hgnc_id'))
+			$obj.load( "/api/dosage/expand/" + row.hgnc_id );
+		else
+			$obj.load( "/api/dosage/expand/" + row.key );
+
+		return false;
+	})
+
+	$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+		$obj.closest('tr').prev().removeClass('dosage-row-top');
+
+		return false;
+	});
 
   }
 

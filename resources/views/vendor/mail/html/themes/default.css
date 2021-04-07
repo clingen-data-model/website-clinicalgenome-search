@@ -1,0 +1,120 @@
+.emailbody {
+	background-color: #f5f8fa;
+	padding-top: 10px;
+}
+body, table, button, a, td {
+	font-family: Avenir, Helvetica, sans-serif;
+	font-size: 16px;
+}
+p,
+ul,
+ol,
+blockquote {
+    line-height: 1.4;
+    text-align: left;
+}
+
+a {
+    color: #3869d4;
+}
+
+a img {
+    border: none;
+}
+
+/* Typography */
+
+h1 {
+    color: #3d4852;
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+
+h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+
+h3 {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 0;
+    text-align: left;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5em;
+    margin-top: 0;
+    text-align: left;
+}
+
+p.sub {
+    font-size: 12px;
+}
+
+img {
+    max-width: 100%;
+}
+
+.wrapper {
+	background-color: #f5f8fa;
+	max-width: 800px;
+}
+.header, .footer {
+	padding-bottom: 15px;
+	padding-top: 10px;
+	text-align: left;
+}
+.footer td {
+	font-size: 11px;
+}
+.center {
+	text-align: center;
+}
+.small {
+	font-size:11px;
+}
+.action {
+    -premailer-cellpadding: 0;
+    -premailer-cellspacing: 0;
+    -premailer-width: 100%;
+    margin: 30px auto;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+}
+.button {
+	color: #ffffff !important;
+	background-color:#1e7899;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+    margin: 30px auto;
+	font-size: 115%;
+	text-decoration: none;
+}
+
+.heading {
+	border-radius: 10px 10px 0px 0px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	padding-left: 30px;
+	padding-right: 30px;
+	border-bottom: 1px solid #19448d;
+	background-color: #19448d;
+	color: #fff;
+	font-size: 20px;
+}
+.body {
+	padding-top: 30px;
+	padding-bottom: 30px;
+	padding-left: 30px;
+	padding-right: 30px;
+	border-bottom: 1px solid #EDEFF2;
+	background-color: #FFFFFF;
+}

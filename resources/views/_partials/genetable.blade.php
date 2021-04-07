@@ -5,7 +5,7 @@
 <!-- The table -->
 <table
     id="table"
-    data-classes="table table-striped table-hover"
+    data-classes="table"
     data-toolbar="#toolbar"
     data-addrbar="true"
     data-search="true"
@@ -24,19 +24,22 @@
     data-show-columns="true"
     data-show-columns-toggle-all="true"
     data-search-formatter="false"
-    {{-- data-detail-view="true" --}}
     data-show-export="true"
-    data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']""
+    data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
     {{-- data-click-to-select="true" --}}
-    {{-- data-detail-view-icon="false" --}}
-    {{-- data-detail-view-by-click="true" --}}
+    @if (isset($expand))
+    data-detail-view="true"
+    data-detail-view-icon="false"
+    data-detail-view-by-click="true"
+    @endif
     {{-- data-detail-formatter="detailFormatter" --}}
     data-minimum-count-columns="2"
     {{-- data-show-pagination-switch="true" --}}
     data-pagination="true"
     data-id-field="id"
+    data-ajax-options="ajaxOptions"
     data-page-list="[10, 25, 50, 100, 250, all]"
-    data-page-size="25"
+    data-page-size="{{ $display_list ?? 25 }}"
     data-show-footer="true"
     data-side-pagination="client"
     data-pagination-v-align="both"

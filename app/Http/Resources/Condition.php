@@ -24,6 +24,8 @@ class Condition extends JsonResource
             'has_actionability' => $this->has_actionability,
             'has_validity' => $this->has_validity,
             'has_dosage' => $this->has_dosage,
+            'has_pharma' => $this->has_pharma ?? false,
+            'has_variant' => $this->has_variant ?? false,
             'synonym' => GeneLib::conditionLastSynonym($this),
             'date' => $this->displayDate($this->last_curated_date),
             'rawdate' => $this->last_curated_date

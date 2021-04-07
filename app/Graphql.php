@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Support\Facades\Log;
 
+use Auth;
+
 use App\Traits\Query;
 
 use App\Metric;
@@ -70,11 +72,20 @@ class Graphql
 							curation_activities
 							dosage_curation {
 								triplosensitivity_assertion {
+									disease {
+										label
+										curie
+									}
 									dosage_classification {
 										ordinal
 									  }
 								}
 								haploinsufficiency_assertion {
+									disease {
+										label
+										description
+										curie
+									}
 									dosage_classification {
 										ordinal
 									  }
@@ -87,6 +98,18 @@ class Graphql
 		else
 		{
 			/*
+			dosage_curation {
+								triplosensitivity_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion {
+									dosage_classification {
+										ordinal
+									  }
+								}
+							}
 			$genes = Gene::get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities']);
 			// add each gene to the collection
 
@@ -129,6 +152,17 @@ class Graphql
 		// get the list of acmg59 genes
 		$acmg59s = Gene::select('hgnc_id')->where('acmg59', 1)->get()->pluck('hgnc_id')->toArray();
 
+		// if logged in, get all followed genes
+		if (Auth::guard('api')->check())
+        {
+            $user = Auth::guard('api')->user();
+			$followed = $user->genes->pluck('hgnc_id')->toArray();
+		}
+		else
+		{
+			$followed = [];
+		}
+
 		// get list of pharma and variant pathogenicity genes
 		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
 
@@ -139,6 +173,7 @@ class Graphql
 		foreach($response->genes->gene_list as $record)
 		{
 			$node = new Nodal((array) $record);
+			$node->followed = in_array($node->hgnc_id, $followed);
 			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
 			if ($extra !== null)
 			{
@@ -257,11 +292,9 @@ class Graphql
 						  }
 						  curie
 						}
-						actionability_curations {
-						  report_date
-						  source
-						}
 						actionability_assertions {
+							report_date
+							source
 							classification {
 							  label
 							  curie
@@ -334,7 +367,7 @@ class Graphql
 		{
 			foreach($node->genetic_conditions as $condition)
 			{
-				$naction = $naction + count($condition->actionability_curations);
+				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);
 				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
 
@@ -361,14 +394,26 @@ class Graphql
 		$node->naction = $naction;
 		$node->nvalid = $nvalid;
 		$node->ndosage = $ndosage;
+		$node->ncpc = 0;
+		$node->npharmgkb = 0;
+		$node->nvariant = 0;
 
 		if (!empty($pharma))
 		{
 			$entries = Cpic::gene($node->label)->cpic()->get();
 			$node->pharma = $entries->toArray();
+			$node->ncpc = $entries->count();
 
 			$entries = Cpic::gene($node->label)->gkb()->get();
 			$node->pharmagkb = $entries->toArray();
+			$node->npharmgkb = $entries->count();
+		}
+
+		if (!empty($variant))
+		{
+			$entries = Variant::sortByClassifications($localgene->name);
+			$node->variant = $entries;
+			$node->nvariant = array_sum($entries);
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
@@ -382,7 +427,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneActivityDetail($args, $page = 0, $pagesize = 20)
+    /*static function geneActivityDetail($args, $page = 0, $pagesize = 20)
     {
 		// break out the args
 		foreach ($args as $key => $value)
@@ -432,7 +477,7 @@ class Graphql
 						  }
 						  curie
 						}
-						actionability_curations {
+						actionability_assertions {
 						  report_date
 						  source
 						}
@@ -526,7 +571,7 @@ class Graphql
 						$by_activity['dosage_curation'][end($curie)][$ii]['curation'] = $gene_dosage_assertion;
 					}
 					$ii = -1;
-					foreach ($genetic_condition->actionability_curations as $actionability_curation) {
+					foreach ($genetic_condition->actionability_assertions as $actionability_curation) {
 						$ii++;
 						$curie = explode("/", $genetic_condition->disease->iri);
 						$by_activity['actionability'][end($curie)][$ii]['disease'] = $genetic_condition->disease;
@@ -555,7 +600,7 @@ class Graphql
 
 		//dd($node);
 		return $node;
-	}
+	}*/
 
 
 	/**
@@ -628,19 +673,71 @@ class Graphql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		$query = '{
-			gene(iri: "' . $iri . '") {
-				label
-				conditions {
-					iri
+		if ($report)
+		{
+			$query = '{
+				genes('
+				. self::optionList($page, $pagesize, $sort, $direction, $search, 'ACTIONABILITY')
+				. '){
+					gene_list{
+						label
+						hgnc_id
+						genetic_conditions {
+							disease {
+								label
+								curie
+							}
+							mode_of_inheritance {
+								label
+								website_display_label
+								curie
+							  }
+							actionability_assertions {
+								report_date
+								source
+								attributed_to {
+									label
+								}
+								classification {
+									label
+									curie
+								}
+							}
+						}
+				  	}
+				}
+				statistics {
+					actionability_tot_reports
+					actionability_tot_updated_reports
+					actionability_tot_gene_disease_pairs
+					actionability_tot_adult_gene_disease_pairs
+					actionability_tot_pediatric_gene_disease_pairs
+					actionability_tot_adult_outcome_intervention_pairs
+					actionability_tot_outcome_intervention_pairs
+					actionability_tot_pediatric_outcome_intervention_pairs
+					actionability_tot_adult_score_counts
+					actionability_tot_pediatric_score_counts
+					actionability_tot_adult_failed_early_rule_out
+					actionability_tot_pediatric_failed_early_rule_out
+				}
+			}';
+		}
+		else
+		{
+			$query = '{
+				gene(iri: "' . $iri . '") {
 					label
-					actionability_curations {
-						report_date
-						source
+					conditions {
+						iri
+						label
+						actionability_assertions {
+							report_date
+							source
+						}
 					}
 				}
-			  }
-			}';
+				}';
+		}
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
@@ -648,9 +745,26 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-		$node = new Nodal((array) $response->gene);
+		if ($report)
+		{
+			$collection = collect();
+			
+			foreach($response->genes->gene_list as $record)
+			{
+				$node = new Nodal((array) $record);
+				$collection->push($node);
+			}
 
-		return $node;
+			return (object) ['count' => $collection->count(), 'collection' => $collection,
+							 'statistics' => $response->statistics
+							];
+		}
+		else
+		{
+			$node = new Nodal((array) $response->gene);
+
+			return $node;
+		}
 	}
 
 
@@ -670,7 +784,9 @@ class Graphql
 
 		$search = null;
 
-		$query = '{
+		if (isset($report))
+		{
+			$query = '{
 				genes('
 				. self::optionList($page, $pagesize, $sort, $direction, $search, "GENE_DOSAGE")
 				. ') {
@@ -678,23 +794,86 @@ class Graphql
 					gene_list {
 						label
 						hgnc_id
-						chromosome_band
 						dosage_curation {
+							curie
 							report_date
 							triplosensitivity_assertion {
+								report_date
+								disease {
+									label
+									curie
+								}
 								dosage_classification {
 									ordinal
 								}
 							}
 							haploinsufficiency_assertion {
+								report_date
+								disease {
+									label
+									curie
+								}
 								dosage_classification {
 									ordinal
 								}
 							}
 						}
+						genetic_conditions {
+							disease {
+							  label
+							  curie
+							}
+							gene_dosage_assertions {
+							  report_date
+							  assertion_type
+							  curie
+							  dosage_classification {
+								ordinal
+							  }
+							}
+						}
 					}
 				}
 			}';
+		}
+		else
+		{
+			$query = '{
+					genes('
+					. self::optionList($page, $pagesize, $sort, $direction, $search, "GENE_DOSAGE")
+					. ') {
+						count
+						gene_list {
+							label
+							hgnc_id
+							chromosome_band
+							dosage_curation {
+								report_date
+								triplosensitivity_assertion {
+									report_date
+									disease {
+										label
+										curie
+									}
+									dosage_classification {
+										ordinal
+									}
+								}
+								haploinsufficiency_assertion {
+									report_date
+									disease {
+										label
+										curie
+									}
+									dosage_classification {
+										ordinal
+									}
+								}
+							}
+						}
+					}
+				}';
+		}
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
@@ -807,7 +986,7 @@ class Graphql
 							}
 						  curie
 						}
-						actionability_curations {
+						actionability_assertions {
 						  report_date
 						  source
 						}
@@ -1216,24 +1395,29 @@ class Graphql
 					hgnc_id
 					}
 					gene_validity_assertions {
-					mode_of_inheritance {
-						label
-						website_display_label
+						mode_of_inheritance {
+							label
+							website_display_label
+							curie
+						}
+						report_date
+						classification {
+							label
+							curie
+						}
 						curie
 					}
-					report_date
-					classification {
-						label
-						curie
-					}
-					curie
-					}
-					actionability_curations {
+					actionability_assertions {
 						report_date
 						source
+						classification {
+							label
+							curie
+						}
 					}
 					gene_dosage_assertions {
 						report_date
+						assertion_type
 						dosage_classification {
 							ordinal
 						}
@@ -1270,7 +1454,7 @@ class Graphql
 				//$nodeCollect = collect($node);
 				//dd($nodeCollect);
 				//dd(count($condition->gene_validity_assertions));
-				$naction = $naction + count($condition->actionability_curations);
+				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);
 				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
 
@@ -1387,22 +1571,11 @@ class Graphql
 						count
 						disease_list {
 							label
-							hgnc_id
+							curie
+							description
 							synonyms
 							last_curated_date
 							curation_activities
-							dosage_curation {
-								triplosensitivity_assertion {
-									dosage_classification {
-										ordinal
-									  }
-								}
-								haploinsufficiency_assertion {
-									dosage_classification {
-										ordinal
-									  }
-								}
-							}
 						}
 					}
 				}';
@@ -1442,7 +1615,7 @@ class Graphql
 			$nvalid = $collection->where('has_validity', true)->count();
 			$ndosage = $collection->where('has_dosage', true)->count();
 
-			Metric::store(Metric::KEY_TOTAL_CURATED_DISEASE, $response->diseases->count);
+			//Metric::store(Metric::KEY_TOTAL_CURATED_DISEASE, $response->diseases->count);
 			//$ndosage = $collection->whereNotNull('dosage_curation')->count();
 		} else {
 			// right now we only use these counts on the curated page.  Probably should get triggered
@@ -1570,15 +1743,9 @@ class Graphql
 							}
 						}
 						genetic_conditions {
-							actionability_curations {
-								classification_description
-								curie
-								iri
-								label
+							actionability_assertions {
 								report_date
-								report_id
 								source
-								wg_label
 							}
 						}
 					}
@@ -1622,16 +1789,16 @@ class Graphql
 
 			foreach ($record->genetic_conditions as $condition)
 			{
-				if (!empty($condition->actionability_curations))
+				if (!empty($condition->actionability_assertions))
 				{
-					$action_curations += count($condition->actionability_curations);
+					$action_curations += count($condition->actionability_assertions);
 
-					foreach ($condition->actionability_curations as $ac)
+					foreach ($condition->actionability_assertions as $ac)
 					{
-						if (strpos($ac->iri, 'Adult') > 0)
+						if (strpos($ac->source, 'Adult') > 0)
 							$adultcounter++;
 
-						if (strpos($ac->iri, 'Pediatric') > 0)
+						if (strpos($ac->source, 'Pediatric') > 0)
 							$pedscounter++;
 					}
 				}
@@ -2079,6 +2246,50 @@ class Graphql
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
 
+		// Pharmacogenomics
+		
+		$cpics = Cpic::where('type', 1)->get();
+		$gkb = Cpic::where('type', 2)->get();
+
+    	$values[Metric::KEY_TOTAL_GENES_CPC_PHARMACOGENOMIICS] = $cpics->unique(['gene'])->count();
+    	$values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] = $cpics->count();
+    	$values[Metric::KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS] = $gkb->unique(['gene'])->count();;
+		$values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] = $gkb->count();
+		$values[Metric::KEY_TOTAL_GENES_PHARMACOGENOMIICS] = Cpic::all()->unique(['gene'])->count();
+		$values[Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] = $values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS]
+															+ $values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS];
+
+		$template = ['Cpic' => 0, 'PharmGKB' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template, 'scores' => $template];
+
+		$topcounters['classtotals']['Cpic'] = $values[Metric::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS];
+		$topcounters['classtotals']['PharmGKB'] = $values[Metric::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS];
+
+		$offset = 0;
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $values[Metric::KEY_TOTAL_ANNOT_PHARMACOGENOMIICS] * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$topcounters['scores']['Cpic'] = $cpics->groupBy('cpic_level')->map(function ($level) {
+			return $level->count();
+		});
+
+		$topcounters['scores']['PharmGKB'] = $gkb->groupBy('pharmgkb_level_of_evidence')->map(function ($level) {
+			return $level->count();
+		});
+
+		$values[Metric::KEY_TOTAL_PHARMACOGENOMICS_GRAPH] = $topcounters;
 
 		$metric = new Metric([	'values' => $values,
 								'type' => Metric::TYPE_SYSTEM,
@@ -2141,6 +2352,84 @@ class Graphql
 		}
 
 		//return (object) ['count' => count($collection), 'collection' => $collection];
+		return json_encode($array);
+	}
+
+
+	/**
+     * Suggester for Gene names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneFind($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		$collection = collect();
+
+		if ($search == '*')
+		{
+			$array = [['label' => 'All Genes (*)',
+						'short' => 'All Genes',
+						'curated' => 2,
+						'hgncid' => '*'
+						]];
+			return json_encode($array);	
+		}
+
+		if (strpos('@', $search) === 0)
+		{
+			$array = [['label' => 'All Validity',
+						'short' => 'All Validity',
+						'curated' => 2,
+						'hgncid' => '@AllValidity'
+					],
+					['label' => 'All Dosage',
+						'short' => 'All Dosage',
+						'curated' => 2,
+						'hgncid' => '@AllDosage'
+					],
+					['label' => 'All Actionability',
+						'short' => 'All Actionability',
+						'curated' => 2,
+						'hgncid' => '@AllActionability'
+					]
+				];
+
+			return json_encode($array);	
+		}
+
+		$query = '{
+				suggest(contexts: ALL, suggest: GENE, text: "'
+				. $search . '") {
+						curations
+						highlighted
+						alternative_curie
+						text
+					}
+				}
+			}';
+
+		// query genegraph
+		$response = self::query($query,  __METHOD__);
+
+		if (empty($response))
+			return $response;
+
+		$array = [];
+		foreach($response->suggest as $record)
+		{
+			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
+							. $ctag,
+						'short' => $record->text,
+						'curated' => !empty($record->curations),
+						'hgncid' => $record->alternative_curie
+						];
+		}
+
 		return json_encode($array);
 	}
 

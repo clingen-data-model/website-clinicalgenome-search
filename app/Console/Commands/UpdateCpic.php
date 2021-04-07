@@ -12,6 +12,7 @@ use App\Imports\ExcelGKB;
 use App\Cpic;
 use App\GeneLib;
 use App\Gene;
+use App\Drug;
 
 class UpdateCpic extends Command
 {
@@ -47,16 +48,16 @@ class UpdateCpic extends Command
     public function handle()
     {
     
-        echo "Importing pharma data from CPIC ...\n";
+        echo "Updating CPIC data from CPIC ...";
 
         try {
-					
-			$results = file_get_contents("https://api.cpicpgx.org/v1/pair_view?order=genesymbol,provisional,guidelineurl,cpiclevel,drugname&select=*,gene(hgncid)");
+                    
+			$results = file_get_contents("https://api.cpicpgx.org/v1/pair_view?order=genesymbol,provisional,guidelineurl,cpiclevel,drugname&select=*,gene(hgncid),drug(rxnormid)");
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retreiving CPIC data\n";
-			
+			echo "\n(E001) Error retreiving CPIC data\n";
+			exit;
 		}
 
         $dd = json_decode($results);
@@ -69,6 +70,7 @@ class UpdateCpic extends Command
             $record = new Cpic([ 'gene' => $row->genesymbol,
                                 'hgnc_id' => $row->gene->hgncid,
                                 'drug' => $row->drugname,
+                                'rxnorm' => $row->drug->rxnormid,
                                 'guideline' => $row->guidelineurl,
                                 'cpic_level' => $row->cpiclevel,
                                 'cpic_level_status' => $row->provisional ? "Provisional" : "Final",
@@ -87,10 +89,24 @@ class UpdateCpic extends Command
             ]);
 
             $record->save();
+
+            // update main drug table with activity
+            if ($record->rxnorm !== null)
+            {
+                $drug = Drug::curie($record->rxnorm)->first();
+                if ($drug !== null)
+                {
+                    $activity = $drug->curation_activities;
+                    $activity['pharma'] = true;
+                    $drug->curation_activities = $activity;
+                    $drug->save();
+                }
+            }
         }
 
+        echo "DONE\n";
 
-        echo "Importing pharma data from PharmGKB ...\n";
+        echo "Updating PharmGKB data from PharmGKB ...";
 
         try {
                     
@@ -98,8 +114,8 @@ class UpdateCpic extends Command
 
         } catch (\Exception $e) {
         
-            echo "(E001) Error retreiving PharmKGB data\n";
-            
+            echo "\n(E001) Error retreiving PharmKGB data\n";
+            exit;
         }
     
         $dd = json_decode($results);
@@ -161,6 +177,8 @@ class UpdateCpic extends Command
                 $gene->save();
             }
         }
+
+        echo "DONE\n";
 
     }
 }

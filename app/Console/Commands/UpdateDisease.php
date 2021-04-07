@@ -42,7 +42,7 @@ class UpdateDisease extends Command
      */
     public function handle()
     {
-        echo "Importing disease data from genegraph ...\n";
+        echo "Updating G-D-A Disease Activity from Genegraph ...";
         
         $results = GeneLib::conditionList([	'page' =>  0,
 										'pagesize' => "null",
@@ -50,14 +50,18 @@ class UpdateDisease extends Command
                                         'direction' => 'ASC',
                                         'forcegg' => true,
                                         'search' => null,
-                                        'curated' => false ]);
+                                        'curated' => true ]);
                                         
         if ($results === null)
-            die( GeneLib::getError() );
+        {
+
+            echo "\n(E001) Error reading genegraph data\n";
+            exit;
+        }
 
         foreach($results->collection as $disease)
         {
-            echo "Updating  " . $disease->curie . "\n";
+            //echo "Updating  " . $disease->curie . "\n";
 
             $flags = ['actionability' => $disease->has_actionability,
                         'validity' => $disease->has_validity,
@@ -72,6 +76,8 @@ class UpdateDisease extends Command
                                         'curation_activities' => $flags,
                                         'type' => 1, 'status' => 1]);
         }
+
+        echo "DONE\n";
 
     }
 }

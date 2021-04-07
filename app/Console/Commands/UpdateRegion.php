@@ -39,7 +39,7 @@ class UpdateRegion extends Command
      */
     public function handle()
     {
-        echo "Reading idx file ...\n";
+        echo "Updating Dosage GRCh37 region data from DCI ...";
             
         $handle = fopen(base_path() . '/data/region.idx', "r");
         if ($handle)
@@ -47,7 +47,7 @@ class UpdateRegion extends Command
             while (($line = fgets($handle)) !== false)
             {
                 // process the line read.
-                echo "Processing " . $line . "\n";
+                //echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
@@ -81,8 +81,14 @@ class UpdateRegion extends Command
         }
         else
         {
-            echo "Cannot access IDX file\n";
+            echo "\n(E001) Cannot access GRCh37 region file\n";
+            exit;
         } 
+
+        echo "DONE\n";
+
+        echo "Updating Dosage GRCh38 region data from DCI ...";
+
 
         $handle = fopen(base_path() . '/data/region38.idx', "r");
         if ($handle)
@@ -90,7 +96,7 @@ class UpdateRegion extends Command
             while (($line = fgets($handle)) !== false)
             {
                 // process the line read.
-                echo "Processing " . $line . "\n";
+                //echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
@@ -124,7 +130,11 @@ class UpdateRegion extends Command
         }
         else
         {
-            echo "Cannot access IDX file\n";
+            echo "\n(E001) Cannot access GRCh38 region file\n";
+            exit;
         } 
+
+        echo "DONE\n";
+
     }
 }

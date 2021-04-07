@@ -31,10 +31,10 @@
 
       <div class="col-md-12">
         <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
-        <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="badge action-af-badge">None</span>
+          <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
         </button>
       </div>
-      <div class="col-md-12">
+      <div class="col-md-12 dark-table">
         @include('_partials.genetable')
       </div>
     </div>
@@ -79,6 +79,7 @@
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
+<script src="/js/filters.js"></script>
 
 <script>
 
@@ -91,6 +92,12 @@
   var $table = $('#table');
   var showadvanced = true;
   var lightstyle = true;
+
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
 
   function responseHandler(res) {
     $('.countGenes').html(res.total);
@@ -105,28 +112,18 @@
 
 
   /*
-  **  Filter control for acmg59 mode
+  **  Filter control for follow mode
   */
-	$('.action-show-acmg59').on('click', function() {
+	$('#curated-filter-dashboard').on('login', function() {
+    $(this).show();
+  });
 
-    if ($(this).hasClass('fa-toggle-off'))
-    {
-      $table.bootstrapTable('filterBy', {acmg59: true});
 
-      $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
-      $('.action-show-acmg59-text').html('On');
-      $('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
-
-    }
-    else
-    {
-      $table.bootstrapTable('filterBy', {acmg59: [false, true]});
-
-      $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
-      $('.action-show-acmg59-text').html('Off');
-      $('.action-af-badge').html('None').removeClass('bg-primary');
-
-    }
+  /*
+  **  Filter control for follow mode
+  */
+	$('#curated-filter-dashboard').on('logout', function() {
+    $(this).hide();
   });
 
 
@@ -237,6 +234,14 @@
     $table.on('post-body.bs.table', function (e, name, args) {
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+
+    $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.closest('tr').prev().css('border-top', '1px solid #ddd');
+
+      return false;
+    });
 
   }
 

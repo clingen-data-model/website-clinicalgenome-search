@@ -40,30 +40,34 @@ class UpdateDosages extends Command
      */
     public function handle()
     {
-        echo "Accessing Jira ...\n";
+        echo "Updating Dosage Region data from DCI ...";
 
         $regions = Jira::regionLoad([]);
 
         if ($regions === null || $regions->collection->isEmpty())
         {
-            echo "ERROR:  Region Load returned an empty set\n";
+            echo "\n(E001):  Region Load returned an empty set\n";
             exit;
         }
 
-        echo "Updating Dosages Table\n";
-
         foreach ($regions->collection as $region)
         {
-            //dd($region->toArray());
-            $status = Dosage::updateOrCreate(['issue' => $region->issue, 'type' => 1],
+           // dd($region->toArray());
+            try {
+                $status = Dosage::updateOrCreate(['issue' => $region->issue, 'type' => 1],
                                                 $region->toArray());
+            } catch(\Exception $e) {
+                dd($region->toArray());
+            } catch (\Throwable $ex) {
+                dd($region->toArray());
+            }
 
             if (empty($status))
             {
-                echo "ERROR:  Issue {$region->issue} not updated \n";
+                echo "\n(E002):  Issue {$region->issue} not updated \n";
             }
         }
         
-        echo "Update Complete\n";
+        echo "DONE\n";
     }
 }

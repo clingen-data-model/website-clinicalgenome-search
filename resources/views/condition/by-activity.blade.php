@@ -66,63 +66,9 @@
 
 			@endif
 
-			@php ($header_val = true) @endphp
-			@forelse ($record->genetic_conditions as $key => $disease)
-				@if(count($disease->gene_validity_assertions))
-				@if($header_val == true)
-				@php ($currations_set = true) @endphp
-					<h3  id="link-gene-validity" class=" mt-3 mb-0"><img src="/images/clinicalValidity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Gene-Disease Validity</h3>
-					<div class="card mb-3">
-						<div class="card-body p-0 m-0">
-						<table class="panel-body table mb-0">
-							<thead class="thead-labels">
-								<tr>
-								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2 text-left">MOI</th>
-								<th class="col-sm-2  ">Classification</th>
-								<th class="col-sm-1 text-center">Report &amp; Date</th>
-								</tr>
-							</thead>
-							<tbody class="">
-							@endif
-								@php ($first = true) @endphp
-								@foreach($disease->gene_validity_assertions as $i => $validity)
-										<tr>
-											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+			@php global $currations_set; $currations_set = false; @endphp
 
-												<a href="{{ route('gene-show', $disease->gene->hgnc_id) }}">{{ $disease->gene->label }}</a>
-											</td>
-
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												{{ $record->label }}
-											</td>
-
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }}
-												<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
-											</td>
-
-											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
-												<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}">
-												{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}
-												</a>
-											</td>
-											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif text-center"><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->report_date) }}</a></td>
-										</tr>
-								@php ($first = false) @endphp
-								@endforeach
-								@php ($header_val = false) @endphp
-				@endisset
-				@empty
-				@endforelse
-				@if($header_val == false)
-							</tbody>
-						</table>
-					</div>
-				</div>
-				@endisset
-
+			@include('condition.includes.validity')
 
 
 				@php ($header_dos = true) @endphp
@@ -162,12 +108,12 @@
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
-													@if ($key == "haploinsufficiency_assertion")
+													@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
 													<a class="btn btn-default btn-block text-left  mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::haploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
 													@endif
-													@if ($key != "haploinsufficiency_assertion")
+													@if ($dosage->assertion_type  != "HAPLOINSUFFICIENCY_ASSERTION")
 													<a class="btn btn-default btn-block text-left   mb-2 btn-classification" href="{{ route('dosage-show', $disease->gene->hgnc_id) }}">{{ $dosage->dosage_classification->ordinal ?? null }}
 														({{ \App\GeneLib::triploAssertionString($dosage->dosage_classification->ordinal ?? null) }})
 													</a>
@@ -281,7 +227,7 @@
 
 				@php ($header_aci = true) @endphp
 				@forelse ($record->genetic_conditions as $key => $disease)
-					@if(count($disease->actionability_curations))
+					@if(count($disease->actionability_assertions))
 				  @if($header_aci == true)
 					@php ($currations_set = true) @endphp
 					<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
@@ -301,7 +247,7 @@
 							<tbody class="">
 					@endif
 								@php ($first = true) @endphp
-								@foreach($disease->actionability_curations as $i => $actionability)
+								@foreach($disease->actionability_assertions as $i => $actionability)
 										<tr>
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												@if($first == true) <a href="{{ route('gene-show', $disease->gene->hgnc_id) }}">{{ $disease->gene->label }}</a> @endif
@@ -316,7 +262,8 @@
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
 													<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}">
-													{{ $record->displayActionType($actionability->source) }}View Details
+													<div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
+													@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->classification->label)))
 													</a>
 											</td>
 

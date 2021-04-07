@@ -57,7 +57,8 @@ class UpdateJira extends Command
 		** LOEUF: 
 		** GRCh38 Genomic Position:  10532
 		*/
-
+		
+exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
 		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
 		
 		foreach ($results->issues as $issue)

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\GeneLib;
 
 /**
@@ -23,15 +25,21 @@ use App\GeneLib;
 * */
 class DrugController extends Controller
 {
-	/**
-	* Create a new controller instance.
-	*
-	* @return void
-	*/
-	public function __construct()
-	{
-		//$this->middleware('auth');
-	}
+	private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
 
 
 	/**
@@ -51,11 +59,15 @@ class DrugController extends Controller
             'title' => "Drugs"
         ]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+		
 		return view('drug.index', compact('display_tabs'))
 						->with('apiurl', '/api/drugs')
 						->with('pagesize', $size)
 						->with('page', $page)
-						->with('search', $search);
+						->with('search', $search)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -71,7 +83,8 @@ class DrugController extends Controller
 			return view('error.message-standard')
 				->with('title', 'Error retrieving Drug details')
 				->with('message', 'The system was not able to retrieve details for this Drug. Please return to the previous page and try again.')
-				->with('back', url()->previous());
+				->with('back', url()->previous())
+				->with('user', $this->user);
 
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
@@ -79,7 +92,8 @@ class DrugController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Drug details')
 						->with('message', 'The system was not able to retrieve details for this Drug.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+                        ->with('user', $this->user);
 
 		// set display context for view
 		$display_tabs = collect([
@@ -87,7 +101,8 @@ class DrugController extends Controller
 			'title' => $record->label . " drug information"
 		]);
 		
-        return view('drug.show', compact('display_tabs', 'record'));
+        return view('drug.show', compact('display_tabs', 'record'))
+		->with('user', $this->user);
 	}
 	
 

@@ -29,6 +29,8 @@ class Genesearch extends JsonResource
             'has_actionability' => $this->activity['actionability'] ?? false,
             'has_validity' => $this->activity['validity'] ?? false,
             'has_dosage' => $this->activity['dosage'] ?? false,
+            'has_pharma' => $this->activity['pharma'] ?? false,
+            'has_variant' => $this->activity['varpath'] ?? false,
             'date_last_curated' => $this->displayDate($this->date_last_curated),
             'rawdate' => $this->date_last_curated,
             'status' => 1

@@ -40,16 +40,17 @@ class UpdateMane extends Command
      */
     public function handle()
     {
-		echo "downloading mane data ...\n";
+		echo "Updating MANE data from NCBI ...";
 				
 			
 		try {
 					
-			$results = file_get_contents("https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/MANE.GRCh38.v0.92.summary.txt.gz");
+			$results = file_get_contents("https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/MANE.GRCh38.v0.93.summary.txt.gz");
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retreiving MANE data\n";
+			echo "\n(E001) Error retreiving MANE data\n";
+			exit;
 			
 		}
 	
@@ -69,7 +70,7 @@ class UpdateMane extends Command
 		{
 			$parts = explode("\t", $line);
 			
-			echo "Updating " . $parts[2] . " \n";
+			//echo "Updating " . $parts[2] . " \n";
 
 			$gene = Gene::hgnc($parts[2])->first();
 
@@ -104,5 +105,8 @@ class UpdateMane extends Command
 			else
 				echo "Bad Status " . $parts[9] . " \n";
 		}
+
+		echo "DONE\n";
+
     }
 }

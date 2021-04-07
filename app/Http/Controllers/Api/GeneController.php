@@ -7,6 +7,7 @@ use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Gene as GeneResource;
 
 use App\GeneLib;
+use App\Gene;
 
 class GeneController extends Controller
 {
@@ -57,5 +58,38 @@ class GeneController extends Controller
                                         'curated' => false ]);
 
         return $results;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function find(Request $request, $term = null)
+    {
+        $results = GeneLib::geneFind([	'page' => $input['offset'] ?? 0,
+										'pagesize' => $input['limit'] ?? "null",
+										'sort' => $sort ?? 'GENE_LABEL',
+                                        'direction' => $input['order'] ?? 'ASC',
+                                        'search' => $term ?? null,
+                                        'curated' => false ]);
+
+        return $results;
+    }
+
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function expand(ApiRequest $request, $id = null)
+    {        
+        // ...otherwise assume gene
+        $gene = Gene::hgnc($id)->first();
+
+        return view('gene.expand')
+                    ->with('gene', $gene);
     }
 }

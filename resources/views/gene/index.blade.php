@@ -25,7 +25,7 @@
         </div>
       </div>
 
-      <div class="col-md-12 light-arrows">
+      <div class="col-md-12 light-arrows dark-table">
 
 			@include('_partials.genetable')
 
@@ -75,7 +75,13 @@
 	**
 	*/
 
-	var $table = $('#table');
+  var $table = $('#table');
+  
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
 
   function responseHandler(res) {
     $('.countGenes').html(res.total);
@@ -135,7 +141,7 @@
           title: 'Gene Type',
           field: 'locus_type',
           cellStyle: cellFormatter,
-          filterControl: 'select',
+          filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
@@ -153,7 +159,7 @@
         },
         {
           field: 'date',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Date of last curation against gene, if known."></i></div> Last Eval.',
           //align: 'right',
           cellStyle: cellFormatter,
           filterControl: 'input',

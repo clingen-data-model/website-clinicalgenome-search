@@ -24,7 +24,7 @@
       </div>
     </div>
 
-		<div class="col-md-12 light-arrows">
+		<div class="col-md-12 light-arrows dark-table">
 
 			@include('_partials.genetable')
 
@@ -74,7 +74,13 @@
 	**
 	*/
 
-	var $table = $('#table');
+  var $table = $('#table');
+  
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
 
   function responseHandler(res) {
 
@@ -85,21 +91,23 @@
 
   var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity'];
 
-function checkactive(text, value, field, data)
-{
-  switch (text)
+  function checkactive(text, value, field, data)
   {
-    case 'actionability': 
-      return value.indexOf('A') != -1;
-    case 'dosage sensitivity':
-      return value.indexOf('D') != -1;
-    case 'gene validity':
-      return value.indexOf('V') != -1;
-    default:
-      return true;
+    switch (text)
+    {
+      case 'actionability': 
+        return value.indexOf('A') != -1;
+      case 'dosage sensitivity':
+        return value.indexOf('D') != -1;
+      case 'gene validity':
+        return value.indexOf('V') != -1;
+      default:
+        return true;
+    }
+
   }
 
-}
+  
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       locale: 'en-US',
@@ -129,7 +137,15 @@ function checkactive(text, value, field, data)
           filterControl: 'select',
 					filterData: 'var:activelist',
 					filterCustomSearch: checkactive,
+          cellStyle: cellFormatter
+        },
+        {
+          title: 'BioPortal',
+          field: 'curie',
+          formatter: drPortalFormatter,
+          searchFormatter: false,
           cellStyle: cellFormatter,
+          sortable: false
         }
       ]
     })

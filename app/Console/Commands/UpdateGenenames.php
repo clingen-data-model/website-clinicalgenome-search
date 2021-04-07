@@ -39,7 +39,7 @@ class UpdateGenenames extends Command
      */
     public function handle()
     {
-        echo "Downloading gene table from genenames.org ...\n";
+        echo "Updating Gene List from Genenames ...";
 		
 		// set the options so genenames sends json instead of xml
 		$options = array(
@@ -53,11 +53,12 @@ class UpdateGenenames extends Command
 			
 		try {
 					
-			$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            //$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            $results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retrieving search data\n";
+			echo "\n(E001) Error retrieving search data\n";
 			exit;
 			
 		}
@@ -66,12 +67,13 @@ class UpdateGenenames extends Command
 		
 		if ($data['response']['numFound'] == 0)
 		{
-			echo "(E002) Error fetching search data.\n";
+            echo "\n(E002) Error fetching search data.\n";
+            exit;
 		}
 	
 		foreach ($data['response']['docs'] as $doc)
 		{
-			echo "Processing " . $doc['symbol'] . "  " . $doc['name'] .  "  " .  $doc['hgnc_id'] . "\n";
+			//echo "Processing " . $doc['symbol'] . "  " . $doc['name'] .  "  " .  $doc['hgnc_id'] . "\n";
 			
 			// change doc status to gene status
 			$doc['status'] = 0;
@@ -82,7 +84,9 @@ class UpdateGenenames extends Command
 			
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['name' => $doc['symbol']], $doc);
-            //$gene = Gene::updateOrCreate(['hgnc_id' => $doc['hgnc_id']], $doc);
-		}
+        }
+        
+        echo "DONE\n";
+
     }
 }

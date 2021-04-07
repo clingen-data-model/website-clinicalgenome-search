@@ -20,7 +20,7 @@ class UpdateMap extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Refresh the ISCA data for each gene';
 
     /**
      * Create a new command instance.
@@ -39,7 +39,7 @@ class UpdateMap extends Command
      */
     public function handle()
     {
-        echo "Reading idx file ...\n";
+        echo "Updating ISCA Dosage Gene Map from DCI ...";
             
         $handle = fopen(base_path() . '/data/gene_isca.idx', "r");
         if ($handle)
@@ -47,7 +47,7 @@ class UpdateMap extends Command
             while (($line = fgets($handle)) !== false)
             {
                 // process the line read.
-                echo "Processing " . $line . "\n";
+                //echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
@@ -58,7 +58,10 @@ class UpdateMap extends Command
         }
         else
         {
-            echo "Cannot access IDX file\n";
+            echo "\n(E001) Cannot access gene_isca file\n";
+            exit;
         } 
+
+        echo "DONE\n";
     }
 }

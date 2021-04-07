@@ -78,9 +78,14 @@
 
   var $table = $('#table');
 
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
+
   function responseHandler(res) {
 
-    // TODO - Moved away from #gene-count to class... check if all changed and temove the # code below
     $('.countCurations').html(res.total);
     $('.affiliate-id').html(res.id);
 

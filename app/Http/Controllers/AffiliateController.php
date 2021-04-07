@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Resources\Affiliate as AffiliateResource;
 
+use Auth;
+
 /**
 *
 * @category   Web
@@ -22,6 +24,22 @@ use App\Http\Resources\Affiliate as AffiliateResource;
 class AffiliateController extends Controller
 {
     private $api = '/api/affiliates';
+    private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -40,10 +58,17 @@ class AffiliateController extends Controller
             'title' => "Gene Curation Expert Panels"
         ]);
 
+        if (Auth::guard('api')->check())
+            $user = Auth::guard('api')->user();
+
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
         return view('affiliate.index', compact('display_tabs'))
                         ->with('apiurl', $this->api)
                         ->with('pagesize', $size)
-                        ->with('page', $page);
+                        ->with('page', $page)
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
 
     }
 
@@ -66,10 +91,14 @@ class AffiliateController extends Controller
         if (!ctype_digit($id))
             $id = 0;
 
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
         return view('affiliate.show', compact('display_tabs'))
                         ->with('apiurl', $this->api . "/${id}")
                         ->with('pagesize', $size)
-                        ->with('page', $page);
+                        ->with('page', $page)
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
     }
 
 }

@@ -47,6 +47,7 @@ class Gene extends Model
 		'pli' => 'string|nullable',
 		'haplo' => 'string|nullable',
           'triplo' => 'string|nullable',
+          'disease' => 'json|nullable',
           'ensemble_gene_id' => 'string|nullable',
           'entrez_id' => 'string|nullable',
           'ucsc_id' => 'string|nullable',
@@ -70,8 +71,9 @@ class Gene extends Model
                'curation_activities' => 'array',
                'mane_select' => 'array',
                'mane_plus' => 'array',
-               'genegraph' => 'array'
-		];
+               'genegraph' => 'array',
+               'disease' => 'array'
+     ];
 
      /**
      * The attributes that are mass assignable.
@@ -80,8 +82,10 @@ class Gene extends Model
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
 					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
-                            'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type', 'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
-                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type', 'notes', 'activity', 'date_last_curated', 'status',
+                            'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
+                            'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
+                            'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
+                            'notes', 'activity', 'date_last_curated', 'status', 'disease',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
 
 	/**
@@ -91,7 +95,7 @@ class Gene extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status',
                            'display_aliases', 'display_previous',
-                           'display_omim', 'grch37', 'grch38', 'mane'];
+                           'display_omim', 'grch37', 'grch38'];
 
      public const TYPE_NONE = 0;
 
@@ -234,18 +238,6 @@ class Gene extends Model
      }
 
 
-    /**
-     * Set all names to uppercase
-     *
-     * @param
-     * @return string
-     */
-    //public function setNameAttribute($value)
-	//{
-	//	$this->attributes['name'] = strtoupper($value);
-	//}
-
-
 	/**
      * Get a display formatted form of aliases
      *
@@ -282,13 +274,13 @@ class Gene extends Model
      * @@param
      * @return
      */
-    public function getDisplayOmimAttribute()
-    {
+     public function getDisplayOmimAttribute()
+     {
          if (empty($this->omim_id))
               return null;
 
          return implode(', ', $this->omim_id);
-    }
+     }
 
 
     /**
@@ -297,9 +289,9 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasDosageAttribute()
-    {
-		return (isset($this->curation_activities) ? 
+     public function getHasDosageAttribute()
+     {
+		return (isset($this->curation_activities['dosage']) ? 
 			$this->curation_activities['dosage'] : false); 
      }
      
@@ -310,9 +302,9 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasActionabilityAttribute()
-    {
-		return (isset($this->curation_activities) ? 
+     public function getHasActionabilityAttribute()
+     {
+		return (isset($this->curation_activities['actionability']) ? 
 			$this->curation_activities['actionability'] : false); 
      }
      
@@ -323,10 +315,62 @@ class Gene extends Model
      * @@param	
      * @return 
      */
-    public function getHasValidityAttribute()
-    {
-		return (isset($this->curation_activities) ? 
+     public function getHasValidityAttribute()
+     {
+		return (isset($this->curation_activities['validity']) ? 
 			$this->curation_activities['validity'] : false); 
+     }
+
+
+     /**
+     * Flag indicating if gene has any pharma curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasPharmaAttribute()
+    {
+
+         return (isset($this->curation_activities) ? 
+              $this->curation_activities['pharma'] ?? false : false); 
+    }
+
+
+    /**
+     * Flag indicating if gene has any actionability curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasVariantAttribute()
+    {
+         return (isset($this->curation_activities) ? 
+              $this->curation_activities['varpath'] ?? false : false); 
+    }
+
+
+    /**
+     * Get a psuedo genegraph representation of the local activity field
+     */
+    public function getCurationAttribute()
+     {
+          $activities = [];
+
+          if (!isset($this->activity))
+               return $activities;
+          
+          if ($this->activity["dosage"])
+               $activities[] = "GENE_DOSAGE";
+          if ($this->activity["pharma"])
+               $activities[] = "GENE_PHARMA";
+          if ($this->activity["varpath"])
+               $activities[] = "VAR_PATH";
+          if ($this->activity["validity"])
+               $activities[] = "GENE_VALIDITY";
+          if ($this->activity["actionability"])
+               $activities[] = "ACTIONABILITY";
+
+          return $activities;
      }
      
 
@@ -385,6 +429,79 @@ class Gene extends Model
 
 
      /**
+     * Get the Loss disease name
+     *
+     * @@param
+     * @return
+     */
+     public function getLossDiseaseAttribute()
+     {
+          if ($this->disease === null)
+               return '';
+
+          return $this->disease['loss_disease'] ?? '';
+     }
+
+
+     /**
+     * Get the Loss disease mondo id
+     *
+     * @@param
+     * @return
+     */
+     public function getLossMondoAttribute()
+     {
+         if ($this->disease === null)
+              return '';
+
+         return $this->disease['loss_mondo'] ?? '';
+     }
+
+
+     /**
+     * Get the Gain disease name
+     *
+     * @@param
+     * @return
+     */
+    public function getGainDiseaseAttribute()
+    {
+         if ($this->disease === null)
+              return '';
+
+         return $this->disease['gain_disease'] ?? '';
+    }
+
+
+    /**
+     * Get the Gain disease mondo id
+     *
+     * @@param
+     * @return
+     */
+    public function getGainMondoAttribute()
+    {
+        if ($this->disease === null)
+             return '';
+
+        return $this->disease['gain_mondo'] ?? '';
+    }
+
+
+     /**
+     * Flag indicating if gene has any dosage curations 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function hasActivity($activity)
+    {
+         return (isset($this->activity[$activity]) ? 
+              $this->activity[$activity] : false); 
+    }
+
+
+     /**
      * Search for all contained or overlapped genes and regions
      *
      * @@param	string	$ident
@@ -401,12 +518,13 @@ class Gene extends Model
           $gene_count = 0;
           $region_count = 0;
 
-          // map string type to type flag
-          if ($type == 'GRCh37')
-               ;
-          else if ($type == 'GRCh38')
-               ;
-          else
+          // check the required input
+          if (!isset($type) || !isset($region))
+               return (object) ['count' => $collection->count(), 'collection' => $collection,
+                         'gene_count' => $gene_count, 'region_count' => $region_count];
+
+          // only recognize 37 and 38 at this time
+          if ($type != 'GRCh37' && $type != 'GRCh38')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 
@@ -472,5 +590,17 @@ class Gene extends Model
       
           return (object) ['count' => $collection->count(), 'collection' => $collection,
                       'gene_count' => $gene_count, 'region_count' => $region_count];
+    }
+
+
+    /**
+     * Update local table from genegraph
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function gg2local($node)
+    {
+         
     }
 }

@@ -9,7 +9,7 @@
 				<div class="modal-body">
 					<p>Click on submit to unfollow this gene.</p>
 						<div class="input-group">
-							<input type="hidden" name="gene" value="{{ $gene }}">
+							<input type="hidden" id="unfollow-gene-field" name="gene" value="{{ $gene }}">
 						</div>
 				</div>
 				<div class="modal-footer">

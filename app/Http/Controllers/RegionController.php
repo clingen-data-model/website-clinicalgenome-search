@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use GuzzleHttp\Client;
 
+use Auth;
+
 use App\GeneLib;
 
 /**
@@ -25,7 +27,23 @@ use App\GeneLib;
 * */
 class RegionController extends Controller
 {
-    //
+    private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+	}
+	
+
     /**
      * Display a listing of all gene validity assertions.
      *
@@ -37,9 +55,11 @@ class RegionController extends Controller
         $display_tabs = collect([
             'active' => "more",
             'title' => "ClinGen Regions"
-        ]);
+		]);
+		
+		$user = $this->user;
 
-        return view('region.index', compact('display_tabs'));
+        return view('region.index', compact('display_tabs', 'user'));
     }
 
 
@@ -91,7 +111,9 @@ class RegionController extends Controller
 			} catch (ClientException $e) {
 				$region = 'INVALID';
 			}
-		}
+        }
+        
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('region.search', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -100,6 +122,8 @@ class RegionController extends Controller
 						->with('region', $region)
 						->with('apiurl', '/api/region/search/' . $type . '/' . $region)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
     }
 }

@@ -30,7 +30,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12 light-arrows">
+		<div class="col-md-12 light-arrows dark-table">
 				@include('_partials.genetable')
 
 		</div>
@@ -88,6 +88,12 @@
 	var $table = $('#table');
 	var showadvanced = false;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
+
+	window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
 
 	/* no longer used
 	var score_assertion_strings = {
@@ -310,7 +316,7 @@
 				},
 				{
 					field: 'date_last_curated',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Date of last curation against gene, if known."></i></div> Last Eval.',
 					//formatter: badgeFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',

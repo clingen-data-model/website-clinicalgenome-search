@@ -9,6 +9,7 @@ use App\Graphql;
 use App\Jira;
 use App\Region;
 use App\Mysql;
+use App\Health;
 
 
 /**
@@ -189,6 +190,33 @@ class GeneLib extends Model
           '40' => 'Dosage Sensitivity Unlikely'
      ];
 
+     protected static $actionability_assertion_strings = [
+          'Definitive Actionability' => "Definitive Actionability",
+          'Strong Actionability' => "Strong Actionability",
+          'Moderate Actionability' => "Moderate Actionability",
+          'Limited Actionability' => "Limited Actionability",
+          'Insufficient Actionability' => "Insufficient Actionability",
+          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => "N/A - Insufficient evidence: early rule-out",
+          'N/A - Insufficient evidence: early rule-out' => "N/A - Insufficient evidence: early rule-out",
+          'Has Insufficient Evidence for Actionability Based on Expert Review' => "N/A - Insufficient evidence: expert review",
+          'N/A - Insufficient evidence: expert review' => "N/A - Insufficient evidence: expert review",
+          'No Actionability' => "No Actionability",
+          'Assertion Pending' => "Assertion Pending",
+     ];
+
+     protected static $actionability_sort_value = [
+          'Definitive Actionability' => 20,
+          'Strong Actionability' => 19,
+          'Moderate Actionability' => 18,
+          'Limited Actionability' => 17,
+          'Insufficient Actionability' => 16,
+          'No Actionability' => 15,
+          'Assertion Pending' => 14,
+          'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
+		'N/A - Insufficient evidence: expert review' => 12,
+		'N/A - Insufficient evidence: early rule-out' => 11
+     ];
+
 
 	/*----------------------Public Methods----------------------------*/
 
@@ -228,14 +256,24 @@ class GeneLib extends Model
 		// Gene data is currently in neo4j
           //$response = Neo4j::geneList($args);
           /*
-          SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name) 
+          SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name)
           */
 
           // Gene listing using Graphql
-          if ($args['curated'] || !empty($args['forcegg']))
+          if (!empty($args['forcegg']))
+               return Graphql::geneList($args);
+
+          $health = Health::where('service', 'GeneSearch')->first();
+
+          if (empty($health->genegraph) || empty($args['curated']))
+               $response = Mysql::geneList($args);
+          else
+               $response = Graphql::geneList($args);
+
+          /*if ($args['curated'] || !empty($args['forcegg']))
                $response = Graphql::geneList($args);
           else
-               $response = Mysql::geneList($args);
+               $response = Mysql::geneList($args);*/
 
 		return $response;
 	}
@@ -269,10 +307,10 @@ class GeneLib extends Model
                return $gene;
 
           }
-          
+
 		//...but actionability is now in genegraph
           $response = Graphql::geneDetail($args);
-          
+
           // This is a real ugly characteristic of genegraph that requires a really ugly workaround
           if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
           {
@@ -360,7 +398,7 @@ class GeneLib extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function geneActivityDetail($args)
+    /*static function geneActivityDetail($args)
     {
          if (is_null($args) || !is_array($args))
               return collect([]);
@@ -372,7 +410,7 @@ class GeneLib extends Model
          $response = Graphql::geneActivityDetail($args);
 
          return $response;
-    }
+    }*/
 
 
      /**
@@ -395,6 +433,28 @@ class GeneLib extends Model
 
 		return $response;
      }
+
+
+     /**
+     * Get a list of all the curated genes
+     *
+     * (Neo4j, Genegraph)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneFind($args)
+    {
+         if (is_null($args) || !is_array($args))
+              return collect([]);
+
+         // Gene data is currently in neo4j
+         //$response = Neo4j::geneList($args);
+
+         // Gene listing using Graphql
+         $response = Graphql::geneFind($args);
+
+         return $response;
+    }
 
 
      /**
@@ -567,7 +627,7 @@ class GeneLib extends Model
                // Much of the data is in graphql....
                $response = Graphql::dosageDetail($args);
                $expand = false;
-               
+
                // This is a real ugly characteristic of genegraph that requires a really ugly workaround
                if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
                {
@@ -674,7 +734,9 @@ class GeneLib extends Model
               foreach(['summary', 'genetype', 'label', 'date',
               'triplo_score', 'haplo_score', 'cytoband', 'key',
               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+              'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
               'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+              'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
               'grch37', 'grch38', 'chromosome_band',
               'resolution', 'issue_type', 'description',
               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
@@ -695,7 +757,7 @@ class GeneLib extends Model
          {
               $response->omimtitle = $omim->titles;
          }
-//dd($response);
+
          return $response;
     }
 
@@ -815,7 +877,7 @@ class GeneLib extends Model
                $response = Graphql::drugList($args);
           else      // Drug data is now local
                $response = Mysql::drugList($args);
-               
+
 		return $response;
 	}
 
@@ -836,7 +898,7 @@ class GeneLib extends Model
           //$response = Neo4j::drugDetail($args);
 
           // Drug details are currently in neo4j
-		$response =Graphql::drugDetail($args);
+		$response =Mysql::drugDetail($args);
 
 		return $response;
      }
@@ -1008,6 +1070,20 @@ class GeneLib extends Model
      *
      * @return string
      */
+    public static function actionabilityAssertionString($str)
+    {
+         if (empty($str))
+              return '';
+
+          return self::$actionability_assertion_strings[$str] ?? '';
+    }
+
+
+     /**
+     * Return a displayable validity assertion description
+     *
+     * @return string
+     */
      public static function validityAssertionString($str)
      {
           if (empty($str))
@@ -1068,7 +1144,7 @@ class GeneLib extends Model
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
      }
-     
+
 
      /**
      * Return a displayable validity criteria description

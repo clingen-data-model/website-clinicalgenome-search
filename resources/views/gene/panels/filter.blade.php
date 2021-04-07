@@ -20,4 +20,17 @@
                 <span class="ml-2 hgnc text-muted action-show-acmg59-text">Off</span>
             </div>
         </div>
+        @if ($user === null)
+        <div id="curated-filter-dashboard" style="display:none">
+        @endif
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only the genes you are following </label>
+        <div class="col-sm-3">
+            <div class="form-inline p-0 m-0 col-sm-12">
+                <i class="fas fa-toggle-off fa-lg action-show-follow"></i>
+                <span class="ml-2 hgnc text-muted action-show-follow-text">Off</span>
+            </div>
+        </div>
+        @if ($user === null)
+        </div>
+        @endif
     </div>

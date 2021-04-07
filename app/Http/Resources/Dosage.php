@@ -16,7 +16,7 @@ class Dosage extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $a = [
             'type' => $this->type,
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
@@ -40,5 +40,27 @@ class Dosage extends JsonResource
             'date' => $this->displayDate($this->resolved_date ?? $this->dosage_report_date),
             'rawdate' => $this->resolved_date ?? $this->dosage_report_date
         ];
+
+        if ($this->type == 0)
+        {
+            $a['haplo_disease'] = $this->dosage_curation->haploinsufficiency_assertion->disease->label ?? null;
+            $a['haplo_disease_id'] = $this->dosage_curation->haploinsufficiency_assertion->disease->curie ?? null;
+            $a['triplo_disease'] = $this->dosage_curation->triplosensitivity_assertion->disease->label ?? null;
+            $a['triplo_disease_id'] = $this->dosage_curation->triplosensitivity_assertion->disease->curie ?? null;
+            $a['haplo_mondo'] = $this->dosage_curation->haploinsufficiency_assertion->disease->curie ?? null;
+            $a['triplo_mondo'] = $this->dosage_curation->triplosensitivity_assertion->disease->curie ?? null;
+        }
+        else
+        {
+            $a['haplo_disease'] = $this->loss_pheno_omim[0]['titles'] ?? null;
+            $a['haplo_disease_id'] = $this->loss_pheno_omim[0]['id'] ?? null;
+            $a['triplo_disease'] = $this->gain_pheno_omim[0]['titles'] ?? null;
+            $a['triplo_disease_id'] = $this->gain_pheno_omim[0]['id'] ?? null;
+            $a['haplo_mondo'] = null;
+            $a['triplo_mondo'] = null;
+        }
+
+
+        return $a;
     }
 }

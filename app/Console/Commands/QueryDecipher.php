@@ -40,16 +40,16 @@ class QueryDecipher extends Command
      */
     public function handle()
     {
-		echo "downloading decipher bed data ...\n";
+		echo "Updating HI Predictions from Decipher ...";
 				
-			
 		try {
 					
 			$results = file_get_contents("https://decipher.sanger.ac.uk/files/downloads/HI_Predictions_Version3.bed.gz");
 
 		} catch (\Exception $e) {
 		
-			echo "(E001) Error retreiving decipher data\n";
+			echo "\n(E001) Error retreiving decipher data\n";
+			exit;
 			
 		}
 	
@@ -88,30 +88,12 @@ class QueryDecipher extends Command
 					
 					$gene->hi = substr($subparts['2'], 0, $k);
 					$gene->save();
-					echo $subparts['0'] . " has a HI of " . $subparts['2'] . "\n";
+					// echo $subparts['0'] . " has a HI of " . $subparts['2'] . "\n";
 				}
 			}
 		}
-		
-			
-		
-		/*foreach ($data as $json)
-		{
-			echo $json['name'] . "\n";
 
-			// check if entry already exists, if not create
-			$decipher = Decipher::firstOrNew(['name' => $json['name']],
-											['hi_index' => $json['hi_index'], 'p_li' => $json['p_li'],
-											 'ensembl_id' => $json['ensembl_id'], 'content' => $results,
-											 'status' => 1 ]);
-		
-			// look up corresponding entry in genes table
-			$gene = Gene::where('name', $json['name'])->first();
-		
-			if (!empty($gene))
-				$decipher->gene_id = $gene->id;
-							
-			$decipher->save();
-		}*/
+		echo "DONE\n";
+
     }
 }

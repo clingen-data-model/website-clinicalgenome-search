@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use Setting;
+
 use App\Omim;
 
 class UpdateOmim extends Command
@@ -39,38 +41,52 @@ class UpdateOmim extends Command
      */
     public function handle()
     {
-        echo "Importing omim titles ...\n";
-        
-        // https://data.omim.org/downloads/gnEYXJE_RtCzjSCNEOWFHg/mimTitles.txt
+        echo "Updating OMIM Titles from OMIM ...";
 
-		$handle = fopen(base_path() . '/data/mimTitles.txt', "r");
-        if ($handle)
+        $key = Setting::get('omim', false);
+
+        if (!$key)
         {
-            while (($line = fgets($handle)) !== false)
-            {
+            echo "\n(E002) Error retreiving Omim key\n";
+            exit;
+        }
+        
+        try {
+
+            $results = file_get_contents("https://data.omim.org/downloads/" . $key . "/mimTitles.txt");
+
+		} catch (\Exception $e) {
+		
+			echo "\n(E001) Error retreiving Omim Titles data\n";
+			
+		}
+	
+        $line = strtok($results, "\n");
+        
+        while ($line !== false)
+        {
                 // process the line read.
-                echo "Processing " . $line . "\n";
+                //echo "Processing " . $line . "\n";
 
                 $value = explode("\t", $line);
 
-                if (strpos($value[0], '#') === 0)
-                    continue;
+                if (strpos($value[0], '#') !== 0)
+                {
 
-                $issue = Omim::updateOrCreate(['omimid' => trim($value[1])], 
-                                ['prefix' => trim($value[0]),
-                                'titles' => trim($value[2]),
-                                'alt_titles' => trim($value[3]),
-                                'inc_titles' => trim($value[4]),
-                                'status' => 1,
-                                'type' => 1
-                                ] );
-            }
+                    $issue = Omim::updateOrCreate(['omimid' => trim($value[1])], 
+                                    ['prefix' => trim($value[0]),
+                                    'titles' => trim($value[2]),
+                                    'alt_titles' => trim($value[3]),
+                                    'inc_titles' => trim($value[4]),
+                                    'status' => 1,
+                                    'type' => 1
+                                    ] );
+                }
+            
+            $line = strtok("\n");
+        }
 
-            fclose($handle);
-        }
-        else
-        {
-            echo "Cannot access IDX file\n";
-        }
+        echo "DONE\n";
+
     }
 }

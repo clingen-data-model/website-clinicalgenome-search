@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use GuzzleHttp\Client;
 
+use Auth;
+
 use App\Exports\DosageExport;
 use App\GeneLib;
 
@@ -29,6 +31,21 @@ use App\GeneLib;
 class DosageController extends Controller
 {
 	private $api = '/api/dosage';
+	private $user = null;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+    }
 
 
     /**
@@ -39,20 +56,30 @@ class DosageController extends Controller
     public function index(Request $request, $page = 1, $size = 50)
     {
         // process request args
-		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'sort', 'search','direction', 'col_search', 'col_search_val']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
             'title' => "Dosage Sensitivity Curations"
-        ]);
+		]);
+
+		$col_search = collect([
+			'col_search' => $request->col_search,
+			'col_search_val' => $request->col_search_val,
+		]);
+
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('col_search', $col_search)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -70,12 +97,13 @@ class DosageController extends Controller
 										'validity' => true,
 										'dosage' => true
 									]);
-									
+
 		if ($record === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+                        ->with('user', $this->user);
 
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
@@ -106,7 +134,9 @@ class DosageController extends Controller
 			'title' => $record->label . " curation results for Dosage Sensitivity"
 		]);
 
-		return view('gene-dosage.show', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('gene-dosage.show', compact('display_tabs', 'record', 'user'));
 	}
 
 
@@ -129,7 +159,8 @@ class DosageController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Dosage Sensitivity details')
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+                        ->with('user', $this->user);
 
 		$record->haplo_assertion = GeneLib::haploAssertionString($record->haplo_score);
         $record->triplo_assertion = GeneLib::triploAssertionString($record->triplo_score);
@@ -140,14 +171,16 @@ class DosageController extends Controller
 		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
-	
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "dosage",
 			'title' => $record->label . " curation results for Dosage Sensitivity"
 		]);
 
-		return view('gene-dosage.region_show', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('gene-dosage.region_show', compact('display_tabs', 'record', 'user'));
 	}
 
 
@@ -169,7 +202,7 @@ class DosageController extends Controller
 		]);
 
 		$original = $region;
-		
+
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
 		{
@@ -200,6 +233,8 @@ class DosageController extends Controller
 		session(['dosage_region_search' => $region]);
 		session(['dosage_region_search_type' => $type]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -207,7 +242,9 @@ class DosageController extends Controller
 						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -235,7 +272,7 @@ class DosageController extends Controller
 			return redirect()->route('dosage-index');
 
 		$original = $region;
-		
+
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
 		{
@@ -263,6 +300,8 @@ class DosageController extends Controller
 			}
 		}
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -270,10 +309,12 @@ class DosageController extends Controller
 						->with('region', $region)
 						->with('apiurl', '/api/dosage/region_search/' . $type . '/' . $region)
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
-	
-	
+
+
 	/**
      * Download the specified file.
      *
@@ -288,6 +329,7 @@ class DosageController extends Controller
 	}
 
 
+// THIS MOVED TO HOME CONTROLLR AS A CENTRAL LOCATIONS - TODO CLEANUP
 	/**
      * Show the ftp downloads page.
      *
@@ -316,7 +358,8 @@ class DosageController extends Controller
         ]);
 
 		return view('gene-dosage.downloads', compact('display_tabs'))
-						->with('filelist', $filelist);
+						->with('filelist', $filelist)
+                        ->with('user', $this->user);
 	}
 
 
@@ -338,10 +381,14 @@ class DosageController extends Controller
             'title' => "Dosage Sensitivity CNV Curations"
 		]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.cnv', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/cnv')
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
 
 
@@ -362,10 +409,14 @@ class DosageController extends Controller
             'active' => "dosage"
 		]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('gene-dosage.acmg59', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/acmg59')
 						->with('pagesize', $size)
-						->with('page', $page);
+						->with('page', $page)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
 	}
 
 }

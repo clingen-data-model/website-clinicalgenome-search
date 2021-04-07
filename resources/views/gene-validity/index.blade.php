@@ -28,7 +28,7 @@
     </div>
 
 
-    <div class="col-md-12 light-arrows">
+    <div class="col-md-12 light-arrows dark-table">
 			@include('_partials.genetable')
 		</div>
 	</div>
@@ -39,6 +39,7 @@
 @section('heading')
 <div class="content ">
     <div class="section-heading-content">
+      {{-- {{ $col_search }} --}}
     </div>
 </div>
 @endsection
@@ -78,6 +79,12 @@
 
   var $table = $('#table');
 
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
+
   function responseHandler(res) {
 
     $('.countCurations').html(res.total);
@@ -103,6 +110,7 @@
       locale: 'en-US',
       sortName:  "symbol",
 			sortOrder: "asc",
+      filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
       columns: [
         {
           title: 'Gene',
@@ -173,10 +181,10 @@
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          //align: 'center',
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',
+          filterDefault: "{{ $col_search['col_search'] === "classification" ? $col_search['col_search_val'] : "" }}",
           sortable: true,
           sortName: 'order'
         },
@@ -239,7 +247,7 @@ $(function() {
 
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
-  
+
 });
 
 </script>

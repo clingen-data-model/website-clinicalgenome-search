@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Auth;
+
 use App\GeneLib;
+use App\Nodal;
+use App\User;
 
 /**
  *
@@ -23,6 +27,34 @@ use App\GeneLib;
 class ConditionController extends Controller
 {
 	private $api = '/api/conditions';
+	private $user = null;
+
+	protected $validity_sort_order = [
+		'SEPIO:0004504' => 20,				// Definitive
+		'SEPIO:0004505' => 19,				// Strong
+		'SEPIO:0004506' => 18,				// Moderate
+		'Supportive' => 17,					// Supportive
+		'SEPIO:0004507' => 16,				// Limited
+		'Animal Model Only' => 15,			// Animal Mode Only
+		'SEPIO:0000404' => 14,				// Disputing
+		'SEPIO:0004510' => 13,				// Refuted
+		'SEPIO:0004508' => 12				// No Known Disease Relationship
+	];
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (Auth::guard('api')->check())
+                $this->user = Auth::guard('api')->user();
+            return $next($request);
+        });
+	}
+	
 
     /**
      * Display a listing of all gene validity assertions.
@@ -41,11 +73,15 @@ class ConditionController extends Controller
             'title' => "ClinGen Diseases"
         ]);
 
+		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
 						->with('pagesize', $size)
 						->with('page', $page)
-						->with('search', $search);
+						->with('search', $search)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
     }
 
 
@@ -57,6 +93,13 @@ class ConditionController extends Controller
 	*/
 	public function show(Request $request, $id = null)
 	{
+		if ($id === null)
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Disease details')
+						->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+						->with('back', url()->previous())
+						->with('user', $this->user);
+
 		$record = GeneLib::conditionDetail([ 
 										'condition' => $id,
 										'curations' => true,
@@ -69,16 +112,49 @@ class ConditionController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Disease details')
 						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+						->with('user', $this->user);
 
+		//reformat the response structure for view by activity
+		$validity_collection = collect();
+//dd($record);
+		foreach ($record->genetic_conditions as $key => $disease)
+		{
+			// actionability
+			/*foreach ($disease->actionability_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$actionability_collection->push($node);
+			}*/
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+									'gene' => $disease->gene, 'assertion' => $assertion]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			/*foreach ($disease->gene_dosage_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$dosage_collection->push($node);
+			}*/
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
 
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "condition",
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
-//dd($record);
-		return view('condition.by-activity', compact('display_tabs', 'record'));
+
+		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection'));
 	}
 
 
@@ -102,7 +178,8 @@ class ConditionController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Disease details')
 						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+						->with('user', $this->user);
 
 
 		// set display context for view
@@ -111,7 +188,9 @@ class ConditionController extends Controller
 			'title' => $record->label . " curation results organized by gene"
 		]);
 
-		return view('condition.by-gene', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('condition.by-gene', compact('display_tabs', 'record', 'user'));
 	}
 
 
@@ -127,7 +206,8 @@ class ConditionController extends Controller
 			return view('error.message-standard')
 				->with('title', 'Error retrieving Disease details')
 				->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
-				->with('back', url()->previous());
+				->with('back', url()->previous()
+				->with('user', $this->user));
 
 
 		$record = GeneLib::conditionDetail([
@@ -142,7 +222,8 @@ class ConditionController extends Controller
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Disease details')
 						->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-						->with('back', url()->previous());
+						->with('back', url()->previous())
+						->with('user', $this->user);
 
 		// set display context for view
 		$display_tabs = collect([
@@ -150,7 +231,9 @@ class ConditionController extends Controller
 			'title' => $record->label . " Disease External Resources"
 		]);
 
-		return view('condition.show-external-resources', compact('display_tabs', 'record'));
+		$user = $this->user;
+
+		return view('condition.show-external-resources', compact('display_tabs', 'record', 'user'));
 	}
 
 

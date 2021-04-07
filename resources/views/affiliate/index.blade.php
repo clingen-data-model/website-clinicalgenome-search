@@ -25,7 +25,7 @@
 			</div>
     </div>
 
-		<div class="col-md-12 light-arrows">
+		<div class="col-md-12 light-arrows dark-table">
 
 			@include('_partials.genetable')
 
@@ -76,15 +76,16 @@
 
   var $table = $('#table');
 
-
+  window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
+  
   function responseHandler(res) {
 
     $('.countPanels').html(res.total);
     $('.countCurations').html(res.ncurations);
-    /*
-    $.each(res.rows, function (i, row) {
-      row.state = $.inArray(row.id, selections) !== -1
-    })*/
     return res
   }
 
@@ -145,8 +146,6 @@
     })
 
     $table.on('post-body.bs.table', function (e, name, args) {
-			console.log("post body fired");
-
 			$('[data-toggle="tooltip"]').tooltip();
 		})
 
@@ -157,19 +156,19 @@
     // Set cursor to busy prior to table init
 		$("body").css("cursor", "progress");
 
-  // initialize the table and load the data
-  inittable();
+    // initialize the table and load the data
+    inittable();
 
-  // make some mods to the search input field
-  var search = $('.fixed-table-toolbar .search input');
-  search.attr('placeholder', 'Search in table');
+    // make some mods to the search input field
+    var search = $('.fixed-table-toolbar .search input');
+    search.attr('placeholder', 'Search in table');
 
-  $( ".fixed-table-toolbar" ).show();
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+    $( ".fixed-table-toolbar" ).show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
 
-  $("button[name='filterControlSwitch']").attr('title', 'Column Search');
-	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+    $("button[name='filterControlSwitch']").attr('title', 'Column Search');
+    $("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
 
   })
 

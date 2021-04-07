@@ -35,6 +35,7 @@ class Cpic extends Model
           'ident' => 'alpha_dash|max:80|required',
           'gene' => 'name|max:80|required',
           'drug' => 'string|nullable',
+          'rxnorm' => 'string|nullable',
           'guideline' => 'string|nullable',
           'cpic_level' => 'string|nullable',
           'cpic_level_status' => 'json|nullable',
@@ -59,7 +60,7 @@ class Cpic extends Model
      *
      * @var array
      */
-	protected $fillable = ['gene', 'drug', 'guideline', 'cpic_level', 'cpic_level_status',
+	protected $fillable = ['gene', 'drug', 'rxnorm', 'guideline', 'cpic_level', 'cpic_level_status',
                             'pharmgkb_level_of_evidence', 'pgx_on_fda_label', 'cpic_publications_pmid',
                             'hgnc_id', 'pa_id', 'is_vip', 'has_va', 'had_cpic_guideline', 'pa_id_drug',
                             'notes', 'type', 'status' ];

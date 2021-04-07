@@ -1,4 +1,4 @@
-.bootstrap-table table.table>tbody>tr>td {
+.dark-table .bootstrap-table table.table>tbody>tr>td {
   padding: 1.05rem .5rem !important;
   // font-size: .99rem;
   font-weight: 300;
@@ -9,7 +9,7 @@
    //padding: 21px 12px 19px !important;
 }
 
-.bootstrap-table .input-btn-region-prefix .btn {
+.dark-table .bootstrap-table .input-btn-region-prefix .btn {
   border-radius:  1rem 0 0 1rem !important;
 }
 
@@ -67,9 +67,9 @@
   border-radius: 10rem;
   color: #000;
 }
-.bootstrap-table table.table > tbody > tr > td.global_table_cell.region,
-.bootstrap-table table.table > tbody > tr > td.global_table_cell.psuedogene,
-.bootstrap-table table.table > tbody > tr > td.global_table_cell.gene {
+.dark-table .bootstrap-table table.table > tbody > tr > td.global_table_cell.region,
+.dark-table .bootstrap-table table.table > tbody > tr > td.global_table_cell.psuedogene,
+.dark-table .bootstrap-table table.table > tbody > tr > td.global_table_cell.gene {
   padding-right: 0rem !important;
   padding-left: .2rem !important;
 }
@@ -283,3 +283,19 @@ footer p {
     display: inline-block;
     float: left;
 }
+
+.swal-error {
+    //background-color: #FFF5EE;
+    background-color: #FFFAFA;
+}
+
+
+.swal-success {
+    background-color: #F0F8FF;
+}
+
+#modalSettings ul.nav-tabs li.active {
+    background-color: #DDD;
+}
+
+

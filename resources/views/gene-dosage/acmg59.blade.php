@@ -27,7 +27,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12">
+		<div class="col-md-12 dark-table">
 				@include('_partials.genetable')
 
 		</div>
@@ -78,6 +78,12 @@
 
 	var $table = $('#table')
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
+
+	window.ajaxOptions = {
+    beforeSend: function (xhr) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+    }
+  }
 
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);

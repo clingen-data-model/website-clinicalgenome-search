@@ -19,36 +19,52 @@
 				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl text-white'>
 					|
 				</li> --}}
-				@auth
-				<!--<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href="/dashboard">Dashboard</a>
-				</li>-->
-				@endauth
-				@guest
-				<!--<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white action-login' href='#'>Login</a>
-				</li>-->
-				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href='{{ route('login') }}'><i class="fas fa-user-circle"></i> Login</a>
+				@if(Auth::guard('api')->check())
+				<li id="dashboard-menu" class="dropdown">
+					<a href="#" class="dropdown-toggle text-white" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-user" aria-hidden="true"> </i>
+						<span id="nav-user-name"> {{ $user->name ?? 'Member' }} </span>
+					</a>
+					<ul class="dropdown-menu">
+					  <li><a href="/dashboard"><i class="fas fa-tachometer-alt mr-1"></i>Dashboard</a></li>
+					  <li role="separator" class="divider"></li>
+					  <li><!--<a class="dropdown-item" href="{{ route('logout') }}"
+						onclick="event.preventDefault();
+						document.getElementById('logout-form').submit();">-->
+						<a href="#" class="action-logout-now">
+						<i class="fas fa-sign-out-alt mr-1 text-danger"></i>Logout
+						</a>
+						<form id="logout-form" action="/logout" method="POST" style="display: none;">
+							@csrf
+						</form></li>
+					</ul>
 				</li>
-				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href='{{ route('register') }}'><i class="fas fa-sign-in-alt"></i> Register</a>
+				<li id="login-menu" class='visible-inline-md visible-inline-lg visible-inline-xl' style="display:none">
+					<a class='text-white action-login' href='#'>Login</a>
 				</li>
 				@else
-				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href='#'><i class="fas fa-user-circle"></i> {{ Auth::user()->name }}</a>
+				<li id="dashboard-menu" class="dropdown" style="display:none">
+					<a href="#" class="dropdown-toggle text-white" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-user" aria-hidden="true"> </i>
+						<span id="nav-user-name"> {{ $user->name ?? 'Member' }} </span>
+					</a>
+					<ul class="dropdown-menu">
+					  <li><a href="/dashboard"><i class="fas fa-tachometer-alt mr-1"></i>Dashboard</a></li>
+					  <li role="separator" class="divider"></li>
+					  <li><a class="dropdown-item" href="{{ route('logout') }}"
+						onclick="event.preventDefault();
+						document.getElementById('logout-form').submit();">
+						<i class="fas fa-sign-out-alt mr-1 text-danger"></i>Logout
+						</a>
+						<form id="logout-form" action="/logout" method="POST" style="display: none;">
+							@csrf
+						</form></li>
+					</ul>
 				</li>
-				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
-					<a class=' text-white' href="{{ route('logout') }}"
-             onclick="event.preventDefault();
-                           document.getElementById('logout-form').submit();">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-				</li> --}}
-				@endguest
+				<li id="login-menu" class='visible-inline-md visible-inline-lg visible-inline-xl'>
+					<a class='text-white action-login' href='#'>Login</a>
+				</li>
+				@endif
 			</ul>
 		</div>
 	</div>

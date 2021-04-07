@@ -36,9 +36,7 @@
         margin-bottom: 23px;
     }
 
-    form {
-        max-width: 326px;
-    }
+    
 
     .form-control {
         border: 1px solid #d5dae2;
@@ -46,7 +44,7 @@
         margin-bottom: 20px;
         min-height: 45px;
         font-size: 13px;
-        line-height: 15;
+        //line-height: 15;
         font-weight: normal;
 
         &::placeholder {
