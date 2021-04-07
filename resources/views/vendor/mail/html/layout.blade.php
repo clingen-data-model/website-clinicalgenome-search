@@ -40,6 +40,7 @@ width: 100% !important;
 <td class="body" width="100%" cellpadding="0" cellspacing="0">
 <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
 <!-- Body content -->
+<tr>
 <td class="content-cell">
 {{ Illuminate\Mail\Markdown::parse($slot) }}
 
@@ -47,13 +48,14 @@ width: 100% !important;
 </td>
 </tr>
 <tr>
-    <td class="body" width="100%" cellpadding="0" cellspacing="0">
-        <strong>About ClinGen - Clinical Genome Resource</strong><br/>
-        ClinGen is a National Institutes of Health (NIH)-funded resource dedicated to building an authoritative central
-        resource that defines the clinical relevance of genes and variants for use in precision medicine and research.
-        </br></br>
-        To learn more about ClinGen, visit <a href="https://clinicalgenome.org">www.clinicalgenome.org</a>
-    </td>
+<td class="content-cell">
+<br/><br/>
+<strong>About ClinGen - Clinical Genome Resource</strong><br/>
+ClinGen is a National Institutes of Health (NIH)-funded resource dedicated to building an authoritative central
+resource that defines the clinical relevance of genes and variants for use in precision medicine and research.
+<br/><br/>
+To learn more about ClinGen, visit <a href="https://clinicalgenome.org">www.clinicalgenome.org</a>
+</td>
 </tr>
 </table>
 </td>

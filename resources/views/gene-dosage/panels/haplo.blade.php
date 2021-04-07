@@ -34,7 +34,7 @@
             @endif
             @if (!empty($record->loss_pheno_ontology_id))
               <li>{{ $record->loss_pheno_name }}
-              @switch ($record->loss_pheno_ontology->value)
+              @switch ($record->loss_pheno_ontology)
                 @case ('Monarch')
                   <a target='external' href="{{env('CG_URL_MONARCH')}}{{ $record->loss_pheno_ontology_id }}" class="badge-info badge pointer ml-1">Monarch <i class="fas fa-external-link-alt"></i> </a>
                   @break
