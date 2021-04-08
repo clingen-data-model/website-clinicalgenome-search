@@ -101,16 +101,27 @@ class AuthController extends Controller
      *
      * @return json
      */
-    public function signupActivate($token)
+    public function signupActivate(Request $request, $token)
     {
         $user = User::where('activation_token', $token)->first();
-        if (!$user) {
+        if ($user === null) {
             return response()->json([
                 'message' => 'This activation token is invalid.'
             ], 404);
         }
+
+        if ($user->status == User::STATUS_ACTIVE)
+        {
+            return redirect('/dashboard/active');
+        }
+
+        if ($user->status != User::STATUS_INITIALIZED)
+        {
+            return redirect('/dashboard');
+        }
+
         $user->status = User::STATUS_ACTIVE;
-        $user->activation_token = '';
+        //$user->activation_token = '';
         $user->save();
 
         $display_tabs = collect([
@@ -120,7 +131,9 @@ class AuthController extends Controller
 
         $show_message = true;
 
-        return view('dashboard.logout', compact('display_tabs', 'show_message'));
+        return redirect('/dashboard/active');
+
+        //return view('dashboard.logout', compact('display_tabs', 'show_message'));
     }
 
 

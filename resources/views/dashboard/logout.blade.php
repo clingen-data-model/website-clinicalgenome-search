@@ -16,22 +16,22 @@
         </div>
         <div class="col-sm-8">
             <h4>Key Features</h4>
-            <p>The following are key features available when you create your free account.</p>
+            <p>The following are key features available when you create your free account:</p>
             <ul>
               <li>
-                Follow genes of interest and see them tracked on a private dashboard.
+                Follow genes of interest and see them tracked on a private dashboard
               </li>
               <li>
-                Receive emails when ClinGen updates one of the genes you follow.
+                Receive emails when ClinGen updates one of the genes you follow
               </li>
               <li>
-                Be notified when a curation activity updates one of their curations.
+                Be notified when a curation activity updates one of their curations
               </li>
               <li>
-                Customize the frequency of the emails you receive.
+                Customize the frequency of the emails you receive
               </li>
               <li>
-                Access to reports based on the genes you follow.
+                Access to reports based on the genes you follow
               </li>
               <li><a href="https://clinicalgenome.org/tools/clingen-website/">Learn more about these features here.</a>
               </li>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="col-sm-4 border-l">
-          @if (isset($show_message))
+          @if (isset($message) && $message = "active")
           <div class="alert alert-success" role="alert"><p><b>You have activated your account!</b></p>
             <p>You may log in at anytime using the button below, 
             or the Login link located in the upper right corner of the page.</p></div>

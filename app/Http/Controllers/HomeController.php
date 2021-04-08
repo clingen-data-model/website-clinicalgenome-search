@@ -37,7 +37,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request, $message = null)
     {
 
         $display_tabs = collect([
@@ -59,7 +59,8 @@ class HomeController extends Controller
 
         }
         else{
-            return view('dashboard.logout', compact('display_tabs'));
+
+            return view('dashboard.logout', compact('display_tabs', 'message'));
         }
 
 
