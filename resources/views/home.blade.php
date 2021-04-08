@@ -163,11 +163,21 @@
 		});*/
 
         $('#startdate').datepicker({
-            uiLibrary: 'bootstrap'
+            uiLibrary: 'bootstrap',
+			disableDates:  function (date) {
+				// nothing older that 04-07-2021
+				const mindate = new Date(2021, 03, 07);
+				return date > mindate ? true : false;
+			}
         });
 
 		$('#stopdate').datepicker({
-            uiLibrary: 'bootstrap'
+            uiLibrary: 'bootstrap',
+			disableDates:  function (date) {
+				// nothing older that 04-07-2021
+				const mindate = new Date(2021, 03, 07);
+				return date > mindate ? true : false;
+			}
         });
 		
 		/* 
