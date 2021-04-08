@@ -1,24 +1,47 @@
 $(function() {
+    
     var $table = $('#follow-table');
     var $reporttable = $('#table');
-
+        
+    /**
+     * Choose a date for report start
+     */
     $('#startdate').datepicker({
-        uiLibrary: 'bootstrap'
+        uiLibrary: 'bootstrap',
+        disableDates:  function (date) {
+            // nothing older that 04-07-2021
+            const mindate = new Date(2021, 3, 7);
+            return date > mindate ? true : false;
+        }
     });
 
+
+    /**
+     * Choose a date for report stop
+     */
     $('#stopdate').datepicker({
-        uiLibrary: 'bootstrap'
+        uiLibrary: 'bootstrap',
+        disableDates:  function (date) {
+            // nothing older that 04-07-2021
+            const mindate = new Date(2021, 3, 7);
+            return date > mindate ? true : false;
+        }
     });
     
-    /* 
-    ** If a user logs out on this page, we want them to see the dead view
-    */
+
+    /**
+     * On logout from dashboard page, send to dead dashboard view.
+     */
     $( "#dashboard-logout" ).on( "login", function( event, param1, param2 ) {
 
           window.location.reload();
 
     });
 
+
+    /**
+     * Chow screen to follow a new gene
+     */
     $('.action-new-gene').on('click', function() {
 
         $('#search_form')[0].reset();
@@ -26,6 +49,10 @@ $(function() {
 
     });
 
+
+    /**
+     * Chow screen to create a new report
+     */
     $('.action-new-report').on('click', function() {
 
         $('#report-form')[0].reset();
@@ -41,6 +68,9 @@ $(function() {
     });
 
 
+    /**
+     * Edit an existing report
+     */
     $('#report-view').on('click', '.action-edit-report', function() {
 
         var uuid = $(this).attr('data-uuid');
@@ -78,11 +108,18 @@ $(function() {
             
         }).fail(function(response)
         {
-            alert("Error following gene");
+            swal({
+                title: "Error",
+                text: "An error occurred while retrieving report.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
     });
 
     
+    /**
+     * Share a report (future feature)
+     */
     $('#report-view').on('click', '.action-share-report', function() {
 
         var uuid = $(this).attr('data-uuid');
@@ -95,6 +132,10 @@ $(function() {
 
     });
 
+
+    /**
+     * Unlock a report
+     */
     $('#report-view').on('click', '.action-unlock-report', function() {
 
         var uuid = $(this).attr('data-uuid');
@@ -120,15 +161,24 @@ $(function() {
         $.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
         {
             obj.removeClass('action-unlock-report').addClass('action-lock-report').html('<i class="fas fa-unlock" style="color:lightgray"></i>');
+            obj.attr('title', "Lock Report");
 
             
         }).fail(function(response)
         {
-            alert("Error following gene");
+            swal({
+                title: "Error",
+                text: "An error occurred while unlocking the report.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
     });
 
 
+
+    /**
+     * Lock a report
+     */
     $('#report-view').on('click', '.action-lock-report', function() {
 
         var uuid = $(this).attr('data-uuid');
@@ -154,20 +204,25 @@ $(function() {
         $.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
         {
             obj.removeClass('action-lock-report').addClass('action-unlock-report').html('<i class="fas fa-lock" style="color:red"></i>');
-
+            obj.attr('title', "Unlock Report");
             
         }).fail(function(response)
         {
-            alert("Error following gene");
+            swal({
+                title: "Error",
+                text: "An error occurred while locking the report.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
     });
 
 
+    /**
+     * Delete a report
+     */
     $('#report-view').on('click', '.action-remove-report', function() {
 
         var uuid = $(this).attr('data-uuid');
-
-        var row = $(this).closest('tr').attr('data-index');
 
         $.ajaxSetup({
             cache: true,
@@ -195,10 +250,9 @@ $(function() {
                     //submits to the form's action URL
                     $.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
                     {
-                        //alert("OK");
                         $reporttable.bootstrapTable('remove', {
-                            field: '$index',
-                            values: row
+                            field: 'ident',
+                            values: uuid
                         });
 
                         var len = $reporttable.bootstrapTable('getData').length;
@@ -206,7 +260,11 @@ $(function() {
                         $('#custom-report-count').html(len);
                     }).fail(function(response)
                     {
-                        alert("Error following gene");
+                        swal({
+                            title: "Error",
+                            text: "An error occurred while unlocking the report.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                            icon: "error",
+                        });
                     });
                 } 
         });
@@ -214,6 +272,9 @@ $(function() {
     });
 
 
+    /**
+     * Toggle global notifications
+     */
     $('.action-toggle-notifications').on('click', function() {
 
         var tog;
@@ -249,15 +310,22 @@ $(function() {
         //submits to the form's action URL
         $.post(url, { value: tog, _token: "{{ csrf_token() }}" }, function(response)
         {
-            //alert("OK");
+        
         }).fail(function(response)
         {
-            alert("Error following gene");
+            swal({
+                title: "Error",
+                text: "An error occurred while setting notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
 
     });
 
 
+    /**
+     * Show the profile modal
+     */
     $('.action-edit-profile').on('click', function() {
 
         $('#modalProfile').modal('show');
@@ -265,14 +333,20 @@ $(function() {
     });
 
 
+    /**
+     * Select a report folder
+     */
     $('.action-select-folder').on('click', function() {
 
         // what folder did they click on?
         var type = $(this).find('.caption').attr('data-type');
+
         // deselect previous
         $('.action-select-folder').removeClass('border');
+
         // show current selection
         $(this).addClass('border');
+
         //reload the table
         $.ajaxSetup({
             cache: true,
@@ -293,40 +367,73 @@ $(function() {
             //console.log(response.data);
             $('#table').bootstrapTable('load', response.data);
             $('#table').bootstrapTable("resetSearch","");
+
+            if (type == 1)
+            {
+                $('#report-toolbar').html('Unless locked <i class="fas fa-lock" style="color:red"></i>, Notifications are deleted after 30 days');
+            }
+            else
+            {
+                $('#report-toolbar').html('');
+            }
+                
         }).fail(function(response)
         {
-            alert("Error reloading table");
+            swal({
+                title: "Error",
+                text: "An error occurred while selecting a folder.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
-        //var data = [{ title: "New Title", type: "Notification", display_created: "today", display_last: "yester_day", remove: 1, ident: "12345"}]
-        
-        //$('#table').bootstrapTable({ data: data });
-        //$('#table').bootstrapTable('load', data);
-        //clear the search
     });
 
 
+    /**
+     * Show the settings profile from the indicator
+     */
     $('.action-edit-settings').on('click', function() {
 
+        $('#settings-tabs-global').trigger('click');
         $('#modalSettings').modal('show');
 
     });
 
+
+    /**
+     * Expand the Follow section
+     */
     $('#collapseFollow').on('shown.bs.collapse', function () {
         $('#collapseFollowIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
     });
 
+
+    /**
+     * Collapse the Follow sectio
+     */
     $('#collapseFollow').on('hidden.bs.collapse', function () {
         $('#collapseFollowIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
     });
 
+
+    /**
+     * Expand the reports section
+     */
     $('#collapseReports').on('shown.bs.collapse', function () {
         $('#collapseReportsIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
     });
 
+
+    /**
+     * Collapse the reports section
+     */
     $('#collapseReports').on('hidden.bs.collapse', function () {
         $('#collapseReportsIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
     });
 
+
+    /**
+     * Unfollow a gene
+     */
     $table.on('click', '.action-follow-gene', function(element) {
         swal({
             title: "Are you sure?",
@@ -350,6 +457,9 @@ $(function() {
     });
 
 
+    /**
+     * Change the notification frequency for a gene or group
+     */
     $("body").on('click', '.dropdown-menu li a', function(){
         var parent = $(this).parents("ul").attr('data-parent');
 
@@ -372,12 +482,21 @@ $(function() {
         }
     });
 
+
+    /**
+     * Close the dropdonw adter selectio
+     */
     $(document).click(function (event) {
         //hide all our dropdowns
         $('.dropdown-menu[data-parent]').hide();
 
     });
 
+
+    /**
+     * 
+     * Send otification changes to the server
+     */
     function server_update(gene, oldtype, newtype)
     {
         $.ajaxSetup({
@@ -399,586 +518,520 @@ $(function() {
             //alert("OK");
         }).fail(function(response)
         {
-            alert("Error following gene");
+            swal({
+                title: "Error",
+                text: "An error occurred while changing notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
         });
     }
+
 
     $( '#unfollow_form' ).validate( {
-    submitHandler: function(form) {
-        $.ajaxSetup({
-            cache: true,
-            contentType: "application/x-www-form-urlencoded",
-            processData: true,
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-               }
-        });
-
-        var url = "/api/genes/unfollow";
-        
-        var formData = $(form).serialize();
-
-        //submits to the form's action URL
-        $.post(url, formData, function(response)
-        {
-            var url = "/api/home/follow/reload";
-
-            var gene = response.gene;
-        
-            //submits to the form's action URL
-            $.get(url, function(response)
-            {
-                //console.log(response.data);
-                $('#follow-table').bootstrapTable('load', response.data);
-                $('#follow-table').bootstrapTable("resetSearch","");
-
-                switch (gene)
-                {
-                    case '@AllActionability':
-                        $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
-                        break;
-                    case '@AllValidity':
-                        $('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
-                        break;
-                    case '@AllDosage':
-                        $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
-                        break;
-                    case '*':
-                        $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
                 }
-
-                $('#modalSearchGene').modal('hide');
-
-            }).fail(function(response)
-            {
-                alert("Error reloading table");
             });
-        }).fail(function(response)
-        {
-            //handle failed validation
-            alert("Error following gene");
-        });
 
-        $('#modalUnFollowGene').modal('hide');
-    },
-    rules: {
-        email: {
-            required: true,
-            email: true,
-            maxlength: 80
-        }
-    },
-    messages: {
-        email:  {
-            required: "Please enter your email address",
-            email: "Please enter a valid email address",
-            maxlength: "Section names must be less than 80 characters"
-        },	
-    },
-    errorElement: 'em',
-    errorClass: 'invalid-feedback',
-    errorPlacement: function ( error, element ) {
-        // Add the `help-block` class to the error element
-        error.addClass( "invalid-feedback" );
+            var url = "/api/genes/unfollow";
+            
+            var formData = $(form).serialize();
 
-        if ( element.prop( "type" ) === "checkbox" ) {
-            error.insertAfter( element.parent( "label" ) );
-        } else {
-            error.insertAfter( element );
-        }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-    }
-});
-
-
-$( '#follow_form' ).validate( {
-    submitHandler: function(form) {
-        $.ajaxSetup({
-            cache: true,
-            contentType: "application/x-www-form-urlencoded",
-            processData: true,
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-               }
-        });
-
-        var url = "/api/genes/follow";
-        
-        var formData = $(form).serialize();
-
-        //submits to the form's action URL
-        $.post(url, formData, function(response)
-        {
-            var url = "/api/home/follow/reload";
-
-            var gene = response.gene;
-        
             //submits to the form's action URL
-            $.get(url, function(response)
+            $.post(url, formData, function(response)
             {
-                //console.log(response.data);
-                $('#follow-table').bootstrapTable('load', response.data);
-                $('#follow-table').bootstrapTable("resetSearch","");
-                
-                switch (gene)
+                var url = "/api/home/follow/reload";
+
+                var gene = response.gene;
+            
+                //submits to the form's action URL
+                $.get(url, function(response)
                 {
-                    case '@AllActionability':
-                        $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
-                        break;
-                    case '@AllValidity':
-                        $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
-                        break;
-                    case '@AllDosage':
-                        $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
-                        break;
-                    case '*':
-                        $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
-                }
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
 
-                $('#modalSearchGene').modal('hide');
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+                    }
 
+                    $('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
             }).fail(function(response)
             {
-                alert("Error reloading table");
+                swal({
+                    title: "Error",
+                    text: "An error occurred while unfollowing the item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
             });
-            
-        }).fail(function(response)
-        {
-            //handle failed validation
-            alert("Error following gene");
-        });
 
-    },
-    rules: {
-        email: {
-            required: true,
-            email: true,
-            maxlength: 80
+            $('#modalUnFollowGene').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },	
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
         }
-    },
-    messages: {
-        email:  {
-            required: "Please enter your email address",
-            email: "Please enter a valid email address",
-            maxlength: "Section names must be less than 80 characters"
-        },	
-    },
-    errorElement: 'em',
-    errorClass: 'invalid-feedback',
-    errorPlacement: function ( error, element ) {
-        // Add the `help-block` class to the error element
-        error.addClass( "invalid-feedback" );
-
-        if ( element.prop( "type" ) === "checkbox" ) {
-            error.insertAfter( element.parent( "label" ) );
-        } else {
-            error.insertAfter( element );
-        }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-    }
-});
-
-
-$( '#profile-form' ).validate( {
-    submitHandler: function(form) {
-        $.ajaxSetup({
-            cache: true,
-            contentType: "application/x-www-form-urlencoded",
-            processData: true,
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-               }
-        });
-
-        var url = "/dashboard/profile";
-        
-        var formData = $(form).serialize();
-
-        //submits to the form's action URL
-        $.post(url, formData, function(response)
-        {
-            //alert(JSON.stringify(response));
-    
-            /*if (response['message'])
-            {
-                swal("Done!", response['message'], "success")
-                    .then((answer2) => {
-                        if (answer2){*/
-                            //$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-                        /*}
-                });
-            }*/
-        }).fail(function(response)
-        {
-            //handle failed validation
-            alert("Error following gene");
-        });
-
-        $('#modalProfile').modal('hide');
-    },
-    rules: {
-        email: {
-            required: true,
-            email: true,
-            maxlength: 80
-        }
-    },
-    messages: {
-        email:  {
-            required: "Please enter your email address",
-            email: "Please enter a valid email address",
-            maxlength: "Section names must be less than 80 characters"
-        },	
-    },
-    errorElement: 'em',
-    errorClass: 'invalid-feedback',
-    errorPlacement: function ( error, element ) {
-        // Add the `help-block` class to the error element
-        error.addClass( "invalid-feedback" );
-
-        if ( element.prop( "type" ) === "checkbox" ) {
-            error.insertAfter( element.parent( "label" ) );
-        } else {
-            error.insertAfter( element );
-        }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-    }
-});
-
-$( '#settings-form' ).validate( {
-    submitHandler: function(form) {
-        $.ajaxSetup({
-            cache: true,
-            contentType: "application/x-www-form-urlencoded",
-            processData: true,
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-               }
-        });
-
-        var url = "/dashboard/preferences";
-        
-        var formData = $(form).serialize();
-
-        //submits to the form's action URL
-        $.post(url, formData, function(response)
-        {
-            //alert(JSON.stringify(response));
-    
-            /*if (response['message'])
-            {
-                swal("Done!", response['message'], "success")
-                    .then((answer2) => {
-                        if (answer2){*/
-                            //$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-                        /*}
-                });
-            }*/
-        }).fail(function(response)
-        {
-            //handle failed validation
-            alert("Error following gene");
-        });
-
-        $('#modalSettings').modal('hide');
-    },
-    rules: {
-        email: {
-            required: true,
-            email: true,
-            maxlength: 80
-        }
-    },
-    messages: {
-        email:  {
-            required: "Please enter your email address",
-            email: "Please enter a valid email address",
-            maxlength: "Section names must be less than 80 characters"
-        },	
-    },
-    errorElement: 'em',
-    errorClass: 'invalid-feedback',
-    errorPlacement: function ( error, element ) {
-        // Add the `help-block` class to the error element
-        error.addClass( "invalid-feedback" );
-
-        if ( element.prop( "type" ) === "checkbox" ) {
-            error.insertAfter( element.parent( "label" ) );
-        } else {
-            error.insertAfter( element );
-        }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-    }
-});
-
-
-$( '#report-form' ).validate( {
-    submitHandler: function(form) {
-        $.ajaxSetup({
-            cache: true,
-            contentType: "application/x-www-form-urlencoded",
-            processData: true,
-            headers:{
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-TOKEN' : window.token,
-                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-               }
-        });
-
-        var url = "/dashboard/reports";
-        
-        var formData = $(form).serialize();
-
-        //submits to the form's action URL
-        $.post(url, formData, function(response)
-        {
-            //$('#report-').bootstrapTable("load", myData);
-    
-            /*if (response['message'])
-            {
-                swal("Done!", response['message'], "success")
-                    .then((answer2) => {
-                        if (answer2){*/
-                            //$('.action-follow-gene').find('.fa-star').css('color', 'lightgray');
-                        /*}
-                });
-            }*/
-
-            // for now, only user folders can be edited
-            var url = "/api/home/reports/10";
-            
-            //submits to the form's action URL
-            $.get(url, function(response)
-            {
-                $('#table').bootstrapTable('load', response.data);
-                $('#table').bootstrapTable("resetSearch","");
-
-                // reset folder count
-                $('#custom-report-count').html(response.data.length);
-
-            }).fail(function(response)
-            {
-                alert("Error reloading table");
-            });
-        //var data = [{ title: "New Title", type: "Notification", display_created: "today", display_last: "yester_day", remove: 1, ident: "12345"}]
-        
-        //$('#table').bootstrapTable({ data: data });
-        //$('#table').bootstrapTable('load', data);
-        //clear the search
-        }).fail(function(response)
-        {
-            //handle failed validation
-            alert("Error following gene");
-        });
-
-        $('#modalReport').modal('hide');
-    },
-    rules: {
-        email: {
-            required: true,
-            email: true,
-            maxlength: 80
-        }
-    },
-    messages: {
-        email:  {
-            required: "Please enter your email address",
-            email: "Please enter a valid email address",
-            maxlength: "Section names must be less than 80 characters"
-        },	
-    },
-    errorElement: 'em',
-    errorClass: 'invalid-feedback',
-    errorPlacement: function ( error, element ) {
-        // Add the `help-block` class to the error element
-        error.addClass( "invalid-feedback" );
-
-        if ( element.prop( "type" ) === "checkbox" ) {
-            error.insertAfter( element.parent( "label" ) );
-        } else {
-            error.insertAfter( element );
-        }
-    },
-    highlight: function ( element, errorClass, validClass ) {
-        $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
-    },
-    unhighlight: function (element, errorClass, validClass) {
-        $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
-    }
-});
-
-
-// fix for bootstrap 3 limitation of dropdowns within a constrained area
-$(document).on('click', '.native-table [data-toggle="dropdown"]', function () {
-    $buttonGroup = $(this).parent();
-    if (!$buttonGroup.attr('data-attachedUl')) {
-        var ts = +new Date;
-        $ul = $(this).siblings('ul');
-        $ul.attr('data-parent', ts);
-        $buttonGroup.attr('data-attachedUl', ts);
-        $(window).resize(function () {
-            $ul.css('display', 'none').data('top');
-        });
-    } else {
-        $ul = $('[data-parent=' + $buttonGroup.attr('data-attachedUl') + ']');
-    }
-    if (!$buttonGroup.hasClass('open')) {
-        $ul.css('display', 'none');
-        return;
-    }
-
-    dropDownFixPosition($(this).parent(), $ul);
-
-    function dropDownFixPosition(button, dropdown) {
-        var dropDownTop = button.offset().top + button.outerHeight();
-        dropdown.css('top', dropDownTop + "px");
-        dropdown.css('left', button.offset().left + "px");
-        dropdown.css('position', "absolute");
-
-        dropdown.css('width', dropdown.width());
-        dropdown.css('heigt', dropdown.height());
-        dropdown.css('display', 'block');
-        dropdown.appendTo('body');
-    }
-});
-
-
-    
-
-    // make some mods to the search input field
-    var search = $('.fixed-table-toolbar .search input');
-    search.attr('placeholder', 'Search in table');
-
-    $( ".fixed-table-toolbar" ).show();
-    $('[data-toggle="tooltip"]').tooltip();
-    $('[data-toggle="popover"]').popover();
-
-    //$("button[name='filterControlSwitch']").attr('title', 'Column Search');
-    //$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
-});
-</script>
-
-<script src="/js/typeahead.js"></script>
-<script>
-    // suggest query stuff
- /* $( ".typeQueryGene" ).click(function() {
-      alert("a");
-    $("#navSearchBar").attr("action", "{{ route('genes.find') }}");
-    $( ".inputQueryGene" ).show();
-    $( ".inputQueryGene .queryGene" ).show();
-    $( ".typeQueryLabel").text("Gene");
-  });*/
-
- // $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
-
-  var followterm = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: {
-      url: '{{  url('api/genes/find/%QUERY') }}',
-      wildcard: '%QUERY'
-    }
-  });
-
-  var followtermGene = new Bloodhound({
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
-    queryTokenizer: Bloodhound.tokenizers.whitespace,
-    remote: {
-      url: '{{  url('api/genes/find/%QUERY') }}',
-      wildcard: '%QUERY'
-    }
-  });
-
-  $('.queryFindGene').typeahead(null,
-  {
-    name: 'followtermGene',
-    display: 'label',
-    source: followtermGene,
-    limit: 10,
-    highlight: true,
-    hint: false,
-    autoselect:true,
-  }).bind('typeahead:selected',function(evt,item){
-    // here is where we can set the follow and refresh the screen.
-
-    $('#follow-gene-field').val(item.hgncid);
-    $('#follow_form').submit();
-    
-  });
-
-  var myselect = $('#selected-genes');
-
-  $(function() {
-      //console.log(myselect);
-  myselect.tagsinput({
-
-    tagClass: function(item) {
-        //console.log(item)
-        switch (item.curated) {
-            case true   : return 'label label-primary';
-            case false  : return 'label label-default';
-            case 2: return 'label label-danger';
-            default: return 'label label-primary';
-        }
-    },
-    itemValue: 'hgncid',
-    itemText: 'short',
-      typeaheadjs: {
-        name: 'followtermGene',
-        displayKey: 'short',
-        limit: Infinity,
-        //valueKey: 'short',
-        //value: 'hgncid',
-        source: followtermGene
-      }
     });
 
-    //myselect.tagsinput('add', { "hgncid": 1 , "short": "Amsterdam"   });
-  });
 
-  function symbolClass(value, row, index)
-  {
-      return {
-          classes: 'table-symbol'
-      }
-  }
+    $( '#follow_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
 
-  function rowAttributes(row, index)
-  {
-    return {
-        'data-hgnc': row.hgnc
-    }
-  }
+            var url = "/api/genes/follow";
+            
+            var formData = $(form).serialize();
 
-  function formatSymbol(value, row, index)
-  {	
-      return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
-  }
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload";
+
+                var gene = response.gene;
+            
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+                    
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+                    }
+
+                    $('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+                
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },	
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    $( '#profile-form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/dashboard/profile";
+            
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                ;
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while changing an item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalProfile').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },	
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+    $( '#settings-form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/dashboard/preferences";
+            
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                ;
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while changing an item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalSettings').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },	
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    $( '#report-form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/dashboard/reports";
+            
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                // for now, only user folders can be edited
+                var url = "/api/home/reports/10";
+                
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    $('#table').bootstrapTable('load', response.data);
+                    $('#table').bootstrapTable("resetSearch","");
+
+                    // reset folder count
+                    $('#custom-report-count').html(response.data.length);
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+            
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while updating the report.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalReport').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },	
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    // fix for bootstrap 3 limitation of dropdowns within a constrained area
+    $(document).on('click', '.native-table [data-toggle="dropdown"]', function () {
+        $buttonGroup = $(this).parent();
+        if (!$buttonGroup.attr('data-attachedUl')) {
+            var ts = +new Date;
+            $ul = $(this).siblings('ul');
+            $ul.attr('data-parent', ts);
+            $buttonGroup.attr('data-attachedUl', ts);
+            $(window).resize(function () {
+                $ul.css('display', 'none').data('top');
+            });
+        } else {
+            $ul = $('[data-parent=' + $buttonGroup.attr('data-attachedUl') + ']');
+        }
+        if (!$buttonGroup.hasClass('open')) {
+            $ul.css('display', 'none');
+            return;
+        }
+
+        dropDownFixPosition($(this).parent(), $ul);
+
+        function dropDownFixPosition(button, dropdown) {
+            var dropDownTop = button.offset().top + button.outerHeight();
+            dropdown.css('top', dropDownTop + "px");
+            dropdown.css('left', button.offset().left + "px");
+            dropdown.css('position', "absolute");
+
+            dropdown.css('width', dropdown.width());
+            dropdown.css('heigt', dropdown.height());
+            dropdown.css('display', 'block');
+            dropdown.appendTo('body');
+        }
+    });
+
+
+    var followterm = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+        url: window.burl,
+        wildcard: '%QUERY'
+        }
+    });
+
+    var followtermGene = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+        url: window.burl,
+        wildcard: '%QUERY'
+        }
+    });
+
+    $('.queryFindGene').typeahead(null,
+    {
+        name: 'followtermGene',
+        display: 'label',
+        source: followtermGene,
+        limit: Infinity,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+    }).bind('typeahead:selected',function(evt,item){
+        // here is where we can set the follow and refresh the screen.
+
+        $('#follow-gene-field').val(item.hgncid);
+        $('#follow_form').submit();
+        
+    });
+
+    var myselect = $('#selected-genes');
+
+    myselect.tagsinput({
+
+        tagClass: function(item) {
+            //console.log(item)
+            switch (item.curated) {
+                case true   : return 'label label-primary';
+                case false  : return 'label label-default';
+                case 2: return 'label label-danger';
+                default: return 'label label-primary';
+            }
+        },
+        itemValue: 'hgncid',
+        itemText: 'short',
+        typeaheadjs: {
+            name: 'followtermGene',
+            displayKey: 'short',
+            limit: Infinity,
+            //valueKey: 'short',
+            //value: 'hgncid',
+            source: followtermGene
+        }
+    });
+
+});
