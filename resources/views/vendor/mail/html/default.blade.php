@@ -87,7 +87,7 @@
 				<tr>
 					<td class="header" align="center">
 						<a href="{{ config('app.url') }}">
-							<img src="https://search.clingen.info/brand/logo/logo-clinical-genome-logo.png" style="height: 100px;" alt="{{ config('app.name') }}">
+							<img src="{{ config('app.url') }}/brand/logo/logo-clinical-genome-logo.png" style="height: 100px;" alt="{{ config('app.name') }}">
 						</a>
 					</td>
 				</tr>

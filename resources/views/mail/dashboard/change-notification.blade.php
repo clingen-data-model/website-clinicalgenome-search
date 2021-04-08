@@ -9,7 +9,7 @@ Hello,<br/><br/>
 You are receiving this email because one or more genes you are following have been updated as of {{ $date }}. A full report can be found by clicking the link below or accessing your ClinGen Dashboard.
 <br />
 <br />
-	<center><a href="https://search.clingen.info/reports/view/{{ $report }}" class="button">View Report</a></center>
+	<center><a href="{{ config('app.url') }}/reports/view/{{ $report }}" class="button">View Report</a></center>
 	<br /><br />
 	<hr />
 	<br />
@@ -19,7 +19,7 @@ You are receiving this email because one or more genes you are following have be
 	@endforeach
 	<br /><br />
 	<strong>Manage your email preferences</strong><br />
-	Manage the frequency and scope of these notifications through the <a href="https://search.clingen.info/dashboard/">ClinGen Dashboard.</a>
+	Manage the frequency and scope of these notifications through the <a href="{{ config('app.url') }}/dashboard/">ClinGen Dashboard.</a>
 
 @endsection
 
