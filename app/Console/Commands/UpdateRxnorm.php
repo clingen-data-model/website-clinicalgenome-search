@@ -49,19 +49,21 @@ class UpdateRxnorm extends Command
         if ($handle)
         {
             // delete the old table
-            //Drug::query()->forceDelete();
+            Drug::query()->forceDelete();
 
             // discard the header
-            $line = fgets($handle);
+            $line = fgetcsv($handle);
 
-            while (($line = fgets($handle)) !== false)
+            while (($line = fgetcsv($handle)) !== false)
             {
                 // process the line read.
                 //echo "Processing " . $line . "\n";
 
-                $value = explode(",", $line);
+                //$value = explode(",", $line);
 
-                //echo $value[38] . " " . $value[1] . "\n";
+                $value = $line;
+
+                //echo $value[0] . " " . $value[1] . "\n";
 
                 //$issue = Iscamap::updateOrCreate(['symbol' => trim($value[0])], ['issue' => trim($value[1])] );
                 $flags = ['actionability' => null,
@@ -71,7 +73,7 @@ class UpdateRxnorm extends Command
                         'varpath' => null
                     ];
 
-                $record = drug::updateOrCreate(['curie' => basename($value[0])], [
+                $record = Drug::updateOrCreate(['curie' => basename($value[0])], [
                                         'iri' => $value[0],
                                         'label' => $value[1],
                                         'curation_activities' => $flags,
