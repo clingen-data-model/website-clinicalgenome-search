@@ -77,7 +77,7 @@ class DrugController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id = null)
+	public function show(Request $request, $id = null)
     {
 		if ($id === null)
 			return view('error.message-standard')
@@ -86,6 +86,9 @@ class DrugController extends Controller
 				->with('back', url()->previous())
 				->with('user', $this->user);
 
+		if (strpos($id, "RXNORM:") === 0)
+			$id = substr($id, 7);
+			
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
