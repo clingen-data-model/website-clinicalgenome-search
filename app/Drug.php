@@ -180,5 +180,37 @@ class Drug extends Model
      {
 		return (isset($this->curation_activities) ? 
 			$this->curation_activities['pharma'] : false); 
-	}
+     }
+     
+
+     /**
+     * Flag indicating if gene has any variant pathogenicity activity 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasVariantAttribute()
+    {
+         return (isset($this->curation_activities) ? 
+              $this->curation_activities['varpath'] : false); 
+    }
+
+
+    /**
+     * Flag indicating if gene has ANY curation activity 
+     * 
+     * @@param	
+     * @return 
+     */
+    public function getHasCurationAttribute()
+    {
+          if (!isset($this->curation_activities))
+               return false;
+          
+          return $this->curation_activities['varpath'] ||
+               $this->curation_activities['pharma'] ||
+               $this->curation_activities['actionability'] ||
+               $this->curation_activities['validity'] ||
+               $this->curation_activities['dosage'];
+    }
 }

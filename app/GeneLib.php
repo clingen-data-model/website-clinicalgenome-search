@@ -916,11 +916,11 @@ class GeneLib extends Model
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
-		// Gene data is currently in neo4j
-		//$response = Neo4j::geneList($args);
-
-		// Gene listing using Graphql
-		$response = Graphql::drugLook($args);
+		// Suggester listing using Graphql
+         $response = Graphql::drugLook($args);
+          
+          // Suggester listing using Mysql
+		//$response = Mysql::drugLook($args);
 
 		return $response;
      }

@@ -144,48 +144,24 @@ class Mysql
 
 		$collection = collect();
 
-		$query = '{
-				suggest(contexts: ALL, suggest: DRUG, text: "'
-				. $search . '") {
-						curie
-						curations
-						highlighted
-						iri
-						text
-						type
-						weight
-					}
-				}
-			}';
+		// remove any possible occurence of'%' from search term
+		$search = str_replace('%', '', $id);
 
-		// query genegraph
-		$response = self::query($query,  __METHOD__);
+		$response = Drug::where('label', 'like', '%' . $search . '%')->take(10)->get();
 
 		if (empty($response))
 			return $response;
 
-		// add each gene to the collection
-		/*foreach($response->suggest as $record)
-		{
-			$node = new Nodal((array) $record);
-			$node->label = $record->highlighted . '  (' . $record->curie . ')';
-			$node->href = route('drug-show', $record->curie);
-
-			$collection->push($node);
-		}*/
-
 		$array = [];
-		foreach($response->suggest as $record)
+		foreach($response as $record)
 		{
-			$ctag = (empty($record->curations) ? '' : '        CURATED');
-			$short = "RXNORM:" . basename($record->curie);
-			$array[] = ['label' => $record->text . '  (' . $short . ')'
+			$ctag = ($record->has_curations ? '        CURATED' : '');
+			$short = $record->curie;
+			$array[] = ['label' => $record->label . '  (RXNORM:' . $short . ')'
 							. $ctag,
 						'url' => route('drug-show', $short)];
 		}
 
-
-		//return (object) ['count' => count($collection), 'collection' => $collection];
 		return json_encode($array);
 	}
 
