@@ -650,7 +650,7 @@ class Graphql
 		foreach($response->suggest as $record)
 		{
 			$ctag = (empty($record->curations) ? '' : '        CURATED');
-			$short = "RXNORM:" . basename($record->curie);
+			$short = basename($record->curie);
 			$array[] = ['label' => $record->text . '  (' . $short . ')'
 							. $ctag,
 						'url' => route('drug-show', $short)];

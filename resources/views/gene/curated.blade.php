@@ -52,16 +52,19 @@
 @section('modals')
 
 @include('modals.curatedfilter')
+@include('modals.bookmark')
 
 @endsection
 
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+  <link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+  <link href="/css/select2.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
+<script src="/js/select2.full.min.js"></script>
 
 <script src="/js/tableExport.min.js"></script>
 <script src="/js/jspdf.min.js"></script>
@@ -124,6 +127,30 @@
   */
 	$('#curated-filter-dashboard').on('logout', function() {
     $(this).hide();
+  });
+
+
+  /*
+  **  
+  */
+	$('.action-remove-bookmark').on('click', function() {
+    alert("remove");
+  });
+
+
+  /*
+  **  
+  */
+	$('.action-default-bookmark').on('click', function() {
+    alert("default");
+  });
+
+
+  /*
+  **  
+  */
+	$('.action-save-bookmark').on('click', function() {
+    alert("save");
   });
 
 
@@ -256,6 +283,15 @@ $(function() {
   // make some mods to the search input field
   var search = $('.fixed-table-toolbar .search input');
   search.attr('placeholder', 'Search in table');
+
+  $(".bookmark-modal-select").select2({
+    tags: true,
+    dropdownParent: $('#modalBookmark'),
+    dropdownAutoWidth: true,
+    width: '75%'
+    //theme: 'bootstrap'
+    
+  });
 
   $( ".fixed-table-toolbar" ).show();
   $('[data-toggle="tooltip"]').tooltip();
