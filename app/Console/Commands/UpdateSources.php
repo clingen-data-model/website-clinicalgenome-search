@@ -45,7 +45,7 @@ class UpdateSources extends Command
       $schedule = $this->argument('schedule');
       switch ($schedule)
       {
-        case 'daily': 
+        case 'daily':
           $this->call('update:Genenames');  // HGNC
           $this->call('update:activity');   // Genegraph
           $this->call('update:cpic');       // CPIC and PharmGKB
@@ -54,7 +54,7 @@ class UpdateSources extends Command
           $this->call('update:dosages');    // DCI (Jira)
           $this->call('update:map');        // local file
           $this->call('update:ratings');    // DCI (Jira)
-          //$this->call('update:region');     // local file
+          $this->call('update:region');     // local file
           $this->call('update:disease');    // Genephap
           $this->call('update:changes');
           $this->call('update:follow');
@@ -75,7 +75,7 @@ class UpdateSources extends Command
           $this->call('update:acmg59');     // local file
           $this->call('update:rxnorm');       // Local file from bioontology
           break;
-        case 'init': 
+        case 'init':
           $this->call('update:acmg59c');     // local file
           break;
 

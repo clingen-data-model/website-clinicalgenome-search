@@ -748,7 +748,7 @@ class Graphql
 		if ($report)
 		{
 			$collection = collect();
-			
+
 			foreach($response->genes->gene_list as $record)
 			{
 				$node = new Nodal((array) $record);
@@ -1829,7 +1829,7 @@ class Graphql
 			$extracount++;
 		}
 
-		
+
 		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count + $extracount,
 					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
 					Metric::KEY_TOTAL_VALIDITY_GENES => $validity_genes,
@@ -2247,7 +2247,7 @@ class Graphql
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
 
 		// Pharmacogenomics
-		
+
 		$cpics = Cpic::where('type', 1)->get();
 		$gkb = Cpic::where('type', 2)->get();
 
@@ -2376,7 +2376,7 @@ class Graphql
 						'curated' => 2,
 						'hgncid' => '*'
 						]];
-			return json_encode($array);	
+			return json_encode($array);
 		}
 
 		if (strpos('@', $search) === 0)
@@ -2395,10 +2395,15 @@ class Graphql
 						'short' => 'All Actionability',
 						'curated' => 2,
 						'hgncid' => '@AllActionability'
+					],
+					['label' => 'ACMG 59 Genes',
+						'short' => '@ACMG59',
+						'curated' => 2,
+						'hgncid' => '@ACMG59'
 					]
 				];
 
-			return json_encode($array);	
+			return json_encode($array);
 		}
 
 		$query = '{

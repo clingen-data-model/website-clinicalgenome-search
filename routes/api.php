@@ -89,4 +89,7 @@ Route::get('/home/reports/{type}', 'Api\HomeController@reports')->name('home.rep
 Route::post('/home/toggle', 'Api\HomeController@toggle')->name('home.toggle');
 Route::get('/home/follow/reload', 'Api\FollowController@reload')->name('home.reload');
 
+// filters
+Route::resource('filters', 'Api\FilterController');
+
 

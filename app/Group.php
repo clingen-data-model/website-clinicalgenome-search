@@ -166,6 +166,10 @@ class Group extends Model
         $t = new Group(['name' => '@AllActionability', 'display_name' => 'All Actionability', 'search_name' => '@AllActionability',
                         'description' => 'Follow All Clinical Actionability Activity']);
         $t->save();
+
+        $t = new Group(['name' => '@ACMG59', 'display_name' => 'ACMG 59 Genes', 'search_name' => '@ACMG59',
+                        'description' => 'Follow All ACMG 59 Genes']);
+        $t->save();
     }
 
 }

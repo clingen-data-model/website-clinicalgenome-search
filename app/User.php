@@ -87,6 +87,15 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
 
+    /*
+     * The filters owned by this user
+     */
+    public function filters()
+    {
+       return $this->hasMany('App\Filter');
+    }
+
+
 
     /**
      * Adjust full name when first name is changed

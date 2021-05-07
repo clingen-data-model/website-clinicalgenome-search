@@ -40,6 +40,7 @@ class Filter extends Model
           'screen' => 'integer',
           'screen_name' => 'string|nullable',
           'description' => 'string|nullable',
+          'settings' => 'json',
           'default' => 'integer',
           'type' => 'integer',
           'status' => 'integer'
@@ -51,6 +52,7 @@ class Filter extends Model
      * @var array
      */
 	protected $casts = [
+            'settings' => 'array'
 		];
 
      /**
@@ -58,7 +60,8 @@ class Filter extends Model
      *
      * @var array
      */
-	protected $fillable = ['ident', 'name', 'display_name', 'screen', 'screen_name', 'description', 'default', 'type', 'status'];
+    protected $fillable = ['ident', 'name', 'display_name', 'screen', 'screen_name', 'description',
+                            'settings', 'default', 'type', 'status'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -107,6 +110,7 @@ class Filter extends Model
     public function __construct(array $attributes = array())
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
+
         parent::__construct($attributes);
     }
     
@@ -165,5 +169,24 @@ class Filter extends Model
 	public function scopeDefault($query)
     {
         return $query->where('default', 1);
+    }
+
+
+    /**
+     * Return parameter array from url
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public static function parseSettings($url)
+    {
+        $parts = parse_url($url);
+
+        if (empty($parts['query']))
+            return [];
+
+        parse_str($parts['query'], $settings);
+
+        return $settings;
     }
 }

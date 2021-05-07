@@ -78,7 +78,10 @@ function table_buttons() {
                 text: 'Bookmarks',
                 icon: 'glyphicon-bookmark',
                 event: function () {
-                    $('#modalBookmark').modal('toggle');
+                    if (window.auth !== 1)
+                        alert("You must log in");
+                    else
+                        $('#modalBookmark').modal('toggle');
                 },
                 attributes: {
                     title: 'Bookmarks'

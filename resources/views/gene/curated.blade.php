@@ -71,10 +71,10 @@
 <script src="/js/xlsx.core.min.js"></script>
 <script src="/js/jspdf.plugin.autotable.js"></script>
 
-<script src="/js/bootstrap-table.min.js"></script>
+<script src="/js/bootstrap-table.js"></script>
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
-<script src="/js/bootstrap-table-addrbar.min.js"></script>
+<script src="/js/bootstrap-table-addrbar.js"></script>
 
 <script src="/js/sweetalert.min.js"></script>
 
@@ -95,6 +95,16 @@
   var $table = $('#table');
   var showadvanced = true;
   var lightstyle = true;
+  var scrid = {{ $display_tabs['scrid'] }};
+  var scrid_display = "{{ $display_tabs['display'] }}";
+  window.token = "{{ csrf_token() }}";
+
+  var params = {}
+
+  function queryParams(_params) {
+    params = _params
+    return _params
+  }
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
@@ -134,7 +144,40 @@
   **  
   */
 	$('.action-remove-bookmark').on('click', function() {
-    alert("remove");
+
+    var uuid = $('select[name="bookmark"]').val();
+
+    $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN' : window.token,
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+        }
+    });
+
+    var url = "/api/filters/" + uuid;
+
+    //submits to the form's action URL
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      data: {_method: 'delete', _token : window.token, ident: uuid }
+    }).done(function(response)
+    {
+      alert("bookmark deleted");
+      //refresh select list
+    }).fail(function(response)
+    {
+        swal({
+            title: "Error",
+            text: "An error occurred while deleting the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+            icon: "error",
+        });
+    });
+
   });
 
 
@@ -142,7 +185,45 @@
   **  
   */
 	$('.action-default-bookmark').on('click', function() {
-    alert("default");
+
+   
+     // alert($table.bootstrapTable('getOptions').url + '?' + $.param(params));
+    // return;
+
+    var uuid = $('select[name="bookmark"]').val();
+
+    var name = $('select[name="bookmark"] option:selected').text();
+
+    $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN' : window.token,
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+        }
+    });
+
+    var url = "/api/filters/" + uuid;
+
+    //submits to the form's action URL
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {_method: 'put', _token : window.token, ident: uuid, name: name, screen: scrid, default: 1 }
+    }).done(function(response)
+    {
+      alert("bookmark updated");
+      //refresh select list
+    }).fail(function(response)
+    {
+        swal({
+            title: "Error",
+            text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+            icon: "error",
+        });
+    });
   });
 
 
@@ -150,15 +231,120 @@
   **  
   */
 	$('.action-save-bookmark').on('click', function() {
-    alert("save");
+
+    var uuid = $('select[name="bookmark"]').val();
+
+    var name = $('select[name="bookmark"] option:selected').text();
+
+    var settings = window.location.href;
+
+    $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN' : window.token,
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+        }
+    });
+
+    var url = "/api/filters/" + uuid;
+
+    //submits to the form's action URL
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {_method: 'put', _token : window.token, ident: uuid, name: name, screen: scrid, settings: settings }
+    }).done(function(response)
+    {
+      alert("bookmark updated");
+      //refresh select list
+    }).fail(function(response)
+    {
+        swal({
+            title: "Error",
+            text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+            icon: "error",
+        });
+    });
+  });
+
+
+  /*
+  **  
+  */
+	$('.action-restore-bookmark').on('click', function() {
+
+    var uuid = $('select[name="bookmark"]').val();
+
+    var name = $('select[name="bookmark"] option:selected').text();
+
+    var settings = window.location.href;
+
+    $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers:{
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN' : window.token,
+            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+        }
+    });
+
+    var url = "/api/filters/" + uuid;
+
+    //submits to the form's action URL
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {_method: 'get', _token : window.token, ident: uuid }
+    }).done(function(response)
+    {
+      var url = window.location.origin + window.location.pathname + '?';
+
+      for (const property in response.data.settings)
+      {
+        url = url + property + '=' + response.data.settings[property] + '&';
+      }
+
+      //window.location.href = url;
+
+      $table.bootstrapTable('refreshOptions', {
+          sortName: response.data.settings.sort,
+          sortOrder: response.data.settings.order,
+          pageSize: parseInt(response.data.settings.size), 
+          pageNumber: parseInt(response.data.settings.page)
+      });
+
+      $table.bootstrapTable('resetSearch', response.data.settings.search);
+      $table.bootstrapTable('selectPage', parseInt(response.data.settings.page));
+
+      
+    }).fail(function(response)
+    {
+        swal({
+            title: "Error",
+            text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+            icon: "error",
+        });
+    });
   });
 
 
   function inittable() {
-    $table.bootstrapTable('destroy').bootstrapTable({
-      locale: 'en-US',
+    $.extend($.fn.bootstrapTable.defaults, {
       sortName:  "symbol",
 			sortOrder: "asc",
+      pageSize: 10,
+      pageNumber: 4
+    });
+
+    $table.bootstrapTable('destroy').bootstrapTable({
+      locale: 'en-US',
+      //sortName:  "symbol",
+			//sortOrder: "asc",
       columns: [
         {
           title: 'Gene',
@@ -245,6 +431,10 @@
       });
     })
 
+    $table.on('refresh-options.bs.table', function (e, name, args) {
+      alert("a");
+    })
+
     $table.on('load-success.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
 
@@ -270,6 +460,12 @@
       return false;
     });
 
+    $table.on('column-search.bs.table', function (e, index, row, $obj) {
+      console.log(e)
+      e.preventDefault();
+      console.log("column search");
+    });
+
   }
 
 $(function() {
@@ -288,10 +484,25 @@ $(function() {
     tags: true,
     dropdownParent: $('#modalBookmark'),
     dropdownAutoWidth: true,
-    width: '75%'
+    width: '75%',
+    createTag: function (params) {
+      var term = $.trim(params.term);
+
+      if (term === '') {
+        return null;
+      }
+
+      return {
+        id: 0,
+        text: term,
+        newTag: true // add additional parameters
+      }
+    }
     //theme: 'bootstrap'
     
   });
+
+  //$(".bookmark-modal-select").select2('val', '0'); 
 
   $( ".fixed-table-toolbar" ).show();
   $('[data-toggle="tooltip"]').tooltip();

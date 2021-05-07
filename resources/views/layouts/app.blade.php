@@ -306,6 +306,8 @@
         $('#modalLogin').modal('show');
       });
 
+      window.auth = {{ Auth::guard('api')->user() === null ? 0 : 1 }};
+
 
     </script>
     <script src="/js/typeahead.js"></script>

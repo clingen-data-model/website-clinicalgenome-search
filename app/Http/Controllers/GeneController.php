@@ -12,6 +12,7 @@ use App\GeneLib;
 use App\User;
 use App\Gene;
 use App\Nodal;
+use App\Filter;
 
 /**
 *
@@ -116,17 +117,22 @@ class GeneController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "gene-curations",
-            'title' => "ClinGen Curated Genes"
+			'title' => "ClinGen Curated Genes",
+			'scrid' => Filter::SCREEN_CURATED_GENES,
+			'display' => "All Curated Genes"
         ]);
 
 		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
+		$bookmarks = ($this->user === null ? collect() : $this->user->filters);
 
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks);
 	}
 
 

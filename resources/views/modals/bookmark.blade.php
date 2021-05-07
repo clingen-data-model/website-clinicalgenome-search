@@ -15,10 +15,10 @@
 						  <div class="form-group">
 							<label class="col-sm-3 control-label" for="textinput">Name:</label>
 							<div class="col-sm-8">
-								<select class="bookmark-modal-select">
-									<option>orange</option>
-									<option>white</option>
-									<option>purple</option>
+								<select name="bookmark" class="bookmark-modal-select">
+									@foreach ($bookmarks as $bookmark)
+									<option value="{{ $bookmark->ident }}" {{ $bookmark->default ? 'selected' : '' }}>{{ $bookmark->name }}</option>
+									@endforeach
 								</select>
 							</div>
 						  </div>
@@ -27,7 +27,8 @@
 						  <div class="form-group">
 							<label class="col-sm-3 control-label" for="textinput">Page:</label>
 							<div class="col-sm-8">
-							  <input type="text" name="page" placeholder="Screen Page" value="Curated Genes Page" class="form-control" disabled>
+								<input type="hidden" name="screen" value="{{ $display_tabs['scrid'] }}">
+							  <input type="text" name="page" placeholder="Screen Page" value="{{ $display_tabs['display'] }}" class="form-control" disabled>
 							</div>
 						  </div>
 
@@ -41,6 +42,9 @@
 				</button> -->
 				<button type="button" class="btn btn-danger float-left action-remove-bookmark">
 					Remove
+				</button>
+				<button type="button" class="btn btn-primary action-restore-bookmark">
+					Restore
 				</button>
 				<button type="button" class="btn btn-primary action-default-bookmark">
 					Default

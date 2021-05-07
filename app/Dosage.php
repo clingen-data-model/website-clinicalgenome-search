@@ -121,10 +121,10 @@ class Dosage extends Model
 
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getHgncIdAttribute()
     {
@@ -133,22 +133,22 @@ class Dosage extends Model
 
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getSymbolAttribute()
     {
 		  return $this->label ?? null;
     }
-    
+
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getChromosomeBandAttribute()
     {
@@ -157,46 +157,46 @@ class Dosage extends Model
 
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getOmimlinkAttribute()
     {
 		  return $this->omim ?? null;
     }
-    
+
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getTriploAssertionAttribute()
     {
 		  return $this->triplo ?? null;
     }
-    
+
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getHaploAssertionAttribute()
     {
 		  return $this->haplo ?? null;
     }
-    
+
 
     /**
-     * Return full name of gene 
-     * 
-     * @@param	
-     * @return 
+     * Return full name of gene
+     *
+     * @@param
+     * @return
      */
     public function getResolvedDateAttribute()
     {

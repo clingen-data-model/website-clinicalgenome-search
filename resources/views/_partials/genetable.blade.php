@@ -14,7 +14,7 @@
     data-filter-control-visible="false"
     data-id-table="advancedTable"
     data-search-align="left"
-    data-trim-on-search="false"
+    data-trim-on-search="true"
     data-show-search-clear-button="true"
     data-buttons="table_buttons"
     {{-- data-show-refresh="true" --}}
@@ -45,6 +45,7 @@
     data-pagination-v-align="both"
     data-show-extended-pagination="false"
     data-url="{{  $apiurl }}"
+    data-query-params="queryParams"
     data-response-handler="responseHandler"
     data-header-style="headerStyle"
     data-show-filter-control-switch="true"
