@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Illuminate\Support\Facades\Log;
+
 use App\Traits\Display;
 
 use Uuid;
@@ -14,6 +17,7 @@ use Carbon\Carbon;
 use App\GeneLib;
 use App\Change;
 use App\Gene;
+
 
 /**
  *
@@ -57,7 +61,7 @@ class Actionability extends Model
 		'type' => 'integer',
 		'status' => 'integer'
 	];
-    
+
 	/**
      * Map the json attributes to associative arrays.
      *
@@ -109,7 +113,7 @@ class Actionability extends Model
 	 		9 => 'Deleted'
      ];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -121,7 +125,7 @@ class Actionability extends Model
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
     }
-     
+
 
     /**
      * Get the change
@@ -198,8 +202,8 @@ class Actionability extends Model
         if (empty($assertions))
             die ("Failure to retrieve new data");
 
-        // clear out the status field 
-        
+        // clear out the status field
+
         // compare and update
         foreach ($assertions->collection as $gene)
         {
@@ -207,6 +211,7 @@ class Actionability extends Model
             {
                 $current = Actionability::hgnc($gene->hgnc_id)->mondo($condition->disease->curie)->orderBy('version', 'desc')->first();
 
+                Log::info('Actionabilty.assess: ' . $gene->label);
                 if ($current === null)          // new assertion
                 {
                     $new = new Actionability([
@@ -267,7 +272,7 @@ class Actionability extends Model
 
                     continue;
                 }
-                
+
                 $new = new Actionability([
                                             'gene_label' => $gene->label,
                                             'gene_hgnc_id' => $gene->hgnc_id,
@@ -290,6 +295,9 @@ class Actionability extends Model
                 // Map the proper adult and ped fields
                 foreach ($condition->actionability_assertions as $assertion)
                 {
+                    Log::info('Actionabilty.assess: ' . $assertion->report_date);
+                    Log::info('Actionabilty.assess: ' . $assertion->source);
+                    Log::info('Actionabilty.assess: ' . print_r($assertion->attributed_to));
                     if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                     {
                         $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
@@ -329,7 +337,7 @@ class Actionability extends Model
                 }
             }
         }
-        
+
         return $assertions;
     }
 
@@ -349,7 +357,7 @@ class Actionability extends Model
         unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
               $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
               $old_array['list_date'], $old_array['display_status']);
-        unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'], 
+        unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'],
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
               $new_array['list_date'], $new_array['display_status']);
 
