@@ -295,9 +295,12 @@ class Actionability extends Model
                 // Map the proper adult and ped fields
                 foreach ($condition->actionability_assertions as $assertion)
                 {
-                    Log::info('Actionabilty.assess: ' . $assertion->report_date);
-                    Log::info('Actionabilty.assess: ' . $assertion->source);
-                    Log::info('Actionabilty.assess: ' . print_r($assertion->attributed_to));
+                    // skip over genegraph bug until it is fixed
+                    if ($assertion->attributed_to === null)
+                    {
+                        Log::info('Actionabilty.assess: Skipping null attributed genegraph bug - ' . $assertion->source);
+                        continue;
+                    }
                     if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                     {
                         $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
