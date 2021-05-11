@@ -279,14 +279,29 @@ class GeneController extends Controller
 				// regroup the adult and pediatric assertions
 				foreach ($disease->actionability_assertions as $assertion)
 				{
-					if ($assertion->attributed_to->label == "Adult Actionability Working Group")
-					{
-						$adult = $assertion;
-					}
-					if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
-					{
-						$pediatric = $assertion;
-					}
+                    if ($assertion->attributed_to !== null)
+                    {
+                        if ($assertion->attributed_to->label == "Adult Actionability Working Group")
+                        {
+                            $adult = $assertion;
+                        }
+                        if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
+                        {
+                            $pediatric = $assertion;
+                        }
+                    }
+                    else{
+                        // workaround for genegraph bug 5/11/2021
+                        if (strpos($assertion->source, "Adult") !== false)
+                        {
+                            $adult = $assertion;
+                        }
+                        if (strpos($assertion->source, "Pediatric") !== false)
+                        {
+                            $pediatric = $assertion;
+                        }
+
+                    }
 
 					$aorder = $this->actionability_sort_order[$assertion->classification->label] ?? 0;
 					if ($aorder > $order)
