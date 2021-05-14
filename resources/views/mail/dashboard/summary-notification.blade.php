@@ -9,7 +9,7 @@ Hello,<br/><br/>
 To view your {{ $period }} Summary Report, click on the link below or log into your ClinGen Dashboard.
 <br />
 <br />
-	<center><a href="https://search.clingen.info/reports/view/{{ $report }}" class="button">View Summary Report</a></center>
+	<center><a href="{{ config('app.url') }}/reports/view/{{ $report }}" class="button">View Summary Report</a></center>
 	<br /><br />
 	<hr />
 	<br />
@@ -19,7 +19,7 @@ To view your {{ $period }} Summary Report, click on the link below or log into y
 	@endforeach
 	<br /><br />
 	<strong>Manage your email preferences</strong><br />
-	Manage the frequency and scope of these notifications through the <a href="https://search.clingen.info/dashboard/">ClinGen Dashboard.</a>
+	Manage the frequency and scope of these notifications through the <a href="{{ config('app.url') }}/dashboard/">ClinGen Dashboard.</a>
 
 @endsection
 

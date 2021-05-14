@@ -32,6 +32,12 @@ class AuthController extends Controller
         $this->middleware('auth:api')->only('logout');
     }
 
+
+    /**
+     * Register a new account.
+     *
+     * @return json
+     */
     public function register(Request $request)
     {
         $validatedData = $request->validate([
@@ -42,19 +48,14 @@ class AuthController extends Controller
         ]);
 
         $validatedData['name'] = $validatedData['firstname'] . ' ' . $validatedData['lastname'];
-
         $validatedData['organization'] = $request->input('organization');
-
         $validatedData['preferences'] = ['display_list' => '25'];
-
         $validatedData['password'] = Hash::make($request->password);
-
         $validatedData['activation_token'] = Str::random(60);
-
         $user = User::create($validatedData);
 
+        // for now, keep this separate as the interersts feature evolve
         $user->profile = ['interests' => []];
-
         $user->save();
     
         //$accessToken = $user->createToken('authToken')->accessToken;
@@ -68,8 +69,10 @@ class AuthController extends Controller
 
         $stat = false;
 
+        // send out email verification
         $user->notify(new RegisterActivate($user));
         
+        // add the followed gene for this session
         if (!empty($context))
         {
             $user = Auth::user();
@@ -93,16 +96,32 @@ class AuthController extends Controller
     }
 
 
-    public function signupActivate($token)
+    /**
+     * Confirm an email and activate account.
+     *
+     * @return json
+     */
+    public function signupActivate(Request $request, $token)
     {
         $user = User::where('activation_token', $token)->first();
-        if (!$user) {
+        if ($user === null) {
             return response()->json([
                 'message' => 'This activation token is invalid.'
             ], 404);
         }
+
+        if ($user->status == User::STATUS_ACTIVE)
+        {
+            return redirect('/dashboard/active');
+        }
+
+        if ($user->status != User::STATUS_INITIALIZED)
+        {
+            return redirect('/dashboard');
+        }
+
         $user->status = User::STATUS_ACTIVE;
-        $user->activation_token = '';
+        //$user->activation_token = '';
         $user->save();
 
         $display_tabs = collect([
@@ -112,10 +131,17 @@ class AuthController extends Controller
 
         $show_message = true;
 
-        return view('dashboard.logout', compact('display_tabs', 'show_message'));
+        return redirect('/dashboard/active');
+
+        //return view('dashboard.logout', compact('display_tabs', 'show_message'));
     }
 
 
+    /**
+     * Login to account.
+     *
+     * @return json
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -130,14 +156,14 @@ class AuthController extends Controller
         $loginData['deleted_at'] = null;
 
         if (!auth()->attempt($loginData)) {
-            return response()->json(['message' => 'Your username or password is incorrect'], 400);
+            return response()->json(['message' => 'Your username or password is incorrect, or you have not verified your email address.'], 400);
         }
 
         $tokenResult = auth()->user()->createToken('authToken');
         $token = $tokenResult->token;
 
         if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
+            $token->expires_at = Carbon::now()->addWeeks(4);
 
         $token->save();
 
@@ -184,6 +210,11 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Log out of an account
+     * 
+     * @return json
+     */
     public function logout (Request $request)
     {
         $accessToken = auth()->user()->token();
@@ -195,6 +226,11 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Forgot password
+     * 
+     * @return json
+     */
     public function forgot(Request $request)
     {
         $input = $request->all();
@@ -225,6 +261,9 @@ class AuthController extends Controller
     }
 
 
+    /**
+     * Change a password (not used)
+     */
     public function change_password(Request $request)
     {
         /*$input = $request->all();
@@ -258,6 +297,4 @@ class AuthController extends Controller
         }
         return \Response::json($arr);*/
     }
-
-
 }

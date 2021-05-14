@@ -63,7 +63,7 @@
                       </div>
                     </div>
                   </form>
-                  <p class="login-card-footer-text mb-0">Don't have a ClinGen account?  <a href="#!" class="text-reset action-login-register"><i>Register here</i></a></p>
+                  <p class="login-card-footer-text mb-0">Don't have a ClinGen account?  <a href="#!" class="text-reset action-login-register"><strong><i>Register Here</i></strong></a></p>
                   <!--<nav class="login-card-footer-nav">
                     <a href="#!">Terms of use.</a>
                     <a href="#!">Privacy policy</a>

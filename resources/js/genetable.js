@@ -73,6 +73,16 @@ function table_buttons() {
                 attributes: {
                     title: 'Advanced Filters'
                 }
+            },
+            btnAdd: {
+                text: 'Bookmarks',
+                icon: 'glyphicon-bookmark',
+                event: function () {
+                    $('#modalBookmark').modal('toggle');
+                },
+                attributes: {
+                    title: 'Bookmarks'
+                }
             }
         }
     else

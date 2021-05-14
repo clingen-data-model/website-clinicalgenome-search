@@ -214,6 +214,8 @@ class GeneLib extends Model
           'No Actionability' => 15,
           'Assertion Pending' => 14,
           'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
+		'N/A - Insufficient evidence: expert review' => 12,
+		'N/A - Insufficient evidence: early rule-out' => 11
      ];
 
 
@@ -915,11 +917,11 @@ class GeneLib extends Model
 		if (is_null($args) || !is_array($args))
 			return collect([]);
 
-		// Gene data is currently in neo4j
-		//$response = Neo4j::geneList($args);
-
-		// Gene listing using Graphql
-		$response = Graphql::drugLook($args);
+		// Suggester listing using Graphql
+         $response = Graphql::drugLook($args);
+          
+          // Suggester listing using Mysql
+		//$response = Mysql::drugLook($args);
 
 		return $response;
      }

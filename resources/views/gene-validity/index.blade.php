@@ -181,7 +181,6 @@
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          //align: 'center',
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',

@@ -37,7 +37,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request, $message = null)
     {
 
         $display_tabs = collect([
@@ -59,102 +59,60 @@ class HomeController extends Controller
 
         }
         else{
-            return view('dashboard.logout', compact('display_tabs'));
+
+            return view('dashboard.logout', compact('display_tabs', 'message'));
         }
 
-//dd($notification);
 
-    // Add any followed groups
-    foreach ($user->groups as $group)
-    {
-        switch ($group->name)
+        // Add any followed groups
+        foreach ($user->groups as $group)
         {
-            case '@AllGenes': 
-                $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
-                break;
-            case '@AllDosage': 
-                $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
-                break;
-            case '@AllValidity': 
-                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
-                break;
-            case '@AllActionability': 
-                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
-                break;
-            default: 
-                $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
-                break;
+            switch ($group->name)
+            {
+                case '@AllGenes': 
+                    $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
+                    break;
+                case '@AllDosage': 
+                    $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
+                    break;
+                case '@AllValidity': 
+                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
+                    break;
+                case '@AllActionability': 
+                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
+                    break;
+                default: 
+                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
+                    break;
 
+            }
+
+            $gene = new Gene(['name' => $group->display_name,
+                                'hgnc_id' => $group->search_name,
+                                'activity' => $a,
+                                'date_last_curated' => ''
+                            ]);
+
+            $genes->prepend($gene);
         }
 
-        $gene = new Gene(['name' => $group->display_name,
-                            'hgnc_id' => $group->search_name,
-                            'activity' => $a,
-                            'date_last_curated' => ''
-                        ]);
+        // do a little self repair
+        if ($user->profile === null)
+            $user->update(['profile' => ['interests' => []]]);
 
-        $genes->prepend($gene);
-    }
+        if (!isset($user->profile['interests']))
+        {
+            $p = $user->profile;
+            $p['interests'] = [];
+            $user->update(['profile' => $p]);
+        }
 
-    // tack on group display.  For now, only All Genes is supported
-    /*if (isset($user->notification->frequency['Groups']) && in_array('AllGenes', $user->notification->frequency['Groups']))
-    {
-        $group = new Gene(['name' => "All Genes",
-                            'hgnc_id' => '*',
-                           'activity' => ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true],
-                           'date_last_curated' => ''
-                           ]);
+        $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
+        $user_reports = $reports->where('type', Title::TYPE_USER)->count();
+        $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
 
-        $genes->prepend($group);
-    }
-    if (isset($user->notification->frequency['Groups']) && in_array('AllActionability', $user->notification->frequency['Groups']))
-    {
-        $group = new Gene(['name' => "All Actionability",
-                            'hgnc_id' => '@AllActionability',
-                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true],
-                           'date_last_curated' => ''
-                           ]);
-
-        $genes->prepend($group);
-    }
-    if (isset($user->notification->frequency['Groups']) && in_array('AllValidity', $user->notification->frequency['Groups']))
-    {
-        $group = new Gene(['name' => "All Validity",
-                            'hgnc_id' => '@AllValidity',
-                           'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false],
-                           'date_last_curated' => ''
-                           ]);
-
-        $genes->prepend($group);
-    }
-    if (isset($user->notification->frequency['Groups']) && in_array('AllDosage', $user->notification->frequency['Groups']))
-    {
-        $group = new Gene(['name' => "All Dosage",
-                            'hgnc_id' => '@AllDosage',
-                           'activity' => ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
-                           'date_last_curated' => ''
-                           ]);
-
-        $genes->prepend($group);
-    }*/
-
-    // do a little self repair
-    if ($user->profile === null)
-        $user->update(['profile' => ['interests' => []]]);
-
-    if (!isset($user->profile['interests']))
-    {
-        $p = $user->profile;
-        $p['interests'] = [];
-        $user->update(['profile' => $p]);
-    }
-
-    $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
-    $user_reports = $reports->where('type', Title::TYPE_USER)->count();
-    $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
-
-    // default to user reports
-    $reports = $reports->where('type', Title::TYPE_USER);
+        // default to user reports
+        $reports = $reports->where('type', Title::TYPE_USER);
 
         $total = $genes->count();
         $curations = $genes->sum(function ($gene) {
@@ -318,7 +276,11 @@ class HomeController extends Controller
 
             $title = $user->titles->where('ident', $id)->first();
 
-            if ($title !== null)
+            if ($title === null)
+            {
+                return view('dashboard.noreport');
+            }
+            else
             {
                 foreach($title->reports as $report)
                 {
@@ -390,7 +352,11 @@ class HomeController extends Controller
 
         $title = Title::where('ident', $id)->first();
 
-        if ($title !== null)
+        if ($title === null)
+        {
+            return view('dashboard.noreport');
+        }
+        else
         {
             foreach($title->reports as $report)
             {

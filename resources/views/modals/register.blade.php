@@ -31,8 +31,8 @@
                   </div>
                   <div class="form-group row">
                     <div class="col-sm-12">
-                      <label for="organization" class="sr-only">Organization</label>
-                      <input type="text" name="organization" class="form-control" placeholder="Organization">
+                      <label for="organization" class="sr-only">Organization (Optional)</label>
+                      <input type="text" name="organization" class="form-control" placeholder="Organization (optional)">
                     </div>
                   </div>
                   <div class="form-group row">
@@ -57,7 +57,7 @@
                       </div>
                     </div>
                   </form>
-                  <p class="login-card-footer-text mb-0">Already have an account? <a href="#!" class="text-reset action-register-login"><i>Login here</i></a></p>
+                  <p class="login-card-footer-text mb-0">Already have an account? <a href="#!" class="text-reset action-register-login"><strong><i>Login Here</i></strong></a></p>
                   <!--<nav class="register-card-footer-nav">
                     <a href="#!">Terms of use.</a>
                     <a href="#!">Privacy policy</a>

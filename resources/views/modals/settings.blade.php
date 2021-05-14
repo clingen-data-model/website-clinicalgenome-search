@@ -12,7 +12,7 @@
 					<div class="modal-body">
 						<ul class="col-md-12 nav nav-tabs mt-1">
 							<li role="presentation" class="active">
-								<a href="#globals" data-toggle="tab">Globals</a>
+								<a id="settings-tabs-global" href="#globals" data-toggle="tab">Globals</a>
 							</li>
 							<li role="presentation" class="">
 								<a href="#defaults" data-toggle="tab">Defaults</a>
@@ -67,9 +67,9 @@
 												<div class="form-group">
 													<div class="row my-2">
 														<div class="col-sm-2 text-right mt-1 pr-0">
-															Primary Email:
+															Send Emails To:
 														</div>
-														<div class="col-sm-10 pl-1">
+														<div class="col-sm-9 ml-1">
 															<input type="text" class="form-control api-update" name="primary_email" value="{{  $notification->primary['email'] }}">
 														</div>
 													</div>
@@ -77,7 +77,7 @@
 														<div class="col-sm-2 text-right mt-1 pr-0">
 															Additional Emails:
 														</div>
-														<div class="col-sm-10 pl-1">
+														<div class="col-sm-9 ml-1">
 															<input type="text" class="form-control api-update" placeholder="Type in emails..." name="secondary_email" value="{{  $notification->secondary['email'] }}">
 															<small>Add as many emails you want with a comma (,) between each.</small>
 														</div>
@@ -135,7 +135,7 @@
 												<div class="form-group">
 													<div class="col-sm-8">
 														<h5>Summary Report</h5>
-														Choose whether to receive summary reports in addition to the regular change notifications.
+														Choose how often to receive summary reports in addition to the regular change notifications.
 													</div>
 													<div class="col-sm-4 border-left" style="border-left-width: 10px !important">
 														<div class="radio">
