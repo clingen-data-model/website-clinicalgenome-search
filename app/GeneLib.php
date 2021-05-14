@@ -143,7 +143,8 @@ class GeneLib extends Model
           'Undetermined mode of inheritance' => 'Undetermined',
           'Undetermined' => 'Undetermined',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
-          'Semidominant mode of inheritance' => 'Semidomimant'
+          'Semidominant mode of inheritance' => 'Semidomimant',
+          'Mitochondrial inheritance' => 'Mitochondrial inheritance'
      ];
 
      protected static $validity_criteria_strings = [
