@@ -9,12 +9,12 @@
             last_curated_date
             curation_activities
             dosage_curation {
-                triplosensitivity_assertion { 
+                triplosensitivity_assertion {
                     dosage_classification {
                         ordinal
                         }
                 }
-                haploinsufficiency_assertion { 
+                haploinsufficiency_assertion {
                     dosage_classification {
                         ordinal
                         }
@@ -57,13 +57,13 @@
                 dosage_classification {
                     ordinal
                     }
-            
+
             }
             haploinsufficiency_assertion {
                 dosage_classification {
                     ordinal
                     }
-            
+
             }
         }
         genetic_conditions {
@@ -156,13 +156,13 @@
         dosage_curation {
             curie
             report_date
-            triplosensitivity_assertion { 
+            triplosensitivity_assertion {
                 dosage_classification {
                     ordinal
                 }
                 score
             }
-            haploinsufficiency_assertion { 
+            haploinsufficiency_assertion {
                 dosage_classification {
                     ordinal
                 }
@@ -275,7 +275,7 @@
 
 // Condition list
 {
-    diseases(limit: null)
+    diseases(limit: null, curation_activity: ALL, sort: {field: GENE_LABEL, direction: ASC}) {
     {
         count
         disease_list {
