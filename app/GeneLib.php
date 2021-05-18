@@ -140,10 +140,10 @@ class GeneLib extends Model
           'Autosomal dominant inheritance' => 'Autosomal Dominant',
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
+          'Semidominant mode of inheritance' => 'Semidomimant',
           'Undetermined mode of inheritance' => 'Undetermined',
           'Undetermined' => 'Undetermined',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
-          'Semidominant mode of inheritance' => 'Semidomimant',
           'Mitochondrial inheritance' => 'Mitochondrial inheritance'
      ];
 
@@ -919,7 +919,7 @@ class GeneLib extends Model
 
 		// Suggester listing using Graphql
          $response = Graphql::drugLook($args);
-          
+
           // Suggester listing using Mysql
 		//$response = Mysql::drugLook($args);
 
