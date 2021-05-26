@@ -153,10 +153,10 @@
     <td colspan="2" class="table-title">Aggregate Variant Analysis</td>
     <td colspan="2">0-6</td>
     <td id="GeneticEvidence7Max">12</td>
-    <td class="input-width-numbers points-given-bg">{{ $record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->value ?? null }}</td>
-    <td class=" points-tally-bg">{{ $record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->tally ?? null }}</td>
+    <td class="input-width-numbers points-given-bg">{{ $record->score_data->GeneticEvidence->{'Case-ControlData'}->AggregateVariantAnalysis->value ?? null }}</td>
+    <td class=" points-tally-bg">{{ $record->score_data->GeneticEvidence->{'Case-ControlData'}->AggregateVariantAnalysis->tally ?? null }}</td>
     <td class="input-width-pmid">
-    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->{'Case=ControlData'}->AggregateVariantAnalysis->pmid ?? null) !!}
+    {!! App\Helper::PrintWrapperPmid($record->score_data->GeneticEvidence->{'Case-ControlData'}->AggregateVariantAnalysis->pmid ?? null) !!}
     </td>
   </tr>
   <tr>
