@@ -25,7 +25,7 @@ $('.action-show-genes').on('click', function() {
 
     if ($('.action-show-regions').hasClass('btn-success'))
         viz.push(1);
-    
+
     filter_push("geneswitch", "type", viz);
     filter_process($table);
 
@@ -165,7 +165,7 @@ $('.action-show-hiknown').on('click', function() {
     if ($(this).hasClass('fa-toggle-off'))
     {
         //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
-        filter_push("hits", ["haplo_assertion", "triplo_assertion"], 
+        filter_push("hits", ["haplo_assertion", "triplo_assertion"],
                     ['3 (Sufficient Evidence)', '3 (Sufficient Evidence)']);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
@@ -291,7 +291,7 @@ $('.action-show-hiknown').on('click', function() {
 	{
 		return Date.parse(rows.rawdate) > timestamp;
     }
-    
+
     /**
 	 *
 	 * Listener for displaying only the recent reviewed items
@@ -344,41 +344,41 @@ $('.action-show-hiknown').on('click', function() {
         {
           //$table.bootstrapTable('filterBy', {acmg59: true});
           filter_push("acmg59", 'acmg59', true);
-    
+
           $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
           $('.action-show-acmg59-text').html('On');
           //$('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
-    
+
           $('.action-af-badge').remove();
-    
-                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v2.0</span>');
+
+                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.0</span>');
                 $('.filter-container').append(newbadge);
-    
+
         }
         else
         {
           //$table.bootstrapTable('filterBy', {acmg59: [false, true]});
           filter_pop("acmg59");
-    
+
           $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
           $('.action-show-acmg59-text').html('Off');
           //$('.action-af-badge').html('None').removeClass('bg-primary');
-    
+
           $('.action-acmg-badge').remove();
-    
+
                 if ($('.filter-container').html() == '')
                 {
                     var newbadge = $('<span class="badge action-af-badge">None</span>');
                     $('.filter-container').append(newbadge);
                 }
-    
+
         }
 
         filter_process($table);
 
-      });  
-      
-      
+      });
+
+
     /*
      **  Filter control for follow mode
     */
@@ -388,28 +388,28 @@ $('.action-show-hiknown').on('click', function() {
         {
           //$table.bootstrapTable('filterBy', {followed: true});
           filter_push("follow", 'followed', true);
-    
+
           $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
           $('.action-show-follow-text').html('On');
           //$('.action-af-badge').html('Followed').addClass('bg-primary');
-    
+
           $('.action-af-badge').remove();
-    
+
                 var newbadge = $('<span class="badge action-follow-badge bg-primary mr-1">Followed</span>');
                 $('.filter-container').append(newbadge);
-    
+
         }
         else
         {
           //$table.bootstrapTable('filterBy', {followed: [false, true]});
           filter_pop("follow");
-    
+
           $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
           $('.action-show-follow-text').html('Off');
           //$('.action-af-badge').html('None').removeClass('bg-primary');
-    
+
           $('.action-follow-badge').remove();
-    
+
           if ($('.filter-container').html() == '')
           {
             var newbadge = $('<span class="badge action-af-badge">None</span>');
@@ -419,7 +419,7 @@ $('.action-show-hiknown').on('click', function() {
 
 
         filter_process($table);
-        
+
       });
 
 
@@ -435,7 +435,7 @@ function filter_push(name, column, value) {
         "active": true
     };
 
-    filter_pop(name); 
+    filter_pop(name);
     filterstack.push(o);
     console.log(filterstack);
 }
@@ -466,7 +466,7 @@ function filter_process(table) {
     monthFilter*/
 
     table.bootstrapTable('filterBy', { }, {'filterAlgorithm': checkFilter});
-    
+
 }
 
 function checkFilter(row, filters)
@@ -513,4 +513,3 @@ function checkFilter(row, filters)
 
         return check;
     }
-    

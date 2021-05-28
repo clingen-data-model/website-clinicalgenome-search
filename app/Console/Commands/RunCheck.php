@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Gene;
 use App\GeneLib;
 use App\Health;
+use App\Validity;
 
 class RunCheck extends Command
 {
@@ -44,7 +45,7 @@ class RunCheck extends Command
     public function handle()
     {
         echo "Checking Genegraph\n";
-        
+
         // first check and update genes table
 
         $results = GeneLib::geneList([	'page' =>  0,
@@ -54,7 +55,7 @@ class RunCheck extends Command
                                         'search' => null,
                                         'forcegg' => true,
                                         'curated' => true ]);
-                                        
+
         //TODO:  this will likely hang on a refresh, need to time out
         if ($results === null || $results->count < 1500)
         {
@@ -111,6 +112,11 @@ class RunCheck extends Command
         }
 
         echo "Genegraph OK ($hash)\n";
+
+        // update validy table (this is a trial to see impact during production)
+        $model = new Validity();
+        $model->assertions();
+
 
         // now check and update dosage related tables
 
