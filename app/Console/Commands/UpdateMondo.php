@@ -101,18 +101,15 @@ class UpdateMondo extends Command
         */
 
         echo "Updating MONDO Disease Library from Monarch ...";
-    
+
         $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
 
         $json = json_decode($data);
-        
+
         $nodes = $json->graphs[0]->nodes;
 
         foreach ($nodes as $node)
         {
-            if (!empty($node->meta->deprecated))
-                continue;
-
             $term = basename($node->id);
             $term = str_replace('_', ':', $term);
 
@@ -128,8 +125,27 @@ class UpdateMondo extends Command
                 $disease = new Disease(['curie' => $term, 'type' => 1, 'status' => 1]);
             }
 
-            $disease->label = $node->lbl;
+            // check if deprecated
+            if (isset($node->meta->deprecated) &&  $node->meta->deprecated === true)
+            {
+                if (!isset($node->lbl))
+                    continue;
+
+                if ($disease->status != Disease::STATUS_GG_DEPRECATED)
+                    $disease->status = Disease::STATUS_DEPRECATED;
+
+                if (strpos($node->lbl, 'obsolete ') === 0)
+                    $disease->label = substr($node->lbl, 9);
+                else
+                    $disease->label = $node->lbl ?? '';
+            }
+            else
+            {
+                $disease->label = $node->lbl ?? '';
+            }
+
             $disease->description = $node->meta->definition->val ?? '';
+
             $synonyms = [];
             if (isset($node->meta->synonyms))
             {
@@ -143,7 +159,7 @@ class UpdateMondo extends Command
         }
 
         echo "DONE\n";
-		
+
 
     }
 }

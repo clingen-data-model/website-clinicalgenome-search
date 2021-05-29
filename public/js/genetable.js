@@ -351,7 +351,9 @@ function datebadgeFormatter(index, row) {
 function conditionFormatter(index, row) {
   // var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
   //           + '<div class="small text-dark">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
-  var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>' + '<div class="small text-dark">' + row.curie + '</div>';
+  var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>' + '<div class="small text-dark">' + row.curie + ' ';
+  if (row.status == 9) html += '<span class="badge bg-light text-muted border-1 text-normal small" title="MONARCH has deprecated this term">Obsolete Term</span>';
+  html += '</div>';
   if (row.synonym != null) html += '<div class="text-sm text-muted">' + row.synonym + '</div>';
   return html;
 }
