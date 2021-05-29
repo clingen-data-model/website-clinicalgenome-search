@@ -41,22 +41,22 @@ class UpdateMane extends Command
     public function handle()
     {
 		echo "Updating MANE data from NCBI ...";
-				
-			
+
+
 		try {
-					
+
 			$results = file_get_contents("https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/MANE.GRCh38.v0.93.summary.txt.gz");
 
 		} catch (\Exception $e) {
-		
+
 			echo "\n(E001) Error retreiving MANE data\n";
 			exit;
-			
+
 		}
-	
+
 		// unzip the data
 		$data = gzdecode($results);
-		
+
 		// discard the header
 		$line = strtok($data, "\n");
 
@@ -64,12 +64,13 @@ class UpdateMane extends Command
 
 		// clear the plus fields since there can be any number of them
 		Gene::query()->update(['mane_plus' => null]);
-		
+		Gene::query()->update(['mane_select' => null]);
+
 		// parse the remaining file
 		while (($line = strtok("\n")) !== false)
 		{
 			$parts = explode("\t", $line);
-			
+
 			//echo "Updating " . $parts[2] . " \n";
 
 			$gene = Gene::hgnc($parts[2])->first();

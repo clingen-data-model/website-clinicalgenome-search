@@ -39,11 +39,16 @@ class UpdateAcmg59c extends Command
      */
     public function handle()
     {
-        echo "Updating ACMG 59 flag from gene list ...";
-            
-        $handle = fopen(base_path() . '/data/acmg59.dat', "r");
+        echo "Updating ACMG 3.0 flag from gene list ...";
+
+        //$handle = fopen(base_path() . '/data/acmg59.dat', "r");
+
+        $handle = fopen(base_path() . '/data/ACMG_SF_v3.0.txt', "r");
         if ($handle)
         {
+            // clear the old flags just in case there are future updates
+            Gene::acmg59()->update(['acmg59' => false]);
+
             while (($line = fgets($handle)) !== false)
             {
                 // process the line read.
@@ -61,7 +66,7 @@ class UpdateAcmg59c extends Command
 
                 echo "Updating " . $line . "\n";
                 $record->update(['acmg59' => true]);
-    
+
             }
 
             fclose($handle);
@@ -70,7 +75,7 @@ class UpdateAcmg59c extends Command
         {
             echo "\n(E001) Cannot access ACMG data file\n";
             exit;
-        } 
+        }
 
         echo "DONE\n";
 

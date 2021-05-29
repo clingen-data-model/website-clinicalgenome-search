@@ -1597,13 +1597,12 @@ class Graphql
 				}
 			}';
 		}
-
+//dd($query);
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
 
 		if (empty($response))
 			return $response;
-
 		// add each gene to the collection
 		foreach($response->diseases->disease_list as $record)
 			$collection->push(new Nodal((array) $record));

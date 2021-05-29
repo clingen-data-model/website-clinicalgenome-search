@@ -10,20 +10,11 @@
             curation_activities
             dosage_curation {
                 triplosensitivity_assertion {
-                    disease {
-                        label
-                        curie
-                    }
                     dosage_classification {
                         ordinal
                         }
                 }
                 haploinsufficiency_assertion {
-                    disease {
-                        label
-                        description
-                        curie
-                    }
                     dosage_classification {
                         ordinal
                         }
@@ -381,7 +372,7 @@
 
 // Condition list
 {
-    diseases(limit: null, curation_activity: ALL)
+    diseases(limit: null, curation_activity: ALL, sort: {field: GENE_LABEL, direction: ASC}) {
     {
         count
         disease_list {

@@ -43,15 +43,15 @@ class UpdateDisease extends Command
     public function handle()
     {
         echo "Updating G-D-A Disease Activity from Genegraph ...";
-        
+
         $results = GeneLib::conditionList([	'page' =>  0,
 										'pagesize' => "null",
-										'sort' => 'GENE_LABEL',
-                                        'direction' => 'ASC',
+										'sort' => null,
+                                        'direction' => null,
                                         'forcegg' => true,
                                         'search' => null,
                                         'curated' => true ]);
-                                        
+
         if ($results === null)
         {
 

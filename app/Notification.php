@@ -96,7 +96,7 @@ class Notification extends Model
 	 		0 => 'Initialized',
 	 		9 => 'Deleted'
      ];
-     
+
      public const FREQUENCY_NONE = 0;
      public const FREQUENCY_DEFAULT = 0;
      public const FREQUENCY_DAILY = 1;
@@ -125,7 +125,7 @@ class Notification extends Model
           self::FREQUENCY_ANNUAL => 'annual'
      ];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -152,7 +152,7 @@ class Notification extends Model
                               'summary' => self::FREQUENCY_MONTHLY
                            ];
      }
-     
+
 
      /*
      * The owner of this notification
@@ -161,7 +161,7 @@ class Notification extends Model
     {
        return $this->belongsTo('App\User');
     }
-     
+
 
 	/**
      * Query scope by ident
@@ -242,7 +242,7 @@ class Notification extends Model
           {
                $freq = $this->frequency;
                array_push($freq['Default'], $genes);
-               $this->frequency = $freq;    
+               $this->frequency = $freq;
           }
      }
 
@@ -257,19 +257,19 @@ class Notification extends Model
      {
          if ($this->frequency === null)
              return true;
- 
+
          if (!isset($this->frequency['Default']))
              return true;
-     
+
          if (!in_array($item, $this->frequency['Default']))
              return true;
-         
+
          $frequency = $this->frequency;
          if (($key = array_search($item, $frequency['Default'])) !== false)
               unset($frequency['Default'][$key]);
          $frequency['Default'] = array_values($frequency['Default']);
          $this->frequency = $frequency;
- 
+
          return true;
      }
 
@@ -301,12 +301,12 @@ class Notification extends Model
                     return 4320;
                case self::FREQUENCY_ANNUAL:
                     return 8790;
-               default: 
+               default:
                     return -1;
           }
      }
 
-    
+
      /**
      * Transform the stored frequency strucure
      *
@@ -326,7 +326,7 @@ class Notification extends Model
 
                if (isset($frequency['Daily']))
                     $genes = array_merge($genes, $frequency['Daily']);
-               
+
                if ($frequency['frequency'] == self::FREQUENCY_DAILY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
@@ -343,14 +343,14 @@ class Notification extends Model
 
                if (isset($frequency['Weekly']))
                     $genes = array_merge($genes, $frequency['Weekly']);
-               
+
                if ($frequency['frequency'] == self::FREQUENCY_WEEKLY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
                array_walk($genes, array($this, 'walk'));
 
 
-               $reports[] = ['start_date' => Carbon::subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
           }
 
@@ -361,14 +361,14 @@ class Notification extends Model
 
                if (isset($frequency['Monthly']))
                     $genes = array_merge($genes, $frequency['Monthly']);
-               
+
                if ($frequency['frequency'] == self::FREQUENCY_MONTHLY && isset($frequency['Default']))
                     $genes = array_merge($genes, $frequency['Default']);
 
                array_walk($genes, array($this, 'walk'));
 
 
-               $reports[] = ['start_date' => Carbon::subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+               $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
           }
 
@@ -394,7 +394,7 @@ class Notification extends Model
 
                $reports[] = ['start_date' => Carbon::now()->subYear()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
-               
+
                return $reports;
           }
 
@@ -404,7 +404,7 @@ class Notification extends Model
           Carbon::now()->format('m') == '04' || Carbon::now()->format('m') == '07' ||
           Carbon::now()->format('m') == '10') && (($frequency['summary'] == self::FREQUENCY_QUARTERLY)))
           {
-     
+
                $reports[] = ['start_date' => Carbon::now()->subQuarter()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
 
@@ -428,7 +428,7 @@ class Notification extends Model
 
                $reports[] = ['start_date' => Carbon::now()->subWeek()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":["' . implode('", "', $this->genes) . '"]}')];
-               
+
                return $reports;
           }
 
@@ -448,20 +448,20 @@ class Notification extends Model
 
           if (isset($freq['Default']) && in_array($gene, $freq['Default']))
                return 'Default';         //'$this->frequency_strings[$freq['frequency']];'
-          
+
           if (isset($freq['Daily']) && in_array($gene, $freq['Daily']))
                return 'Daily';
 
           if (isset($freq['Weekly']) && in_array($gene, $freq['Weekly']))
                return 'Weekly';
-          
+
           if (isset($freq['Monthly']) && in_array($gene, $freq['Monthly']))
                return 'Monthly';
 
           if (isset($freq['Pause']) && in_array($gene, $freq['Pause']))
                return 'Pause';
 
-          return 'Default'; 
+          return 'Default';
      }
 
 
@@ -481,7 +481,7 @@ class Notification extends Model
                if (in_array($name, $this->frequency[$bucket]))
                     return $bucket;
           }
-          
+
           return false;
      }
 
@@ -501,11 +501,11 @@ class Notification extends Model
           }
 
           if (!isset($this->frequency['Groups']))
-          {  
+          {
                $this->frequency['Groups'] = [$group];
                return true;
           }
-    
+
           if (!in_array($group, $this->frequency['Groups']))
           {
                $frequency = $this->frequency;
@@ -525,19 +525,19 @@ class Notification extends Model
      {
          if ($this->frequency === null)
              return false;
- 
+
          if (!isset($this->frequency[$bucket]))
              return false;
-     
+
          if (!in_array($name, $this->frequency[$bucket]))
              return false;
-         
+
          $frequency = $this->frequency;
          if (($key = array_search($name, $frequency[$bucket])) !== false)
               unset($frequency[$bucket][$key]);
          $frequency[$bucket] = array_values($frequency[$bucket]);
          $this->frequency = $frequency;
- 
+
          return true;
      }
 
@@ -552,19 +552,19 @@ class Notification extends Model
      {
          if ($this->frequency === null)
              return true;
- 
+
          if (!isset($this->frequency['Groups']))
              return true;
-     
+
          if (!in_array($group, $this->frequency['Groups']))
              return true;
-         
+
          $frequency = $this->frequency;
          if (($key = array_search($group, $frequency['Groups'])) !== false)
               unset($frequency['Groups'][$key]);
          $frequency['Groups'] = array_values($frequency['Groups']);
          $this->frequency = $frequency;
- 
+
          return true;
      }*/
 
