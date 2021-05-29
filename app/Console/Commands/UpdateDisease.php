@@ -68,14 +68,24 @@ class UpdateDisease extends Command
                         'dosage' => $disease->has_dosage
                     ];
 
+            $status = Disease::STATUS_ACTIVE;
+
+            if (strpos($disease->label, 'obsolete ') === 0)
+            {
+                $status = Disease::STATUS_GG_DEPRECATED;
+                $disease->label = substr($disease->label, 9);
+            }
+
             $record = Disease::updateOrCreate(['curie' => $disease->curie], [
                                         'label' => $disease->label,
                                         'description' => $disease->description,
                                         'synonyms' => $disease->synonyms,
                                         'last_curated_date' => $disease->last_curated_date,
                                         'curation_activities' => $flags,
-                                        'type' => 1, 'status' => 1]);
+                                        'type' => 1, 'status' => $status]);
         }
+
+        // now hide all the obsolete, non-curated diseases
 
         echo "DONE\n";
 

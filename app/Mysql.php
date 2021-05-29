@@ -206,7 +206,7 @@ class Mysql
 		// manipulate the return order per Erin
 		if (empty($search))
 		{
-			$collection = Disease::all();
+			$collection = Disease::filter()->orderBy('curie')->get();
 		}
 		else
 		{

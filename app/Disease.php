@@ -83,6 +83,9 @@ class Disease extends Model
 	];
 
      public const STATUS_INITIALIZED = 0;
+     public const STATUS_ACTIVE = 1;
+     public const STATUS_GG_DEPRECATED = 9;
+     public const STATUS_DEPRECATED = 10;
 
      /*
      * Status strings for display methods
@@ -93,7 +96,7 @@ class Disease extends Model
 	 		9 => 'Deleted'
 	];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -105,7 +108,7 @@ class Disease extends Model
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
 	}
-     
+
 
 	/**
      * Query scope by ident
@@ -131,6 +134,30 @@ class Disease extends Model
     }
 
 
+    /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDeprecated($query)
+    {
+		return $query->where('status', 9);
+    }
+
+
+    /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeFilter($query)
+    {
+		return $query->whereIn('status', [1, 9]);
+    }
+
+
 	/**
      * Get a display formatted form of aliases
      *
@@ -144,43 +171,43 @@ class Disease extends Model
 
 		return $this->syonyms[0] ?? '';
      }
-     
+
 
      /**
-     * Flag indicating if gene has any dosage curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
      */
     public function getHasDosageAttribute()
     {
-		return (isset($this->curation_activities) ? 
-			$this->curation_activities['dosage'] : false); 
+		return (isset($this->curation_activities) ?
+			$this->curation_activities['dosage'] : false);
      }
-     
+
 
      /**
-     * Flag indicating if gene has any actionability curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any actionability curations
+     *
+     * @@param
+     * @return
      */
     public function getHasActionabilityAttribute()
     {
-		return (isset($this->curation_activities) ? 
-			$this->curation_activities['actionability'] : false); 
+		return (isset($this->curation_activities) ?
+			$this->curation_activities['actionability'] : false);
      }
-     
+
 
      /**
-     * Flag indicating if gene has any validity curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any validity curations
+     *
+     * @@param
+     * @return
      */
     public function getHasValidityAttribute()
     {
-		return (isset($this->curation_activities) ? 
-			$this->curation_activities['validity'] : false); 
+		return (isset($this->curation_activities) ?
+			$this->curation_activities['validity'] : false);
 	}
 }

@@ -28,28 +28,29 @@ class Condition extends JsonResource
             'has_variant' => $this->has_variant ?? false,
             'synonym' => GeneLib::conditionLastSynonym($this),
             'date' => $this->displayDate($this->last_curated_date),
-            'rawdate' => $this->last_curated_date
+            'rawdate' => $this->last_curated_date,
+            'status' => $this->status
         ];
     }
-    
-    
+
+
     /**
-     * 
+     *
      * Map the node structure to a json consumable array
-     * 
+     *
      */
     protected function mapCurations()
     {
 		if (empty($this->curations))
 			return [];
-			
+
 		foreach($this->curations as $node)
 		{
 			$map = $node->values();
 			$map['labels'] = $node->labels();
 			$curations[] = $map;
 		}
-		
+
 		return $curations;
 	}
 }

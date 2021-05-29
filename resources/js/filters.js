@@ -4,6 +4,7 @@ var filterstack = [
 
 /**
  *
+ *
  * Listener for displaying only genes
  *
  * */
@@ -347,7 +348,7 @@ $('.action-show-hiknown').on('click', function() {
 
           $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
           $('.action-show-acmg59-text').html('On');
-          //$('.action-af-badge').html('ACMG SF v2.0').addClass('bg-primary');
+          //$('.action-af-badge').html('ACMG SF v3.0').addClass('bg-primary');
 
           $('.action-af-badge').remove();
 

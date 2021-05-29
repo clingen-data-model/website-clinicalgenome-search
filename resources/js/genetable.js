@@ -50,7 +50,7 @@ function reportDetailFormatter(index, row, element)
         async: false,
         success: function(data) {
             html = data;
-        } 
+        }
     });
 
     return html;
@@ -501,7 +501,12 @@ function conditionFormatter(index, row) {
     // var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
     //           + '<div class="small text-dark">' + row.curie + ' <span class="badge text-xs">Condition</span></div>';
     var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'
-        + '<div class="small text-dark">' + row.curie + '</div>';
+        + '<div class="small text-dark">' + row.curie + ' ';
+
+    if (row.status == 9)
+        html += '<span class="badge bg-light text-muted border-1 text-normal small" title="MONARCH has deprecated this term">Obsolete Term</span>';
+
+    html += '</div>';
 
     if (row.synonym != null)
       html += '<div class="text-sm text-muted">' + row.synonym + '</div>';
@@ -526,7 +531,7 @@ function cbadgeFormatter(index, row) {
         html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
     else
         html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
-    
+
     if (row.has_variant)
         html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
     else
@@ -542,7 +547,7 @@ function cbadgeFormatter(index, row) {
 }
 
 function drsymbolFormatter(index, row) {
-    return '<a href="/kb/drugs/' + row.curie + '">RXNORM:' + row.curie 
+    return '<a href="/kb/drugs/' + row.curie + '">RXNORM:' + row.curie
             + '</a>';
 }
 
@@ -552,7 +557,7 @@ function drugFormatter(index, row) {
 }
 
 function drPortalFormatter(index, row) {
-    return '<a target="external" href="https://bioportal.bioontology.org/ontologies/RXNORM?p=classes&conceptid=' 
+    return '<a target="external" href="https://bioportal.bioontology.org/ontologies/RXNORM?p=classes&conceptid='
     + row.curie + '" class="badge-info badge pointer ml-2">BioPortal <i class="fas fa-external-link-alt"></i></a>';
 
 }
@@ -645,7 +650,7 @@ function hasdosageFormatter(index, row) {
     return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/genes/'
             + row.hgnc_id
             + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
-   
+
     /*if (row.has_dosage_haplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
         //      + row.hgnc_id
