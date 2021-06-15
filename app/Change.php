@@ -47,7 +47,7 @@ class Change extends Model
         'change_date' => 'timestamp',
 		'status' => 'integer'
 	];
-    
+
 	/**
      * Map the json attributes to associative arrays.
      *
@@ -55,7 +55,8 @@ class Change extends Model
      */
 	protected $casts = [
 			'haplo_other' => 'array',
-            'triplo_other' => 'array'
+            'triplo_other' => 'array',
+            'description' => 'array'
 		];
 
     /**
@@ -64,7 +65,7 @@ class Change extends Model
      * @var array
      */
 	protected $fillable = ['ident', 'element_id', 'element_type', 'old_id', 'old_type', 'new_id', 'new_type',
-                            'type', 'category', 'change_date', 'status',
+                            'type', 'category', 'change_date', 'status', 'description',
                          ];
 
 	/**
@@ -103,7 +104,7 @@ class Change extends Model
 	 		9 => 'Deleted'
      ];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -159,7 +160,7 @@ class Change extends Model
         return 'Unknown';
 
     }
-     
+
 
 	/**
      * Query scope by ident
@@ -225,15 +226,15 @@ class Change extends Model
     {
         if (isset($filters['first']) && $filters['first'] == "on")
         {
-    
+
             $query = $query->whereHas('new', function($subquery) use($genes){
                 return $subquery->whereIn('gene_label', $genes);
             })->groupBy('element_id');
 
             return $query;
         }
-       
-        
+
+
         if (isset($filters['gene_label']))
         {
             $genes = $filters['gene_label'];
@@ -248,7 +249,7 @@ class Change extends Model
 
             if (in_array('@AllValidity', $genes))
                 $query = $query->orWhere('new_type', 'App\Validity');
-            
+
             if (in_array('@AllDosage', $genes))
                 $query = $query->orWhere('new_type', 'App\Sensitivity');
 
@@ -261,7 +262,7 @@ class Change extends Model
                     $query->where('acmg59', 1);
                 });
             }
-            
+
         }
 
 		return $query;
@@ -276,6 +277,6 @@ class Change extends Model
      */
 	public function assertions()
     {
-        
+
     }
 }

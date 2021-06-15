@@ -267,7 +267,8 @@ class Actionability extends Model
                                      'new_id' => $new->id,
                                      'new_type' => 'App\Actionability',
                                      'change_date' => $new->adult_report_date > $new->pediatric_report_date ? $new->adult_report_date : $new->pediatric_report_date,
-                                     'status' => 1
+                                     'description' => ['New curation activity'],
+                                     'status' => 1,
                             ]);
 
                     continue;
@@ -318,7 +319,9 @@ class Actionability extends Model
                     }
                 }
 
-                if (!$this->compare($current, $new))      // update
+                $differences = $this->compare($current, $new);
+
+                if (!empty($differences))      // update
                 {
                     //dd($new);
                     $new->save();
@@ -335,7 +338,8 @@ class Actionability extends Model
                                      'new_id' => $new->id,
                                      'new_type' => 'App\Actionability',
                                      'change_date' => $new->adult_report_date > $new->pediatric_report_date ? $new->adult_report_date : $new->pediatric_report_date,
-                                     'status' => 1
+                                     'status' => 1,
+                                     'description' => $this->scribe($differences)
                             ]);
                 }
             }
@@ -366,6 +370,66 @@ class Actionability extends Model
 
         $diff = array_diff_assoc($new_array, $old_array);
 
-        return empty($diff);
+        return $diff;
+    }
+
+
+    /**
+     * Parse the content array and return a scribe version for reports
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scribe($content)
+    {
+        if (empty($content))
+            return null;
+
+        $annot = [];
+
+        foreach ($content as $key => $value)
+        {
+            switch ($key)
+            {
+                case 'gene_label':
+                    $annot[] = 'Gene symbol has changed';
+                    break;
+                case 'gene_hgnc_id':
+                    $annot[] = 'Gene HGNC ID has changed';
+                    break;
+                case 'disease_label':
+                    $annot[] = 'Disease label has changed';
+                    break;
+                case 'disease_mondo':
+                    $annot[] = 'Disease MONDO ID has changed';
+                    break;
+                case 'adult_report_date':
+                    $annot[] = 'Adult report date has changed';
+                    break;
+                case 'adult_source':
+                    $annot[] = 'Adult report has changed';
+                    break;
+                case 'adult_classification':
+                    $annot[] = 'Adult classification has changed';
+                    break;
+                case 'adult_attributed_to':
+                    $annot[] = 'Adult Working Group has changed';
+                    break;
+                case 'pediatric_report_date':
+                    $annot[] = 'Pediatric  report date has changed';
+                    break;
+                case 'pediatric_source':
+                    $annot[] = 'Pediatric report has changed';
+                    break;
+                case 'pediatric_classification':
+                    $annot[] = 'Pediatric classification has changed';
+                    break;
+                case 'pediatric_attributed_to':
+                    $annot[] = 'Pediatric Working Group has changed';
+                    break;
+            }
+        }
+
+        return $annot;
     }
 }

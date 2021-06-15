@@ -31,9 +31,9 @@
     <div class="row justify-content-center">
         <div class="col-md-12 mt-3">
             <div id="toolbar" class="text-right">
-                        
+
             </div>
-            <div class="row mb-3">  
+            <div class="row mb-3">
                 <div class="col-md-12 native-table">
                     <table class="table" id="table" data-toggle="table"
                                     data-sort-name="symbol"
@@ -98,7 +98,7 @@
                             </td>
                             <td>{{ $report->change_date }}</td>
                             <td>{{ $report->activity }}</td>
-                            <td></td>
+                            <td>{{ $report->description == null ? '' :  implode(',', $report->description )}}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -114,7 +114,7 @@
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
     <link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
-    
+
 @endsection
 
 @section('script_js')

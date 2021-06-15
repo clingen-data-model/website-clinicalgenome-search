@@ -109,7 +109,7 @@ class Validity extends Model
 	 		9 => 'Deleted'
      ];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -139,7 +139,7 @@ class Validity extends Model
     {
         return $this->morphOne(Change::class, 'new');
     }
-     
+
 
 	/**
      * Query scope by ident
@@ -185,8 +185,8 @@ class Validity extends Model
         if (empty($assertions))
             die ("Failure to retrieve new data");
 
-        // clear out the status field 
-        
+        // clear out the status field
+
         // compare and update
         foreach ($assertions->collection as $assertion)
         {
@@ -223,6 +223,7 @@ class Validity extends Model
                                 'new_id' => $current->id,
                                 'new_type' => 'App\Validity',
                                 'change_date' => $current->report_date,
+                                'description' => ['New curation activity'],
                                 'status' => 1
                     ]);
 
@@ -245,7 +246,9 @@ class Validity extends Model
                                     'status' => 1
                                 ]);
 
-            if (!$this->compare($current, $new))      // update
+            $differences = $this->compare($current, $new);
+
+            if (!empty($differences))      // update
             {
                 //dd($new);
                 $new->save();
@@ -263,11 +266,12 @@ class Validity extends Model
                                 'new_id' => $new->id,
                                 'new_type' => 'App\Validity',
                                 'change_date' => Carbon::yesterday(),   // $new->report_date,
-                                'status' => 1
+                                'status' => 1,
+                                'description' => $this->scribe($differences)
                     ]);
             }
         }
-        
+
         return $assertions;
     }
 
@@ -287,12 +291,66 @@ class Validity extends Model
         unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
               $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
               $old_array['list_date'], $old_array['display_status']);
-        unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'], 
+        unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'],
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
               $new_array['list_date'], $new_array['display_status']);
 
         $diff = array_diff_assoc($new_array, $old_array);
 
-        return empty($diff);
+        return $diff;
+    }
+
+
+    /**
+     * Parse the content array and return a scribe version for reports
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scribe($content)
+    {
+        if (empty($content))
+            return null;
+
+        $annot = [];
+
+        foreach ($content as $key => $value)
+        {
+            switch ($key)
+            {
+                case 'curie':
+                    $annot[] = 'New assertion';
+                    break;
+                case 'report_date':
+                    $annot[] = 'Report date has changed';
+                    break;
+                case 'gene_label':
+                    $annot[] = 'Gene symbol has changed';
+                    break;
+                case 'gene_hgnc_id':
+                    $annot[] = 'Gene HGNC ID has changed';
+                    break;
+                case 'disease_label':
+                    $annot[] = 'Disease label has changed';
+                    break;
+                case 'disease_mondo':
+                    $annot[] = 'Disease MONDO ID has changed';
+                    break;
+                case 'mode_of_inheritance':
+                    $annot[] = 'MOI classification has changed';
+                    break;
+                case 'classification':
+                    $annot[] = 'Validity classification has changed';
+                    break;
+                case 'specified_by':
+                    $annot[] = 'Evaluation SOP has changed';
+                    break;
+                case 'attributed_to':
+                    $annot[] = 'CGEP/WG attribution has changed';
+                    break;
+            }
+        }
+
+        return $annot;
     }
 }

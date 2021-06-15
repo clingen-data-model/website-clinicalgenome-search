@@ -1,9 +1,10 @@
 <div class="pl-3 pr-3 pr-3 pb-0 collapse in" id="collapseFollow">
     <div id="follow-toolbar" class="text-right">
-        <button class="btn btn-block action-new-gene">Add New Gene To Follow</button>  
+        <button class="btn btn-block action-new-gene">Follow New Gene</button>
+        <button class="btn action-new-region">Follow New Region</button>
     </div>
 
-    <div class="row mb-3">  
+    <div class="row mb-3">
         <div class="col-md-12 native-table">
             <table class="table" id="follow-table" data-toggle="table"
                     data-sort-name="symbol"
