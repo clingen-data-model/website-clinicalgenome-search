@@ -753,7 +753,7 @@ $(function () {
               $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
           }
 
-          $('#modalSearchGene').modal('hide');
+          $('#modalSearchRegion').modal('hide');
         }).fail(function (response) {
           alert("Error reloading table");
         });
