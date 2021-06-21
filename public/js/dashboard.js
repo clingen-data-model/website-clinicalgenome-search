@@ -128,7 +128,15 @@ $(function () {
     window.location.reload();
   });
   /**
-   * Chow screen to follow a new gene
+   * Show screen to follow a new gene
+   */
+
+  $('.action-new-region').on('click', function () {
+    $('#search_region_form')[0].reset();
+    $('#modalSearchRegion').modal('show');
+  });
+  /**
+   * Show screen to follow a new gene
    */
 
   $('.action-new-gene').on('click', function () {
@@ -163,7 +171,12 @@ $(function () {
         'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
       }
     });
-    var url = "/api/reports/" + uuid; //submits to the form's action URL
+    var url = "/api/reports/" + uuid;
+    $('#report-form')[0].reset(); // deal with hidden fields
+
+    $("#report_form input[name=ident]").val(''); // clear the gene selector
+
+    myselect.tagsinput('removeAll'); //submits to the form's action URL
 
     $.get(url, function (response) {
       $('#edit-report-title').html('Edit User Report');
@@ -171,7 +184,8 @@ $(function () {
       $('#report-form').find("[name='description']").val(response.fields.description);
       $('#report-form').find("[name='startdate']").val(response.fields.startdate);
       $('#report-form').find("[name='stopdate']").val(response.fields.stopdate);
-      $('#report-form').find("[name='ident']").val(uuid); //console.log(response.fields.genes);
+      $('#report-form').find("[name='ident']").val(uuid);
+      $('#report-form').find("[name='regions']").val(response.fields.regions); //console.log(response.fields.genes);
 
       response.fields.genes.forEach(function (element) {
         myselect.tagsinput('add', {
@@ -493,7 +507,7 @@ $(function () {
     $('.dropdown-menu[data-parent]').hide();
   });
   /**
-   * 
+   *
    * Send otification changes to the server
    */
 
@@ -613,6 +627,92 @@ $(function () {
     }
   });
   $('#follow_form').validate({
+    submitHandler: function submitHandler(form) {
+      $.ajaxSetup({
+        cache: true,
+        contentType: "application/x-www-form-urlencoded",
+        processData: true,
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-TOKEN': window.token,
+          'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+        }
+      });
+      var url = "/api/genes/follow";
+      var formData = $(form).serialize(); //submits to the form's action URL
+
+      $.post(url, formData, function (response) {
+        var url = "/api/home/follow/reload";
+        var gene = response.gene; //submits to the form's action URL
+
+        $.get(url, function (response) {
+          //console.log(response.data);
+          $('#follow-table').bootstrapTable('load', response.data);
+          $('#follow-table').bootstrapTable("resetSearch", "");
+
+          switch (gene) {
+            case '@AllActionability':
+              $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+              break;
+
+            case '@AllValidity':
+              $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+              break;
+
+            case '@AllDosage':
+              $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+              break;
+
+            case '*':
+              $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+          }
+
+          $('#modalSearchGene').modal('hide');
+        }).fail(function (response) {
+          alert("Error reloading table");
+        });
+      }).fail(function (response) {
+        swal({
+          title: "Error",
+          text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+          icon: "error"
+        });
+      });
+    },
+    rules: {
+      email: {
+        required: true,
+        email: true,
+        maxlength: 80
+      }
+    },
+    messages: {
+      email: {
+        required: "Please enter your email address",
+        email: "Please enter a valid email address",
+        maxlength: "Section names must be less than 80 characters"
+      }
+    },
+    errorElement: 'em',
+    errorClass: 'invalid-feedback',
+    errorPlacement: function errorPlacement(error, element) {
+      // Add the `help-block` class to the error element
+      error.addClass("invalid-feedback");
+
+      if (element.prop("type") === "checkbox") {
+        error.insertAfter(element.parent("label"));
+      } else {
+        error.insertAfter(element);
+      }
+    },
+    highlight: function highlight(element, errorClass, validClass) {
+      $(element).addClass("is-invalid").removeClass("is-valid");
+    },
+    unhighlight: function unhighlight(element, errorClass, validClass) {
+      $(element).addClass("is-valid").removeClass("is-invalid");
+    }
+  });
+  $('#search_region_form').validate({
     submitHandler: function submitHandler(form) {
       $.ajaxSetup({
         cache: true,

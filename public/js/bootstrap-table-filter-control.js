@@ -2964,7 +2964,6 @@
     }, {
       key: "onColumnSearch",
       value: function onColumnSearch(_ref2) {
-        console.log("oncolumnsearch");
         var currentTarget = _ref2.currentTarget,
             keyCode = _ref2.keyCode;
 

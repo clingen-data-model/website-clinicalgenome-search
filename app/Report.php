@@ -47,7 +47,7 @@ class Report extends Model
         'notes' => 'string',
 		'status' => 'integer'
 	];
-    
+
 	/**
      * Map the json attributes to associative arrays.
      *
@@ -97,7 +97,7 @@ class Report extends Model
 	 		9 => 'Deleted'
      ];
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -143,7 +143,7 @@ class Report extends Model
 		return $this->start_date->timezone('America/New_York')
 					->format("m/d/Y");
     }
-    
+
 
     /**
      * Return a displayable string of stop date
@@ -159,7 +159,7 @@ class Report extends Model
 		return $this->stop_date->timezone('America/New_York')
 					->format("m/d/Y");
 	}
-     
+
 
 	/**
      * Query scope by ident
@@ -207,5 +207,40 @@ class Report extends Model
                             ->filters($this->filters)->get();
 
         return $changes;
+    }
+
+
+    /**
+     * Parse filter and return a structured list
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function parse_filter()
+    {
+        $resp = ['genes' => [], 'regex' => [], 'groups' => [], 'regions' => []];
+
+        if ($this->filters['gene_label'] === null)
+            return $resp;
+
+        foreach ($this->filters['gene_label'] as $item)
+        {
+            switch (substr($item, 0, 1))
+            {
+                case '*':
+                    $resp['regex'][] = $item;
+                    break;
+                case '%':
+                    $resp['regions'][] = substr($item,1);
+                    break;
+                case '@':
+                    $resp['groups'][] = $item;
+                    break;
+                default:
+                    $resp['genes'][] = $item;
+            }
+        }
+
+        return $resp;
     }
 }

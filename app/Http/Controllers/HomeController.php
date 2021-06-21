@@ -69,19 +69,19 @@ class HomeController extends Controller
         {
             switch ($group->name)
             {
-                case '@AllGenes': 
+                case '@AllGenes':
                     $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
                     break;
-                case '@AllDosage': 
+                case '@AllDosage':
                     $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
-                case '@AllValidity': 
+                case '@AllValidity':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
                     break;
-                case '@AllActionability': 
+                case '@AllActionability':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
                     break;
-                default: 
+                default:
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
 
@@ -372,6 +372,9 @@ class HomeController extends Controller
 
                 $list = $report->filters['gene_label'];
 
+                // do some dirty cleanup of genes list to remove region prefix
+                $list = str_replace('%', '', $list);
+
                 if (is_array($report->filters['gene_label']))
                     sort($list);
 
@@ -406,7 +409,7 @@ class HomeController extends Controller
     {
 
         $input = $request->only(['title', 'description', 'startdate', 'stopdate',
-                                'genes', 'ident']);
+                                'genes', 'regions', 'ident']);
 
         if (!Auth::guard('api')->check())
         {
@@ -429,6 +432,20 @@ class HomeController extends Controller
             }
             else
                 $newgenes[] = $genename;
+        }
+
+        $regionnames = explode(';', $input['regions']);
+
+        foreach ($regionnames as $regionname)
+        {
+            /*if (strpos($genename, 'HGNC') === 0)
+            {
+                $gene = Gene::hgnc($genename)->first();
+                if ($gene !== null)
+                    $newgenes[] = $gene->name;
+            }
+            else*/
+                $newgenes[] = '%' . $regionname;
         }
 
         if (empty($input['ident']))

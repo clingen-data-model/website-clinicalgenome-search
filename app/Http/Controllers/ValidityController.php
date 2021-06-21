@@ -14,6 +14,7 @@ use Auth;
 require app_path() .  '/Helpers/helper.php';
 
 use App\GeneLib;
+use App\Filter;
 
 /**
  *
@@ -63,7 +64,9 @@ class ValidityController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "validity",
-            'title' => "ClinGen Gene-Disease Validity Curations"
+            'title' => "ClinGen Gene-Disease Validity Curations",
+            'scrid' => Filter::SCREEN_VALIDITY_CURATIONS,
+			'display' => "Gene-Disease Validity"
         ]);
 
         $col_search = collect([
@@ -71,10 +74,22 @@ class ValidityController extends Controller
             'col_search_val' => $request->col_search_val,
         ]);
 
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_VALIDITY_CURATIONS)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
 
-        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_VALIDITY_CURATIONS);
 
-        //dd($col_search);
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene-validity.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
@@ -82,7 +97,9 @@ class ValidityController extends Controller
 						->with('page', $page)
                         ->with('col_search', $col_search)
                         ->with('user', $this->user)
-                        ->with('display_list', $display_list);
+                        ->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
     }
 
 

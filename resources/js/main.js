@@ -30,7 +30,7 @@ $('.action-logout-now').on('click', function(){
     $('#logout-form').submit();
 });
 
-// log out 
+// log out
 $( '#logout-form' ).validate( {
     submitHandler: function(form) {
 
@@ -44,9 +44,9 @@ $( '#logout-form' ).validate( {
                 'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
             }
         });
-      
+
         var url = "/api/logout";
-        
+
         var formData = $(form).serialize();
 
         $.post(url, formData, function(response)
@@ -66,7 +66,7 @@ $( '#logout-form' ).validate( {
                 className: "swal-success",
                 buttons: false
                 });
-                
+
                     /*$('.action-login').html('Login').attr('href', '#')
                                 .on('click', function() {
                                 $('#modalLogin').modal('show');
@@ -84,15 +84,15 @@ $( '#logout-form' ).validate( {
 
 $( '#login-form' ).validate( {
     submitHandler: function(form) {
-      
+
         $.ajaxSetup({
             cache: true,
             contentType: "application/x-www-form-urlencoded",
             processData: true
         });
-        
+
         var url = "/api/login";
-        
+
         var formData = $(form).serialize();
 
         $.post(url, formData, function(response)
@@ -111,7 +111,7 @@ $( '#login-form' ).validate( {
                 className: "swal-success",
                 buttons: false
                 });
-            
+
             // initialize user and add dashboard menu
             $('#nav-user-name').html(response.user);
             $('#login-menu').hide();
@@ -125,7 +125,7 @@ $( '#login-form' ).validate( {
                 var color = $('.stats-banner').find('.fa-star').css('color');
 
                     if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
-                { 
+                {
                 $('.stats-banner').find('.fa-star').css('color', 'green');
                 }
 
@@ -135,6 +135,7 @@ $( '#login-form' ).validate( {
             // some pages require a complete reload, so send event
             $('#dashboard-logout').trigger('logout');
             $('#curated-filter-dashboard').trigger('login');
+            $('#preferences-menu').trigger('login');
 
             window.auth = 1;
       }).fail(function(response)
@@ -160,7 +161,7 @@ $( '#login-form' ).validate( {
         required: "Please enter your email address",
         email: "Please enter a valid email address",
         maxlength: "Section names must be less than 80 characters"
-      },	
+      },
     },
     errorElement: 'em',
     errorClass: 'invalid-feedback',
@@ -185,15 +186,15 @@ $( '#login-form' ).validate( {
 
 $( '#forgot-form' ).validate( {
     submitHandler: function(form) {
-      
+
         $.ajaxSetup({
             cache: true,
             contentType: "application/x-www-form-urlencoded",
             processData: true
         });
-        
+
         var url = "/api/forgot";
-        
+
         var formData = $(form).serialize();
 
         $.post(url, formData, function(response)
@@ -209,7 +210,7 @@ $( '#forgot-form' ).validate( {
                 className: "swal-success",
                 buttons: false
                 });
-            
+
       }).fail(function(response)
       {
         //handle failed validation
@@ -229,7 +230,7 @@ $( '#forgot-form' ).validate( {
         required: "Please enter your email address",
         email: "Please enter a valid email address",
         maxlength: "Section names must be less than 80 characters"
-      },	
+      },
     },
     errorElement: 'em',
     errorClass: 'invalid-feedback',
@@ -254,15 +255,15 @@ $( '#forgot-form' ).validate( {
 
 $( '#register-form' ).validate( {
     submitHandler: function(form) {
-      
+
         $.ajaxSetup({
             cache: true,
             contentType: "application/x-www-form-urlencoded",
             processData: true
         });
-        
+
         var url = "/api/register";
-        
+
         var formData = $(form).serialize();
 
         $.post(url, formData, function(response)
@@ -275,7 +276,7 @@ $( '#register-form' ).validate( {
                 title: "You have successfully registered!",
                 text: "An confirmation email has been sent to your email address.  Please follow the directions to verify and complete the registration.",
                 className: "swal-success"});
-                
+
             // initialize user and add dashboard menu
             //$('#nav-user-name').html(response.user);
             //$('#login-menu').hide();
@@ -289,7 +290,7 @@ $( '#register-form' ).validate( {
                 var color = $('.stats-banner').find('.fa-star').css('color');
 
                     if (typeof color !== 'undefined' && color == "rgb(211, 211, 211)")
-                { 
+                {
                 $('.stats-banner').find('.fa-star').css('color', 'green');
                 }
 
@@ -340,7 +341,7 @@ $( '#register-form' ).validate( {
             required: "Please enter your email address",
             email: "Please enter a valid email address",
             maxlength: "Section names must be less than 80 characters"
-        },	
+        },
     },
     errorElement: 'em',
     errorClass: 'invalid-feedback',

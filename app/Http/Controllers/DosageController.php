@@ -12,6 +12,7 @@ use Auth;
 
 use App\Exports\DosageExport;
 use App\GeneLib;
+use App\Filter;
 
 /**
 *
@@ -62,7 +63,9 @@ class DosageController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
-            'title' => "Dosage Sensitivity Curations"
+            'title' => "Dosage Sensitivity Curations",
+            'scrid' => Filter::SCREEN_DOSAGE_CURATIONS,
+			'display' => "Dosage Sensitivity"
 		]);
 
 		$col_search = collect([
@@ -70,7 +73,22 @@ class DosageController extends Controller
 			'col_search_val' => $request->col_search_val,
 		]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_DOSAGE_CURATIONS)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_DOSAGE_CURATIONS);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -79,7 +97,9 @@ class DosageController extends Controller
 						->with('page', $page)
 						->with('col_search', $col_search)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+                        ->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
     }
 
 
@@ -198,7 +218,9 @@ class DosageController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
-            'title' => "Dosage Sensitivity Curations"
+            'title' => "Dosage Sensitivity Curations",
+            'scrid' => Filter::SCREEN_DOSAGE_REGION_SEARCH,
+			'display' => "Dosage Sensitivity Region Search"
 		]);
 
 		$original = $region;
@@ -233,7 +255,22 @@ class DosageController extends Controller
 		session(['dosage_region_search' => $region]);
 		session(['dosage_region_search_type' => $type]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_DOSAGE_REGION_SEARCH)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_DOSAGE_REGION_SEARCH);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -244,7 +281,9 @@ class DosageController extends Controller
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+                        ->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
     }
 
 
@@ -262,7 +301,9 @@ class DosageController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
-            'title' => "Dosage Sensitivity Curations"
+            'title' => "Dosage Sensitivity Curations",
+            'scrid' => Filter::SCREEN_DOSAGE_REGION_REFRESH,
+			'display' => "Expert Panel Curations"
 		]);
 
 		$region = session('dosage_region_search', false);
@@ -300,7 +341,22 @@ class DosageController extends Controller
 			}
 		}
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_DOSAGE_REGION_REFRESH)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_DOSAGE_REGION_REFRESH);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
@@ -311,7 +367,9 @@ class DosageController extends Controller
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+                        ->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
 	}
 
 
@@ -378,17 +436,36 @@ class DosageController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "dosage",
-            'title' => "Dosage Sensitivity CNV Curations"
+            'title' => "Dosage Sensitivity CNV Curations",
+            'scrid' => Filter::SCREEN_DOSAGE_CNVS,
+			'display' => "Dosage Sensitivity CNV"
 		]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_DOSAGE_CNVS)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_DOSAGE_CNVS);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene-dosage.cnv', compact('display_tabs'))
 						->with('apiurl', '/api/dosage/cnv')
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+                        ->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
 	}
 
 

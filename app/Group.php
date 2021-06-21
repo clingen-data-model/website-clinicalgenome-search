@@ -56,7 +56,8 @@ class Group extends Model
      *
      * @var array
      */
-	protected $fillable = ['ident', 'name', 'display_name', 'search_name', 'description', 'type', 'status'];
+	protected $fillable = ['ident', 'name', 'display_name', 'search_name',
+                            'user_id', 'description', 'type', 'status'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -65,7 +66,9 @@ class Group extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status'];
 
-     public const TYPE_NONE = 0;
+     public const TYPE_INTERNAL = 0;
+     public const TYPE_REGION_37 = 1;
+     public const TYPE_REGION_38 = 2;
 
      /*
      * Type strings for display methods
@@ -99,7 +102,16 @@ class Group extends Model
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
     }
-    
+
+
+    /*
+     * The users following this group
+     */
+    public function user()
+    {
+       return $this->belongsTo('App\User');
+    }
+
 
     /*
      * The users following this group
@@ -145,7 +157,7 @@ class Group extends Model
         return $query->where('search_name', $name);
     }
 
-    
+
     /**
      * Initialize with known groups
      */

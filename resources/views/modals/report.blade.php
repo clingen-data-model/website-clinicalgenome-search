@@ -43,7 +43,14 @@
 											<span class="text-muted"><small><i>(Enter * to select all genes or @ to select a group)</i></small></span>
 										</div>
 									</div>
-							</div><!-- /.col-lg-8 -->				
+                                    <div class="form-group">
+										<label for="inputEmail6" class="col-sm-2 control-label">Regions</label>
+										<div class="col-sm-9">
+											<input id="selected-regions" type="text" class="form-control selector" name="regions" value="" placeholder="">
+											<span class="text-muted"><small><i>(Use ; to separate multiple regions)</i></small></span>
+										</div>
+									</div>
+							</div><!-- /.col-lg-8 -->
 						</div>
 					</div>
 					<div class="modal-footer">

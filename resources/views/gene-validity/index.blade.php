@@ -29,7 +29,7 @@
 
 
     <div class="col-md-12 light-arrows dark-table">
-			@include('_partials.genetable')
+			@include('_partials.genetable', ['customload' => true])
 		</div>
 	</div>
 </div>
@@ -42,6 +42,12 @@
       {{-- {{ $col_search }} --}}
     </div>
 </div>
+@endsection
+
+@section('modals')
+
+@include('modals.bookmark')
+
 @endsection
 
 @section('script_css')
@@ -60,7 +66,6 @@
 <script src="/js/bootstrap-table.min.js"></script>
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
-<script src="/js/bootstrap-table-addrbar.min.js"></script>
 
 <script src="/js/sweetalert.min.js"></script>
 
@@ -68,6 +73,7 @@
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
+<script src="/js/bookmark.js"></script>
 
 <script>
 
@@ -78,6 +84,9 @@
 	*/
 
   var $table = $('#table');
+  var bookmarksonly = true;
+  window.scrid = {{ $display_tabs['scrid'] }};
+  window.token = "{{ csrf_token() }}";
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
@@ -212,6 +221,7 @@
 
     $table.on('load-success.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
+      window.update_addr();
 
       if (name.hasOwnProperty('error'))
       {

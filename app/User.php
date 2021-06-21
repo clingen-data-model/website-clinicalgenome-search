@@ -69,6 +69,15 @@ class User extends Authenticatable implements MustVerifyEmail
        return $this->belongsToMany('App\Group');
     }
 
+
+    /*
+     * The groups that this user is following
+     */
+    public function owngroups()
+    {
+       return $this->hasMany('App\Group');
+    }
+
     /*
      * The notification preferences for this user
      */
@@ -107,7 +116,7 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->attributes['firstname'] = $value;
         $this->attributes['name'] = $this->attributes['firstname'];
-        
+
         if (isset($this->attributes['lastname']))
             $this->attributes['name'] .= " " . $this->attributes['lastname'];
     }
@@ -165,11 +174,11 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         if (!isset($this->profile['interests']))
-        {  
+        {
             $this->profile['interests'] = [$item];
             return true;
         }
-    
+
         if (!in_array($item, $this->profile['interests']))
         {
             $profile = $this->profile;
@@ -194,10 +203,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
         if (!isset($this->profile['interests']))
             return true;
-    
+
         if (!in_array($item, $this->profile['interests']))
             return true;
-        
+
         $profile = $this->profile;
         if (($key = array_search($item, $profile['interests'])) !== false)
              unset($profile['interests'][$key]);

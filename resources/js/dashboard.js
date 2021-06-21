@@ -1,8 +1,8 @@
 $(function() {
-    
+
     var $table = $('#follow-table');
     var $reporttable = $('#table');
-        
+
     /**
      * Choose a date for report start
      */
@@ -27,7 +27,7 @@ $(function() {
             return date > mindate ? true : false;
         }
     });
-    
+
 
     /**
      * On logout from dashboard page, send to dead dashboard view.
@@ -40,9 +40,20 @@ $(function() {
 
 
     /**
-     * Chow screen to follow a new gene
+     * Show screen to follow a new gene
      */
-    $('.action-new-gene').on('click', function() {
+    $('.action-new-region').on('click', function() {
+
+        $('#search_region_form')[0].reset();
+        $('#modalSearchRegion').modal('show');
+
+    });
+
+
+    /**
+     * Show screen to follow a new gene
+     */
+     $('.action-new-gene').on('click', function() {
 
         $('#search_form')[0].reset();
         $('#modalSearchGene').modal('show');
@@ -88,6 +99,14 @@ $(function() {
 
         var url = "/api/reports/" + uuid;
 
+        $('#report-form')[0].reset();
+
+        // deal with hidden fields
+        $("#report_form input[name=ident]").val('');
+
+        // clear the gene selector
+        myselect.tagsinput('removeAll');
+
         //submits to the form's action URL
         $.get(url, function(response)
         {
@@ -97,6 +116,7 @@ $(function() {
             $('#report-form').find("[name='startdate']").val(response.fields.startdate);
             $('#report-form').find("[name='stopdate']").val(response.fields.stopdate);
             $('#report-form').find("[name='ident']").val(uuid);
+            $('#report-form').find("[name='regions']").val(response.fields.regions);
 
             //console.log(response.fields.genes);
             response.fields.genes.forEach(function(element) {
@@ -105,7 +125,7 @@ $(function() {
 
             $('#modalReport').modal('show');
 
-            
+
         }).fail(function(response)
         {
             swal({
@@ -116,7 +136,7 @@ $(function() {
         });
     });
 
-    
+
     /**
      * Share a report (future feature)
      */
@@ -156,14 +176,14 @@ $(function() {
         });
 
         var url = "/api/reports/unlock";
-        
+
         //submits to the form's action URL
         $.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
         {
             obj.removeClass('action-unlock-report').addClass('action-lock-report').html('<i class="fas fa-unlock" style="color:lightgray"></i>');
             obj.attr('title', "Lock Report");
 
-            
+
         }).fail(function(response)
         {
             swal({
@@ -205,7 +225,7 @@ $(function() {
         {
             obj.removeClass('action-lock-report').addClass('action-unlock-report').html('<i class="fas fa-lock" style="color:red"></i>');
             obj.attr('title', "Unlock Report");
-            
+
         }).fail(function(response)
         {
             swal({
@@ -246,7 +266,7 @@ $(function() {
                 if (yes) {
 
                     var url = "/api/reports/remove";
-        
+
                     //submits to the form's action URL
                     $.post(url, { id: uuid, _token: "{{ csrf_token() }}" }, function(response)
                     {
@@ -266,7 +286,7 @@ $(function() {
                             icon: "error",
                         });
                     });
-                } 
+                }
         });
 
     });
@@ -306,11 +326,11 @@ $(function() {
         });
 
         var url = "/api/home/toggle";
-        
+
         //submits to the form's action URL
         $.post(url, { value: tog, _token: "{{ csrf_token() }}" }, function(response)
         {
-        
+
         }).fail(function(response)
         {
             swal({
@@ -360,7 +380,7 @@ $(function() {
         });
 
         var url = "/api/home/reports/" + type;
-        
+
         //submits to the form's action URL
         $.get(url, function(response)
         {
@@ -376,7 +396,7 @@ $(function() {
             {
                 $('#report-toolbar').html('');
             }
-                
+
         }).fail(function(response)
         {
             swal({
@@ -452,7 +472,7 @@ $(function() {
                         field: 'symbol',
                         values: row
                     });
-                } 
+                }
         });
     });
 
@@ -494,7 +514,7 @@ $(function() {
 
 
     /**
-     * 
+     *
      * Send otification changes to the server
      */
     function server_update(gene, oldtype, newtype)
@@ -511,7 +531,7 @@ $(function() {
         });
 
         var url = "/api/home/notify";
-        
+
         //submits to the form's action URL
         $.post(url, { gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
         {
@@ -541,7 +561,7 @@ $(function() {
             });
 
             var url = "/api/genes/unfollow";
-            
+
             var formData = $(form).serialize();
 
             //submits to the form's action URL
@@ -550,7 +570,7 @@ $(function() {
                 var url = "/api/home/follow/reload";
 
                 var gene = response.gene;
-            
+
                 //submits to the form's action URL
                 $.get(url, function(response)
                 {
@@ -602,7 +622,7 @@ $(function() {
                 required: "Please enter your email address",
                 email: "Please enter a valid email address",
                 maxlength: "Section names must be less than 80 characters"
-            },	
+            },
         },
         errorElement: 'em',
         errorClass: 'invalid-feedback',
@@ -639,7 +659,7 @@ $(function() {
             });
 
             var url = "/api/genes/follow";
-            
+
             var formData = $(form).serialize();
 
             //submits to the form's action URL
@@ -648,14 +668,14 @@ $(function() {
                 var url = "/api/home/follow/reload";
 
                 var gene = response.gene;
-            
+
                 //submits to the form's action URL
                 $.get(url, function(response)
                 {
                     //console.log(response.data);
                     $('#follow-table').bootstrapTable('load', response.data);
                     $('#follow-table').bootstrapTable("resetSearch","");
-                    
+
                     switch (gene)
                     {
                         case '@AllActionability':
@@ -677,7 +697,7 @@ $(function() {
                 {
                     alert("Error reloading table");
                 });
-                
+
             }).fail(function(response)
             {
                 swal({
@@ -700,7 +720,7 @@ $(function() {
                 required: "Please enter your email address",
                 email: "Please enter a valid email address",
                 maxlength: "Section names must be less than 80 characters"
-            },	
+            },
         },
         errorElement: 'em',
         errorClass: 'invalid-feedback',
@@ -723,6 +743,105 @@ $(function() {
     });
 
 
+    $( '#search_region_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/genes/follow";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload";
+
+                var gene = response.gene;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+                    }
+
+                    $('#modalSearchGene').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+
     $( '#profile-form' ).validate( {
         submitHandler: function(form) {
             $.ajaxSetup({
@@ -737,7 +856,7 @@ $(function() {
             });
 
             var url = "/dashboard/profile";
-            
+
             var formData = $(form).serialize();
 
             //submits to the form's action URL
@@ -767,7 +886,7 @@ $(function() {
                 required: "Please enter your email address",
                 email: "Please enter a valid email address",
                 maxlength: "Section names must be less than 80 characters"
-            },	
+            },
         },
         errorElement: 'em',
         errorClass: 'invalid-feedback',
@@ -803,7 +922,7 @@ $(function() {
             });
 
             var url = "/dashboard/preferences";
-            
+
             var formData = $(form).serialize();
 
             //submits to the form's action URL
@@ -833,7 +952,7 @@ $(function() {
                 required: "Please enter your email address",
                 email: "Please enter a valid email address",
                 maxlength: "Section names must be less than 80 characters"
-            },	
+            },
         },
         errorElement: 'em',
         errorClass: 'invalid-feedback',
@@ -870,7 +989,7 @@ $(function() {
             });
 
             var url = "/dashboard/reports";
-            
+
             var formData = $(form).serialize();
 
             //submits to the form's action URL
@@ -878,7 +997,7 @@ $(function() {
             {
                 // for now, only user folders can be edited
                 var url = "/api/home/reports/10";
-                
+
                 //submits to the form's action URL
                 $.get(url, function(response)
                 {
@@ -892,7 +1011,7 @@ $(function() {
                 {
                     alert("Error reloading table");
                 });
-            
+
             }).fail(function(response)
             {
                 swal({
@@ -916,7 +1035,7 @@ $(function() {
                 required: "Please enter your email address",
                 email: "Please enter a valid email address",
                 maxlength: "Section names must be less than 80 characters"
-            },	
+            },
         },
         errorElement: 'em',
         errorClass: 'invalid-feedback',
@@ -1006,7 +1125,7 @@ $(function() {
 
         $('#follow-gene-field').val(item.hgncid);
         $('#follow_form').submit();
-        
+
     });
 
     var myselect = $('#selected-genes');

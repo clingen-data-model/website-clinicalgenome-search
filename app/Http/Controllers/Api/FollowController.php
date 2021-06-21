@@ -25,8 +25,8 @@ class FollowController extends Controller
      */
     public function create(ApiRequest $request)
     {
-        $input = $request->only(['gene', 'email']);
-    
+        $input = $request->only(['gene', 'email', 'type', 'build', 'display']);
+
         if (Auth::guard('api')->user())
         {
             $user = Auth::guard('api')->user();
@@ -62,7 +62,50 @@ class FollowController extends Controller
         $notification = $user->notification;
 
         // handle group expressions
-        if ($input['gene'] == "*")
+        if (isset($input['type']) && $input['type'] == 'region')
+        {
+            $name = '%' . $input['gene'];
+
+            // ignore commas for search purposes
+            $name = str_replace(',', '', $name);
+
+            // TODO:  Validate its a good region string!
+
+            $group = $user->owngroups()->search($name)->first();
+
+            if ($group === null)
+            {
+
+                $group = new Group([
+                                    'name' => $name,
+                                    'user_id' => $user->id,
+                                    'search_name' => $name,
+                                    'type' => ($input['type'] == 'GRCh38' ?
+                                                Group::TYPE_REGION_38 :
+                                                Group::TYPE_REGION_37)
+                                    ]);
+            }
+
+            // update the parameters
+            $group->display_name = $input['display'];
+            $group->description = $input['gene'];
+
+            $group->save();
+
+            $hasit = $user->groups()->where('groups.id', $group->id)->exists();
+
+            if (($group !== null) && ($hasit === false))
+                $user->groups()->attach($group->id);
+
+            $bucket = $notification->checkGroup($group->search_name);
+
+            if ($bucket === false)
+                $notification->addDefault($group->search_name);
+
+            $notification->save();
+
+        }
+        else if ($input['gene'] == "*")
         {
             $name = $input['gene'];
             $group = Group::search($name)->first();
@@ -93,7 +136,7 @@ class FollowController extends Controller
                     $frequency['Groups'][] = 'AllGenes';
                 $notify->frequency = $frequency;
             }*/
-                
+
             /*$notify->addDefault($input['gene']);
             $notify->save();
             return response()->json(['success' => 'true',
@@ -111,7 +154,7 @@ class FollowController extends Controller
             if (($group !== null) && ($hasit === false))
             {
                 $user->groups()->attach($group->id);
-            }  
+            }
 
             $bucket = $notification->checkGroup($group->name);
             if ($bucket === false)
@@ -134,7 +177,7 @@ class FollowController extends Controller
 
             $name = $gene->name;
 
-    
+
 
             // do some self repairing in the event notifications are lost
             $notify = $user->notification;
@@ -199,7 +242,7 @@ dd("not logged in");  }*/
                                     502);
 
         $notification = $user->notification;
-       
+
         if ($input['gene'] == '*')
         {
             $name = $input['gene'];
@@ -211,13 +254,28 @@ dd("not logged in");  }*/
 
             if ($bucket !== false)
                 $notification->removeGroup($group->search_name, $bucket);
-            
+
             $user->notification->save();
             return response()->json(['success' => 'true',
                                  'status_code' => 200,
                                  'gene' => $name,
 							 	 'message' => 'Gene UnFollowed'],
 							 	 200);
+        }
+        else if ($input['gene'][0] == '%')
+        {
+            $name = $input['gene'];
+            $group = $user->owngroups()->search($name)->first();
+            if ($group !== null)
+                $user->groups()->detach($group->id);
+
+            $bucket = $notification->checkGroup($group->name);
+
+            if ($bucket !== false)
+                $notification->removeGroup($group->name, $bucket);
+
+            //soft delete the group
+            $group->delete();
         }
         else if ($input['gene'][0] == '@')
         {
@@ -242,7 +300,7 @@ dd("not logged in");  }*/
                                         'gene' => $name,
                                         'message' => "Gene Lookup Error"],
                                         501);
-            
+
             $user->genes()->detach($gene->id);
 
             $name = $gene->name;
@@ -262,8 +320,8 @@ dd("not logged in");  }*/
                 $frequency[$list] = array_values($frequency[$list]);
             }
         }
-        
-        $notify->frequency = $frequency;        
+
+        $notify->frequency = $frequency;
         $notify->save();
 
         return response()->json(['success' => 'true',
@@ -277,7 +335,7 @@ dd("not logged in");  }*/
 
     /**
      * reload the table
-     * 
+     *
      */
     public function reload()
     {
@@ -302,21 +360,25 @@ dd("not logged in");  }*/
 
         foreach ($user->groups as $group)
         {
+            $type = 1;
+
             switch ($group->name)
             {
-                case '@AllGenes': 
+                case '@AllGenes':
                     $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
                     break;
-                case '@AllDosage': 
+                case '@AllDosage':
                     $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
-                case '@AllValidity': 
+                case '@AllValidity':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
                     break;
-                case '@AllActionability': 
+                case '@AllActionability':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
                     break;
-                default: 
+                default:
+                    if (substr($group->name,0, 1) == '%')
+                        $type = 2;
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
 
@@ -325,6 +387,7 @@ dd("not logged in");  }*/
             $gene = new Gene(['name' => $group->display_name,
                                 'hgnc_id' => $group->search_name,
                                 'activity' => $a,
+                                'type' => $type,
                                 'date_last_curated' => ''
                             ]);
 
@@ -336,6 +399,33 @@ dd("not logged in");  }*/
         //return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
         //            'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
     }
+
+
+    /**
+     * Expand a region entry row.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function dare_expand(Request $request, $group = null)
+    {
+		if (empty($group))
+			return "Region not found";
+
+		$region = Group::where('search_name', '%' . $group)->first();
+
+		if ($region === null)
+			return "Region not found";
+
+        $type = ($region->type == Group::TYPE_REGION_38 ? 'GRCh38' : 'GRCh37');
+
+        $genes = Gene::searchList(['type' => $type,
+                    "region" => $region->description,
+                    'option' => 1 ]);
+
+        return view('dashboard.includes.expand-region')
+            ->with('group', $region)
+            ->with('genes', $genes->collection);
+	}
 /*
     @foreach ($genes as $gene)
                     <tr data-hgnc="{{ $gene->hgnc_id }}">

@@ -9,6 +9,7 @@ use Auth;
 use App\GeneLib;
 use App\Nodal;
 use App\User;
+use App\Filter;
 
 /**
  *
@@ -54,7 +55,7 @@ class ConditionController extends Controller
             return $next($request);
         });
 	}
-	
+
 
     /**
      * Display a listing of all gene validity assertions.
@@ -70,10 +71,27 @@ class ConditionController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "condition",
-            'title' => "ClinGen Diseases"
+            'title' => "ClinGen Diseases",
+            'scrid' => Filter::SCREEN_ALL_DISEASES,
+			'display' => "All Disease"
         ]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_ALL_DISEASES)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_ALL_DISEASES);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('condition.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
@@ -81,7 +99,9 @@ class ConditionController extends Controller
 						->with('page', $page)
 						->with('search', $search)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
     }
 
 
@@ -100,7 +120,7 @@ class ConditionController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
-		$record = GeneLib::conditionDetail([ 
+		$record = GeneLib::conditionDetail([
 										'condition' => $id,
 										'curations' => true,
 										'action_scores' => true,

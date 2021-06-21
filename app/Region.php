@@ -115,7 +115,7 @@ class Region extends Model
      *    chr#:#-#
      *    #:#-#
      *    #p#[.#]-#p#[.#]
-     * 
+     *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -183,7 +183,7 @@ class Region extends Model
       // break out the args
       foreach ($args as $key => $value)
         $$key = $value;
-      
+
       // initialize the collection
       $collection = collect();
       $gene_count = 0;
@@ -202,7 +202,7 @@ class Region extends Model
       $location = preg_split('/[:-]/', trim($region), 3);
 
       $chr = strtoupper($location[0]);
-      
+
       if (strpos($chr, 'CHR') == 0)   // strip out the chr
           $chr = substr($chr, 3);
 
@@ -242,7 +242,7 @@ class Region extends Model
           $g = Gene::name($region->symbol)->first();
           if ($g !== null)
           {
-            $region->hgnc_id = $g->hgnc_id; 
+            $region->hgnc_id = $g->hgnc_id;
             $region->plof = $g->plof;
             $region->hi = $g->hi;
             $region->pli = $g->pli;
@@ -264,7 +264,7 @@ class Region extends Model
             $region->hi = null;
             $region->pli = null;
         }
-  
+
         // for 30 and 40, Jira also sends text
         if ($region->loss == 'N/A')
             $region->loss = "Not Yet Evaluated";
@@ -293,7 +293,7 @@ class Region extends Model
         $collection->push($region);
 
       }
-      
+
       return (object) ['count' => $collection->count(), 'collection' => $collection,
                       'gene_count' => $gene_count, 'region_count' => $region_count];
     }

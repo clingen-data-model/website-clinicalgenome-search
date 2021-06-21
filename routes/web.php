@@ -37,6 +37,7 @@ Route::group(['prefix' => '/dashboard'], function () {
 	Route::get('/reports', 'HomeController@reports')->name('dashboard-reports');
 	Route::post('/reports', 'HomeController@create_reports')->name('dashboard-new-reports');
 	Route::get('/reports/{id}', 'HomeController@show_report')->name('dashboard-show-report');
+    Route::post('/region', 'HomeController@create_region')->name('dashboard-region-search');
 });
 
 Route::get('/reports/view/{id}', 'HomeController@view')->name('dashboard-show-report');

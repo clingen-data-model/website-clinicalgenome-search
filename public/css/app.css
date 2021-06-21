@@ -20082,6 +20082,10 @@ footer p {
   background-color: #DDD;
 }
 
+.fa-blank {
+  visibility: hidden !important;
+}
+
 .bootstrap-table .dropdown-toggle .caret {
   display: none;
 }

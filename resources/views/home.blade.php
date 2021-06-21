@@ -20,19 +20,19 @@
                     <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseReportsIcon"></i></a>
                 <h4 class="m-0 p-2 text-white" style="background:#3c79b6">Reports</h4>
             </div>
-        
+
 			@include('dashboard.includes.reports')
-			
+
             <div>
                 <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
 					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
 				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
-					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>	
+					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>
 				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
-            
+
             @include('dashboard.includes.follow')
-            
+
         </div>
         <div class="col-md-3 mt-3">
 
@@ -56,6 +56,7 @@
 	@include('modals.followgene', ['gene' => ''])
     @include('modals.profile')
     @include('modals.search')
+    @include('modals.searchregion')
 	@include('modals.settings')
 	@include('modals.report')
 
@@ -70,7 +71,7 @@
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
-	
+
     <style>
         .profile-background
         {
@@ -108,7 +109,7 @@
 
 		.caption {
 			font-size: 14px;
-			color: black; 
+			color: black;
 			text-align: center;
 			width: 200px;
 		}
@@ -122,7 +123,7 @@
  			 width: 100% !important;
 		}
     </style>
-    
+
 @endsection
 
 @section('script_js')
@@ -150,13 +151,13 @@
 <script src="/js/edit.js"></script>
 
 <script>
-	
+
     $(function() {
 		var $table = $('#follow-table');
 		var $reporttable = $('#table');
 
 		window.burl = '{{  url('api/genes/find/%QUERY') }}';
-    
+
         // make some mods to the search input field
         var search = $('.fixed-table-toolbar .search input');
         search.attr('placeholder', 'Search in table');
@@ -165,13 +166,45 @@
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
 
+        $('#follow-table').on('click', '.action-region-expand', function() {
+
+            var uuid = $(this).attr('data-uuid');
+
+            $table.bootstrapTable('expandRowByUniqueId', uuid);
+
+            $(this).removeClass('action-region-expand')
+                .addClass('action-region-collapse')
+                .html('Hide region');
+        });
+
+        $('#follow-table').on('click', '.action-region-collapse', function() {
+
+            var uuid = $(this).attr('data-uuid');
+
+            $table.bootstrapTable('collapseRowByUniqueId', uuid);
+
+            $(this).addClass('action-region-expand')
+                .removeClass('action-region-collapse')
+                .html('Show region');
+        });
+
+        $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+            $obj.attr('colspan',12);
+
+            console.log(row.hgnc.substring(1));
+
+            $obj.load( "/api/home/dare/expand/" + row.hgnc.substring(1));
+
+            return false;
+        });
 	});
-	
+
 </script>
 
 <script src="/js/typeahead.js"></script>
 <script src="/js/dashboard.js"></script>
-	
+
 <script>
 
 	function symbolClass(value, row, index)
@@ -189,8 +222,13 @@
 	}
 
 	function formatSymbol(value, row, index)
-	{	
-		return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
+	{
+        if (row.hgnc.charAt(0) == '@')
+            return value;
+        else if (row.hgnc.charAt(0) == '%')
+            return value;
+        else
+		    return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
 	}
 
 </script>

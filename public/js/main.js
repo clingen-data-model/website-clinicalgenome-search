@@ -119,7 +119,7 @@ $('.action-forgot-login').on('click', function () {
 });
 $('.action-logout-now').on('click', function () {
   $('#logout-form').submit();
-}); // log out 
+}); // log out
 
 $('#logout-form').validate({
   submitHandler: function submitHandler(form) {
@@ -203,6 +203,7 @@ $('#login-form').validate({
 
       $('#dashboard-logout').trigger('logout');
       $('#curated-filter-dashboard').trigger('login');
+      $('#preferences-menu').trigger('login');
       window.auth = 1;
     }).fail(function (response) {
       swal({

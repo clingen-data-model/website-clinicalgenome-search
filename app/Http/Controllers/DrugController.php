@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 
 use App\GeneLib;
+use App\Filter;
 
 /**
 *
@@ -56,18 +57,37 @@ class DrugController extends Controller
         // set display context for view
         $display_tabs = collect([
             'active' => "drug",
-            'title' => "Drugs"
+            'title' => "Drugs",
+            'scrid' => Filter::SCREEN_ALL_DRUGS,
+			'display' => "All Drugs"
         ]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
-		
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_ALL_DRUGS)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_ALL_DRUGS);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
+
 		return view('drug.index', compact('display_tabs'))
 						->with('apiurl', '/api/drugs')
 						->with('pagesize', $size)
 						->with('page', $page)
 						->with('search', $search)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
     }
 
 
@@ -88,7 +108,7 @@ class DrugController extends Controller
 
 		if (strpos($id, "RXNORM:") === 0)
 			$id = substr($id, 7);
-			
+
 		$record = GeneLib::drugDetail([ 'drug' => $id ]);
 
 		if ($record === null)
@@ -103,11 +123,11 @@ class DrugController extends Controller
 			'active' => "drug",
 			'title' => $record->label . " drug information"
 		]);
-		
+
         return view('drug.show', compact('display_tabs', 'record'))
 		->with('user', $this->user);
 	}
-	
+
 
 	/**
 	* Display a listing of all genes.
@@ -122,7 +142,7 @@ class DrugController extends Controller
 			$$key = $value;
 
 		// the way layouts is set up, everything is named search.  Drug is the third
-		
+
 		return redirect()->route('drug-index', ['page' => 1, 'size' => 50, 'search' => $search[2] ]);
 	}
 }

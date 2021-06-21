@@ -3055,7 +3055,6 @@
       return false;
     },
     onSearch: function onSearch(text) {
-      console.log("search=" + text)
       return false;
     },
     onToggle: function onToggle(cardView) {
@@ -4417,7 +4416,6 @@
     }, {
       key: "onSort",
       value: function onSort(_ref) {
-        console.log("onsort");
         var type = _ref.type,
             currentTarget = _ref.currentTarget;
         var $this = type === 'keypress' ? $__default['default'](currentTarget) : $__default['default'](currentTarget).parent();
@@ -4751,7 +4749,6 @@
         }
 
         var handleInputEvent = function handleInputEvent($searchInput) {
-          console.log("inputevent");
           var eventTriggers = 'keyup drop blur mouseup';
           $searchInput.off(eventTriggers).on(eventTriggers, function (event) {
             if (opts.searchOnEnterKey && event.keyCode !== 13) {
@@ -4822,11 +4819,9 @@
     }, {
       key: "onSearch",
       value: function onSearch() {
-        console.log("onsearch");
         var _ref5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
             currentTarget = _ref5.currentTarget,
             firedByInitSearchText = _ref5.firedByInitSearchText;
-console.log(firedByInitSearchText)
         var overwriteSearchText = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
 
         if (currentTarget !== undefined && $__default['default'](currentTarget).length && overwriteSearchText) {
@@ -4847,7 +4842,6 @@ console.log(firedByInitSearchText)
         }
 
         if (!firedByInitSearchText) {
-          console.log("overriding");
           this.options.pageNumber = 1;
         }
 
@@ -5264,7 +5258,6 @@ console.log(firedByInitSearchText)
       key: "updatePagination",
       value: function updatePagination(event) {
         // Fix #171: IE disabled button can be clicked bug.
-        console.log("updatepagination");
         if (event && $__default['default'](event.currentTarget).hasClass('disabled')) {
           return;
         }
@@ -5285,7 +5278,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "onPageListChange",
       value: function onPageListChange(event) {
-        console.log("pagelistchange");
         event.preventDefault();
         var $this = $__default['default'](event.currentTarget);
         $this.parent().addClass(this.constants.classes.dropdownActive).siblings().removeClass(this.constants.classes.dropdownActive);
@@ -5297,7 +5289,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "onPagePre",
       value: function onPagePre(event) {
-        console.log("pagepre");
         event.preventDefault();
 
         if (this.options.pageNumber - 1 === 0) {
@@ -5312,7 +5303,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "onPageNext",
       value: function onPageNext(event) {
-        console.log("pagenext");
         event.preventDefault();
 
         if (this.options.pageNumber + 1 > this.options.totalPages) {
@@ -5327,7 +5317,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "onPageNumber",
       value: function onPageNumber(event) {
-        console.log("pagenumber");
         event.preventDefault();
 
         if (this.options.pageNumber === +$__default['default'](event.currentTarget).text()) {
@@ -5769,7 +5758,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "initServer",
       value: function initServer(silent, query, url) {
-        console.log("initserver");
         var _this10 = this;
 
         var data = {};
@@ -5901,7 +5889,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "initSearchText",
       value: function initSearchText() {
-        console.log("initsearchtext");
         if (this.options.search) {
           this.searchText = '';
 
@@ -7013,7 +7000,6 @@ console.log(firedByInitSearchText)
           this.options.pageSize = params.pageSize;
         }
 
-        console.log("refresh")
         this.trigger('refresh', this.initServer(params && params.silent, params && params.query, params && params.url));
       }
     }, {
@@ -7119,7 +7105,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "togglePagination",
       value: function togglePagination() {
-        console.log("toggle");
         this.options.pagination = !this.options.pagination;
         var icon = this.options.showButtonIcons ? this.options.pagination ? this.options.icons.paginationSwitchDown : this.options.icons.paginationSwitchUp : '';
         var text = this.options.showButtonText ? this.options.pagination ? this.options.formatPaginationSwitchUp() : this.options.formatPaginationSwitchDown() : '';
@@ -7146,7 +7131,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "resetSearch",
       value: function resetSearch(text) {
-        console.log("resetsearch");
         var $search = Utils.getSearchInput(this);
         $search.val(text || '');
         this.onSearch({
@@ -7156,7 +7140,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "filterBy",
       value: function filterBy(columns, options) {
-        console.log("filterby");
         this.filterOptions = Utils.isEmptyObject(options) ? this.options.filterOptions : $__default['default'].extend(this.options.filterOptions, options);
         this.filterColumns = Utils.isEmptyObject(columns) ? {} : columns;
         this.options.pageNumber = 1;
@@ -7198,7 +7181,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "selectPage",
       value: function selectPage(page) {
-        console.log("select");
         if (page > 0 && page <= this.options.totalPages) {
           this.options.pageNumber = page;
           this.updatePagination();
@@ -7207,7 +7189,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "prevPage",
       value: function prevPage() {
-        console.log("prepage");
         if (this.options.pageNumber > 1) {
           this.options.pageNumber--;
           this.updatePagination();
@@ -7216,7 +7197,6 @@ console.log(firedByInitSearchText)
     }, {
       key: "nextPage",
       value: function nextPage() {
-        console.log("nextpage");
         if (this.options.pageNumber < this.options.totalPages) {
           this.options.pageNumber++;
           this.updatePagination();

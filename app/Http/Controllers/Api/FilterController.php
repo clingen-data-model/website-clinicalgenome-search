@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Filter as FilterResource;
 
 use Auth;
+use Cookie;
 
 use App\Filter;
 
@@ -44,7 +45,7 @@ class FilterController extends Controller
 
         // should client send screen or retrieve froom session?
 
-        return FilterResource::collection($this->user->filters);
+        return FilterResource::collection($this->user->filters->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
     }
 
     /**
@@ -71,13 +72,36 @@ class FilterController extends Controller
                 'message' => "Permission Denied"],
                 501);
 
-        $input = $request->only('name', 'screen', 'default');
+        $input = $request->only('name', 'screen', 'ident', 'settings', 'default');
 
+        if ($input['ident'] == 0 && empty($input['name']))
+        {
+            $list = $this->user->filters()->screen($input['screen'])->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE)->map->only(['ident', 'name', 'default']);
+
+            return response()->json(['success' => 'true',
+                    'status_code' => 200,
+                    'list' => $list,
+                    'message' => "Refresh content"],
+                    200);
+        }
+
+        // parse the settings value into an array
+        if (!empty($input['settings']))
+            $input['settings'] = Filter::parseSettings($input['settings']);
+
+        unset($input['ident']);
         $filter = new Filter($input);
         $this->user->filters()->save($filter);
 
+        $list = $this->user->filters()->screen($input['screen'])->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE)->map->only(['ident', 'name', 'default']);
+
+        //Cookie::queue('clingen_preferences',$filter->cookie, 0);
+        Filter::setBookmark($request, $input['screen'], $filter);
+
         return response()->json(['success' => 'true',
                 'status_code' => 200,
+                'list' => $list,
+                'new' => $filter->ident,
                 'message' => "Filter created"],
                 200);
     }
@@ -88,7 +112,7 @@ class FilterController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         if ($this->user === null)
             return response()->json(['success' => 'false',
@@ -106,6 +130,9 @@ class FilterController extends Controller
                 'status_code' => 7009,
                 'message' => "Permission Denied"],
                 501);
+
+        //Cookie::queue('clingen_preferences',$filter->cookie, 0);
+        Filter::setBookmark($request, $filter->screen, $filter);
 
         return new FilterResource($filter);
     }
@@ -163,8 +190,11 @@ class FilterController extends Controller
 
         $filter->update($input);
 
+        $list = $this->user->filters()->screen($input['screen'])->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE)->map->only(['ident', 'name', 'default']);
+
         return response()->json(['success' => 'true',
                 'status_code' => 200,
+                'list' => $list,
                 'message' => "Filter updated"],
                 200);
     }
@@ -192,11 +222,16 @@ class FilterController extends Controller
                 'message' => "Permission Denied"],
                 501);
 
+        $screen = $filter->screen;
+
         $filter->delete();
+
+        $list = $this->user->filters()->screen($screen)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE)->map->only(['ident', 'name', 'default']);
 
         return response()->json(['success' => 'true',
                 'status_code' => 200,
-                'message' => "Filter Deleted"],
+                'message' => "Filter Deleted",
+                'list' => $list],
                 200);
     }
 }

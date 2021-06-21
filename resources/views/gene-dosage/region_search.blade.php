@@ -63,6 +63,7 @@
 @section('modals')
 
 	@include('modals.filter')
+    @include('modals.bookmark')
 
 @endsection
 
@@ -82,7 +83,6 @@
 <script src="/js/bootstrap-table.min.js"></script>
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
-<script src="/js/bootstrap-table-addrbar.min.js"></script>
 
 <script src="/js/sweetalert.min.js"></script>
 
@@ -91,6 +91,7 @@
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
 <script src="/js/filters.js"></script>
+<script src="/js/bookmark.js"></script>
 
 <script>
 
@@ -103,6 +104,8 @@
 	var $table = $('#table');
 	var showadvanced = true;
 	var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
+    window.scrid = {{ $display_tabs['scrid'] }};
+    window.token = "{{ csrf_token() }}";
 
 	window.ajaxOptions = {
 		beforeSend: function (xhr) {
@@ -188,15 +191,15 @@
 			sortOrder: "asc",
 			rowStyle:  function(row, index) {
 				if (index % 2 === 0) {
-     				return { 
+     				return {
 						classes: 'bt-even-row bt-hover-row'
 					}
 				}
 				else {
-     				return { 
+     				return {
 						classes: 'bt-odd-row bt-hover-row'
 					}
-				}			
+				}
      		},
 			columns: [
 				{
@@ -350,6 +353,7 @@
 		$table.on('load-success.bs.table', function (e, name, args) {
 
 			$("body").css("cursor", "default");
+            window.update_addr();
 
 			if (name.hasOwnProperty('error'))
 			{
@@ -378,7 +382,7 @@
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
 			$obj.attr('colspan',12);
-		
+
 			var t = $obj.closest('tr');
 
 			var stripe = t.prev().hasClass('bt-even-row');

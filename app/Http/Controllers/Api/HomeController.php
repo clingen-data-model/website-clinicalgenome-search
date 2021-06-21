@@ -47,12 +47,12 @@ class HomeController extends Controller
         {
             // add the account and send the activation email
         }
-        
+
         return response()->json(['success' => 'truue',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);
-                                  
+
     }
 
 
@@ -81,6 +81,10 @@ class HomeController extends Controller
             $name = $input['gene'];
         }
         else if ($input['gene'][0] == '@')
+        {
+            $name = $input['gene'];
+        }
+        else if ($input['gene'][0] == '%')
         {
             $name = $input['gene'];
         }
@@ -122,12 +126,12 @@ class HomeController extends Controller
 
         $t = $user->notification;
         $t->update(['frequency' => $notification]);
-        
+
         return response()->json(['success' => 'truue',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);
-                                  
+
     }
 
 
@@ -151,12 +155,12 @@ class HomeController extends Controller
 
         $t = $user->notification;
         $t->update(['frequency' => $notification]);
-        
+
         return response()->json(['success' => 'truue',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);
-               
+
     }
 
 
@@ -190,7 +194,7 @@ class HomeController extends Controller
             default:
                 $reports = $user->titles;
         }
-       
+
         return ReportsResource::collection($reports);
     }
 
@@ -204,12 +208,12 @@ class HomeController extends Controller
     {
 		if (empty($id))
 			return "Report not found";
-			
+
 		$title = Title::ident($id)->first();
-		
+
 		if ($title === null)
 			return "Report not found";
-			
+
         return view('dashboard.includes.expand-report')->with('title', $title);
 	}
 

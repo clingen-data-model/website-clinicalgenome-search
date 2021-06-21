@@ -247,6 +247,7 @@ class Change extends Model
                 return $subquery->whereIn('gene_label', $genes);
             });
 
+            // internal groups
             if (in_array('@AllValidity', $genes))
                 $query = $query->orWhere('new_type', 'App\Validity');
 
@@ -263,7 +264,43 @@ class Change extends Model
                 });
             }
 
+            // regions
+            $groups = preg_grep('/^\%.*/', $genes);
+            foreach ($groups as $group)
+            {
+                // get list genes
+                $region = Group::where('search_name', $group)->first();
+
+                // if this is a non-recurrent report, build a psuedo region
+                if ($region === null)
+                {
+                    if (Region::checkRegion(substr($group,1)) == false)
+                        continue;
+
+                    $region = new Group(['type' => Group::TYPE_REGION_37,
+                                         'description' => substr($group,1),
+                                        'option' => 1 ]);
+                }
+
+                $type = ($region->type == Group::TYPE_REGION_38 ? 'GRCh38' : 'GRCh37');
+
+                $genes = Gene::searchList(['type' => $type,
+                        "region" => $region->description,
+                        'option' => 1 ]);
+
+                $items = $genes->collection->pluck('name');
+
+                $query = $query->orWhereHas('element', function ($query) use ($items) {
+                            $query->whereIn('name', $items);
+                        });
+            }
+
         }
+
+        /*$a = vsprintf(str_replace('?', '%s', $query->toSql()), collect($query->getBindings())->map(function ($binding) {
+            return is_numeric($binding) ? $binding : "'{$binding}'";
+        })->toArray());
+        dd($a);*/
 
 		return $query;
     }

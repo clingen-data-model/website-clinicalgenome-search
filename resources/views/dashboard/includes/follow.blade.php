@@ -1,6 +1,6 @@
 <div class="pl-3 pr-3 pr-3 pb-0 collapse in" id="collapseFollow">
     <div id="follow-toolbar" class="text-right">
-        <button class="btn btn-block action-new-gene">Follow New Gene</button>
+        <button class="btn action-new-gene">Follow New Gene</button>
         <button class="btn action-new-region">Follow New Region</button>
     </div>
 
@@ -30,7 +30,9 @@
                     data-show-columns-toggle-all="false"
                     data-search-formatter="false"
                     data-pagination="true"
-                    data-id-field="id"
+                    data-detail-view="true"
+                    data-detail-view-icon="false"
+                    data-unique-id="ident"
                     data-page-list="[10, 25, 50, 100, 250, all]"
                     data-page-size="25"
                     data-show-footer="true"
@@ -50,6 +52,7 @@
                         <th class="col-sm-2" data-field="notify" data-searchable="false" data-align="center">Notify</th>
                         <th class="col-sm-2" data-field="unfollow" data-searchable="false" data-align="center">Unfollow</th>
                         <th data-field="hgnc" data-visible="false"></th>
+                        <th data-field="ident" data-visible="false"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,17 +60,23 @@
                     <tr >
                         <td scope="row" data-value="{{ $gene->name }}">{{ $gene->name }}</td>
                         <td>
+                            @if (strpos($gene->hgnc_id, '%') === 0)
+                            <button type="button" class="btn btn-sm action-region-expand" data-uuid="{{ $gene->ident }}">
+                                Show region
+                            </button>
+                            @else
                             <img src="/images/clinicalValidity-{{ $gene->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/dosageSensitivity-{{ $gene->hasActivity('dosage') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/clinicalActionability-{{ $gene->hasActivity('actionability') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/variantPathogenicity-{{ $gene->hasActivity('varpath') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/Pharmacogenomics-{{ $gene->hasActivity('pharma') ? 'on' : 'off' }}.png" width="22" height="22">
+                            @endif
                         </td>
                         <td>{{ $gene->displayDate($gene->date_last_curated) }}</td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="selection">{{ $gene->hgnc_id == '*' || $gene->hgnc_id[0] == '@' ? $notification->setting($gene->hgnc_id) : $notification->setting($gene->name) }}</span><span class="caret"></span>
+                                    <span class="selection">{{ $gene->hgnc_id == '*' || $gene->hgnc_id[0] == '@' || $gene->hgnc_id[0] == '%' ? $notification->setting($gene->hgnc_id) : $notification->setting($gene->name) }}</span><span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a data-value="Daily">Daily</a></li>
@@ -84,6 +93,7 @@
                             <span class="action-follow-gene"><i class="fas fa-star" style="color:green"></i></span>
                         </td>
                         <td>{{ $gene->hgnc_id }}</td>
+                        <td>{{ $gene->ident }}</td>
                     </tr>
                 @endforeach
                 </tbody>

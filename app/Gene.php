@@ -139,12 +139,12 @@ class Gene extends Model
                   "readthrough" "http://purl.obolibrary.org/obo/SO_0000883"
                   "RNA, ribosomal" "http://purl.obolibrary.org/obo/SO_0000252"
                   "RNA, misc" "http://purl.obolibrary.org/obo/SO_0000356"})
-     From Jira: 
+     From Jira:
                miscRNA, mcRNA, other, protein-coding, psuedo, rRNA, scRNA,
                snoRNA, snRNA, tRNA, unknown, withdrawn
      */
 
-     
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -160,14 +160,14 @@ class Gene extends Model
 
      /**
      * Access the devices associated with this clinic
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
      public function location()
      {
 		return $this->hasOne('App\Location');
      }
-     
+
 
      /*
      * The roles that belong to this user
@@ -266,7 +266,7 @@ class Gene extends Model
 
 		return implode(', ', $this->prev_symbol);
      }
-     
+
 
      /**
      * Get a display formatted form of omim ids
@@ -284,68 +284,68 @@ class Gene extends Model
 
 
     /**
-     * Flag indicating if gene has any dosage curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
      */
      public function getHasDosageAttribute()
      {
-		return (isset($this->curation_activities['dosage']) ? 
-			$this->curation_activities['dosage'] : false); 
+		return (isset($this->curation_activities['dosage']) ?
+			$this->curation_activities['dosage'] : false);
      }
-     
+
 
      /**
-     * Flag indicating if gene has any actionability curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any actionability curations
+     *
+     * @@param
+     * @return
      */
      public function getHasActionabilityAttribute()
      {
-		return (isset($this->curation_activities['actionability']) ? 
-			$this->curation_activities['actionability'] : false); 
+		return (isset($this->curation_activities['actionability']) ?
+			$this->curation_activities['actionability'] : false);
      }
-     
+
 
      /**
-     * Flag indicating if gene has any validity curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any validity curations
+     *
+     * @@param
+     * @return
      */
      public function getHasValidityAttribute()
      {
-		return (isset($this->curation_activities['validity']) ? 
-			$this->curation_activities['validity'] : false); 
+		return (isset($this->curation_activities['validity']) ?
+			$this->curation_activities['validity'] : false);
      }
 
 
      /**
-     * Flag indicating if gene has any pharma curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any pharma curations
+     *
+     * @@param
+     * @return
      */
     public function getHasPharmaAttribute()
     {
 
-         return (isset($this->curation_activities) ? 
-              $this->curation_activities['pharma'] ?? false : false); 
+         return (isset($this->curation_activities) ?
+              $this->curation_activities['pharma'] ?? false : false);
     }
 
 
     /**
-     * Flag indicating if gene has any actionability curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any actionability curations
+     *
+     * @@param
+     * @return
      */
     public function getHasVariantAttribute()
     {
-         return (isset($this->curation_activities) ? 
-              $this->curation_activities['varpath'] ?? false : false); 
+         return (isset($this->curation_activities) ?
+              $this->curation_activities['varpath'] ?? false : false);
     }
 
 
@@ -358,7 +358,7 @@ class Gene extends Model
 
           if (!isset($this->activity))
                return $activities;
-          
+
           if ($this->activity["dosage"])
                $activities[] = "GENE_DOSAGE";
           if ($this->activity["pharma"])
@@ -372,7 +372,7 @@ class Gene extends Model
 
           return $activities;
      }
-     
+
 
     /**
      * Get a display formatted form of grch37
@@ -393,10 +393,10 @@ class Gene extends Model
                case '24':
                     $chr = 'Y';
                     break;
-               default: 
+               default:
                     $chr = $this->chr;
           }
-          
+
           return 'chr' . $chr . ':' . $this->start37 . '-' . $this->stop37;
      }
 
@@ -420,7 +420,7 @@ class Gene extends Model
                case '24':
                     $chr = 'Y';
                     break;
-               default: 
+               default:
                     $chr = $this->chr;
           }
 
@@ -489,15 +489,15 @@ class Gene extends Model
 
 
      /**
-     * Flag indicating if gene has any dosage curations 
-     * 
-     * @@param	
-     * @return 
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
      */
     public function hasActivity($activity)
     {
-         return (isset($this->activity[$activity]) ? 
-              $this->activity[$activity] : false); 
+         return (isset($this->activity[$activity]) ?
+              $this->activity[$activity] : false);
     }
 
 
@@ -512,7 +512,7 @@ class Gene extends Model
           // break out the args
           foreach ($args as $key => $value)
                $$key = $value;
-      
+
           // initialize the collection
           $collection = collect();
           $gene_count = 0;
@@ -532,7 +532,7 @@ class Gene extends Model
           $location = preg_split('/[:-]/', trim($region), 3);
 
           $chr = strtoupper($location[0]);
-          
+
           if (strpos($chr, 'CHR') == 0)   // strip out the chr
                $chr = substr($chr, 3);
 
@@ -558,14 +558,28 @@ class Gene extends Model
           if ($chr == 'Y')
                $chr = 24;
 
-          if ($type == 'GRCh37')
-               $regions = self::where('chr', (int) $chr)
-                         ->where('start37', '<=', (int) $stop)
-                         ->where('stop37', '>=', (int) $start)->get();
-          else if ($type == 'GRCh38')
-               $regions = self::where('chr', (int) $chr)
-                         ->where('start38', '<=', (int) $stop)
-                         ->where('stop38', '>=', (int) $start)->get();
+            if (isset($option) && $option == 1)  // only return contained
+            {
+            if ($type == 'GRCh37')
+                $regions = self::where('chr', (int) $chr)
+                            ->where('start37', '>=', (int) $start)
+                            ->where('stop37', '<=', (int) $stop)->get();
+            else if ($type == 'GRCh38')
+                $regions = self::where('chr', (int) $chr)
+                            ->where('start38', '>=', (int) $start)
+                            ->where('stop38', '<=', (int) $stop)->get();
+            }
+            else
+            {
+                if ($type == 'GRCh37')
+                    $regions = self::where('chr', (int) $chr)
+                            ->where('start37', '<=', (int) $stop)
+                            ->where('stop37', '>=', (int) $start)->get();
+                else if ($type == 'GRCh38')
+                    $regions = self::where('chr', (int) $chr)
+                            ->where('start38', '<=', (int) $stop)
+                            ->where('stop38', '>=', (int) $start)->get();
+            }
 
           foreach ($regions as $region)
           {
@@ -587,7 +601,7 @@ class Gene extends Model
 
                $collection->push($region);
           }
-      
+
           return (object) ['count' => $collection->count(), 'collection' => $collection,
                       'gene_count' => $gene_count, 'region_count' => $region_count];
     }
@@ -601,6 +615,6 @@ class Gene extends Model
      */
     public static function gg2local($node)
     {
-         
+
     }
 }

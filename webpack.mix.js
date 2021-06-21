@@ -17,4 +17,5 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/dashboard.js', 'public/js/dashboard.js')
     .babel('resources/js/genetable.js', 'public/js/genetable.js')
     .js('resources/js/filters.js', 'public/js/filters.js')
+    .js('resources/js/bookmark.js', 'public/js/bookmark.js')
     .sass('resources/sass/app.scss', 'public/css');

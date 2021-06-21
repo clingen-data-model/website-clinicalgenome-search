@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\GeneListRequest;
 
 use Auth;
+use Session;
+use Cookie;
 
 use App\GeneLib;
 use App\User;
@@ -88,10 +90,30 @@ class GeneController extends Controller
 		// set display context for view
         $display_tabs = collect([
             'active' => "gene",
-            'title' => "Genes"
+            'title' => "Genes",
+            'scrid' => Filter::SCREEN_ALL_GENES,
+			'display' => "All Genes"
 		]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        if (Auth::guard('api')->check())
+            $user = Auth::guard('api')->user();
+
+        // get list of all current bookmarks for the page
+        $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_ALL_GENES)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_ALL_GENES);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+        // don't apply global settings if local ones present
+        $settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
@@ -99,7 +121,9 @@ class GeneController extends Controller
 						->with('page', $page)
 						->with('search', $search)
 						->with('user', $this->user)
-						->with('display_list', $display_list);
+						->with('display_list', $display_list)
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
 	}
 
 
@@ -122,9 +146,22 @@ class GeneController extends Controller
 			'display' => "All Curated Genes"
         ]);
 
-		$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+		// get list of all current bookmarks for the page
+		$bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_CURATED_GENES)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
 
-		$bookmarks = ($this->user === null ? collect() : $this->user->filters);
+        // get active bookmark, if any
+        $filter = Filter::preferences($request, $this->user, Filter::SCREEN_CURATED_GENES);
+
+        if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+            return $filter;
+
+		// don't apply global settings if local ones present
+		$settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+			$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
 
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
@@ -132,7 +169,8 @@ class GeneController extends Controller
 						->with('page', $page)
 						->with('user', $this->user)
 						->with('display_list', $display_list)
-						->with('bookmarks', $bookmarks);
+						->with('bookmarks', $bookmarks)
+                        ->with('currentbookmark', $filter);
 	}
 
 

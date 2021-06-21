@@ -71,13 +71,32 @@ function table_buttons() {
       text: 'Bookmarks',
       icon: 'glyphicon-bookmark',
       event: function event() {
-        if (window.auth !== 1) alert("You must log in");else $('#modalBookmark').modal('toggle');
+        if (window.auth !== 1) swal({
+          title: "Preferences",
+          text: "You must be logged in to manage page preferemces."
+        });else $('#modalBookmark').modal('toggle');
       },
       attributes: {
         title: 'Bookmarks'
       }
     }
-  };else return {};
+  };else if (typeof bookmarksonly !== 'undefined' && bookmarksonly) {
+    return {
+      btnUsersAdd: {
+        text: 'Bookmarks',
+        icon: 'glyphicon-bookmark',
+        event: function event() {
+          if (window.auth !== 1) swal({
+            title: "Preferences",
+            text: "You must be logged in to manage page preferemces."
+          });else $('#modalBookmark').modal('toggle');
+        },
+        attributes: {
+          title: 'Bookmarks'
+        }
+      }
+    };
+  } else return {};
 }
 /**
  * For a symbol or region cell

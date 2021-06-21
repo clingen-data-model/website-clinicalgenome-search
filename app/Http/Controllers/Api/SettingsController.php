@@ -11,6 +11,7 @@ use Auth;
 use App\User;
 use App\Title;
 use App\Gene;
+use App\Group;
 use App\Notification;
 
 class SettingsController extends Controller
@@ -47,7 +48,7 @@ class SettingsController extends Controller
 								 'status_code' => 1001,
 							 	 'message' => "Permission Denied"],
                                   501);
-            
+
         $user = Auth::guard('api')->user();
 
         $field = $input['name'];
@@ -55,11 +56,11 @@ class SettingsController extends Controller
 
         switch ($input['name'])
         {
-            case 'firstname': 
-            case 'lastname': 
+            case 'firstname':
+            case 'lastname':
                 $field = 'name';
-            case 'name': 
-            case 'organization': 
+            case 'name':
+            case 'organization':
             case 'credentials':
             //case 'email':
                 $user->update([$input['name'] => $input['value']]);
@@ -135,7 +136,7 @@ class SettingsController extends Controller
 
                     if ($bucket !== false)
                         $notification->removeGroup('@' . $notify[0], $bucket);
-                    
+
                     $user->removeGroup('@' . $notify[0]);
                 }
                 $notification->save();
@@ -145,7 +146,7 @@ class SettingsController extends Controller
 
         if ($field == 'name')
             $value = $user->name;
-        
+
         /*
         'name', 'firstname', 'lastname', 'organization', 'display_list',
                                 'credentials', 'email', 'profile', 'preferences', 'avatar'
@@ -180,12 +181,12 @@ class SettingsController extends Controller
 
         $t = $user->notification;
         $t->update(['frequency' => $notification]);
-        
+
         return response()->json(['success' => 'truue',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);
-               
+
     }
 
 
@@ -203,11 +204,11 @@ class SettingsController extends Controller
 								 'status_code' => 1011,
 							 	 'message' => "Permission Denied"],
                                   501);
-            
+
         $user = Auth::guard('api')->user();
 
         $report = $user->titles()->ident($ident);
-        
+
         if ($report === null)
             return response()->json(['success' => 'false',
 								 'status_code' => 1012,
@@ -232,11 +233,11 @@ class SettingsController extends Controller
 								 'status_code' => 1011,
 							 	 'message' => "Permission Denied"],
                                   501);
-            
+
         $user = Auth::guard('api')->user();
 
         $report = $user->titles()->ident($ident);
-        
+
         if ($report === null)
             return response()->json(['success' => 'false',
 								 'status_code' => 1012,
@@ -264,21 +265,42 @@ class SettingsController extends Controller
 								 'status_code' => 1011,
 							 	 'message' => "Permission Denied"],
                                   501);
-            
+
         $user = Auth::guard('api')->user();
 
         $title = $user->titles()->ident($id)->first();
         $report = $title->reports()->first();
-        $list = $report->filters['gene_label'];
-        $genes = Gene::select('name', 'hgnc_id')->whereIn('name', $list)->get();
+
+        // break out list into regex, groups, regions, proper names
+        $list = $report->parse_filter();
+
+        $genes = Gene::select('name', 'hgnc_id')->whereIn('name', $list['genes'])->get();
+
+        $regions = implode(';', $list['regions']);
+
+        foreach ($list['regex'] as $item)
+        {
+            $genes->push(new Gene(['name' => 'All Genes', 'hgnc_id' => '*']));
+        }
+
+        foreach ($list['groups'] as $item)
+        {
+            $group = Group::search($item)->first();
+
+            if ($group === null)
+                continue;
+
+            $genes->push(new Gene(['name' => $group->display_name, 'hgnc_id' => $group->search_name]));
+        }
 
         $fields = [ 'title' => $title->title,
                     'description' => $title->description,
                     'startdate' => $report->display_start_date,
                     'stopdate' => $report->display_stop_date,
-                    'genes' => $genes
+                    'genes' => $genes,
+                    'regions' => $regions
         ];
-        
+
         if ($report === null)
             return response()->json(['success' => 'false',
 								 'status_code' => 1012,
@@ -307,11 +329,11 @@ class SettingsController extends Controller
 								 'status_code' => 1011,
 							 	 'message' => "Permission Denied"],
                                   501);
-            
+
         $user = Auth::guard('api')->user();
 
         $report = $user->titles()->ident($ident);
-        
+
         if ($report === null)
             return response()->json(['success' => 'false',
 								 'status_code' => 1012,
@@ -357,7 +379,7 @@ class SettingsController extends Controller
             default:
                 $reports = $user->titles;
         }
-       
+
         return ReportsResource::collection($reports);
     }
 
@@ -371,12 +393,12 @@ class SettingsController extends Controller
     {
 		if (empty($id))
 			return "Report not found";
-			
+
 		$title = Title::ident($id)->first();
-		
+
 		if ($title === null)
 			return "Report not found";
-			
+
         return view('dashboard.includes.expand-report')->with('title', $title);
 	}
 
