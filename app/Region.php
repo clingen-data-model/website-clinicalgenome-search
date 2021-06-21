@@ -127,7 +127,7 @@ class Region extends Model
       if (strtoupper(substr($region, 0, 3)) == 'CHR')     // get rid of the useless chr
         $region = substr($region, 3);
 
-      if (preg_match('/^([0-9xX]{1,2}):([0-9,]+)-([0-9,]+)$/', $region, $matches))
+      if (preg_match('/^([0-9xXyY]{1,2}):([0-9,]+)-([0-9,]+)$/', $region, $matches))
       {
 
         if (count($matches) != 4)
