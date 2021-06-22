@@ -22,7 +22,7 @@
 
             <p>This page provides files for download and information about API resources for the following activities.</p>
             <ul>
-                <li><a href="section_gene-disease-validity">Gene-Disease Validity</a></li>
+                <li><a href="#section_gene-disease-validity">Gene-Disease Validity</a></li>
                 <li><a href="#section_dosage">Dosage Sensitivity</a></li>
                 <li><a href="#section_actionability">Clinical Actionability</a></li>
                 <li><a href="#section_variant">Variant Pathogenicity</a></li>
@@ -141,8 +141,40 @@
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
-                        <td><strong>Clinical Actionability Download </strong>
-                            <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  Both CSV and TSV formats are supported.</div>
+                        <td><strong>Summary of Overall Scores from Released Reports</strong>
+                            <div class="small">Summary of overall scores from released reports is available for Adult and Pediatric contexts.</div>
+                        </td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Summary of Individual Scores from Released Reports</strong>
+                            <div class="small">Summary of individual scores from released reports is available for Adult and Pediatric contexts.</div>
+                        </td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Summary of All Assertions from Released Reports</strong>
+                            <div class="small">Summary of all assertions from released reports is available for Adult and Pediatric contexts.</div>
+                        </td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Summary of Consensus Assertions from Released Reports</strong>
+                            <div class="small">Summary of consensus assertions from released reports is available for Adult and Pediatric contexts.</div>
+                        </td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Additional Clinical Actionability Download Options</strong>
+                            <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  </div>
                         </td>
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/"  class="btn btn-default" target="_blank"> Website</a></td>
                         <td class="text-10px" nowrap=""></td>

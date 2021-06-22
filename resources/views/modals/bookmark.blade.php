@@ -37,10 +37,10 @@
                           <p>Manage all your preferences for this page my selecting from the "Choose Preference" list, select an action, then click on "Go!".
                           </p>
                             <div class="row">
-                            <div class="col-sm-10">
+                            <div class="col-sm-12">
                                 <div class="input-group">
                                     <div class="input-group-btn">
-                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Preference <span class="caret"></span></button>
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Choose Preference </button>
                                         <ul id="preferences-menu" class="dropdown-menu dropdown-menu-right">
                                             @foreach ($bookmarks as $bookmark)
                                             @if ($bookmark->default == 1)
@@ -55,20 +55,23 @@
                                       </div><!-- /btn-group -->
                                       <input id="bookmark-selected-preference" type="text" class="form-control" aria-label="" value="" readonly>
                                   <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle bookmark-action-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span id="button-selected-action">Action</span> <span class="caret"></span></button>
+                                    <button type="button" class="rounded-0 btn btn-default dropdown-toggle bookmark-action-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span id="button-selected-action">Action </span> </button>
                                     <ul class="dropdown-menu dropdown-menu-right">
-                                      <li><a href="#" class="bookmark-modal-select action-restore-bookmark" data-action="select"><i class="fas fa-check"></i>  Select</a></li>
-                                      <li><a href="#" class="bookmark-modal-select action-default-bookmark" data-action="default"><i class="fas fa-asterisk"></i>  Make Default</a></li>
-                                      <li><a href="#" class="bookmark-modal-select action-update-bookmark" data-action="update"><i class="far fa-edit"></i>  Update</a></li>
+                                      <li><a href="#" class="bookmark-modal-select action-restore-bookmark" data-action="select"><i class="fas fa-check"></i>  Select </a></li>
+                                      <li><a href="#" class="bookmark-modal-select action-default-bookmark" data-action="default"><i class="fas fa-asterisk"></i>  Make Default </a></li>
+                                      <li><a href="#" class="bookmark-modal-select action-update-bookmark" data-action="update"><i class="far fa-edit"></i>  Update </a></li>
                                       <li role="separator" class="divider"></li>
-                                      <li><a href="#" class="bookmark-modal-select action-remove-bookmark" data-action="remove"><i class="far fa-trash-alt"></i>  Delete</a></li>
+                                      <li><a href="#" class="bookmark-modal-select action-remove-bookmark" data-action="remove"><i class="far fa-trash-alt"></i>  Delete </a></li>
                                     </ul>
                                   </div><!-- /btn-group -->
+                                  <div class="input-group-btn">
+                                  <button type="button" class="btn btn-primary bookmark-action-go">Go!</button>
+                                  </div>
                                 </div><!-- /input-group -->
                               </div><!-- /.col-sm-10 -->
-                              <div class="col-sm-1 pl-0">
+                              {{-- <div class="col-sm-1 pl-0">
                                 <button type="button" class="btn btn-primary rounded-0 bookmark-action-go">Go!</button>
-                              </div>
+                              </div> --}}
                             </div><!-- /.row -->
 
                           <hr />
@@ -78,7 +81,7 @@
                             <span class="input-group-addon" id="sizing-addon2">Preference Name:</span>
                             <input type="text" class="form-control" id="modal-new-bookmark" name="newbookmark" placeholder="Enter a name" aria-describedby="sizing-addon2">
                             <span class="input-group-btn">
-                                <button class="btn btn-default action-save-bookmark" type="button">Go!</button>
+                                <button class="btn btn-primary action-save-bookmark" type="button">Go!</button>
                               </span>
                           </div>
 
