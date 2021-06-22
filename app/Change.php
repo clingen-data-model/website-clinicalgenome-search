@@ -274,11 +274,17 @@ class Change extends Model
                 // if this is a non-recurrent report, build a psuedo region
                 if ($region === null)
                 {
-                    if (Region::checkRegion(substr($group,1)) == false)
+                    $split = explode('||', substr($group,1));
+                    if ($split === false)
                         continue;
 
-                    $region = new Group(['type' => Group::TYPE_REGION_37,
-                                         'description' => substr($group,1),
+                    if (Region::checkRegion($split[0]) == false)
+                        continue;
+
+                    $type = $split[1] ?? Group::TYPE_REGION_37;
+
+                    $region = new Group(['type' => $type,
+                                         'description' => $split[0],
                                         'option' => 1 ]);
                 }
 

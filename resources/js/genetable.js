@@ -75,19 +75,19 @@ function table_buttons() {
                 }
             },
             btnAdd: {
-                text: 'Bookmarks',
+                text: 'Page Preferences',
                 icon: 'glyphicon-bookmark',
                 event: function () {
                     if (window.auth !== 1)
                         swal({
-                         title: "Preferences",
+                         title: "Page Preferences",
                          text: "You must be logged in to manage page preferemces."
                          });
                     else
                         $('#modalBookmark').modal('toggle');
                 },
                 attributes: {
-                    title: 'Bookmarks'
+                    title: 'Page Preferences'
                 }
             }
         }
@@ -95,19 +95,24 @@ function table_buttons() {
     {
         return {
             btnUsersAdd: {
-                text: 'Bookmarks',
+                text: 'Page Preferences',
                 icon: 'glyphicon-bookmark',
                 event: function () {
                     if (window.auth !== 1)
                         swal({
-                        title: "Preferences",
+                        title: "Page Preferences",
                         text: "You must be logged in to manage page preferemces."
                         });
                     else
+                    {
+                        $('#modal-bookmark-status').html('&nbsp;');
+                        $('#modal-new-bookmark').val('');
+                        $('#bookmark-selected-preference').val('');
                         $('#modalBookmark').modal('toggle');
+                    }
                 },
                 attributes: {
-                    title: 'Bookmarks'
+                    title: 'Page Preferences'
                 }
             }
         }

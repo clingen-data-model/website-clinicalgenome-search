@@ -7,6 +7,11 @@
 				</button>
 				<h3 class="modal-title text-white" id="modalBookmarkTitle">Manage Page Preferences</h3>
 			</div>
+            <div class="alert alert-warning mb-0" role="alert">
+                <b>Page Preferences</b> allow you to save and restore individual settings to your preference.
+                Currently this <b>new feature</b> allows you to manage table page number, table page size, table search string,
+                and table column sort order.  Future releases will also manage advanced filters, column layout, and column search settings.
+            </div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-12">
@@ -83,7 +88,7 @@
 				</div><!-- /.row -->
 			</div>
             <div class="modal-footer">
-                <h5><span id="modal-bookmark-status" class="text-danger"></span></h5>
+                <div id="modal-bookmark-status" class="text-danger pull-left">&nbsp;</div>
 			</div>
 		</div>
 	</div>

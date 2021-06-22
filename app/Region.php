@@ -60,6 +60,10 @@ class Region extends Model
     protected $appends = [];
 
 
+    public const TYPE_REGION_GRCH37 = 1;
+    public const TYPE_REGION_GRCH38 = 2;
+
+
     /**
      * Automatically assign an ident on instantiation
      *

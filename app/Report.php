@@ -12,6 +12,7 @@ use Uuid;
 use Carbon\Carbon;
 
 use App\Change;
+use App\Region;
 
 /**
  *
@@ -218,7 +219,7 @@ class Report extends Model
      */
     public function parse_filter()
     {
-        $resp = ['genes' => [], 'regex' => [], 'groups' => [], 'regions' => []];
+        $resp = ['genes' => [], 'regex' => [], 'groups' => [], 'regions' => [], 'region_type' => 1];
 
         if ($this->filters['gene_label'] === null)
             return $resp;
@@ -231,7 +232,12 @@ class Report extends Model
                     $resp['regex'][] = $item;
                     break;
                 case '%':
-                    $resp['regions'][] = substr($item,1);
+                    $split = explode('||', substr($item,1));
+                    if ($split === false)
+                        break;
+                    if (isset($split[1]) && $split[1] == Region::TYPE_REGION_GRCH38)
+                        $resp['region_type'] = Region::TYPE_REGION_GRCH38;
+                    $resp['regions'][] = $split[0];
                     break;
                 case '@':
                     $resp['groups'][] = $item;

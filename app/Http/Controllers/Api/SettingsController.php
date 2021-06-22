@@ -13,6 +13,7 @@ use App\Title;
 use App\Gene;
 use App\Group;
 use App\Notification;
+use App\Region;
 
 class SettingsController extends Controller
 {
@@ -276,7 +277,25 @@ class SettingsController extends Controller
 
         $genes = Gene::select('name', 'hgnc_id')->whereIn('name', $list['genes'])->get();
 
-        $regions = implode(';', $list['regions']);
+        $region_type = Region::TYPE_REGION_GRCH37;
+
+        $temp_regions = [];
+
+        // split out the type from regions
+        foreach ($list['regions'] as $region)
+        {
+            $split = explode('||', $region);
+
+            if ($split === false)
+                continue;
+
+            if (isset($split[1]) && $split[1] == Region::TYPE_REGION_GRCH38)
+                $region_type = Region::TYPE_REGION_GRCH38;
+
+            $temp_regions[] = $split[0];
+        }
+
+        $regions = implode(';', $temp_regions);
 
         foreach ($list['regex'] as $item)
         {
@@ -298,7 +317,8 @@ class SettingsController extends Controller
                     'startdate' => $report->display_start_date,
                     'stopdate' => $report->display_stop_date,
                     'genes' => $genes,
-                    'regions' => $regions
+                    'regions' => $regions,
+                    'type' => $region_type == 1 ? 'GRCh37' : 'GRCh38',
         ];
 
         if ($report === null)

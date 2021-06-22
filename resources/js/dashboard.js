@@ -67,6 +67,8 @@ $(function() {
     $('.action-new-report').on('click', function() {
 
         $('#report-form')[0].reset();
+        $('.action-select-text').html('GRCh37');
+        $('#select-gchr').val('GRCh38');
 
         // deal with hidden fields
         $("#report_form input[name=ident]").val('');
@@ -117,6 +119,8 @@ $(function() {
             $('#report-form').find("[name='stopdate']").val(response.fields.stopdate);
             $('#report-form').find("[name='ident']").val(uuid);
             $('#report-form').find("[name='regions']").val(response.fields.regions);
+            $('#report-form').find("[name='type']").val(response.fields.type);
+            $('.action-select-text').html(response.fields.type);
 
             //console.log(response.fields.genes);
             response.fields.genes.forEach(function(element) {
@@ -134,6 +138,18 @@ $(function() {
                 icon: "error",
             });
         });
+    });
+
+
+    /**
+     * Region selector for new user report
+     */
+    $('#report_modal').on('click', '.action-select-grch', function () {
+
+        var uuid = $(this).attr('data-uuid');
+
+        $('.action-select-text').html(uuid);
+        $('#select-gchr').val(uuid);
     });
 
 

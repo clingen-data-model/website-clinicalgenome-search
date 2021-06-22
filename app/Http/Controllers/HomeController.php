@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Gene;
 use App\Title;
 use App\Report;
+use App\Region;
 
 class HomeController extends Controller
 {
@@ -374,6 +375,8 @@ class HomeController extends Controller
 
                 // do some dirty cleanup of genes list to remove region prefix
                 $list = str_replace('%', '', $list);
+                $list = str_replace('||1', '(GRCh37)', $list);
+                $list = str_replace('||2', '(GRCh38)', $list);
 
                 if (is_array($report->filters['gene_label']))
                     sort($list);
@@ -409,7 +412,7 @@ class HomeController extends Controller
     {
 
         $input = $request->only(['title', 'description', 'startdate', 'stopdate',
-                                'genes', 'regions', 'ident']);
+                                'genes', 'regions', 'ident', 'type']);
 
         if (!Auth::guard('api')->check())
         {
@@ -445,7 +448,18 @@ class HomeController extends Controller
                     $newgenes[] = $gene->name;
             }
             else*/
-                $newgenes[] = '%' . $regionname;
+            switch ($input['type'])
+            {
+                case 'GRCh37':
+                    $type = '||' . Region::TYPE_REGION_GRCH37;
+                    break;
+                case 'GRCh38':
+                    $type = '||' . Region::TYPE_REGION_GRCH38;
+                    break;
+                default:
+                    $type = '';
+            }
+                $newgenes[] = '%' . $regionname . $type;
         }
 
         if (empty($input['ident']))

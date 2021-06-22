@@ -71,6 +71,9 @@ class FollowController extends Controller
 
             // TODO:  Validate its a good region string!
 
+            if (isset($input['build']) && $input['build'] == 'GRCh38')
+                $name = $name . '||2';
+
             $group = $user->owngroups()->search($name)->first();
 
             if ($group === null)
@@ -80,7 +83,7 @@ class FollowController extends Controller
                                     'name' => $name,
                                     'user_id' => $user->id,
                                     'search_name' => $name,
-                                    'type' => ($input['type'] == 'GRCh38' ?
+                                    'type' => ($input['build'] == 'GRCh38' ?
                                                 Group::TYPE_REGION_38 :
                                                 Group::TYPE_REGION_37)
                                     ]);
