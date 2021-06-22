@@ -16,19 +16,26 @@ $(function() {
      */
     window.update_addr = function ()
     {
-
         var current = originalurl;
 
         const parms = new URLSearchParams(current);
 
         // set page size
-        var size = parms.get('size');
-        //$table.bootstrapTable('selectPage', parseInt(page))
+        //var size = parms.get('size');
 
         // set Search
         var search = parms.get('search');
-        if (parms.get('col_search') == "" || parms.get('col_search') != "" && search != "")
+        if (parms.get('col_search') == "" || (parms.get('col_search') != "" && search != ""))
+        {
+            // because of where the dosage search is located, inputs collide
+            var tok = $('#dosage-search-form input[name="_token"]').val();
+            var typ = $('#dosage-search-form input[name="type"]').val();
+            var teg = $('#dosage-search-form input[name="region"]').val();
             $table.bootstrapTable('resetSearch', search);
+            $('#dosage-search-form input[name="_token"]').val(tok);
+            $('#dosage-search-form input[name="type"]').val(typ);
+            $('#dosage-search-form input[name="region"]').val(teg);
+        }
 
         // set column sort and order
         var sort = parms.get('sort');
@@ -60,7 +67,6 @@ $(function() {
     function set_addr(field, value)
     {
         var current = window.location.search;
-        console.log(window.location);
 
         var parms = new URLSearchParams(current);
 
