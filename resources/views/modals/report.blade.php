@@ -54,7 +54,7 @@
                                     <label for="i7" class="col-sm-2 control-label">Regions</label>
                                     <div class="col-sm-8 input-group">
                                         <div class="input-group-btn input-btn-region-prefix pl-3">
-                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="action-select-text">{{  $type ?? 'GRCh37' }}</span> <span class="caret"></span>
+                                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <span class="action-select-text">{{  $type ?? 'GRCh37' }}</span>
                                             </button>
                                             <ul class="dropdown-menu">
                                             <li><a href="#" class="action-select-grch" data-uuid="GRCh37">GRCh37</a></li>
