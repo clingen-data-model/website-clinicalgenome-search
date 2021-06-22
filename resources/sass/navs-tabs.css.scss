@@ -205,16 +205,16 @@ header .dropdown-toggle::after {
 
 }
 // Make the arrow larger
-.nav-tabs-search .dropdown-toggle::after, .bootstrap-table .dropdown-toggle::after {
+.nav-tabs-search .dropdown-toggle::after, .bootstrap-table .dropdown-toggle::after, .dropdown-toggle::after  {
     margin-left: 0px !important;
-    display: inline-block;
-    margin-left: 0.0em;
-    vertical-align: 0.255em;
+    display: inline-block !important;
+    margin-left: 0.0em !important;
+    vertical-align: 0.255em !important;
     content: "";
-    border-top: 0.3em solid;
-    border-right: 0.3em solid transparent;
-    border-bottom: 0;
-    border-left: 0.3em solid transparent;
+    border-top: 0.3em solid !important;
+    border-right: 0.3em solid transparent !important;
+    border-bottom: 0 !important;
+    border-left: 0.3em solid transparent !important;
 }
 .svg-h-text {
     height: 1rem;
