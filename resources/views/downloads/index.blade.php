@@ -22,7 +22,7 @@
 
             <p>This page provides files for download and information about API resources for the following activities.</p>
             <ul>
-                <li><a href="section_gene-disease-validity">Gene-Disease Validity</a></li>
+                <li><a href="#section_gene-disease-validity">Gene-Disease Validity</a></li>
                 <li><a href="#section_dosage">Dosage Sensitivity</a></li>
                 <li><a href="#section_actionability">Clinical Actionability</a></li>
                 <li><a href="#section_variant">Variant Pathogenicity</a></li>
