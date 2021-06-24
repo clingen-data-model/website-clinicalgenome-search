@@ -473,7 +473,7 @@ $(function() {
     $table.on('click', '.action-follow-gene', function(element) {
         swal({
             title: "Are you sure?",
-            text: "You can alway follow again.",
+            text: "Unfollowed genes or groups can always be refollowed later.",
             icon: "warning",
             buttons: true,
             dangerMode: true,
