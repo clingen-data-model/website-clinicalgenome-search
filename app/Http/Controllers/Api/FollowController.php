@@ -70,6 +70,7 @@ class FollowController extends Controller
             $name = str_replace(',', '', $name);
 
             // TODO:  Validate its a good region string!
+            $goodname = $name;
 
             if (isset($input['build']) && $input['build'] == 'GRCh38')
                 $name = $name . '||2';
@@ -93,7 +94,7 @@ class FollowController extends Controller
             $group->name = $group->ident;
 
             // if the display name is empty, create from the search_name
-            $group->display_name = empty($input['display']) ? $input['gene'] : $input['display'];
+            $group->display_name = empty($input['display']) ? $goodname : $input['display'];
 
             // update the parameters
             $group->description = $input['gene'];
