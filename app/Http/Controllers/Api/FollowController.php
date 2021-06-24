@@ -66,8 +66,9 @@ class FollowController extends Controller
         {
             $name = '%' . $input['gene'];
 
-            // ignore commas for search purposes
+            // ignore commas and white space for search purposes
             $name = str_replace(',', '', $name);
+            $name = preg_replace('/\s/', '', $name);
 
             // TODO:  Validate its a good region string!
             $goodname = substr($name, 1);
@@ -97,7 +98,7 @@ class FollowController extends Controller
             $group->display_name = empty($input['display']) ? $goodname : $input['display'];
 
             // update the parameters
-            $group->description = $input['gene'];
+            $group->description = $goodname;
 
             $group->save();
 
