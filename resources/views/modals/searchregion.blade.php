@@ -32,6 +32,7 @@
 										<input type="text" class="form-control" name="gene" size="50" value="" placeholder="Enter genomic coordinates or cytoband range">
 										<span class="text-muted pb-4"><small><i>(Ex.: chr22:21917117-24994433, chrX:30,195,000-30,355,000 )</i></small></span>
 									</div>
+                                    <div class="mt-6 pt-6">&nbsp</div>
                                     <label for="search" class="col-sm-2 control-label">Display Name <i>(optional)</i></label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="display" size="50" value="" placeholder="Enter a name">

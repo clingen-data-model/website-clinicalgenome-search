@@ -184,4 +184,16 @@ class Group extends Model
         $t->save();
     }
 
+
+    public static function parse_group($group)
+    {
+        // only works for region right now
+        if (strpos($group, '%') === 0)
+            $group = substr($group, 1);
+
+        $parts = explode('||', $group);
+
+        return $parts[0];
+    }
+
 }

@@ -81,7 +81,7 @@ function table_buttons() {
                     if (window.auth !== 1)
                         swal({
                          title: "Page Preferences",
-                         text: "You must be logged in to manage page preferemces."
+                         text: "You must be logged in to manage page preferences."
                          });
                     else
                         $('#modalBookmark').modal('toggle');
