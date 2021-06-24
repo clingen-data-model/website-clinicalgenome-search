@@ -70,7 +70,7 @@ class FollowController extends Controller
             $name = str_replace(',', '', $name);
 
             // TODO:  Validate its a good region string!
-            $goodname = $name;
+            $goodname = substr($name, 1);
 
             if (isset($input['build']) && $input['build'] == 'GRCh38')
                 $name = $name . '||2';
