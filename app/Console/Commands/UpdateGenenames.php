@@ -54,21 +54,22 @@ class UpdateGenenames extends Command
 		try {
 
             //$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
-            $results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            //$results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
+            $results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json");
 
 		} catch (\Exception $e) {
 
 			echo "\n(E001) Error retrieving search data\n";
-			exit;
+			return 0;
 
 		}
 
 		$data = json_decode($results, true);
 
-		if ($data['response']['numFound'] == 0)
+		if (empty($data['response']['numFound']))
 		{
             echo "\n(E002) Error fetching search data.\n";
-            exit;
+            return 0;
 		}
 
 		foreach ($data['response']['docs'] as $doc)
