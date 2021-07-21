@@ -29,9 +29,11 @@
 	<div class="row geneValidityScoresWrapper">
 		<div class="col-sm-12">
 			<div class="content-space content-border">
-
 				{{ $record->animalmode ?? '' }}
-				@if(strpos($record->specified_by->label,"SOP8"))
+				@if($record->json_message_version == "GCI.8.1")
+					@include('gene-validity.partial.report-heading')
+					@include('gene-validity.partial.sop8-1')
+				@elseif(strpos($record->specified_by->label,"SOP8"))
 					@include('gene-validity.partial.report-heading')
 					@include('gene-validity.partial.sop7')
 				@elseif(strpos($record->specified_by->label,"SOP7"))
