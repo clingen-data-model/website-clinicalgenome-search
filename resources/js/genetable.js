@@ -551,7 +551,7 @@ function conditionFormatter(index, row) {
     html += '</div>';
 
     if (row.synonym != null)
-      html += '<div class="text-sm text-muted">' + row.synonym + '</div>';
+        html += '<div class="text-sm text-muted">Synonym: ' + row.synonym + '</div>';
 
     return html;
 }
