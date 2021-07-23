@@ -39,7 +39,7 @@
 			<td rowspan="2" class="table-title table-border-thin">Autosomal Dominant or X-linked Disorder</td>
 			<td>Predicted  or proven null variant</td>
 			<td>1.5</td>
-			<td>0-3 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
+			<td>0-3</td>
 			<td class="">12</td>
 			<td>{{ $record->sop8_proband_with_predicted_variant_count }}</td>
 			<td class="input-width-numbers">{{ $record->sop8_proband_with_predicted_proband_count }}</td>
@@ -54,10 +54,10 @@
 		<tr>
 		  <td class='table-border-thin'>Other variant type</td>
 		  <td class='table-border-thin'>0.1</td>
-		  <td class='table-border-thin'>0-1.5 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
+		  <td class='table-border-thin'>0-1.5</td>
 			<td class=" table-border-thin">12</td>
 		  <td id="GeneticEvidence1Max" class='table-border-thin'>{{ $record->sop8_proband_with_other_variant_count }}</td>
-			<td class="input-width-numbers table-border-thin"><span class="form-group">{{ $record->sop8_proband_with_other_proband_count }}</span></td>
+			<td class="input-width-numbers table-border-thin">{{ $record->sop8_proband_with_other_proband_count }}</td>
 			<td class="input-width-numbers points-given-bg table-border-thin">
 			{{ $record->sop8_proband_with_other_total }}			</td>
 			<td class=" points-tally-bg table-border-thin">
@@ -72,7 +72,7 @@
 		<tr>
 			<td rowspan="2" class="table-title table-border-thin">Autosomal Recessive Disease</td>
 			<td>Predicted  or proven null variant</td>
-			<td>1.5</td>
+			<td>1.5 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
 			<td>0-3 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
 			<td rowspan="2" class="table-border-thin ">12</td>
 			<td id="GeneticEvidence4Max" class=' '>{{ $record->sop8_variants_autosomal_recessive_disease_with_variant_count }}</td>
@@ -88,7 +88,7 @@
 		</tr>
 		<tr>
 		  <td class='table-border-thin'>Other variant type</td>
-		  <td class='table-border-thin'>0.1</td>
+		  <td class='table-border-thin'>0.1 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
 		  <td class='table-border-thin'>0-1.5  <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
 		  <td id="GeneticEvidence4Max" class=' table-border-thin'>{{ $record->sop8_variants_autosomal_recessive_disease_other_variant_count }}</td>
 		  <td class="input-width-pmid  table-border-thin">
@@ -123,7 +123,7 @@
 	  </tr>
 		<tr>
 		  <td colspan="2" class='table-heading-line-normal'>Total Summed LOD Score</td>
-		  <td class='table-heading-line-normal'><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->TotalPoints ?? null}}</span></td>
+		  <td class='table-heading-line-normal'>{{ $record->score_data->GeneticEvidence->CaseLevelData->SegregationEvidence->TotalPoints ?? null}}</td>
 		  <td class=' input-width-numbers table-heading-line-normal' style="background-color: #f1f1f1">&nbsp;</td>
 		  <td class="input-width-pmid  table-heading-line-normal" style="background-color: #f1f1f1">&nbsp;</td>
 	  </tr>
@@ -155,7 +155,7 @@
 				4. Statistical Significance</td>
 			<td colspan="2">0-6</td>
 			<td colspan="2" rowspan="2" id="GeneticEvidence6Max">12</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Count ?? null }}</span></td>
+			<td class="input-width-numbers">{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->Count ?? null }}</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 														{{ $record->score_data->GeneticEvidence->CaseControlData->SingleVariantAnalysis->TotalPoints ?? null }}
@@ -174,7 +174,7 @@
 		<tr>
 			<td colspan="2" class="table-title">Aggregate Variant Analysis</td>
 			<td colspan="2">0-6</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Count ?? null }}</span></td>
+			<td class="input-width-numbers">{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->Count ?? null }}</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 								{{ $record->score_data->GeneticEvidence->CaseControlData->AggregateVariantAnalysis->TotalPoints ?? null }}
@@ -223,7 +223,7 @@
 			<td>0.5</td>
 			<td>0 - 2</td>
 			<td colspan="2" rowspan="3" class='table-border-thin' id="ExperimentalEvidence1Max">2</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Count ?? null }}</span></td>
+			<td class="input-width-numbers">{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->Count ?? null }}</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 						{{ $record->score_data->ExperimentalEvidence->Function->BiochemicalFunction->TotalPoints ?? null }}
@@ -242,10 +242,10 @@
 			<td>Protein Interaction</td>
 			<td>0.5</td>
 			<td>0 - 2</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Count ?? null }}</span></td>
-			<td class="input-width-numbers points-given-bg"><span class="form-group">
+			<td class="input-width-numbers">{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Count ?? null }}</td>
+			<td class="input-width-numbers points-given-bg">
 				{{ $record->score_data->ExperimentalEvidence->Function->ProteinInteraction->TotalPoints ?? null }}
-			</span></td>
+			</td>
 			<td class="input-width-pmid">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->ProteinInteraction->Evidence ?? null ) !!}
 			</td>
@@ -254,10 +254,10 @@
 			<td class=' table-border-thin'>Expression</td>
 			<td class=' table-border-thin'>0.5</td>
 			<td class=' table-border-thin'>0 - 2</td>
-			<td class="input-width-numbers table-border-thin"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->Function->Expression->Count ?? null }}</span></td>
-			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
+			<td class="input-width-numbers table-border-thin">{{ $record->score_data->ExperimentalEvidence->Function->Expression->Count ?? null }}</td>
+			<td class="input-width-numbers points-given-bg table-border-thin">
 						{{ $record->score_data->ExperimentalEvidence->Function->Expression->TotalPoints ?? null }}
-			</span></td>
+			</td>
 			<td class="input-width-pmid table-border-thin">
 				{!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->Function->Expression->Evidence ?? null ) !!}
 			</td>
@@ -268,7 +268,7 @@
 			<td>1</td>
 			<td>0 - 2</td>
 			<td colspan="2" rowspan="2" class=' table-border-thin' id="ExperimentalEvidence2Max">2</td>
-			<td class="input-width-numbers"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Count ?? null }}</span></td>
+			<td class="input-width-numbers">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->Count ?? null }}</td>
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->PatientCells->TotalPoints ?? null }}
@@ -285,10 +285,10 @@
 			<td class='table-border-thin'>Non-patient cells</td>
 			<td class='table-border-thin'>0.5</td>
 			<td class='table-border-thin'>0 - 1</td>
-			<td class="input-width-numbers table-border-thin"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Count ?? null }}</span></td>
-			<td class="input-width-numbers points-given-bg table-border-thin"><span class="form-group">
+			<td class="input-width-numbers table-border-thin">{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Count ?? null }}</td>
+			<td class="input-width-numbers points-given-bg table-border-thin">
 						{{ $record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->TotalPoints ?? null }}
-			</span></td>
+			</td>
 			<td class="input-width-pmid table-border-thin">
 			  {!! PrintWrapperPmidSop5Gci($record->score_data->ExperimentalEvidence->FunctionalAlteration->NonPatientCells->Evidence ?? null ) !!}
 			</td>
@@ -299,10 +299,10 @@
 		  <td class=''>2</td>
 		  <td class=''>0 - 4</td>
 		  <td colspan="2" rowspan="6" class='' id="">4</td>
-		  <td class="input-width-numbers"><span class="form-group">{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->Count ?? null }}</span></td>
-		  <td class="input-width-numbers points-given-bg"><span class="form-group">
+		  <td class="input-width-numbers">{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->Count ?? null }}</td>
+		  <td class="input-width-numbers points-given-bg">
 						{{ $record->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints ?? null }}
-		  </span></td>
+		  </td>
 		  <td rowspan="6" class=" points-tally-bg">
 						{{ $record->score_data->ExperimentalEvidence->ModelsRescue->PointsCounted ?? null }}
 		  </td>
