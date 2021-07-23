@@ -89,7 +89,7 @@
 		<tr>
 		  <td class='table-border-thin'>Other variant type</td>
 		  <td class='table-border-thin'>0.1 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
-		  <td class='table-border-thin'>0-1.5  <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
+		  <td class='table-border-thin' nowrap>0-1.5 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="" data-original-title="In the case of AR conditions, each variant (in trans) is scored independently, then combined"><i class='fas fa-info-circle'></i></span></td>
 		  <td id="GeneticEvidence4Max" class=' table-border-thin'>{{ $record->sop8_variants_autosomal_recessive_disease_other_variant_count }}</td>
 		  <td class="input-width-pmid  table-border-thin">
 			  {!! PrintWrapperPmidSop5Gci($record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalRecessiveDisease->ProbandWithOtherVariantType->Evidence ?? null ) !!}
@@ -112,7 +112,7 @@
 		  <td rowspan="3" class='table-border-thin'>0-3</td>
 		  <td class='table-border-thin'>{{ $record->sop8_candi_gene_summed }}</td>
 		  <td class=' input-width-numbers table-border-thin'>{{ $record->sop8_candi_gene_family }}</td>
-		  <td rowspan="2" class=' input-width-numbers table-border-thin'>12</td>
+		  <td rowspan="2" class=' input-width-numbers table-border-thin'>3</td>
 		  <td class="input-width-pmid  table-border-thin">{{ $record->sop8_candi_gene_family_evidence }}</td>
 	  </tr>
 		<tr>
