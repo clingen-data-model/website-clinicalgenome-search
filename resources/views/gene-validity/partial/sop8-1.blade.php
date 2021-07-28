@@ -22,10 +22,10 @@
 		</tr>
 		<tr>
 			<td class="table-heading-bg table-heading table-heading-tight">Default <div class="text-10px">(per variant)</div></td>
-			<td class="table-heading-bg table-heading table-heading-tight">Range <div class="text-10px">(per variant)</td>
+			<td class="table-heading-bg table-heading table-heading-tight">Range <div class="text-10px">(per variant)</div></td>
 			<td class="table-heading-bg table-heading table-heading-tight">Variant Count</td>
 			<td colspan="2" class="table-heading-bg table-heading table-heading-tight">Proband Count</td>
-			<td class="table-heading-bg table-heading table-heading-tight points-given-bg">Total</td>
+			<td class="table-heading-bg table-heading table-heading-tight points-given-bg">Total<div class="text-10px">(Max)</div></td>
 			<td class="table-heading-bg table-heading table-heading-tight points-tally-bg">Counted</td>
 		</tr>
 		<tr>
@@ -404,9 +404,6 @@
 <hr />
 <p>&nbsp;</p>
 <table class="table table-condensed table-bordered table-border-normal">
-<tbody>
-  <tr>
-    <td style="width:15%" class="table-heading-line-thick table-heading"><table class="table table-condensed table-bordered table-border-normal">
       <tbody>
         <tr>
           <td style="width:25%" class="table-heading-line-thick table-heading">Assertion criteria</td>
@@ -522,6 +519,4 @@
   </tr>
       @endif
       @endif
-    </table></td>
-  </tr>
-</table>
+    </table>
