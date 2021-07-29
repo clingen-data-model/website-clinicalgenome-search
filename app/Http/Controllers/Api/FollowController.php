@@ -66,10 +66,12 @@ class FollowController extends Controller
         {
             $name = '%' . $input['gene'];
 
-            // ignore commas for search purposes
+            // ignore commas and white space for search purposes
             $name = str_replace(',', '', $name);
+            $name = preg_replace('/\s/', '', $name);
 
             // TODO:  Validate its a good region string!
+            $goodname = substr($name, 1);
 
             if (isset($input['build']) && $input['build'] == 'GRCh38')
                 $name = $name . '||2';
@@ -89,9 +91,14 @@ class FollowController extends Controller
                                     ]);
             }
 
+            // quick fix for  unique constraint on the groups table
+            $group->name = $group->ident;
+
+            // if the display name is empty, create from the search_name
+            $group->display_name = empty($input['display']) ? $goodname : $input['display'];
+
             // update the parameters
-            $group->display_name = $input['display'];
-            $group->description = $input['gene'];
+            $group->description = $goodname;
 
             $group->save();
 
@@ -380,7 +387,7 @@ dd("not logged in");  }*/
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
                     break;
                 default:
-                    if (substr($group->name,0, 1) == '%')
+                    if (substr($group->search_name,0, 1) == '%')
                         $type = 2;
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;

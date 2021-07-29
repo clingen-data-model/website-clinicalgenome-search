@@ -166,10 +166,10 @@
 												</div>
 											</div>
 										</div>
-									</div><!-- /.col-lg-8 -->				
+									</div><!-- /.col-lg-8 -->
 								</div>
 							</div>
-							
+
 							<!-- List Settings -->
 							<div class="tab-pane fade" id="lists">
 								<div class="row mb-3">
@@ -202,8 +202,14 @@
 														</div>
 														<div class="radio">
 															<label>
-																<input type="radio" name="display_list" value="250" {{ $user->preferences['display_list'] == '250' ? 'checked' : '' }}>
+																<input type="radio" class="api-update" name="display_list" value="250" {{ $user->preferences['display_list'] == '250' ? 'checked' : '' }}>
 																250
+															</label>
+														</div>
+														<div class="radio">
+															<label>
+																<input type="radio" class="api-update" name="display_list" value="All" {{ $user->preferences['display_list'] == 'All' ? 'checked' : '' }}>
+																All
 															</label>
 														</div>
 													</div>
@@ -262,7 +268,7 @@
 												</div>
 											</div>
 										</div>
-									</div>		
+									</div>
 								</div>
 							</div>
 
@@ -341,7 +347,7 @@
 												</div>
 											</div>
 										</div>
-									</div>		
+									</div>
 								</div>
 							</div>
 

@@ -128,6 +128,9 @@ class Region extends Model
       if (empty($region))
         return false;
 
+    // remove any whitespace
+    $region = preg_replace('/\s/', '', $region);
+
       if (strtoupper(substr($region, 0, 3)) == 'CHR')     // get rid of the useless chr
         $region = substr($region, 3);
 
@@ -201,6 +204,9 @@ class Region extends Model
       else
         return (object) ['count' => $collection->count(), 'collection' => $collection,
                         'gene_count' => $gene_count, 'region_count' => $region_count];
+
+    // remove any whitespace
+    $region = preg_replace('/\s/', '', $region);
 
       // break out the location and clean it up
       $location = preg_split('/[:-]/', trim($region), 3);

@@ -81,7 +81,7 @@ function table_buttons() {
                     if (window.auth !== 1)
                         swal({
                          title: "Page Preferences",
-                         text: "You must be logged in to manage page preferemces."
+                         text: "You must be logged in to manage page preferences."
                          });
                     else
                         $('#modalBookmark').modal('toggle');
@@ -551,7 +551,7 @@ function conditionFormatter(index, row) {
     html += '</div>';
 
     if (row.synonym != null)
-      html += '<div class="text-sm text-muted">' + row.synonym + '</div>';
+        html += '<div class="text-sm text-muted">Synonym: ' + row.synonym + '</div>';
 
     return html;
 }
