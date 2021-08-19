@@ -8,7 +8,7 @@
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">{{ $record->label }}</h1>
+						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1> {!! displayMondoObsolete($record->label) !!}
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 							<i class="far fa-caret-square-down"></i> View Disease Facts
 						</a>
@@ -101,7 +101,8 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												{{ $record->label }}
+                                                {{ displayMondoLabel($record->label) }}
+                                                {!! displayMondoObsolete($record->label) !!}
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
@@ -254,7 +255,8 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												@if($first == true) {{ $record->label }} @endif
+												@if($first == true) {{ displayMondoLabel($record->label) }}
+                                                {!! displayMondoObsolete($record->label) !!} @endif
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
@@ -383,7 +385,7 @@
 				{{-- Check to see if curations are showing --}}
 				@if($currations_set == false)
 						<br clear="both" />
-						<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->label }}.</strong> <br />View <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->getMondoString($record->iri, true) }}">ClinVar</a>.</div>
+						<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!}.</strong> <br />View <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->getMondoString($record->iri, true) }}">ClinVar</a>.</div>
 				@endif
 
 @endsection

@@ -8,7 +8,7 @@
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">{{ $record->label }}</h1>
+						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1> {!! displayMondoObsolete($record->label) !!}
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 							<i class="far fa-caret-square-down"></i> View Disease Facts
 						</a>
@@ -70,7 +70,7 @@
 
 
 				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i><a class="text-dark" href="{{ route('gene-show', $disease->gene->hgnc_id) }}" >{{ $disease->gene->label }}</a></i> -
-					{{ $record->label }}</h3>
+					{{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!}</h3>
 					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">

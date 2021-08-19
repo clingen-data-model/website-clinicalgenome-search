@@ -227,6 +227,18 @@ class Gene extends Model
 
 
      /**
+     * Query scope by gene previous symbol
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopePrevious($query, $symbol)
+    {
+        return $query->whereJsonContains('prev_symbol', $symbol);
+    }
+
+
+     /**
      * Query scope by cytoband
      *
      * @@param	string	$ident
@@ -533,7 +545,7 @@ class Gene extends Model
 
           $chr = strtoupper($location[0]);
 
-          if (strpos($chr, 'CHR') == 0)   // strip out the chr
+          if (strpos($chr, 'CHR') === 0 )   // strip out the chr
                $chr = substr($chr, 3);
 
           //vet the search terms

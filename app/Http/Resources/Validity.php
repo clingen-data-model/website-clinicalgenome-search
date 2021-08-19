@@ -23,7 +23,7 @@ class Validity extends JsonResource
             'hgnc_id' => $this->gene->hgnc_id,
             //'href' => $this->href,
             'ep' => $this->attributed_to->label ?? '',
-            'disease' => $this->disease->label,
+            'disease' => displayMondoLabel($this->disease->label) . '  ' . displayMondoObsolete($this->disease->label),
             'mondo' => $this->disease->curie,
             'moi' => $this->displayMoi($this->mode_of_inheritance->curie),
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
@@ -34,25 +34,25 @@ class Validity extends JsonResource
             'date' => $this->report_date
         ];
     }
-    
-    
+
+
     /**
-     * 
+     *
      * Map the node structure to a json consumable array
-     * 
+     *
      */
     protected function mapCurations()
     {
 		if (empty($this->curations))
 			return [];
-			
+
 		foreach($this->curations as $node)
 		{
 			$map = $node->values();
 			$map['labels'] = $node->labels();
 			$curations[] = $map;
 		}
-		
+
 		return $curations;
 	}
 }

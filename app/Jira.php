@@ -30,12 +30,12 @@ use App\Omim;
  *
  * */
 class Jira extends Model
-{	 
+{
 	/**
      * This class is designed to be used statically.  It is a non-persistant model
      * with no corresponding table in the database.
      */
-     
+
      /**
      * The attributes that should be validity checked.
      *
@@ -60,7 +60,7 @@ class Jira extends Model
     protected $appends = [];
 
     private const groupname = 'DCI';
-	
+
     public const FIELD_SUMMARY = 'summary';
     public const FIELD_ISSUETYPE = 'issuetype';
     public const FIELD_PMID1 = 'customfield_10189';
@@ -90,7 +90,7 @@ class Jira extends Model
           Gain PMID 6:  customfield_12236
           Gain PMID 6 Description:  customfield_12242
      */
-     
+
      /**
      * Get details of a specific gene
      *
@@ -101,7 +101,7 @@ class Jira extends Model
 		// break out the args
 		foreach ($args as $key => $value)
                $$key = $value;
-               
+
           // get the issue number
           $symbol = Gene::where('hgnc_id', $gene)->first();
 
@@ -233,16 +233,21 @@ class Jira extends Model
                $node->triplo_score = 30;
           else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
                $node->triplo_score = 40;
+            else if ($node->triplo_score == "Not yet evaluated")
+               $node->triplo_score = -5;
 
           if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
                $node->haplo_score = 30;
           else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
                $node->haplo_score = 40;
+          else if ($node->haplo_score == "Not yet evaluated")
+               $node->haplo_score = -5;
 
 
-	//dd($node);	
 
-		return $node;	
+	//dd($node);
+
+		return $node;
      }
 
 
@@ -318,7 +323,7 @@ class Jira extends Model
           {
                $node->issue_status = $node->jira_status;
           }
-          
+
          $node->date = $node->displayDate($response->resolutiondate ?? '');
 
          // some of the region fields for G37 have commas in them, remove them
@@ -377,19 +382,23 @@ class Jira extends Model
 
          // for 30 and 40, Jira also sends text
          if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
-              $node->triplo_score = 30;
-         else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
-              $node->triplo_score = 40;
+               $node->triplo_score = 30;
+          else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+               $node->triplo_score = 40;
+            else if ($node->triplo_score == "Not yet evaluated")
+               $node->triplo_score = -5;
 
-         if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
-              $node->haplo_score = 30;
-         else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
-              $node->haplo_score = 40;
+          if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+               $node->haplo_score = 30;
+          else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+               $node->haplo_score = 40;
+          else if ($node->haplo_score == "Not yet evaluated")
+               $node->haplo_score = -5;
 
 
-    //dd($node);	
+    //dd($node);
 
-         return $node;	
+         return $node;
     }
 
 
@@ -403,7 +412,7 @@ class Jira extends Model
          // break out the args
          foreach ($args as $key => $value)
               $$key = $value;
-              
+
           $collection = collect();
 
           // filter 14035 is erica's recurrent cnv search string
@@ -426,14 +435,18 @@ class Jira extends Model
 
                // for 30 and 40, Jira also sends text
                if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->triplo_score = 30;
-               else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
-                    $node->triplo_score = 40;
+               $node->triplo_score = 30;
+          else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+               $node->triplo_score = 40;
+            else if ($node->triplo_score == "Not yet evaluated")
+               $node->triplo_score = -5;
 
-               if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->haplo_score = 30;
-               else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
-                    $node->haplo_score = 40;
+          if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+               $node->haplo_score = 30;
+          else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+               $node->haplo_score = 40;
+          else if ($node->haplo_score == "Not yet evaluated")
+               $node->haplo_score = -5;
 
                $collection->push($node);
           }
@@ -456,7 +469,7 @@ class Jira extends Model
         // break out the args
         foreach ($args as $key => $value)
              $$key = $value;
-             
+
          $collection = collect();
 
          $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Gene Curation", "ISCA Region Curation") AND labels in ("RatingChange")');
@@ -464,7 +477,7 @@ class Jira extends Model
          if (empty($response))
               return $collection;
 
-          foreach ($response->getIssues() as $issue) 
+          foreach ($response->getIssues() as $issue)
           {
                $changelog = self::getIssue($issue->key, 'changelog');
 
@@ -474,7 +487,7 @@ class Jira extends Model
                     {
                          if ($item->field == 'ISCA Triplosensitivity score')
                          {
-                              if ($item->fromString !== null 
+                              if ($item->fromString !== null
                                    && trim($item->fromString) != 'Not yet evaluated'
                                    && $item->toString !== null)
                               {
@@ -504,11 +517,15 @@ class Jira extends Model
                                              $node->from = 30;
                                          else if ($node->from == "40: Dosage sensitivity unlikely")
                                              $node->from = 40;
+                                        else if ($node->from == "Not yet evaluated")
+                                             $node->from = -5;
 
                                          if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                                              $node->to = 30;
                                         else if ($node->to == "40: Dosage sensitivity unlikely")
                                              $node->to = 40;
+                                        else if ($node->to == "Not yet evaluated")
+                                            $node->to = -5;
 
                                         $collection->push($node);
                                    }
@@ -516,7 +533,7 @@ class Jira extends Model
                          }
                          else if ($item->field == 'ISCA Haploinsufficiency score')
                          {
-                              if ($item->fromString !== null 
+                              if ($item->fromString !== null
                                    && trim($item->fromString) != 'Not yet evaluated'
                                    && $item->toString !== null)
                               {
@@ -542,14 +559,18 @@ class Jira extends Model
                                         ]);
                                         // for 30 and 40, Jira also sends text
                if ($node->from == "30: Gene associated with autosomal recessive phenotype")
-               $node->from = 30;
-          else if ($node->from == "40: Dosage sensitivity unlikely")
-               $node->from = 40;
+                    $node->from = 30;
+                else if ($node->from == "40: Dosage sensitivity unlikely")
+                    $node->from = 40;
+               else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
           if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                $node->to = 30;
           else if ($node->to == "40: Dosage sensitivity unlikely")
                $node->to = 40;
+        else if ($node->to == "Not yet evaluated")
+            $node->to = -5;
                                         $collection->push($node);
                                    }
                               }
@@ -560,7 +581,7 @@ class Jira extends Model
 
          return $collection;
      }
-     
+
 
      /**
      * Get a list of ACMG 59 genes
@@ -572,7 +593,7 @@ class Jira extends Model
          // break out the args
          foreach ($args as $key => $value)
               $$key = $value;
-              
+
           $collection = collect();
 
           $response = self::getIssues('project = ISCA AND issuetype in ("ISCA Gene Curation") AND labels in ("ACMGSFv2.0") ');
@@ -591,17 +612,21 @@ class Jira extends Model
                     'triplo_score' => $issue->fields->customfield_10166->value ?? 'unknown',
                     'haplo_score' => $issue->fields->customfield_10165->value ?? 'unknown'
                ]);
-               
+
                // for 30 and 40, Jira also sends text
                if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->triplo_score = 30;
-               else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
-                    $node->triplo_score = 40;
+               $node->triplo_score = 30;
+          else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+               $node->triplo_score = 40;
+            else if ($node->triplo_score == "Not yet evaluated")
+               $node->triplo_score = -5;
 
-               if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->haplo_score = 30;
-               else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
-                    $node->haplo_score = 40;
+          if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+               $node->haplo_score = 30;
+          else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+               $node->haplo_score = 40;
+          else if ($node->haplo_score == "Not yet evaluated")
+               $node->haplo_score = -5;
 
                $collection->push($node);
           }
@@ -624,7 +649,7 @@ class Jira extends Model
          // break out the args
          foreach ($args as $key => $value)
               $$key = $value;
-              
+
           $collection = Dosage::type(1)->get();
 
           /** the old direct method.  Want to save this for later
@@ -708,7 +733,7 @@ class Jira extends Model
          // break out the args
          foreach ($args as $key => $value)
               $$key = $value;
-              
+
           $collection = collect();
 
           // filter 10632 is the region selection filter
@@ -783,19 +808,23 @@ class Jira extends Model
                $node->gain_pheno_omim = $omims;
 
                // for 30 and 40, Jira also sends text
-               if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")
+                if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")
                     $node->triplo = 30;
                else if ($node->triplo == "40: Dosage sensitivity unlikely")
                     $node->triplo = 40;
+                 else if ($node->triplo == "Not yet evaluated")
+                    $node->triplo = -5;
 
                if ($node->haplo == "30: Gene associated with autosomal recessive phenotype")
                     $node->haplo = 30;
                else if ($node->haplo == "40: Dosage sensitivity unlikely")
                     $node->haplo = 40;
+               else if ($node->haplo == "Not yet evaluated")
+                    $node->haplo = -5;
 
                $node->haplo_history = null;
                $node->triplo_history = null;
-               
+
                $check = self::getHistory($issue);
 
                if ($check->isNotEmpty())
@@ -847,7 +876,7 @@ class Jira extends Model
 
                     if ($item->field == 'ISCA Triplosensitivity score')
                     {
-                         if ($item->fromString !== null 
+                         if ($item->fromString !== null
                               && trim($item->fromString) != 'Not yet evaluated'
                               && $item->toString !== null)
                          {
@@ -876,13 +905,17 @@ class Jira extends Model
                                    // for 30 and 40, Jira also sends text
                                    if ($node->from == "30: Gene associated with autosomal recessive phenotype")
                                         $node->from = 30;
-                                   else if ($node->from == "40: Dosage sensitivity unlikely")
+                                    else if ($node->from == "40: Dosage sensitivity unlikely")
                                         $node->from = 40;
+                                    else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
-                                   if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+                                    if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                                         $node->to = 30;
-                                   else if ($node->to == "40: Dosage sensitivity unlikely")
+                                    else if ($node->to == "40: Dosage sensitivity unlikely")
                                         $node->to = 40;
+                                    else if ($node->to == "Not yet evaluated")
+                                        $node->to = -5;
 
                                    $collection->push($node);
 
@@ -891,7 +924,7 @@ class Jira extends Model
                     }
                     else if ($item->field == 'ISCA Haploinsufficiency score')
                     {
-                         if ($item->fromString !== null 
+                         if ($item->fromString !== null
                               && trim($item->fromString) != 'Not yet evaluated'
                               && $item->toString !== null)
                          {
@@ -922,11 +955,15 @@ class Jira extends Model
                                         $node->from = 30;
                                    else if ($node->from == "40: Dosage sensitivity unlikely")
                                         $node->from = 40;
+                                    else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
                                    if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                                         $node->to = 30;
                                    else if ($node->to == "40: Dosage sensitivity unlikely")
                                         $node->to = 40;
+                                    else if ($node->to == "Not yet evaluated")
+                                        $node->to = -5;
 
                                    $collection->push($node);
                               }
@@ -953,7 +990,7 @@ class Jira extends Model
           $temp = preg_split('/[:-]/', trim($region), 3);
 
           $chr = strtoupper($temp[0]);
-                
+
           if (strpos($chr, 'CHR') == 0)   // strip out the chr
                $chr = substr($chr, 3);
 
@@ -969,19 +1006,19 @@ class Jira extends Model
 
      /**
      * Create the internal DCI group and store accounts
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
      static function createGroup()
      {
           // check if parent exists, if not create.
-          
+
      }
 
 
      /**
      * Get all issue
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
     static function getIssues($query)
@@ -1002,8 +1039,8 @@ class Jira extends Model
 
                ]);
                $record->save();
-              
-              //var_dump($issue->fields);	
+
+              //var_dump($issue->fields);
          } catch (JiraRestApi\JiraException $e) {
               print("Error Occured! " . $e->getMessage());
          }
@@ -1014,14 +1051,14 @@ class Jira extends Model
 
     /**
      * Get an issue
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
      static function getIssue($issue, $field = 'fields')
      {
           try {
                $issueService = new IssueService();
-               
+
                $queryParam = [
                     'expand' => [
                          'renderedFields',
@@ -1033,7 +1070,7 @@ class Jira extends Model
                          'changelog',
                     ]
                ];
-               
+
                $begin = Carbon::now();
                $issue = $issueService->get($issue, $queryParam);
                $end = Carbon::now();
@@ -1047,8 +1084,8 @@ class Jira extends Model
 
                ]);
                $record->save();
-               
-               //var_dump($issue->fields);	
+
+               //var_dump($issue->fields);
           } catch (JiraRestApi\JiraException $e) {
                print("Error Occured! " . $e->getMessage());
           }
@@ -1062,16 +1099,16 @@ class Jira extends Model
 
      /**
      * Get an issue
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
     static function updateIssue($issue, $field, $value)
     {
          return;
-         
+
          try {
               $issueService = new IssueService();
-              
+
               $queryParam = [
                    'expand' => [
                         'renderedFields',
@@ -1098,7 +1135,7 @@ class Jira extends Model
                 // You can set the $paramArray param to disable notifications in example
 
                $issue = $issueService->update($issue, $issueField, $editParams);
-              
+
                $end = Carbon::now();
               $record = new Minute([
                    'system' => 'Search',
@@ -1110,15 +1147,15 @@ class Jira extends Model
 
               ]);
               $record->save();
-              
-              //var_dump($issue->fields);	
+
+              //var_dump($issue->fields);
          } catch (JiraRestApi\JiraException $e) {
               print("Error Occured! " . $e->getMessage());
          }
 //dd($issue);
          return $issue->$field ?? null;
     }
-     
+
 
      /**
      * Get all users
@@ -1129,15 +1166,15 @@ class Jira extends Model
      {
           try {
                $us = new UserService();
-          
+
                $paramArray = [
-               'username' => '.', // get all users. 
+               'username' => '.', // get all users.
                'startAt' => 0,
                'maxResults' => 1000,
                'includeInactive' => true,
                //'property' => '*',
                ];
-          
+
                // get the user info.
                $users = $us->findUsers($paramArray);
           } catch (JiraRestApi\JiraException $e) {
@@ -1157,7 +1194,7 @@ class Jira extends Model
      {
           try {
                $us = new UserService();
-           
+
                $paramArray = [
                    //'username' => null,
                    'project' => 'TEST',
@@ -1166,7 +1203,7 @@ class Jira extends Model
                    'maxResults' => 50, //max 1000
                    //'actionDescriptorId' => 1,
                ];
-           
+
                $users = $us->findAssignableUsers($paramArray);
           } catch (JiraRestApi\JiraException $e) {
                print("Error Occured! " . $e->getMessage());
@@ -1183,7 +1220,7 @@ class Jira extends Model
      {
           try {
                $us = new UserService();
-          
+
                // create new user
                $user = $us->create([
                     'name'=>'charlie',
@@ -1191,7 +1228,7 @@ class Jira extends Model
                     'emailAddress' => 'charlie@atlassian.com',
                     'displayName' => 'Charlie of Atlassian',
                ]);
-          
+
                var_dump($user);
           } catch (JiraRestApi\JiraException $e) {
                print("Error Occured! " . $e->getMessage());
@@ -1208,9 +1245,9 @@ class Jira extends Model
     {
           try {
                $us = new UserService();
-          
+
                $paramArray = ['username' => 'user@example.com'];
-          
+
                $users = $us->deleteUser($paramArray);
           } catch (JiraRestApi\JiraException $e) {
                print("Error Occured! " . $e->getMessage());

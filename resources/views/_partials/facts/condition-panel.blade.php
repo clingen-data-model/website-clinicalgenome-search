@@ -5,9 +5,9 @@
 
 					<dl class="dl-horizontal">
 						<dt>Name</dt>
-						<dd>{{ $record->symbol }}</dd>
+						<dd>{{ displayMondoLabel($record->symbol) }}</dd>
 						<dt>Ontological Reference</dt>
-						<dd>{{  $record->getMondoString($record->iri, true) }}</dd>
+						<dd>{{  $record->getMondoString($record->iri, true) }} {!! displayMondoObsolete($record->symbol) !!}</dd>
 
 					</dl>
 			</div>

@@ -69,7 +69,7 @@
 
 
 				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i>{{ $record->symbol }}</i> -
-					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}" >{{ $disease->disease->label }} <span class="text-muted small">({{ $record->getMondoString($disease->disease->iri, true) }})</span></a></h3>
+					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}" >{{ displayMondoLabel($disease->disease->label) }} <span class="text-muted small">({{ $record->getMondoString($disease->disease->iri, true) }}) {!! displayMondoObsolete($disease->disease->label) !!}</span></a></h3>
 					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
 						<table class="panel-body table mb-0">

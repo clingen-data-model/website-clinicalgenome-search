@@ -1,4 +1,4 @@
-<h3>{{ $record->gene->label }} - {{ $record->disease->label }}</h3>
+<h3>{{ $record->gene->label }} - {{ displayMondoLabel($record->disease->label) }} {!! displayMondoObsolete($record->disease->label) !!}</h3>
 {{ $record->interface }}
 <div class="form-group">
 <table class='table table-striped text-left' style="width:100%;" >
@@ -13,7 +13,7 @@
   </tr>
   <tr style="font-size:14px">
     <td style="" nowrap class="text-left">Disease:</td>
-    <td  style="">{{ $record->disease->label }} ({{ $record->disease->curie }})</td>
+    <td  style="">{{ displayMondoLabel($record->disease->label) }} <div> ({{ $record->disease->curie }}) {!! displayMondoObsolete($record->disease->label) !!} </div></td>
   </tr>
   @if($record->mode_of_inheritance)
   <tr style="font-size:14px">

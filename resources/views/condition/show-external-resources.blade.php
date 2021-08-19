@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-		  <h1 class=" display-4 ">{{ $record->label }}
+		  <h1 class=" display-4 ">{{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!}
 				@include("_partials.facts.condition-button")
 		  </h1>
 		</div>

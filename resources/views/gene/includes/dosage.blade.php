@@ -28,8 +28,8 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
-												<a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ $disease->disease->label }}</a>
-												<div class="text-muted small">{{ $record->getMondoString($disease->disease->iri, true) }}</div>
+												<a href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}">{{ displayMondoLabel($disease->disease->label) }}</a>
+												<div class="text-muted small">{{ $record->getMondoString($disease->disease->iri, true) }} {!! displayMondoObsolete($disease->disease->label) !!}</div>
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">

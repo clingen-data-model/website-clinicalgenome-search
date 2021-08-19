@@ -12,6 +12,7 @@ use App\Metric;
 use App\Jira;
 use App\Variant;
 use App\Cpic;
+use App\Gencc;
 
 use Carbon\Carbon;
 
@@ -350,6 +351,12 @@ class Graphql
 			$node->mane_plus = $localgene->mane_plus;
 		}
 
+        $gencc = Gencc::hgnc($gene)->get();
+        if (!$gencc->isEmpty())
+        {
+            $node->gencc = $gencc->groupBy('classification_curie');
+        }
+
 		$naction = 0;
 		$nvalid = 0;
 		$ndosage = 0;
@@ -365,7 +372,7 @@ class Graphql
 
 		if (!empty($node->genetic_conditions))
 		{
-			foreach($node->genetic_conditions as $condition)
+			foreach($node->genetic_conditions as $key => $condition)
 			{
 				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);

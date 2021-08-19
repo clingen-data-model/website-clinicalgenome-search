@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody class="">
-            
+
                 @foreach($validity_collection as $validity)
                 <tr>
                     <td class="">
@@ -23,7 +23,8 @@
                     </td>
 
                     <td class="">
-                        {{ $record->label }}
+                        {{ displayMondoLabel($record->label) }}
+                        {!! displayMondoObsolete($record->label) !!}
                     </td>
 
                     <td class="">

@@ -27,8 +27,8 @@
 						</td>
 
 						<td class="">
-							<a href="{{ route('condition-show', $record->getMondoString($actionability->disease->iri, true)) }}">{{ $actionability->disease->label }}</a>
-							<div class="text-muted small">{{ $record->getMondoString($actionability->disease->iri, true) }}</div>
+							<a href="{{ route('condition-show', $record->getMondoString($actionability->disease->iri, true)) }}">{{ displayMondoLabel($actionability->disease->label) }}</a>
+							<div class="text-muted small">{{ $record->getMondoString($actionability->disease->iri, true) }} {!! displayMondoObsolete($actionability->disease->label) !!}</div>
 						</td>
 
 						<td class="">

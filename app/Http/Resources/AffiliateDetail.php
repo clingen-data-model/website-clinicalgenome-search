@@ -20,7 +20,7 @@ class AffiliateDetail extends JsonResource
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,
             'href' => $this->href,
-            'disease' => $this->disease->label,
+            'disease' => displayMondoLabel($this->disease->label) . '  ' . displayMondoObsolete($this->disease->label),
             'mondo' => $this->disease->curie,
             'moi' => $this->displayMoi($this->mode_of_inheritance->curie ?? ''),
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
@@ -30,25 +30,25 @@ class AffiliateDetail extends JsonResource
             'date' => $this->report_date
         ];
     }
-    
-    
+
+
     /**
-     * 
+     *
      * Map the node structure to a json consumable array
-     * 
+     *
      */
     protected function mapCurations()
     {
 		if (empty($this->curations))
 			return [];
-			
+
 		foreach($this->curations as $node)
 		{
 			$map = $node->values();
 			$map['labels'] = $node->labels();
 			$curations[] = $map;
 		}
-		
+
 		return $curations;
 	}
 }

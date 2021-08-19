@@ -316,13 +316,22 @@ class Mysql
 
 		$collection = collect();
 
+        $records = Gene::query()->where('name', 'like', '%5P%')
+                            ->orWhere('alias_symbol', 'like', '%5P%')
+                            ->orWhere('prev_symbol', 'like', '%5P%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(name)')->get();
+
 		$array = [];
-		foreach($response->suggest as $record)
+		foreach($records as $record)
 		{
-			$ctag = (empty($record->curations) ? '' : '        CURATED');
+			/*$ctag = (empty($record->curations) ? '' : '        CURATED');
 			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
 							. $ctag,
-						'url' => route('gene-show', $record->alternative_curie)];
+						'url' => route('gene-show', $record->hgnc_id)];*/
+            $ctag = (empty($record->activiity) ? '' : '        CURATED');
+            $array[] = ['label' => $record->name . '  (' . $record->hgnc_id . ')'
+                            . $ctag,
+                        'url' => route('gene-show', $record->hgnc_id)];
 		}
 
 		//return (object) ['count' => count($collection), 'collection' => $collection];

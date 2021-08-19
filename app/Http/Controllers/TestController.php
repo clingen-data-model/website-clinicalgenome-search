@@ -42,6 +42,7 @@ class TestController extends Controller
      */
     public function index()
     {
+
 		//Graphql::geneMetrics([]);
 
 		//$response = Neo4j::geneList(['pagesize' => null])
@@ -85,12 +86,12 @@ try {
 
 /*
 Illuminate\Http\Client\ConnectionException
-cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) 
+cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received (see https://curl.haxx.se/libcurl/c/libcurl-errors.html)
 */
 
 //dd($response->json());
 
-		$users = User::has('genes')->with('genes')->get();
+		/*$users = User::has('genes')->with('genes')->get();
 		$a = new Report();
 
 		foreach ($users as $user)
@@ -122,7 +123,7 @@ cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received
 		}
 
 		/*$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
-		
+
 		foreach ($results->issues as $issue)
 		{
 			$record = Jira::getIssue($issue->key);
@@ -154,7 +155,7 @@ cURL error 28: Operation timed out after 1001 milliseconds with 0 bytes received
 		*/
 
 		die("done");
-		return view('new-dosage.reports');
+		//return view('new-dosage.reports');
 	}
 
 	public function statistics()

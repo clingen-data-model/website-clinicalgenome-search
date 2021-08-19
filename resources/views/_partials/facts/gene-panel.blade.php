@@ -49,6 +49,17 @@
 						<dt>Alias symbols</dt>
 						<dd>{{ $record->alias_symbols ?? 'oops'}}</dd>
 						@endif
+                        @if($record->gencc)
+						<dt>GenCC Classifications</dt>
+                        <dd>
+                            @forelse ($record->gencc as $key => $value)
+                                            <span class="badge gencc-{{ App\Gencc::score_class($key) }} text-white" id="cg" data-toggle="tooltip" placement="left">{{ ucfirst($value->first()->classification_title) }}<span class="badge badge-light ml-2">{{ $value->count() }}</span></span>
+                                            @empty
+                                            <span class="badge gencc-unknown text-white" id="cg" data-toggle="tooltip" placement="left" >No Classification</span>
+                            @endforelse
+                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class="ml-3">(Read more GenCC Classifications)</a></dd>
+                        </dd>
+						@endif
 						@if(isset($record->hi))
 						<dt>%HI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index"></i></dt>
 						<dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
