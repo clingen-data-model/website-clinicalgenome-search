@@ -43,10 +43,13 @@ class RunReport extends Command
      */
     public function handle()
     {
-        //echo "Running Erin Report ...";
-        
-        // first check and update genes table
+        echo "Running Erin Report ...";
+        $this->report2();
 
+    }
+
+    public function report1()
+    {
         $results = GeneLib::validityList([	'page' =>  0,
 										'pagesize' => "null",
 										'sort' => 'GENE_LABEL',
@@ -54,7 +57,7 @@ class RunReport extends Command
                                         'search' => null,
                                         'forcegg' => true,
                                         'curated' => true ]);
-                                        
+
         //TODO:  this will likely hang on a refresh, need to time out
         if ($results === null)
         {
@@ -93,12 +96,57 @@ class RunReport extends Command
                             . $record->mutations . "\t"
                             . $record->mapkey . "\n";
                     }
-                default: 
+                default:
                     break;
             }
         }
+    }
 
-        //echo "DONE\n";
 
+    public function report2()
+    {
+        $con = new \App\Http\Controllers\ExcelController();
+
+        $results = [];
+
+        $lines = 0;
+
+        $handle = fopen(base_path() . '/data/ADMI_CNV_Molly.csv', "r");
+        if ($handle)
+        {
+
+            while (($line = fgetcsv($handle)) !== false)
+            {
+                $row = array_values($line);
+
+                // remove any unprintables
+                $row[0] = preg_replace('/[[:^print:]]/', '', $row[0]);
+                $row[13] = preg_replace('/[[:^print:]]/', '', $row[13]);
+                $row[14] = preg_replace('/[[:^print:]]/', '', $row[14]);
+
+                if (empty($row[0]))
+                    break;
+
+                $region = $row[0] . ':' . $row[13] . '-' . $row[14];
+                $type = 'GRCh37';
+
+                dd($region);
+
+                //echo "$region \n";
+
+                 $genes = Gene::searchList(['type' => $type,
+                        "region" => $region,
+                        'option' => 1 ]);
+
+                $row[] = implode(', ', $genes->collection->pluck('name')->toArray());
+
+                $results[] = $row;
+
+                $lines++;
+            }
+        }
+
+        echo "\n $lines processed \n";
+        $con->output($results);
     }
 }
