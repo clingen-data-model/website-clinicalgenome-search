@@ -365,7 +365,7 @@ class Graphql
 
 		if (!empty($node->genetic_conditions))
 		{
-			foreach($node->genetic_conditions as $condition)
+			foreach($node->genetic_conditions as $key => $condition)
 			{
 				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);

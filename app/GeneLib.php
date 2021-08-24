@@ -69,7 +69,8 @@ class GeneLib extends Model
           '2' => 'Emerging Evidence',
           '3' => 'Sufficient Evidence',
           '30' => 'Autosomal Recessive',
-          '40' => 'Dosage Sensitivity Unlikely'
+          '40' => 'Dosage Sensitivity Unlikely',
+          'Not yet evaluated' => "Not yet evaluated"
      ];
 
      protected static $dosage_assertion_strings = [
