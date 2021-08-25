@@ -240,7 +240,7 @@ class Jira extends Model
                $node->haplo_score = 30;
           else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
                $node->haplo_score = 40;
-          else if ($node->haplo_score == "Not yet evaluate")
+          else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
 
@@ -392,7 +392,7 @@ class Jira extends Model
                $node->haplo_score = 30;
           else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
                $node->haplo_score = 40;
-          else if ($node->haplo_score == "Not yet evaluate")
+          else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
 
@@ -445,7 +445,7 @@ class Jira extends Model
                $node->haplo_score = 30;
           else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
                $node->haplo_score = 40;
-          else if ($node->haplo_score == "Not yet evaluate")
+          else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
                $collection->push($node);
@@ -517,11 +517,15 @@ class Jira extends Model
                                              $node->from = 30;
                                          else if ($node->from == "40: Dosage sensitivity unlikely")
                                              $node->from = 40;
+                                        else if ($node->from == "Not yet evaluated")
+                                             $node->from = -5;
 
                                          if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                                              $node->to = 30;
                                         else if ($node->to == "40: Dosage sensitivity unlikely")
                                              $node->to = 40;
+                                        else if ($node->to == "Not yet evaluated")
+                                            $node->to = -5;
 
                                         $collection->push($node);
                                    }
@@ -555,14 +559,18 @@ class Jira extends Model
                                         ]);
                                         // for 30 and 40, Jira also sends text
                if ($node->from == "30: Gene associated with autosomal recessive phenotype")
-               $node->from = 30;
-          else if ($node->from == "40: Dosage sensitivity unlikely")
-               $node->from = 40;
+                    $node->from = 30;
+                else if ($node->from == "40: Dosage sensitivity unlikely")
+                    $node->from = 40;
+               else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
           if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                $node->to = 30;
           else if ($node->to == "40: Dosage sensitivity unlikely")
                $node->to = 40;
+        else if ($node->to == "Not yet evaluated")
+            $node->to = -5;
                                         $collection->push($node);
                                    }
                               }
@@ -617,7 +625,7 @@ class Jira extends Model
                $node->haplo_score = 30;
           else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
                $node->haplo_score = 40;
-          else if ($node->haplo_score == "Not yet evaluate")
+          else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
                $collection->push($node);
@@ -800,19 +808,19 @@ class Jira extends Model
                $node->gain_pheno_omim = $omims;
 
                // for 30 and 40, Jira also sends text
-                if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->triplo_score = 30;
-               else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
-                    $node->triplo_score = 40;
-                 else if ($node->triplo_score == "Not yet evaluated")
-                    $node->triplo_score = -5;
+                if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo = 30;
+               else if ($node->triplo == "40: Dosage sensitivity unlikely")
+                    $node->triplo = 40;
+                 else if ($node->triplo == "Not yet evaluated")
+                    $node->triplo = -5;
 
-               if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
-                    $node->haplo_score = 30;
-               else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
-                    $node->haplo_score = 40;
-               else if ($node->haplo_score == "Not yet evaluate")
-                    $node->haplo_score = -5;
+               if ($node->haplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo = 30;
+               else if ($node->haplo == "40: Dosage sensitivity unlikely")
+                    $node->haplo = 40;
+               else if ($node->haplo == "Not yet evaluated")
+                    $node->haplo = -5;
 
                $node->haplo_history = null;
                $node->triplo_history = null;
@@ -895,19 +903,19 @@ class Jira extends Model
                                    ]);
 
                                    // for 30 and 40, Jira also sends text
-                                   if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
-                                        $node->triplo_score = 30;
-                                    else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
-                                        $node->triplo_score = 40;
-                                        else if ($node->triplo_score == "Not yet evaluated")
-                                        $node->triplo_score = -5;
+                                   if ($node->from == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->from = 30;
+                                    else if ($node->from == "40: Dosage sensitivity unlikely")
+                                        $node->from = 40;
+                                    else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
-                                    if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
-                                        $node->haplo_score = 30;
-                                    else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
-                                        $node->haplo_score = 40;
-                                    else if ($node->haplo_score == "Not yet evaluate")
-                                        $node->haplo_score = -5;
+                                    if ($node->to == "30: Gene associated with autosomal recessive phenotype")
+                                        $node->to = 30;
+                                    else if ($node->to == "40: Dosage sensitivity unlikely")
+                                        $node->to = 40;
+                                    else if ($node->to == "Not yet evaluated")
+                                        $node->to = -5;
 
                                    $collection->push($node);
 
@@ -947,11 +955,15 @@ class Jira extends Model
                                         $node->from = 30;
                                    else if ($node->from == "40: Dosage sensitivity unlikely")
                                         $node->from = 40;
+                                    else if ($node->from == "Not yet evaluated")
+                                        $node->from = -5;
 
                                    if ($node->to == "30: Gene associated with autosomal recessive phenotype")
                                         $node->to = 30;
                                    else if ($node->to == "40: Dosage sensitivity unlikely")
                                         $node->to = 40;
+                                    else if ($node->to == "Not yet evaluated")
+                                        $node->to = -5;
 
                                    $collection->push($node);
                               }
