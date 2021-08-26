@@ -118,6 +118,10 @@
                 </table>
             </div>
 
+        <div class="text-center">
+            <i>All Dosage Sensitivity download files are refreshed nightly.  For older versions of these file, click </i><a href="https://ftp.clinicalgenome.org/archive" target="dosage_archive">here</a>
+        </div>
+
 
 
 
