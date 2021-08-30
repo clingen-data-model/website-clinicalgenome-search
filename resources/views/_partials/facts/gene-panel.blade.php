@@ -53,11 +53,11 @@
 						<dt>GenCC Classifications</dt>
                         <dd>
                             @forelse ($record->gencc as $key => $value)
-                                            <span class="badge gencc-{{ App\Gencc::score_class($key) }} text-white" id="cg" data-toggle="tooltip" placement="left">{{ ucfirst($value->first()->classification_title) }}<span class="badge badge-light ml-2">{{ $value->count() }}</span></span>
+                                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class=""><span class="badge badge-gencc gencc-{{ App\Gencc::score_class($key) }} text-white mr-2 ml-0" id="cg" data-toggle="tooltip" placement="left">{{ ucfirst($value->first()->classification_title) }}<span class="badge badge-light ml-2">{{ $value->count() }}</span></span></a>
                                             @empty
                                             <span class="badge gencc-unknown text-white" id="cg" data-toggle="tooltip" placement="left" >No Classification</span>
                             @endforelse
-                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class="ml-3">(Read more about GenCC Classifications)</a></dd>
+                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class="">(Read more about GenCC Classifications)</a></dd>
                         </dd>
 						@endif
 						@if(isset($record->hi))
