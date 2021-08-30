@@ -57,7 +57,7 @@
                                             @empty
                                             <span class="badge gencc-unknown text-white" id="cg" data-toggle="tooltip" placement="left" >No Classification</span>
                             @endforelse
-                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class="ml-3">(Read more GenCC Classifications)</a></dd>
+                            <a href="https://search.thegencc.org/genes/{{ $record->hgnc_id }}" class="ml-3">(Read more about GenCC Classifications)</a></dd>
                         </dd>
 						@endif
 						@if(isset($record->hi))
