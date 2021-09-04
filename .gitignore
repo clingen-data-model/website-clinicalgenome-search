@@ -7,6 +7,7 @@
 /data/*.dat
 /data/hg19/*.gff3
 /data/hg38/*.gff
+/data/ignore
 /vendor
 .env
 .env.backup
