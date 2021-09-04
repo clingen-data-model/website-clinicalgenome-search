@@ -59,6 +59,9 @@ class UpdateDisease extends Command
             exit;
         }
 
+        // null out the current curation activities since there is no removal notification process
+        Disease::query()->update(['curation_activities' => null, 'last_curated_date' => null]);
+
         foreach($results->collection as $disease)
         {
             //echo "Updating  " . $disease->curie . "\n";

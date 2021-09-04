@@ -108,6 +108,8 @@ class UpdateMondo extends Command
 
         $nodes = $json->graphs[0]->nodes;
 
+        //Disease::truncate();
+
         foreach ($nodes as $node)
         {
             $term = basename($node->id);
