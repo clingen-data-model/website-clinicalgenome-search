@@ -227,6 +227,18 @@ class Gene extends Model
 
 
      /**
+     * Query scope by gene previous symbol
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopePrevious($query, $symbol)
+     {
+         return $query->whereJsonContains('prev_symbol', $symbol);
+     }
+
+
+     /**
      * Query scope by cytoband
      *
      * @@param	string	$ident
