@@ -11,7 +11,7 @@
 						<th class="col-sm-1 th-curation-group text-left">Gene</th>
 						<th class="col-sm-4 text-left"> Disease</th>
 						<th class="col-sm-2"></th>
-						<th class="col-sm-2">Adult &amp; Pediatric Reports</th>
+						<th class="col-sm-2">Assertions</th>
 						<th class="col-sm-1 text-center">Report &amp; Date</th>
 					</tr>
 				</thead>
