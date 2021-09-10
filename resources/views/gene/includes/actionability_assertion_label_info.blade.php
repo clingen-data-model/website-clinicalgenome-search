@@ -1,4 +1,4 @@
-@if($assertion == "Assertion Pending")
+@if($assertion == "Report Available - Assertion Pending")
   <span data-toggle="tooltip" data-placement="top" title="" data-original-title="'Assertion Pending' were generated prior to the implementation of the process for making actionability assertions. Topics needing assertions are actively being reviewed."><i class="fas fa-info-circle text-muted"></i></span>
 
   @elseif($assertion == "N/A - Insufficient evidence: expert review")
