@@ -1,4 +1,12 @@
-<h3>{{ $record->gene->label }} - {{ displayMondoLabel($record->disease->label) }} {!! displayMondoObsolete($record->disease->label) !!}</h3>
+<hr class="mt-0" />
+<a href="#validity_summary" class="badge badge-pill badge-light border-1 p-2 mr-2">Classification Summary <i class="fas fa-arrow-circle-down"></i></a>
+<a href="#validity_classification_matrix" class="badge badge-pill badge-light border-1 p-2 mr-2">Classification Matrix <i class="fas fa-arrow-circle-down"></i></a>
+<a href="#tag_genetic_evidence_case_level_with_proband" class="badge badge-pill badge-light border-1 p-2 mr-2">Genetic Evidence: Case Level <i class="fas fa-arrow-circle-down"></i></a>
+<a href="#tag_genetic_evidence_case_control" class="badge badge-pill badge-light border-1 p-2 mr-2">Genetic Evidence: Case-Control <i class="fas fa-arrow-circle-down"></i></a>
+<a href="#tag_experimental_evidence" class="badge badge-pill badge-light border-1 p-2 mr-2">Experimental Evidence <i class="fas fa-arrow-circle-down"></i></a>
+<hr />
+<h3>Classification Summary</h3>
+  {{-- <h4>{{ $record->gene->label }} - {{ displayMondoLabel($record->disease->label) }} {!! displayMondoObsolete($record->disease->label) !!}</h4> --}}
 {{ $record->interface }}
 <div class="form-group">
 <table class='table table-striped text-left' style="width:100%;" >

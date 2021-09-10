@@ -8,7 +8,7 @@
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/clinicalValidity-on.png" width="40" height="40"></td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0">  Gene-Disease Validity Classification Summary</h1>
+          <td class="pl-2"><h1 class="h2 p-0 m-0">  Gene-Disease Validity Classification</h1>
           </td>
         </tr>
       </table>
@@ -54,7 +54,6 @@
 				@else
 					ERROR - NO SOP SET
 				@endif
-
 				{{-- @if (!empty($score_string))
 					@if ($assertion->jsonMessageVersion == "GCI.6")
 						@include('validity.gci6')
@@ -71,6 +70,8 @@
 	</div>
 </div>
 @endsection
+
+@include('gene-validity.partial.rich_data_table')
 
 @section('heading')
 <div class="content ">

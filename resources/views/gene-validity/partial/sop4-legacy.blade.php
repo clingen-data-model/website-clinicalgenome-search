@@ -1,5 +1,5 @@
-
-<table class="table table-compact table-bordered table-border-normal">
+<h3>Classification Matrix</h3>
+<table id='validity_classification_matrix' class="table table-compact table-bordered table-border-normal">
 <tbody>
   <tr>
     <td rowspan="17" class="table-heading-line-thick table-title table-title-vertical"><div class="table-title-text">
