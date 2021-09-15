@@ -293,14 +293,14 @@ class Region extends Model
         else if ($region->loss == "40: Dosage sensitivity unlikely")
               $region->loss = 40;
         else if ($region->loss == "Not yet evaluated")
-              $node->haplo_score = -5;
+              $region->loss = -5;
 
         if ($region->gain == "30: Gene associated with autosomal recessive phenotype")
               $region->gain = 30;
         else if ($region->gain == "40: Dosage sensitivity unlikely")
               $region->gain = 40;
         else if ($region->gain == "Not yet evaluated")
-              $node->haplo_score = -5;
+              $region->gain = -5;
 
         if ($region->type == 3)
         {
