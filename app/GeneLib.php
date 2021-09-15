@@ -203,7 +203,7 @@ class GeneLib extends Model
           'Has Insufficient Evidence for Actionability Based on Expert Review' => "N/A - Insufficient evidence: expert review",
           'N/A - Insufficient evidence: expert review' => "N/A - Insufficient evidence: expert review",
           'No Actionability' => "No Actionability",
-          'Assertion Pending' => "Report Available - Assertion Under Review",
+          'Assertion Pending' => "Report Available - Assertion Pending",
      ];
 
      protected static $actionability_sort_value = [
