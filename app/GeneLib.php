@@ -431,7 +431,10 @@ class GeneLib extends Model
 		//$response = Neo4j::geneList($args);
 
 		// Gene listing using Graphql
-		$response = Graphql::geneLook($args);
+		//$response = Graphql::geneLook($args);
+
+        // Gene listing using Graphql
+		$response = Mysql::geneLook2($args);
 
 		return $response;
      }
@@ -672,9 +675,9 @@ class GeneLib extends Model
           if ($supplement !== null)
           {
                // combine the two
-               foreach(['summary', 'genetype',
-               'triplo_score', 'haplo_score', 'cytoband', 'key',
-               'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+               foreach(['summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
+               'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
+               'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
                'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
@@ -919,10 +922,10 @@ class GeneLib extends Model
 			return collect([]);
 
 		// Suggester listing using Graphql
-         $response = Graphql::drugLook($args);
+         //$response = Graphql::drugLook($args);
 
-          // Suggester listing using Mysql
-		//$response = Mysql::drugLook($args);
+        // Suggester listing using Mysql
+		$response = Mysql::drugLook2($args);
 
 		return $response;
      }
@@ -990,7 +993,10 @@ class GeneLib extends Model
 		//$response = Neo4j::geneList($args);
 
 		// Gene listing using Graphql
-		$response = Graphql::conditionLook($args);
+		//$response = Graphql::conditionLook($args);
+
+        // Gene listing using Mysql
+		$response = Mysql::conditionLook2($args);
 
 		return $response;
      }

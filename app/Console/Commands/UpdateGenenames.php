@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Gene;
+use App\Term;
 
 class UpdateGenenames extends Command
 {
@@ -91,6 +92,19 @@ class UpdateGenenames extends Command
 
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['name' => $doc['symbol']], $doc);
+
+            $term = Term::updateOrCreate(['name' => $gene->name, 'value' => $gene->hgnc_id],
+                                        ['type' => 1, 'status -> 1']);
+
+            if ($gene->prev_symbol !== null)
+                foreach ($gene->prev_symbol as $symbol)
+                Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
+                                        ['alias' => $gene->name, 'type' => 2, 'status -> 1']);
+            if ($gene->alias_symbol !== null)
+                foreach ($gene->alias_symbol as $symbol)
+                    Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
+                                        ['alias' => $gene->name, 'type' => 3, 'status -> 1']);
+
         }
 
         echo "DONE\n";

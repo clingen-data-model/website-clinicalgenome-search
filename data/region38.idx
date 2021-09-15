@@ -2840,7 +2840,7 @@ chr1:172418560-172468829	ISCA-7666	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr1:172441457-172444069	ISCA-7754	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	601730
 chr1:172532349-172611833	ISCA-21685	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.302	
 chr1:172613428-172613534	ISCA-39100	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr1:172659103-172666876	ISCA-3940	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.612	152700
+chr1:172659103-172666876	ISCA-3940	ISCA Gene Curation	Reopened		N/A	N/A	0.612	152700
 chr1:172748252-172750171	ISCA-34708	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:173039202-173050941	ISCA-36128	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	603898
 chr1:173140504-173142372	ISCA-1591	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -4410,7 +4410,7 @@ chr2:47335315-47335514	ISCA-30366	ISCA Gene Curation	Awaiting Review		N/A	N/A		6
 chr2:47359534-47359762	ISCA-46118	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:47369311-47387020	ISCA-3226	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype		613244
 chr2:47377675-47377770	ISCA-4898	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:47403067-47634501	ISCA-35336	ISCA Gene Curation	Complete		0	3	0.868	609309
+chr2:47403067-47634501	ISCA-35336	ISCA Gene Curation	Reopened		N/A	N/A	0.868	609309
 chr2:47509290-47570985	ISCA-6190	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.672	607366
 chr2:47527537-47529164	ISCA-45971	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:47690667-47691283	ISCA-32050	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -4437,7 +4437,7 @@ chr2:48953161-49154527	ISCA-24523	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr2:49059603-49059658	ISCA-42423	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:49233794-49233899	ISCA-42142	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:49878612-49879434	ISCA-9597	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:49918503-51032132	ISCA-3442	ISCA Gene Curation	Under Group Review		N/A	N/A	1.0	600565
+chr2:49918503-51032132	ISCA-3442	ISCA Gene Curation	Complete		0	3	1.0	600565
 chr2:50588690-50589415	ISCA-39583	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:50696172-50696262	ISCA-41616	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:51032601-52407917	ISCA-45651	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -5073,7 +5073,7 @@ chr2:96122817-96143059	ISCA-29250	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr2:96143166-96145468	ISCA-20192	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.791	603068
 chr2:96184859-96208827	ISCA-9801	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.928	
 chr2:96208416-96242623	ISCA-12401	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:96248514-96265997	ISCA-10127	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.101	613403
+chr2:96248514-96265997	ISCA-10127	ISCA Gene Curation	Complete		0	3	0.101	613403
 chr2:96266159-96274173	ISCA-5090	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.015	604333
 chr2:96274338-96305546	ISCA-9043	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	610359
 chr2:96325317-96330507	ISCA-10508	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -5332,7 +5332,7 @@ chr2:113067970-113075843	ISCA-15506	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr2:113086807-113086906	ISCA-39288	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:113099365-113134016	ISCA-26858	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.34	612852
 chr2:113157399-113209391	ISCA-16701	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.805	
-chr2:113215997-113278921	ISCA-34702	ISCA Gene Curation	Complete		0	2	0.902	167415
+chr2:113215997-113278921	ISCA-34702	ISCA Gene Curation	Under Group Review		N/A	N/A	0.902	167415
 chr2:113235527-113267023	ISCA-17002	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:113437691-113496204	ISCA-11012	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.967	611079
 chr2:113499084-113501150	ISCA-26850	ISCA Gene Curation	Awaiting Review		N/A	N/A		611084
@@ -5501,7 +5501,7 @@ chr2:130497743-130497849	ISCA-46261	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr2:130521212-130528603	ISCA-18672	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:130536570-130549915	ISCA-32630	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:130570846-130584161	ISCA-32025	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:130592165-130599575	ISCA-872	ISCA Gene Curation	Complete		0	2	0.683	605376
+chr2:130592165-130599575	ISCA-872	ISCA Gene Curation	Under Group Review		N/A	N/A	0.683	605376
 chr2:130611078-130658448	ISCA-16492	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:130622838-130622944	ISCA-43092	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:130680050-130685863	ISCA-17052	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -5999,7 +5999,7 @@ chr2:178454716-178455643	ISCA-29320	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr2:178463664-178480817	ISCA-9850	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	607062
 chr2:178480454-178516463	ISCA-27542	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.023	607774
 chr2:178522827-178620217	ISCA-31806	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr2:178525989-178807423	ISCA-33419	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	611705
+chr2:178525989-178807423	ISCA-33419	ISCA Gene Curation	Complete		0	3	0.0	604145
 chr2:178776926-178779963	ISCA-44389	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:178825308-179050137	ISCA-7027	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr2:178831371-178831449	ISCA-37721	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -6529,7 +6529,7 @@ chr2:223975045-224039286	ISCA-5588	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr2:224170716-224171737	ISCA-28997	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:224294930-224295088	ISCA-20758	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:224378698-224402107	ISCA-16709	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	
-chr2:224470150-224585363	ISCA-10681	ISCA Gene Curation	Complete		0	3	0.974	603136
+chr2:224470150-224585363	ISCA-10681	ISCA Gene Curation	Under Group Review		N/A	N/A	0.974	603136
 chr2:224499180-224500217	ISCA-16307	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr2:224765090-225042689	ISCA-24300	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.029	611518
 chr2:225010461-225010540	ISCA-45304	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -7153,7 +7153,7 @@ chr3:36826817-36945662	ISCA-23868	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr3:36968192-36968316	ISCA-17354	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:36976216-36977139	ISCA-760	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:36985043-36993131	ISCA-6254	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.164	607911
-chr3:36993487-37050846	ISCA-1421	ISCA Gene Curation	Complete		0	3	0.74	120436
+chr3:36993487-37050846	ISCA-1421	ISCA Gene Curation	Under Group Review		N/A	N/A	0.0	120436
 chr3:37016398-37017034	ISCA-24513	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:37052626-37176817	ISCA-1500	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr3:37134351-37135164	ISCA-26590	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -7188,7 +7188,7 @@ chr3:38451027-38454820	ISCA-36243	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr3:38453890-38493142	ISCA-25497	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.993	602730
 chr3:38496127-38526304	ISCA-5388	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604051
 chr3:38526746-38527362	ISCA-7496	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr3:38548061-38649687	ISCA-6253	ISCA Gene Curation	Complete		0	2	0.996	600163
+chr3:38548061-38649687	ISCA-6253	ISCA Gene Curation	Complete		0	3	0.996	600163
 chr3:38696807-38816217	ISCA-24786	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604427
 chr3:38845764-39051944	ISCA-18982	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604385
 chr3:39025987-39026093	ISCA-38821	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -8366,6 +8366,7 @@ chr3:136336235-136752412	ISCA-31565	ISCA Gene Curation	Under Secondary Review		N
 chr3:136430084-136430183	ISCA-43795	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:136588209-136588311	ISCA-10052	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:136609050-136609602	ISCA-41654	ISCA Gene Curation	Awaiting Review		N/A	N/A		
+chr3:136684193 -148623326	ISCA-46553	ISCA Region Curation	Complete	3q24 Region (includes ZIC1)	0	3		
 chr3:136721394-136721495	ISCA-45765	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:136736296-136737255	ISCA-21840	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:136819126-136855892	ISCA-21067	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.066	
@@ -8481,8 +8482,8 @@ chr3:146576555-146605427	ISCA-16715	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr3:146921923-146925218	ISCA-37859	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:146996607-146996713	ISCA-40672	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:147276727-147277287	ISCA-31931	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr3:147386046-147407476	ISCA-30312	ISCA Gene Curation	Complete		0	2	0.002	608948
-chr3:147409365-147416719	ISCA-37134	ISCA Gene Curation	Complete		0	2	0.825	600470
+chr3:147386046-147407476	ISCA-30312	ISCA Gene Curation	Complete		0	0	0.002	608948
+chr3:147409365-147416719	ISCA-37134	ISCA Gene Curation	Complete		0	0	0.825	600470
 chr3:147421327-147509910	ISCA-16726	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:147590809-147591932	ISCA-28939	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:148078159-148088029	ISCA-37167	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -9122,7 +9123,7 @@ chr4:201420-205027	ISCA-3295	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr4:212600-255985	ISCA-24054	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:262820-264256	ISCA-41273	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:270675-305474	ISCA-1492	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
-chr4:337779 -2009235	ISCA-37429	ISCA Region Curation	Complete	4p16.3 terminal (Wolf-Hirshhorn syndrome) region	2	3		
+chr4:337779 -2009235	ISCA-37429	ISCA Region Curation	Complete	4p16.3 terminal (Wolf-Hirschhorn syndrome) region	2	3		
 chr4:337814-384868	ISCA-23926	ISCA Gene Curation	Complete		Not yet evaluated	30: Gene associated with autosomal recessive phenotype	0.162	194648
 chr4:350157-350252	ISCA-1034	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr4:393534-393658	ISCA-40543	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -11714,7 +11715,7 @@ chr5:90410000-90410669	ISCA-956	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr5:90458209-90474771	ISCA-35142	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr5:90473929-90514557	ISCA-12915	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr5:90515626-90529616	ISCA-31242	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.772	
-chr5:90558796-91164437	ISCA-10384	ISCA Gene Curation	Under Secondary Review		N/A	N/A	0.0	605472
+chr5:90558796-91164437	ISCA-10384	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.0	605472
 chr5:91030792-91031394	ISCA-25076	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:91270727-91270867	ISCA-40894	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:91279964-91281136	ISCA-5294	ISCA Gene Curation	Reopened		N/A	N/A		
@@ -12174,7 +12175,7 @@ chr5:138610655-138620964	ISCA-7773	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr5:138744430-138753924	ISCA-44356	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:138753425-138935034	ISCA-36628	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.971	116805
 chr5:138868921-138875335	ISCA-19281	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.924	610868
-chr5:138946724-139198368	ISCA-4168	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	608005
+chr5:138946724-139198368	ISCA-4168	ISCA Gene Curation	Complete		Not yet evaluated	30: Gene associated with autosomal recessive phenotype	0.001	608005
 chr5:139012329-139012441	ISCA-40562	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:139035107-139035645	ISCA-15395	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:139221758-139221837	ISCA-44301	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -12360,7 +12361,7 @@ chr5:147234963-147401996	ISCA-33804	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr5:147390808-147510068	ISCA-28834	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.996	601168
 chr5:147559994-147662009	ISCA-44902	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:147585438-147782796	ISCA-33980	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	611197
-chr5:147824582-147839196	ISCA-36990	ISCA Gene Curation	Complete		0	2	0.293	608189
+chr5:147824582-147839196	ISCA-36990	ISCA Gene Curation	Under Group Review		N/A	N/A	0.293	608189
 chr5:147850463-147906594	ISCA-8738	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.299	
 chr5:147851656-147852549	ISCA-18552	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr5:147878711-147882191	ISCA-809	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.042	606531
@@ -12931,7 +12932,7 @@ chr6:7389808-7418037	ISCA-8614	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0
 chr6:7480864-7482595	ISCA-5984	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:7506176-7506628	ISCA-29945	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:7516094-7517878	ISCA-23197	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr6:7541671-7586714	ISCA-8684	ISCA Gene Curation	Complete		0	1	1.0	125647
+chr6:7541671-7586714	ISCA-8684	ISCA Gene Curation	Under Group Review		N/A	N/A	1.0	125647
 chr6:7590198-7611967	ISCA-37058	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr6:7620423-7620885	ISCA-5853	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:7726099-7881728	ISCA-6777	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.895	112266
@@ -13801,7 +13802,7 @@ chr6:42956334-42956766	ISCA-18146	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr6:42960754-42963880	ISCA-24839	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.668	606664
 chr6:42963865-42980224	ISCA-15439	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	601498
 chr6:42980344-43017086	ISCA-16302	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.043	143170
-chr6:42984570-43012342	ISCA-31413	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.998	601646
+chr6:42984570-43012342	ISCA-31413	ISCA Gene Curation	Complete		0	1	0.998	601646
 chr6:43014249-43021294	ISCA-7554	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.994	611248
 chr6:43021623-43029599	ISCA-33944	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	613475
 chr6:43036196-43036500	ISCA-42207	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -16652,7 +16653,7 @@ chr7:128739359-128773400	ISCA-28781	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chr7:128761338-128761598	ISCA-45536	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:128772485-128775794	ISCA-23212	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.369	613522
 chr7:128790762-128822130	ISCA-2300	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	611902
-chr7:128830406-128859272	ISCA-8125	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	609524
+chr7:128830406-128859272	ISCA-8125	ISCA Gene Curation	Complete		0	3	1.0	609524
 chr7:128862856-128865847	ISCA-33524	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.563	607160
 chr7:128866348-128872047	ISCA-42209	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr7:128870645-128910719	ISCA-12494	ISCA Gene Curation	Awaiting Review		N/A	N/A		609344
@@ -18405,7 +18406,7 @@ chr8:104981137-104984885	ISCA-29120	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr8:105011067-105011677	ISCA-34430	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:105194708-105197464	ISCA-23967	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:105287841-105288365	ISCA-26495	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr8:105318438-105804539	ISCA-9713	ISCA Gene Curation	Complete		0	2	1.0	603693
+chr8:105318438-105804539	ISCA-9713	ISCA Gene Curation	Under Group Review		N/A	N/A	1.0	603693
 chr8:105737280-105737756	ISCA-19330	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:105780410-106060503	ISCA-38241	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr8:106215567-106217220	ISCA-26574	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -18801,7 +18802,7 @@ chr9:477778-478396	ISCA-7371	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr9:500259-501693	ISCA-9057	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:558826-558930	ISCA-38815	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:659889-660521	ISCA-17364	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr9:841647-969090	ISCA-2743	ISCA Gene Curation	Complete		0	2	0.684	602424
+chr9:841647-969090	ISCA-2743	ISCA Gene Curation	Under Group Review		N/A	N/A	0.684	602424
 chr9:976655-991732	ISCA-34810	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.001	
 chr9:1001858-1001963	ISCA-44648	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr9:1003237-1057554	ISCA-36060	ISCA Gene Curation	Complete		0	0	0.461	604935
@@ -21938,7 +21939,7 @@ chr10:117197489-117210299	ISCA-32421	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr10:117241114-117279430	ISCA-29553	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.972	193001
 chr10:117277274-117375492	ISCA-14883	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.997	
 chr10:117484293-117545068	ISCA-16524	ISCA Gene Curation	Awaiting Review		N/A	N/A		607637
-chr10:117542746-117549546	ISCA-8398	ISCA Gene Curation	Complete		0	2	0.942	600035
+chr10:117542746-117549546	ISCA-8398	ISCA Gene Curation	Under Group Review		N/A	N/A	0.942	600035
 chr10:118004916-118046941	ISCA-25901	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.911	608599
 chr10:118046821-118210153	ISCA-27282	ISCA Gene Curation	Awaiting Review		N/A	N/A		608598
 chr10:118297925-118342325	ISCA-8173	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.051	
@@ -22571,7 +22572,7 @@ chr11:14987786-14988428	ISCA-25243	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:15073593-15078637	ISCA-25443	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.058	114160
 chr11:15111416-15269675	ISCA-10040	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	610668
 chr11:15624105-15705368	ISCA-37751	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr11:15966449-16738477	ISCA-9293	ISCA Gene Curation	Complete		0	0	1.0	607257
+chr11:15966449-16738477	ISCA-9293	ISCA Gene Curation	Reopened		N/A	N/A	1.0	607257
 chr11:15969533-15969621	ISCA-45549	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:16483357-16484709	ISCA-22438	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:16576851-16577135	ISCA-37543	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -22736,7 +22737,7 @@ chr11:32085111-32085712	ISCA-42359	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:32091074-32105722	ISCA-10966	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.016	602735
 chr11:32112049-32168823	ISCA-37617	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:32143742-32143912	ISCA-37817	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr11:32387775-32435539	ISCA-3923	ISCA Gene Curation	Complete		0	3		607102
+chr11:32387775-32435539	ISCA-3923	ISCA Gene Curation	Under Group Review		N/A	N/A	1.0	607102
 chr11:32435518-32458769	ISCA-31086	ISCA Gene Curation	Awaiting Review		N/A	N/A		607899
 chr11:32583816-32606264	ISCA-26976	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.982	609641
 chr11:32591771-32592766	ISCA-11806	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -23553,7 +23554,7 @@ chr11:67468179-67491103	ISCA-11159	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr11:67490245-67490315	ISCA-41245	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:67491760-67505372	ISCA-9765	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.722	608794
 chr11:67506497-67508162	ISCA-31496	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.256	
-chr11:67518912-67523446	ISCA-3866	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.021	607314
+chr11:67518912-67523446	ISCA-3866	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.021	607314
 chr11:67583812-67586653	ISCA-16225	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.115	134660
 chr11:67606936-67612554	ISCA-16365	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.0	161015
 chr11:67613524-67615664	ISCA-25408	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -23584,7 +23585,7 @@ chr11:68044794-68044957	ISCA-41244	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:68052859-68121389	ISCA-16016	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.787	118491
 chr11:68154863-68213899	ISCA-24567	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	610881
 chr11:68261338-68271973	ISCA-11525	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.031	610880
-chr11:68298866-68449275	ISCA-29983	ISCA Gene Curation	Complete		0	2	0.998	603506
+chr11:68298866-68449275	ISCA-29983	ISCA Gene Curation	Closed		N/A	N/A	0.998	603506
 chr11:68460724-68615334	ISCA-4919	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.996	610879
 chr11:68488609-68488840	ISCA-37836	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:68684544-68691175	ISCA-33902	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	137035
@@ -24434,7 +24435,7 @@ chr11:125568108-125592568	ISCA-40012	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr11:125569216-125584684	ISCA-7884	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.965	605170
 chr11:125574719-125574818	ISCA-46025	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:125592847-125623091	ISCA-37041	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.979	601134
-chr11:125624910-125676256	ISCA-4741	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.0	603078
+chr11:125624910-125676256	ISCA-4741	ISCA Gene Curation	Under Group Review		N/A	N/A	0.0	603078
 chr11:125649746-125649887	ISCA-38017	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr11:125671522-125680847	ISCA-2722	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	102525
 chr11:125746279-125749867	ISCA-24083	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	606861
@@ -25672,13 +25673,13 @@ chr12:65050626-65121305	ISCA-28971	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr12:65095749-65095855	ISCA-44530	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65134661-65135560	ISCA-8382	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65169583-65248355	ISCA-35665	ISCA Gene Curation	Complete		0	3	0.999	607844
-chr12:65278593-65466907	ISCA-10315	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.007	613719
+chr12:65278593-65466907	ISCA-10315	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.007	613719
 chr12:65418667-65420025	ISCA-4982	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65466817-65642372	ISCA-23264	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65544238-65557311	ISCA-42875	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65644311-65646488	ISCA-25563	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:65758020-65826974	ISCA-12236	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr12:65824460-65966291	ISCA-562	ISCA Gene Curation	Complete		0	2	0.734	611547
+chr12:65824460-65966291	ISCA-562	ISCA Gene Curation	Complete		0	3	0.734	611547
 chr12:65851227-65882167	ISCA-24227	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:66023620-66023726	ISCA-40120	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr12:66037195-66037744	ISCA-23282	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -26693,7 +26694,7 @@ chr13:27424619-27435823	ISCA-35239	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:27435639-27450897	ISCA-31158	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.03	
 chr13:27488138-27488232	ISCA-38333	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:27545913-27621106	ISCA-13981	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.215	609733
-chr13:27620743-27667415	ISCA-1213	ISCA Gene Curation	Complete		0	2	0.258	613715
+chr13:27620743-27667415	ISCA-1213	ISCA Gene Curation	Complete		0	3	0.258	613715
 chr13:27696073-27697302	ISCA-6044	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr13:27792483-27794768	ISCA-32132	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.08	
 chr13:27828763-27828869	ISCA-39394	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -28376,7 +28377,7 @@ chr14:64914361-65062655	ISCA-42775	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr14:64939158-64942745	ISCA-17583	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	138319
 chr14:64945816-64972336	ISCA-29709	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr14:64986895-65062650	ISCA-36451	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.172	134636
-chr14:65006101-65102695	ISCA-15826	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.952	154950
+chr14:65006101-65102695	ISCA-15826	ISCA Gene Curation	Complete		0	3	0.952	154950
 chr14:65044688-65044769	ISCA-37744	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:65089918-65094311	ISCA-25486	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr14:65124355-65124542	ISCA-40555	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -29314,7 +29315,7 @@ chr15:22756513-22756729	ISCA-36416	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr15:22757857-22778737	ISCA-28230	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:22767696-22777576	ISCA-33965	ISCA Gene Curation	Reopened		N/A	N/A		
 chr15:22782170-23040134	ISCA-37448	ISCA Region Curation	Complete	15q11.2 recurrent region (BP1-BP2) (includes NIPA1)	40: Dosage sensitivity unlikely	3		
-chr15:22782170-28134728	ISCA-37404	ISCA Region Curation	Complete	15q11q13 recurrent (PWS/AS) region (BP1-BP3, Class 1)	3	3		
+chr15:22782170-28134728	ISCA-37404	ISCA Region Curation	Complete	15q11.2q13 recurrent (PWS/AS) region (BP1-BP3, Class 1)	3	3		
 chr15:22786225-22829789	ISCA-2387	ISCA Gene Curation	Complete		0	0	0.214	608145
 chr15:22838641-22868384	ISCA-29893	ISCA Gene Curation	Complete		0	0	0.487	608146
 chr15:22867052-22980898	ISCA-9226	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.995	606322
@@ -29331,7 +29332,7 @@ chr15:23354748-23368489	ISCA-5712	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr15:23363272-23363561	ISCA-44279	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:23430839-23435219	ISCA-32512	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:23439038-23447243	ISCA-4004	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
-chr15:23465365-28134728	ISCA-37478	ISCA Region Curation	Complete	15q11q13 recurrent (PWS/AS) region (BP2-BP3, Class 2)	3	3		
+chr15:23465365-28134728	ISCA-37478	ISCA Region Curation	Complete	15q11.2q13 recurrent (PWS/AS) region (BP2-BP3, Class 2)	3	3		
 chr15:23562062-23562131	ISCA-42471	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:23565674-23568044	ISCA-12789	ISCA Gene Curation	Reopened		N/A	N/A	0.024	603856
 chr15:23643549-23647867	ISCA-16618	ISCA Gene Curation	Complete		0	1	0.922	605283
@@ -29606,7 +29607,7 @@ chr15:36617012-36618423	ISCA-21635	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr15:36626677-36627776	ISCA-33472	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:36799100-36818506	ISCA-16977	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:36864443-36886533	ISCA-23938	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr15:36889204-37101311	ISCA-29844	ISCA Gene Curation	Complete		0	2	0.994	601740
+chr15:36889204-37101311	ISCA-29844	ISCA Gene Curation	Complete		0	3	0.994	601740
 chr15:36972821-36972901	ISCA-44524	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:37490678-37491139	ISCA-35244	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:37934626-37997541	ISCA-33582	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -29733,7 +29734,7 @@ chr15:43371073-43409771	ISCA-11942	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr15:43391384-43391727	ISCA-37517	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr15:43403061-43510640	ISCA-18526	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	605230
 chr15:43517608-43531611	ISCA-2439	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	600178
-chr15:43533462-43590272	ISCA-21830	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.103	610979
+chr15:43533462-43590272	ISCA-21830	ISCA Gene Curation	Reopened		N/A	N/A	0.103	610979
 chr15:43592857-43599406	ISCA-3343	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.073	123290
 chr15:43599563-43618800	ISCA-32026	ISCA Gene Curation	Complete		Not yet evaluated	30: Gene associated with autosomal recessive phenotype	0.005	606440
 chr15:43602543-43602648	ISCA-41345	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -30411,7 +30412,7 @@ chr15:84633443-84636045	ISCA-43267	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr15:84639285-84654290	ISCA-19532	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr15:84655132-84658611	ISCA-1166	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.157	162340
 chr15:84669544-84716139	ISCA-8183	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.173	
-chr15:84748556-84806445	ISCA-35648	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.949	613624
+chr15:84748556-84806445	ISCA-35648	ISCA Gene Curation	Reopened		N/A	N/A	0.949	613624
 chr15:84817356-84873479	ISCA-13143	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr15:84884350-84975649	ISCA-8626	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	606207
 chr15:84938416-84938522	ISCA-42349	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -31160,7 +31161,7 @@ chr16:23520754-23557375	ISCA-30145	ISCA Gene Curation	Complete		0	30: Gene assoc
 chr16:23537004-23538175	ISCA-26613	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:23557557-23574393	ISCA-33190	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.84	
 chr16:23581012-23596329	ISCA-36524	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.755	603836
-chr16:23603162-23641337	ISCA-27675	ISCA Gene Curation	Under Secondary Review		N/A	N/A	0.0	613348
+chr16:23603162-23641337	ISCA-27675	ISCA Gene Curation	Under Group Review		N/A	N/A	0.0	613348
 chr16:23641431-23677472	ISCA-2074	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.02	612962
 chr16:23678889-23690367	ISCA-36323	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.994	602098
 chr16:23690310-23713248	ISCA-29711	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	604034
@@ -31234,7 +31235,7 @@ chr16:28813942-28814327	ISCA-11401	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr16:28823048-28837237	ISCA-6123	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	607931
 chr16:28842411-28846348	ISCA-13505	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.651	610678
 chr16:28843919-28844007	ISCA-38065	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr16:28846606-28874213	ISCA-11221	ISCA Gene Curation	Under Group Review		N/A	N/A	0.957	608937
+chr16:28846606-28874213	ISCA-11221	ISCA Gene Curation	Complete		0	1	0.957	608937
 chr16:28878488-28904466	ISCA-31445	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.0	601003
 chr16:28878957-28879921	ISCA-18997	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:28904421-28925238	ISCA-5273	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	611869
@@ -31748,7 +31749,7 @@ chr16:67438019-67481157	ISCA-16024	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr16:67482571-67483547	ISCA-19329	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.09	602311
 chr16:67517706-67528745	ISCA-31754	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr16:67528814-67546788	ISCA-19641	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.896	
-chr16:67562526-67639185	ISCA-33425	ISCA Gene Curation	Complete		0	2	0.998	604167
+chr16:67562526-67639185	ISCA-33425	ISCA Gene Curation	Under Group Review		N/A	N/A	0.998	604167
 chr16:67645004-67657569	ISCA-34889	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.022	610859
 chr16:67657512-67660832	ISCA-2841	ISCA Gene Curation	Complete		0	1	0.0	609377
 chr16:67660956-67662774	ISCA-2763	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.855	607484
@@ -32852,7 +32853,7 @@ chr17:30830877-30831360	ISCA-25496	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr17:30898983-30907629	ISCA-29625	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.043	
 chr17:30921904-30959398	ISCA-25951	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	608635
 chr17:30959564-30959850	ISCA-39498	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:30968642-30999911	ISCA-26689	ISCA Gene Curation	Complete		0	2	0.003	611358
+chr17:30968642-30999911	ISCA-26689	ISCA Gene Curation	Reopened		N/A	N/A	0.003	611358
 chr17:30975335-30976004	ISCA-10943	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:31038574-31051037	ISCA-16191	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:31094350-31094425	ISCA-42271	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -33238,7 +33239,7 @@ chr17:42998273-43002959	ISCA-29232	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr17:43006784-43014459	ISCA-10257	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	600735
 chr17:43014607-43022385	ISCA-22585	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.02	604631
 chr17:43025231-43032041	ISCA-28209	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	601555
-chr17:43044295-43125364	ISCA-20827	ISCA Gene Curation	Complete		0	3	0.0	113705
+chr17:43044295-43125364	ISCA-20827	ISCA Gene Curation	Under Group Review		N/A	N/A	0.0	113705
 chr17:43079261-43079816	ISCA-9470	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:43125557-43153671	ISCA-28005	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:43144845-43145323	ISCA-45924	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -33425,7 +33426,7 @@ chr17:48713647-48713868	ISCA-5799	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr17:48720802-48724758	ISCA-31881	ISCA Gene Curation	Awaiting Review		N/A	N/A		610787
 chr17:48721719-48722518	ISCA-18087	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	609819
 chr17:48724408-48724475	ISCA-15738	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr17:48724763-48728750	ISCA-5126	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.01	604607
+chr17:48724763-48728750	ISCA-5126	ISCA Gene Curation	Under Group Review		N/A	N/A	0.01	604607
 chr17:48762234-48817247	ISCA-31056	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	610849
 chr17:48765554-48765847	ISCA-42681	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:48831035-48865245	ISCA-11321	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.032	604587
@@ -33562,7 +33563,7 @@ chr17:58148384-58159585	ISCA-12890	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr17:58156959-58159120	ISCA-13521	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:58166982-58171116	ISCA-23886	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.014	
 chr17:58192726-58205174	ISCA-36523	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	261500
-chr17:58205436-58219605	ISCA-1625	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.0	609883
+chr17:58205436-58219605	ISCA-1625	ISCA Gene Curation	Reopened		N/A	N/A	0.0	609883
 chr17:58238550-58268518	ISCA-16759	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	150205
 chr17:58269855-58280935	ISCA-25832	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	606989
 chr17:58301231-58328795	ISCA-31649	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.057	610764
@@ -33798,7 +33799,7 @@ chr17:69244311-69327133	ISCA-35790	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr17:69318690-69319127	ISCA-3550	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:69414697-69553865	ISCA-29258	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.951	601254
 chr17:69593987-69903000	ISCA-39323	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-Chr17:69896855 -71796293	ISCA-46303	ISCA Region Curation	Awaiting Review	SOX9 upstream enhancer region	N/A	N/A		
+Chr17:69896855 -71796293	ISCA-46303	ISCA Region Curation	Complete	SOX9 upstream enhancer region	1	3		
 chr17:69961707-69983544	ISCA-38724	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:70051271-70068095	ISCA-41539	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr17:70075225-70135608	ISCA-11169	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	605722
@@ -35230,7 +35231,7 @@ chr19:10922185-10928688	ISCA-25567	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr19:10928811-10930254	ISCA-16575	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	
 chr19:10960997-11062277	ISCA-17145	ISCA Gene Curation	Complete		0	2	1.0	603254
 chr19:11011708-11012006	ISCA-43360	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr19:11089432-11133820	ISCA-18075	ISCA Gene Curation	Complete		0	3	0.0	606945
+chr19:11089432-11133820	ISCA-18075	ISCA Gene Curation	Reopened		N/A	N/A	0.0	606945
 chr19:11113474-11113534	ISCA-44107	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr19:11145493-11155997	ISCA-32643	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.006	609394
 chr19:11164270-11197865	ISCA-13800	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.982	
@@ -35776,7 +35777,7 @@ chr19:32675848-32678300	ISCA-9258	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 chr19:32691363-32713796	ISCA-15910	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr19:32719767-32829580	ISCA-7559	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr19:32823436-32824505	ISCA-36478	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr19:32830511-32870957	ISCA-4092	ISCA Gene Curation	Under Secondary Review		N/A	N/A	0.246	604144
+chr19:32830511-32870957	ISCA-4092	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.246	604144
 chr19:32862800-32863092	ISCA-42993	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr19:32875925-32972024	ISCA-35345	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chr19:32963508-32963865	ISCA-26230	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -36116,7 +36117,7 @@ chr19:42133445-42133513	ISCA-28623	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr19:42198598-42220152	ISCA-11042	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.285	
 chr19:42220312-42228201	ISCA-17086	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.068	
 chr19:42230186-42243330	ISCA-21884	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.997	606784
-chr19:42247569-42255128	ISCA-1397	ISCA Gene Curation	Complete		0	2	0.807	611888
+chr19:42247569-42255128	ISCA-1397	ISCA Gene Curation	Complete		0	3	0.807	611888
 chr19:42268530-42295796	ISCA-14285	ISCA Gene Curation	Complete		0	2	1.0	612082
 chr19:42297033-42302800	ISCA-6459	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.021	603074
 chr19:42302132-42310821	ISCA-6482	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.196	
@@ -39572,7 +39573,7 @@ chrX:9865093-9865543	ISCA-41318	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:9967358-9968352	ISCA-34878	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:10015254-10144474	ISCA-21209	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	
 chrX:10156975-10237660	ISCA-9681	ISCA Gene Curation	Complete		0	2	0.989	302910
-chrX:10445310-10833683	ISCA-6632	ISCA Gene Curation	Under Group Review		N/A	N/A	0.501	300552
+chrX:10445310-10833683	ISCA-6632	ISCA Gene Curation	Complete		0	3	0.501	300552
 chrX:10582817-10582919	ISCA-45057	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:11111332-11123086	ISCA-20454	ISCA Gene Curation	Under Group Review		N/A	N/A	0.89	300056
 chrX:11137544-11665920	ISCA-23783	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.992	300118
@@ -39608,7 +39609,7 @@ chrX:13770922-13938713	ISCA-954	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.49
 chrX:14002494-14029918	ISCA-32972	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.906	
 chrX:14244265-14245423	ISCA-4117	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:14529298-14731812	ISCA-3820	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.909	305990
-chrX:14690863-14873255	ISCA-18478	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.988	300515
+chrX:14690863-14873255	ISCA-18478	ISCA Gene Curation	Complete		0	3	0.988	300515
 chrX:14834158-14835417	ISCA-3922	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:14873421-14922327	ISCA-34091	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.993	
 chrX:14977752-14978540	ISCA-4944	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -39662,7 +39663,7 @@ chrX:18239313-18355089	ISCA-5385	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.9
 chrX:18341200-18341542	ISCA-45363	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:18425608-18653629	ISCA-14810	ISCA Gene Curation	Complete		0	3	0.998	300203
 chrX:18534857-18535789	ISCA-4743	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:18639688-18672108	ISCA-18076	ISCA Gene Curation	Under Group Review		N/A	N/A	0.893	300839
+chrX:18639688-18672108	ISCA-18076	ISCA Gene Curation	Complete		0	3	0.96	300839
 chrX:18675067-18827921	ISCA-14503	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.984	300109
 chrX:18688643-18692687	ISCA-44425	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:18835512-18839374	ISCA-26919	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -40152,7 +40153,7 @@ chrX:54147366-54147659	ISCA-29755	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:54192823-54358695	ISCA-17033	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	300358
 chrX:54223303-54224069	ISCA-13416	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:54440404-54448032	ISCA-36014	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.761	
-chrX:54445454-54496234	ISCA-26106	ISCA Gene Curation	Under Group Review		N/A	N/A	0.973	300546
+chrX:54445454-54496234	ISCA-26106	ISCA Gene Curation	Complete		0	3	0.973	300546
 chrX:54530219-54567289	ISCA-20551	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.992	
 chrX:54671985-54672834	ISCA-19418	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:54748918-54798255	ISCA-13990	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
@@ -40211,7 +40212,7 @@ chrX:63280418-63282010	ISCA-41271	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:63297674-63299885	ISCA-12144	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:63347228-63351332	ISCA-8158	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.726	
 chrX:63426559-63560993	ISCA-12194	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:63634967-63785546	ISCA-13514	ISCA Gene Curation	Complete		0	2	0.983	300429
+chrX:63634967-63785546	ISCA-13514	ISCA Gene Curation	Reopened		N/A	N/A	0.983	300429
 chrX:63670196-63671502	ISCA-41058	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:63766759-63767588	ISCA-5283	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:63786002-63786087	ISCA-36938	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -40431,13 +40432,13 @@ chrX:77374212-77381329	ISCA-20314	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:77447389-77457278	ISCA-6207	ISCA Gene Curation	Awaiting Review		N/A	N/A		300827
 chrX:77504880-77786235	ISCA-3220	ISCA Gene Curation	Complete		0	3	1.0	300032
 chrX:77727845-77728413	ISCA-44077	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chrX:77825747-77895568	ISCA-36300	ISCA Gene Curation	Complete		0	2	0.887	300715
+chrX:77825747-77895568	ISCA-36300	ISCA Gene Curation	Under Group Review		N/A	N/A	0.96	300715
 chrX:77837289-77837395	ISCA-44474	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:77899468-77907376	ISCA-15669	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.657	603792
 chrX:77910693-78050395	ISCA-27820	ISCA Gene Curation	Complete		0	3	1.0	300011
 chrX:77962541-77965214	ISCA-44089	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:77967949-77969638	ISCA-17521	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.283	300567
-chrX:78104248-78129295	ISCA-4697	ISCA Gene Curation	Complete		0	3	0.971	311800
+chrX:78104248-78129295	ISCA-4697	ISCA Gene Curation	Complete		0	2	0.971	311800
 chrX:78129748-78139650	ISCA-13097	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	300754
 chrX:78165696-78170137	ISCA-18240	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:78271468-78327611	ISCA-4903	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.004	300201
@@ -40944,7 +40945,7 @@ chrX:129540259-129592556	ISCA-35493	ISCA Gene Curation	Complete		0	3	1.0	300535
 chrX:129645259-129654956	ISCA-8081	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.377	300297
 chrX:129738979-129769536	ISCA-11382	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	300145
 chrX:129779949-129795201	ISCA-26958	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.891	300441
-chrX:129803288-129843886	ISCA-11289	ISCA Gene Curation	Complete		0	2	0.885	300646
+chrX:129803288-129843886	ISCA-11289	ISCA Gene Curation	Under Group Review		N/A	N/A	0.885	300646
 chrX:129871304-129877635	ISCA-32825	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:129906131-129929752	ISCA-21057	ISCA Gene Curation	Awaiting Review		N/A	N/A	1.0	300508
 chrX:129980285-130058081	ISCA-1461	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.982	300688
@@ -41284,7 +41285,7 @@ chrX:153444720-153446487	ISCA-23180	ISCA Gene Curation	Awaiting Review		N/A	N/A	
 chrX:153447668-153495465	ISCA-17586	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.959	300540
 chrX:153494980-153509546	ISCA-15701	ISCA Gene Curation	Under Secondary Review		N/A	N/A	0.916	301870
 chrX:153517677-153582929	ISCA-14107	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.999	300014
-chrX:153587925-153599177	ISCA-21217	ISCA Gene Curation	Complete		0	2	0.84	300708
+chrX:153587925-153599177	ISCA-21217	ISCA Gene Curation	Under Group Review		N/A	N/A	0.84	300708
 chrX:153599340-153599893	ISCA-38137	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:153603221-153605150	ISCA-5129	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrX:153642441-153651326	ISCA-5040	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.649	300134
@@ -41395,9 +41396,9 @@ chrX:156025658-156028183	ISCA-11572	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrY:276356-303356	ISCA-9695	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	
 chrY:303352-318819	ISCA-39019	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chrY:333933-387327	ISCA-33008	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	300339
-chrY:624344-659411	ISCA-25281	ISCA Gene Curation	Complete		0	3	0.738	312865
+chrY:624344-659411	ISCA-25281	ISCA Gene Curation	Reopened		N/A	N/A	0.738	312865
 chrY:1190437-1212762	ISCA-6185	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.003	400023
-chrY:1268814-1325218	ISCA-15612	ISCA Gene Curation	Under Secondary Review		N/A	N/A	0.002	306250
+chrY:1268814-1325218	ISCA-15612	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype	0.002	306250
 chrY:1336574-1382689	ISCA-28446	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	430000
 chrY:1386152-1392113	ISCA-33491	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.067	403000
 chrY:1403139-1453794	ISCA-32316	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	400011
@@ -41883,6 +41884,439 @@ chrY:56903690-57217415	ISCA-37485	ISCA Region Curation	Awaiting Review	0 copies:
 chrY:56954255-56968979	ISCA-1822	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.006	300531
 chrY:57067838-57130289	ISCA-8506	ISCA Gene Curation	Complete		0	0	0.005	300053
 chrY:57184151-57199537	ISCA-35598	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.0	300007
+	ISCA-46739	ISCA Region Curation	Complete	Yq11.223 population region (DGV_Gold_Standard_June_2021_gssvL138428)	0	40: Dosage sensitivity unlikely		
+	ISCA-46738	ISCA Region Curation	Complete	Yq11.223 population region (DGV_Gold_Standard_June_2021_gssvL138419)	0	40: Dosage sensitivity unlikely		
+	ISCA-46737	ISCA Region Curation	Complete	Xq27.3 population region (DGV_Gold_Standard_June_2021_gssvL137799)	0	40: Dosage sensitivity unlikely		
+	ISCA-46736	ISCA Region Curation	Complete	Xq21.1 population region (DGV_Gold_Standard_June_2021_gssvL136501)	0	40: Dosage sensitivity unlikely		
+	ISCA-46735	ISCA Region Curation	Complete	Xp11.23 population region (DGV_Gold_Standard_June_2021_gssvL136075)	0	40: Dosage sensitivity unlikely		
+	ISCA-46734	ISCA Region Curation	Complete	Xq28 population region (DGV_Gold_Standard_June_2021_gssvG41365)	40: Dosage sensitivity unlikely	0		
+	ISCA-46733	ISCA Region Curation	Complete	Xq24 population region (DGV_Gold_Standard_June_2021_gssvG41158)	40: Dosage sensitivity unlikely	0		
+	ISCA-46732	ISCA Region Curation	Complete	22q11.23 population region (DGV_Gold_Standard_June_2021_gssvG24415)	40: Dosage sensitivity unlikely	0		
+	ISCA-46731	ISCA Region Curation	Complete	22q11.21 population region (DGV_Gold_Standard_June_2021_gssvL77050)	0	40: Dosage sensitivity unlikely		
+	ISCA-46730	ISCA Region Curation	Complete	22q11.21 population region (DGV_Gold_Standard_June_2021_gssvL77049)	0	40: Dosage sensitivity unlikely		
+	ISCA-46729	ISCA Region Curation	Complete	22q11.21 population region (DGV_Gold_Standard_June_2021_gssvL77047)	0	40: Dosage sensitivity unlikely		
+	ISCA-46728	ISCA Region Curation	Complete	22q11.21 population region (DGV_Gold_Standard_June_2021_gssvL76981)	0	40: Dosage sensitivity unlikely		
+	ISCA-46727	ISCA Region Curation	Complete	22q11.22 population region (DGV_Gold_Standard_June_2021_gssvL77120)	0	40: Dosage sensitivity unlikely		
+	ISCA-46726	ISCA Region Curation	Complete	22q11.23 population region (DGV_Gold_Standard_June_2021_gssvL77244)	0	40: Dosage sensitivity unlikely		
+	ISCA-46725	ISCA Region Curation	Complete	22q11.23 population region (DGV_Gold_Standard_June_2021_gssvL77238)	0	40: Dosage sensitivity unlikely		
+	ISCA-46724	ISCA Region Curation	Complete	12p11.2 population region (DGV_Gold_Standard_June_2021_gssvG23340)	40: Dosage sensitivity unlikely	0		
+	ISCA-46723	ISCA Region Curation	Complete	21q11.2 population region (DGV_Gold_Standard_June_2021_gssvL74506)	0	40: Dosage sensitivity unlikely		
+	ISCA-46722	ISCA Region Curation	Complete	21q22.3 population region (DGV_Gold_Standard_June_2021_gssvL75982)	0	40: Dosage sensitivity unlikely		
+	ISCA-46721	ISCA Region Curation	Complete	21q22.3 population region (DGV_Gold_Standard_June_2021_gssvL76000)	0	40: Dosage sensitivity unlikely		
+	ISCA-46720	ISCA Region Curation	Complete	20p11.22 population region (DGV_Gold_Standard_June_2021_gssvL71898)	0	40: Dosage sensitivity unlikely		
+	ISCA-46719	ISCA Region Curation	Complete	20q11.21 population region (DGV_Gold_Standard_June_2021_gssvL72187)	0	40: Dosage sensitivity unlikely		
+	ISCA-46718	ISCA Region Curation	Complete	19p12 population region (DGV_Gold_Standard_June_2021_gssvL57428)	0	40: Dosage sensitivity unlikely		
+	ISCA-46717	ISCA Region Curation	Complete	19q13.42 population region (DGV_Gold_Standard_June_2021_gssvG19479)	40: Dosage sensitivity unlikely	0		
+	ISCA-46716	ISCA Region Curation	Complete	19p12 population region (DGV_Gold_Standard_June_2021_gssvL57316)	0	40: Dosage sensitivity unlikely		
+	ISCA-46715	ISCA Region Curation	Complete	19p13.12 population region (DGV_Gold_Standard_June_2021_gssvL57062)	0	40: Dosage sensitivity unlikely		
+	ISCA-46714	ISCA Region Curation	Complete	19q13.32 population region (DGV_Gold_Standard_June_2021_gssvL58890)	0	40: Dosage sensitivity unlikely		
+	ISCA-46713	ISCA Region Curation	Complete	19q13.42 population region (DGV_Gold_Standard_June_2021_gssvL59370)	0	40: Dosage sensitivity unlikely		
+	ISCA-46712	ISCA Region Curation	Complete	18q21.1 population region (DGV_Gold_Standard_June_2021_gssvG17872)	40: Dosage sensitivity unlikely	0		
+	ISCA-46711	ISCA Region Curation	Complete	18p11.21 population region (DGV_Gold_Standard_June_2021_gssvG17388)	40: Dosage sensitivity unlikely	0		
+	ISCA-46710	ISCA Region Curation	Complete	18q11.2 population region (DGV_Gold_Standard_June_2021_gssvL52661)	0	40: Dosage sensitivity unlikely		
+	ISCA-46709	ISCA Region Curation	Complete	18p11.22 population region (DGV_Gold_Standard_June_2021_gssvL52196)	0	40: Dosage sensitivity unlikely		
+	ISCA-46708	ISCA Region Curation	Complete	18p11.31 population region (DGV_Gold_Standard_June_2021_gssvL51911)	0	40: Dosage sensitivity unlikely		
+	ISCA-46707	ISCA Region Curation	Complete	17q21.2 population region (DGV_Gold_Standard_June_2021_gssvG16538)	40: Dosage sensitivity unlikely	0		
+	ISCA-46706	ISCA Region Curation	Complete	17q12 population region (DGV_Gold_Standard_June_2021_gssvG16427)	40: Dosage sensitivity unlikely	0		
+	ISCA-46705	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvG16095)	40: Dosage sensitivity unlikely	0		
+	ISCA-46704	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvG16067)	40: Dosage sensitivity unlikely	0		
+	ISCA-46703	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvG16017)	40: Dosage sensitivity unlikely	0		
+	ISCA-46702	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvG16012)	40: Dosage sensitivity unlikely	0		
+	ISCA-46701	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvL48488)	0	40: Dosage sensitivity unlikely		
+	ISCA-46700	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvL48476)	0	40: Dosage sensitivity unlikely		
+	ISCA-46699	ISCA Region Curation	Complete	17p11.2 population region (DGV_Gold_Standard_June_2021_gssvL48375)	0	40: Dosage sensitivity unlikely		
+	ISCA-46698	ISCA Region Curation	Complete	17q12 population region (DGV_Gold_Standard_June_2021_gssvL49126)	0	40: Dosage sensitivity unlikely		
+	ISCA-46697	ISCA Region Curation	Complete	17q21.2 population region (DGV_Gold_Standard_June_2021_gssvL49379)	0	40: Dosage sensitivity unlikely		
+	ISCA-46696	ISCA Region Curation	Complete	17q21.2 population region (DGV_Gold_Standard_June_2021_gssvL49386)	0	40: Dosage sensitivity unlikely		
+	ISCA-46695	ISCA Region Curation	Complete	17q21.2 population region (DGV_Gold_Standard_June_2021_gssvL49384)	0	40: Dosage sensitivity unlikely		
+	ISCA-46694	ISCA Region Curation	Complete	17q21.2 population region (DGV_Gold_Standard_June_2021_gssvL49383)	0	40: Dosage sensitivity unlikely		
+	ISCA-46693	ISCA Region Curation	Complete	16q23.1 population region (DGV_Gold_Standard_June_2021_gssvG15270)	40: Dosage sensitivity unlikely	0		
+	ISCA-46692	ISCA Region Curation	Complete	16q22.2 population region (DGV_Gold_Standard_June_2021_gssvG15245)	40: Dosage sensitivity unlikely	0		
+	ISCA-46691	ISCA Region Curation	Complete	16p12.2 population region (DGV_Gold_Standard_June_2021_gssvG14372)	40: Dosage sensitivity unlikely	0		
+	ISCA-46690	ISCA Region Curation	Complete	16p13.3 population region (DGV_Gold_Standard_June_2021_gssvL41949)	0	40: Dosage sensitivity unlikely		
+	ISCA-46689	ISCA Region Curation	Complete	16p12.1 population region (DGV_Gold_Standard_June_2021_gssvL43366)	0	40: Dosage sensitivity unlikely		
+	ISCA-46688	ISCA Region Curation	Complete	15q11.2 population region (DGV_Gold_Standard_June_2021_gssvG12359)	40: Dosage sensitivity unlikely	0		
+	ISCA-46687	ISCA Region Curation	Complete	15q13.2 population region (DGV_Gold_Standard_June_2021_gssvG12633)	40: Dosage sensitivity unlikely	0		
+	ISCA-46686	ISCA Region Curation	Complete	15q11.2 population region (DGV_Gold_Standard_June_2021_gssvG12224)	40: Dosage sensitivity unlikely	0		
+	ISCA-46685	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvG12150)	40: Dosage sensitivity unlikely	0		
+	ISCA-46684	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvG12133)	40: Dosage sensitivity unlikely	0		
+	ISCA-46683	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvG12117)	40: Dosage sensitivity unlikely	0		
+	ISCA-46682	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvG12097)	40: Dosage sensitivity unlikely	0		
+	ISCA-46681	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvG10899)	40: Dosage sensitivity unlikely	0		
+	ISCA-46680	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvG10827)	40: Dosage sensitivity unlikely	0		
+	ISCA-46679	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvG10817)	40: Dosage sensitivity unlikely	0		
+	ISCA-46678	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvL33520)	0	40: Dosage sensitivity unlikely		
+	ISCA-46677	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvL33589)	0	40: Dosage sensitivity unlikely		
+	ISCA-46676	ISCA Region Curation	Complete	14q13.2 population region (DGV_Gold_Standard_June_2021_gssvL34350)	0	40: Dosage sensitivity unlikely		
+	ISCA-46675	ISCA Region Curation	Complete	14q11.2 population region (DGV_Gold_Standard_June_2021_gssvG10810)	40: Dosage sensitivity unlikely	0		
+	ISCA-46674	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvL37239)	0	40: Dosage sensitivity unlikely		
+	ISCA-46673	ISCA Region Curation	Complete	14q32.33 population region (DGV_Gold_Standard_June_2021_gssvL37313)	0	40: Dosage sensitivity unlikely		
+	ISCA-46672	ISCA Region Curation	Complete	13q12.11 population region (DGV_Gold_Standard_June_2021_gssvG9718)	40: Dosage sensitivity unlikely	0		
+	ISCA-46671	ISCA Region Curation	Complete	13q21.33 population region (DGV_Gold_Standard_June_2021_gssvL31119)	0	40: Dosage sensitivity unlikely		
+	ISCA-46670	ISCA Region Curation	Complete	13q21.1 population region (DGV_Gold_Standard_June_2021_gssvL30434)	0	40: Dosage sensitivity unlikely		
+	ISCA-46669	ISCA Region Curation	Complete	12p13.31 population region (DGV_Gold_Standard_June_2021_gssvG7850)	40: Dosage sensitivity unlikely	0		
+	ISCA-46668	ISCA Region Curation	Complete	12p13.31 population region (DGV_Gold_Standard_June_2021_gssvG7792)	40: Dosage sensitivity unlikely	0		
+	ISCA-46667	ISCA Region Curation	Complete	12p13.2 population region (DGV_Gold_Standard_June_2021_gssvL23179)	0	40: Dosage sensitivity unlikely		
+	ISCA-46666	ISCA Region Curation	Complete	12q23.3 population region (DGV_Gold_Standard_June_2021_gssvL26928)	0	40: Dosage sensitivity unlikely		
+	ISCA-46665	ISCA Region Curation	Complete	12p11.1 population region (DGV_Gold_Standard_June_2021_gssvL24290)	0	40: Dosage sensitivity unlikely		
+	ISCA-46664	ISCA Region Curation	Complete	12p11.23 population region (DGV_Gold_Standard_June_2021_gssvL23860)	0	40: Dosage sensitivity unlikely		
+	ISCA-46663	ISCA Region Curation	Complete	12p13.2 population region (DGV_Gold_Standard_June_2021_gssvL23231)	0	40: Dosage sensitivity unlikely		
+	ISCA-46662	ISCA Region Curation	Complete	12p13.2 population region (DGV_Gold_Standard_June_2021_gssvL23228)	0	40: Dosage sensitivity unlikely		
+	ISCA-46661	ISCA Region Curation	Complete	12p13.2 population region (DGV_Gold_Standard_June_2021_gssvL23223)	0	40: Dosage sensitivity unlikely		
+	ISCA-46660	ISCA Region Curation	Complete	11q12.2 population region (DGV_Gold_Standard_June_2021_gssvG6800)	40: Dosage sensitivity unlikely	0		
+	ISCA-46659	ISCA Region Curation	Complete	11p14.1 population region (DGV_Gold_Standard_June_2021_gssvG6305)	40: Dosage sensitivity unlikely	0		
+	ISCA-46658	ISCA Region Curation	Complete	11p15.1 population region (DGV_Gold_Standard_June_2021_gssvG6192)	40: Dosage sensitivity unlikely	0		
+	ISCA-46657	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvG5957)	40: Dosage sensitivity unlikely	0		
+	ISCA-46656	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvG5919)	40: Dosage sensitivity unlikely	0		
+	ISCA-46655	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvL16784)	0	40: Dosage sensitivity unlikely		
+	ISCA-46654	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvL16737)	0	40: Dosage sensitivity unlikely		
+	ISCA-46653	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvL16732)	0	40: Dosage sensitivity unlikely		
+	ISCA-46652	ISCA Region Curation	Complete	11p15.5 population region (DGV_Gold_Standard_June_2021_gssvL16511)	0	40: Dosage sensitivity unlikely		
+	ISCA-46651	ISCA Region Curation	Complete	11p15.1 population region (DGV_Gold_Standard_June_2021_gssvL17400)	0	40: Dosage sensitivity unlikely		
+	ISCA-46650	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvL16961)	0	40: Dosage sensitivity unlikely		
+	ISCA-46649	ISCA Region Curation	Complete	11p15.4 population region (DGV_Gold_Standard_June_2021_gssvL16881)	0	40: Dosage sensitivity unlikely		
+	ISCA-46648	ISCA Region Curation	Complete	11q22.2 population region (DGV_Gold_Standard_June_2021_gssvL21098)	0	40: Dosage sensitivity unlikely		
+	ISCA-46647	ISCA Region Curation	Complete	11q13.4 population region (DGV_Gold_Standard_June_2021_gssvL19865)	0	40: Dosage sensitivity unlikely		
+	ISCA-46646	ISCA Region Curation	Complete	11q11 population region (DGV_Gold_Standard_June_2021_gssvL19045)	0	40: Dosage sensitivity unlikely		
+	ISCA-46645	ISCA Region Curation	Complete	11q11 population region (DGV_Gold_Standard_June_2021_gssvL19042)	0	40: Dosage sensitivity unlikely		
+	ISCA-46644	ISCA Region Curation	Complete	10q22.1 population region (DGV_Gold_Standard_June_2021_gssvL13249)	0	40: Dosage sensitivity unlikely		
+	ISCA-46643	ISCA Region Curation	Complete	10q22.1 population region (DGV_Gold_Standard_June_2021_gssvL13247)	0	40: Dosage sensitivity unlikely		
+	ISCA-46642	ISCA Region Curation	Complete	10q11.22 population region (DGV_Gold_Standard_June_2021_gssvL12112)	0	40: Dosage sensitivity unlikely		
+	ISCA-46641	ISCA Region Curation	Complete	10q11.23 population region (DGV_Gold_Standard_June_2021_gssvL12109)	0	40: Dosage sensitivity unlikely		
+	ISCA-46640	ISCA Region Curation	Complete	10q11.22 population region (DGV_Gold_Standard_June_2021_gssvL12105)	0	40: Dosage sensitivity unlikely		
+	ISCA-46639	ISCA Region Curation	Complete	10q11.22 population region (DGV_Gold_Standard_June_2021_gssvG4512)	40: Dosage sensitivity unlikely	0		
+	ISCA-46638	ISCA Region Curation	Complete	10p12.1 population region (DGV_Gold_Standard_June_2021_gssvL11273)	0	40: Dosage sensitivity unlikely		
+	ISCA-46637	ISCA Region Curation	Complete	10p13 population region (DGV_Gold_Standard_June_2021_gssvL10668)	0	40: Dosage sensitivity unlikely		
+	ISCA-46636	ISCA Region Curation	Complete	9q32 population region (DGV_Gold_Standard_June_2021_gssvG40321)	40: Dosage sensitivity unlikely	0		
+	ISCA-46635	ISCA Region Curation	Complete	9p11.2 population region (DGV_Gold_Standard_June_2021_gssvG38779)	40: Dosage sensitivity unlikely	0		
+	ISCA-46634	ISCA Region Curation	Complete	9p12 population region (DGV_Gold_Standard_June_2021_gssvL130637)	0	40: Dosage sensitivity unlikely		
+	ISCA-46633	ISCA Region Curation	Complete	9p12 population region (DGV_Gold_Standard_June_2021_gssvL130619)	0	40: Dosage sensitivity unlikely		
+	ISCA-46632	ISCA Region Curation	Complete	9q31.1 population region (DGV_Gold_Standard_June_2021_gssvL132495)	0	40: Dosage sensitivity unlikely		
+	ISCA-46631	ISCA Region Curation	Complete	8p23.1 population region (DGV_Gold_Standard_June_2021_gssvG36644)	40: Dosage sensitivity unlikely	0		
+	ISCA-46630	ISCA Region Curation	Complete	8p23.1 population region (DGV_Gold_Standard_June_2021_gssvG36608)	40: Dosage sensitivity unlikely	0		
+	ISCA-46629	ISCA Region Curation	Complete	8p23.1 population region (DGV_Gold_Standard_June_2021_gssvG36607)	40: Dosage sensitivity unlikely	0		
+	ISCA-46628	ISCA Region Curation	Complete	7q36.1 population region (DGV_Gold_Standard_June_2021_gssvL119849)	0	40: Dosage sensitivity unlikely		
+	ISCA-46627	ISCA Region Curation	Complete	7q35 population region (DGV_Gold_Standard_June_2021_gssvL119429)	0	40: Dosage sensitivity unlikely		
+	ISCA-46626	ISCA Region Curation	Complete	7q35 population region (DGV_Gold_Standard_June_2021_gssvG35898)	40: Dosage sensitivity unlikely	0		
+	ISCA-46625	ISCA Region Curation	Complete	7q22.1 population region (DGV_Gold_Standard_June_2021_gssvL117874)	0	40: Dosage sensitivity unlikely		
+	ISCA-46624	ISCA Region Curation	Complete	7q34 population region (DGV_Gold_Standard_June_2021_gssvL119381)	0	40: Dosage sensitivity unlikely		
+	ISCA-46623	ISCA Region Curation	Complete	7q34 population region (DGV_Gold_Standard_June_2021_gssvL119380)	0	40: Dosage sensitivity unlikely		
+	ISCA-46622	ISCA Region Curation	Complete	7q34 population region (DGV_Gold_Standard_June_2021_gssvL119369)	0	40: Dosage sensitivity unlikely		
+	ISCA-46621	ISCA Region Curation	Complete	7q34 population region (DGV_Gold_Standard_June_2021_gssvL119360)	0	40: Dosage sensitivity unlikely		
+	ISCA-46620	ISCA Region Curation	Complete	7q11.23 population region (DGV_Gold_Standard_June_2021_gssvL116711)	0	40: Dosage sensitivity unlikely		
+	ISCA-46619	ISCA Region Curation	Complete	7q11.21 population region (DGV_Gold_Standard_June_2021_gssvL116036)	0	40: Dosage sensitivity unlikely		
+	ISCA-46618	ISCA Region Curation	Complete	7q11.21 population region (DGV_Gold_Standard_June_2021_gssvL115987)	0	40: Dosage sensitivity unlikely		
+	ISCA-46617	ISCA Region Curation	Complete	7p11.2 population region (DGV_Gold_Standard_June_2021_gssvL115697)	0	40: Dosage sensitivity unlikely		
+	ISCA-46616	ISCA Region Curation	Complete	7p14.1 population region (DGV_Gold_Standard_June_2021_gssvL115094)	0	40: Dosage sensitivity unlikely		
+	ISCA-46615	ISCA Region Curation	Complete	7p22.1 population region (DGV_Gold_Standard_June_2021_gssvL113541)	0	40: Dosage sensitivity unlikely		
+	ISCA-46614	ISCA Region Curation	Complete	6q13 population region (DGV_Gold_Standard_June_2021_gssvG32691)	40: Dosage sensitivity unlikely	0		
+	ISCA-46613	ISCA Region Curation	Complete	6q13 population region (DGV_Gold_Standard_June_2021_gssvG32688)	40: Dosage sensitivity unlikely	0		
+	ISCA-46612	ISCA Region Curation	Complete	6p25.3 population region (DGV_Gold_Standard_June_2021_gssvL104460)	0	40: Dosage sensitivity unlikely		
+	ISCA-46611	ISCA Region Curation	Complete	6p21.32 population region (DGV_Gold_Standard_June_2021_gssvL106271)	0	40: Dosage sensitivity unlikely		
+	ISCA-46610	ISCA Region Curation	Complete	6p21.32 population region (DGV_Gold_Standard_June_2021_gssvL106269)	0	40: Dosage sensitivity unlikely		
+	ISCA-46609	ISCA Region Curation	Complete	6p21.32 population region (DGV_Gold_Standard_June_2021_gssvL106264)	0	40: Dosage sensitivity unlikely		
+	ISCA-46608	ISCA Region Curation	Complete	6p22.1 population region (DGV_Gold_Standard_June_2021_gssvL105927)	0	40: Dosage sensitivity unlikely		
+	ISCA-46607	ISCA Region Curation	Complete	6p22.1 population region (DGV_Gold_Standard_June_2021_gssvL105924)	0	40: Dosage sensitivity unlikely		
+	ISCA-46606	ISCA Region Curation	Reopened	5q31.3 population region (DGV_Gold_Standard_June_2021_gssvG31070)	N/A	N/A		
+	ISCA-46605	ISCA Region Curation	Complete	5q13.2 population region (DGV_Gold_Standard_June_2021_gssvG30124)	40: Dosage sensitivity unlikely	0		
+	ISCA-46604	ISCA Region Curation	Complete	5p15.33 population region (DGV_Gold_Standard_June_2021_gssvG29169)	40: Dosage sensitivity unlikely	0		
+	ISCA-46603	ISCA Region Curation	Awaiting Review	5p15.33 population region (DGV_Gold_Standard_June_2021_gssvG29108)	N/A	N/A		
+	ISCA-46602	ISCA Region Curation	Complete	5q22.1 population region (DGV_Gold_Standard_June_2021_gssvL101506)	0	40: Dosage sensitivity unlikely		
+	ISCA-46601	ISCA Region Curation	Complete	5q35.3 population region (DGV_Gold_Standard_June_2021_gssvL104429)	0	40: Dosage sensitivity unlikely		
+	ISCA-46600	ISCA Region Curation	Complete	5q35.3 population region (DGV_Gold_Standard_June_2021_gssvL104164)	0	40: Dosage sensitivity unlikely		
+	ISCA-46599	ISCA Region Curation	Complete	5q31.3 population region (DGV_Gold_Standard_June_2021_gssvL102648)	0	40: Dosage sensitivity unlikely		
+	ISCA-46598	ISCA Region Curation	Complete	4p11 population region (DGV_Gold_Standard_June_2021_gssvG27527)	40: Dosage sensitivity unlikely	0		
+	ISCA-46597	ISCA Region Curation	Complete	4p16.1 population region (DGV_Gold_Standard_June_2021_gssvG27165)	40: Dosage sensitivity unlikely	0		
+	ISCA-46596	ISCA Region Curation	Complete	4p16.1 population region (DGV_Gold_Standard_June_2021_gssvL88361)	0	40: Dosage sensitivity unlikely		
+	ISCA-46595	ISCA Region Curation	Complete	4p11 population region (DGV_Gold_Standard_June_2021_gssvL90109)	0	40: Dosage sensitivity unlikely		
+	ISCA-46594	ISCA Region Curation	Complete	4q13.2 population region (DGV_Gold_Standard_June_2021_gssvL90978)	0	40: Dosage sensitivity unlikely		
+	ISCA-46593	ISCA Region Curation	Complete	4q13.3 population region (DGV_Gold_Standard_June_2021_gssvL91223)	0	40: Dosage sensitivity unlikely		
+	ISCA-46592	ISCA Region Curation	Complete	3q29 population region (DGV_Gold_Standard_June_2021_gssvG26791)	40: Dosage sensitivity unlikely	0		
+	ISCA-46591	ISCA Region Curation	Complete	3p12.3 population region (DGV_Gold_Standard_June_2021_gssvL82434)	0	40: Dosage sensitivity unlikely		
+	ISCA-46590	ISCA Region Curation	Complete	3p12.3 population region (DGV_Gold_Standard_June_2021_gssvL82397)	0	40: Dosage sensitivity unlikely		
+	ISCA-46589	ISCA Region Curation	Complete	3q29 population region (DGV_Gold_Standard_June_2021_gssvL86947)	0	40: Dosage sensitivity unlikely		
+	ISCA-46588	ISCA Region Curation	Complete	3q25.31 population region (DGV_Gold_Standard_June_2021_gssvL85294)	0	40: Dosage sensitivity unlikely		
+	ISCA-46587	ISCA Region Curation	Complete	3q11.2 population region (DGV_Gold_Standard_June_2021_gssvL83307)	0	40: Dosage sensitivity unlikely		
+	ISCA-46586	ISCA Region Curation	Complete	3q11.2 population region (DGV_Gold_Standard_June_2021_gssvL83303)	0	40: Dosage sensitivity unlikely		
+	ISCA-46585	ISCA Region Curation	Complete	2q37.3 population region (DGV_Gold_Standard_June_2021_gssvL70815)	0	40: Dosage sensitivity unlikely		
+	ISCA-46584	ISCA Region Curation	Complete	2q21.1 population region (DGV_Gold_Standard_June_2021_gssvL66075)	0	40: Dosage sensitivity unlikely		
+	ISCA-46583	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64514)	0	40: Dosage sensitivity unlikely		
+	ISCA-46582	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64458)	0	40: Dosage sensitivity unlikely		
+	ISCA-46581	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64445)	0	40: Dosage sensitivity unlikely		
+	ISCA-46580	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64421)	0	40: Dosage sensitivity unlikely		
+	ISCA-46579	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64418)	0	40: Dosage sensitivity unlikely		
+	ISCA-46578	ISCA Region Curation	Complete	2p11.2 population region (DGV_Gold_Standard_June_2021_gssvL64414)	0	40: Dosage sensitivity unlikely		
+	ISCA-46577	ISCA Region Curation	Complete	1q44 population region (DGV_Gold_Standard_June_2021_gssvL8958)	0	40: Dosage sensitivity unlikely		
+	ISCA-46576	ISCA Region Curation	Complete	1q44 population region (DGV_Gold_Standard_June_2021_gssvL8766)	0	40: Dosage sensitivity unlikely		
+	ISCA-46575	ISCA Region Curation	Complete	1q41 population region (DGV_Gold_Standard_June_2021_gssvL7905)	0	40: Dosage sensitivity unlikely		
+	ISCA-46574	ISCA Region Curation	Complete	1q24.2 population region (DGV_Gold_Standard_June_2021_gssvL5980)	0	40: Dosage sensitivity unlikely		
+	ISCA-46573	ISCA Region Curation	Complete	1q23.3 population region (DGV_Gold_Standard_June_2021_gssvL5778)	0	40: Dosage sensitivity unlikely		
+	ISCA-46572	ISCA Region Curation	Complete	1q21.3 population region (DGV_Gold_Standard_June_2021_gssvL5433)	0	40: Dosage sensitivity unlikely		
+	ISCA-46571	ISCA Region Curation	Complete	1q21.2 population region (DGV_Gold_Standard_June_2021_gssvL5166)	0	40: Dosage sensitivity unlikely		
+	ISCA-46570	ISCA Region Curation	Complete	1q21.2 population region (DGV_Gold_Standard_June_2021_gssvL5133)	0	40: Dosage sensitivity unlikely		
+	ISCA-46569	ISCA Region Curation	Complete	1q21.2 population region (DGV_Gold_Standard_June_2021_gssvL5122)	0	40: Dosage sensitivity unlikely		
+	ISCA-46568	ISCA Region Curation	Complete	1p31.3 population region (DGV_Gold_Standard_June_2021_gssvL3013)	0	40: Dosage sensitivity unlikely		
+	ISCA-46567	ISCA Region Curation	Complete	1p31.3 population region (DGV_Gold_Standard_June_2021_gssvL2940)	0	40: Dosage sensitivity unlikely		
+	ISCA-46566	ISCA Region Curation	Complete	1p36.12 population region (DGV_Gold_Standard_June_2021_gssvL1420)	0	40: Dosage sensitivity unlikely		
+	ISCA-46565	ISCA Region Curation	Complete	1p36.13 population region (DGV_Gold_Standard_June_2021_gssvL1195)	0	40: Dosage sensitivity unlikely		
+	ISCA-46564	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvL1109)	0	40: Dosage sensitivity unlikely		
+	ISCA-46563	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvL1108)	0	40: Dosage sensitivity unlikely		
+	ISCA-46562	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvL905)	0	40: Dosage sensitivity unlikely		
+	ISCA-46561	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvL891)	0	40: Dosage sensitivity unlikely		
+	ISCA-46560	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvL889)	0	40: Dosage sensitivity unlikely		
+	ISCA-46559	ISCA Region Curation	Complete	1q21.3 population region (DGV_Gold_Standard_June_2021_gssvG2465)	40: Dosage sensitivity unlikely	0		
+	ISCA-46558	ISCA Region Curation	Complete	1p13.3 population region (DGV_Gold_Standard_June_2021_gssvG1423)	40: Dosage sensitivity unlikely	0		
+	ISCA-46557	ISCA Region Curation	Complete	1p36.21 population region (DGV_Gold_Standard_June_2021_gssvG371)	40: Dosage sensitivity unlikely	0		
+	ISCA-46556	ISCA Region Curation	Complete	1p36.33 population region (DGV_Gold_Standard_June_2021_gssvG23)	40: Dosage sensitivity unlikely	0		
+	ISCA-46554	ISCA Region Curation	Complete	1p36.33 population region ((DGV_Gold_Standard_June_2021_gssvG23))	40: Dosage sensitivity unlikely	0		
+	ISCA-46552	ISCA Region Curation	Complete	Yq11.223 population region (gnomAD-SV_v2.1_DUP_Y_55057)	40: Dosage sensitivity unlikely	0		
+	ISCA-46551	ISCA Region Curation	Complete	Yq11.223 population region (gnomAD-SV_v2.1_DUP_Y_55049)	40: Dosage sensitivity unlikely	0		
+	ISCA-46550	ISCA Region Curation	Complete	Xq28 population region (gnomAD-SV_v2.1_DEL_X_190964)	0	40: Dosage sensitivity unlikely		
+	ISCA-46549	ISCA Region Curation	Complete	Xq28 population region (gnomAD-SV_v2.1_DEL_X_190749)	0	40: Dosage sensitivity unlikely		
+	ISCA-46548	ISCA Region Curation	Complete	Xq28 population region (gnomAD-SV_v2.1_DEL_X_190688)	0	40: Dosage sensitivity unlikely		
+	ISCA-46547	ISCA Region Curation	Complete	Xq26.3 population region (gnomAD-SV_v2.1_DEL_X_189893)	0	40: Dosage sensitivity unlikely		
+	ISCA-46546	ISCA Region Curation	Complete	Xq26.3 population region (gnomAD-SV_v2.1_DEL_X_189886)	0	40: Dosage sensitivity unlikely		
+	ISCA-46545	ISCA Region Curation	Complete	Xq24 population region (gnomAD-SV_v2.1_DEL_X_189263)	0	40: Dosage sensitivity unlikely		
+	ISCA-46544	ISCA Region Curation	Complete	Xq24 population region (gnomAD-SV_v2.1_DEL_X_189262)	0	40: Dosage sensitivity unlikely		
+	ISCA-46543	ISCA Region Curation	Complete	Xp11.23 population region (gnomAD-SV_v2.1_DUP_X_53157)	40: Dosage sensitivity unlikely	0		
+	ISCA-46542	ISCA Region Curation	Complete	Xp11.23 population region (gnomAD-SV_v2.1_DUP_X_53155)	40: Dosage sensitivity unlikely	0		
+	ISCA-46541	ISCA Region Curation	Complete	Xp11.23 population region (gnomAD-SV_v2.1_DUP_X_53151)	40: Dosage sensitivity unlikely	0		
+	ISCA-46540	ISCA Region Curation	Complete	Xp11.23 population region (gnomAD-SV_v2.1_DUP_X_53149)	40: Dosage sensitivity unlikely	0		
+	ISCA-46539	ISCA Region Curation	Complete	Xp11.23 population region (gnomAD-SV_v2.1_DEL_X_186156)	0	40: Dosage sensitivity unlikely		
+	ISCA-46538	ISCA Region Curation	Complete	22q13.1 population region (gnomAD-SV_v2.1_DEL_22_182715)	0	40: Dosage sensitivity unlikely		
+	ISCA-46537	ISCA Region Curation	Complete	22q11.23 population region (gnomAD-SV_v2.1_DEL_22_181682)	0	40: Dosage sensitivity unlikely		
+	ISCA-46536	ISCA Region Curation	Complete	22q11.23 population region (gnomAD-SV_v2.1_DEL_22_181680)	0	40: Dosage sensitivity unlikely		
+	ISCA-46535	ISCA Region Curation	Complete	22q11.23 population region (gnomAD-SV_v2.1_DEL_22_181679)	0	40: Dosage sensitivity unlikely		
+	ISCA-46534	ISCA Region Curation	Complete	22q11.23 population region (gnomAD-SV_v2.1_DEL_22_181670)	0	40: Dosage sensitivity unlikely		
+	ISCA-46533	ISCA Region Curation	Complete	22q11.21 population region (gnomAD-SV_v2.1_DEL_22_181532)	0	40: Dosage sensitivity unlikely		
+	ISCA-46532	ISCA Region Curation	Complete	22q11.21 population region (gnomAD-SV_v2.1_DEL_22_181459)	0	40: Dosage sensitivity unlikely		
+	ISCA-46531	ISCA Region Curation	Complete	22q11.21 population region (gnomAD-SV_v2.1_DEL_22_181452)	0	40: Dosage sensitivity unlikely		
+	ISCA-46530	ISCA Region Curation	Complete	22q11.21 population region (gnomAD-SV_v2.1_DEL_22_181446)	0	40: Dosage sensitivity unlikely		
+	ISCA-46529	ISCA Region Curation	Complete	22q11.21 population region (gnomAD-SV_v2.1_DEL_22_181316)	0	40: Dosage sensitivity unlikely		
+	ISCA-46528	ISCA Region Curation	Complete	21q22.3 population region (gnomAD-SV_v2.1_DEL_21_181010)	0	40: Dosage sensitivity unlikely		
+	ISCA-46527	ISCA Region Curation	Complete	21q11.2 population region (gnomAD-SV_v2.1_DEL_21_178683)	0	40: Dosage sensitivity unlikely		
+	ISCA-46526	ISCA Region Curation	Complete	21q11.2 population region (gnomAD-SV_v2.1_DEL_21_178682)	0	40: Dosage sensitivity unlikely		
+	ISCA-46525	ISCA Region Curation	Complete	21q11.2 population region (gnomAD-SV_v2.1_DEL_21_178681)	0	40: Dosage sensitivity unlikely		
+	ISCA-46524	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173817)	0	40: Dosage sensitivity unlikely		
+	ISCA-46523	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173816)	0	40: Dosage sensitivity unlikely		
+	ISCA-46522	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173812)	0	40: Dosage sensitivity unlikely		
+	ISCA-46521	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173811)	0	40: Dosage sensitivity unlikely		
+	ISCA-46520	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173809)	0	40: Dosage sensitivity unlikely		
+	ISCA-46519	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173807)	0	40: Dosage sensitivity unlikely		
+	ISCA-46518	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173806)	0	40: Dosage sensitivity unlikely		
+	ISCA-46517	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173805)	0	40: Dosage sensitivity unlikely		
+	ISCA-46516	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173803)	0	40: Dosage sensitivity unlikely		
+	ISCA-46515	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173802)	0	40: Dosage sensitivity unlikely		
+	ISCA-46514	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173801)	0	40: Dosage sensitivity unlikely		
+	ISCA-46513	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173800)	0	40: Dosage sensitivity unlikely		
+	ISCA-46512	ISCA Region Curation	Complete	19q13.42 population region (gnomAD-SV_v2.1_DEL_19_173749)	0	40: Dosage sensitivity unlikely		
+	ISCA-46511	ISCA Region Curation	Complete	19q13.41 population region (gnomAD-SV_v2.1_DEL_19_173549)	0	40: Dosage sensitivity unlikely		
+	ISCA-46510	ISCA Region Curation	Complete	19q13.41 population region (gnomAD-SV_v2.1_DEL_19_173445)	0	40: Dosage sensitivity unlikely		
+	ISCA-46509	ISCA Region Curation	Complete	19q13.41 population region (gnomAD-SV_v2.1_DEL_19_173443)	0	40: Dosage sensitivity unlikely		
+	ISCA-46508	ISCA Region Curation	Complete	19q13.31 population region (gnomAD-SV_v2.1_DEL_19_172626)	0	40: Dosage sensitivity unlikely		
+	ISCA-46507	ISCA Region Curation	Complete	19q13.31 population region (gnomAD-SV_v2.1_DEL_19_172625)	0	40: Dosage sensitivity unlikely		
+	ISCA-46506	ISCA Region Curation	Complete	19q13.12 population region (gnomAD-SV_v2.1_DEL_19_172006)	0	40: Dosage sensitivity unlikely		
+	ISCA-46505	ISCA Region Curation	Complete	19p13.2 population region (gnomAD-SV_v2.1_DUP_19_46817)	40: Dosage sensitivity unlikely	0		
+	ISCA-46504	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160670)	0	40: Dosage sensitivity unlikely		
+	ISCA-46503	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160664)	0	40: Dosage sensitivity unlikely		
+	ISCA-46502	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160663)	0	40: Dosage sensitivity unlikely		
+	ISCA-46501	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160662)	0	40: Dosage sensitivity unlikely		
+	ISCA-46500	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160659)	0	40: Dosage sensitivity unlikely		
+	ISCA-46499	ISCA Region Curation	Complete	17q21.31 population region (gnomAD-SV_v2.1_DEL_17_160658)	0	40: Dosage sensitivity unlikely		
+	ISCA-46498	ISCA Region Curation	Complete	17q21.2 population region (gnomAD-SV_v2.1_DUP_17_44064)	40: Dosage sensitivity unlikely	0		
+	ISCA-46497	ISCA Region Curation	Complete	17q21.2 population region (gnomAD-SV_v2.1_DEL_17_160290)	0	40: Dosage sensitivity unlikely		
+	ISCA-46496	ISCA Region Curation	Complete	17q21.2 population region (gnomAD-SV_v2.1_DEL_17_160287)	0	40: Dosage sensitivity unlikely		
+	ISCA-46495	ISCA Region Curation	Complete	17p11.2 population region (gnomAD-SV_v2.1_DEL_17_159095)	0	40: Dosage sensitivity unlikely		
+	ISCA-46494	ISCA Region Curation	Complete	17p11.2 population region (gnomAD-SV_v2.1_DEL_17_159047)	0	40: Dosage sensitivity unlikely		
+	ISCA-46493	ISCA Region Curation	Complete	16q22.1 population region (gnomAD-SV_v2.1_DUP_16_42449)	40: Dosage sensitivity unlikely	0		
+	ISCA-46492	ISCA Region Curation	Complete	16p11.2 population region (gnomAD-SV_v2.1_DEL_16_153860)	0	40: Dosage sensitivity unlikely		
+	ISCA-46491	ISCA Region Curation	Complete	16p11.2 population region (gnomAD-SV_v2.1_DUP_16_42022)	40: Dosage sensitivity unlikely	0		
+	ISCA-46490	ISCA Region Curation	Complete	16p11.2 population region (gnomAD-SV_v2.1_DEL_16_153573)	0	40: Dosage sensitivity unlikely		
+	ISCA-46489	ISCA Region Curation	Complete	16p11.2 population region (gnomAD-SV_v2.1_DEL_16_153568)	0	40: Dosage sensitivity unlikely		
+	ISCA-46488	ISCA Region Curation	Complete	16p12.3 population region (gnomAD-SV_v2.1_DEL_16_152900)	0	40: Dosage sensitivity unlikely		
+	ISCA-46487	ISCA Region Curation	Complete	16p13.11 population region (gnomAD-SV_v2.1_DEL_16_152730)	0	40: Dosage sensitivity unlikely		
+	ISCA-46486	ISCA Region Curation	Awaiting Review	16p13.11 population region (gnomAD-SV_v2.1_DUP_16_41455)	N/A	N/A		
+	ISCA-46485	ISCA Region Curation	Complete	16p13.12 population region (gnomAD-SV_v2.1_DEL_16_152600)	0	40: Dosage sensitivity unlikely		
+	ISCA-46484	ISCA Region Curation	Complete	16p13.12 population region (gnomAD-SV_v2.1_DEL_16_152599)	0	40: Dosage sensitivity unlikely		
+	ISCA-46483	ISCA Region Curation	Complete	16p13.3 population region (gnomAD-SV_v2.1_DEL_16_151010)	0	40: Dosage sensitivity unlikely		
+	ISCA-46482	ISCA Region Curation	Complete	15q14 population region (gnomAD-SV_v2.1_DEL_15_146739)	0	40: Dosage sensitivity unlikely		
+	ISCA-46481	ISCA Region Curation	Complete	15q14 population region (gnomAD-SV_v2.1_DEL_15_146738)	0	40: Dosage sensitivity unlikely		
+	ISCA-46480	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DEL_15_146627)	0	40: Dosage sensitivity unlikely		
+	ISCA-46479	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DEL_15_146625)	0	40: Dosage sensitivity unlikely		
+	ISCA-46478	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DEL_15_146614)	0	40: Dosage sensitivity unlikely		
+	ISCA-46477	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DEL_15_146612)	0	40: Dosage sensitivity unlikely		
+	ISCA-46476	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DEL_15_146609)	0	40: Dosage sensitivity unlikely		
+	ISCA-46475	ISCA Region Curation	Complete	15q13.3 population region (gnomAD-SV_v2.1_DUP_15_39790)	40: Dosage sensitivity unlikely	0		
+	ISCA-46474	ISCA Region Curation	Complete	15q13.2 population region (gnomAD-SV_v2.1_DEL_15_146467)	0	40: Dosage sensitivity unlikely		
+	ISCA-46473	ISCA Region Curation	Complete	15q13.2 population region (gnomAD-SV_v2.1_DEL_15_146464)	0	40: Dosage sensitivity unlikely		
+	ISCA-46472	ISCA Region Curation	Complete	15q13.2 population region (gnomAD-SV_v2.1_DEL_15_146452)	0	40: Dosage sensitivity unlikely		
+	ISCA-46471	ISCA Region Curation	Complete	15q13.2 population region (gnomAD-SV_v2.1_DEL_15_146453)	0	40: Dosage sensitivity unlikely		
+	ISCA-46470	ISCA Region Curation	Complete	15q13.2 population region (gnomAD-SV_v2.1_DEL_15_146428)	0	40: Dosage sensitivity unlikely		
+	ISCA-46469	ISCA Region Curation	Complete	15q11.2 population region (gnomAD-SV_v2.1_DEL_15_145837)	0	40: Dosage sensitivity unlikely		
+	ISCA-46468	ISCA Region Curation	Complete	15q11.2 population region (gnomAD-SV_v2.1_DEL_15_145826)	0	40: Dosage sensitivity unlikely		
+	ISCA-46467	ISCA Region Curation	Complete	14q11.2 population region (gnomAD-SV_v2.1_DEL_14_140616)	0	40: Dosage sensitivity unlikely		
+	ISCA-46466	ISCA Region Curation	Complete	12q12 population region (gnomAD-SV_v2.1_DEL_12_127735)	0	40: Dosage sensitivity unlikely		
+	ISCA-46465	ISCA Region Curation	Complete	12p11.23 population region (gnomAD-SV_v2.1_DEL_12_126677)	0	40: Dosage sensitivity unlikely		
+	ISCA-46464	ISCA Region Curation	Complete	12p13.2 population region (gnomAD-SV_v2.1_DEL_12_125610)	0	40: Dosage sensitivity unlikely		
+	ISCA-46463	ISCA Region Curation	Complete	12p13.2 population region (gnomAD-SV_v2.1_DEL_12_125568)	0	40: Dosage sensitivity unlikely		
+	ISCA-46462	ISCA Region Curation	Complete	12p13.2 population region (gnomAD-SV_v2.1_DEL_12_125567)	0	40: Dosage sensitivity unlikely		
+	ISCA-46461	ISCA Region Curation	Complete	12p13.31 population region (gnomAD-SV_v2.1_DUP_12_33971)	40: Dosage sensitivity unlikely	0		
+	ISCA-46460	ISCA Region Curation	Complete	11q14.3 population region (gnomAD-SV_v2.1_DEL_11_121860)	0	40: Dosage sensitivity unlikely		
+	ISCA-46459	ISCA Region Curation	Complete	11q14.3 population region (gnomAD-SV_v2.1_DUP_11_33042)	40: Dosage sensitivity unlikely	0		
+	ISCA-46458	ISCA Region Curation	Complete	11q11 population region (gnomAD-SV_v2.1_DEL_11_119564)	0	40: Dosage sensitivity unlikely		
+	ISCA-46457	ISCA Region Curation	Complete	11q11 population region (gnomAD-SV_v2.1_DEL_11_119505)	0	40: Dosage sensitivity unlikely		
+	ISCA-46456	ISCA Region Curation	Complete	11p15.4 population region (gnomAD-SV_v2.1_DEL_11_116241)	0	40: Dosage sensitivity unlikely		
+	ISCA-46455	ISCA Region Curation	Complete	11p15.4 population region (gnomAD-SV_v2.1_DEL_11_116124)	0	40: Dosage sensitivity unlikely		
+	ISCA-46454	ISCA Region Curation	Complete	11p15.4 population region (gnomAD-SV_v2.1_DEL_11_116046)	0	40: Dosage sensitivity unlikely		
+	ISCA-46453	ISCA Region Curation	Complete	10q22.3 population region (gnomAD-SV_v2.1_DEL_10_112166)	0	40: Dosage sensitivity unlikely		
+	ISCA-46452	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110230)	0	40: Dosage sensitivity unlikely		
+	ISCA-46451	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110229)	0	40: Dosage sensitivity unlikely		
+	ISCA-46450	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110225)	0	40: Dosage sensitivity unlikely		
+	ISCA-46449	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110224)	0	40: Dosage sensitivity unlikely		
+	ISCA-46448	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110223)	0	40: Dosage sensitivity unlikely		
+	ISCA-46447	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110222)	0	40: Dosage sensitivity unlikely		
+	ISCA-46446	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110221)	0	40: Dosage sensitivity unlikely		
+	ISCA-46445	ISCA Region Curation	Complete	10q11.23 population region (gnomAD-SV_v2.1_DEL_10_110193)	0	40: Dosage sensitivity unlikely		
+	ISCA-46444	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110072)	0	40: Dosage sensitivity unlikely		
+	ISCA-46443	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110044)	0	40: Dosage sensitivity unlikely		
+	ISCA-46442	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110043)	0	40: Dosage sensitivity unlikely		
+	ISCA-46441	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110040)	0	40: Dosage sensitivity unlikely		
+	ISCA-46440	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110031)	0	40: Dosage sensitivity unlikely		
+	ISCA-46439	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110022)	0	40: Dosage sensitivity unlikely		
+	ISCA-46438	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110021)	0	40: Dosage sensitivity unlikely		
+	ISCA-46437	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110019)	0	40: Dosage sensitivity unlikely		
+	ISCA-46436	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110016)	0	40: Dosage sensitivity unlikely		
+	ISCA-46435	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110001)	0	40: Dosage sensitivity unlikely		
+	ISCA-46434	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_110000)	0	40: Dosage sensitivity unlikely		
+	ISCA-46433	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_109999)	0	40: Dosage sensitivity unlikely		
+	ISCA-46432	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_109998)	0	40: Dosage sensitivity unlikely		
+	ISCA-46431	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_109958)	0	40: Dosage sensitivity unlikely		
+	ISCA-46430	ISCA Region Curation	Complete	10q11.22 population region (gnomAD-SV_v2.1_DEL_10_109954)	0	40: Dosage sensitivity unlikely		
+	ISCA-46429	ISCA Region Curation	Complete	10p12.33 population region (gnomAD-SV_v2.1_DEL_10_108289)	0	40: Dosage sensitivity unlikely		
+	ISCA-46428	ISCA Region Curation	Complete	10p12.33 population region (gnomAD-SV_v2.1_DEL_10_108288)	0	40: Dosage sensitivity unlikely		
+	ISCA-46427	ISCA Region Curation	Complete	10p12.33 population region (gnomAD-SV_v2.1_DEL_10_108283)	0	40: Dosage sensitivity unlikely		
+	ISCA-46426	ISCA Region Curation	Complete	10p12.33 population region (gnomAD-SV_v2.1_DEL_10_108282)	0	40: Dosage sensitivity unlikely		
+	ISCA-46425	ISCA Region Curation	Complete	9q34.3 population region (gnomAD-SV_v2.1_DEL_9_106704)	0	40: Dosage sensitivity unlikely		
+	ISCA-46424	ISCA Region Curation	Complete	9q31.2 population region (gnomAD-SV_v2.1_DEL_9_104809)	0	40: Dosage sensitivity unlikely		
+	ISCA-46423	ISCA Region Curation	Complete	9q21.11 population region (gnomAD-SV_v2.1_DUP_9_27462)	40: Dosage sensitivity unlikely	0		
+	ISCA-46422	ISCA Region Curation	Complete	9q21.11 population region (gnomAD-SV_v2.1_DUP_9_27460)	40: Dosage sensitivity unlikely	0		
+	ISCA-46421	ISCA Region Curation	Complete	9q21.11 population region (gnomAD-SV_v2.1_DEL_9_102461)	0	40: Dosage sensitivity unlikely		
+	ISCA-46420	ISCA Region Curation	Complete	9q21.11 population region (gnomAD-SV_v2.1_DEL_9_102460)	0	40: Dosage sensitivity unlikely		
+	ISCA-46419	ISCA Region Curation	Complete	9q21.11 population region (gnomAD-SV_v2.1_DEL_9_102459)	0	40: Dosage sensitivity unlikely		
+	ISCA-46418	ISCA Region Curation	Complete	9q13 population region (gnomAD-SV_v2.1_DEL_9_102391)	0	40: Dosage sensitivity unlikely		
+	ISCA-46417	ISCA Region Curation	Complete	9q12 population region (gnomAD-SV_v2.1_DEL_9_102303)	0	40: Dosage sensitivity unlikely		
+	ISCA-46416	ISCA Region Curation	Complete	9p11.1 population region (gnomAD-SV_v2.1_DEL_9_102297)	0	40: Dosage sensitivity unlikely		
+	ISCA-46415	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102296)	0	40: Dosage sensitivity unlikely		
+	ISCA-46414	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102294)	0	40: Dosage sensitivity unlikely		
+	ISCA-46413	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102236)	0	40: Dosage sensitivity unlikely		
+	ISCA-46412	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102187)	0	40: Dosage sensitivity unlikely		
+	ISCA-46411	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102099)	0	40: Dosage sensitivity unlikely		
+	ISCA-46410	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102097)	0	40: Dosage sensitivity unlikely		
+	ISCA-46409	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102096)	0	40: Dosage sensitivity unlikely		
+	ISCA-46408	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102085)	0	40: Dosage sensitivity unlikely		
+	ISCA-46407	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102049)	0	40: Dosage sensitivity unlikely		
+	ISCA-46406	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102048)	0	40: Dosage sensitivity unlikely		
+	ISCA-46405	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102047)	0	40: Dosage sensitivity unlikely		
+	ISCA-46404	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102046)	0	40: Dosage sensitivity unlikely		
+	ISCA-46403	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102043)	0	40: Dosage sensitivity unlikely		
+	ISCA-46402	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102042)	0	40: Dosage sensitivity unlikely		
+	ISCA-46401	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102036)	0	40: Dosage sensitivity unlikely		
+	ISCA-46400	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102035)	0	40: Dosage sensitivity unlikely		
+	ISCA-46399	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102032)	0	40: Dosage sensitivity unlikely		
+	ISCA-46398	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102027)	0	40: Dosage sensitivity unlikely		
+	ISCA-46397	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102025)	0	40: Dosage sensitivity unlikely		
+	ISCA-46396	ISCA Region Curation	Complete	9p11.2 population region (gnomAD-SV_v2.1_DEL_9_102024)	0	40: Dosage sensitivity unlikely		
+	ISCA-46395	ISCA Region Curation	Complete	9p12 population region (gnomAD-SV_v2.1_DEL_9_101967)	0	40: Dosage sensitivity unlikely		
+	ISCA-46394	ISCA Region Curation	Complete	9p12 population region (gnomAD-SV_v2.1_DEL_9_101925)	0	40: Dosage sensitivity unlikely		
+	ISCA-46393	ISCA Region Curation	Complete	9p12 population region (gnomAD-SV_v2.1_DEL_9_101915)	0	40: Dosage sensitivity unlikely		
+	ISCA-46392	ISCA Region Curation	Complete	9p13.1 population region (gnomAD-SV_v2.1_DEL_9_101840)	0	40: Dosage sensitivity unlikely		
+	ISCA-46391	ISCA Region Curation	Complete	9p24.3 population region (gnomAD-SV_v2.1_DUP_9_26178)	40: Dosage sensitivity unlikely	0		
+	ISCA-46390	ISCA Region Curation	Complete	8q24.3 population region (gnomAD-SV_v2.1_DEL_8_98285)	0	40: Dosage sensitivity unlikely		
+	ISCA-46389	ISCA Region Curation	Complete	8q24.3 population region (gnomAD-SV_v2.1_DEL_8_98283)	0	40: Dosage sensitivity unlikely		
+	ISCA-46388	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89725)	0	40: Dosage sensitivity unlikely		
+	ISCA-46387	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DUP_8_23819)	40: Dosage sensitivity unlikely	0		
+	ISCA-46386	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89706)	0	40: Dosage sensitivity unlikely		
+	ISCA-46385	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89703)	0	40: Dosage sensitivity unlikely		
+	ISCA-46384	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89357)	0	40: Dosage sensitivity unlikely		
+	ISCA-46383	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89356)	0	40: Dosage sensitivity unlikely		
+	ISCA-46382	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89355)	0	40: Dosage sensitivity unlikely		
+	ISCA-46381	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DUP_8_23708)	40: Dosage sensitivity unlikely	0		
+	ISCA-46380	ISCA Region Curation	Complete	8p23.1 population region (gnomAD-SV_v2.1_DEL_8_89353)	0	40: Dosage sensitivity unlikely		
+	ISCA-46379	ISCA Region Curation	Complete	8p23.3 population region (gnomAD-SV_v2.1_DEL_8_88408)	0	40: Dosage sensitivity unlikely		
+	ISCA-46378	ISCA Region Curation	Complete	8p23.3 population region (gnomAD-SV_v2.1_DEL_8_88399)	0	40: Dosage sensitivity unlikely		
+	ISCA-46377	ISCA Region Curation	Complete	7q35 population region (gnomAD-SV_v2.1_DEL_7_87112)	0	40: Dosage sensitivity unlikely		
+	ISCA-46376	ISCA Region Curation	Complete	7q34 population region (gnomAD-SV_v2.1_DEL_7_87016)	0	40: Dosage sensitivity unlikely		
+	ISCA-46375	ISCA Region Curation	Complete	7q34 population region (gnomAD-SV_v2.1_DEL_7_87015)	0	40: Dosage sensitivity unlikely		
+	ISCA-46374	ISCA Region Curation	Complete	7q22.1 population region (gnomAD-SV_v2.1_DEL_7_84412)	0	40: Dosage sensitivity unlikely		
+	ISCA-46373	ISCA Region Curation	Complete	7q22.1 population region (gnomAD-SV_v2.1_DEL_7_84190)	0	40: Dosage sensitivity unlikely		
+	ISCA-46372	ISCA Region Curation	Complete	7q11.23 population region (gnomAD-SV_v2.1_DEL_7_82638)	0	40: Dosage sensitivity unlikely		
+	ISCA-46371	ISCA Region Curation	Complete	7q11.23 population region (gnomAD-SV_v2.1_DEL_7_82637)	0	40: Dosage sensitivity unlikely		
+	ISCA-46370	ISCA Region Curation	Complete	7q11.23 population region (gnomAD-SV_v2.1_DEL_7_82636)	0	40: Dosage sensitivity unlikely		
+	ISCA-46369	ISCA Region Curation	Complete	7q11.23 population region (gnomAD-SV_v2.1_DEL_7_82621)	0	40: Dosage sensitivity unlikely		
+	ISCA-46368	ISCA Region Curation	Complete	7q11.21 population region (gnomAD-SV_v2.1_DEL_7_81890)	0	40: Dosage sensitivity unlikely		
+	ISCA-46367	ISCA Region Curation	Complete	7p22.1 population region (gnomAD-SV_v2.1_DEL_7_77893)	0	40: Dosage sensitivity unlikely		
+	ISCA-46366	ISCA Region Curation	Complete	7p22.1 population region (gnomAD-SV_v2.1_DEL_7_77769)	0	40: Dosage sensitivity unlikely		
+	ISCA-46365	ISCA Region Curation	Complete	7p22.1 population region (gnomAD-SV_v2.1_DEL_7_77765)	0	40: Dosage sensitivity unlikely		
+	ISCA-46364	ISCA Region Curation	Complete	5q35.3 population region (gnomAD-SV_v2.1_DEL_5_65880)	0	40: Dosage sensitivity unlikely		
+	ISCA-46363	ISCA Region Curation	Complete	5q35.3 population region (gnomAD-SV_v2.1_DEL_5_65831)	0	40: Dosage sensitivity unlikely		
+	ISCA-46362	ISCA Region Curation	Complete	5q31.3 population region (gnomAD-SV_v2.1_DEL_5_63328)	0	40: Dosage sensitivity unlikely		
+	ISCA-46361	ISCA Region Curation	Complete	5q13.2 population region (gnomAD-SV_v2.1_DEL_5_58900)	0	40: Dosage sensitivity unlikely		
+	ISCA-46360	ISCA Region Curation	Complete	5q13.2 population region (gnomAD-SV_v2.1_DUP_5_15442)	40: Dosage sensitivity unlikely	0		
+	ISCA-46359	ISCA Region Curation	Complete	5q13.2 population region (gnomAD-SV_v2.1_DEL_5_58897)	0	40: Dosage sensitivity unlikely		
+	ISCA-46358	ISCA Region Curation	Complete	5q13.2 population region (gnomAD-SV_v2.1_DUP_5_15350)	40: Dosage sensitivity unlikely	0		
+	ISCA-46357	ISCA Region Curation	Complete	4q13.3 population region (gnomAD-SV_v2.1_DEL_4_46753)	0	40: Dosage sensitivity unlikely		
+	ISCA-46356	ISCA Region Curation	Complete	4q13.3 population region (gnomAD-SV_v2.1_DEL_4_46744)	0	40: Dosage sensitivity unlikely		
+	ISCA-46355	ISCA Region Curation	Complete	4q13.2 population region (gnomAD-SV_v2.1_DEL_4_46404)	0	40: Dosage sensitivity unlikely		
+	ISCA-46354	ISCA Region Curation	Complete	4q13.2 population region (gnomAD-SV_v2.1_DEL_4_46401)	0	40: Dosage sensitivity unlikely		
+	ISCA-46353	ISCA Region Curation	Complete	4q13.2 population region (gnomAD-SV_v2.1_DEL_4_46399)	0	40: Dosage sensitivity unlikely		
+	ISCA-46352	ISCA Region Curation	Complete	4q13.2 population region (gnomAD-SV_v2.1_DEL_4_46398)	0	40: Dosage sensitivity unlikely		
+	ISCA-46351	ISCA Region Curation	Complete	4q13.2 population region (gnomAD-SV_v2.1_DEL_4_46396)	0	40: Dosage sensitivity unlikely		
+	ISCA-46350	ISCA Region Curation	Complete	3p12.3 population region (gnomAD-SV_v2.1_DEL_3_33722)	0	40: Dosage sensitivity unlikely		
+	ISCA-46349	ISCA Region Curation	Complete	2q21.2 population region (gnomAD-SV_v2.1_DUP_2_6167)	40: Dosage sensitivity unlikely	0		
+	ISCA-46348	ISCA Region Curation	Complete	2q21.2 population region (gnomAD-SV_v2.1_DEL_2_22275)	0	40: Dosage sensitivity unlikely		
+	ISCA-46347	ISCA Region Curation	Complete	2q21.1 population region (gnomAD-SV_v2.1_DEL_2_22163)	0	40: Dosage sensitivity unlikely		
+	ISCA-46346	ISCA Region Curation	Complete	2q21.1 population region (gnomAD-SV_v2.1_DEL_2_22156)	0	40: Dosage sensitivity unlikely		
+	ISCA-46345	ISCA Region Curation	Complete	2q21.1 population region (gnomAD-SV_v2.1_DEL_2_22155)	0	40: Dosage sensitivity unlikely		
+	ISCA-46344	ISCA Region Curation	Complete	2q21.1 population region (gnomAD-SV_v2.1_DEL_2_22135)	0	40: Dosage sensitivity unlikely		
+	ISCA-46343	ISCA Region Curation	Complete	2q21.1 population region (gnomAD-SV_v2.1_DEL_2_22133)	0	40: Dosage sensitivity unlikely		
+	ISCA-46342	ISCA Region Curation	Complete	2p11.2 population region (gnomAD-SV_v2.1_DEL_2_19888)	0	40: Dosage sensitivity unlikely		
+	ISCA-46341	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DEL_1_13898)	0	40: Dosage sensitivity unlikely		
+	ISCA-46340	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DEL_1_13890)	0	40: Dosage sensitivity unlikely		
+	ISCA-46339	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DEL_1_13889)	0	40: Dosage sensitivity unlikely		
+	ISCA-46338	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DEL_1_13888)	0	40: Dosage sensitivity unlikely		
+	ISCA-46337	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DEL_1_13885)	0	40: Dosage sensitivity unlikely		
+	ISCA-46336	ISCA Region Curation	Complete	1q44 population region (gnomAD-SV_v2.1_DUP_1_3816)	40: Dosage sensitivity unlikely	0		
+	ISCA-46335	ISCA Region Curation	Complete	1q32.2 population region (gnomAD-SV_v2.1_DEL_1_11282)	0	40: Dosage sensitivity unlikely		
+	ISCA-46334	ISCA Region Curation	Complete	1q25.2 population region (gnomAD-SV_v2.1_DEL_1_9549)	0	40: Dosage sensitivity unlikely		
+	ISCA-46333	ISCA Region Curation	Complete	1q23.3 population region (gnomAD-SV_v2.1_DEL_1_8646)	0	40: Dosage sensitivity unlikely		
+	ISCA-46332	ISCA Region Curation	Complete	1q21.3 population region (gnomAD-SV_v2.1_DEL_1_8087)	0	40: Dosage sensitivity unlikely		
+	ISCA-46331	ISCA Region Curation	Complete	1q21.3 population region (gnomAD-SV_v2.1_DEL_1_8075)	0	40: Dosage sensitivity unlikely		
+	ISCA-46330	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7863)	0	40: Dosage sensitivity unlikely		
+	ISCA-46329	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7859)	0	40: Dosage sensitivity unlikely		
+	ISCA-46328	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7798)	0	40: Dosage sensitivity unlikely		
+	ISCA-46327	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7795)	0	40: Dosage sensitivity unlikely		
+	ISCA-46326	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7781)	0	40: Dosage sensitivity unlikely		
+	ISCA-46325	ISCA Region Curation	Complete	1q21.2 population region (gnomAD-SV_v2.1_DEL_1_7778)	0	40: Dosage sensitivity unlikely		
+	ISCA-46324	ISCA Region Curation	Complete	1q21.1 population region (gnomAD-SV_v2.1_DEL_1_7699)	0	40: Dosage sensitivity unlikely		
+	ISCA-46323	ISCA Region Curation	Complete	1p13.3 population region (gnomAD-SV_v2.1_DEL_1_7022)	0	40: Dosage sensitivity unlikely		
+	ISCA-46322	ISCA Region Curation	Complete	1p13.3 population region (gnomAD-SV_v2.1_DEL_1_6959)	0	40: Dosage sensitivity unlikely		
+	ISCA-46321	ISCA Region Curation	Complete	1p21.1 population region (gnomAD-SV_v2.1_DUP_1_1884)	40: Dosage sensitivity unlikely	0		
+	ISCA-46320	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1945)	0	40: Dosage sensitivity unlikely		
+	ISCA-46319	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1944)	0	40: Dosage sensitivity unlikely		
+	ISCA-46318	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1943)	0	40: Dosage sensitivity unlikely		
+	ISCA-46317	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1941)	0	40: Dosage sensitivity unlikely		
+	ISCA-46316	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1939)	0	40: Dosage sensitivity unlikely		
+	ISCA-46315	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1938)	0	40: Dosage sensitivity unlikely		
+	ISCA-46314	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1937)	0	40: Dosage sensitivity unlikely		
+	ISCA-46313	ISCA Region Curation	Complete	1p36.11 population region (gnomAD-SV_v2.1_DEL_1_1834)	0	40: Dosage sensitivity unlikely		
+	ISCA-46312	ISCA Region Curation	Complete	1p36.21 population region (gnomAD-SV_v2.1_DEL_1_1100)	0	40: Dosage sensitivity unlikely		
+	ISCA-46311	ISCA Region Curation	Complete	1p36.21 population region (gnomAD-SV_v2.1_DEL_1_1094)	0	40: Dosage sensitivity unlikely		
+	ISCA-46310	ISCA Region Curation	Complete	1p36.21 population region (gnomAD-SV_v2.1_DEL_1_1089)	0	40: Dosage sensitivity unlikely		
+	ISCA-46309	ISCA Region Curation	Complete	1p36.21 population region (gnomAD-SV_v2.1_DEL_1_1085)	0	40: Dosage sensitivity unlikely		
+	ISCA-46308	ISCA Region Curation	Complete	1p36.21 population region (gnomAD-SV_v2.1_DUP_1_507)	40: Dosage sensitivity unlikely	0		
+	ISCA-46307	ISCA Region Curation	Complete	1p36.33 population region (gnomAD-SV_v2.1_DEL_1_195)	0	40: Dosage sensitivity unlikely		
+	ISCA-46306	ISCA Region Curation	Complete	1p36.33 population region (gnomAD-SV_v2.1_DEL_1_11)	0	40: Dosage sensitivity unlikely		
+	ISCA-46305	ISCA Region Curation	Awaiting Review	TEST 1p36.33 population region (gnomAD-SV_v2.1_DEL_1_11) TEST	N/A	N/A		
 	ISCA-46293	ISCA Gene Curation	Closed		N/A	N/A		617641
 	ISCA-45070	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 	ISCA-44757	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -43268,7 +43702,7 @@ chrY:57184151-57199537	ISCA-35598	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 	ISCA-10363	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-10342	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-10341	ISCA Gene Curation	Reopened		N/A	N/A		
-	ISCA-10337	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		300726
+	ISCA-10337	ISCA Gene Curation	Reopened		N/A	N/A		300726
 	ISCA-10332	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-10320	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-10288	ISCA Gene Curation	Reopened		N/A	N/A		
@@ -43590,7 +44024,7 @@ chrY:57184151-57199537	ISCA-35598	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.
 	ISCA-3906	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-3901	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-3890	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-	ISCA-3888	ISCA Gene Curation	Complete		Not yet evaluated	Not yet evaluated		300595
+	ISCA-3888	ISCA Gene Curation	Reopened		N/A	N/A		300595
 	ISCA-3883	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-3872	ISCA Gene Curation	Reopened		N/A	N/A		
 	ISCA-3843	ISCA Gene Curation	Reopened		N/A	N/A		

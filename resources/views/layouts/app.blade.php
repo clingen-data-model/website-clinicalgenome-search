@@ -426,7 +426,20 @@
         name: 'termDisease',
         display: 'label',
         source: termDisease,
-
+        templates: {
+            //header: '<h3 class="league-name">Header</h3>',
+            footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
+            empty: [
+                '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+            ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+            suggestion: function (data) {
+                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i>  <u>' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i>  <u>')
+                               + data.label +  '</u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+            }
+        },
         limit: 20,
         minLength: 3,
         highlight: true,
@@ -441,7 +454,20 @@
         name: 'termGene',
         display: 'label',
         source: termGene,
-
+        templates: {
+            //header: '<h3 class="league-name">Header</h3>',
+            footer: '<div class="bg-light text-right text-dark"><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Gene has been curated by ClinGen</span></div>',
+            empty: [
+                '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+            ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+            suggestion: function (data) {
+                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i><u><span class="ml-2 mr-2">' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i><u><span class="ml-2 mr-2">')
+                               + data.label +  '</span></u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+            }
+        },
         limit: 20,
         minLength: 3,
         highlight: true,
@@ -456,7 +482,20 @@
         name: 'termDrug',
         display: 'label',
         source: termDrug,
-
+        templates: {
+            //header: '<h3 class="league-name">Header</h3>',
+            footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"><i><span class="mr-2 ml-2">Drug has been curated by ClinGen</span></div>',
+            empty: [
+                '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+            ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+            suggestion: function (data) {
+                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i> <u>' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i> <u>')
+                               + data.label +  '</u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+            }
+        },
         limit: 20,
         minLength: 3,
         highlight: true,

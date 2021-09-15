@@ -23,7 +23,10 @@
 							<a target='external' href="{{env('CG_URL_UNIPROT_GENE')}}{{ $record->uniprot_id }}" class="badge-info badge pointer">Uniprot <i class="fas fa-external-link-alt"></i> </a>
 							@endif
 							@if($record->symbol)
-							<a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
+							<a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}[genesymbol]" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
+							@endif
+                            @if($record->symbol)
+								<a target='external' href="https://grenada.lumc.nl/LSDB_list/lsdbs/{{ $record->symbol }}" class="badge-info badge pointer">LOVD LSDB<i class="fas fa-external-link-alt"></i> </a>
 							@endif
 							@if($record->symbol)
 								<a target='external' href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}[gene]" class="badge-info badge pointer">ClinVar <i class="fas fa-external-link-alt"></i> </a>

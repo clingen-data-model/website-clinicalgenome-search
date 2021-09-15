@@ -42,25 +42,25 @@ class UpdateJira extends Command
      */
     public function handle()
     {
-        /*  For DCI, the values are: 
+        /*  For DCI, the values are:
         ** Gene Symbol:  10030
 		** HGNC_ID: 12230
 		** pLI:  11635
 		** HI:  12243
         ** LOEUF: 12244
         ** GRCh38 Genomic Position:  10532
-        
+
 		** Gene Symbol:  10030
 		** HGNC_ID: 12430
 		** pLI:  11635
 		** HI:  12431
-		** LOEUF: 
+		** LOEUF:
 		** GRCh38 Genomic Position:  10532
 		*/
-		
+
 exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
 		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
-		
+
 		foreach ($results->issues as $issue)
 		{
 			$record = Jira::getIssue($issue->key);
@@ -114,12 +114,12 @@ exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
 			}
 		}
 	}
-	
+
 	/*
 $db = DB::connection('jira');
 
 		$genes = Gene::where('locus_group', "protein-coding gene")->get();
-		
+
 		foreach ($genes as $gene)
 		{
 			$symbol = $gene->name;

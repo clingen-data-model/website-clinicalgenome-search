@@ -43,40 +43,39 @@ class UpdatePlof extends Command
 		echo "Updating Gnomad LOF data from GNOMAD ...";
 
 		// https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz
-		
+
 		try {
-					
+
 			//$results = file_get_contents("https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz");
 			$data = file_get_contents(base_path() . "/data/gnomad.v2.1.1.lof_metrics.by_gene.txt","r");
-		
+
 		} catch (\Exception $e) {
-		
+
 			echo "\n(E001) Error retreiving Gnomad LOF data\n";
 			exit;
-			
+
 		}
-	
+
 		// unzip the data
 		//$data = gzdecode($results);
 		//dd($data);
-	
+
 		// discard the header
 		$line = strtok($data, "\n");
-		
-		
+
+
 		// parse the remaining file
 		while (($line = strtok("\n")) !== false)
 		{
 
 			$parts = explode("\t", $line);
-			
-			//echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
 
-			// what we want is in the second and 20th sections...
+			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
+
 			if (isset($parts[0]))
 			{
 				$gene = Gene::where('name', $parts[0])->first();
-				
+
 				if (empty($gene))
 				{
 					// check previous sympols
@@ -85,15 +84,15 @@ class UpdatePlof extends Command
 
 				if (empty($gene))
 					continue;
-				
-				// observed is 16, expected is 19
+
 				$gene->plof = $parts[29];
 				$gene->pli = $parts[20];
-				$gene->save();
+				$stat = $gene->save();
+                echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "(" . $stat . ") \n";
 			}
-			
+
 		}
-		
+
 
 		echo "DONE\n";
 

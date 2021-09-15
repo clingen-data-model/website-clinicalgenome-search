@@ -137,6 +137,13 @@ class DosageController extends Controller
 			$record->haplo_assertion = GeneLib::haploAssertionString($record->has_dosage_haplo);
 			$record->triplo_assertion = GeneLib::triploAssertionString($record->has_dosage_triplo);
 		}
+
+        if (empty($record->haplo_assertion))
+            $record->haplo_assertion = "Not Yet Evaluated";
+
+        if (empty($record->triplo_assertion))
+            $record->triplo_assertion = "Not Yet Evaluated";
+
         $record->report = env('CG_URL_CURATIONS_DOSAGE', '#') . $record->symbol . '&subject=';
 		$record->date = $record->displayDate($record->dosage_report_date);
 		$record->chromosome = $record->formatPosition($record->grch37, 'chr');
@@ -146,7 +153,6 @@ class DosageController extends Controller
 		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
-
 
 		// set display context for view
 		$display_tabs = collect([

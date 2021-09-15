@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Iscamap;
+use App\Gene;
 
 class UpdateMap extends Command
 {
@@ -40,7 +41,7 @@ class UpdateMap extends Command
     public function handle()
     {
         echo "Updating ISCA Dosage Gene Map from DCI ...";
-            
+
         $handle = fopen(base_path() . '/data/gene_isca.idx', "r");
         if ($handle)
         {
@@ -51,7 +52,21 @@ class UpdateMap extends Command
 
                 $value = explode("\t", $line);
 
-                $issue = Iscamap::updateOrCreate(['symbol' => trim($value[0])], ['issue' => trim($value[1])] );
+                // see if there is a usable hgnc id
+                $gene = Gene::name(trim($value[0]))->first();
+
+                if ($gene === null)
+                {
+                    $gene = Gene::whereJsonContains('prev_symbol', trim($value[0]))->first();
+
+                    if ($gene === null)
+                    {
+                        $gene = Gene::whereJsonContains('alias_symbol', trim($value[0]))->first();
+                    }
+                }
+
+                $issue = Iscamap::updateOrCreate(['symbol' => trim($value[0])], ['issue' => trim($value[1]),
+                                                                                'hgnc_id' => $gene->hgnc_id ?? null] );
             }
 
             fclose($handle);
@@ -60,7 +75,7 @@ class UpdateMap extends Command
         {
             echo "\n(E001) Cannot access gene_isca file\n";
             exit;
-        } 
+        }
 
         echo "DONE\n";
     }

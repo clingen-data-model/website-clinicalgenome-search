@@ -10,6 +10,7 @@ use App\Traits\Query;
 
 use App\Drug;
 use App\Disease;
+use App\Term;
 
 use Carbon\Carbon;
 
@@ -166,6 +167,70 @@ class Mysql
 	}
 
 
+    /**
+     * Suggester for Drug names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function drugLook2($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+        $array = [];
+        if (stripos($search, 'RXNORM:') === 0)
+        {
+            // strip out the numeric value
+            $search = substr($search, 7);
+
+            $records = Drug::query()->where('curie', 'like', $search . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+            foreach($records as $record)
+            {
+                $c = $record->curation_activities;
+                $array[] = ['label' => 'RXNORM"' . $record->curie,
+                            'alias' => '',
+                            'hgnc' => $record->label,
+                            'url' => route('drug-show', $record->curie),
+                            'curated' => (bool) count(array_filter($record->curation_activities))];
+            }
+        }
+        else
+        {
+            $records = Drug::where('label', 'like', '%' . $search . '%')
+                        ->orderByRaw('CHAR_LENGTH(label)')
+                        //->orderBy('synonyms')
+                        //->orderBy('weight', 'desc')
+                        ->take(10)->get();
+            foreach($records as $record)
+            {
+                /*switch ($record->type)
+                {
+                    case 2:
+                        $ctag = "(previous of " . $record->alias . ")";
+                        break;
+                    case 3:
+                        $ctag = "(alias of " . $record->alias . ")";
+                        break;
+                    default:
+                        $ctag = '';
+                }*/
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->label,
+                            'alias' => '',
+                            'hgnc' => 'RXNORM:' . $record->curie,
+                            'url' => route('drug-show', $record->curie),
+                            'curated' => (bool) count(array_filter($record->curation_activities))];
+            }
+        }
+		return json_encode($array);
+	}
+
+
 	/**
      * Suggester for Condition names
      *
@@ -177,17 +242,82 @@ class Mysql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		$collection = collect();
+		//$collection = collect();
 
+        if (stripos($search, 'MONDO:') === 0)
+            $records = Disease::query()->where('curie', 'like', $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(curie)')->get();
+        else
+            $records = Disease::query()->where('label', 'like', '%' . $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(name)')->get();
 		$array = [];
-		foreach($response->suggest as $record)
+		foreach($records as $record)
 		{
-			$ctag = (empty($record->curations) ? '' : '        CURATED');
-			$array[] = ['label' => $record->text . '  (' . $record->curie . ')'
+			$ctag = (empty($record->curation_activities) ? '' : ' CURATED');
+			$array[] = ['label' => $record->label . '  (' . $record->curie . ')'
 							. $ctag,
 						'url' => route('condition-show', $record->curie)];
 		}
+		return json_encode($array);
+	}
 
+
+    /**
+     * Suggester for Condition names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function conditionLook2($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+        $array = [];
+        if (stripos($search, 'MONDO:') === 0)
+        {
+            $records = Disease::query()->where('curie', 'like', $search . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+            foreach($records as $record)
+            {
+                $array[] = ['label' => $record->curie,
+                            'alias' => '',
+                            'hgnc' => $record->label,
+                            'url' => route('condition-show', $record->curie),
+                            'curated' => !empty($record->curation_activities)];
+            }
+        }
+        else
+        {
+            $records = Disease::where('label', 'like', '%' . $search . '%')
+                        ->orderByRaw('CHAR_LENGTH(label)')
+                        //->orderBy('synonyms')
+                        //->orderBy('weight', 'desc')
+                        ->take(10)->get();
+            foreach($records as $record)
+            {
+                /*switch ($record->type)
+                {
+                    case 2:
+                        $ctag = "(previous of " . $record->alias . ")";
+                        break;
+                    case 3:
+                        $ctag = "(alias of " . $record->alias . ")";
+                        break;
+                    default:
+                        $ctag = '';
+                }*/
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->label,
+                            'alias' => '',
+                            'hgnc' => $record->curie,
+                            'url' => route('condition-show', $record->curie),
+                            'curated' => !empty($record->curation_activities)];
+            }
+        }
 		return json_encode($array);
 	}
 
@@ -314,12 +444,16 @@ class Mysql
 		foreach ($args as $key => $value)
 			$$key = $value;
 
-		$collection = collect();
-
-        $records = Gene::query()->where('name', 'like', '%5P%')
-                            ->orWhere('alias_symbol', 'like', '%5P%')
-                            ->orWhere('prev_symbol', 'like', '%5P%')
+		//$collection = collect();
+        if (stripos($search, 'HGNC:') === 0)
+            $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+        else
+            $records = Gene::query()->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('alias_symbol', 'like', '%' . $search . '%')
+                            ->orWhere('prev_symbol', 'like', '%' . $search . '%')
                             ->take(10)->orderByRaw('CHAR_LENGTH(name)')->get();
+
 
 		$array = [];
 		foreach($records as $record)
@@ -328,13 +462,88 @@ class Mysql
 			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
 							. $ctag,
 						'url' => route('gene-show', $record->hgnc_id)];*/
-            $ctag = (empty($record->activiity) ? '' : '        CURATED');
+            $ctag = (empty($record->activity) ? '' : ' CURATED');
             $array[] = ['label' => $record->name . '  (' . $record->hgnc_id . ')'
                             . $ctag,
                         'url' => route('gene-show', $record->hgnc_id)];
 		}
 
 		//return (object) ['count' => count($collection), 'collection' => $collection];
+        //dd($array);
+		return json_encode($array);
+	}
+
+
+    /**
+     * Suggester for Gene names
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneLook2($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+        $array = [];
+        if (stripos($search, 'HGNC:') === 0)
+        {
+            $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+
+            foreach($records as $record)
+            {
+                /*switch ($record->type)
+                {
+                    case 2:
+                        $ctag = "(previous of " . $record->alias . ")";
+                        break;
+                    case 3:
+                        $ctag = "(alias of " . $record->alias . ")";
+                        break;
+                    default:
+                        $ctag = '';
+                }*/
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->hgnc_id,
+                            'alias' => '',
+                            'hgnc' => $record->name,
+                            'url' => route('gene-show', $record->hgnc_id),
+                            'curated' => !empty($record->activity)];
+            }
+        }
+        else
+        {
+            $records = Term::where('name', 'like', '%' . $search . '%')
+                        ->orderByRaw('CHAR_LENGTH(name)')
+                        ->orderBy('alias')
+                        ->orderBy('weight', 'desc')
+                        ->take(10)->get();
+            foreach($records as $record)
+            {
+                switch ($record->type)
+                {
+                    case 2:
+                        $ctag = "(previous of " . $record->alias . ")";
+                        break;
+                    case 3:
+                        $ctag = "(alias of " . $record->alias . ")";
+                        break;
+                    default:
+                        $ctag = '';
+                }
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->name,
+                            'alias' => $ctag,
+                            'hgnc' => $record->value,
+                            'url' => route('gene-show', $record->value),
+                            'curated' => !empty($record->curated)];
+            }
+        }
 		return json_encode($array);
 	}
 }

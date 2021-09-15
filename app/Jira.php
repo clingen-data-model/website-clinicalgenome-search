@@ -108,25 +108,39 @@ class Jira extends Model
           if ($symbol === null && !$expanded)
                return null;
 
-          if (!$expanded)
-          {
-               $issue = Iscamap::symbol($symbol->name)->first();
+        $response = null;
 
-               if ($issue === null)
+        if (!$expanded)
+        {
+            $issue = Iscamap::symbol($symbol->name)->first();
+
+            if ($issue === null)
+            {
+                $results = self::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "HGNC ID" ~ "' . $symbol->hgnc_id . '"');
+
+                if (!isset($results->issues[0]))
                     return null;
 
-               $issue = $issue->issue;
-          }
-          else
-               $issue = $gene;
+                $response = $results->issues[0];
+                $issue = $response->key;
+                $response = $response->fields;
+                //dd($response);
+            }
+            else
+                $issue = $issue->issue;
+        }
+        else
+            $issue = $gene;
 
-          $response = self::getIssue($issue);
-
+        if ($response === null)
+            $response = self::getIssue($issue);
+//dd($response);
           // map the jira response into a somewhat sane structure
 		$node = new Nodal([
                'label' => $response->customfield_10030 ?? 'unknown',
                'summary' => $response->summary,
                'key' => $issue,
+               'genesymbol' => $response->customfield_10030,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
                'grch37' => $response->customfield_10160 ?? null,
                'grch38' => $response->customfield_10532 ?? null,
@@ -147,7 +161,11 @@ class Jira extends Model
                'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
                'resolution' => $response->resolution->name ?? 'In Review',
                'issue_type' => $response->issuetype->name,
-               'jira_status' => $response->status->name
+               'jira_status' => $response->status->name,
+               'genereviews' => $response->customfield_10150 ?? null,
+               'locusdb' => $response->customfield_10161 ?? null,
+               'reduced_penetrance' => $response->customfield_12245 ?? null,
+               'reduced_penetrance_comment' => $response->customfield_12246 ?? null
           ]);
 
           // create a custom status string based on legacy comparisons
@@ -1027,7 +1045,7 @@ class Jira extends Model
               $issueService = new IssueService();
 
               $begin = Carbon::now();
-              $issues = $issueService->search($query, 0, 2500);
+              $issues = $issueService->search($query, 0, 250000);
               $end = Carbon::now();
                $record = new Minute([
 				'system' => 'Search',
@@ -1104,22 +1122,8 @@ class Jira extends Model
      */
     static function updateIssue($issue, $field, $value)
     {
-         return;
-
          try {
               $issueService = new IssueService();
-
-              $queryParam = [
-                   'expand' => [
-                        'renderedFields',
-                        'names',
-                        'schema',
-                        'transitions',
-                        'operations',
-                        'editmeta',
-                        'changelog',
-                   ]
-              ];
 
               $issueField = new IssueField(true);
 
@@ -1130,25 +1134,10 @@ class Jira extends Model
                     'notifyUsers' => false,
                 ];
 
-                $begin = Carbon::now();
-
                 // You can set the $paramArray param to disable notifications in example
 
                $issue = $issueService->update($issue, $issueField, $editParams);
 
-               $end = Carbon::now();
-              $record = new Minute([
-                   'system' => 'Search',
-                   'subsystem' => __METHOD__,
-                   'method' => 'query',
-                   'start' => $begin,
-                   'finish' => $end,
-                   'status' => 1
-
-              ]);
-              $record->save();
-
-              //var_dump($issue->fields);
          } catch (JiraRestApi\JiraException $e) {
               print("Error Occured! " . $e->getMessage());
          }

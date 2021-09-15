@@ -16,7 +16,7 @@
           <div class="col-sm-3 text-right mt-3">Dosage ID:</div>
           <div class="col-sm-3 border-left-4 border-info bold mt-3">
             {{  $record->key }}
-            <div class="small"><a href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{ $record->symbol }}">View legacy report...</a></div>
+            <div class="small"><a href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{ $record->genesymbol }}">View legacy report...</a></div>
           </div>
           <div class="col-sm-4">
             <div id="ideogram"> </div>
@@ -53,7 +53,10 @@
           <div class="col-sm-3 text-right">Haploinsufficiency:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             @if ($record->resolution == "Complete")
-            {{ $record->haplo_assertion }} ({{ $record->haplo_score }})
+            {{ $record->haplo_assertion }}
+            @if ($record->haplo_score != -5)
+            ({{ $record->haplo_score }})
+            @endif
             <div class="small"><a href="#report_details_haploinsufficiency">Read full report...</a></div>
             @else
             {{ $record->issue_status }}
@@ -64,13 +67,27 @@
           <div class="col-sm-3 text-right">Triplosensitivity:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             @if ($record->resolution == "Complete")
-            {{  $record->triplo_assertion }} ({{ $record->triplo_score }})
+            {{  $record->triplo_assertion }}
+            @if ($record->tripl_score)
+             ({{ $record->triplo_score }})
+             @endif
             <div class="small"><a href="#report_details_triplosensitivity">Read full report...</a></div>
             @else
             {{ $record->issue_status }}
             @endif
           </div>
         </div>
+        <div class="row pb-2 pt-2">
+            <div class="col-sm-3 text-right">Assoc. with Reduced Penetrance:</div>
+            <div class="col-sm-9 border-left-4 border-info bold">
+              @if ($record->resolution == "Complete")
+              {{  $record->reduced_penetrance->value ?? 'Not Yet Evaluated' }}
+              @else
+              {{ $record->issue_status }}
+              @endif
+                <div class="font-weight-normal mt-1">{{ $record->reduced_penetrance_comment }}</div>
+            </div>
+          </div>
         <div class="row pb-2 pt-2">
           <div class="col-sm-3 text-right">Last Evaluated:</div>
           <div class="col-sm-9 border-left-4 border-info bold">

@@ -21,11 +21,14 @@
           <a target='external' href="{{env('CG_URL_UCSC_GENE')}}{{ $record->ucsc_id ?? '' }}" class="badge-info badge pointer">UCSC <i class="fas fa-external-link-alt"></i> </a>
           @endif
           @if($record->uniprot_id)
-							<a target='external' href="{{env('CG_URL_UNIPROT_GENE')}}{{ $record->uniprot_id }}" class="badge-info badge pointer">Uniprot <i class="fas fa-external-link-alt"></i> </a>
-					@endif
+		  <a target='external' href="{{env('CG_URL_UNIPROT_GENE')}}{{ $record->uniprot_id }}" class="badge-info badge pointer">Uniprot <i class="fas fa-external-link-alt"></i> </a>
+		 @endif
           @if($record->symbol)
-							<a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
-            @endif
+		  <a target='external' href="{{env('CG_URL_REVIEWS_GENE')}}{{ $record->symbol }}[genesymbol]" class="badge-info badge pointer">GeneReviews <i class="fas fa-external-link-alt"></i> </a>
+          @endif
+          @if($record->symbol)
+            <a target='external' href="https://grenada.lumc.nl/LSDB_list/lsdbs/{{ $record->symbol }}" class="badge-info badge pointer">LOVD LSDB<i class="fas fa-external-link-alt"></i> </a>
+        @endif
           @if($record->symbol)
             <a target='external' href="{{env('CG_URL_CLINVAR_GENE')}}{{ $record->symbol }}[gene]" class="badge-info badge pointer">ClinVar <i class="fas fa-external-link-alt"></i> </a>
           @endif

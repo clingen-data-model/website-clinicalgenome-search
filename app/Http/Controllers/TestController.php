@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 
 use App\GeneLib;
+use App\Term;
 use App\Jira;
 use App\Gene;
 use App\User;
@@ -43,6 +44,13 @@ class TestController extends Controller
     public function index()
     {
 
+        $a = Term::where('name', 'like', 'Z%')->groupBy('alias')->orderByRaw('CHAR_LENGTH(name)')->take(20)->get();
+
+        //dd($a);
+        foreach ($a as $b)
+        {
+            echo "<div> $b->name, $b->value, $b->alias </div>";
+        }
 		//Graphql::geneMetrics([]);
 
 		//$response = Neo4j::geneList(['pagesize' => null])

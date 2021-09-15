@@ -39,7 +39,7 @@ class Iscamap extends Model
      *
      * @var array
      */
-     protected $fillable = ['symbol', 'issue', 'status', 'type' ];
+     protected $fillable = ['symbol', 'issue', 'hgnc_id', 'status', 'type' ];
 
 	  /**
      * Non-persistent storage model attributes.
@@ -83,6 +83,18 @@ class Iscamap extends Model
     public function scopeSymbol($query, $symbol)
     {
       return $query->where('symbol', $symbol);
+    }
+
+
+    /**
+     * Query scope by ident
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeHgnc($query, $hgnc)
+    {
+      return $query->where('hgnc_id', $hgnc);
     }
 
 

@@ -41,28 +41,29 @@ class UpdateErepo extends Command
     public function handle()
     {
       echo "Updating Variant Pathogenicity data from Erepo ...";
-          
-        
+
+
       try {
-            
+
         $results = file_get_contents("http://erepo.genome.network/evrepo/api/interpretations?matchLogic=and&matchMode=keyword&matchLimit=all");
 
       } catch (\Exception $e) {
-      
+
         echo "\n(E001) Error retreiving erepo data\n";
         exit;
       }
-    
+
       $dd = json_decode($results);
-      
+
       Variant::query()->forceDelete();
-      
+
       foreach($dd->variantInterpretations as $variant)
       {
         //echo $variant->{'@id'} . " " . $variant->guidelines[0]["outcome"]["label"] . "\n";
         Variant::create(['iri' => $variant->{'@id'}, 'variant_id' => $variant->variationId,
                     'caid' => $variant->caid,
                     'condition' => $variant->condition,
+                    'published_date' => $variant->publishedDate ?? null,
                     'evidence_links' => $variant->evidenceLinks,
                     'gene' => $variant->gene,
                     'guidelines' => $variant->guidelines,
@@ -78,7 +79,7 @@ class UpdateErepo extends Command
             $gene->activity = $activity;
             $gene->save();
         }
-      }		
+      }
 
       echo "DONE\n";
 

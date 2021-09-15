@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 use App\Gene;
 use App\GeneLib;
+use App\Term;
 
 class UpdateActivity extends Command
 {
@@ -43,7 +44,7 @@ class UpdateActivity extends Command
     public function handle()
     {
         echo "Updating GDA Activity from Genegraph ...";
-        
+
         $results = GeneLib::geneList([	'page' =>  0,
 										'pagesize' => "null",
 										'sort' => 'GENE_LABEL',
@@ -51,7 +52,7 @@ class UpdateActivity extends Command
                                         'search' => null,
                                         'forcegg' => true,
                                         'curated' => true ]);
-                                        
+
         if ($results === null)
         {
             echo "\n(E001) Error fetching activity data.\n";
@@ -79,6 +80,17 @@ class UpdateActivity extends Command
                                 'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
             else
                 echo "\n(W001) WARN: Gene " . $gene->symbol . "not in local table\n";
+
+            // update search terms
+            $terms = Term::where('value',$record->hgnc_id)->get();
+
+            foreach ($terms as $term)
+            {
+                if ($term->alias === null)
+                    $term->update(['curated' => 1, 'weight' => 2]);     // one for parent, one for curated
+                else
+                    $term->update(['curated' => 1, 'weight' => 1]);     // one for curated
+            }
         }
 
         echo "DONE\n";
