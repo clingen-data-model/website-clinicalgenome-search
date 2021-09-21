@@ -15,6 +15,7 @@ use App\Cpic;
 use App\Gencc;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 /**
  *
@@ -1723,6 +1724,13 @@ class Graphql
      */
     static function geneMetrics($args)
     {
+
+		Artisan::call('update:actionability-stats json=true');
+		$actionability_stats = Artisan::output();
+
+		$actionability_stats = json_decode($actionability_stats);
+
+
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
@@ -1837,7 +1845,9 @@ class Graphql
 
 
 		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count + $extracount,
-					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
+					//Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
+					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_stats->total_genes,
+
 					Metric::KEY_TOTAL_VALIDITY_GENES => $validity_genes,
 				  	Metric::KEY_TOTAL_DOSAGE_GENES => $dosage_genes,
 					Metric::KEY_TOTAL_DOSAGE_HAP_AR => $hapcounters['30'],
@@ -1854,9 +1864,12 @@ class Graphql
 					Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY => $tripcounters['40'],
 					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
 					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters),
-					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations,
-					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
-					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
+					// Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations,
+					// Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
+					// Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
+					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $actionability_stats->total_topics,
+					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $actionability_stats->total_adult_io_pairs_unique,
+					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $actionability_stats->total_peds_io_pairs_unique,
 				];
 
 
@@ -1978,7 +1991,7 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no known disease relationship'];
 
 		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] =
-						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
+						$actionability_stats->total_topics +
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
 //dd($values);
@@ -2209,24 +2222,89 @@ class Graphql
 
 		$response = json_decode($response);*/
 
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->statistics->actionability_tot_adult_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->statistics->actionability_tot_pediatric_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->statistics->actionability_tot_outcome_intervention_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->statistics->actionability_tot_adult_outcome_intervention_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] = $response->statistics->actionability_tot_adult_failed_early_rule_out;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->statistics->actionability_tot_adult_gene_disease_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->statistics->actionability_tot_pediatric_gene_disease_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->statistics->actionability_tot_outcome_intervention_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->statistics->actionability_tot_adult_outcome_intervention_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] = $response->statistics->actionability_tot_adult_failed_early_rule_out;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
 
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
-		$result = array_combine($r[1], $r[2]);
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] 					= $actionability_stats->total_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] 	= $actionability_stats->total_updated_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] 				= $actionability_stats->total_genes_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] 			= $actionability_stats->total_adult_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] 				=	$actionability_stats->total_peds_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] 					= $actionability_stats->total_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] 		= $actionability_stats->total_adult_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] 			= $actionability_stats->total_peds_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] 		= $actionability_stats->total_updated_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] 			= $actionability_stats->total_updated_topics;
+
+		//preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
+		//$result = array_combine($r[1], $r[2]);
+		$result[12] = (string)$actionability_stats->total_adult_io_pairs_12;
+		$result[11] = (string)$actionability_stats->total_adult_io_pairs_11;
+		$result[10] = (string)$actionability_stats->total_adult_io_pairs_10;
+		$result[9] = (string)$actionability_stats->total_adult_io_pairs_9;
+		$result[8] = (string)$actionability_stats->total_adult_io_pairs_8;
+		$result[7] = (string)$actionability_stats->total_adult_io_pairs_7;
+		$result[6] = (string)$actionability_stats->total_adult_io_pairs_6;
+		$result[5] = (string)$actionability_stats->total_adult_io_pairs_5less;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE] = $result;
-
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_pediatric_score_counts, $r);
-		$result = array_combine($r[1], $r[2]);
+			unset($result);
+		//preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_pediatric_score_counts, $r);
+		//$result = array_combine($r[1], $r[2]);
+		$result[12] = (string)$actionability_stats->total_peds_io_pairs_12;
+		$result[11] = (string)$actionability_stats->total_peds_io_pairs_11;
+		$result[10] = (string)$actionability_stats->total_peds_io_pairs_10;
+		$result[9] = (string)$actionability_stats->total_peds_io_pairs_9;
+		$result[8] = (string)$actionability_stats->total_peds_io_pairs_8;
+		$result[7] = (string)$actionability_stats->total_peds_io_pairs_7;
+		$result[6] = (string)$actionability_stats->total_peds_io_pairs_6;
+		$result[5] = (string)$actionability_stats->total_peds_io_pairs_5less;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE] = $result;
+		unset($result);
+
+		$result["total_assertion"] 													= (string)$actionability_stats->total_assertion;
+		$result["total_assertion_definitive"] 							= (string)$actionability_stats->total_assertion_definitive;
+		$result["total_assertion_strong"] 									= (string)$actionability_stats->total_assertion_strong;
+		$result["total_assertion_moderate"] 								= (string)$actionability_stats->total_assertion_moderate;
+		$result["total_assertion_limited"] 									= (string)$actionability_stats->total_assertion_limited;
+		$result["total_assertion_na_expert_review"] 				= (string)$actionability_stats->total_assertion_na_expert_review;
+		$result["total_assertion_na_early_rule_out"] 				= (string)$actionability_stats->total_assertion_na_early_rule_out;
+		$result["total_assertion_assertion_pending"] 				= (string)$actionability_stats->total_assertion_assertion_pending;
+		$result["total_assertion_unknown"] 									= (string)$actionability_stats->total_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS] = $result;
+		unset($result);
+
+		$result['total_adult_assertion']          					 = (string)$actionability_stats->total_adult_assertion;
+		$result['total_adult_assertion_definitive']          = (string)$actionability_stats->total_adult_assertion_definitive;
+		$result['total_adult_assertion_strong']              = (string)$actionability_stats->total_adult_assertion_strong;
+		$result['total_adult_assertion_moderate']            = (string)$actionability_stats->total_adult_assertion_moderate;
+		$result['total_adult_assertion_limited']             = (string)$actionability_stats->total_adult_assertion_limited;
+		$result['total_adult_assertion_na_expert_review']    = (string)$actionability_stats->total_adult_assertion_na_expert_review;
+		$result['total_adult_assertion_na_early_rule_out']   = (string)$actionability_stats->total_adult_assertion_na_early_rule_out;
+		$result['total_adult_assertion_assertion_pending']   = (string)$actionability_stats->total_adult_assertion_assertion_pending;
+		$result['total_adult_assertion_unknown']             = (string)$actionability_stats->total_adult_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS] = $result;
+		unset($result);
+
+		$result['total_peds_assertion']           					 = (string)$actionability_stats->total_peds_assertion;
+		$result['total_peds_assertion_definitive']           = (string)$actionability_stats->total_peds_assertion_definitive;
+		$result['total_peds_assertion_strong']               = (string)$actionability_stats->total_peds_assertion_strong;
+		$result['total_peds_assertion_moderate']             = (string)$actionability_stats->total_peds_assertion_moderate;
+		$result['total_peds_assertion_limited']              = (string)$actionability_stats->total_peds_assertion_limited;
+		$result['total_peds_assertion_na_expert_review']     = (string)$actionability_stats->total_peds_assertion_na_expert_review;
+		$result['total_peds_assertion_na_early_rule_out']    = (string)$actionability_stats->total_peds_assertion_na_early_rule_out;
+		$result['total_peds_assertion_assertion_pending']    = (string)$actionability_stats->total_peds_assertion_assertion_pending;
+		$result['total_peds_assertion_unknown']              = (string)$actionability_stats->total_peds_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS] = $result;
+		unset($result);
+
 
 		$template = ['Adult' => 0, 'Ped' => 0
 					];
