@@ -34,7 +34,7 @@
                 <table class="table table-striped table-hover mb-0">
                     <tr>
                         <td><strong>ClinGen Curation Activity Summary Report </strong>
-                            <div class="small">This file provides summary curations information for Gene-Disease Validity, Gene Dosage Sensitivity, and Clinical Actionability. Curations for each activity are grouped by gene (HGNC) and disease (MONDO). This file is helpful is you are seeking to understand all of the genes and/or diseases ClinGen has curated along with summary information.</div>
+                            <div class="small">This file provides summary curation information about Gene-Disease Validity, Dosage Sensitivity, and Clinical Actionability. Curations for each activity are grouped by gene (HGNC) and disease (MONDO). This file is helpful for those seeking to understand all of the genes and/or diseases ClinGen has curated along with summary information.</div>
                         </td>
                         <td></td>
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('curation-activity-summary-cvs') }}"  class="btn btn-default watchdownloadclick" title="ClinGen Curation Activity Summary Report CVS"><i class="fas fa-download"></i> CSV</a></td>
