@@ -19,6 +19,13 @@ Route::get('/', function () {
 
 });
 
+Route::get('/kb/curations', function () {
+
+	return redirect()->route('gene-curations');
+});
+
+
+
 Auth::routes(['verify' => true]);
 
 Route::get('/kb', function () {
