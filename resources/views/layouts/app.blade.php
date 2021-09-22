@@ -152,11 +152,16 @@
                 Statistics
               </a>
             </li>
-            <li class="nav-item dropdown @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
+            <li class="nav-item @if ($display_tabs['active'] == "downloads") active @endif ">
+              <a class="nav-link" href="{{ route('download-index') }}">
+                Downloads
+              </a>
+            </li>
+            <li class="nav-item dropdown dropdown-menu-right @if (($display_tabs['active'] == "gene") ||  ($display_tabs['active'] == "drug") || ($display_tabs['active'] == "condition") || ($display_tabs['active'] == "more")) active @endif">
                 <a class="nav-link dropdown-toggle"  href="#" >
                  More
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-right">
                   {{-- <li><a href="#">Genomic Browser</a></li> --}}
                   {{-- <li><a class="@if ($display_tabs['active'] == "affiliate") font-weight-bold @endif" href="{{ route('affiliate-index') }}">Curations by ClinGen Expert Panels</a></li>
                   <li role="separator" class="divider"></li> --}}
@@ -172,7 +177,7 @@
                 <a class="nav-link dropdown-toggle mr-0" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                   <i class="fas fa-question-circle"></i>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-menu-right">
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">About ClinGen's Website</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">Learn About New Features</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/">How To Cite ClinGen</a></li>
