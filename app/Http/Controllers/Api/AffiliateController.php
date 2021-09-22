@@ -29,11 +29,11 @@ class AffiliateController extends Controller
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => $input['search'] ?? null,
                                         'curated' => false ]);
-                                        
+
 		if ($results === null)
             return GeneLib::getError();
 
-        return ['total' => $results->count, 
+        return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,
                 'rows'=> AffiliateResource::collection($results->collection),
                 'ncurations' => $results->ncurations];
@@ -51,13 +51,15 @@ class AffiliateController extends Controller
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
         $results = GeneLib::AffiliateDetail([ 'affiliate' => $id ]);
-        
+        //dd($results);
         if ($results === null)
             return GeneLib::getError();
 
+            //dd(AffiliateDetailResource::collection($results->collection));
+
         return ['total' => $results->count,
-                'totalNotFiltered' => $results->count, 
+                'totalNotFiltered' => $results->count,
                 'id' => $results->label,
-                'rows'=> AffiliateDetailResource::collection($results->collection)];
+                'rows'=> AffiliateDetailResource::collection($results->collection, $results->label)];
     }
 }

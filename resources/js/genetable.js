@@ -538,6 +538,14 @@ function datebadgeFormatter(index, row) {
         + '' + row.released + '</a>';
 
 }
+function contributorbadgeFormatter(index, row) {
+
+    return row.contributor_type;
+    // return '<span class="badge badge-light border-1 text-left font-weight-normal">'
+    //     + '' + row.contributor_type + '</span>';
+
+}
+
 
 function conditionFormatter(index, row) {
     // var html = '<a href="/kb/conditions/' + row.curie + '"><strong>' + row.label + '</strong></a>'

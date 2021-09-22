@@ -1427,6 +1427,21 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 
+		// $query = '{
+		// 	affiliations (limit: null)
+		// 	{
+		// 		count
+		// 		agent_list {
+		// 			iri
+		// 			curie
+		// 			label
+		// 			gene_validity_assertions{
+		// 				count
+		// 			}
+		// 		}
+		// 	}
+		// }';
+
 		$query = '{
 			affiliations (limit: null)
 			{
@@ -1435,8 +1450,21 @@ class Graphql
 					iri
 					curie
 					label
-					gene_validity_assertions{
+					gene_validity_assertions(role: ANY, limit: null){
 						count
+						curation_list{
+              curie
+              contributions {
+                realizes {
+                  curie
+                  label
+                }
+                agent {
+                  curie
+                  label
+                }
+							}
+            }
 					}
 				}
 			}
@@ -1445,6 +1473,7 @@ class Graphql
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
 
+		//dd($response);
 		if (empty($response))
 			return $response;
 
@@ -1454,6 +1483,29 @@ class Graphql
 		foreach($response->affiliations->agent_list as $record)
 		{
 			$node = new Nodal((array) $record);
+			$total_all_curations = 0;
+			$total_approver_curations = 0;
+			$total_secondary_curations = 0;
+			//dd($node->gene_validity_assertions->curation_list);
+			foreach($node->gene_validity_assertions->curation_list as $affilate) {
+				//dd($affilate);
+				$total_all_curations++;
+				foreach ($affilate->contributions as $contribution) {
+					//dd($contribution);
+					// Check if the current agent is this one.
+					if ($node->curie == $contribution->agent->curie) {
+						if($contribution->realizes->curie == "SEPIO:0000155") {
+						$total_approver_curations++;
+						}
+						if ($contribution->realizes->curie == "SEPIO:0004099") {
+							$total_secondary_curations++;
+						}
+					}
+				}
+				$record->total_all_curations = $total_all_curations;
+				$record->total_approver_curations = $total_approver_curations;
+				$record->total_secondary_curations = $total_secondary_curations;
+			}
 			$ncurations += $node->gene_validity_assertions->count;
 
 			$collection->push(new Nodal((array) $record));
@@ -1461,7 +1513,7 @@ class Graphql
 
 		// genegraph currently provides no sort capablility
 		$collection = $collection->sortBy('label');
-
+		//dd($collection);
 		return (object) ['count' => $response->affiliations->count, 'collection' => $collection,
 						'ncurations' => $ncurations];
 	}
@@ -1492,7 +1544,7 @@ class Graphql
 				curie
 				iri
 				label
-				gene_validity_assertions(limit: null, sort: {field: GENE_LABEL, direction: ASC}) {
+				gene_validity_assertions(role: ANY, limit: null, sort: {field: GENE_LABEL, direction: ASC}) {
 					count
 					curation_list {
 						curie
@@ -1524,6 +1576,16 @@ class Graphql
 							label
 							curie
 						}
+						contributions {
+							realizes {
+								curie
+								label
+							}
+							agent {
+								curie
+								label
+							}
+						}
 						report_date
 					}
 				}
@@ -1543,6 +1605,21 @@ class Graphql
 			if ($record->gene === null || $record->disease === null)
 				continue;	// TODO:  Log this as a gg error
 
+
+				//dd($response->affiliation->curie);
+				foreach ($record->contributions as $contribution) {
+            //dd($contribution);
+            // Check if the current agent is this one.
+                if ($response->affiliation->curie == $contribution->agent->curie) {
+                    if ($contribution->realizes->curie == "SEPIO:0000155") {
+                        $record->contributor_type = "Primary";
+                    }
+                    if ($contribution->realizes->curie == "SEPIO:0004099") {
+                        $record->contributor_type = "Secondary";
+                    }
+                }
+        }
+			//dd($record);
 			$collection->push(new Nodal((array) $record));
 		}
 
