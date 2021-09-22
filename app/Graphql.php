@@ -279,8 +279,16 @@ class Graphql
 										iri
 										label
 									}
+									attributed_to {
+										curie
+										label
+									}
 								}
 								gene_validity_assertions {
+									attributed_to {
+										curie
+										label
+									}
 									classification {
 										curie
 										iri

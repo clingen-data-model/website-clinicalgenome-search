@@ -29,10 +29,13 @@ class Filegenescurated extends JsonResource
             'gene_dosage_haploinsufficiency_assertion' => $this['haploinsufficiency_assertion'] ?? "",
             'gene_dosage_triplosensitivity_assertion ' => $this[ 'triplosensitivity_assertion'] ?? "",
             'gene_dosage_report' => $this['dosage_report'] ?? "",
+            'dosage_group' => $this['dosage_group'] ?? "",
             'gene_disease_validity_assertion_classifications ' => $this[ 'gene_validity_assertion_classifications'] ?? "",
             'gene_disease_validity_assertion_reports' => $this[ 'gene_validity_assertion_reports'] ?? "",
+            'gene_validity_groups' => $this['gene_validity_groups'] ?? "",
             'actionability_assertion_classifications ' => $this[ 'actionability_assertion_classifications'] ?? "",
             'actionability_assertion_reports' => $this[ 'actionability_assertion_reports'] ?? "",
+            'actionability_groups' => $this['actionability_groups'] ?? "",
         ];
     }
 
