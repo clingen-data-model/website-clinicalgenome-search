@@ -238,6 +238,183 @@ class Graphql
 	}
 
 
+
+	/**
+	 * Get gene list with curation flags and last update
+	 *
+	 * @return Illuminate\Database\Eloquent\Collection
+	 */
+	static function geneListForExportReport($args, $curated = true, $page = 0, $pagesize = 20000)
+	{
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$search = null;
+
+		$query = '{
+					genes('
+			. self::optionList($page, $pagesize, $sort, $direction, $search, 'ALL')
+			. ') {
+						count
+						gene_list {
+							label
+							hgnc_id
+							last_curated_date
+							curation_activities
+							genetic_conditions{
+								disease {
+									curie
+									label
+									last_curated_date
+								}
+								actionability_assertions {
+									report_date
+									source
+									classification {
+										curie
+										iri
+										label
+									}
+								}
+								gene_validity_assertions {
+									classification {
+										curie
+										iri
+										label
+									}
+									mode_of_inheritance {
+										curie
+										label
+									}
+									curie
+									report_date
+									iri
+								}
+							}
+							dosage_curation {
+								report_date
+								triplosensitivity_assertion {
+									disease {
+										label
+										curie
+									}
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion {
+									disease {
+										label
+										description
+										curie
+									}
+									dosage_classification {
+										ordinal
+									  }
+								}
+							}
+						}
+					}
+				}';
+
+		/*
+		type {
+			label
+			curie
+		}*/
+
+		// query genegraph
+		$response = self::query($query, __METHOD__);
+
+
+
+		if (empty($response))
+			return $response;
+
+		// get the list of acmg59 genes
+		$acmg59s = Gene::select('hgnc_id')->where('acmg59', 1)->get()->pluck('hgnc_id')->toArray();
+
+		// if logged in, get all followed genes
+		if (Auth::guard('api')->check()) {
+			$user = Auth::guard('api')->user();
+			$followed = $user->genes->pluck('hgnc_id')->toArray();
+		} else {
+			$followed = [];
+		}
+
+		// get list of pharma and variant pathogenicity genes
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+
+		// build list of genes not known by genegraph
+		$excludes = [];
+
+		// create node list and add pharma and variant curation indicators to the current gene list
+		foreach ($response->genes->gene_list as $record) {
+			$node = new Nodal((array) $record);
+			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
+			if ($extra !== null) {
+				$t = $node->curation_activities;
+				if (!empty($extra->activity["pharma"]))
+					array_push($t, "GENE_PHARMA");
+				if (!empty($extra->activity["varpath"]))
+					array_push($t, "VAR_PATH");
+				$node->curation_activities = $t;
+				$excludes[] = $node->hgnc_id;
+			}
+
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+			$collection->push($node);
+		}
+
+		// add genes not tagged by genegraph
+		foreach ($extras as $extra) {
+			if (in_array($extra->hgnc_id, $excludes))
+				continue;
+
+			$t = [];
+			if (!empty($extra->activity["pharma"]))
+				array_push($t, "GENE_PHARMA");
+			if (!empty($extra->activity["varpath"]))
+				array_push($t, "VAR_PATH");
+
+			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
+
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+			$collection->push($node);
+		}
+
+
+		if ($curated) {
+			$naction = $collection->where('has_actionability', true)->count();
+			$nvalid = $collection->where('has_validity', true)->count();
+			$ndosage = $collection->where('has_dosage', true)->count();
+			$npharma = $collection->where('has_pharma', true)->count();
+			$nvariant = $collection->where('has_variant', true)->count();;
+		} else {
+			// right now we only use these counts on the curated page.  Probably should get triggered
+			// by a call option so as not to bury things to deep.
+			$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;
+			$npharma = 0;
+			$nvariant = 0;
+		}
+
+		return (object) [
+			'count' => $collection->count(), 	//$response->genes->count,
+			'collection' => $collection,
+			'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
+			'nvariant' => $nvariant, 'npharma' => $npharma
+		];
+	}
+
+
 	/**
      * Get details of a specific gene
      *
