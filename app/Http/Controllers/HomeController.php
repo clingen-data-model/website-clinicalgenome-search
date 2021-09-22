@@ -157,7 +157,7 @@ class HomeController extends Controller
 
         // set display context for view
         $display_tabs = collect([
-            'active' => "more"
+            'active' => "downloads"
         ]);
 
         return view('downloads.index', compact('display_tabs'))
