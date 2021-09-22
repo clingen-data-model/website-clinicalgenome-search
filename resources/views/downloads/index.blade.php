@@ -8,7 +8,6 @@
             <h1 class="h2 mt-4">  ClinGen's File Downloads &amp; APIs</h1>
 
         </div>
-
         <div class="col-md-12 pt-3">
             <div class="row mb-3">
                 <div class="col-md-9">
@@ -22,12 +21,27 @@
 
             <p>This page provides files for download and information about API resources for the following activities.</p>
             <ul>
+                <li><a href="#section_summary">Summary Report</a></li>
                 <li><a href="#section_gene-disease-validity">Gene-Disease Validity</a></li>
                 <li><a href="#section_dosage">Dosage Sensitivity</a></li>
                 <li><a href="#section_actionability">Clinical Actionability</a></li>
                 <li><a href="#section_variant">Variant Pathogenicity</a></li>
             </ul>
             <hr />
+
+            <h3 class="pt-4" id="section_summary">Summary Report</h3>
+            <div class="card mb-4">
+                <table class="table table-striped table-hover mb-0">
+                    <tr>
+                        <td><strong>ClinGen Curation Activity Summary Report </strong>
+                            <div class="small">This file provides summary curations information for Gene-Disease Validity, Gene Dosage Sensitivity, and Clinical Actionability. Curations for each activity are grouped by gene (HGNC) and disease (MONDO). This file is helpful is you are seeking to understand all of the genes and/or diseases ClinGen has curated along with summary information.</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('curation-activity-summary-cvs') }}"  class="btn btn-default watchdownloadclick" title="ClinGen Curation Activity Summary Report CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                </table>
+            </div>
 
             <h3 class="pt-4" id="section_gene-disease-validity"><img src="/images/clinicalValidity-on.png" width="35" height="35"> Gene-Disease Validity Downloads</h3>
             <div class="card mb-4">
@@ -37,7 +51,7 @@
                             <div class="small">This file provides a summary of the Gene-Disease Validity curations completed by ClinGen's GCEPs. This file is built in real-time. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-download') }}"  class="btn btn-default watchdownloadclick" title="Gene-Disease Validity Curations"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>
@@ -45,13 +59,13 @@
 
             <h3 class="pt-4" id="section_dosage"><img src="/images/dosageSensitivity-on.png" width="35" height="35"> Dosage Sensitivity Downloads</h3>
             <div class="card">
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover  mb-0">
                     <tr>
                         <td><strong>README</strong>
                             <div class="small">This files are produced by the ClinGen Dosage Sensitivity Curation Working Group, formerly the International Standards for Cytogenomic Arrays (ISCA) Consortium Evidence-Based Review Committee. The goal of this group is to curate regions of the genome (both single genes and particular genomic regions) with respect to their haploinsufficiency and/or triplosensitivity. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default"><i class="fas fa-download"></i> README</button></a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download README"><i class="fas fa-download"></i> README</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -59,7 +73,7 @@
                             <div class="small">This file provides a summary of the Dosage Sensitivity curations completed by ClinGen. This file is built in real-time. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}"  class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -67,8 +81,8 @@
                             <div class="small">The files in this directory contain data for genes that have been through the review process. These files are updated daily. Files are available for genes and regions localized on both GRCh37 and GRCh38.  The tsv files have a header and contain all of the curation information found on the ClinGen Dosage Sensitivity Map web pages, including disease name (when applicable), PMIDs used as evidence, and comments.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv"><button class="btn btn-default watchdownloadclick "><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -76,8 +90,8 @@
                             <div class="small">The files in this directory contain data for regions that have been through the review process. These files are updated daily. Files are available for genes and regions localized on both GRCh37 and GRCh38.  The tsv files have a header and contain all of the curation information found on the ClinGen Dosage Sensitivity Map web pages, including disease name (when applicable), PMIDs used as evidence, and comments.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (tsv)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh37 (tsv)"><i class="fas fa-download"></i> GRCh37 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -85,8 +99,8 @@
                             <div class="small">BED files are available for gene curation. There are separate files for haploinsufficiency and triplosensitivity as the BED file only has one column for 'score'. Because the score column expects a number rather than text, "Dosage sensitivity unlikely" is represented by the score of 40, and "Gene associated with autosomal recessive phenotype" is represented by the score of 30.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh37 (bed)"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -94,8 +108,8 @@
                             <div class="small">BED files are available for gene curation. There are separate files for haploinsufficiency and triplosensitivity as the BED file only has one column for 'score'. Because the score column expects a number rather than text, "Dosage sensitivity unlikely" is represented by the score of 40, and "Gene associated with autosomal recessive phenotype" is represented by the score of 30.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed"><button class="btn btn-default"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh37 (bed)"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
 
@@ -105,23 +119,25 @@
                         </td>
                         <td></td>
                         <td style="text-align:center"">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed"><button class="btn btn-default mt-3 mb-3"><i class="fas fa-download"></i> HG19 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed"><button class="btn btn-default mb-1"><i class="fas fa-download"></i> HG19 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed"><button class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG19 (bed)"><i class="fas fa-download"></i> HG19 (bed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed"><button class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG19 (aed)"><i class="fas fa-download"></i> HG19 (aed)</button></a>
                         </td>
                         <td style="text-align:center">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed"><button class="btn btn-default mt-3 mb-3"><i class="fas fa-download"></i> HG38 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed"><button class="btn btn-default mb-1"><i class="fas fa-download"></i> HG38 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed"><button class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed"><button class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</button></a>
                         </td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
-
+                    <tr>
+                        <td><strong>All Dosage Sensitivity Download File Archive</strong>
+                            <div class="small">All Dosage Sensitivity download files are refreshed nightly are available.  </div>
+                        </td>
+                        <td style="text-align:center" colspan="4">
+                            <a href="https://ftp.clinicalgenome.org/archive"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity FTP download files"><i class="fas fa-download"></i> FTP Files</button></a>
+                        </td>
+                    </tr>
                 </table>
             </div>
-
-        <div class="text-center">
-            <i>All Dosage Sensitivity download files are refreshed nightly.  For older versions of these file, click </i><a href="https://ftp.clinicalgenome.org/archive" target="dosage_archive">here</a>
-        </div>
-
 
 
 
@@ -132,55 +148,55 @@
                         <td><strong>Clinical Actionability API - Adult JSON </strong>
                             <div class="small">REST-API endpoints to get the actionability curation data for the Adult context in a JSON format.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ" target="_blank" class="btn btn-default"><i class="fas fa-download"></i> NESTED JSON</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ?flavor=flat" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> FLAT JSON</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ" target="_blank" class="btn btn-default watchdownloadclick" title="Clinical Actionability API - Adult JSON Nester"><i class="fas fa-download"></i> NESTED JSON</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ?flavor=flat" target="_blank"   class="btn btn-default watchdownloadclick" title="Clinical Actionability API - Adult JSON Flat"><i class="fas fa-download"></i> FLAT JSON</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Clinical Actionability API - Pediatric JSON </strong>
                             <div class="small">REST-API endpoints to get the actionability curation data for the Pediatric context in a JSON format.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> NESTED JSON</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ?flavor=flat" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> FLAT JSON</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability - Pediatric JSON Nested"><i class="fas fa-download"></i> NESTED JSON</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ?flavor=flat" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability - Pediatric JSON Flat"><i class="fas fa-download"></i> FLAT JSON</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Summary of Overall Scores from Released Reports</strong>
                             <div class="small">Summary of overall scores from released reports is available for Adult and Pediatric contexts.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ?format=tsv" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of Overall Scores from Released Reports - Adult TSV"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ?format=tsv" target="_blank"   class="btn btn-default watchdownloadclick"  title="Actionability Summary of Overall Scores from Released Reports - Pediatric TSV"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Summary of Individual Scores from Released Reports</strong>
                             <div class="small">Summary of individual scores from released reports is available for Adult and Pediatric contexts.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of Individual Scores from Released Reports - ADULT"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/scoring?format=tsv&excludeNotScored=true" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of Individual Scores from Released Reports - Pediatric"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Summary of All Assertions from Released Reports</strong>
                             <div class="small">Summary of all assertions from released reports is available for Adult and Pediatric contexts.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of All Assertions from Released Reports - ADULT"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv&assertionType=all" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of All Assertions from Released Reports - Pediatric"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Summary of Consensus Assertions from Released Reports</strong>
                             <div class="small">Summary of consensus assertions from released reports is available for Adult and Pediatric contexts.</div>
                         </td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> ADULT - TSV</a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Adult/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of Consensus Assertions from Released Reports - ADULT"><i class="fas fa-download"></i> ADULT - TSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/Pediatric/api/summ/assertion?format=tsv" target="_blank"   class="btn btn-default watchdownloadclick" title="Actionability Summary of Consensus Assertions from Released Reports - Pediatric"><i class="fas fa-download"></i> Pediatric - TSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
                         <td><strong>Additional Clinical Actionability Download Options</strong>
                             <div class="small">Clinical Actionability data can be downloaded by clicking the link to the right and choosing the “Export” option on the top-right of the reports table.  </div>
                         </td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/"  class="btn btn-default" target="_blank"> Website</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="https://actionability.clinicalgenome.org/ac/"  class="btn btn-default watchdownloadclick" title="Additional Clinical Actionability Download Options" target="_blank"> Website</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>
@@ -195,7 +211,7 @@
                             <div class="small">This file provides a summary of the Variant Pathogenicitycurations completed by ClinGen's VCEPs. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  class="btn btn-default"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -203,7 +219,7 @@
                             <div class="small">OpenAPI specification and documentation for the ClinGen Evidence Repository JSON-LD REST API</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.docs.stoplight.io"  class="btn btn-default"> Documentation</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.docs.stoplight.io"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation"> Documentation</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>
