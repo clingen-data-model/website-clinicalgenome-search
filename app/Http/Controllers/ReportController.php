@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GenesCuratedExport;
 use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
+use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
 use Auth;
 
 use App\GeneLib;
+use App\Graphql;
 use App\Metric;
 
 class ReportController extends Controller
@@ -27,7 +30,7 @@ class ReportController extends Controller
             return $next($request);
         });
 	}
-	
+
 
     /**
      * Show the application dashboard.
@@ -54,6 +57,12 @@ class ReportController extends Controller
 
 		return view('reports.stats.index', compact('display_tabs', 'metrics'))
 						->with('user', $this->user);
+	}
+
+	public function genesReportDownload()
+	{
+		$date = date('Y-m-d');
+		return Gexcel::download(new GenesCuratedExport, 'Clingen-Curation-Activity-Summary-Report-' . $date . '.csv');
 	}
 
 

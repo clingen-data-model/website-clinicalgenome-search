@@ -502,6 +502,28 @@ class GeneLib extends Model
 		return $response;
 	}
 
+     /**
+      * Get a list of all the genes and diseases by activity
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function geneListForExportReport($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // The affiliate and curation data is currently in neo4j
+          //$response = Neo4j::affiliateList($args);
+
+          // The affiliate and curation data is currently in graphql
+          $response = Graphql::geneListForExportReport($args);
+
+          return $response;
+     }
+
+
 
 	/**
      * Get details of a particular affiliate and associated curations
