@@ -12,6 +12,7 @@ use App\User;
 use App\Actionability;
 use App\Sensitivity;
 use App\Validity;
+use App\Variantpath;
 
 class UpdateChanges extends Command
 {
@@ -55,11 +56,16 @@ class UpdateChanges extends Command
 
         $model = new Actionability();
         $model->assertions();
-        
+
         echo "Downloading Dosage Sensitivity changes ...\n";
 
         $model = new Sensitivity();
         $model->assertions();
-        
+
+        //echo "Downloading Variant Pathogenicity changes ...\n";
+
+        $model = new Variantpath();
+        $model->assertions();
+
     }
 }

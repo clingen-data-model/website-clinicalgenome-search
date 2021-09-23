@@ -217,8 +217,8 @@ class Region extends Model
           $chr = substr($chr, 3);
 
       //vet the search terms
-      $start = str_replace(',', '', $location[1] ?? '');  // strip out commas
-      $stop = str_replace(',', '', $location[2] ?? '');
+      $start = str_replace(',', '', empty($location[1]) ? '0' : $location[1]);  // strip out commas
+      $stop = str_replace(',', '', empty($location[2]) ? '9999999999' : $location[2]);
 
       if ($start == '' || $stop == '')
         return (object) ['count' => $collection->count(), 'collection' => $collection,

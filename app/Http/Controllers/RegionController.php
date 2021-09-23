@@ -42,7 +42,7 @@ class RegionController extends Controller
             return $next($request);
         });
 	}
-	
+
 
     /**
      * Display a listing of all gene validity assertions.
@@ -56,7 +56,7 @@ class RegionController extends Controller
             'active' => "more",
             'title' => "ClinGen Regions"
 		]);
-		
+
 		$user = $this->user;
 
         return view('region.index', compact('display_tabs', 'user'));
@@ -79,7 +79,7 @@ class RegionController extends Controller
             'active' => "gene",
             'title' => "Gene Curations"
         ]);
-        
+
 		// figure out what the search bar sent you
 
         $region = $search[3];
@@ -112,7 +112,7 @@ class RegionController extends Controller
 				$region = 'INVALID';
 			}
         }
-        
+
         $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('region.search', compact('display_tabs'))

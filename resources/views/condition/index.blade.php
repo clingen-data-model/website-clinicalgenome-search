@@ -87,6 +87,11 @@
   window.scrid = {{ $display_tabs['scrid'] }};
     window.token = "{{ csrf_token() }}";
 
+    function queryParams(params) {
+        params.search = "{{ $search }}"
+        return params
+    }
+
   window.ajaxOptions = {
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
@@ -100,23 +105,27 @@
     return res
   }
 
-  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity'];
+  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
 
   function checkactive(text, value, field, data)
-  {
-    switch (text)
-    {
-      case 'actionability':
-        return value.indexOf('A') != -1;
-      case 'dosage sensitivity':
-        return value.indexOf('D') != -1;
-      case 'gene validity':
-        return value.indexOf('V') != -1;
-      default:
-        return true;
-    }
+	{
+		switch (text)
+		{
+			case 'actionability':
+				return value.indexOf('A') != -1;
+			case 'dosage sensitivity':
+				return value.indexOf('D') != -1;
+			case 'gene validity':
+				return value.indexOf('V') != -1;
+            case 'variant pathogenicity':
+				return value.indexOf('R') != -1;
+            case 'pharmacogenomics':
+				return value.indexOf('P') != -1;
+			default:
+				return true;
+		}
 
-  }
+	}
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
@@ -134,9 +143,11 @@
         {
           title: 'Curations',
           field: 'curation',
-          filterControl: 'input',
+          //filterControl: 'input',
           formatter: cbadgeFormatter,
           cellStyle: cellFormatter,
+          sortable: true,
+          width: 170,
           filterControl: 'select',
 					filterData: 'var:activelist',
 					filterCustomSearch: checkactive,

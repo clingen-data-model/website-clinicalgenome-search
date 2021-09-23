@@ -345,6 +345,28 @@
 														</div>
 													</div>
 												</div>
+												<hr />
+												<div class="form-group">
+													<div class="col-sm-6">
+														<h5><img class="ma-4" src="/images/variantPathogenicity-on.png" heigth="50" width="50">
+															Variant Pathogenicity
+														</h5>
+													</div>
+													<div class="col-sm-6 border-left" style="border-left-width: 10px !important">
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="variant_interest" {{ in_array('variant', $user->profile['interests']) ? 'checked' : '' }}>
+																Yes, I'm interested
+															</label>
+														</div>
+														<div class="radio">
+															<label>
+																<input type="checkbox" class="api-update" name="variant_notify" {{ $user->notification->checkGroup('@AllVariant') ? 'checked' : '' }}>
+																Notify on all Variant Pathogenicity related updates
+															</label>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>

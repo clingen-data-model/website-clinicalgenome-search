@@ -70,27 +70,59 @@ class UpdatePlof extends Command
 
 			$parts = explode("\t", $line);
 
-			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "\n";
+			//echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] .  " ensr= " . $parts[63] . "\n";
 
-			if (isset($parts[0]))
+            // first, try to match the entry by ensemble ID
+            $gene = Gene::ensembl($parts[63])->first();
+
+            // if no valid match, then try to match up by symbol name
+            if (empty($gene) && isset($parts[0]))
 			{
 				$gene = Gene::where('name', $parts[0])->first();
 
 				if (empty($gene))
 				{
 					// check previous sympols
-					$gene = Gene::whereJsonContains('prev_symbol', $parts[0])->first();
+					$genes = Gene::whereJsonContains('prev_symbol', $parts[0])->get();
+
+                    if ($genes->isEmpty())
+                        continue;
+
+                    foreach ($genes as $option)
+                    {
+                        if ($parts[74] == 'X')
+                            $parts[74] = '23';
+                        else if ($parts[74] == 'Y')
+                            $parts[74] = '24';
+                        if ( $option->chr !== null && $option->chr == $parts[74])
+                        {
+                            $gene = $option;
+                            break;
+                        }
+                    }
 				}
 
-				if (empty($gene))
-					continue;
+                // a redudnant check before moving on
+                if ($parts[74] == 'X')
+                    $parts[74] = '23';
+                else if ($parts[74] == 'Y')
+                    $parts[74] = '24';
 
-				$gene->plof = $parts[29];
-				$gene->pli = $parts[20];
-				$stat = $gene->save();
-                echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "(" . $stat . ") \n";
-			}
+                if ( !empty($gene) && $gene->chr !== null && $gene->chr != $parts[74])
+                {
+                    echo $parts[0] . " incorrectly matched to gene $gene->name hgnc $gene->hgnc_id   - $parts[63] \n";
+                    continue;
+                }
+            }
 
+            // if still no match, skip it.
+            if (empty($gene))
+                continue;
+
+            $gene->plof = $parts[29];
+            $gene->pli = $parts[20];
+            $stat = $gene->save();
+            //echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] . "(" . $stat . ") \n";
 		}
 
 

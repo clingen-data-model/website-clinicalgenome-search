@@ -155,6 +155,8 @@ class Change extends Model
                 return 'Gene-Disease Validity';
             case 'App\Sensitivity':
                 return 'Dosage Sensitivity';
+            case 'App\Variantpath':
+                return 'Variant Pathogenicity';
         }
 
         return 'Unknown';

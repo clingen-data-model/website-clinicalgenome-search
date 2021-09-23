@@ -109,6 +109,7 @@ class SettingsController extends Controller
             case 'validity_interest':
             case 'dosage_interest':
             case 'actionability_interest':
+            case 'variant_interest':
                 $interest = preg_split("/_interest/", $input['name']);
                 if ($input['value'] == "1")
                     $user->addInterest($interest[0]);
@@ -119,6 +120,7 @@ class SettingsController extends Controller
             case 'validity_notify':
             case 'dosage_notify':
             case 'actionability_notify':
+            case 'variant_notify':
                 $notify = preg_split("/_notify/", $input['name']);
                 $notify[0] = 'All' . ucfirst($notify[0]);
                 $notification = $user->notification;

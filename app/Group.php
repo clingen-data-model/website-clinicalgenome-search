@@ -182,6 +182,10 @@ class Group extends Model
         $t = new Group(['name' => '@ACMG59', 'display_name' => 'ACMG 59 Genes', 'search_name' => '@ACMG59',
                         'description' => 'Follow All ACMG 59 Genes']);
         $t->save();
+
+        $t = new Group(['name' => '@AllVariant', 'display_name' => 'All Variant', 'search_name' => '@AllVariant',
+                        'description' => 'Follow All Variant Pathogenicity Activity']);
+        $t->save();
     }
 
 

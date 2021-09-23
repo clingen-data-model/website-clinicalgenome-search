@@ -20,7 +20,8 @@ class Condition extends JsonResource
             'curie' => $this->curie,
             //'description' => $this->description,
             'label' => $this->label,
-            'curation' => ($this->has_dosage ? 'D' : '') . ($this->has_actionability ? 'A' : '') . ($this->has_validity ? 'V' : ''),
+            'curation' => ($this->has_dosage ? 'D' : '') . ($this->has_actionability ? 'A' : '') . ($this->has_validity ? 'V' : '')
+                            . ($this->has_variant ? 'R' : '') . ($this->has_pharma ? 'P' : ''),
             'has_actionability' => $this->has_actionability,
             'has_validity' => $this->has_validity,
             'has_dosage' => $this->has_dosage,

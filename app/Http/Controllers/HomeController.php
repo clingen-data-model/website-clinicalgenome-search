@@ -82,6 +82,9 @@ class HomeController extends Controller
                 case '@AllActionability':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
                     break;
+                case '@AllVariant':
+                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => true, 'validity' => false, 'actionability' => false];
+                    break;
                 default:
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;

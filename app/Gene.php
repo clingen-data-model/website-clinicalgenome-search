@@ -66,6 +66,7 @@ class Gene extends Model
 			'alias_symbol' => 'array',
                'prev_symbol' => 'array',
                'omim_id' => 'array',
+               'lsdb' => 'array',
                'history' => 'array',
                'activity' => 'array',
                'curation_activities' => 'array',
@@ -81,7 +82,7 @@ class Gene extends Model
      * @var array
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
-					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli',
+					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli', 'lsdb',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
@@ -212,6 +213,18 @@ class Gene extends Model
      {
 		return $query->where('hgnc_id', $id);
      }
+
+
+     /**
+     * Query scope by ensemble id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeEnsembl($query, $id)
+    {
+       return $query->where('ensembl_gene_id', $id);
+    }
 
 
      /**
@@ -548,9 +561,17 @@ class Gene extends Model
           if (strpos($chr, 'CHR') === 0 )   // strip out the chr
                $chr = substr($chr, 3);
 
+
+
           //vet the search terms
-          $start = str_replace(',', '', $location[1] ?? '');  // strip out commas
-          $stop = str_replace(',', '', $location[2] ?? '');
+          $start = str_replace(',', '', empty($location[1]) ? '0' : $location[1]);  // strip out commas
+          $stop = str_replace(',', '', empty($location[2]) ? '9999999999' : $location[2]);
+
+          if ($chr == 'X')
+               $chr = 23;
+
+          if ($chr == 'Y')
+               $chr = 24;
 
           if ($start == '' || $stop == '')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
@@ -563,12 +584,6 @@ class Gene extends Model
           if ((int) $start >= (int) $stop)
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
-
-          if ($chr == 'X')
-               $chr = 23;
-
-          if ($chr == 'Y')
-               $chr = 24;
 
             if (isset($option) && $option == 1)  // only return contained
             {

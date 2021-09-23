@@ -32,7 +32,7 @@ class RegionController extends Controller
         if ($results === null)
             return GeneLib::getError();
 
-        return ['total' => $results->count, 
+        return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,
                 'rows'=> GenesearchResource::collection($results->collection),
                 'gene_count' => $results->gene_count,

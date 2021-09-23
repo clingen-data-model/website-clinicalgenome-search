@@ -488,29 +488,29 @@ function affiliateFormatter(index, row) {
 function badgeFormatter(index, row) {
     var html = '';
     if (row.has_validity)
-        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-off.png" title="Gene-Disease Validity" style="width:30px">';
 
     if (row.has_dosage)
-        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">';
     else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-off.png" title="Dosage Sensitivity" style="width:30px">';
 
     if (row.has_actionability)
-        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-off.png" title="Clinical Actionability" style="width:30px">';
 
     if (row.has_variant)
-        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">';
     else
-        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
 
     if (row.has_pharma)
-        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
     else
-        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" title="Pharmacogenomics" style="width:30px">';
 
     return html;
 }
@@ -560,29 +560,29 @@ function cbadgeFormatter(index, row) {
     var html = '';
 
     if (row.has_validity)
-        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-off.png" title="Gene-Disease Validity" style="width:30px">';
 
     if (row.has_dosage)
-        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">';
     else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-off.png" title="Dosage Sensitivity" style="width:30px">';
 
     if (row.has_actionability)
-        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-off.png" title="Clinical Actionability" style="width:30px">';
 
     if (row.has_variant)
-        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">';
     else
-        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
 
     if (row.has_pharma)
-        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
     else
-        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" title="Pharmacogenomics" style="width:30px">';
 
 
     return html;
@@ -608,29 +608,29 @@ function drbadgeFormatter(index, row) {
     var html = '';
 
     if (row.has_validity)
-        html += '<img class="" src="/images/clinicalValidity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalValidity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalValidity-off.png" title="Gene-Disease Validity" style="width:30px">';
 
     if (row.has_dosage)
-        html += '<img class="" src="/images/dosageSensitivity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">';
     else
-        html += '<img class="" src="/images/dosageSensitivity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/dosageSensitivity-off.png" title="Dosage Sensitivity" style="width:30px">';
 
     if (row.has_actionability)
-        html += '<img class="" src="/images/clinicalActionability-on.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">';
     else
-        html += '<img class="" src="/images/clinicalActionability-off.png" style="width:30px">';
+        html += '<img class="" src="/images/clinicalActionability-off.png" title="Clinical Actionability" style="width:30px">';
 
     if (row.has_variant)
-        html += '<img class="" src="/images/variantPathogenicity-on.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">';
     else
-        html += '<img class="" src="/images/variantPathogenicity-off.png" style="width:30px">';
+        html += '<img class="" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
 
     if (row.has_pharma)
-        html += '<img class="" src="/images/Pharmacogenomics-on.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
     else
-        html += '<img class="" src="/images/Pharmacogenomics-off.png" style="width:30px">';
+        html += '<img class="" src="/images/Pharmacogenomics-off.png" title="Pharmacogenomics" style="width:30px">';
 
 
     return html;

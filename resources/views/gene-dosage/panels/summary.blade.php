@@ -68,7 +68,7 @@
           <div class="col-sm-9 border-left-4 border-info bold">
             @if ($record->resolution == "Complete")
             {{  $record->triplo_assertion }}
-            @if ($record->tripl_score)
+            @if ($record->triplo_score != -5)
              ({{ $record->triplo_score }})
              @endif
             <div class="small"><a href="#report_details_triplosensitivity">Read full report...</a></div>

@@ -84,10 +84,12 @@ class Mysql
 			else
 			{
 				// initialize the collection
-				$collection = Gene::where('name', 'like', '%' . $search . '%')->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+				$collection = Gene::where('name', 'like', '%' . $search . '%')
+                    ->orderByRaw('CHAR_LENGTH(name)')
+                    ->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
 
 				// manipulate the return order per Erin
-				if ($search !== null && $search != "")
+				/*if ($search !== null && $search != "")
 				{
 					//$match = $collection->where('symbol', $search)->first();
 					$search = strtolower($search);
@@ -102,7 +104,7 @@ class Mysql
 							return strtolower($item->symbol) != $search;
 						})->prepend($match);
 					}
-				}
+				}*/
 			}
 		}
 
@@ -340,10 +342,12 @@ class Mysql
 		}
 		else
 		{
-			$collection = Disease::where('label', 'like', '%' . $search . '%')->get();
+			$collection = Disease::where('label', 'like', '%' . $search . '%')
+                    ->orderByRaw('CHAR_LENGTH(label)')
+                    ->get();
 
 			//$match = $collection->where('symbol', $search)->first();
-			$search = strtolower($search);
+			/*$search = strtolower($search);
 			$match = $collection->first(function ($item) use ($search) {
 				return strtolower($item->symbol) == $search;
 			});
@@ -354,7 +358,7 @@ class Mysql
 				$collection = $collection->filter(function ($item) use ($search) {
 					return strtolower($item->symbol) != $search;
 				})->prepend($match);
-			}
+			}*/
 		}
 
 		$ncurated = $collection->where('last_curated_date', '!=', null)->count();
@@ -394,10 +398,12 @@ class Mysql
 		}
 		else
 		{
-			$collection = Drug::where('label', 'like', '%' . $search . '%')->get();
+			$collection = Drug::where('label', 'like', '%' . $search . '%')
+                            ->orderByRaw('CHAR_LENGTH(label)')
+                            ->get();
 
 			//$match = $collection->where('symbol', $search)->first();
-			$search = strtolower($search);
+			/*$search = strtolower($search);
 			$match = $collection->first(function ($item) use ($search) {
 				return strtolower($item->symbol) == $search;
 			});
@@ -408,7 +414,7 @@ class Mysql
 				$collection = $collection->filter(function ($item) use ($search) {
 					return strtolower($item->symbol) != $search;
 				})->prepend($match);
-			}
+			}*/
 		}
 
 		return (object) ['count' => $collection->count(), 'collection' => $collection];

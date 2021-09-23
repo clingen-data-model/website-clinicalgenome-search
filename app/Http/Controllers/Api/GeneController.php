@@ -18,7 +18,7 @@ class GeneController extends Controller
      */
     public function index(ApiRequest $request)
     {
-    
+
         $input = $request->only(['search', 'order', 'offset', 'limit']);
 
         $results = GeneLib::geneList([	'page' => $input['offset'] ?? 0,
@@ -27,11 +27,11 @@ class GeneController extends Controller
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => $input['search'] ?? null,
                                         'curated' => false ]);
-                                        
+
         if ($results === null)
             return GeneLib::getError();
 
-        return ['total' => $results->count, 
+        return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,
                 'rows'=> GeneResource::collection($results->collection),
                 'naction' => $results->naction,
@@ -85,7 +85,7 @@ class GeneController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function expand(ApiRequest $request, $id = null)
-    {        
+    {
         // ...otherwise assume gene
         $gene = Gene::hgnc($id)->first();
 

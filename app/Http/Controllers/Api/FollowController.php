@@ -386,6 +386,9 @@ dd("not logged in");  }*/
                 case '@AllActionability':
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
                     break;
+                case '@AllVariant':
+                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => true, 'validity' => false, 'actionability' => false];
+                    break;
                 default:
                     if (substr($group->search_name,0, 1) == '%')
                         $type = 2;

@@ -98,7 +98,7 @@ class UpdateGenenames extends Command
 
             if ($gene->prev_symbol !== null)
                 foreach ($gene->prev_symbol as $symbol)
-                Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
+                    Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
                                         ['alias' => $gene->name, 'type' => 2, 'status -> 1']);
             if ($gene->alias_symbol !== null)
                 foreach ($gene->alias_symbol as $symbol)
