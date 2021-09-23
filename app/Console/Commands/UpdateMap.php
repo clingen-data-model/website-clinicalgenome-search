@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 use App\Iscamap;
 use App\Gene;
+use App\Term;
 
 class UpdateMap extends Command
 {
@@ -52,20 +53,22 @@ class UpdateMap extends Command
 
                 $value = explode("\t", $line);
 
+                $symbol = trim($value[0]);
+
                 // see if there is a usable hgnc id
-                $gene = Gene::name(trim($value[0]))->first();
+                $gene = Gene::name($symbol)->first();
 
                 if ($gene === null)
                 {
-                    $gene = Gene::whereJsonContains('prev_symbol', trim($value[0]))->first();
+                    $term = Term::name($symbol)->first();
 
-                    if ($gene === null)
+                    if ($term !== null)
                     {
-                        $gene = Gene::whereJsonContains('alias_symbol', trim($value[0]))->first();
+                        $gene = Gene::hgnc($term->value)->first();
                     }
                 }
 
-                $issue = Iscamap::updateOrCreate(['symbol' => trim($value[0])], ['issue' => trim($value[1]),
+                $issue = Iscamap::updateOrCreate(['issue' => trim($value[1])], ['symbol' => $symbol,
                                                                                 'hgnc_id' => $gene->hgnc_id ?? null] );
             }
 

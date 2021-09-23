@@ -433,7 +433,7 @@
         source: termDisease,
         templates: {
             //header: '<h3 class="league-name">Header</h3>',
-            footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
+            //footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
             empty: [
                 '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
             ],/*,
@@ -441,8 +441,8 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i>  <u>' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i>  <u>')
-                               + data.label +  '</u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right small mt-1 col-sm-2 tt-ui-curated">Curated</span>' : '') + '</div>'
+
             }
         },
         limit: 20,
@@ -461,7 +461,7 @@
         source: termGene,
         templates: {
             //header: '<h3 class="league-name">Header</h3>',
-            footer: '<div class="bg-light text-right text-dark"><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Gene has been curated by ClinGen</span></div>',
+            //footer: '<div class="bg-light text-right text-dark"><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Gene has been curated by ClinGen</span></div>',
             empty: [
                 '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
             ],/*,
@@ -469,8 +469,7 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i><u><span class="ml-2 mr-2">' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i><u><span class="ml-2 mr-2">')
-                               + data.label +  '</span></u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right small mt-1 col-sm-2 tt-ui-curated">Curated</span>' : '') + '</div>'
             }
         },
         limit: 20,
@@ -489,7 +488,7 @@
         source: termDrug,
         templates: {
             //header: '<h3 class="league-name">Header</h3>',
-            footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"><i><span class="mr-2 ml-2">Drug has been curated by ClinGen</span></div>',
+            //footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"><i><span class="mr-2 ml-2">Drug has been curated by ClinGen</span></div>',
             empty: [
                 '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
             ],/*,
@@ -497,8 +496,8 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div>' + (data.curated ? '<i class="fas fa-check-circle" style="color: green;"></i> <u>' : '<i class="fas fa-circle" style="color: #F8F8FF;"></i> <u>')
-                               + data.label +  '</u><span class="">  ' + data.hgnc  + '</span><span class="font-italic text-muted"> ' + data.alias + '</span></div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right small mt-1 col-sm-2 tt-ui-curated">Curated</span>' : '') + '</div>'
+
             }
         },
         limit: 20,

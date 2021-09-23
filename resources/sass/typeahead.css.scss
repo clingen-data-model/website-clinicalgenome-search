@@ -33,6 +33,16 @@
 #notes_show .tt-hint {
   padding-left: 12px !important;
 }
+.tt-ui-row:hover .tt-ui-alias, .tt-ui-row:hover .tt-ui-curie {
+  color: #fff;
+}
+.tt-ui-row .tt-ui-curie {
+  color: rgb(128, 128, 128);
+}
+.tt-ui-row .tt-ui-alias {
+  color: rgb(128, 128, 128);
+  font-style: italic;
+}
 // .typeahead, .tt-query, .tt-hint {
 //   width: 100%;
 //   color: #999;
