@@ -66,16 +66,16 @@
 	           </ul>
            </div><!-- /btn-group -->
            <span class="inputQueryGene">
-            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Start typing a gene symbol...">
+            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:6769)">
            </span>
            <span class="inputQueryDisease" style="display: none">
-            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Start typing a disease..." >
+            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys, MONDO:0013426)" >
            </span>
            <span class="inputQueryDrug" style="display: none">
-           <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Start typing a drug...">
+           <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Enter a drug name or RXNORM ID (Examples: aspirin, RXNORM:1191)">
            </span>
            <span class="inputQueryRegion" style="display: none">
-           <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Start typing a region...">
+           <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region (Examples: chr7:75158048-76063176, chr7, chr7:70008000)">
            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit"> Search</button>

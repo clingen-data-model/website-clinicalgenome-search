@@ -236,6 +236,29 @@
 	}
 
 
+  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
+
+    function checkactive(text, value, field, data)
+    {
+        switch (text)
+        {
+            case 'actionability':
+                return value.indexOf('A') != -1;
+            case 'dosage sensitivity':
+                return value.indexOf('D') != -1;
+            case 'gene validity':
+                return value.indexOf('V') != -1;
+            case 'variant pathogenicity':
+                return value.indexOf('R') != -1;
+            case 'pharmacogenomics':
+                return value.indexOf('P') != -1;
+            default:
+                return true;
+        }
+
+    }
+
+
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 			locale: 'en-US',
@@ -306,11 +329,14 @@
 					sortable: true
 				},
 				{
-					field: 'status',
-					title: 'Activity',
+					field: 'curation',
+					title: 'Curations',
 					formatter: badgeFormatter,
 					cellStyle: cellFormatter,
-					filterControl: 'select',
+                    filterControl: 'select',
+					filterData: 'var:activelist',
+					filterCustomSearch: checkactive,
+                    width: 170,
 					searchFormatter: false,
 					sortable: true
 				},
@@ -328,7 +354,6 @@
 		});
 
 		$table.on('load-error.bs.table', function (e, name, args) {
-			console.log("error fired");
 
 			$("body").css("cursor", "default");
 
@@ -340,7 +365,6 @@
 		})
 
 		$table.on('load-success.bs.table', function (e, name, args) {
-			console.log("success fired");
 
 			$("body").css("cursor", "default");
 
@@ -355,7 +379,6 @@
 		})
 
 		$table.on('post-body.bs.table', function (e, name, args) {
-			console.log("post body fired");
 
 			$('[data-toggle="tooltip"]').tooltip();
 		})

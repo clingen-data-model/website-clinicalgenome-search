@@ -26,6 +26,9 @@ class Genesearch extends JsonResource
             'stop' => $this->stop,
             'relationship' => $this->relationship,
             //'type' => $this->type,
+            'curation' => (($this->activity['dosage'] ?? false) ? 'D' : '') . (($this->activity['actionability'] ?? false) ? 'A' : '')
+                             . (($this->activity['validity'] ?? false) ? 'V' : '')
+                            . (($this->activity['varpath'] ?? false) ? 'R' : '') . (($this->activity['pharma'] ?? false) ? 'P' : ''),
             'has_actionability' => $this->activity['actionability'] ?? false,
             'has_validity' => $this->activity['validity'] ?? false,
             'has_dosage' => $this->activity['dosage'] ?? false,

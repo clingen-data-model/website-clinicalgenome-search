@@ -192,7 +192,7 @@ class Mysql
             foreach($records as $record)
             {
                 $c = $record->curation_activities;
-                $array[] = ['label' => 'RXNORM"' . $record->curie,
+                $array[] = ['label' => 'RXNORM:' . $record->curie,
                             'alias' => '',
                             'hgnc' => $record->label,
                             'url' => route('drug-show', $record->curie),
