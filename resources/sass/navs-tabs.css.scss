@@ -9,8 +9,10 @@
 .nav-tabs-search {
   border:none !important;
 }
-.nav-tabs-search > li {
+.nav-tabs-search > li.nav-item a.nav-link, .nav-tabs-search > li.nav-item.active a.nav-link {
     // margin-bottom: -4px;
+    padding-left: .45rem !important;
+    padding-right: .45rem !important;
 }
 .nav-tabs-search .nav-link, .nav-tabs-search .nav-link:hover {
   border:none !important;
