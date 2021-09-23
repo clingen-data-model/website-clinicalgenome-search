@@ -160,6 +160,15 @@
           searchFormatter: false,
           sortable: true
         },
+		    {
+          field: 'contributor_type',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="The role of this group during the curation process."></i></div> Contribution',
+          cellStyle: cellFormatter,
+          formatter: contributorbadgeFormatter,
+          filterControl: 'select',
+          searchFormatter: false,
+          sortable: true
+        },
         {
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Clinical Validity Classification"></i></div> Classification',
           field: 'classification',

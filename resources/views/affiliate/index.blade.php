@@ -121,9 +121,33 @@
             searchFormatter: false,
             visible: false
         },
+		    // {
+        //   title: 'Number of Curations',
+        //   field: 'count',
+        //   cellStyle: cellFormatter,
+        //   filterControl: 'input',
+        //   searchFormatter: false,
+        //   align: 'center'
+        // },
+		    // {
+        //   title: 'total_all_curations',
+        //   field: 'total_all_curations',
+        //   cellStyle: cellFormatter,
+        //   filterControl: 'input',
+        //   searchFormatter: false,
+        //   align: 'center'
+        // },
 		    {
-          title: 'Number of Curations',
-          field: 'count',
+          title: '# Primary Curations',
+          field: 'total_approver_curations',
+          cellStyle: cellFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          align: 'center'
+        },
+		    {
+          title: '# Secondary Contributor',
+          field: 'total_secondary_curations',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,

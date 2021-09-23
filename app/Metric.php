@@ -76,7 +76,7 @@ class Metric extends Model
     public const KEY_TOTAL_DOSAGE_GENES = "total_dosage_genes";
 
     public const KEY_TOTAL_GENE_LEVEL_CURATIONS = "total_gene_level_curations";
-    
+
     public const KEY_TOTAL_VALIDITY_CURATIONS = "total_validity_curations";
     public const KEY_TOTAL_VALIDITY_DEFINITIVE = "total_validity_definitive";
     public const KEY_TOTAL_VALIDITY_STRONG = "total_validity_strong";
@@ -122,6 +122,9 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_GRAPH = "total_actionability_graph";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT = "total_actionability_adult_ruleout";
     public const KEY_TOTAL_ACTIONABILITY_PED_RULEOUT = "total_actionability_ped_ruleout";
+    public const KEY_TOTAL_ACTIONABILITY_ASSERTIONS = "total_actionability_assertions";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS = "total_actionability_adult_assertions";
+    public const KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS = "total_actionability_ped_assertions";
 
     public const KEY_TOTAL_PATHOGENICITY_CURATIONS = "total_pathogenicity_curations";
     public const KEY_TOTAL_PATHOGENICITY_UNIQUE = "total_pathogenicity_unique";
@@ -141,7 +144,7 @@ class Metric extends Model
     public const KEY_TOTAL_GENES_GKB_PHARMACOGENOMIICS = "total_pharmacogenomics_gkb_genes";
     public const KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS = "total_pharmacogenomics_gkb_annotations";
     public const KEY_TOTAL_PHARMACOGENOMICS_GRAPH = "total_pharmacogenomics_graph";
-    
+
 
     /*
     * Status strings for display methods
@@ -340,7 +343,7 @@ class Metric extends Model
     if ($total == 0)
       return 0;
 
-      
+
     if (!(isset($this->values[$a])))
             return 0;
 
@@ -453,11 +456,46 @@ class Metric extends Model
    */
   public function actionabilityAdultPercent($value = 0)
   {
-  
+
     if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
       return 0;
-    
+
     $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+  /**
+   * Get the percentages for actionability assertion charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityAdultAssertionPercent($value = 0)
+  {
+
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
+      return 0;
+
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion'] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability assertion charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityPedsAssertionPercent($value = 0)
+  {
+
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
+      return 0;
+
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] * 100);
 
     return ($pct == 0 ? 1 : $pct);
   }
@@ -480,7 +518,7 @@ class Metric extends Model
 
     if (empty($sum) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]))
       return 0;
-    
+
     $pct = (int) ($sum / $this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] * 100);
 
     return ($pct == 0 ? 1 : $pct);
@@ -514,7 +552,7 @@ class Metric extends Model
    */
   public function actionabilityAdultRuleout()
   {
-    
+
     if (!(isset($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME]) &&
         isset($this->values[self::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT])))
           return 0;
@@ -534,10 +572,10 @@ class Metric extends Model
    */
   public function actionabilityPedPercent($value = 0)
   {
-  
+
     if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]))
       return 0;
-    
+
     $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
 
     return ($pct == 0 ? 1 : $pct);
@@ -561,7 +599,7 @@ class Metric extends Model
 
     if (empty($sum) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]))
       return 0;
-    
+
     $pct = (int) ($sum / $this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] * 100);
 
     return ($pct == 0 ? 1 : $pct);
@@ -595,7 +633,7 @@ class Metric extends Model
    */
   public function actionabilityPedRuleout()
   {
-    
+
     if (!(isset($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME]) &&
         isset($this->values[self::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT])))
           return 0;
@@ -615,10 +653,10 @@ class Metric extends Model
    */
   public function pharmaCpicPercent($value = 0)
   {
-  
+
     if (empty($value) || empty($this->values[self::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS]))
       return 0;
-    
+
     $pct = (int) ($value / $this->values[self::KEY_TOTAL_ANNOT_CPC_PHARMACOGENOMIICS] * 100);
 
     return ($pct == 0 ? 1 : $pct);
@@ -633,10 +671,10 @@ class Metric extends Model
    */
   public function pharmaGkbPercent($value = 0)
   {
-  
+
     if (empty($value) || empty($this->values[self::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS]))
       return 0;
-    
+
     $pct = (int) ($value / $this->values[self::KEY_TOTAL_ANNOT_GKB_PHARMACOGENOMIICS] * 100);
 
     return ($pct == 0 ? 1 : $pct);

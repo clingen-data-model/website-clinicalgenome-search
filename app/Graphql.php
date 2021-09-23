@@ -15,6 +15,7 @@ use App\Cpic;
 use App\Gencc;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 /**
  *
@@ -234,6 +235,191 @@ class Graphql
 						'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
 						'nvariant' => $nvariant, 'npharma' => $npharma];
+	}
+
+
+
+	/**
+	 * Get gene list with curation flags and last update
+	 *
+	 * @return Illuminate\Database\Eloquent\Collection
+	 */
+	static function geneListForExportReport($args, $curated = true, $page = 0, $pagesize = 20000)
+	{
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$search = null;
+
+		$query = '{
+					genes('
+			. self::optionList($page, $pagesize, $sort, $direction, $search, 'ALL')
+			. ') {
+						count
+						gene_list {
+							label
+							hgnc_id
+							last_curated_date
+							curation_activities
+							genetic_conditions{
+								disease {
+									curie
+									label
+									last_curated_date
+								}
+								actionability_assertions {
+									report_date
+									source
+									classification {
+										curie
+										iri
+										label
+									}
+									attributed_to {
+										curie
+										label
+									}
+								}
+								gene_validity_assertions {
+									attributed_to {
+										curie
+										label
+									}
+									classification {
+										curie
+										iri
+										label
+									}
+									mode_of_inheritance {
+										curie
+										label
+									}
+									curie
+									report_date
+									iri
+								}
+							}
+							dosage_curation {
+								report_date
+								triplosensitivity_assertion {
+									disease {
+										label
+										curie
+									}
+									dosage_classification {
+										ordinal
+									  }
+								}
+								haploinsufficiency_assertion {
+									disease {
+										label
+										description
+										curie
+									}
+									dosage_classification {
+										ordinal
+									  }
+								}
+							}
+						}
+					}
+				}';
+
+		/*
+		type {
+			label
+			curie
+		}*/
+
+		// query genegraph
+		$response = self::query($query, __METHOD__);
+
+
+
+		if (empty($response))
+			return $response;
+
+		// get the list of acmg59 genes
+		$acmg59s = Gene::select('hgnc_id')->where('acmg59', 1)->get()->pluck('hgnc_id')->toArray();
+
+		// if logged in, get all followed genes
+		if (Auth::guard('api')->check()) {
+			$user = Auth::guard('api')->user();
+			$followed = $user->genes->pluck('hgnc_id')->toArray();
+		} else {
+			$followed = [];
+		}
+
+		// get list of pharma and variant pathogenicity genes
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+
+		// build list of genes not known by genegraph
+		$excludes = [];
+
+		// create node list and add pharma and variant curation indicators to the current gene list
+		foreach ($response->genes->gene_list as $record) {
+			$node = new Nodal((array) $record);
+			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
+			if ($extra !== null) {
+				$t = $node->curation_activities;
+				if (!empty($extra->activity["pharma"]))
+					array_push($t, "GENE_PHARMA");
+				if (!empty($extra->activity["varpath"]))
+					array_push($t, "VAR_PATH");
+				$node->curation_activities = $t;
+				$excludes[] = $node->hgnc_id;
+			}
+
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+			$collection->push($node);
+		}
+
+		// add genes not tagged by genegraph
+		foreach ($extras as $extra) {
+			if (in_array($extra->hgnc_id, $excludes))
+				continue;
+
+			$t = [];
+			if (!empty($extra->activity["pharma"]))
+				array_push($t, "GENE_PHARMA");
+			if (!empty($extra->activity["varpath"]))
+				array_push($t, "VAR_PATH");
+
+			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
+
+			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+			$collection->push($node);
+		}
+
+
+		if ($curated) {
+			$naction = $collection->where('has_actionability', true)->count();
+			$nvalid = $collection->where('has_validity', true)->count();
+			$ndosage = $collection->where('has_dosage', true)->count();
+			$npharma = $collection->where('has_pharma', true)->count();
+			$nvariant = $collection->where('has_variant', true)->count();;
+		} else {
+			// right now we only use these counts on the curated page.  Probably should get triggered
+			// by a call option so as not to bury things to deep.
+			$naction = 0;
+			$nvalid = 0;
+			$ndosage = 0;
+			$npharma = 0;
+			$nvariant = 0;
+		}
+
+		return (object) [
+			'count' => $collection->count(), 	//$response->genes->count,
+			'collection' => $collection,
+			'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
+			'nvariant' => $nvariant, 'npharma' => $npharma
+		];
 	}
 
 
@@ -1249,6 +1435,21 @@ class Graphql
 		// initialize the collection
 		$collection = collect();
 
+		// $query = '{
+		// 	affiliations (limit: null)
+		// 	{
+		// 		count
+		// 		agent_list {
+		// 			iri
+		// 			curie
+		// 			label
+		// 			gene_validity_assertions{
+		// 				count
+		// 			}
+		// 		}
+		// 	}
+		// }';
+
 		$query = '{
 			affiliations (limit: null)
 			{
@@ -1257,8 +1458,21 @@ class Graphql
 					iri
 					curie
 					label
-					gene_validity_assertions{
+					gene_validity_assertions(role: ANY, limit: null){
 						count
+						curation_list{
+              curie
+              contributions {
+                realizes {
+                  curie
+                  label
+                }
+                agent {
+                  curie
+                  label
+                }
+							}
+            }
 					}
 				}
 			}
@@ -1267,6 +1481,7 @@ class Graphql
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
 
+		//dd($response);
 		if (empty($response))
 			return $response;
 
@@ -1276,6 +1491,29 @@ class Graphql
 		foreach($response->affiliations->agent_list as $record)
 		{
 			$node = new Nodal((array) $record);
+			$total_all_curations = 0;
+			$total_approver_curations = 0;
+			$total_secondary_curations = 0;
+			//dd($node->gene_validity_assertions->curation_list);
+			foreach($node->gene_validity_assertions->curation_list as $affilate) {
+				//dd($affilate);
+				$total_all_curations++;
+				foreach ($affilate->contributions as $contribution) {
+					//dd($contribution);
+					// Check if the current agent is this one.
+					if ($node->curie == $contribution->agent->curie) {
+						if($contribution->realizes->curie == "SEPIO:0000155") {
+						$total_approver_curations++;
+						}
+						if ($contribution->realizes->curie == "SEPIO:0004099") {
+							$total_secondary_curations++;
+						}
+					}
+				}
+				$record->total_all_curations = $total_all_curations;
+				$record->total_approver_curations = $total_approver_curations;
+				$record->total_secondary_curations = $total_secondary_curations;
+			}
 			$ncurations += $node->gene_validity_assertions->count;
 
 			$collection->push(new Nodal((array) $record));
@@ -1283,7 +1521,7 @@ class Graphql
 
 		// genegraph currently provides no sort capablility
 		$collection = $collection->sortBy('label');
-
+		//dd($collection);
 		return (object) ['count' => $response->affiliations->count, 'collection' => $collection,
 						'ncurations' => $ncurations];
 	}
@@ -1314,7 +1552,7 @@ class Graphql
 				curie
 				iri
 				label
-				gene_validity_assertions(limit: null, sort: {field: GENE_LABEL, direction: ASC}) {
+				gene_validity_assertions(role: ANY, limit: null, sort: {field: GENE_LABEL, direction: ASC}) {
 					count
 					curation_list {
 						curie
@@ -1346,6 +1584,16 @@ class Graphql
 							label
 							curie
 						}
+						contributions {
+							realizes {
+								curie
+								label
+							}
+							agent {
+								curie
+								label
+							}
+						}
 						report_date
 					}
 				}
@@ -1365,6 +1613,21 @@ class Graphql
 			if ($record->gene === null || $record->disease === null)
 				continue;	// TODO:  Log this as a gg error
 
+
+				//dd($response->affiliation->curie);
+				foreach ($record->contributions as $contribution) {
+            //dd($contribution);
+            // Check if the current agent is this one.
+                if ($response->affiliation->curie == $contribution->agent->curie) {
+                    if ($contribution->realizes->curie == "SEPIO:0000155") {
+                        $record->contributor_type = "Primary";
+                    }
+                    if ($contribution->realizes->curie == "SEPIO:0004099") {
+                        $record->contributor_type = "Secondary";
+                    }
+                }
+        }
+			//dd($record);
 			$collection->push(new Nodal((array) $record));
 		}
 
@@ -1723,6 +1986,13 @@ class Graphql
      */
     static function geneMetrics($args)
     {
+
+		Artisan::call('update:actionability-stats json=true');
+		$actionability_stats = Artisan::output();
+
+		$actionability_stats = json_decode($actionability_stats);
+
+
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
@@ -1837,7 +2107,9 @@ class Graphql
 
 
 		$values = [	Metric::KEY_TOTAL_CURATED_GENES => $response->genes->count + $extracount,
-					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
+					//Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_genes,
+					Metric::KEY_TOTAL_ACTIONABILITY_GENES => $actionability_stats->total_genes,
+
 					Metric::KEY_TOTAL_VALIDITY_GENES => $validity_genes,
 				  	Metric::KEY_TOTAL_DOSAGE_GENES => $dosage_genes,
 					Metric::KEY_TOTAL_DOSAGE_HAP_AR => $hapcounters['30'],
@@ -1854,9 +2126,12 @@ class Graphql
 					Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY => $tripcounters['40'],
 					Metric::KEY_TOTAL_DOSAGE_TRIP_AR => $tripcounters['30'],
 					Metric::KEY_TOTAL_DOSAGE_CURATIONS => array_sum($hapcounters) + array_sum($tripcounters),
-					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations,
-					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
-					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
+					// Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $action_curations,
+					// Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $adultcounter,
+					// Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $pedscounter
+					Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS => $actionability_stats->total_topics,
+					Metric::KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS => $actionability_stats->total_adult_io_pairs_unique,
+					Metric::KEY_TOTAL_ACTIONABILITY_PED_CURATIONS => $actionability_stats->total_peds_io_pairs_unique,
 				];
 
 
@@ -1978,7 +2253,7 @@ class Graphql
 		$values[Metric::KEY_TOTAL_VALIDITY_NONE] = $counters['no known disease relationship'];
 
 		$values[Metric::KEY_TOTAL_GENE_LEVEL_CURATIONS] =
-						$values[Metric::KEY_TOTAL_ACTIONABILITY_CURATIONS] +
+						$actionability_stats->total_topics +
 						$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] +
 						$values[Metric::KEY_TOTAL_DOSAGE_CURATIONS];
 //dd($values);
@@ -2209,24 +2484,89 @@ class Graphql
 
 		$response = json_decode($response);*/
 
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->statistics->actionability_tot_adult_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->statistics->actionability_tot_pediatric_gene_disease_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->statistics->actionability_tot_outcome_intervention_pairs;
-    	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->statistics->actionability_tot_adult_outcome_intervention_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] = $response->statistics->actionability_tot_adult_failed_early_rule_out;
-		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] = $response->statistics->actionability_tot_reports;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] = $response->statistics->actionability_tot_updated_reports;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] = $response->statistics->actionability_tot_gene_disease_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] = $response->statistics->actionability_tot_adult_gene_disease_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] = $response->statistics->actionability_tot_pediatric_gene_disease_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] = $response->statistics->actionability_tot_outcome_intervention_pairs;
+    // 	$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] = $response->statistics->actionability_tot_adult_outcome_intervention_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] = $response->statistics->actionability_tot_pediatric_outcome_intervention_pairs;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] = $response->statistics->actionability_tot_adult_failed_early_rule_out;
+		// $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
 
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
-		$result = array_combine($r[1], $r[2]);
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] 					= $actionability_stats->total_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] 	= $actionability_stats->total_updated_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] 				= $actionability_stats->total_genes_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] 			= $actionability_stats->total_adult_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] 				=	$actionability_stats->total_peds_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] 					= $actionability_stats->total_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] 		= $actionability_stats->total_adult_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] 			= $actionability_stats->total_peds_io_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] 		= $actionability_stats->total_updated_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] 			= $actionability_stats->total_updated_topics;
+
+		//preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
+		//$result = array_combine($r[1], $r[2]);
+		$result[12] = (string)$actionability_stats->total_adult_io_pairs_12;
+		$result[11] = (string)$actionability_stats->total_adult_io_pairs_11;
+		$result[10] = (string)$actionability_stats->total_adult_io_pairs_10;
+		$result[9] = (string)$actionability_stats->total_adult_io_pairs_9;
+		$result[8] = (string)$actionability_stats->total_adult_io_pairs_8;
+		$result[7] = (string)$actionability_stats->total_adult_io_pairs_7;
+		$result[6] = (string)$actionability_stats->total_adult_io_pairs_6;
+		$result[5] = (string)$actionability_stats->total_adult_io_pairs_5less;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE] = $result;
-
-		preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_pediatric_score_counts, $r);
-		$result = array_combine($r[1], $r[2]);
+			unset($result);
+		//preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_pediatric_score_counts, $r);
+		//$result = array_combine($r[1], $r[2]);
+		$result[12] = (string)$actionability_stats->total_peds_io_pairs_12;
+		$result[11] = (string)$actionability_stats->total_peds_io_pairs_11;
+		$result[10] = (string)$actionability_stats->total_peds_io_pairs_10;
+		$result[9] = (string)$actionability_stats->total_peds_io_pairs_9;
+		$result[8] = (string)$actionability_stats->total_peds_io_pairs_8;
+		$result[7] = (string)$actionability_stats->total_peds_io_pairs_7;
+		$result[6] = (string)$actionability_stats->total_peds_io_pairs_6;
+		$result[5] = (string)$actionability_stats->total_peds_io_pairs_5less;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE] = $result;
+		unset($result);
+
+		$result["total_assertion"] 													= (string)$actionability_stats->total_assertion;
+		$result["total_assertion_definitive"] 							= (string)$actionability_stats->total_assertion_definitive;
+		$result["total_assertion_strong"] 									= (string)$actionability_stats->total_assertion_strong;
+		$result["total_assertion_moderate"] 								= (string)$actionability_stats->total_assertion_moderate;
+		$result["total_assertion_limited"] 									= (string)$actionability_stats->total_assertion_limited;
+		$result["total_assertion_na_expert_review"] 				= (string)$actionability_stats->total_assertion_na_expert_review;
+		$result["total_assertion_na_early_rule_out"] 				= (string)$actionability_stats->total_assertion_na_early_rule_out;
+		$result["total_assertion_assertion_pending"] 				= (string)$actionability_stats->total_assertion_assertion_pending;
+		$result["total_assertion_unknown"] 									= (string)$actionability_stats->total_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS] = $result;
+		unset($result);
+
+		$result['total_adult_assertion']          					 = (string)$actionability_stats->total_adult_assertion;
+		$result['total_adult_assertion_definitive']          = (string)$actionability_stats->total_adult_assertion_definitive;
+		$result['total_adult_assertion_strong']              = (string)$actionability_stats->total_adult_assertion_strong;
+		$result['total_adult_assertion_moderate']            = (string)$actionability_stats->total_adult_assertion_moderate;
+		$result['total_adult_assertion_limited']             = (string)$actionability_stats->total_adult_assertion_limited;
+		$result['total_adult_assertion_na_expert_review']    = (string)$actionability_stats->total_adult_assertion_na_expert_review;
+		$result['total_adult_assertion_na_early_rule_out']   = (string)$actionability_stats->total_adult_assertion_na_early_rule_out;
+		$result['total_adult_assertion_assertion_pending']   = (string)$actionability_stats->total_adult_assertion_assertion_pending;
+		$result['total_adult_assertion_unknown']             = (string)$actionability_stats->total_adult_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS] = $result;
+		unset($result);
+
+		$result['total_peds_assertion']           					 = (string)$actionability_stats->total_peds_assertion;
+		$result['total_peds_assertion_definitive']           = (string)$actionability_stats->total_peds_assertion_definitive;
+		$result['total_peds_assertion_strong']               = (string)$actionability_stats->total_peds_assertion_strong;
+		$result['total_peds_assertion_moderate']             = (string)$actionability_stats->total_peds_assertion_moderate;
+		$result['total_peds_assertion_limited']              = (string)$actionability_stats->total_peds_assertion_limited;
+		$result['total_peds_assertion_na_expert_review']     = (string)$actionability_stats->total_peds_assertion_na_expert_review;
+		$result['total_peds_assertion_na_early_rule_out']    = (string)$actionability_stats->total_peds_assertion_na_early_rule_out;
+		$result['total_peds_assertion_assertion_pending']    = (string)$actionability_stats->total_peds_assertion_assertion_pending;
+		$result['total_peds_assertion_unknown']              = (string)$actionability_stats->total_peds_assertion_unknown;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS] = $result;
+		unset($result);
+
 
 		$template = ['Adult' => 0, 'Ped' => 0
 					];

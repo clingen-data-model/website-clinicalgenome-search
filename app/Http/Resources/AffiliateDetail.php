@@ -16,6 +16,20 @@ class AffiliateDetail extends JsonResource
      */
     public function toArray($request)
     {
+
+        // foreach ($this->contributions as $contribution) {
+        //     //dd($contribution);
+        //     // Check if the current agent is this one.
+        //         if ($this->attributed_to->curie == $contribution->agent->curie) {
+        //             if ($contribution->realizes->curie == "SEPIO:0000155") {
+        //                 $contributor_type = "Primary";
+        //             }
+        //             if ($contribution->realizes->curie == "SEPIO:0004099") {
+        //                 $contributor_type = "Secondary";
+        //             }
+        //         }
+        // }
+
         return [
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,
@@ -26,6 +40,7 @@ class AffiliateDetail extends JsonResource
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
             'classification' => Genelib::ValidityClassificationString($this->classification->label ?? ''),
             'perm_id' => $this->curie,
+            'contributor_type' => $this->contributor_type,
             'released' => $this->displayDate($this->report_date),
             'date' => $this->report_date
         ];

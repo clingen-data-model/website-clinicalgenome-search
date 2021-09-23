@@ -19,6 +19,13 @@ Route::get('/', function () {
 
 });
 
+Route::get('/kb/curations', function () {
+
+	return redirect()->route('gene-curations');
+});
+
+
+
 Auth::routes(['verify' => true]);
 
 Route::get('/kb', function () {
@@ -215,6 +222,7 @@ Route::group(['prefix' => 'kb/downloads'], function () {
 Route::group(['prefix' => 'kb/reports'], function () {
 
 	Route::get('/stats', 'ReportController@statistics')->name('stats-index');
+	Route::get('/curation-activity-summary-report', 'ReportController@genesReportDownload')->name('curation-activity-summary-cvs');
 
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });
