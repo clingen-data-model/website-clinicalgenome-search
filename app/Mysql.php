@@ -181,7 +181,7 @@ class Mysql
 			$$key = $value;
 
         $array = [];
-        if (stripos($search, 'RXNORM:') === 0)
+        if (stripos($search, 'RXNORM') === 0)
         {
             // strip out the numeric value
             $search = substr($search, 7);
@@ -206,27 +206,50 @@ class Mysql
                         //->orderBy('synonyms')
                         //->orderBy('weight', 'desc')
                         ->take(10)->get();
-            foreach($records as $record)
+
+            if ($records->isEmpty() && stripos('RXNOR', $search) === 0)
             {
-                /*switch ($record->type)
+                // TODO:  change this around to avoid duplication
+                $search = substr($search, 7);
+
+                $records = Drug::query()->where('curie', 'like', $search . '%')
+                                ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                foreach($records as $record)
                 {
-                    case 2:
-                        $ctag = "(previous of " . $record->alias . ")";
-                        break;
-                    case 3:
-                        $ctag = "(alias of " . $record->alias . ")";
-                        break;
-                    default:
-                        $ctag = '';
-                }*/
-                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
-                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
-                //                . $ctag,
-                $array[] = ['label' => $record->label,
-                            'alias' => '',
-                            'hgnc' => 'RXNORM:' . $record->curie,
-                            'url' => route('drug-show', $record->curie),
-                            'curated' => (bool) count(array_filter($record->curation_activities))];
+                    $c = $record->curation_activities;
+                    $array[] = ['label' => 'RXNORM:' . $record->curie,
+                                'alias' => '',
+                                'hgnc' => $record->label,
+                                'url' => route('drug-show', $record->curie),
+                                'curated' => (bool) count(array_filter($record->curation_activities))];
+                }
+
+            }
+            else
+            {
+                foreach($records as $record)
+                {
+                    /*switch ($record->type)
+                    {
+                        case 2:
+                            $ctag = "(previous of " . $record->alias . ")";
+                            break;
+                        case 3:
+                            $ctag = "(alias of " . $record->alias . ")";
+                            break;
+                        default:
+                            $ctag = '';
+                    }*/
+                    // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                    //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                    //                . $ctag,
+                    $array[] = ['label' => $record->label,
+                                'alias' => '',
+                                'hgnc' => 'RXNORM:' . $record->curie,
+                                'url' => route('drug-show', $record->curie),
+                                'curated' => (bool) count(array_filter($record->curation_activities))];
+                }
             }
         }
 		return json_encode($array);
@@ -276,7 +299,7 @@ class Mysql
 			$$key = $value;
 
         $array = [];
-        if (stripos($search, 'MONDO:') === 0)
+        if (stripos($search, 'MONDO') === 0)
         {
             $records = Disease::query()->where('curie', 'like', $search . '%')
                             ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
@@ -492,7 +515,7 @@ class Mysql
 			$$key = $value;
 
         $array = [];
-        if (stripos($search, 'HGNC:') === 0)
+        if (stripos($search, 'HGNC') === 0)
         {
             $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
                             ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
