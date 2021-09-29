@@ -146,7 +146,7 @@
           align: 'center'
         },
 		    {
-          title: '# Secondary Contributor',
+          title: '# Secondary Contributions',
           field: 'total_secondary_curations',
           cellStyle: cellFormatter,
           filterControl: 'input',

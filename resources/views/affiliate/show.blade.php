@@ -162,7 +162,7 @@
         },
 		    {
           field: 'contributor_type',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="The role of this group during the curation process."></i></div> Contribution',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Each curation has a primary contributor, and may have one of more secondary contributors. Secondary contributors collaborate with and provide feedback to the primary GCEP. Questions related to curations should be directed to the primary GCEP."></i></div> Contribution',
           cellStyle: cellFormatter,
           formatter: contributorbadgeFormatter,
           filterControl: 'select',
