@@ -99,6 +99,58 @@ class UpdateActionabilityStats extends Command
         $total_genes_pairs_unique            = count($total_genes_pairs_unique);
 
 
+        // Total Not Failed
+        $data = ActionabilitySummary::Where([
+            ["status_overall", "=", "Released"],
+            ["status_stg1", "=", "Complete"],
+        ])->get();
+        $report = array();
+        foreach ($data as $item) {
+            //dd($item);
+            $report[] = $item->gene;
+            if ($item->context == "Pediatric") {
+                $reportPediatric[] = $item->docId;
+            }
+            if ($item->context == "Adult") {
+                $reportAdult[] = $item->docId;
+            }
+            $reportTopic[] = $item->docId;
+        }
+        $total_complete_io_pairs                   = array_values(array_unique($report));
+        $total_complete_io_pairs                   = count($total_complete_io_pairs);
+        $total_complete_topic                      = array_values(array_unique($reportTopic));
+        $total_complete_topic                      = count($total_complete_topic);
+        $total_complete_topic_adult                = array_values(array_unique($reportAdult));
+        $total_complete_topic_adult                = count($total_complete_topic_adult);
+        $total_complete_topic_peds                 = array_values(array_unique($reportPediatric));
+        $total_complete_topic_peds                 = count($total_complete_topic_peds);
+
+
+        // Total Failed
+        $data = ActionabilitySummary::Where([
+            ["status_overall", "=", "Released"],
+            ["status_stg1", "=", "Failed"],
+        ])->get();
+        $report = array();
+        foreach ($data as $item) {
+            //dd($item);
+            $report[] = $item->gene;
+            if($item->context == "Pediatric"){
+                $reportPediatric[] = $item->docId;
+            }
+            if ($item->context == "Adult") {
+                $reportAdult[] = $item->docId;
+            }
+            $reportTopic[] = $item->docId;
+        }
+        $total_failed_io_pairs                   = array_values(array_unique($report));
+        $total_failed_io_pairs                   = count($total_failed_io_pairs);
+        $total_failed_topic                      = array_values(array_unique($reportTopic));
+        $total_failed_topic                      = count($total_failed_topic);
+        $total_failed_topic_adult                = array_values(array_unique($reportAdult));
+        $total_failed_topic_adult                = count($total_failed_topic_adult);
+        $total_failed_topic_peds                 = array_values(array_unique($reportPediatric));
+        $total_failed_topic_peds                 = count($total_failed_topic_peds);
 
 
         // Total IO  Pairs & + Counts
@@ -420,6 +472,17 @@ class UpdateActionabilityStats extends Command
             $array['total_updated_topics']          = $total_updated_topics;
             $array['total_genes']                   = $total_genes;
             $array['total_genes_pairs_unique']      = $total_genes_pairs_unique;
+
+            $array['total_genes_pairs_unique']      = $total_complete_io_pairs;
+            $array['total_complete_topic']          = $total_complete_topic;
+            $array['total_complete_topic_adult']    = $total_complete_topic_adult;
+            $array['total_complete_topic_peds']     = $total_complete_topic_peds;
+
+            $array['total_failed_io_pairs']         = $total_failed_io_pairs;
+            $array['total_failed_topic']            = $total_failed_topic;
+            $array['total_failed_topic_adult']      = $total_failed_topic_adult;
+            $array['total_failed_topic_peds']       = $total_failed_topic_peds;
+
             $array['total_io_pairs_unique']         = $total_io_pairs_unique;
             $array['total_adult_io_pairs_unique']   = $total_adult_io_pairs_unique;
             $array['total_adult_io_pairs_12']       = $total_adult_io_pairs_12;
@@ -476,11 +539,20 @@ class UpdateActionabilityStats extends Command
         $this->line("Total Actionability Topics ----------------------------- " . $total_topics);
         $this->line("Total Updated Topics ----------------------------------- " . $total_updated_topics);
         $this->line("Total Genes -------------------------------------------- " . $total_genes);
-        //$this->line("Total Genes Pairs -------------------------------------- " . $total_genes_pairs);
         $this->line("Total Unique Genes Pairs ------------------------------- " . $total_genes_pairs_unique);
-        //$this->line("Total I/O Pairs ---------------------------------------- " . $total_io_pairs);
+
+        $this->line("Total Complete IO Pairs -------------------------------- " . $total_complete_io_pairs);
+        $this->line("Total Complete Topic ----------------------------------- " . $total_complete_topic);
+        $this->line("Total Complete Topic Adult ----------------------------- " . $total_complete_topic_adult);
+        $this->line("Total Complete Topic Peds ------------------------------ " . $total_complete_topic_peds);
+
+        $this->line("Total Failed IO Pairs ---------------------------------- " . $total_failed_io_pairs);
+        $this->line("Total Failed Topic ------------------------------------- " . $total_failed_topic);
+        $this->line("Total Failed Topic Adult ------------------------------- " . $total_failed_topic_adult);
+        $this->line("Total Failed Topic Peds -------------------------------- " . $total_failed_topic_peds);
+
         $this->line("Total Unique I/O Pairs --------------------------------- " . $total_io_pairs_unique);
-        //$this->line("Total Adult I/O Pairs ---------------------------------- " . $total_adult_io_pairs);
+
         $this->line("Total Adult Unique I/O Pairs --------------------------- " . $total_adult_io_pairs_unique);
         $this->line("Adult Score 12 ----------------------------------------- " . $total_adult_io_pairs_12);
         $this->line("Adult Score 11 ----------------------------------------- " . $total_adult_io_pairs_11);
@@ -491,7 +563,6 @@ class UpdateActionabilityStats extends Command
         $this->line("Adult Score 6 ------------------------------------------ " . $total_adult_io_pairs_6);
         $this->line("Adult Score 5< ----------------------------------------- " . $total_adult_io_pairs_5less);
 
-        //$this->line("Total Pediatric I/O Pairs ---------------------------------- " . $total_peds_io_pairs);
         $this->line("Total Peds Unique I/O Pairs ---------------------------- " . $total_peds_io_pairs_unique);
         $this->line("Peds Score 12 ------------------------------------------ " . "$total_peds_io_pairs_12");
         $this->line("Peds Score 11 ------------------------------------------ " . $total_peds_io_pairs_11);
