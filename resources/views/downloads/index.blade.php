@@ -129,11 +129,11 @@
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
-                        <td><strong>All Dosage Sensitivity Download File Archive</strong>
-                            <div class="small">All Dosage Sensitivity download files are refreshed nightly are available.  </div>
+                        <td><strong>All Dosage Sensitivity Download File Archive (FTP Archives)</strong>
+                            <div class="small">All Dosage Sensitivity download files are refreshed nightly are available for the last 60 days.  </div>
                         </td>
                         <td style="text-align:center" colspan="4">
-                            <a href="https://ftp.clinicalgenome.org/archive"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity FTP download files"><i class="fas fa-download"></i> FTP Files</button></a>
+                            <a href="https://ftp.clinicalgenome.org/archive"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity FTP download files"><i class="fas fa-download"></i> FTP File Archives</button></a>
                         </td>
                     </tr>
                 </table>
