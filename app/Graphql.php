@@ -1513,10 +1513,15 @@ class Graphql
 				$record->total_all_curations = $total_all_curations;
 				$record->total_approver_curations = $total_approver_curations;
 				$record->total_secondary_curations = $total_secondary_curations;
+				if($record->total_secondary_curations == 0) {
+					$record->total_secondary_curations = "--";
+				}
 			}
 			$ncurations += $node->gene_validity_assertions->count;
 
-			$collection->push(new Nodal((array) $record));
+			if($record->total_approver_curations != 0 ){
+				$collection->push(new Nodal((array) $record));
+			}
 		}
 
 		// genegraph currently provides no sort capablility

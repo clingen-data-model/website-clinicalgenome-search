@@ -32,7 +32,7 @@ class Filegenescurated extends JsonResource
             'dosage_group' => $this['dosage_group'] ?? "",
             'gene_disease_validity_assertion_classifications ' => $this[ 'gene_validity_assertion_classifications'] ?? "",
             'gene_disease_validity_assertion_reports' => $this[ 'gene_validity_assertion_reports'] ?? "",
-            'gene_validity_groups' => $this['gene_validity_groups'] ?? "",
+            'gene_validity_gceps' => $this['gene_validity_gceps'] ?? "",
             'actionability_assertion_classifications ' => $this[ 'actionability_assertion_classifications'] ?? "",
             'actionability_assertion_reports' => $this[ 'actionability_assertion_reports'] ?? "",
             'actionability_groups' => $this['actionability_groups'] ?? "",

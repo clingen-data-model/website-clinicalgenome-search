@@ -55,7 +55,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
                     $mois = array();
                     $gene_validity_assertions_classifications = array();
                     $gene_validity_assertion_reports = array();
-                    $gene_validity_groups = array();
+                    $gene_validity_gceps = array();
                     $actionability_assertion_classifications = array();
                     $actionability_assertions_reports = array();
                     $actionability_groups = array();
@@ -69,7 +69,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
                             $gene_validity_assertions_classifications[] = $gene_validity_assertion->classification->label . " (" . $report_date . ")";
                             $mois[] = $gene_validity_assertion->mode_of_inheritance->label;
                             $gene_validity_assertion_reports[] = route('validity-show', ['id' => $gene_validity_assertion->curie]);
-                            $gene_validity_groups[] = $gene_validity_assertion->attributed_to->label;
+                            $gene_validity_gceps[] = $gene_validity_assertion->attributed_to->label;
                         }
                     }
                     if (isset($genetic_condition->actionability_assertions)) {
@@ -92,7 +92,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
                     $gene_validity_assertion_reports = implode(' | ', $gene_validity_assertion_reports);
                     $actionability_assertion_classifications = implode(' | ', $actionability_assertion_classifications);
                     $actionability_assertions_reports = implode(' | ', $actionability_assertions_reports);
-                    $gene_validity_groups = implode(' | ', $gene_validity_groups);
+                    $gene_validity_gceps = implode(' | ', $gene_validity_gceps);
                     $actionability_groups = implode(' | ', $actionability_groups);
 
                     $return[] = [
@@ -109,7 +109,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
                         'dosage_group' => $dosage_group,
                         'gene_validity_assertion_classifications' => $gene_validity_assertions_classifications,
                         'gene_validity_assertion_reports' => $gene_validity_assertion_reports,
-                        'gene_validity_groups' => $gene_validity_groups,
+                        'gene_validity_gceps' => $gene_validity_gceps,
                         'actionability_assertion_classifications' => $actionability_assertion_classifications,
                         'actionability_assertion_reports' => $actionability_assertions_reports,
                         'actionability_groups' => $actionability_groups,
@@ -129,7 +129,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
     {
         return [
             ["FILE CREATED: " . Carbon::now()->format('Y-m-d')],
-            ["gene_symbol", "hgnc_id", "gene_url", "disease_label", "mondo_id", "disease_url", "mode_of_inheritances", "dosage_haploinsufficiency_assertion", "dosage_triplosensitivity_assertion", "dosage_report", "dosage_group", "gene_disease_validity_assertion_classifications", "gene_disease_validity_assertion_reports", "gene_disease_validity_groups", "actionability_assertion_classifications","actionability_assertion_reports", "actionability_groups"],
+            ["gene_symbol", "hgnc_id", "gene_url", "disease_label", "mondo_id", "disease_url", "mode_of_inheritance", "dosage_haploinsufficiency_assertion", "dosage_triplosensitivity_assertion", "dosage_report", "dosage_group", "gene_disease_validity_assertion_classifications", "gene_disease_validity_assertion_reports", "gene_disease_validity_gceps", "actionability_assertion_classifications","actionability_assertion_reports", "actionability_groups"],
         ];
     }
 }
