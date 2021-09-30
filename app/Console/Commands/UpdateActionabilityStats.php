@@ -277,7 +277,7 @@ class UpdateActionabilityStats extends Command
         $data = ActionabilitySummary::Where([
             ["context", "=", "Pediatric"],
             //["status_overall", "!=", "Released"],
-            ["omim", "!=", "(No paired disease(s) for gene)"],
+            //["omim", "!=", "(No paired disease(s) for gene)"],
             ["consensusAssertion", "!=", ""]
         ])->get();
         $total_peds_assertion_definitive            = 0;
@@ -340,7 +340,7 @@ class UpdateActionabilityStats extends Command
         $data = ActionabilitySummary::Where([
             ["context", "=", "Adult"],
             //["status_overall", "!=", "Released"],
-            ["omim", "!=", "(No paired disease(s) for gene)"],
+            //["omim", "!=", "(No paired disease(s) for gene)"],
             ["consensusAssertion", "!=", ""]
         ])->get();
         $total_adult_assertion_definitive            = 0;

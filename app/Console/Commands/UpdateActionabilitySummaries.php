@@ -208,15 +208,18 @@ class UpdateActionabilitySummaries extends Command
         //dd($heading);
         $this->line('Building Adult Assertion data rows');
         foreach ($all as $row) {
+
+            //dd($row);
             $data = ActionabilitySummary::where([
                 ['contextIri', '=', $row['contextIri']],
                 ['geneOmim', '=', $row['geneOmim']],
-                ['omim', '=', $row['omim']]
+                ['disease', '=', $row['disease']]
                 ])->first();
             if($data){
                 $data->consensusAssertion                = $row['consensusAssertion'] ?? "";
                 $data->save();
             }
+            //dd($data);
         }
 
         // DO THIS FOR ADULT Assertion- PEDS AFTER (CLEANUP IN FUTURE)
@@ -243,7 +246,7 @@ class UpdateActionabilitySummaries extends Command
             $data = ActionabilitySummary::where([
                 ['contextIri', '=', $row['contextIri']],
                 ['geneOmim', '=', $row['geneOmim']],
-                ['omim', '=', $row['omim']]
+                ['disease', '=', $row['disease']]
             ])->first();
             if ($data) {
                 $data->consensusAssertion                = $row['consensusAssertion'] ?? "";
