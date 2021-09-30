@@ -610,9 +610,33 @@
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><h4><a  target="report" href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Reports</a></h4></div>
+          <div class="col-sm-12 text-left"><h4><a  target="report" href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Topics</a></h4></div>
 
           <div class="col-sm-6 px-1">
+            <div class="panel panel-default border-primary">
+                <div class="panel-body p-1">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <div class="text-size-lg lineheight-tight">
+                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_COMPLETED] ?? '' }}
+                  </div>
+                  <div class="mb-2 lineheight-tight">Total Actionability <br />Reports</div>
+                  </a>
+                </div>
+              </div>
+          </div>
+          <div class="col-sm-6 px-1">
+            <div class="panel panel-default border-primary">
+                <div class="panel-body p-1">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <div class="text-size-lg lineheight-tight">
+                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_FAILED] ?? '' }}
+                  </div>
+                  <div class="mb-2 lineheight-tight">Total Topics Failed <br />Early Rule-out</div>
+                  </a>
+                </div>
+              </div>
+          </div>
+          {{-- <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
@@ -635,7 +659,7 @@
                   </a>
                 </div>
               </div>
-          </div>
+          </div> --}}
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
@@ -653,13 +677,25 @@
                 <div class="panel-body p-1">
                   <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
+                    {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] ?? '' }}
+                  </div>
+                  <div class="mb-2 lineheight-tight">Total Actionability <br />Updated Reports</div>
+                  </a>
+                </div>
+              </div>
+          </div>
+          {{-- <div class="col-sm-6 px-1">
+            <div class="panel panel-default border-primary">
+                <div class="panel-body p-1">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] }}
                   </div>
                   <div class="mb-2 lineheight-tight">Total Gene-Disease<br> Pairs</div>
                   </a>
                 </div>
               </div>
-          </div>
+          </div> --}}
           <!--<div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
@@ -696,13 +732,13 @@
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
                           <text x="50%" y="45%" class="chart-number">
-                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] ?? '' }}
+                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] ?? '' }}
                           </text>
                           <text x="50%" y="45%" class="chart-label">
-                            Total Outcome-
+                            Total
                           </text>
                           <text x="50%" y="52%" class="chart-label">
-                            Intervention
+                            Gene-Disease
                           </text>
                           <text x="50%" y="59%" class="chart-label">
                             Pairs
@@ -714,371 +750,200 @@
 
         <div class="row mt-2">
           <div class="col-sm-6">
-            <h4 class="mb-0">Adult Context Outcome-Intervention Pairs</h4>
+            <h5 class="mb-0">Adult Context </h4>
 
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a></p>
+              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a><br/>
+                {{-- <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_ADULT] ?? '' }} Total Adult Gene-Disease Pairs</a> --}}
+              </p>
 
               <p><strong>Total Scores Visualized</strong></p>
 
-            <table class="table table-condensed" style="width: 90%">
+            <table class="table table-condensed">
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0 }}</span>
                   </div>
-                  <strong>12 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0 }}</span>
                   </div>
-                  <strong>11 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0 }}</span>
                   </div>
-                  <strong>10 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0 }}</span>
                   </div>
-                  <strong>9 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0 }}</span>
                   </div>
-                  <strong>8 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0 }}</span>
                   </div>
-                  <strong>7 Score</strong>
                 </td>
               </tr>
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0 }}</span>
                   </div>
-                  <strong>6 Score</strong>
                 </td>
               </tr>
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->actionabilityAdultOrLess() }}</span>
                   </div>
-                  <strong>5 or less</strong>
                 </td>
               </tr>
-              {{-- <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultRuleout() }}%; background-color:#666; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] ?? 0 }}</span>
-
-                  </div><small>Failed Early Rule-out</small>
-                </td>
-              </tr> --}}
             </table>
           </div>
           <div class="col-sm-6 border-left-1">
-            <h4 class="mb-0">Pediatric Context Outcome-Intervention Pairs</h4>
+            <h5 class="mb-0">Pediatric Context </h4>
 
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ" class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a></p>
+              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_PED] ?? '' }} Total Pediatric Gene-Disease Pairs</a><br/>
+                {{-- <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a> --}}
+              </p>
 
               <p><strong>Total Scores Visualized</strong></p>
-            <table class="table table-condensed" style="width: 90%">
+            <table class="table table-condensed">
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0 }}</span>
                   </div>
-                  <strong>12 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0 }}</span>
                   </div>
-                  <strong>11 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0 }}</span>
                   </div>
-                  <strong>10 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0 }}</span>
                   </div>
-                  <strong>9 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0 }}</span>
                   </div>
-                  <strong>8 Score</strong>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0 }}</span>
                   </div>
-                  <strong>7 Score</strong>
                 </td>
               </tr>
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0 }}</span>
                   </div>
-                  <strong>6 Score</strong>
                 </td>
               </tr>
               <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
+                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
+                <td class="border-0">
+                  <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->actionabilityPedOrLess() }}</span>
                   </div>
-                  <strong>5 or less</strong>
-                </td>
-              </tr>
-              {{-- <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>Rule-out</strong></td>
-                <td class="border-0">
-                  <div class="progress progress-no-bg mb-0 mt-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedRuleout() }}%; background-color:#666; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] ?? 0 }}</span>
-
-                  </div><small>Failed Early Rule-out</small>
-                </td>
-              </tr> --}}
-            </table>
-          </div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col-sm-6">
-            <h4 class="mb-0">Adult Context Assertions</h4>
-
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion'] ?? '' }} Total Adult Context Assertions</a></p>
-
-            <table class="table table-condensed" style="width: 90%">
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-definitive progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_definitive'] ?? 0) }}%;">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_definitive'] ?? 0 }}</span>
-                  </div>
-                  <strong>Definitive Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-strong progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_strong'] ?? 0) }}%;">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_strong'] ?? 0 }}</span>
-                  </div>
-                  <strong>Strong Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-moderate progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_moderate'] ?? 0) }}%;">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_moderate'] ?? 0 }}</span>
-                  </div>
-                  <strong>Moderate Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-limited progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_limited'] ?? 0) }}%;">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_limited'] ?? 0 }}</span>
-                  </div>
-                  <strong>Limited Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_expert_review'] ?? 0) }}%; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_expert_review'] ?? 0 }}</span>
-                  </div>
-                  <strong>N/A - Insufficient evidence: expert review</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_early_rule_out'] ?? 0) }}%; opacity:.8">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_early_rule_out'] ?? 0 }}</span>
-                  </div>
-                  <strong>N/A - Insufficient evidence: early rule-out</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending'] ?? 0) }}%; opacity:.3">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending'] ?? 0 }}</span>
-                  </div>
-                  <strong>Assertion Pending</strong>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="col-sm-6 border-left-1">
-            <h4 class="mb-0">Pediatric Context Assertions</h4>
-
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] ?? '' }} Total Pediatric Context Assertions</a></p>
-
-            <table class="table table-condensed" style="width: 90%">
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-definitive progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_definitive'] ?? 0) }}%; background-color:#a2cb50; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_definitive'] ?? 0 }}</span>
-                  </div>
-                  <strong>Definitive Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-strong progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_strong'] ?? 0) }}%; background-color:#a2cb50; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_strong'] ?? 0 }}</span>
-                  </div>
-                  <strong>Strong Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-moderate progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_moderate'] ?? 0) }}%; background-color:#a2cb50; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_moderate'] ?? 0 }}</span>
-                  </div>
-                  <strong>Moderate Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-limited progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_limited'] ?? 0) }}%;">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_limited'] ?? 0 }}</span>
-                  </div>
-                  <strong>Limited Actionability</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_expert_review'] ?? 0) }}%; opacity:1">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_expert_review'] ?? 0 }}</span>
-                  </div>
-                  <strong>N/A - Insufficient evidence: expert review</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_early_rule_out'] ?? 0) }}%; opacity:.7">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_early_rule_out'] ?? 0 }}</span>
-                  </div>
-                  <strong>N/A - Insufficient evidence: early rule-out</strong>
-                </td>
-              </tr>
-              <tr class="">
-                <td class="border-0 pb-2">
-                  <div class="progress mb-0 mt-0" style="background-color: rgb(240, 240, 240);">
-                    <div class="progress-bar chart-bg-no-known-disease-relationship progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedsAssertionPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'] ?? 0) }}%; opacity:.3">
-                    </div>
-                    <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'] ?? 0 }}</span>
-                  </div>
-                  <strong>Assertion Pending</strong>
                 </td>
               </tr>
             </table>

@@ -43,7 +43,7 @@ class UpdateActionabilityStats extends Command
 
 
         // Total Actionability Topics
-        $data = ActionabilitySummary::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released")->get();
+        $data = ActionabilitySummary::where("status_overall", "=", "Released")->get();
         $report = array();
         foreach ($data as $item) {
             //dd($item);
@@ -53,7 +53,7 @@ class UpdateActionabilityStats extends Command
         $total_topics                   = count($total_topics);
 
         // Total Topics
-        $data = ActionabilitySummary::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released")->get();
+        $data = ActionabilitySummary::where("status_overall", "=", "Released")->get();
         $report = array();
         foreach ($data as $item) {
             $release_number = explode(".", $item->release);
@@ -72,10 +72,20 @@ class UpdateActionabilityStats extends Command
         foreach ($data as $item) {
             //dd($item);
             $report[] = $item->gene;
+            if ($item->context == "Pediatric") {
+                $reportPediatric[] = $item->gene;
+            }
+            if ($item->context == "Adult") {
+                $reportAdult[] = $item->gene;
+            }
         }
         //dd($report);
         $total_genes                   = array_values(array_unique($report));
         $total_genes                   = count($total_genes);
+        $total_genes_adult                   = array_values(array_unique($reportAdult));
+        $total_genes_adult                   = count($total_genes_adult);
+        $total_genes_peds                   = array_values(array_unique($reportPediatric));
+        $total_genes_peds                   = count($total_genes_peds);
 
 
         // Total Genes Pairs & Unique Pairs
@@ -88,33 +98,51 @@ class UpdateActionabilityStats extends Command
             ["omim", "!=", "(No paired disease(s) for gene)"],
         ])->get();
         $report = array();
+        $reportPediatric = array();
+        $reportAdult = array();
         foreach ($data as $item) {
             //dd($item);
             $report[$item->id] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+            if ($item->context == "Pediatric") {
+                $reportPediatric[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+            }
+            if ($item->context == "Adult") {
+                $reportAdult[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+            }
         }
         //dd($report);
         $total_genes_pairs                   = count($report);
         //$total_genes_pairs_unique            = array_values(array_unique($report));
         $total_genes_pairs_unique            = array_unique($report);
         $total_genes_pairs_unique            = count($total_genes_pairs_unique);
+        $total_genes_pairs_unique_adult      = array_values(array_unique($reportAdult));
+        $total_genes_pairs_unique_adult      = count($total_genes_pairs_unique_adult);
+        $total_genes_pairs_unique_peds       = array_values(array_unique($reportPediatric));
+        $total_genes_pairs_unique_peds       = count($total_genes_pairs_unique_peds);
 
 
         // Total Not Failed
         $data = ActionabilitySummary::Where([
             ["status_overall", "=", "Released"],
             ["status_stg1", "=", "Complete"],
+        ])->orWhere([
+            ["status_overall", "=", "Released"],
+            ["status_stg1", "=", "Incomplete"],
         ])->get();
         $report = array();
+        $reportPediatric = array();
+        $reportAdult = array();
+        $reportTopic = array();
         foreach ($data as $item) {
             //dd($item);
-            $report[] = $item->gene;
+            $report[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             if ($item->context == "Pediatric") {
-                $reportPediatric[] = $item->docId;
+                $reportPediatric[] = $item->docId . "-" . $item->context;
             }
             if ($item->context == "Adult") {
-                $reportAdult[] = $item->docId;
+                $reportAdult[] = $item->docId . "-" . $item->context;
             }
-            $reportTopic[] = $item->docId;
+            $reportTopic[] = $item->docId . "-" . $item->context;
         }
         $total_complete_io_pairs                   = array_values(array_unique($report));
         $total_complete_io_pairs                   = count($total_complete_io_pairs);
@@ -132,17 +160,21 @@ class UpdateActionabilityStats extends Command
             ["status_stg1", "=", "Failed"],
         ])->get();
         $report = array();
+        $reportPediatric = array();
+        $reportAdult = array();
+        $reportTopic = array();
         foreach ($data as $item) {
             //dd($item);
-            $report[] = $item->gene;
+            $report[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             if($item->context == "Pediatric"){
-                $reportPediatric[] = $item->docId;
+                $reportPediatric[] = $item->docId . "-" . $item->context;
             }
             if ($item->context == "Adult") {
-                $reportAdult[] = $item->docId;
+                $reportAdult[] = $item->docId . "-" . $item->context;
             }
-            $reportTopic[] = $item->docId;
+            $reportTopic[] = $item->docId . "-" . $item->context;
         }
+        //dd(array_unique($reportTopic));
         $total_failed_io_pairs                   = array_values(array_unique($report));
         $total_failed_io_pairs                   = count($total_failed_io_pairs);
         $total_failed_topic                      = array_values(array_unique($reportTopic));
@@ -471,9 +503,14 @@ class UpdateActionabilityStats extends Command
             $array['total_topics']                  = $total_topics;
             $array['total_updated_topics']          = $total_updated_topics;
             $array['total_genes']                   = $total_genes;
-            $array['total_genes_pairs_unique']      = $total_genes_pairs_unique;
+            $array['total_genes_adult']                   = $total_genes_adult;
+            $array['total_genes_peds']                   = $total_genes_peds;
 
-            $array['total_genes_pairs_unique']      = $total_complete_io_pairs;
+            $array['total_genes_pairs_unique']              = $total_genes_pairs_unique;
+            $array['total_genes_pairs_unique_adult']        = $total_genes_pairs_unique_adult;
+            $array['total_genes_pairs_unique_peds']         = $total_genes_pairs_unique_peds;
+
+            $array['total_complete_io_pairs']      = $total_complete_io_pairs;
             $array['total_complete_topic']          = $total_complete_topic;
             $array['total_complete_topic_adult']    = $total_complete_topic_adult;
             $array['total_complete_topic_peds']     = $total_complete_topic_peds;
@@ -539,7 +576,12 @@ class UpdateActionabilityStats extends Command
         $this->line("Total Actionability Topics ----------------------------- " . $total_topics);
         $this->line("Total Updated Topics ----------------------------------- " . $total_updated_topics);
         $this->line("Total Genes -------------------------------------------- " . $total_genes);
+            $this->line("Total Genes Adult ---------------------------------------- " . $total_genes_adult);
+            $this->line("Total Genes Peds ---------------------------------------- " . $total_genes_peds);
+
         $this->line("Total Unique Genes Pairs ------------------------------- " . $total_genes_pairs_unique);
+        $this->line("Total Unique Genes Pairs Adult ------------------------- " . $total_genes_pairs_unique_adult);
+        $this->line("Total Unique Genes Pairs Peds -------------------------- " . $total_genes_pairs_unique_peds);
 
         $this->line("Total Complete IO Pairs -------------------------------- " . $total_complete_io_pairs);
         $this->line("Total Complete Topic ----------------------------------- " . $total_complete_topic);

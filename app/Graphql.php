@@ -2501,8 +2501,12 @@ class Graphql
 		// $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] = $response->statistics->actionability_tot_pediatric_failed_early_rule_out;
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] 					= $actionability_stats->total_topics;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] 					= $actionability_stats->total_genes_adult;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] 					= $actionability_stats->total_genes_peds;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] 	= $actionability_stats->total_updated_topics;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS] 				= $actionability_stats->total_genes_pairs_unique;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_ADULT] 	= $actionability_stats->total_genes_pairs_unique_adult;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_PED] 		= $actionability_stats->total_genes_pairs_unique_peds;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS] 			= $actionability_stats->total_adult_io_pairs_unique;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_PAIRS] 				=	$actionability_stats->total_peds_io_pairs_unique;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_OUTCOME] 					= $actionability_stats->total_io_pairs_unique;
@@ -2510,6 +2514,16 @@ class Graphql
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] 			= $actionability_stats->total_peds_io_pairs_unique;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT] 		= $actionability_stats->total_updated_topics;
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_RULEOUT] 			= $actionability_stats->total_updated_topics;
+
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_COMPLETED_IOPAIR] 		= $actionability_stats->total_complete_io_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_COMPLETED] 						= $actionability_stats->total_complete_topic;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] 			= $actionability_stats->total_complete_topic_adult;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] 				= $actionability_stats->total_complete_topic_peds;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_FAILED_IOPAIR] 				= $actionability_stats->total_failed_io_pairs;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_FAILED] 							= $actionability_stats->total_failed_topic;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] 				= $actionability_stats->total_failed_topic_adult;
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] 					= $actionability_stats->total_failed_topic_peds;
 
 		//preg_match_all("/([^ = ]+)=([^ = ]+)/", $response->statistics->actionability_tot_adult_score_counts, $r);
 		//$result = array_combine($r[1], $r[2]);
@@ -2579,8 +2593,8 @@ class Graphql
 		// calculate top level graph size and offsets
 		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
 
-		$topcounters['classtotals']['Adult'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME];
-		$topcounters['classtotals']['Ped'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME];
+		$topcounters['classtotals']['Adult'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_ADULT];
+		$topcounters['classtotals']['Ped'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_PED];
 
 		$offset = 0;
 

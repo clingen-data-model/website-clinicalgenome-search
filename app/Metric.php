@@ -106,12 +106,17 @@ class Metric extends Model
     public const KEY_TOTAL_DOSAGE_TRIP_AR = "total_dosage_trip_ar";
     public const KEY_TOTAL_DOSAGE_TRIP_UNLIKELY = "total_dosage_trip_unlikely";
 
+    public const KEY_TOTAL_ACTIONABILITY_GENES_ADULT = "total_genes_adult";
+    public const KEY_TOTAL_ACTIONABILITY_GENES_PED = "total_genes_peds";
+
     public const KEY_TOTAL_ACTIONABILITY_CURATIONS = "total_actionability_curations";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_CURATIONS = "total_actionability_adult_curations";
     public const KEY_TOTAL_ACTIONABILITY_PED_CURATIONS = "total_actionability_ped_curations";
     public const KEY_TOTAL_ACTIONABILITY_REPORTS = "total_actionability_reports";
     public const KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS = "total_actionability_updated_reports";
     public const KEY_TOTAL_ACTIONABILITY_GD_PAIRS = "total_actionability_genedis_pairs";
+    public const KEY_TOTAL_ACTIONABILITY_GD_PAIRS_ADULT = "total_genes_pairs_unique_adult";
+    public const KEY_TOTAL_ACTIONABILITY_GD_PAIRS_PED = "total_genes_pairs_unique_peds";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_PAIRS = "total_actionability_adult_pairs";
     public const KEY_TOTAL_ACTIONABILITY_PED_PAIRS = "total_actionability_ped_pairs";
     public const KEY_TOTAL_ACTIONABILITY_OUTCOME = "total_actionability_outcome";
@@ -125,6 +130,15 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_ASSERTIONS = "total_actionability_assertions";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS = "total_actionability_adult_assertions";
     public const KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS = "total_actionability_ped_assertions";
+
+    public const KEY_TOTAL_ACTIONABILITY_COMPLETED_IOPAIR = "total_complete_io_pairs";
+    public const KEY_TOTAL_ACTIONABILITY_COMPLETED = "total_complete_topic";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED = "total_complete_topic_adult";
+    public const KEY_TOTAL_ACTIONABILITY_PED_COMPLETED = "total_complete_topic_peds";
+    public const KEY_TOTAL_ACTIONABILITY_FAILED_IOPAIR = "total_failed_io_pairs";
+    public const KEY_TOTAL_ACTIONABILITY_FAILED = "total_failed_topic";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_FAILED = "total_failed_topic_adult";
+    public const KEY_TOTAL_ACTIONABILITY_PED_FAILED = "total_failed_topic_peds";
 
     public const KEY_TOTAL_PATHOGENICITY_CURATIONS = "total_pathogenicity_curations";
     public const KEY_TOTAL_PATHOGENICITY_UNIQUE = "total_pathogenicity_unique";
