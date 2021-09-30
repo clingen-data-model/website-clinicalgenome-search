@@ -140,6 +140,7 @@ class Jira extends Model
                'label' => $response->customfield_10030 ?? 'unknown',
                'summary' => $response->summary,
                'key' => $issue,
+               'links' => $response->issuelinks ?? null,
                'genesymbol' => $response->customfield_10030,
                'genetype' => $response->customfield_10156->value ?? 'unknown',
                'grch37' => $response->customfield_10160 ?? null,
@@ -261,7 +262,23 @@ class Jira extends Model
           else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
+          // condense the links to only inward issues
+          if ($node->links !== null)
+         {
+             $t = [];
 
+             foreach ($node->links as $link)
+             {
+                 if (isset($link->inwardIssue))
+                   $t[] = $link;
+             }
+
+             if (empty($t))
+               $node->links = null;
+             else
+               $node->links = $t;
+
+         }
 
 	//dd($node);
 
@@ -286,6 +303,7 @@ class Jira extends Model
          $node = new Nodal([
               'summary' => $response->summary,
               'key' => $gene,
+              'links' => $response->issuelinks ?? null,
               'genetype' => $response->customfield_10156->value ?? 'unknown',
               'grch37' => $response->customfield_10160 ?? null,
               'grch38' => $response->customfield_10532 ?? null,
@@ -305,7 +323,12 @@ class Jira extends Model
               'gain_pheno_name' => $response->customfield_11831 ?? null,
               'gain_pheno_ontology' => $response->customfield_11632->value ?? null,
               'gain_pheno_ontology_id' => $response->customfield_11633 ?? null,
+              'breakpoint' => $response->customfield_12531->value ?? null,
               'label' => $response->customfield_10202 ?? null,
+              'allele' => $response->customfield_12530 ?? null,
+              'knownhits' => $response->customfield_12343->value ?? null,
+              'reduced_penetrance' => $response->customfield_12245 ?? null,
+               'reduced_penetrance_comment' => $response->customfield_12246 ?? null,
               //'description' => $response->customfield_12030 ?? '',
               //'description' => str_replace(["\r\n", "\r", "\n"], "<br/>",
                //       $response->description ?? ''),
@@ -315,7 +338,7 @@ class Jira extends Model
               'issue_type' => $response->issuetype->name,
                'jira_status' => $response->status->name
          ]);
-//dd($response);
+//dd($node);
 
           // create a custom status string based on legacy comparisons
           if ($node->jira_status == "Open")
@@ -413,6 +436,23 @@ class Jira extends Model
           else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
 
+         // condense the links to only inward issues
+         if ($node->links !== null)
+         {
+             $t = [];
+
+             foreach ($node->links as $link)
+             {
+                 if (isset($link->inwardIssue))
+                   $t[] = $link;
+             }
+
+             if (empty($t))
+               $node->links = null;
+             else
+               $node->links = $t;
+
+         }
 
     //dd($node);
 

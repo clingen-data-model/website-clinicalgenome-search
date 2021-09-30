@@ -701,7 +701,7 @@ class GeneLib extends Model
                'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
                'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
-               'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name',
+               'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
                'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
                {
@@ -759,12 +759,12 @@ class GeneLib extends Model
          {
               // combine the two
               foreach(['summary', 'genetype', 'label', 'date',
-              'triplo_score', 'haplo_score', 'cytoband', 'key',
-              'loss_comments', 'loss_pheno_omim', 'loss_pmids',
+              'triplo_score', 'haplo_score', 'cytoband', 'key', 'breakpoint',
+              'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
               'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
-              'gain_comments', 'gain_pheno_omim', 'gain_pmids',
+              'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'reduced_penetrance',
               'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-              'grch37', 'grch38', 'chromosome_band',
+              'grch37', 'grch38', 'chromosome_band', 'allele', 'knownhits', 'links',
               'resolution', 'issue_type', 'description',
               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
               {

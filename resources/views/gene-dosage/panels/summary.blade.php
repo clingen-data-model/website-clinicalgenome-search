@@ -49,6 +49,12 @@
           <div class="col-sm-9 border-left-4 border-info bold prewrap" >{{ $record->description }}</div>
         </div>
         @endif
+        @if ($record->issue_type == "ISCA Region Curation" && !empty($record->breakpoint))
+        <div class="row pb-2 pt-3">
+          <div class="col-sm-3 text-right">Breakpoint Type:</div>
+          <div class="col-sm-9 border-left-4 border-info bold" >{{ $record->breakpoint }}</div>
+        </div>
+        @endif
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Haploinsufficiency:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
@@ -77,6 +83,12 @@
             @endif
           </div>
         </div>
+        @if ($record->issue_type == "ISCA Region Curation" && !empty($record->allele))
+        <div class="row pb-2 pt-3">
+          <div class="col-sm-3 text-right">gnomAD Allele Frequency:</div>
+          <div class="col-sm-9 border-left-4 border-info bold" >{{ $record->allele }}</div>
+        </div>
+        @endif
         <div class="row pb-2 pt-2">
             <div class="col-sm-3 text-right">Assoc. with Reduced Penetrance:</div>
             <div class="col-sm-9 border-left-4 border-info bold">
@@ -87,7 +99,22 @@
               @endif
                 <div class="font-weight-normal mt-1">{{ $record->reduced_penetrance_comment }}</div>
             </div>
-          </div>
+        </div>
+        @if ($record->issue_type == "ISCA Region Curation" && !empty($record->knownhits))
+        <div class="row pb-2 pt-3">
+          <div class="col-sm-3 text-right">Contains Known HI/TS Region:</div>
+          <div class="col-sm-9 border-left-4 border-info bold" >{{ $record->knownhits }}</div>
+        </div>
+        @endif
+        @if (!empty($record->links))
+        <div class="row pb-2 pt-2">
+          <div class="col-sm-3 text-right">Related Regions:</div>
+          <div class="col-sm-9 border-left-4 border-info bold" >
+              @foreach ($record->links as $link)
+                <a href="/kb/gene-dosage/region/{{ $link->inwardIssue->key }}">{{ $link->inwardIssue->fields->summary }}</a></div>
+              @endforeach
+        </div>
+        @endif
         <div class="row pb-2 pt-2">
           <div class="col-sm-3 text-right">Last Evaluated:</div>
           <div class="col-sm-9 border-left-4 border-info bold">

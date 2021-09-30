@@ -270,7 +270,7 @@ class Variantpath extends Model
                                 'old_id' =>$current->id,
                                 'old_type' => 'App\Variantpath',
                                 'new_id' => $new->id,
-                                'new_type' => 'App\VariantPath',
+                                'new_type' => 'App\Variantpath',
                                 'change_date' => Carbon::yesterday(),   // $new->report_date,
                                 'status' => 1,
                                 'description' => $this->scribe($differences)
