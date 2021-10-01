@@ -128,7 +128,9 @@ class GenesCuratedExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            ["FILE CREATED: " . Carbon::now()->format('Y-m-d')],
+            ["ClinGen Curation Activity Summary Report - FILE CREATED: " . Carbon::now()->format('Y-m-d')],
+            ["README 1: ", " This file provides summary curation information about Gene-Disease Validity, Dosage Sensitivity, and Clinical Actionability. Curations for each activity are grouped by gene (HGNC) and disease (MONDO)."],
+            ["README 2: ", " Noted columns may have multiple entries: mode_of_inheritance, gene_disease_validity_assertion_classifications, gene_disease_validity_assertion_reports, gene_disease_validity_gceps, actionability_assertion_classifications, actionability_assertion_reports, and actionability_groups.  If so, the entries will be seperated by a | (pipe)."],
             ["gene_symbol", "hgnc_id", "gene_url", "disease_label", "mondo_id", "disease_url", "mode_of_inheritance", "dosage_haploinsufficiency_assertion", "dosage_triplosensitivity_assertion", "dosage_report", "dosage_group", "gene_disease_validity_assertion_classifications", "gene_disease_validity_assertion_reports", "gene_disease_validity_gceps", "actionability_assertion_classifications","actionability_assertion_reports", "actionability_groups"],
         ];
     }
