@@ -855,7 +855,7 @@
               <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
                 <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
                 <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_PED] ?? '' }} Total Pediatric Gene-Disease Pairs</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a><br/>
                 {{-- <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a> --}}
               </p>
 
