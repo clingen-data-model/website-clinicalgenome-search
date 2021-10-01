@@ -228,6 +228,7 @@
         if (newsearch.indexOf(currentsearch) !== 0)
         {
             $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
 
             $.get(url + "?search=" + newsearch, function(response)
                 {
@@ -241,6 +242,7 @@
                     $('.matchphrase').html('"' + currentsearch + '"');
 
                     $("body").css("cursor", "default");
+                    $table.bootstrapTable('hideLoading')
 
                 }).fail(function(response)
                 {
@@ -258,6 +260,7 @@
         if (currentsearch != "")
         {
             $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
 
             $.get(url + "?search=", function(response)
                 {
@@ -271,6 +274,7 @@
                     $('.matchphrase').html('"' + currentsearch + '"');
 
                     $("body").css("cursor", "default");
+                    $table.bootstrapTable('hideLoading')
 
                 }).fail(function(response)
                 {

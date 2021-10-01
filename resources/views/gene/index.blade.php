@@ -257,6 +257,7 @@ $(function() {
         if (newsearch.indexOf(currentsearch) !== 0)
         {
             $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
 
             $.get(url + "?search=" + newsearch, function(response)
                 {
@@ -269,6 +270,7 @@ $(function() {
 
                     $('.matchphrase').html('"' + currentsearch + '"');
 
+                    $table.bootstrapTable('hideLoading')
                     $("body").css("cursor", "default");
 
                 }).fail(function(response)
@@ -287,6 +289,7 @@ $(function() {
         if (currentsearch != "")
         {
             $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
 
             $.get(url + "?search=", function(response)
                 {
@@ -299,6 +302,7 @@ $(function() {
 
                     $('.matchphrase').html('"' + currentsearch + '"');
 
+                    $table.bootstrapTable('hideLoading')
                     $("body").css("cursor", "default");
 
                 }).fail(function(response)
