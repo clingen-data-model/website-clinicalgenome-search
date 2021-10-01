@@ -75,7 +75,7 @@
            <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Enter a drug name or RXNORM ID (Examples: aspirin, RXNORM:1191)">
            </span>
            <span class="inputQueryRegion" style="display: none">
-           <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region (Examples: chr7:75158048-76063176, chr7, chr7:70008000)">
+           <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region, or full cytoband (Examples: chr7:75158048-76063176, chr7, chr7:70008000, 12q24.31)">
            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit"> Search</button>
