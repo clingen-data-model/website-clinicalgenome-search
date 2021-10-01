@@ -65,7 +65,7 @@
                             <div class="small">This files are produced by the ClinGen Dosage Sensitivity Curation Working Group, formerly the International Standards for Cytogenomic Arrays (ISCA) Consortium Evidence-Based Review Committee. The goal of this group is to curate regions of the genome (both single genes and particular genomic regions) with respect to their haploinsufficiency and/or triplosensitivity. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download README"><i class="fas fa-download"></i> README</button></a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/README" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download README"><i class="fas fa-download"></i> README</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -73,7 +73,7 @@
                             <div class="small">This file provides a summary of the Dosage Sensitivity curations completed by ClinGen. This file is built in real-time. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}"  class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}" target="_blank"  class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -81,8 +81,8 @@
                             <div class="small">The files in this directory contain data for genes that have been through the review process. These files are updated daily. Files are available for genes and regions localized on both GRCh37 and GRCh38.  The tsv files have a header and contain all of the curation information found on the ClinGen Dosage Sensitivity Map web pages, including disease name (when applicable), PMIDs used as evidence, and comments.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv"><button class="btn btn-default watchdownloadclick "><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh37.tsv" target="_blank" class="btn btn-default watchdownloadclick "><i class="fas fa-download"></i> GRCh37 (tsv)</button><a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_gene_curation_list_GRCh38.tsv" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -90,8 +90,8 @@
                             <div class="small">The files in this directory contain data for regions that have been through the review process. These files are updated daily. Files are available for genes and regions localized on both GRCh37 and GRCh38.  The tsv files have a header and contain all of the curation information found on the ClinGen Dosage Sensitivity Map web pages, including disease name (when applicable), PMIDs used as evidence, and comments.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh37 (tsv)"><i class="fas fa-download"></i> GRCh37 (tsv)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh37.tsv" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh37 (tsv)"><i class="fas fa-download"></i> GRCh37 (tsv)</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_region_curation_list_GRCh38.tsv" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download GRCh38 (tsv)"><i class="fas fa-download"></i> GRCh38 (tsv)</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -99,8 +99,8 @@
                             <div class="small">BED files are available for gene curation. There are separate files for haploinsufficiency and triplosensitivity as the BED file only has one column for 'score'. Because the score column expects a number rather than text, "Dosage sensitivity unlikely" is represented by the score of 40, and "Gene associated with autosomal recessive phenotype" is represented by the score of 30.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh37 (bed)"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh37.bed" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh37 (bed)" target="_blank"><i class="fas fa-download"></i> GRCh37 (bed)</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_haploinsufficiency_gene_GRCh38.bed" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Haploinsufficiency GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
@@ -108,8 +108,8 @@
                             <div class="small">BED files are available for gene curation. There are separate files for haploinsufficiency and triplosensitivity as the BED file only has one column for 'score'. Because the score column expects a number rather than text, "Dosage sensitivity unlikely" is represented by the score of 40, and "Gene associated with autosomal recessive phenotype" is represented by the score of 30.</div>
                         </td>
                         <td></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh37 (bed)"><i class="fas fa-download"></i> GRCh37 (bed)</button></a></td>
-                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</button></a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh37.bed" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh37 (bed)"><i class="fas fa-download"></i> GRCh37 (bed)</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="ftp://ftp.clinicalgenome.org/ClinGen_triplosensitivity_gene_GRCh38.bed" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download Triplosensitivity GRCh38 (bed)"><i class="fas fa-download"></i> GRCh38 (bed)</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
 
@@ -119,12 +119,12 @@
                         </td>
                         <td></td>
                         <td style="text-align:center"">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed"><button class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG19 (bed)"><i class="fas fa-download"></i> HG19 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed"><button class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG19 (aed)"><i class="fas fa-download"></i> HG19 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG19 (bed)"><i class="fas fa-download"></i> HG19 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG19 (aed)"><i class="fas fa-download"></i> HG19 (aed)</a>
                         </td>
                         <td style="text-align:center">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed"><button class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</button></a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed"><button class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</button></a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</a>
                         </td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
@@ -133,7 +133,7 @@
                             <div class="small">All Dosage Sensitivity download files are refreshed nightly are available for the last 60 days.  </div>
                         </td>
                         <td style="text-align:center" colspan="4">
-                            <a href="https://ftp.clinicalgenome.org/archive"><button class="btn btn-default watchdownloadclick" title="Dosage Sensitivity FTP download files"><i class="fas fa-download"></i> FTP File Archives</button></a>
+                            <a href="https://ftp.clinicalgenome.org/archive" target="_blank" class="btn btn-default watchdownloadclick" title="Dosage Sensitivity FTP download files"><i class="fas fa-download"></i> FTP File Archives</a>
                         </td>
                     </tr>
                 </table>
@@ -211,7 +211,7 @@
                             <div class="small">This file provides a summary of the Variant Pathogenicitycurations completed by ClinGen's VCEPs. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
