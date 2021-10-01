@@ -143,15 +143,15 @@
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
-          align: 'center'
+          align: 'left'
         },
 		    {
-          title: '# Secondary Contributions',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Each curation has a primary contributor, and may have one or more secondary contributors. Secondary contributors collaborate with and provide feedback to the primary GCEP. Questions related to curations should be directed to the primary GCEP."></i></div> # Secondary Contributions',
           field: 'total_secondary_curations',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
-          align: 'center'
+          align: 'left'
         }
       ]
     })
