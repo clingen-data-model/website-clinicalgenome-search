@@ -8,12 +8,12 @@
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40">  </td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0">Diseases</h1>
+          <td class="pl-2 pb-3"><h1 class="h2 p-0 m-0">Diseases</h1>
           </td>
           @if ($search == "")
-          <td class="text-xl text-gray-600 pl-3 pt-2">Search results for all Diseases</td>
+          <td class="text-xl text-gray-600 pl-3 pt-0">Search results for all Diseases</td>
           @else
-          <td class="text-xl text-gray-600 pl-3 pt-2"><i>Search results for all Diseases containing </i><span class="h5 badge badge-secondary matchphrase mb-3">"{{ $search }}"</span></td>
+          <td class="text-xl text-gray-600 pl-3 pb-1"><i>Search results for all Diseases containing: </i><span class="h5 badge badge-secondary matchphrase mb-3  ml-2">"{{ $search }}"</span></td>
           @endif
         </tr>
       </table>

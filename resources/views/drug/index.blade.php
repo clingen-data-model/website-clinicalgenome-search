@@ -3,24 +3,25 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-7 curated-genes-table">
+        <div class="col-md-9 curated-genes-table">
+
             <table class="mt-3 mb-2">
                 <tr>
                     <td class="valign-top"><img src="/images/drugmed.png" width="40" height="40"> </td>
-                    <td class="pl-2">
+                    <td class="pl-2 pb-3">
                         <h1 class="h2 p-0 m-0">Drugs & Medications</h1>
                     </td>
                     @if ($search == "")
-                    <td class="text-xl text-gray-600 pl-3 pt-2">Search results for all Drugs</td>
+                    <td class="text-xl text-gray-600 pl-3 pt-0">Search results for all Drugs</td>
                     @else
-                    <td class="text-xl text-gray-600 pl-3 pt-2"><i>Search results for all Drugs containing </i><span
-                            class="h5 badge badge-secondary matchphrase mb-3">"{{ $search }}"</span></td>
+                    <td class="text-xl text-gray-600 pl-3 pb-1"><i>Search results for all Drugs containing: </i><span
+                            class="h5 badge badge-secondary matchphrase mb-3 ml-2">"{{ $search }}"</span></td>
                     @endif
                 </tr>
             </table>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-3">
             <div class="">
                 <div class="text-right p-2">
                     <ul class="list-inline pb-0 mb-0 small">
