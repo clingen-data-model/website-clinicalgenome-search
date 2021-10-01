@@ -2,34 +2,43 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
-    <div class="col-md-7 curated-genes-table">
-      <table class="mt-3 mb-2">
-        <tr>
-          <td class="valign-top"><img src="/images/drugmed.png" width="40" height="40">  </td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0">Drugs & Medications</h1>
-          </td>
-          <td class="text-xl text-gray-600 pl-3 pt-2">matching search term "{{ $search }}"</td>
-        </tr>
-      </table>
-    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-9 curated-genes-table">
 
-    <div class="col-md-5">
-      <div class="">
-        <div class="text-right p-2">
-          <ul class="list-inline pb-0 mb-0 small">
-            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total Drugs & Medications<br />Matched by Search</li>
-          </ul>
+            <table class="mt-3 mb-2">
+                <tr>
+                    <td class="valign-top"><img src="/images/drugmed.png" width="40" height="40"> </td>
+                    <td class="pl-2 pb-3">
+                        <h1 class="h2 p-0 m-0">Drugs & Medications</h1>
+                    </td>
+                    @if ($search == "")
+                    <td class="text-xl text-gray-600 pl-3 pt-0">Search results for all Drugs</td>
+                    @else
+                    <td class="text-xl text-gray-600 pl-3 pb-1"><i>Search results for all Drugs containing: </i><span
+                            class="h5 badge badge-secondary matchphrase mb-3 ml-2">"{{ $search }}"</span></td>
+                    @endif
+                </tr>
+            </table>
         </div>
-      </div>
+
+        <div class="col-md-3">
+            <div class="">
+                <div class="text-right p-2">
+                    <ul class="list-inline pb-0 mb-0 small">
+                        <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countDrugs text-18px"><i
+                                    class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total
+                            Drugs & Medications<br />Matched by Search</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 light-arrows dark-table">
+
+            @include('_partials.genetable')
+
+        </div>
     </div>
-
-		<div class="col-md-12 light-arrows dark-table">
-
-			@include('_partials.genetable')
-
-		</div>
-	</div>
 </div>
 
 @endsection
@@ -48,9 +57,9 @@
 @endsection
 
 @section('script_css')
-	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+<link href="/css/bootstrap-table.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
+<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -73,8 +82,7 @@
 <script src="/js/bookmark.js"></script>
 
 <script>
-
-	/**
+    /**
 	**
 	**		Globals
 	**
@@ -84,9 +92,10 @@
   var bookmarksonly = true;
   window.scrid = {{ $display_tabs['scrid'] }};
     window.token = "{{ csrf_token() }}";
+    var currentsearch = "{{ $search }}";
 
     function queryParams(params) {
-        params.search = "{{ $search }}"
+        params.search = currentsearch;
         return params
     }
 
@@ -217,7 +226,71 @@ $(function() {
   $('[data-toggle="popover"]').popover();
 
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
-	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+  $("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+
+  $('.search-input').on('keyup', function(e) {
+
+        var url = "{{ $apiurl }}";
+
+        var newsearch = $(this).val();
+
+        if (newsearch.indexOf(currentsearch) !== 0)
+        {
+            $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
+
+            $.get(url + "?search=" + newsearch, function(response)
+                {
+                    responseHandler(response)
+
+                    $table.bootstrapTable('load', response.rows);
+                    //$('#follow-table').bootstrapTable("resetSearch","");
+
+                    currentsearch = newsearch;
+
+                    $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $table.bootstrapTable('hideLoading')
+                    $("body").css("cursor", "default");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+    })
+
+
+    $('button[name="clearSearch"]').on('click', function(e) {
+
+        var url = "{{ $apiurl }}";
+
+        // only clear on real clears
+        if (currentsearch != "")
+        {
+            $("body").css("cursor", "progress");
+            $table.bootstrapTable('showLoading')
+
+            $.get(url + "?search=", function(response)
+                {
+                    responseHandler(response)
+
+                    $table.bootstrapTable('load', response.rows);
+                    $table.bootstrapTable("resetSearch","");
+
+                    currentsearch = "";
+
+                    $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $table.bootstrapTable('hideLoading')
+                    $("body").css("cursor", "default");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+    })
 
 });
 

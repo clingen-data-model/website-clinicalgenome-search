@@ -42,6 +42,7 @@ class Mysql
      */
     static function geneList($args, $curated = false, $page = 0, $pagesize = 20000)
     {
+
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
@@ -83,9 +84,10 @@ class Mysql
 			}
 			else
 			{
-				// initialize the collection
 				$collection = Gene::where('name', 'like', '%' . $search . '%')
                     ->orderByRaw('CHAR_LENGTH(name)')
+                    //->offset($page * $pagesize)
+                    //->take($pagesize)
                     ->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
 
 				// manipulate the return order per Erin
@@ -128,6 +130,7 @@ class Mysql
 			$npharma = 0;
 			$nvariant = 0;
 		}
+        //dd($collection->skip($page)->take($pagesize));
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
 						'npharma' => $npharma, 'nvariant' => $nvariant, 'ncurated' => $ncurated];

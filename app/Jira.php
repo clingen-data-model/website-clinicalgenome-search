@@ -194,6 +194,10 @@ class Jira extends Model
                $node->issue_status = $node->jira_status;
           }
 
+          // Hide some Not Yet evaluated items
+          if (isset($node->reduced_penetrance->value) && $node->reduced_penetrance->value == "Not yet evaluated")
+                $node->reduced_penetrance = null;
+
           // create the structures for pmid.  Jira will not send the fields if empty
           $pmids = [];
           if (isset($response->customfield_10183))
@@ -340,6 +344,13 @@ class Jira extends Model
          ]);
 //dd($node);
 
+          //  Hide ot yet evaluated from these items.
+          if ($node->knownhits == "Not yet evaluated")
+                $node->knownhits = null;
+
+          if (isset($node->reduced_penetrance->value) && $node->reduced_penetrance->value == "Not yet evaluated")
+                $node->reduced_penetrance = null;
+
           // create a custom status string based on legacy comparisons
           if ($node->jira_status == "Open")
           {
@@ -457,6 +468,35 @@ class Jira extends Model
     //dd($node);
 
          return $node;
+    }
+
+
+    /**
+     * Format the description field
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function formatDescription($description)
+    {
+        $lines = [];
+
+        $desc = explode("\n", $description);
+
+        foreach ($desc as $line)
+        {
+            if (strpos($line, '( INTERNAL CLINGEN  REFERENCE=') === 0)
+                continue;
+
+            $stat = preg_match("@(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»\“\”‘’]))@", $line, $matches);
+
+            if ($stat !== 0)
+                $line = str_replace($matches[0], '<a href="' . $matches[0] . '">' . $matches[0] . '</a>',$line);
+
+            $lines[] = $line;
+        }
+
+        return implode("\n", $lines);
+
     }
 
 

@@ -66,10 +66,10 @@
 	           </ul>
            </div><!-- /btn-group -->
            <span class="inputQueryGene">
-            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:6769)">
+            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:15766)">
            </span>
            <span class="inputQueryDisease" style="display: none">
-            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys, MONDO:0013426)" >
+            <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys Dietz, MONDO:0018954)" >
            </span>
            <span class="inputQueryDrug" style="display: none">
            <input type="text" class="form-control queryDrug" aria-label="..." value="" name="search[]" placeholder="Enter a drug name or RXNORM ID (Examples: aspirin, RXNORM:1191)">

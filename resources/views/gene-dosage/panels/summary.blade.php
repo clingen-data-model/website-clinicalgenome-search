@@ -12,7 +12,7 @@
           @endif
           <!--<span class="float-right">Curation Status:  {{ $record->issue_status }}</span>-->
         </h3>
-        <div class="row pt-2">
+        <div class="row pt-3">
           <div class="col-sm-3 text-right mt-3">Dosage ID:</div>
           <div class="col-sm-3 border-left-4 border-info bold mt-3">
             {{  $record->key }}
@@ -46,12 +46,12 @@
         @if ($record->issue_type == "ISCA Region Curation" && !empty($record->description))
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Description:</div>
-          <div class="col-sm-9 border-left-4 border-info bold prewrap" >{{ $record->description }}</div>
+          <div class="col-sm-9 border-left-4 border-info bold prewrap" >{!! App\Jira::formatDescription($record->description) !!}</div>
         </div>
         @endif
         @if ($record->issue_type == "ISCA Region Curation" && !empty($record->breakpoint))
         <div class="row pb-2 pt-3">
-          <div class="col-sm-3 text-right">Breakpoint Type:</div>
+          <div class="col-sm-3 text-right"><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Options: Recurrent or Variable"></i> Breakpoint Type:</div>
           <div class="col-sm-9 border-left-4 border-info bold" >{{ $record->breakpoint }}</div>
         </div>
         @endif
@@ -69,7 +69,7 @@
             @endif
           </div>
         </div>
-        <div class="row pb-2 pt-2">
+        <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Triplosensitivity:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             @if ($record->resolution == "Complete")
@@ -89,7 +89,8 @@
           <div class="col-sm-9 border-left-4 border-info bold" >{{ $record->allele }}</div>
         </div>
         @endif
-        <div class="row pb-2 pt-2">
+        @if (!empty($record->reduced_penetrance))
+        <div class="row pb-2 pt-3">
             <div class="col-sm-3 text-right">Assoc. with Reduced Penetrance:</div>
             <div class="col-sm-9 border-left-4 border-info bold">
               @if ($record->resolution == "Complete")
@@ -100,6 +101,7 @@
                 <div class="font-weight-normal mt-1">{{ $record->reduced_penetrance_comment }}</div>
             </div>
         </div>
+        @endif
         @if ($record->issue_type == "ISCA Region Curation" && !empty($record->knownhits))
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Contains Known HI/TS Region:</div>
@@ -107,7 +109,7 @@
         </div>
         @endif
         @if (!empty($record->links))
-        <div class="row pb-2 pt-2">
+        <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Related Regions:</div>
           <div class="col-sm-9 border-left-4 border-info bold" >
               @foreach ($record->links as $link)
@@ -115,7 +117,7 @@
               @endforeach
         </div>
         @endif
-        <div class="row pb-2 pt-2">
+        <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Last Evaluated:</div>
           <div class="col-sm-9 border-left-4 border-info bold">
             @if ($record->resolution == "Complete")
