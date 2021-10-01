@@ -10,7 +10,11 @@
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40">  </td>
           <td class="pl-2"><h1 class="h2 p-0 m-0">Diseases</h1>
           </td>
-          <td class="text-xl text-gray-600 pl-3 pt-2">matching search term "{{ $search }}"</td>
+          @if ($search == "")
+          <td class="text-xl text-gray-600 pl-3 pt-2">Search results for all Diseases</td>
+          @else
+          <td class="text-xl text-gray-600 pl-3 pt-2"><i>Search results for all Diseases containing </i><span class="h5 badge badge-secondary matchphrase mb-3">"{{ $search }}"</span></td>
+          @endif
         </tr>
       </table>
     </div>
@@ -86,9 +90,10 @@
   var bookmarksonly = true;
   window.scrid = {{ $display_tabs['scrid'] }};
     window.token = "{{ csrf_token() }}";
+    var currentsearch = "{{ $search }}";
 
     function queryParams(params) {
-        params.search = "{{ $search }}"
+        params.search = currentsearch;
         return params
     }
 
@@ -213,6 +218,66 @@
 
     $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+
+    $('.search-input').on('keyup', function(e) {
+
+        var url = "{{ $apiurl }}";
+
+        var newsearch = $(this).val();
+
+        if (newsearch.indexOf(currentsearch) !== 0)
+        {
+            $("body").css("cursor", "progress");
+
+            $.get(url + "?search=" + newsearch, function(response)
+                {
+                    responseHandler(response)
+
+                    $table.bootstrapTable('load', response.rows);
+                    //$('#follow-table').bootstrapTable("resetSearch","");
+
+                    currentsearch = newsearch;
+
+                    $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $("body").css("cursor", "default");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+    })
+
+
+    $('button[name="clearSearch"]').on('click', function(e) {
+
+        var url = "{{ $apiurl }}";
+
+        // only clear on real clears
+        if (currentsearch != "")
+        {
+            $("body").css("cursor", "progress");
+
+            $.get(url + "?search=", function(response)
+                {
+                    responseHandler(response)
+
+                    $table.bootstrapTable('load', response.rows);
+                    $table.bootstrapTable("resetSearch","");
+
+                    currentsearch = "";
+
+                    $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $("body").css("cursor", "default");
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+        }
+    })
 
   });
 

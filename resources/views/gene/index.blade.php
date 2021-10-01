@@ -256,6 +256,8 @@ $(function() {
 
         if (newsearch.indexOf(currentsearch) !== 0)
         {
+            $("body").css("cursor", "progress");
+
             $.get(url + "?search=" + newsearch, function(response)
                 {
                     responseHandler(response)
@@ -266,6 +268,8 @@ $(function() {
                     currentsearch = newsearch;
 
                     $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $("body").css("cursor", "default");
 
                 }).fail(function(response)
                 {
@@ -282,6 +286,8 @@ $(function() {
         // only clear on real clears
         if (currentsearch != "")
         {
+            $("body").css("cursor", "progress");
+
             $.get(url + "?search=", function(response)
                 {
                     responseHandler(response)
@@ -292,6 +298,8 @@ $(function() {
                     currentsearch = "";
 
                     $('.matchphrase').html('"' + currentsearch + '"');
+
+                    $("body").css("cursor", "default");
 
                 }).fail(function(response)
                 {
