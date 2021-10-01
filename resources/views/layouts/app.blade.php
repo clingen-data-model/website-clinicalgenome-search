@@ -441,7 +441,7 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
 
             }
         },
@@ -469,7 +469,7 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
             }
         },
         limit: 20,
@@ -496,7 +496,7 @@
                 '<div class="list-group search-results-dropdown">'
             ],*/
             suggestion: function (data) {
-                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
 
             }
         },
