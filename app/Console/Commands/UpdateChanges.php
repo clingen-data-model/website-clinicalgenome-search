@@ -62,7 +62,7 @@ class UpdateChanges extends Command
         $model = new Sensitivity();
         $model->assertions();
 
-        //echo "Downloading Variant Pathogenicity changes ...\n";
+        echo "Downloading Variant Pathogenicity changes ...\n";
 
         $model = new Variantpath();
         $model->assertions();

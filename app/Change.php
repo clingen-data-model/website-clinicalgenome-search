@@ -259,6 +259,9 @@ class Change extends Model
             if (in_array('@AllActionability', $genes))
                 $query = $query->orWhere('new_type', 'App\Actionability');
 
+            if (in_array('@AllVariant', $genes))
+                $query = $query->orWhere('new_type', 'App\Variantpath');
+
             if (in_array('@ACMG59', $genes))
             {
                 $query = $query->orWhereHas('element', function ($query){

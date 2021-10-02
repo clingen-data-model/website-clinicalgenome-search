@@ -2761,6 +2761,11 @@ class Graphql
 						'curated' => 2,
 						'hgncid' => '@AllActionability'
 					],
+					['label' => 'All Variant Pathogenicity',
+						'short' => 'All Variant Pathogenicity',
+						'curated' => 2,
+						'hgncid' => '@AllVariant'
+					],
 					['label' => 'ACMG 59 Genes',
 						'short' => '@ACMG59',
 						'curated' => 2,
