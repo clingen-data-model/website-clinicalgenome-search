@@ -44,13 +44,18 @@ class TestController extends Controller
     public function index()
     {
 
-        $a = Term::where('name', 'like', 'Z%')->groupBy('alias')->orderByRaw('CHAR_LENGTH(name)')->take(20)->get();
+        $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
 
-        //dd($a);
-        foreach ($a as $b)
+        $json = json_decode($data);
+
+        $nodes = $json->graphs[0]->nodes;
+
+        foreach ($nodes as $node)
         {
-            echo "<div> $b->name, $b->value, $b->alias </div>";
+            dd($node);
         }
+
+
 		//Graphql::geneMetrics([]);
 
 		//$response = Neo4j::geneList(['pagesize' => null])

@@ -60,7 +60,7 @@ class Disease extends Model
      * @var array
      */
 	protected $fillable = ['curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
-					        'description', 'type', 'status',
+					        'omim', 'description', 'type', 'status',
                          ];
 
 	/**
@@ -143,6 +143,26 @@ class Disease extends Model
 	public function scopeDeprecated($query)
     {
 		return $query->where('status', 9);
+    }
+
+
+    /**
+     * Query scope by omim value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeOmim($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'OMIM:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->where('omim', $value);
     }
 
 

@@ -10,6 +10,7 @@ use App\GeneLib;
 use App\Nodal;
 use App\User;
 use App\Filter;
+use App\Disease;
 
 /**
  *
@@ -120,12 +121,22 @@ class ConditionController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
+        // check if the condition came in as an OMIM ID, and if so convert it.
+        if (strpos($id, "MONDO:") !== 0)
+        {
+            $check = Disease::omim($id)->first();
+
+            if ($check !== null)
+                $id = $check->curie;
+        }
+
 		$record = GeneLib::conditionDetail([
 										'condition' => $id,
 										'curations' => true,
 										'action_scores' => true,
 										'validity' => true,
-										'dosage' => true
+										'dosage' => true,
+                                        'variant' => true
 										]);
 
 		if ($record === null)
@@ -137,7 +148,8 @@ class ConditionController extends Controller
 
 		//reformat the response structure for view by activity
 		$validity_collection = collect();
-//dd($record);
+        $variant_collection = collect();
+
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -168,13 +180,18 @@ class ConditionController extends Controller
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
 
+         // we don't do any special sorting on variant path at this time
+         if ($record->nvariant > 0)
+            $variant_collection = collect($record->variant);
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "condition",
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
 
-		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection'));
+		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection',
+                                                    'variant_collection'));
 	}
 
 
@@ -187,12 +204,13 @@ class ConditionController extends Controller
 	public function show_by_gene(Request $request, $id = null)
 	{
 		$record = GeneLib::conditionDetail([
-			'condition' => $id,
-			'curations' => true,
-			'action_scores' => true,
-			'validity' => true,
-			'dosage' => true
-		]);
+                                'condition' => $id,
+                                'curations' => true,
+                                'action_scores' => true,
+                                'validity' => true,
+                                'dosage' => true,
+                                'variant' => true
+		                    ]);
 
 		if ($record === null)
 			return view('error.message-standard')
@@ -201,6 +219,11 @@ class ConditionController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
+        $variant_collection = collect();
+
+        // we don't do any special sorting on variant path at this time
+        if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
 
 		// set display context for view
 		$display_tabs = collect([
@@ -210,7 +233,7 @@ class ConditionController extends Controller
 
 		$user = $this->user;
 
-		return view('condition.by-gene', compact('display_tabs', 'record', 'user'));
+		return view('condition.by-gene', compact('display_tabs', 'record', 'user', 'variant_collection'));
 	}
 
 

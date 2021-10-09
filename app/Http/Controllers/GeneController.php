@@ -13,6 +13,7 @@ use Cookie;
 use App\GeneLib;
 use App\User;
 use App\Gene;
+use App\Panel;
 use App\Nodal;
 use App\Filter;
 
@@ -257,6 +258,14 @@ class GeneController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
+        // check if the condition came in as an OMIM ID, and if so convert it.
+        if (strpos($id, "HGNC:") !== 0)
+        {
+            $check = Gene::omim($id)->first();
+
+            if ($check !== null)
+                $id = $check->hgnc_id;
+        }
 
 		$record = GeneLib::geneDetail([
 									'gene' => $id,
@@ -384,6 +393,8 @@ class GeneController extends Controller
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
 
+        $vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
@@ -392,7 +403,7 @@ class GeneController extends Controller
 
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
-												'variant_collection'))
+												'variant_collection', 'vceps'))
 												->with('user', $this->user);
 	}
 

@@ -22,7 +22,7 @@ use Uuid;
  * @since      Class available since Release 1.0.0
  *
  * */
-class Variant extends Model
+class Panel extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -34,17 +34,13 @@ class Variant extends Model
      * @var array
      */
     public static $rules = [
-		'ident' => 'alpha_dash|max:80|required',
-		'iri' => 'striing|max:80|required',
-		'variant_id' => 'string|nullable',
-		'caid' => 'string|nullable',
-        'condition' => 'json|nullable',
-        'evidence_links' => 'json|nullable',
-        'gene' => 'json|nullable',
-        'guidelines' => 'json|nullable',
-        'hgvs' => 'json|nullable',
-		'type' => 'integer',
-		'status' => 'integer'
+          'ident' => 'alpha_dash|max:80|required',
+          'name' => 'string',
+          'curie' => 'string',
+          'contacts' => 'string|nullable',
+          'description' => 'string|nullable',
+          'type' => 'integer',
+          'status' => 'integer'
 	];
 
 	/**
@@ -53,12 +49,7 @@ class Variant extends Model
      * @var array
      */
 	protected $casts = [
-			'caid' => 'array',
-            'condition' => 'array',
-            'evidence_links' => 'array',
-            'gene' => 'array',
-            'guidelines' => 'array',
-            'hgvs' => 'array',
+            'contacts' => 'array'
 		];
 
      /**
@@ -66,9 +57,8 @@ class Variant extends Model
      *
      * @var array
      */
-	protected $fillable = ['iri', 'variant_id', 'caid', 'condition', 'evidence_links',
-					        'published_date', 'gene', 'guidelines', 'hgvs', 'type', 'status'
-                         ];
+	protected $fillable = ['ident', 'name', 'curie', 'contacts',
+                           'description', 'type', 'status'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -77,7 +67,10 @@ class Variant extends Model
      */
      protected $appends = ['display_date', 'list_date', 'display_status'];
 
-     public const TYPE_NONE = 0;
+     public const TYPE_INTERNAL = 0;
+     public const TYPE_GCEP = 1;
+     public const TYPE_VCEP = 2;
+     public const TYPE_WG = 3;
 
      /*
      * Type strings for display methods
@@ -97,7 +90,7 @@ class Variant extends Model
      protected $status_strings = [
 	 		0 => 'Initialized',
 	 		9 => 'Deleted'
-	];
+    ];
 
 
 	/**
@@ -106,11 +99,29 @@ class Variant extends Model
      * @param	array	$attributes
      * @return 	void
      */
-     public function __construct(array $attributes = array())
-     {
+    public function __construct(array $attributes = array())
+    {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
-	}
+    }
+
+
+    /*
+     * The users following this group
+     */
+    public function users()
+    {
+       return $this->belongsToMany('App\User');
+    }
+
+
+    /*
+     * The genes associated with this group
+     */
+    public function genes()
+    {
+       return $this->belongsToMany('App\Gene');
+    }
 
 
 	/**
@@ -120,60 +131,53 @@ class Variant extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeIdent($query, $ident)
-     {
-		return $query->where('ident', $ident);
-     }
+    {
+        return $query->where('ident', $ident);
+    }
 
 
     /**
-     * Query scope by symbol name
+     * Query scope by group name
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeIri($query, $curie)
+	public function scopeName($query, $name)
     {
-		return $query->where('iri', $curie);
+        return $query->where('name', $name);
     }
 
 
-     /**
-     * Query scope by symbol or condition name
+    /**
+     * Query scope by group id
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public static function sortByClassifications($symbol, $disease = false)
+	public function scopeCurie($query, $curie)
     {
-         $classifications = [
-              'Pathogenic' => 0,
-              'Likely Pathogenic' => 0,
-              'Uncertain Significance' => 0,
-              'Likely Benign' => 0,
-              'Benign' => 0
-         ];
-
-         if (!$disease)
-         {
-            $records = self::where('gene->label', $symbol)->get();
-         }
-        else
-         {
-            $records = self::where('condition->@id', $symbol)->get();
-         }
-
-         if (empty($records))
-              return $classifications;
-
-         foreach ($records as $record)
-              foreach ($record->guidelines as $guideline)
-                   if (isset($classifications[$guideline["outcome"]["label"]]))
-                        $classifications[$guideline["outcome"]["label"]]++;
-
-         return $classifications;
+        return $query->where('curie', $curie);
     }
 
 
-
-
+    /**
+     * Return an href suitable identifier
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function getHrefAttribute()
+    {
+        switch ($this->type)
+        {
+            case self::TYPE_GCEP:
+            case self::TYPE_VCEP:
+                $t = substr($this->name, 3);
+                $k = strpos($t, ' ');
+                return substr($t, 0, $k);
+            default:
+                return $this->name;
+        }
+        return $query->where('curie', $curie);
+    }
 }

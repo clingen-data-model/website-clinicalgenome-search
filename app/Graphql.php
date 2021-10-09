@@ -166,7 +166,7 @@ class Graphql
 		}
 
 		// get list of pharma and variant pathogenicity genes
-		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity', 'vcep')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
 
 		// build list of genes not known by genegraph
 		$excludes = [];
@@ -185,6 +185,7 @@ class Graphql
 				if (!empty($extra->activity["varpath"]))
 					array_push($t, "VAR_PATH");
 				$node->curation_activities = $t;
+                $node->vcep = $extra->vcep;
 				$excludes[] = $node->hgnc_id;
 			}
 
@@ -208,6 +209,8 @@ class Graphql
 			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
 
 			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+            $node->vcep = (empty($extra->vcep) ? null : $extra->vcep);
 
 			$collection->push($node);
 		}
@@ -1306,6 +1309,7 @@ class Graphql
 							label
 						}
 						attributed_to {
+                            curie
 							label
 						}
 					}
@@ -1657,6 +1661,8 @@ class Graphql
 		if (strpos($condition, 'MONDO:') === false && strpos($condition, 'MONDO_') === false)
 			$condition = 'MONDO:' . $condition;
 
+        $mondo = $condition;
+
 		$query = '{
 			disease('
 			. 'iri: "' . $condition
@@ -1756,11 +1762,15 @@ class Graphql
 		$node->nvalid = $nvalid;
 		$node->ndosage = $ndosage;
 
-		//dd($node);
+        if (!empty($variant))
+		{
+			$entries = Variant::sortByClassifications($mondo, true);
+			$node->variant = $entries;
+			$node->nvariant = array_sum($entries);
+		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
 
-		//dd($node);
 		return $node;
 	}
 

@@ -82,7 +82,7 @@ class Gene extends Model
      * @var array
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
-					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli', 'lsdb',
+					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli', 'lsdb', 'vcep',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
@@ -171,6 +171,15 @@ class Gene extends Model
 
 
      /*
+     * The panels associated with this gene
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
+
+
+     /*
      * The roles that belong to this user
      */
      public function users()
@@ -224,6 +233,26 @@ class Gene extends Model
 	public function scopeEnsembl($query, $id)
     {
        return $query->where('ensembl_gene_id', $id);
+    }
+
+
+    /**
+     * Query scope by omim value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeOmim($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'OMIM:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->whereJsonContains('omim_id', $value);
     }
 
 
