@@ -535,6 +535,7 @@ class Graphql
 			$node->GRCh38_seqid = $localgene->seqid38;
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
+            $node->curation_status = $localgene->curation_status;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();

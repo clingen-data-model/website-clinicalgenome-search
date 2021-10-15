@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Mail;
 
+use App\DataExchange\Exceptions\StreamingServiceException;
+
+//require base_path() . '/vendor/autoload.php';
+
 
 use App\GeneLib;
 use App\Term;
 use App\Jira;
+use App\Jirafield;
+use App\Curation;
 use App\Gene;
 use App\User;
 use App\Graphql;
@@ -44,13 +50,29 @@ class TestController extends Controller
     public function index()
     {
 
-        $a = Term::where('name', 'like', 'Z%')->groupBy('alias')->orderByRaw('CHAR_LENGTH(name)')->take(20)->get();
+        $issue = Jira::getIssue('ISCA-4799', null);
 
-        //dd($a);
-        foreach ($a as $b)
+        dd($issue->names);
+        //$changelog = Jira::getIssue('ISCA-4799', 'changelog');
+
+        foreach ($issue->names as $key => $value)
         {
-            echo "<div> $b->name, $b->value, $b->alias </div>";
+            Jirafield::updateOrCreate(['field' => $key], ['label' => $value, 'status' => 1]);
         }
+
+        // map issue to curation record
+        $record = Curation::map($issue);
+
+        foreach ($issue->changelog->histories as $history)
+        {
+            //dd($history);
+        }
+
+        $a = array_reverse($issue->changelog->histories);
+
+        dd($a);
+
+        //dd($issue->changelog);
 		//Graphql::geneMetrics([]);
 
 		//$response = Neo4j::geneList(['pagesize' => null])
