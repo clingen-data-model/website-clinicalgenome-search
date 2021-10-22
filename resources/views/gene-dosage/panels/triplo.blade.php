@@ -29,8 +29,30 @@
           <ul class="list-unstyled">
             @if (!empty($record->gain_pheno_omim))
               @foreach($record->gain_pheno_omim as $item)
-                <li>{{ $item['titles'] }}
-                <a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $item['id'] }}" class="badge-info badge pointer ml-1">OMIM <i class="fas fa-external-link-alt"></i> </a></li>
+                <li>{{ empty($record->gain_pheno_name) ? $item['titles'] : $record->gain_pheno_name }}
+                    @switch ($item['type'])
+                        @case (App\Disease::TYPE_MONDO)
+                        <a target='external' href="{{env('CG_URL_MONARCH')}}{{ $item['id'] }}"
+                            class="badge-info badge pointer ml-1">Monarch <i class="fas fa-external-link-alt"></i> </a>
+                        @break
+                        @case (App\Disease::TYPE_OMIM)
+                        <a target='external' href="{{env('CG_URL_OMIM_GENE')}}{{ $item['no_prefix'] }}"
+                            class="badge-info badge pointer ml-1">OMIM <i class="fas fa-external-link-alt"></i> </a>
+                        @break
+                        @case (App\Disease::TYPE_ORPHANET)
+                        <a target='external' href="{{env('CG_URL_ORPHANET')}}{{ $item['no_prefix'] }}"
+                            class="badge-info badge pointer ml-1">OrphaNet <i class="fas fa-external-link-alt"></i> </a>
+                        @break
+                        @case (App\Disease::TYPE_DOID)
+                        <a target='external'
+                            href="{{env('CG_URL_DISEASEONTOLOGY')}}{{ $item['no_prefix'] }}"
+                            class="badge-info badge pointer ml-1">Disease Ontology <i class="fas fa-external-link-alt"></i> </a>
+                        @break
+                        @case (App\Disease::TYPE_MEDGEN)
+                        <a target='external' href="{{env('CG_URL_MEDGEN')}}{{ $$item['no_prefix'] }}"
+                            class="badge-info badge pointer ml-1">MedGen <i class="fas fa-external-link-alt"></i> </a>
+                        @break
+                        @endswitch
               @endforeach
             @endif
             @if (!empty($record->gain_pheno_ontology_id))

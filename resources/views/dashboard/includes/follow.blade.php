@@ -1,5 +1,6 @@
 <div class="pl-3 pr-3 pr-3 pb-0 collapse in" id="collapseFollow">
     <div id="follow-toolbar" class="text-right">
+        <button class="btn action-new-ep">Follow By EP</button>
         <button class="btn action-new-gene">Follow New Gene</button>
         <button class="btn action-new-region">Follow New Region</button>
     </div>

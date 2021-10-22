@@ -58,6 +58,7 @@
     @include('modals.search')
     @include('modals.searchregion')
 	@include('modals.settings')
+    @include('dashboard.modals.followeps')
 	@include('modals.report')
 
 @endsection
@@ -197,6 +198,34 @@
             $obj.load( "/api/home/dare/expand/" + row.hgnc.substring(1));
 
             return false;
+        });
+
+        $('.action-new-ep').on('click', function() {
+            $('#modalFollowEp').modal('show');
+        });
+
+        $('.action-show-gcep').on('click', function() {
+
+            if ($(this).hasClass('active'))
+                return;
+
+            $(this).addClass('active');
+            $('.vcep-content').addClass('display-hide');
+            $('.gcep-content').removeClass('display-hide');
+            $('.action-show-vcep').removeClass('active');
+
+        });
+
+        $('.action-show-vcep').on('click', function() {
+
+            if ($(this).hasClass('active'))
+                return;
+
+            $(this).addClass('active');
+            $('.gcep-content').addClass('display-hide');
+            $('.vcep-content').removeClass('display-hide');
+            $('.action-show-gcep').removeClass('active');
+
         });
 	});
 

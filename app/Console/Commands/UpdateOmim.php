@@ -50,19 +50,18 @@ class UpdateOmim extends Command
             echo "\n(E002) Error retreiving Omim key\n";
             exit;
         }
-        
-        try {
 
+        try {
             $results = file_get_contents("https://data.omim.org/downloads/" . $key . "/mimTitles.txt");
 
 		} catch (\Exception $e) {
-		
+
 			echo "\n(E001) Error retreiving Omim Titles data\n";
-			
+
 		}
-	
+
         $line = strtok($results, "\n");
-        
+
         while ($line !== false)
         {
                 // process the line read.
@@ -73,7 +72,7 @@ class UpdateOmim extends Command
                 if (strpos($value[0], '#') !== 0)
                 {
 
-                    $issue = Omim::updateOrCreate(['omimid' => trim($value[1])], 
+                    $issue = Omim::updateOrCreate(['omimid' => trim($value[1])],
                                     ['prefix' => trim($value[0]),
                                     'titles' => trim($value[2]),
                                     'alt_titles' => trim($value[3]),
@@ -82,7 +81,7 @@ class UpdateOmim extends Command
                                     'type' => 1
                                     ] );
                 }
-            
+
             $line = strtok("\n");
         }
 

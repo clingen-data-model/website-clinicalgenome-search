@@ -36,9 +36,17 @@ class Panel extends Model
     public static $rules = [
           'ident' => 'alpha_dash|max:80|required',
           'name' => 'string',
-          'curie' => 'string',
-          'contacts' => 'string|nullable',
-          'description' => 'string|nullable',
+          'affiliate_id' => 'string',
+          'title' => 'string',
+          'title_short' => 'string',
+          'title_abbreviated' => 'string',
+          'affiliate_id' => 'string',
+          'affiliate_type' => 'string',
+          'affiliate_status' => 'json',
+          'cdwg_parent_name' => 'string',
+          'contacts' => 'json|nullable',
+          'member' => 'json|nullable',
+          'summary' => 'string|nullable',
           'type' => 'integer',
           'status' => 'integer'
 	];
@@ -49,7 +57,10 @@ class Panel extends Model
      * @var array
      */
 	protected $casts = [
-            'contacts' => 'array'
+            'contacts' => 'array',
+            'affiliate_status' => 'array',
+            'member' => 'array',
+            'contact' => 'array'
 		];
 
      /**
@@ -57,8 +68,10 @@ class Panel extends Model
      *
      * @var array
      */
-	protected $fillable = ['ident', 'name', 'curie', 'contacts',
-                           'description', 'type', 'status'];
+	protected $fillable = ['ident', 'name', 'affiliate_id', 'title', 'title_short',
+                            'title_abbreviated', 'affiliate_type', 'affiliate_status',
+                            'cdwg_parent_name', 'member', 'contacts',
+                           'summary', 'type', 'status'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -154,9 +167,33 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeCurie($query, $curie)
+	public function scopeAffiliate($query, $id)
     {
-        return $query->where('curie', $curie);
+        return $query->where('affiliate_id', $id);
+    }
+
+
+    /**
+     * Query scope by gcep type
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeGcep($query)
+    {
+        return $query->where('type', self::TYPE_GCEP);
+    }
+
+
+    /**
+     * Query scope by vcep type
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeVcep($query)
+    {
+        return $query->where('type', self::TYPE_VCEP);
     }
 
 
@@ -172,12 +209,40 @@ class Panel extends Model
         {
             case self::TYPE_GCEP:
             case self::TYPE_VCEP:
-                $t = substr($this->name, 3);
-                $k = strpos($t, ' ');
-                return substr($t, 0, $k);
+                //$t = substr($this->name, 3);
+                //$k = strpos($t, ' ');
+                //return substr($t, 0, $k);
+                return $this->affiliate_id;
             default:
-                return $this->name;
+                //return $this->name;
+                return $this->affiliate_id;
         }
-        return $query->where('curie', $curie);
+
+        return '';
+    }
+
+    /**
+     * Map genegraph curie to affiliate ID
+     */
+    public static function gg_map_to_panel($curie)
+    {
+        return (strpos($curie, 'CGAGENT:') === 0 ? substr($curie, 8) : $curie);
+
+    }
+
+
+    /**
+     * Map genegraph curie to affiliate ID
+     */
+    public static function erepo_map_to_panel($curie)
+    {
+        //CG-PCER-AGENT:CG_50015_EP.1551905782.01949",
+        if (strpos($curie, 'CG-PCER-AGENT:CG_') === 0)
+        {
+            $k = substr($curie, 17);
+            $curie = substr($k, 0, strpos($k, '_'));
+        }
+
+        return $curie;
     }
 }

@@ -212,22 +212,24 @@ class Variantpath extends Model
                 $gene = Gene::name($current->gene_label)->first();
 
                 if ($gene !== null)
+                {
                     $current->update(['gene_hgnc_id' => $gene->hgnc_id]);
 
 
-                $a = Change::create([
-                                'type' => Change::TYPE_VARIANT,
-                                'category' => Change::CATEGORY_NONE,
-                                'element_id' => $gene->id,
-                                'element_type' => 'App\Gene',
-                                'old_id' =>null,
-                                'old_type' => null,
-                                'new_id' => $current->id,
-                                'new_type' => 'App\Variantpath',
-                                'change_date' => $current->report_date,
-                                'description' => ['New curation activity'],
-                                'status' => 1
-                    ]);
+                    $a = Change::create([
+                                    'type' => Change::TYPE_VARIANT,
+                                    'category' => Change::CATEGORY_NONE,
+                                    'element_id' => $gene->id,
+                                    'element_type' => 'App\Gene',
+                                    'old_id' =>null,
+                                    'old_type' => null,
+                                    'new_id' => $current->id,
+                                    'new_type' => 'App\Variantpath',
+                                    'change_date' => $current->report_date,
+                                    'description' => ['New curation activity'],
+                                    'status' => 1
+                        ]);
+                    }
 
                 continue;
             }

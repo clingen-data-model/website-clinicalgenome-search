@@ -72,6 +72,11 @@ class Disease extends Model
                             'first_synonym'];
 
      public const TYPE_NONE = 0;
+     public const TYPE_MONDO = 1;
+     public const TYPE_OMIM = 2;
+     public const TYPE_ORPHANET = 3;
+     public const TYPE_MEDGEN = 4;
+     public const TYPE_DOID = 5;
 
      /*
      * Type strings for display methods
@@ -230,4 +235,60 @@ class Disease extends Model
 		return (isset($this->curation_activities) ?
 			$this->curation_activities['validity'] : false);
 	}
+
+    /**
+     * Query title for mondo id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function titles($id)
+    {
+      $record = self::curie($id)->first();
+
+      if ($record === null)
+        return '';
+
+      return $record->label;
+    }
+
+    /**
+     * Determine ontology typle by parsing the id
+     *
+     * @@param  string  $id
+     * @return  array
+     */
+    public static function parseIdentifier($id = null)
+    {
+        if (empty($id))
+            return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        $k = strpos($id, ':');
+
+        if ($k === false)
+            if (is_numeric($id))
+                return ['type' => self::TYPE_OMIM, 'adjusted' => $id];         //default
+            else
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        switch (strtoupper(substr($id, 0, $k)))
+        {
+            case 'MONDO':
+                return ['type' => self::TYPE_MONDO, 'adjusted' => substr($id, $k + 1)];
+            case 'OMIM':
+                return ['type' => self::TYPE_OMIM, 'adjusted' => substr($id, $k + 1)];
+            case 'ORPHANET':
+                return ['type' => self::TYPE_ORPHANET, 'adjusted' => substr($id, $k + 1)];
+            case 'MEDGEN':
+                return ['type' => self::TYPE_MEDGEN, 'adjusted' => substr($id, $k + 1)];
+            case 'DOID':
+                return ['type' => self::TYPE_DOID, 'adjusted' => substr($id, $k + 1)];
+            default:
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        }
+
+        return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+    }
 }

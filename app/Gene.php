@@ -73,7 +73,8 @@ class Gene extends Model
                'mane_select' => 'array',
                'mane_plus' => 'array',
                'genegraph' => 'array',
-               'disease' => 'array'
+               'disease' => 'array',
+               'curation_status' => 'array'
      ];
 
      /**
@@ -86,7 +87,7 @@ class Gene extends Model
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
-                            'notes', 'activity', 'date_last_curated', 'status', 'disease',
+                            'notes', 'activity', 'curation_status', 'date_last_curated', 'status', 'disease',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
 
 	/**

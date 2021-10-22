@@ -20201,6 +20201,18 @@ footer p {
   font-size: 10px;
 }
 
+.ep-list {
+  -moz-column-count: 2;
+       column-count: 2;
+  -moz-column-gap: 2rem;
+       column-gap: 2rem;
+  list-style: none;
+}
+
+.display-hide {
+  display: none;
+}
+
 .bootstrap-table .dropdown-toggle .caret {
   display: none;
 }

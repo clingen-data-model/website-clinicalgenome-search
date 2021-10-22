@@ -234,7 +234,28 @@ class Jira extends Model
           {
                foreach (explode(',', $node->loss_pheno_omim) as $item)
                {
-                    $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                $cat = Disease::parseIdentifier($item);
+                switch ($cat['type'])
+                {
+                    case Disease::TYPE_MONDO:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                        break;
+                    case Disease::TYPE_OMIM:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                        break;
+                    case Disease::TYPE_ORPHANET:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    case Disease::TYPE_MEDGEN:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    case Disease::TYPE_DOID:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    default:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                }
                }
           }
           $node->loss_pheno_omim = $omims;
@@ -244,7 +265,28 @@ class Jira extends Model
           {
                foreach (explode(',', $node->gain_pheno_omim) as $item)
                {
-                    $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                    $cat = Disease::parseIdentifier($item);
+                    switch ($cat['type'])
+                    {
+                        case Disease::TYPE_MONDO:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                            break;
+                        case Disease::TYPE_OMIM:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                            break;
+                        case Disease::TYPE_ORPHANET:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        case Disease::TYPE_MEDGEN:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        case Disease::TYPE_DOID:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        default:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                    }
                }
           }
           $node->gain_pheno_omim = $omims;
@@ -417,7 +459,28 @@ class Jira extends Model
          {
               foreach (explode(',', $node->loss_pheno_omim) as $item)
               {
-                   $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                $cat = Disease::parseIdentifier($item);
+                switch ($cat['type'])
+                {
+                    case Disease::TYPE_MONDO:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                        break;
+                    case Disease::TYPE_OMIM:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                        break;
+                    case Disease::TYPE_ORPHANET:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    case Disease::TYPE_MEDGEN:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    case Disease::TYPE_DOID:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                    default:
+                        $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                        break;
+                }
               }
          }
          $node->loss_pheno_omim = $omims;
@@ -427,7 +490,28 @@ class Jira extends Model
          {
               foreach (explode(',', $node->gain_pheno_omim) as $item)
               {
-                   $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                   $cat = Disease::parseIdentifier($item);
+                    switch ($cat['type'])
+                    {
+                        case Disease::TYPE_MONDO:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                            break;
+                        case Disease::TYPE_OMIM:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                            break;
+                        case Disease::TYPE_ORPHANET:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        case Disease::TYPE_MEDGEN:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        case Disease::TYPE_DOID:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                        default:
+                            $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                            break;
+                    }
               }
          }
          $node->gain_pheno_omim = $omims;
@@ -890,7 +974,28 @@ class Jira extends Model
                {
                     foreach (explode(',', $node->loss_pheno_omim) as $item)
                     {
-                         $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                        $cat = Disease::parseIdentifier($item);
+                        switch ($cat['type'])
+                        {
+                            case Disease::TYPE_MONDO:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                                break;
+                            case Disease::TYPE_OMIM:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                                break;
+                            case Disease::TYPE_ORPHANET:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            case Disease::TYPE_MEDGEN:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            case Disease::TYPE_DOID:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            default:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                        }
                     }
                }
                $node->loss_pheno_omim = $omims;
@@ -900,7 +1005,28 @@ class Jira extends Model
                {
                     foreach (explode(',', $node->gain_pheno_omim) as $item)
                     {
-                         $omims[] = ['id' => $item, 'titles' => Omim::titles($item)];
+                        $cat = Disease::parseIdentifier($item);
+                        switch ($cat['type'])
+                        {
+                            case Disease::TYPE_MONDO:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+                                break;
+                            case Disease::TYPE_OMIM:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Omim::titles($item)];
+                                break;
+                            case Disease::TYPE_ORPHANET:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            case Disease::TYPE_MEDGEN:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            case Disease::TYPE_DOID:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                            default:
+                                $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => ''];
+                                break;
+                        }
                     }
                }
                $node->gain_pheno_omim = $omims;

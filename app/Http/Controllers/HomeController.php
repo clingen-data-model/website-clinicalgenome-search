@@ -13,6 +13,7 @@ use App\Gene;
 use App\Title;
 use App\Report;
 use App\Region;
+use App\Panel;
 
 class HomeController extends Controller
 {
@@ -130,12 +131,17 @@ class HomeController extends Controller
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
 
+        $gceps = Panel::gcep()->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+        $vceps = Panel::vcep()->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
-                    'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
+                    'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',
+                    'gceps', 'vceps'));
     }
 
 
     /**
+     *
      * Show the ftp downloads page.
      *
      * @return \Illuminate\Http\Response

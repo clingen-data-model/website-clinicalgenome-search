@@ -62,11 +62,28 @@ class UpdateAffiliates extends Command
         foreach($results->collection as $affiliate)
         {
 
-            // Update names and desciptions, or add new panels
-            $panel = Panel::updateOrCreate(['curie' => $affiliate->curie],
-                                    ['description' => $affiliate->description ?? null,
+            // map the CGAGENT to a real number
+            $id = (strpos($affiliate->curie, 'CGAGENT:') === 0 ? substr($affiliate->curie, 8) : $affiliate->curie);
+            $alt_id = null;
+
+            if (intval($id) > 10000 && intval($id) < 19999)
+            {
+                $alt_id = $id;
+                $id = intval($id) + 30000;
+            }
+
+            // genegraph is not authorative for affliate information, but include any new ones encountered
+            $panel = Panel::firstOrNew(['alternate_id' => $alt_id],
+                                    ['summary' => $affiliate->description ?? null,
                                      'name' => $affiliate->label,
+                                     'affiliate_id' => $id,
+                                     'title' => "",
+                                     'title_short' => $affiliate->label,
+                                     'affiliate_type' => 'gcep',
                                      'type' => Panel::TYPE_GCEP ]);
+
+            if (!isset($panel->id) || $panel->id < 1)
+                $panel->save();
         }
 
         // TODO:  see if we can merge this with previous listing
@@ -84,7 +101,9 @@ class UpdateAffiliates extends Command
 
             if ($gene !== null)
             {
-                $panel = Panel::curie($record->attributed_to->curie)->first();
+                $pid = Panel::gg_map_to_panel($record->attributed_to->curie);
+
+                $panel = Panel::affiliate($pid)->first();
 
                 if ($panel !== null)
                 {
@@ -93,7 +112,6 @@ class UpdateAffiliates extends Command
             }
         }
 
-
         // as long as this update scritpt follows the erepo updats, we can capture vceps
         foreach (Variant::all() as $variant)
         {
@@ -101,17 +119,36 @@ class UpdateAffiliates extends Command
             {
 
                 // while we are, update the gene associations
-                $eid = $variant->gene['NCBI_id'];
+                if (isset($variant->gene['NCBI_id']))
+                {
+                    $eid = $variant->gene['NCBI_id'];
 
-                $gene = Gene::where('entrez_id', $eid)->first();
+                    $gene = Gene::where('entrez_id', $eid)->first();
+                }
+                else
+                {
+                    $gene = Gene::name($variant->gene['label'])->first();
+                }
 
+                // TODO:  lot of repetition here - caching the lookups will speed things up.
                 foreach ($guideline['agents'] as $agent)
                 {
-                    // Update names and desciptions, or add new panels
-                    $panel = Panel::updateOrCreate(['curie' => $agent['@id']],
-                                        ['description' => $agent['affiliation'] ?? null,
-                                        'name' => $agent['label'],
-                                        'type' => Panel::TYPE_VCEP ]);
+                    // erepo is not authorative, but deal with new ones
+                    $id = Panel::erepo_map_to_panel($agent['@id']);
+
+
+                    $panel = Panel::firstOrNew(['affiliate_id' => $id],
+                                    ['summary' => $agent['affiliation'] ?? null,
+                                     'name' => $agent['label'],
+                                     'affiliate_id' => null,
+                                     'title' => $agent['label'],
+                                     'title_short' => $agent['label'],
+                                     'affiliate_type' => 'vcep',
+                                     'type' => Panel::TYPE_VCEP ]);
+
+                    if (!isset($panel->id) || $panel->id < 1)
+                        $panel->save();
+
 
                     if ($gene !== null)
                     {

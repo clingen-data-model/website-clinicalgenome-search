@@ -261,7 +261,10 @@ class GeneController extends Controller
         // check if the condition came in as an OMIM ID, and if so convert it.
         if (strpos($id, "HGNC:") !== 0)
         {
-            $check = Gene::omim($id)->first();
+            if (is_numeric($id))
+                $check = Gene::omim($id)->first();
+            else
+                $check = Gene::name($id)->first();
 
             if ($check !== null)
                 $id = $check->hgnc_id;

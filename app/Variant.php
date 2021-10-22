@@ -145,35 +145,43 @@ class Variant extends Model
      */
 	public static function sortByClassifications($symbol, $disease = false)
     {
-         $classifications = [
-              'Pathogenic' => 0,
-              'Likely Pathogenic' => 0,
-              'Uncertain Significance' => 0,
-              'Likely Benign' => 0,
-              'Benign' => 0
-         ];
+        $classifications = [
+            'Pathogenic' => 0,
+            'Likely Pathogenic' => 0,
+            'Uncertain Significance' => 0,
+            'Likely Benign' => 0,
+            'Benign' => 0
+        ];
 
-         if (!$disease)
-         {
-            $records = self::where('gene->label', $symbol)->get();
-         }
+        if (!$disease)
+        {
+        $records = self::where('gene->label', $symbol)->get();
+        }
         else
-         {
-            $records = self::where('condition->@id', $symbol)->get();
-         }
+        {
+        $records = self::where('condition->@id', $symbol)->get();
+        }
 
-         if (empty($records))
-              return $classifications;
+        if (empty($records))
+            return [$symbol => $classifications];
 
-         foreach ($records as $record)
-              foreach ($record->guidelines as $guideline)
-                   if (isset($classifications[$guideline["outcome"]["label"]]))
-                        $classifications[$guideline["outcome"]["label"]]++;
+        $genelist = [];
 
-         return $classifications;
+        foreach ($records as $record)
+        {
+            if (!isset($genelist[$record->gene['label']]))
+                $genelist[$record->gene['label']] = $classifications;
+
+            $a =& $genelist[$record->gene['label']];
+
+            foreach ($record->guidelines as $guideline)
+                if (isset($a[$guideline["outcome"]["label"]]))
+                    $a[$guideline["outcome"]["label"]]++;
+
+            //$genelist[$record->gene['label']] = $a;
+        }
+
+        return $genelist;
     }
-
-
-
 
 }

@@ -18,9 +18,10 @@
                 </thead>
                 <tbody class="">
                     @php $variant_key = 0 @endphp
-                    @foreach($variant_collection as $variant => $variant_count)
+                    @foreach($variant_collection as $gene => $classes)
+                    @foreach($classes as $variant => $variant_count)
                     <tr class="">
-                        <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0) ALL @endif</td>
+                        <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0) <a href="{{ route('gene-show', $gene) }}">{{ $gene }}</a> @endif</td>
                         <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) {{ $record->label }} @endif</td>
                         <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 "></td>
                         <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
@@ -38,6 +39,7 @@
 
                     </tr>
                     @php $variant_key++ @endphp
+                    @endforeach
                     @endforeach
                 </tbody>
             </table>

@@ -8,10 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 use Illuminate\Support\Facades\Mail;
 
+use App\DataExchange\Exceptions\StreamingServiceException;
+
+//require base_path() . '/vendor/autoload.php';
+
 
 use App\GeneLib;
 use App\Term;
 use App\Jira;
+use App\Jirafield;
+use App\Curation;
 use App\Gene;
 use App\User;
 use App\Graphql;
@@ -20,6 +26,7 @@ use App\Report;
 use App\Title;
 use App\Notification;
 use App\Actionability;
+use App\Panel;
 
 use App\Mail\NotifyFrequency;
 //use App\Neo4j;
@@ -44,6 +51,32 @@ class TestController extends Controller
     public function index()
     {
 
+        $a = Panel::all();
+
+        //CG-PCER-AGENT:CG_50015_EP.1551905782.01949
+        foreach($a as $item)
+        {
+            $t = $item->affiliate_id;
+            //if (strpos($t, "CG-PCER-AGENT:CG_") === 0)
+            //if (strpos($t, "CGAGENT:") === 0)
+            if ($item->alternate_id !== null)
+            {
+                //$t = substr($t, strlen("CG-PCER-AGENT:CG_"));
+
+                //$k = strpos($t, '_');
+
+               // $k = intval($t) + 40000;
+
+                $item->affiliate_id = intval($item->alternate_id) + 30000;
+
+                //$item->alternate_id = $t;
+
+            }
+
+            //$item->title_short = $item->name;
+            $item->save();
+        }
+        /*
         $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
 
         $json = json_decode($data);
@@ -56,6 +89,29 @@ class TestController extends Controller
         }
 
 
+        $issue = Jira::getIssue('ISCA-4799', null);
+
+        dd($issue->names);
+        //$changelog = Jira::getIssue('ISCA-4799', 'changelog');
+
+        foreach ($issue->names as $key => $value)
+        {
+            Jirafield::updateOrCreate(['field' => $key], ['label' => $value, 'status' => 1]);
+        }
+
+        // map issue to curation record
+        $record = Curation::map($issue);
+
+        foreach ($issue->changelog->histories as $history)
+        {
+            //dd($history);
+        }
+
+        $a = array_reverse($issue->changelog->histories);
+
+        dd($a); */
+
+        //dd($issue->changelog);
 		//Graphql::geneMetrics([]);
 
 		//$response = Neo4j::geneList(['pagesize' => null])

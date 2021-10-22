@@ -27,6 +27,17 @@
 
 	</div>
 
+    <div class="row mb-3">
+        <div class="col-md-12">
+            @if ($record->curation_status !== null)
+            @forelse ($record->curation_status as $item)
+            <span class="badge badge-secondary">{{ $item['group'] }}</span>
+            @empty
+            @endforelse
+            @endif
+        </div>
+    </div>
+
 	<!-- tab headers -->
 	<ul class="nav nav-tabs mt-1" style="">
 		<li class="active" style="">
@@ -76,9 +87,14 @@
 
 			{{-- Check to see if curations are showing --}}
 			@if($currations_set == false)
-					<br clear="both" />
+
+                @include('gene.includes.not_curated')
+
+                <!--<br clear="both" />
 					<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
-			@endif
+                -->
+
+            @endif
 
 @endsection
 

@@ -538,6 +538,7 @@ class Graphql
 			$node->GRCh38_seqid = $localgene->seqid38;
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
+            $node->curation_status = $localgene->curation_status;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();
@@ -609,7 +610,9 @@ class Graphql
 		{
 			$entries = Variant::sortByClassifications($localgene->name);
 			$node->variant = $entries;
-			$node->nvariant = array_sum($entries);
+			$node->nvariant = 0;
+            foreach ($entries as $entry)
+			    $node->nvariant += array_sum($entry);
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
@@ -1732,16 +1735,11 @@ class Graphql
 
 		if (!empty($node->genetic_conditions)) {
 			foreach ($node->genetic_conditions as $condition) {
-				//$nodeCollect = collect($node);
-				//dd($nodeCollect);
-				//dd(count($condition->gene_validity_assertions));
+
 				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);
 				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
 
-				//dd($naction);
-				//dd($nvalid);
-				//dd($ndosage);
 				foreach ($condition->gene_dosage_assertions as $dosage) {
 					if(!empty($dosage->assertion_type)) {
 						switch ($dosage->assertion_type) {
@@ -1766,7 +1764,9 @@ class Graphql
 		{
 			$entries = Variant::sortByClassifications($mondo, true);
 			$node->variant = $entries;
-			$node->nvariant = array_sum($entries);
+            $node->nvariant = 0;
+            foreach ($entries as $entry)
+			    $node->nvariant += array_sum($entry);
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
