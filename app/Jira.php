@@ -1245,13 +1245,13 @@ class Jira extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    static function getIssues($query)
+    static function getIssues($query, $start = 0)
     {
          try {
               $issueService = new IssueService();
 
               $begin = Carbon::now();
-              $issues = $issueService->search($query, 0, 250000);
+              $issues = $issueService->search($query, $start, 250000);
               $end = Carbon::now();
                $record = new Minute([
 				'system' => 'Search',
