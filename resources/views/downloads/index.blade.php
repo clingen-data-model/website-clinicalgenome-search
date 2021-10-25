@@ -61,6 +61,10 @@
             <div class="card">
                 <table class="table table-striped table-hover  mb-0">
                     <tr>
+                        <td colspan="4">
+                            <div><p class="text-danger text-center"><strong><i>Important changes are being made to the Dosage Sensitivity download files in December.  Please view the README file for more information.</i></strong></p></div>
+                        </td>
+                    <tr>
                         <td><strong>README</strong>
                             <div class="small">This files are produced by the ClinGen Dosage Sensitivity Curation Working Group, formerly the International Standards for Cytogenomic Arrays (ISCA) Consortium Evidence-Based Review Committee. The goal of this group is to curate regions of the genome (both single genes and particular genomic regions) with respect to their haploinsufficiency and/or triplosensitivity. </div>
                         </td>
