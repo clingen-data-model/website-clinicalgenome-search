@@ -43,7 +43,7 @@ class RunMonthly extends Command
     {
         echo "Running curation total report ...\n";
 
-        $fd = fopen("/tmp/report.csv", "w");
+        $fd = fopen(base_path() . "/data/MonthlyCurationReport.csv", "w");
         $line = "Date,Validity Curations,Dosage Curations,Monthly Validity, Monthly Dosage\n";
         fputs($fd, $line);
 
@@ -54,6 +54,7 @@ class RunMonthly extends Command
         $vdelta = 0;
         $ddelta = 0;
         $month = 0;
+        $year = 0;
 
         foreach ($metrics as $metric)
         {
@@ -66,16 +67,22 @@ class RunMonthly extends Command
 
 
             $thismonth = $metric->created_at->month;
+            $thisyear = $metric->created_at->year;
             if ($month != $thismonth)
             {
-                $line = $metric->created_at->format('F Y') . ','
-                    . '' . ' ,'
-                    . '' . ','
-                    . $vdelta . ',' . $ddelta . "\n";
+                if ($month != 0)
+                {
+                    $line = date('F', mktime(0, 0, 0, $month, 10)) .  ' ' . $year  . ','
+                        . '' . ' ,'
+                        . '' . ','
+                        . $vdelta . ',' . $ddelta . "\n";
 
-                fputs($fd, $line);
+                    fputs($fd, $line);
+                }
 
                 $month = $thismonth;
+                $year = $thisyear;
+
                 $vfirst = ($vfirst == 0) ? $metric->values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? 0 : $vold;
                 $dfirst = ($dfirst == 0) ? $metric->values[Metric::KEY_TOTAL_DOSAGE_CURATIONS] ?? 0 : $dold;
             }
