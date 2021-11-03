@@ -475,6 +475,9 @@ class Graphql
 							  website_display_label
 							  curie
 						  }
+							attributed_to {
+								 label
+							}
 						  report_date
 						  classification {
 							  label

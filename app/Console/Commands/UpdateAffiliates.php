@@ -140,7 +140,7 @@ class UpdateAffiliates extends Command
                     $panel = Panel::firstOrNew(['affiliate_id' => $id],
                                     ['summary' => $agent['affiliation'] ?? null,
                                      'name' => $agent['label'],
-                                     'affiliate_id' => null,
+                                     'alternate_id' => null,
                                      'title' => $agent['label'],
                                      'title_short' => $agent['label'],
                                      'affiliate_type' => 'vcep',
