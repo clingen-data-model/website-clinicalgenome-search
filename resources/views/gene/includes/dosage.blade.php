@@ -4,9 +4,9 @@
 				@php global $currations_set; $currations_set = true; @endphp
 				@if($header_dos == true)
 					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-3">
+					<div class="card mb-4">
 						<div class="card-body p-0 m-0">
-
+							<div class="p-2 text-muted small">The following <strong>2 curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
 						<table class="panel-body table mb-0">
 							<thead class="thead-labels">
 								<tr>
@@ -101,8 +101,9 @@
 					@if($header_dos == true)
 					@php global $currations_set; $currations_set = true; @endphp
 					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-3">
+					<div class="card mb-4">
 						<div class="card-body p-0 m-0">
+							<div class="p-2 text-muted small bg-light">The following <strong>2 curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
 
 						<table class="panel-body table mb-0">
 							<thead class="thead-labels">

@@ -396,8 +396,10 @@ class GeneController extends Controller
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
 
-        $vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
 
+		//dd($record->curation_status);
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
@@ -406,8 +408,181 @@ class GeneController extends Controller
 
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
-												'variant_collection', 'vceps'))
+												'variant_collection',
+			'vceps',
+			'gceps'))
 												->with('user', $this->user);
+	}
+
+
+
+	/**
+	 * Display the specified gene, organized by condition.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show_groups(Request $request, $id = null)
+	{
+		if ($id === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		// check if the condition came in as an OMIM ID, and if so convert it.
+		if (strpos($id, "HGNC:") !== 0) {
+			if (is_numeric($id))
+				$check = Gene::omim($id)->first();
+			else
+				$check = Gene::name($id)->first();
+
+			if ($check !== null)
+				$id = $check->hgnc_id;
+		}
+
+		$record = GeneLib::geneDetail([
+			'gene' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true,
+			'pharma' => true,
+			'variant' => true
+		]);
+
+		if ($record === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		// the new follow stuff.  protptype wip
+		$follow = false;
+		$email = '';
+		$user = Auth::guard('api')->user();
+
+		if (Auth::guard('api')->check()) {
+			$user = Auth::guard('api')->user();
+			//dd($user);
+			$follow = $user->genes->contains('hgnc_id', $id);
+		} else {
+
+			$cookie = $request->cookie('clingenfollow');
+
+			if ($cookie !== null) {
+				$user = User::cookie($cookie)->first();
+
+				if ($user !== null) {
+					$follow = $user->genes->contains('hgnc_id', $id);
+					$email = $user->email;
+				}
+			}
+		}
+		// end follow
+
+		//reformat the response structure for view by activity
+		$actionability_collection = collect();
+		$validity_collection = collect();
+		$dosage_collection = collect();
+		$variant_collection = collect();
+		$pharma_collection = collect();
+
+		foreach ($record->genetic_conditions as $key => $disease) {
+			// actionability
+			if (!empty($disease->actionability_assertions)) {
+				$adult = null;
+				$pediatric = null;
+				$order = 0;
+
+				// regroup the adult and pediatric assertions
+				foreach ($disease->actionability_assertions as $assertion) {
+					if ($assertion->attributed_to !== null) {
+						if ($assertion->attributed_to->label == "Adult Actionability Working Group") {
+							$adult = $assertion;
+						}
+						if ($assertion->attributed_to->label == "Pediatric Actionability Working Group") {
+							$pediatric = $assertion;
+						}
+					} else {
+						// workaround for genegraph bug 5/11/2021
+						if (strpos($assertion->source, "Adult") !== false) {
+							$adult = $assertion;
+						}
+						if (strpos($assertion->source, "Pediatric") !== false) {
+							$pediatric = $assertion;
+						}
+					}
+
+					$aorder = $this->actionability_sort_order[$assertion->classification->label] ?? 0;
+					if ($aorder > $order)
+						$order = $aorder;
+				}
+
+				$node = new Nodal([
+					'order' => $order,
+					'disease' => $disease->disease,
+					'adult_assertion' => $adult,
+					'pediatric_assertion' => $pediatric
+				]);
+
+				$actionability_collection->push($node);
+			}
+			//dd($actionability_collection);
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion) {
+				$node = new Nodal([
+					'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+					'disease' => $disease->disease, 'assertion' => $assertion
+				]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			foreach ($disease->gene_dosage_assertions as $assertion) {
+				$node = new Nodal([
+					'order' => $assertion->dosage_classification->oridinal ?? 0,
+					'disease' => $disease->disease, 'assertion' => $assertion
+				]);
+				$dosage_collection->push($node);
+			}
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
+		$actionability_collection = $actionability_collection->sortByDesc('order');
+
+		if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
+
+		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+
+		//dd($wgs);
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => $record->label . " curation results"
+		]);
+
+
+		return view('gene.show-groups', compact(
+			'display_tabs',
+			'record',
+			'follow',
+			'email',
+			'user',
+			'validity_collection',
+			'actionability_collection',
+			'variant_collection',
+			//'group_collection',
+			'gceps',
+			'vceps'
+		))
+			->with('user', $this->user);
 	}
 
 

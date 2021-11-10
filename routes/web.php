@@ -70,6 +70,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/{id?}/by-disease', 'GeneController@show_by_disease')->name('gene-by-disease');
 
+		Route::get('/{id?}/groups', 'GeneController@show_groups')->name('gene-groups');
+
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 
 		//Route::get('/{id?}/external_resources_genes', 'GeneController@external');

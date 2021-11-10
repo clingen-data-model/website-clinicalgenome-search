@@ -38,6 +38,9 @@
               <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
           </li>
+          <li class="" style="">
+            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">{{ $record->symbol }} Expert Panels &amp; Groups </a>
+          </li>
           <li class="active" style="">
             <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>

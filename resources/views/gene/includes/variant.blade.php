@@ -1,11 +1,12 @@
 @if ($variant_collection->isNotEmpty())
     @php global $currations_set; $currations_set = true; @endphp
 
-    <h3 id="link-gene-validity" class=" mt-3 mb-0">
+    <h3 id="link-gene-validity" class=" mt-6 mb-0">
         <img src="/images/variantPathogenicity-on.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Variant Pathogenicity
     </h3>
     <div class="card mb-4">
          <div class="card-body p-0 m-0">
+             <div class="p-2 text-muted small bg-light">The following <strong>40 variant classifications</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">RASopathy VCEP</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
             <table class="panel-body table mb-0">
                 <thead class="thead-labels">
                     <tr>
@@ -22,7 +23,7 @@
                     @foreach($classes as $variant => $variant_count)
                     <tr class="">
                         <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0){{ $record->label  }}@endif</td>
-                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) Variants approved by ClinGen Variant Curation Expert Panel(s): @endif</td>
+                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) Variants approved by <a href="{{ route('gene-groups', $record->hgnc_id) }}">RASopathy VCEP</a> @endif</td>
                         <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 "></td>
                         <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
                                 <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
