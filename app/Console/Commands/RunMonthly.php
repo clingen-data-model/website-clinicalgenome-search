@@ -55,6 +55,8 @@ class RunMonthly extends Command
         $ddelta = 0;
         $month = 0;
         $year = 0;
+        $vold = 0;
+        $dold = 0;
 
         foreach ($metrics as $metric)
         {
