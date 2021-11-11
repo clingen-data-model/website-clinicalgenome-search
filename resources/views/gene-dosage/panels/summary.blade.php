@@ -113,8 +113,9 @@
           <div class="col-sm-3 text-right">Related Regions:</div>
           <div class="col-sm-9 border-left-4 border-info bold" >
               @foreach ($record->links as $link)
-                <a href="/kb/gene-dosage/region/{{ $link->inwardIssue->key }}">{{ $link->inwardIssue->fields->summary }}</a></div>
+                <div><a href="/kb/gene-dosage/region/{{ $link->inwardIssue->key }}">{{ $link->inwardIssue->fields->summary }}</a></div>
               @endforeach
+          </div>
         </div>
         @endif
         <div class="row pb-2 pt-3">
