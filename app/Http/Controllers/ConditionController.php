@@ -194,6 +194,97 @@ class ConditionController extends Controller
                                                     'variant_collection'));
 	}
 
+	/**
+	 * Display the specified condition.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function showOmim(Request $request, $id = null)
+	{
+		if ($id === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Disease details')
+			->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		// check if the condition came in as an OMIM ID, and if so convert it.
+		if (strpos($id, "MONDO:") !== 0) {
+			$check = Disease::omim($id)->first();
+
+			if ($check !== null)
+				$id = $check->curie;
+		}
+
+		$record = GeneLib::conditionDetail([
+			'condition' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true,
+			'variant' => true
+		]);
+
+		if ($record === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Disease details')
+			->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		//reformat the response structure for view by activity
+		$validity_collection = collect();
+		$variant_collection = collect();
+
+		foreach ($record->genetic_conditions as $key => $disease) {
+			// actionability
+			/*foreach ($disease->actionability_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$actionability_collection->push($node);
+			}*/
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion) {
+				$node = new Nodal([
+					'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+					'gene' => $disease->gene, 'assertion' => $assertion
+				]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			/*foreach ($disease->gene_dosage_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$dosage_collection->push($node);
+			}*/
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
+
+		// we don't do any special sorting on variant path at this time
+		if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "condition",
+			'title' => $record->label . " curation results by ClinGen activity"
+		]);
+
+		return view('condition.omim-by-activity', compact(
+			'display_tabs',
+			'record',
+			'validity_collection',
+			'variant_collection'
+		));
+	}
+
 
 	/**
 	 * Display the specified condition.

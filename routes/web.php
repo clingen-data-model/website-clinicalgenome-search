@@ -144,6 +144,8 @@ Route::group(['prefix' => 'kb/conditions'], function () {
 
 		Route::get('/{id?}', 'ConditionController@show')->name('condition-show');
 
+		Route::get('/omim/{id?}', 'ConditionController@showOmim')->name('condition-show-omim');
+
 		Route::get('/{id?}/by-gene', 'ConditionController@show_by_gene')->name('disease-by-gene');
 
 		// TODO

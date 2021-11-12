@@ -8,9 +8,12 @@
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1> {!! displayMondoObsolete($record->label) !!}
+						<h1 class="h2 p-0 m-0">
+							NOONAN SYNDROME
+							{{-- {{ displayMondoLabel($record->label) }} --}}
+						</h1> {!! displayMondoObsolete($record->label) !!}
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-							<i class="far fa-caret-square-down"></i> View MONDO Disease Facts
+							<i class="far fa-caret-square-down"></i> View OMIM Disease Facts
 						</a>
           </td>
         </tr>
@@ -57,7 +60,16 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-
+			<div class="panel panel-primary mt-3">
+				<div class="panel-body">
+					<h3 class="my-0 h5">ClinGen's Curations Mapped To OMIM</h3>
+					<p class="small">The following XX curations were originally curated to <a href="#clingenlink">Noonan syndrome (MONDO:1234)</a> and have been ontologically mapped to NOONAN SYNDROME (OMIM:1234) because they have been found to be equivalents by the Monarch Disease Ontology. The disease names listed below are the original disease name selected for each curation.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+		<div class="col-md-12">
 			@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR !empty($record->genetic_conditions))
 <div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
   <a  href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="btn btn-primary active">Group By Activity</a>

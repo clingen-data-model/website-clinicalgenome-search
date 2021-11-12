@@ -10,7 +10,7 @@
           <td class="pl-2">
 						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1> {!! displayMondoObsolete($record->label) !!}
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-							<i class="far fa-caret-square-down"></i> View Disease Facts
+							<i class="far fa-caret-square-down"></i> View MONDO Disease Facts
 						</a>
           </td>
         </tr>
