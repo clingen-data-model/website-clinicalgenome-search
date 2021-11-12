@@ -274,7 +274,11 @@ class Jira extends Model
              foreach ($node->links as $link)
              {
                  if (isset($link->inwardIssue))
-                   $t[] = $link;
+                 {
+                   //$t[] = $link;
+                   $a = self::getIssue($link->inwardIssue->key);
+                   $t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $a->customfield_10202 ?? $a->summary];
+                 }
              }
 
              if (empty($t))
