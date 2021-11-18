@@ -155,28 +155,41 @@ class Variant extends Model
 
         if (!$disease)
         {
-        $records = self::where('gene->label', $symbol)->get();
+            $records = self::where('gene->label', $symbol)->get();
         }
         else
         {
-        $records = self::where('condition->@id', $symbol)->get();
+            $records = self::where('condition->@id', $symbol)->get();
         }
 
         if (empty($records))
-            return [$symbol => $classifications];
+            return [$symbol => ['classifications' => $classifications,
+                                'panels' => []]];
 
         $genelist = [];
+
+       // dd($records[0]->guidelines);
 
         foreach ($records as $record)
         {
             if (!isset($genelist[$record->gene['label']]))
-                $genelist[$record->gene['label']] = $classifications;
+                $genelist[$record->gene['label']] = ['classifications' => $classifications,
+                                                    'panels' => []];
 
-            $a =& $genelist[$record->gene['label']];
+            $a =& $genelist[$record->gene['label']]['classifications'];
+            $b =& $genelist[$record->gene['label']]['panels'];
 
             foreach ($record->guidelines as $guideline)
+            {
                 if (isset($a[$guideline["outcome"]["label"]]))
                     $a[$guideline["outcome"]["label"]]++;
+
+                foreach($guideline['agents'] as $agent)
+                {
+                    if (!in_array($agent["affiliation"], $b))
+                        $b[] = $agent["affiliation"];
+                }
+            }
 
             //$genelist[$record->gene['label']] = $a;
         }

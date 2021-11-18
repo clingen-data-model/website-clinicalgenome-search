@@ -615,7 +615,7 @@ class Graphql
 			$node->variant = $entries;
 			$node->nvariant = 0;
             foreach ($entries as $entry)
-			    $node->nvariant += array_sum($entry);
+			    $node->nvariant += array_sum($entry['classifications']);
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;

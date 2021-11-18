@@ -167,15 +167,6 @@
           sortable: true
         },
         {
-          title: '',
-          field: 'vcep',
-          formatter: vcepFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          //filterControl: 'input',
-          sortable: false
-        },
-        {
           title: 'HGNC ID',
           field: 'hgnc_id',
           filterControl: 'input',

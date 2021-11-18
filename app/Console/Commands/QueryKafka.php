@@ -138,6 +138,7 @@ class QueryKafka extends Command
                     //if (strpos($message->key, 'ISCA-20827') > 0)
                     //{
                         $payload = json_decode($message->payload);
+                        //dd($payload);
                         $a = $stream->parser;
                         $a($payload);
                         if ($payload->data->id == 5876)

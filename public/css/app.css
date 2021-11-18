@@ -20201,6 +20201,10 @@ footer p {
   font-size: 10px;
 }
 
+.bg-darkblue {
+  background-color: darkblue;
+}
+
 .ep-list {
   -moz-column-count: 2;
        column-count: 2;

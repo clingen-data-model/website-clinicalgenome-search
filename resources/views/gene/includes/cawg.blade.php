@@ -2,7 +2,15 @@
 		@php global $adult_set; $adult_set = false; @endphp
     @php global $currations_set; $currations_set = true; @endphp
 
-<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
+<h3 class="mb-0">Clinical Actionability Working Group</h3>
+    <p>
+        The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated if the risk were known
+    </p>
+        <p>The Clinical Actionabilty Working Group is currently reviewing the following genes:
+            @foreach([] as $gene)
+            {{ $gene->name }},
+            @endforeach
+        </p>
 	<div class="card mb-4">
 		<div class="card-body p-0 m-0">
 			<div class="p-2 text-muted small bg-light">The following <strong>{{ $record->naction }} curations</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Actionability's Adult &amp; Pediatric Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
@@ -10,8 +18,8 @@
 				<thead class="thead-labels">
 					<tr>
 						<th class="col-sm-1 th-curation-group text-left">Gene</th>
-						<th class="col-sm-4 text-left"> Disease</th>
-						<th class="col-sm-2"></th>
+						<th class="col-sm-5 text-left"> Disease</th>
+						<th class="col-sm-1">Activity</th>
 						<th class="col-sm-2">Assertions</th>
 						<th class="col-sm-1 text-center">Report &amp; Date</th>
 					</tr>
@@ -33,6 +41,7 @@
 						</td>
 
 						<td class="">
+                            <img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">
 						</td>
 
 						<td class="text-center">

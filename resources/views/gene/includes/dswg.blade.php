@@ -3,8 +3,16 @@
 				@if(count($disease->gene_dosage_assertions))
 				@php global $currations_set; $currations_set = true; @endphp
 				@if($header_dos == true)
-					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-4">
+					<h3 class="mb-0">Dosage Sensitivity Curation Working Group</h3>
+					<p>
+                        The Dosage Sensitivity Curation task team uses a systematic process by which to evaluate the evidence supporting or refuting the dosage sensitivity of individual genes and genomic regions. This information can ultimately be used to inform future cytogenomic microarray designs and clinical interpretation decisions.
+                    </p>
+                            <p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:
+                                @foreach([] as $gene)
+                                {{ $gene->name }},
+                                @endforeach
+                            </p>
+                    <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 							<div class="p-2 text-muted small">The following <strong>{{ $record->ndosage }} curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
 						<table class="panel-body table mb-0">
@@ -12,7 +20,7 @@
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-2 text-center">Activity</th>
 								<th class="col-sm-2">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -33,6 +41,7 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                <img class="" src="/images/dosageSensitivity-on.png" title="Variant Pathogenicity" style="width:30px">
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
@@ -100,8 +109,16 @@
 					@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map))
 					@if($header_dos == true)
 					@php global $currations_set; $currations_set = true; @endphp
-					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-4">
+					<h3 class="mb-0">Dosage Sensitivity Curation Working Group</h3>
+					<p>
+                        The Dosage Sensitivity Curation task team uses a systematic process by which to evaluate the evidence supporting or refuting the dosage sensitivity of individual genes and genomic regions. This information can ultimately be used to inform future cytogenomic microarray designs and clinical interpretation decisions.
+                    </p>
+                            <p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:
+                                @foreach([] as $gene)
+                                {{ $gene->name }},
+                                @endforeach
+                            </p>
+                    <div class="card mb-4">
 						<div class="card-body p-0 m-0">
 							<div class="p-2 text-muted small bg-light">The following <strong>2 curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
 

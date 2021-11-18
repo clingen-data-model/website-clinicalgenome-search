@@ -391,13 +391,35 @@ class GeneController extends Controller
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
+
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+        $validity_eps = count($validity_panels);
 		$actionability_collection = $actionability_collection->sortByDesc('order');
 
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
 
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, $item['panels']);
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+
+        // dd($gceps);
+
+        $total_panels = $validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 2);
 
 		//dd($record->curation_status);
 		// set display context for view
@@ -405,11 +427,12 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-
+//dd($vceps);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
-												'variant_collection',
-			'vceps',
+												'variant_collection', 'validity_eps', 'variant_panels',
+                                                'total_panels',
+            'vceps',
 			'gceps'))
 												->with('user', $this->user);
 	}
@@ -558,6 +581,14 @@ class GeneController extends Controller
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
 
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, $item['panels']);
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
 
@@ -578,6 +609,7 @@ class GeneController extends Controller
 			'validity_collection',
 			'actionability_collection',
 			'variant_collection',
+            'variant_panels',
 			//'group_collection',
 			'gceps',
 			'vceps'

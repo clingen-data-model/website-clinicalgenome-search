@@ -26,8 +26,8 @@ class Curated extends JsonResource
             'has_dosage' => $this->has_dosage ? 'Curated' : null,
             'has_pharma' => $this->has_pharma ? 'Curated' : null,
             'has_variant' => $this->has_variant ? 'Approved VCEP' : null,
-            'acmg59' => $this->acmg59,
-            'vcep' => $this->vcep
+            'acmg59' => $this->acmg59
+            //'vcep' => $this->vcep
         ];
     }
 

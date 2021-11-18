@@ -582,9 +582,9 @@
 					<td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EVIDENCE SUMMARY</td>
 					<td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
 						<div class='col-sm-12 text-left'>
-		          {{ $record->score_data->summary->FinalClassificationNotes ?? null }}</div>
-
-							</td>
+		                    {{ $record->score_data->summary->FinalClassificationNotes ?? null }}
+                        </div>
+                    </td>
 				</tr>
 				@endif
 		@endif
