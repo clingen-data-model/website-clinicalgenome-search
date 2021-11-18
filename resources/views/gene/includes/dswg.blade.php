@@ -7,7 +7,7 @@
 					<p>
                         The Dosage Sensitivity Curation task team uses a systematic process by which to evaluate the evidence supporting or refuting the dosage sensitivity of individual genes and genomic regions. This information can ultimately be used to inform future cytogenomic microarray designs and clinical interpretation decisions.
                     </p>
-                            <p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:
+                            <p>The Dosage Sensitity Working Group is currently reviewing the following genes:
                                 @foreach([] as $gene)
                                 {{ $gene->name }},
                                 @endforeach
@@ -113,7 +113,7 @@
 					<p>
                         The Dosage Sensitivity Curation task team uses a systematic process by which to evaluate the evidence supporting or refuting the dosage sensitivity of individual genes and genomic regions. This information can ultimately be used to inform future cytogenomic microarray designs and clinical interpretation decisions.
                     </p>
-                            <p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:
+                            <p>The Dosage Sensitivity Working Group is currently reviewing the following genes:
                                 @foreach([] as $gene)
                                 {{ $gene->name }},
                                 @endforeach
