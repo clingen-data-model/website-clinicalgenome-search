@@ -1,23 +1,16 @@
 
-<h3  id="link-gene-validity" class=" mt-3 mb-0">{{ $gcep->title_abbreviated }}</h3>
 <div class="card mb-4 mt-0">
-    <div class="card-header bg-darkblue text-white">
-        <p>
-            The ClinGen RASopathy Expert Panel seeks to evaluate the current evidence for each gene-condition assertion in order to provide a comprehensive review of Ras/MAPK pathway genes and their causality of a RASopathy condition.
-        </p><p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:
-            @foreach($gcep->genes as $gene)
-            {{ $gene->name }},
-            @endforeach
-        </p>
 
-    </div>
     <div class="card-body p-0 m-0">
 
-        <div class="p-2 text-muted small bg-light">The following <strong>{{ $record->nvalid }} curations</strong> were
-            completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge
-                border-primary text-primary px-1">{{ $gcep->title_abbreviated }}</a>.
-            <!--in partnership with <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">2 expert panels</a>. {{ $record->symbol }} is also under review by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">3 GCEPs</a>. -->
-            <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a>
+        <div class="p-2 text-muted pb-3 bg-light">
+            <h3  id="link-gene-validity" class="">{{ $gcep->title_abbreviated }}</h3>
+            <p>
+                The ClinGen RASopathy Expert Panel seeks to evaluate the current evidence for each gene-condition assertion in order to provide a comprehensive review of Ras/MAPK pathway genes and their causality of a RASopathy condition.
+            </p><p>The {{ $gcep->title_abbreviated }} is currently reviewing the following genes:</p>
+                @foreach($gcep->genes as $gene)
+                <a href="{{ route('gene-show', $gene->hgnc_id) }}" ><span class="badge mr-1">{{ $gene->name }}</span></a>
+                @endforeach
         </div>
 
         <table class="panel-body table mb-0">
@@ -55,7 +48,7 @@
                                 class="fas fa-info-circle text-muted"></i></span>
                     </td>
 
-                    <td class="text-center">
+                    <td class="">
                         <img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">
                     </td>
 
@@ -80,4 +73,3 @@
         </table>
     </div>
 </div>
-<hr>

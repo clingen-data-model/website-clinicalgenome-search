@@ -575,7 +575,15 @@ class GeneController extends Controller
 		}
 
 		// reapply any sorting requirements
-		$validity_collection = $validity_collection->sortByDesc('order');
+        $validity_collection = $validity_collection->sortByDesc('order');
+
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+        $validity_eps = count($validity_panels);
 		$actionability_collection = $actionability_collection->sortByDesc('order');
 
 		if ($record->nvariant > 0)
@@ -599,6 +607,10 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
+        $total_panels = $validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 2);
+
 
 		return view('gene.show-groups', compact(
 			'display_tabs',
@@ -612,7 +624,8 @@ class GeneController extends Controller
             'variant_panels',
 			//'group_collection',
 			'gceps',
-			'vceps'
+			'vceps',
+            'total_panels'
 		))
 			->with('user', $this->user);
 	}

@@ -1,17 +1,16 @@
 
-    <h3  id="link-gene-validity" class=" mt-3 mb-0">{{ $vcep->title_abbreviated }}</h3>
-    <p>
-        The RASopathy Expert Panel aims to systematically aid in resolution of variant classification differences in ClinVar and provide further curation of the genes involved in the RASopathies.
-    <p>
-        <p>The {{ $vcep->title_abbreviated }} is currently reviewing the following genes:
-            @foreach($vcep->genes as $gene)
-            {{ $gene->name }},
-            @endforeach
-        </p>
     <div class="card mb-4">
     <div class="card-body p-0 m-0">
 
-        <div class="p-2 text-muted small bg-light">The following <strong>{{ $record->nvariant }} variant classifications</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">{{ implode(', ', $variant_panels) }}</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
+        <div class="p-2 text-muted pb-3 bg-light">
+            <h3  id="link-gene-validity" class="">{{ $vcep->title_abbreviated }}</h3>
+            <p>
+                The ClinGen RASopathy Expert Panel seeks to evaluate the current evidence for each gene-condition assertion in order to provide a comprehensive review of Ras/MAPK pathway genes and their causality of a RASopathy condition.
+            </p><p>The {{ $vcep->title_abbreviated }} is currently reviewing the following genes:</p>
+                @foreach($vcep->genes as $gene)
+                <span class="badge mr-1">{{ $gene->name }}</span>
+                @endforeach
+        </div>
 
             <table class="panel-body table mb-0">
                 <thead class="thead-labels">

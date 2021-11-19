@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="active" style="">
-            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">{{ $record->symbol }} Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">11</span></a>
+            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">{{ $record->symbol }} Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
           </li>
           <li class="" style="">
             <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
@@ -55,8 +55,10 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <h4>ClinGen's curations and assertions are undertaken and maintained by expert panels and groups assembled from experts around the world. The following expert panels and groups are contributing to curations and assertions related to {{ $record->symbol }}. <a href=''>Click here to learn more about our expert panels and their oversight.</a>
-            </h4>
+            <p>ClinGen's curations and assertions are undertaken and maintained by expert panels and groups assembled from experts around the world. The following expert panels and groups are contributing to curations and assertions related to {{ $record->symbol }}.
+            </p>
+            <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about our expert panels and their oversight.</a>
+            </p>
 
             @foreach($gceps as $gcep)
                 @include('gene.includes.ep')
