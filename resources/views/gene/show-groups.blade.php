@@ -55,9 +55,9 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <p>ClinGen's curations and assertions are undertaken and maintained by expert panels and groups assembled from experts around the world. The following expert panels and groups are contributing to curations and assertions related to {{ $record->symbol }}.
+            <p>ClinGen's curations and assertions are undertaken and maintained by Expert Panels and Working Groups assembled from experts around the world. The ClinGen Expert Panels and Working Groups contributing to curations and assertions for <strong>{{ $record->symbol }}</strong> are shown below.
             </p>
-            <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about our expert panels and their oversight.</a>
+            <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
             </p>
 
             @foreach($gceps as $gcep)

@@ -51,8 +51,8 @@ class UpdateSources extends Command
           $this->call('update:cpic');       // CPIC and PharmGKB
           $this->call('update:erepo');      // Erepo
           $this->call('update:cytobands');  // UCSC (goldenpath hg19)
-          $this->call('update:index gene'); // Refresh index file from Jira
-          $this->call('update:index region');// Refresh index file from Jira
+          $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
+          $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
           $this->call('update:dosages');    // DCI (Jira)
           $this->call('update:map');        // local file
           $this->call('update:ratings');    // DCI (Jira)

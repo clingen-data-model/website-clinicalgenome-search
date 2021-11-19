@@ -43,8 +43,7 @@ class UpdateIndex extends Command
     {
         $report = $this->argument('report');
 
-        switch ($report)
-        {
+        switch ($report) {
             case 'gene':
                 echo "Refreshing gene_isca.idx...";
                 $this->gene();
@@ -61,8 +60,8 @@ class UpdateIndex extends Command
                 break;
         }
 
-		echo "Invalid report type\n";
-	}
+        echo "Invalid report type\n";
+    }
 
 
     /**
@@ -84,8 +83,7 @@ class UpdateIndex extends Command
             //echo "\nmaxResults: " . $results->maxResults;
             //echo "\ntotal: " . $results->total;
 
-            foreach ($results->issues as $issue)
-            {
+            foreach ($results->issues as $issue) {
                 $record = (object) $issue->fields->customFields;
 
                 // incomplete record
@@ -98,16 +96,15 @@ class UpdateIndex extends Command
 
                 //echo "Processing Symbol " . $record->customfield_10030 . "\n";
 
-                $node = [   'label' => $record->customfield_10030,
-                            'id' => $issue->key
-                        ];
+                $node = [
+                    'label' => $record->customfield_10030,
+                    'id' => $issue->key
+                ];
 
                 $collection->push($node);
-
             }
 
             $start += $results->maxResults;
-
         } while ($start < $results->total);
 
         // sort by gene symbol
@@ -130,8 +127,7 @@ class UpdateIndex extends Command
      */
     public function region($build = 37)
     {
-        switch ($build)
-        {
+        switch ($build) {
             case 37:
                 $build = '';
                 $region = 'customfield_10160';
@@ -152,8 +148,7 @@ class UpdateIndex extends Command
 
             $results = Jira::getIssues('project = ISCA AND issuetype in ("ISCA Gene Curation", "ISCA Region Curation")', $start);
 
-            foreach ($results->issues as $issue)
-            {
+            foreach ($results->issues as $issue) {
 
                 $record = (object) $issue->fields->customFields;
 
@@ -165,8 +160,8 @@ class UpdateIndex extends Command
                 if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Won't Fix")
                     continue;
 
-                 // we groom the status a bit
-                 if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Complete")
+                // we groom the status a bit
+                if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Complete")
                     $status = 'Complete';
                 else if ($issue->fields->status->name == "Open")
                     $status =  'Awaiting Review';
@@ -175,42 +170,40 @@ class UpdateIndex extends Command
 
                 //echo "Processing Record " . $issue->key . "\n";
 
-                if ($issue->fields->issuetype->name == "ISCA Gene Curation")
-                {
+                if ($issue->fields->issuetype->name == "ISCA Gene Curation") {
                     // ignore withdrawn genes
                     if (isset($record->customfield_10156) && $record->customfield_10156 == 'withdrawn')
                         continue;
 
-                    $node = [   'location' => $record->$region ?? '', 'id' => $issue->key,
-                                'type' => $issue->fields->issuetype->name,
-                                'status' => $status,
-                                'label' => '', //$record->customfield_10030,
-                                'ts' => ($status == 'Complete' ? ($record->customfield_10166->value ?? 'None') : 'N/A'),
-                                'hs' => ($status == 'Complete' ? ($record->customfield_10165->value ?? 'None') : 'N/A'),
-                                'pli' => $record->customfield_11635 ?? '',
-                                'omim' => basename($record->customfield_10147 ?? '')
+                    $node = [
+                        'location' => $record->$region ?? '', 'id' => $issue->key,
+                        'type' => $issue->fields->issuetype->name,
+                        'status' => $status,
+                        'label' => '', //$record->customfield_10030,
+                        'ts' => ($status == 'Complete' ? ($record->customfield_10166->value ?? 'None') : 'N/A'),
+                        'hs' => ($status == 'Complete' ? ($record->customfield_10165->value ?? 'None') : 'N/A'),
+                        'pli' => $record->customfield_11635 ?? '',
+                        'omim' => basename($record->customfield_10147 ?? '')
 
-                            ];
-                }
-                else    // Region
+                    ];
+                } else    // Region
                 {
-                    $node = [   'location' => $record->$region ?? '', 'id' => $issue->key,
-                                'type' => $issue->fields->issuetype->name,
-                                'status' => $status,
-                                'label' => $record->customfield_10202,
-                                'ts' => ($status == 'Complete' ? ($record->customfield_10166->value ?? 'None') : 'N/A'),
-                                'hs' => ($status == 'Complete' ? ($record->customfield_10165->value ?? 'None') : 'N/A'),
-                                'pli' => $record->customfield_11635 ?? '',
-                                'omim' => basename($record->customfield_10147 ?? '')
-                            ];
+                    $node = [
+                        'location' => $record->$region ?? '', 'id' => $issue->key,
+                        'type' => $issue->fields->issuetype->name,
+                        'status' => $status,
+                        'label' => $record->customfield_10202,
+                        'ts' => ($status == 'Complete' ? ($record->customfield_10166->value ?? 'None') : 'N/A'),
+                        'hs' => ($status == 'Complete' ? ($record->customfield_10165->value ?? 'None') : 'N/A'),
+                        'pli' => $record->customfield_11635 ?? '',
+                        'omim' => basename($record->customfield_10147 ?? '')
+                    ];
                 }
 
                 $collection->push($node);
-
             }
 
             $start += $results->maxResults;
-
         } while ($start < $results->total);
 
         // sort by isca issue in decending order
@@ -224,7 +217,5 @@ class UpdateIndex extends Command
             fwrite($handle, implode("\t", $item) . PHP_EOL);
 
         fclose($handle);
-
     }
-
 }
