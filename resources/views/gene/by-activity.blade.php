@@ -27,28 +27,6 @@
 
 	</div>
 
-    {{-- <div class="row mb-3">
-        <div class="col-md-12">
-            @if ($record->curation_status !== null)
-            @forelse ($record->curation_status as $item)
-            <span class="badge badge-secondary">{{ $item['group'] }}</span>
-            @empty
-            @endforelse
-            @endif
-
-            @if ($gceps !== null)
-						@foreach ($gceps as $gcep)
-                <a target='external' href="https://clinicalgenome.org/affiliation/{{ $gcep->href }}" class="badge-info badge pointer ml-2">{{ $gcep->title_short ?? $gcep->title}} <i class="fas fa-external-link-alt"></i></a>
-            @endforeach
-            @endif
-            @if ($vceps !== null)
-						@foreach ($vceps as $vcep)
-                <a target='external' href="https://clinicalgenome.org/affiliation/{{ $vcep->href }}" class="badge-info badge pointer ml-2">{{ $vcep->title_short }} <i class="fas fa-external-link-alt"></i></a>
-            @endforeach
-            @endif
-        </div>
-    </div> --}}
-
 	<!-- tab headers -->
 	<ul class="nav nav-tabs mt-1" style="">
 		<li class="active" style="">

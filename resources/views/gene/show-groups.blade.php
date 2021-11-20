@@ -72,6 +72,10 @@
                 @include('gene.includes.vcep')
             @endforeach
 
+            @foreach($pregceps as $gcep)
+                @include('gene.includes.pregcep')
+            @endforeach
+
         </div>
     </div>
 </div>

@@ -2,13 +2,13 @@
    font-style: italic;
 }
 :-moz-placeholder {
-   font-style: italic;  
+   font-style: italic;
 }
 ::-moz-placeholder {
-   font-style: italic;  
+   font-style: italic;
 }
-:-ms-input-placeholder {  
-   font-style: italic; 
+:-ms-input-placeholder {
+   font-style: italic;
 }
 
 .dark-table .bootstrap-table table.table>tbody>tr>td {
@@ -309,6 +309,13 @@ footer p {
 
 #modalSettings ul.nav-tabs li.active {
     background-color: #DDD;
+}
+
+.cardeffect{
+    padding: 1.5em .5em .5em;
+    border-radius: 2em;
+//    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
 }
 
 .fa-blank

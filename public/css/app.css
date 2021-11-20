@@ -20137,6 +20137,12 @@ footer p {
   background-color: #DDD;
 }
 
+.cardeffect {
+  padding: 1.5em 0.5em 0.5em;
+  border-radius: 2em;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
 .fa-blank {
   visibility: hidden !important;
 }

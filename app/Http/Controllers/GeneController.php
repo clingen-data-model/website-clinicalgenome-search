@@ -414,12 +414,31 @@ class GeneController extends Controller
 
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = [];
+
+        foreach ($record->curation_status as $precuration)
+        {
+            if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+                continue;
+
+            if (empty($precuration['group_id']))
+                $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+            else
+                $panel = Panel::affiliate($precuration['group_id'])->first();
+
+            if ($panel == null)
+                continue;
+
+            $pregceps[] = $panel;
+        }
+        $pregceps = array_diff($pregceps, $gceps->toArray());
 
         // dd($gceps);
 
         $total_panels = $validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
-                        + ($actionability_collection->isEmpty() ? 0 : 2);
+                        + ($actionability_collection->isEmpty() ? 0 : 2)
+                        + count($pregceps);
 
 		//dd($record->curation_status);
 		// set display context for view
@@ -431,7 +450,7 @@ class GeneController extends Controller
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
 												'variant_collection', 'validity_eps', 'variant_panels',
-                                                'total_panels',
+                                                'pregceps', 'total_panels',
             'vceps',
 			'gceps'))
 												->with('user', $this->user);
@@ -599,8 +618,25 @@ class GeneController extends Controller
 
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = [];
 
-		//dd($wgs);
+        foreach ($record->curation_status as $precuration)
+        {
+            if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+                continue;
+
+            if (empty($precuration['group_id']))
+                $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+            else
+                $panel = Panel::affiliate($precuration['group_id'])->first();
+
+            if ($panel == null)
+                continue;
+
+            $pregceps[] = $panel;
+        }
+        $pregceps = array_diff($pregceps, $gceps->toArray());
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
@@ -609,8 +645,8 @@ class GeneController extends Controller
 
         $total_panels = $validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
-                        + ($actionability_collection->isEmpty() ? 0 : 2);
-
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        + count($pregceps);
 
 		return view('gene.show-groups', compact(
 			'display_tabs',
@@ -625,6 +661,7 @@ class GeneController extends Controller
 			//'group_collection',
 			'gceps',
 			'vceps',
+            'pregceps',
             'total_panels'
 		))
 			->with('user', $this->user);

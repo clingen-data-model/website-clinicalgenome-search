@@ -1,7 +1,8 @@
-
 <div class="card cardeffect mb-3">
     <div class="card-header bg-white">
-        <h2 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $gcep->affiliate_id }}">{{ $gcep->title_abbreviated }}</a></h2>
+        <h2 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $gcep->affiliate_id }}">
+            {{ $gcep->title_abbreviated != "" ? $gcep->title_abbreviated : $gcep->title_short }}
+        </a></h2>
     </div>
     <div class="card-body">
         <div class="row">
@@ -14,17 +15,9 @@
                     <p>
                         The ClinGen RASopathy Expert Panel seeks to evaluate the current evidence for each gene-condition assertion in order to provide a comprehensive review of Ras/MAPK pathway genes and their causality of a RASopathy condition.
                     </p>
-                    <p>The {{ $gcep->title_abbreviated }} has published curation assessments on <span class="badge">{{ $record->label }}</span></p>
+                    <p>The {{ $gcep->title_abbreviated }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-footer bg-white">
-        <p>The {{ $gcep->title_abbreviated }} is also reviewing these other genes:</p>
-            @foreach($gcep->genes as $gene)
-            @if ($gene->name != $record->label )
-            <a href="{{ route('gene-show', $gene->hgnc_id) }}" ><span class="badge mr-1">{{ $gene->name }}</span></a>
-            @endif
-            @endforeach
     </div>
 </div>
