@@ -416,22 +416,26 @@ class GeneController extends Controller
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = [];
 
-        foreach ($record->curation_status as $precuration)
-        {
-            if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
-                continue;
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
+			{
+				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+					continue;
 
-            if (empty($precuration['group_id']))
-                $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
-            else
-                $panel = Panel::allids($precuration['group_id'])->first();
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
 
-            if ($panel == null)
-                continue;
+				if ($panel == null)
+					continue;
 
-            $pregceps[] = $panel;
-        }
-        $pregceps = array_diff($pregceps, $gceps->toArray());
+				$pregceps[] = $panel;
+			}
+
+			$pregceps = array_diff($pregceps, $gceps->toArray());
+		}
 
         // dd($gceps);
 
@@ -620,25 +624,28 @@ class GeneController extends Controller
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = [];
 
-        foreach ($record->curation_status as $precuration)
-        {
-            if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
-                continue;
-
-            if (empty($precuration['group_id']))
-                $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
-            else
-                $panel = Panel::allids($precuration['group_id'])->first();
-
-            if ($panel == null)
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
 			{
-				//dd($precuration);
-                continue;
-			}
+				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+					continue;
 
-            $pregceps[] = $panel;
-        }
-        $pregceps = array_diff($pregceps, $gceps->toArray());
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
+
+				if ($panel == null)
+				{
+					//dd($precuration);
+					continue;
+				}
+
+				$pregceps[] = $panel;
+			}
+			$pregceps = array_diff($pregceps, $gceps->toArray());
+		}
 
 		// set display context for view
 		$display_tabs = collect([

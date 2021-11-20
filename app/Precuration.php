@@ -333,7 +333,8 @@ class Precuration extends Model
         {
             $id = ($record->group->affiliation_id < 20000 ? $record->group->affiliation_id + 30000 :
                                                 $record->group->affiliation_id);
-            $panel = Panel::affiliate($id);
+
+            $panel = Panel::affiliate($id)->first();
 
             if ($panel === null)
             {
