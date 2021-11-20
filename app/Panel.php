@@ -174,6 +174,18 @@ class Panel extends Model
 
 
     /**
+     * Query scope by wither group id or alternate
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAllids($query, $id)
+    {
+        return $query->where('affiliate_id', $id)->orWhere('alternate_id', $id);
+    }
+
+
+    /**
      * Query scope by gcep type
      *
      * @@param	string	$ident

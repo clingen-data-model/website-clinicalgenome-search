@@ -327,5 +327,32 @@ class Precuration extends Model
         {
             // if published and not deleted and not retired...
         }*/
+
+        // Check if the group exists, if not, add
+        if (!empty($record->group->affiliation_id))
+        {
+            $id = ($record->group->affiliation_id < 20000 ? $record->group->affiliation_id + 30000 :
+                                                $record->group->affiliation_id);
+            $panel = Panel::affiliate($id);
+
+            if ($panel === null)
+            {
+                $panel = new Panel(['affiliate_id' => $id,
+                                    'alternate_id' => $record->group->affiliation_id,
+                                    'name' => $record->group->name,
+                                    'title' => $record->group->name,
+                                    'title_abbreviated' => $record->group->name,
+                                    'title_short' => $record->group->name,
+                                    'summary' => '',
+                                    'affiliate_type' => '',
+                                    'type' => Panel::TYPE_WG,
+                                    'status' => 1,]);
+                $panel->save();
+
+
+
+
+            }
+        }
     }
 }

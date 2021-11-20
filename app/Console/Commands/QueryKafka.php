@@ -141,8 +141,8 @@ class QueryKafka extends Command
                         //dd($payload);
                         $a = $stream->parser;
                         $a($payload);
-                        if ($payload->data->id == 5876)
-                            var_dump($payload->data);
+                        //if ($payload->data->id == 5876)
+                          //  var_dump($payload->data);
                     //}
                     //echo "Skipping $message->key \n";
                     $stream->update(['offset' => $message->offset + 1]);

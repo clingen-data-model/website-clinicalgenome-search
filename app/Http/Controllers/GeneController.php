@@ -424,7 +424,7 @@ class GeneController extends Controller
             if (empty($precuration['group_id']))
                 $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
             else
-                $panel = Panel::affiliate($precuration['group_id'])->first();
+                $panel = Panel::allids($precuration['group_id'])->first();
 
             if ($panel == null)
                 continue;
@@ -628,10 +628,13 @@ class GeneController extends Controller
             if (empty($precuration['group_id']))
                 $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
             else
-                $panel = Panel::affiliate($precuration['group_id'])->first();
+                $panel = Panel::allids($precuration['group_id'])->first();
 
             if ($panel == null)
+			{
+				//dd($precuration);
                 continue;
+			}
 
             $pregceps[] = $panel;
         }

@@ -44,6 +44,7 @@ class QueryOms extends Command
         try {
 
             $results = file_get_contents(base_path() . '/data/wg-ep-json.json');
+            //$results = file_get_contents('https://clinicalgenome.org/data-pull/vceps/');
         } catch (\Exception $e) {
 
             echo "\n(E001) Error retrieving panel data\n";
@@ -58,8 +59,18 @@ class QueryOms extends Command
             'working-group' => Panel::TYPE_WG
         ];
 
+        /*
+            https://clinicalgenome.org/data-pull/cwdgs/     This JSON file has all of the CDWGs with group information and all of their members
+            https://clinicalgenome.org/data-pull/gceps/     This JSON file has all of the GCEPs with group information and all of their members
+            https://clinicalgenome.org/data-pull/vceps/     This JSON file has all of the VCEPs with group information and all of their members
+            https://clinicalgenome.org/data-pull/wgs/       This JSON file has all of the Working Groups with group information and all of their members
+            https://clinicalgenome.org/data-pull/members/   This JSON is a list of all of the members in the website with their organization/institutions
+            https://clinicalgenome.org/data-pull/organizations/     This JSON is a list of all of the organizations/institutions in the website
+
+        */
+
         foreach ($data as $entry) {
-            //dd($entry);
+
             //$panel = Panel::affiliate($entry['affiliate_id'])->first();
 
             //echo $entry['affiliation_id'] . "\n";
