@@ -93,7 +93,7 @@ class UpdateAffiliates extends Command
                                 'search' =>  null,
                                 'direction' => 'ASC',
                                 'curated' => false
-        ]);
+    ]);
 
         foreach($results->collection as $record)
         {
@@ -103,7 +103,7 @@ class UpdateAffiliates extends Command
             {
                 $pid = Panel::gg_map_to_panel($record->attributed_to->curie);
 
-                $panel = Panel::affiliate($pid)->first();
+                $panel = Panel::allids($pid)->first();
 
                 if ($panel !== null)
                 {

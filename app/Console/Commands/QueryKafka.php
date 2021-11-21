@@ -123,28 +123,21 @@ class QueryKafka extends Command
         // Subscribe to topic 'test'
         $consumer->subscribe([$stream->topic]);
 
-        echo "Waiting for partition assignment... (make take some time when\n";
-        echo "quickly re-joining the group after leaving it.)\n";
+        //echo "Waiting for partition assignment... (make take some time when\n";
+        //echo "quickly re-joining the group after leaving it.)\n";
 
+        echo "Reading...\n";
         while (true) {
-            //echo "Reading\n";
             $message = $consumer->consume(120*1000);
             //echo $message->err . "\n";
 
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                    //dd($message);
-                    //if (strpos($message->key, 'ISCA-20827') > 0)
-                    //{
                         $payload = json_decode($message->payload);
                         //dd($payload);
                         $a = $stream->parser;
                         $a($payload);
-                        //if ($payload->data->id == 5876)
-                          //  var_dump($payload->data);
-                    //}
-                    //echo "Skipping $message->key \n";
                     $stream->update(['offset' => $message->offset + 1]);
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
