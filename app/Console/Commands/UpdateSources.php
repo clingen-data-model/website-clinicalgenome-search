@@ -59,6 +59,7 @@ class UpdateSources extends Command
           $this->call('update:region');     // local file
           $this->call('update:disease');    // Genephap
           $this->call('gencc:query');       // Gencc souce
+          $this->call('query:oms');         // update afflisliates from website
           $this->call('update:affiliates'); // Update from genegraph and erepo
           $this->call('update:changes');
           $this->call('update:follow');

@@ -55,7 +55,7 @@ class QueryOms extends Command
                     ]
                 ];
 
-                $results = file_get_contents('https://pwire.local/data-pull/' . $target . '/',
+                $results = file_get_contents('https://clinicalgenome.org/data-pull/' . $target . '/',
                                 false, stream_context_create($stream_opts));
 
             } catch (\Exception $e) {
