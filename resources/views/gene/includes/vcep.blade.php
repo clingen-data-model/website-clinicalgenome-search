@@ -1,6 +1,6 @@
 <div class="card cardeffect mb-3">
     <div class="card-header bg-white">
-        <h2 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $vcep->affiliate_id }}">{{ $vcep->title_abbreviated }}</a></h2>
+        <h2 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $vcep->affiliate_id }}">{{ $vcep->smart_title }}</a></h2>
     </div>
     <div class="card-body">
         <div class="row">
@@ -11,9 +11,9 @@
             <div class="col-md-9">
                 <div class="text-muted">
                     <p>
-                        The ClinGen RASopathy Expert Panel seeks to evaluate the current evidence for each gene-condition assertion in order to provide a comprehensive review of Ras/MAPK pathway genes and their causality of a RASopathy condition.
+                        {{ strip_tags($vcep->summary) }}
                     </p>
-                    <p>The {{ $vcep->title_abbreviated }} has published curation assessments on <span class="badge">{{ $record->label }}</span></p>
+                    <p>The {{ $vcep->smart_title }} has published curation assessments on <span class="badge">{{ $record->label }}</span></p>
                 </div>
             </div>
         </div>

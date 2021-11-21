@@ -91,7 +91,9 @@ class Panel extends Model
      * */
      protected $type_strings = [
 	 		0 => 'Unknown',
-	 		9 => 'Deleted'
+            1 => 'GCEP',
+            2 => 'VCEP',
+            3 => 'WG',
 	];
 
      public const STATUS_INITIALIZED = 0;
@@ -232,6 +234,48 @@ class Panel extends Model
 
         return '';
     }
+
+
+    /**
+     * Return an best choice of titles
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getSmartTitleAttribute()
+    {
+        if (!empty($this->title_short))
+            return $this->title_short . ' ' . $this->type_string;
+
+        if (!empty($this->title_abbreviated))
+            return $this->title_abbreviated;
+
+        return $this->title;
+    }
+
+
+    /**
+     * Return an href suitable identifier
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function getTypeStringAttribute()
+    {
+        switch ($this->affiliate_type)
+        {
+            case 'gcep':
+            case 'vcep':
+                return strtoupper($this->affiliate_type);
+            case 'working group':
+                return 'Working Group';
+            default:
+                return '';
+        }
+
+        return '';
+    }
+
 
     /**
      * Map genegraph curie to affiliate ID

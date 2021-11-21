@@ -67,8 +67,8 @@ class QueryKafka extends Command
         $conf->setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) use ($offset) {
             switch ($err) {
                 case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
-                    echo "Assign: ";
-                    var_dump($partitions);
+                    //echo "Assign: ";
+                    //var_dump($partitions);
                     $kafka->assign($partitions);
 
                     foreach ($partitions as $tp) {
@@ -78,8 +78,8 @@ class QueryKafka extends Command
                     break;
 
                 case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
-                    echo "Revoke: ";
-                    var_dump($partitions);
+                   // echo "Revoke: ";
+                    //var_dump($partitions);
                     $kafka->assign(NULL);
                     break;
                 default:
@@ -129,7 +129,7 @@ class QueryKafka extends Command
         while (true) {
             //echo "Reading\n";
             $message = $consumer->consume(120*1000);
-            echo $message->err . "\n";
+            //echo $message->err . "\n";
 
             switch ($message->err) {
                 case 0:

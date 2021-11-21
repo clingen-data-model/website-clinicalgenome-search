@@ -414,7 +414,7 @@ class GeneController extends Controller
 
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
-        $pregceps = [];
+        $pregceps = collect();
 
 		if ($record->curation_status !== null)
 		{
@@ -431,17 +431,16 @@ class GeneController extends Controller
 				if ($panel == null)
 					continue;
 
-				$pregceps[] = $panel;
+				$pregceps->push($panel);
 			}
 
-			$pregceps = array_diff($pregceps, $gceps->toArray());
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
-
-        // dd($gceps);
 
         $total_panels = $validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
-                        + ($actionability_collection->isEmpty() ? 0 : 2)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
                         + count($pregceps);
 
 		//dd($record->curation_status);
@@ -450,7 +449,7 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-//dd($vceps);
+//dd($pregceps);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
 												'variant_collection', 'validity_eps', 'variant_panels',
@@ -622,7 +621,7 @@ class GeneController extends Controller
 
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
-        $pregceps = [];
+        $pregceps = collect();
 
 		if ($record->curation_status !== null)
 		{
@@ -642,10 +641,14 @@ class GeneController extends Controller
 					continue;
 				}
 
-				$pregceps[] = $panel;
+				$pregceps->push($panel);
 			}
-			$pregceps = array_diff($pregceps, $gceps->toArray());
+
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
+
+        //dd($pregceps);
 
 		// set display context for view
 		$display_tabs = collect([

@@ -347,12 +347,8 @@ class Precuration extends Model
                                     'summary' => '',
                                     'affiliate_type' => '',
                                     'type' => Panel::TYPE_WG,
-                                    'status' => 1,]);
+                                    'status' => 1]);
                 $panel->save();
-
-
-
-
             }
         }
     }
