@@ -68,7 +68,7 @@ class Panel extends Model
      *
      * @var array
      */
-	protected $fillable = ['ident', 'name', 'affiliate_id', 'title', 'title_short',
+	protected $fillable = ['ident', 'name', 'affiliate_id', 'alternate_id', 'title', 'title_short',
                             'title_abbreviated', 'affiliate_type', 'affiliate_status',
                             'cdwg_parent_name', 'member', 'contacts',
                            'summary', 'type', 'status'];

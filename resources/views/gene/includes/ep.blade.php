@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="card-footer bg-white">
-        <p>The {{ $gcep->title_abbreviated }} is also reviewing these other genes:</p>
+        <p>The {{ $gcep->smart_title }} is also reviewing these other genes:</p>
             @foreach($gcep->genes as $gene)
             @if ($gene->name != $record->label )
             <a href="{{ route('gene-show', $gene->hgnc_id) }}" ><span class="badge mr-1">{{ $gene->name }}</span></a>

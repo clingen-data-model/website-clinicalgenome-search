@@ -86,10 +86,14 @@ class QueryOms extends Command
 
                 //$panel = Panel::affiliate($entry['affiliate_id'])->first();
 
+                $alternate_id = (intval($entry['affiliation_id']) >= 40000 && intval($entry['affiliation_id']) < 50000) ?
+                                        intval($entry['affiliation_id']) - 30000 : null;
+
                 //echo $entry['affiliation_id'] . "\n";
                 Panel::updateOrCreate(
                     ['affiliate_id' => $entry['affiliation_id']],
                     [
+                        'alternate_id' => $alternate_id,
                         'title' => $entry['title'],
                         'name' => $entry['title_short'] ?? "",
                         'title_short' => $entry['title_short'] ?? "",
