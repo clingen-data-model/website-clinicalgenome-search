@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="active" style="">
-            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">{{ $record->symbol }} Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
+            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Other Relevant Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
           </li>
           <li class="" style="">
             <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
@@ -60,7 +60,7 @@
             <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
             </p>
 
-            @foreach($gceps as $gcep)
+            {{-- @foreach($gceps as $gcep)
                 @include('gene.includes.ep')
             @endforeach
 
@@ -70,7 +70,7 @@
 
             @foreach($vceps as $vcep)
                 @include('gene.includes.vcep')
-            @endforeach
+            @endforeach --}}
 
             @foreach($pregceps as $gcep)
                 @include('gene.includes.pregcep')

@@ -5,13 +5,15 @@
 <h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
 	<div class="card mb-4">
 		<div class="card-body p-0 m-0">
+			<!--
 			<div class="p-2 text-muted small bg-light">The following <strong>{{ $record->naction }} curations</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Actionability's Adult &amp; Pediatric Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
+			-->
 			<table class="panel-body table mb-0">
 				<thead class="thead-labels">
 					<tr>
 						<th class="col-sm-1 th-curation-group text-left">Gene</th>
 						<th class="col-sm-4 text-left"> Disease</th>
-						<th class="col-sm-2"></th>
+						<th class="col-sm-2">Working Group</th>
 						<th class="col-sm-2">Assertions</th>
 						<th class="col-sm-1 text-center">Report &amp; Date</th>
 					</tr>
@@ -33,6 +35,8 @@
 						</td>
 
 						<td class="">
+                            <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
+                                <i class="fas fa-external-link-alt fa-xs"></i></a>
 						</td>
 
 						<td class="text-center">
@@ -69,6 +73,8 @@
 						</td>
 
 						<td class="@if($adult_set != true) pb-0 @else border-0 pt-0 @endif ">
+                            <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
+                                <i class="fas fa-external-link-alt fa-xs"></i></a>
 						</td>
 
 						<td class="@if($adult_set != true) pb-0 @else border-0 pt-0 @endif text-center">

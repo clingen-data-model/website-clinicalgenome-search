@@ -5,9 +5,10 @@
     <div class="card mb-4">
         <div class="card-body p-0 m-0">
 
+            <!--
             <div class="p-2 text-muted small bg-light">The following <strong>{{ $record->nvalid }} curations</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1">{{ $validity_eps }} GCEP</a>.
                 <!--in partnership with <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">2 expert panels</a>. {{ $record->symbol }} is also under review by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">3 GCEPs</a>. -->
-                <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
+                <!--<a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>-->
 
             <table class="panel-body table mb-0">
                 <thead class="thead-labels">
@@ -41,6 +42,7 @@
                         <td class="text-left">
                             <a class="text-muted" href="{{ route('gene-groups', $record->hgnc_id) }}">
                             {{ $validity->assertion->attributed_to->label }} GCEP
+                            <i class="fas fa-external-link-alt fa-xs"></i>
                             </a>
                         </td>
 

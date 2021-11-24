@@ -438,10 +438,10 @@ class GeneController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
-        $total_panels = $validity_eps + count($variant_panels)
+        $total_panels = /*$validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
                         + ($actionability_collection->isEmpty() ? 0 : 1)
-                        + count($pregceps);
+                        + */ count($pregceps);
 
 		//dd($record->curation_status);
 		// set display context for view
@@ -656,10 +656,10 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-        $total_panels = $validity_eps + count($variant_panels)
+        $total_panels = /*$validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
                         + ($actionability_collection->isEmpty() ? 0 : 1)
-                        + count($pregceps);
+                        +*/ count($pregceps);
 
 		return view('gene.show-groups', compact(
 			'display_tabs',

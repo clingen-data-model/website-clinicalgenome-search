@@ -6,8 +6,10 @@
     </h3>
     <div class="card mb-4">
          <div class="card-body p-0 m-0">
+             <!--
              <div class="p-2 text-muted small bg-light">The following <strong>{{ $record->nvariant }} variant classifications</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">{{ implode(', ', $variant_panels) }}</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
-            <table class="panel-body table mb-0">
+             -->
+             <table class="panel-body table mb-0">
                 <thead class="thead-labels">
                     <tr>
                         <th class="col-sm-1 th-curation-group text-left">Gene</th>
