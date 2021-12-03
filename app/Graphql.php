@@ -576,6 +576,14 @@ class Graphql
 							break;
 					}
 				}
+
+                 // blacklist bad assertions
+                 foreach ($condition->gene_validity_assertions as $inkey => $inassert)
+                 {
+                     if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                        unset($condition->gene_validity_assertions[$key]);
+                 }
+
 			}
 		}
 
