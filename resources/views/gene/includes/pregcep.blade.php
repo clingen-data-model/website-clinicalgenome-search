@@ -15,7 +15,11 @@
                     <p>
                         {{ strip_tags($gcep->summary) }}
                     </p>
+                    @if ($gcep->bucket == 2)
                     <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
+                    @elseif ($gcep->bucket == 1)
+                    <p>The {{ $gcep->smart_title }} is in the process of precurating <span class="badge">{{ $record->label }}</span></p>
+                    @endif
                 </div>
             </div>
         </div>

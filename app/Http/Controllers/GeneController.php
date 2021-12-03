@@ -627,8 +627,25 @@ class GeneController extends Controller
 		{
 			foreach ($record->curation_status as $precuration)
 			{
-				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
-					continue;
+                switch ($precuration['status'])
+				{
+					case 'Uploaded':
+                    case "Precuration":
+                    case "Disease Entity Assigned":
+                    case "Precuration Complete":
+                        $bucket = 1;
+                        break;
+                    case "Curation Provisional":
+                    case "Curation Approved":
+                        $bucket = 2;
+                        break;
+                    case "Retired Assignment":
+                    case "Published":
+                        continue 2;
+				}
+
+				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+				//	continue;
 
 				if (empty($precuration['group_id']))
 					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
@@ -640,6 +657,8 @@ class GeneController extends Controller
 					//dd($precuration);
 					continue;
 				}
+
+                $panel->bucket = $bucket;
 
 				$pregceps->push($panel);
 			}

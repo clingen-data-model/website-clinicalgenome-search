@@ -476,8 +476,19 @@ class Graphql
 							  curie
 						  }
 							attributed_to {
+                                curie
 								 label
 							}
+                            contributions {
+                                realizes {
+                                  curie
+                                  label
+                                }
+                                agent {
+                                  label
+                                  curie
+                                }
+                              }
 						  report_date
 						  classification {
 							  label
@@ -1471,18 +1482,18 @@ class Graphql
 					gene_validity_assertions(role: ANY, limit: null){
 						count
 						curation_list{
-              curie
-              contributions {
-                realizes {
-                  curie
-                  label
-                }
-                agent {
-                  curie
-                  label
-                }
+                            curie
+                            contributions {
+                                realizes {
+                                curie
+                                label
+                                }
+                                agent {
+                                curie
+                                label
+                                }
 							}
-            }
+                        }
 					}
 				}
 			}
