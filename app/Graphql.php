@@ -1630,6 +1630,9 @@ class Graphql
 			if ($record->gene === null || $record->disease === null)
 				continue;	// TODO:  Log this as a gg error
 
+            // blacklist bad assertions
+            if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                   continue;
 
 				//dd($response->affiliation->curie);
 				foreach ($record->contributions as $contribution) {
