@@ -275,9 +275,9 @@ class Jira extends Model
              {
                  if (isset($link->inwardIssue))
                  {
-                   //$t[] = $link;
-                   $a = self::getIssue($link->inwardIssue->key);
-                   $t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $a->customfield_10202 ?? $a->summary];
+                   $t[] = $link;
+                   //$a = self::getIssue($link->inwardIssue->key);
+                   //$t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $a->customfield_10202 ?? $a->summary];
                  }
              }
 
