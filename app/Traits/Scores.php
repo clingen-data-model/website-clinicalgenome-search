@@ -90,9 +90,20 @@ trait Scores
 		$j = json_decode($this->legacy_json);
 
 		if (isset($j->scoreJson))
-			return $j->scoreJson->summary->FinalClassificationNotes ?? null;
+        {
+            $k = $j->scoreJson->summary->FinalClassificationNotes;
+        }
 		else
-		return $j->summary->FinalClassificationNotes ?? null;
+        {
+            $k = $j->summary->FinalClassificationNotes ?? null;
+        }
+
+        if (empty($k))
+            return $k;
+
+        $k = str_replace("\n", "\n\n", $k);
+
+		return $k;
 
 	}
 
@@ -461,12 +472,24 @@ trait Scores
 	 */
 	public function getSop8FinalClassificationNotesAttribute()
 	{
-		$j = json_decode($this->legacy_json);
+
+        $j = json_decode($this->legacy_json);
 
 		if (isset($j->scoreJson))
-		return $j->scoreJson->summary->FinalClassificationNotes ?? null;
+        {
+            $k = $j->scoreJson->summary->FinalClassificationNotes;
+        }
 		else
-		return $j->summary->FinalClassificationNotes ?? null;
+        {
+            $k = $j->summary->FinalClassificationNotes ?? null;
+        }
+
+        if (empty($k))
+            return $k;
+
+        $k = str_replace("\n", "\n\n", $k);
+
+		return $k;
 	}
 
 

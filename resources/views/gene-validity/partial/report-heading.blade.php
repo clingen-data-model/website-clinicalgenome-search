@@ -57,7 +57,7 @@
   <tr style="font-size:14px">
     <td style="vertical-align:top" nowrap class="text-left">Evidence Summary:</td>
     <td colspan="3" style="">
-      {{ $record->sop7_final_classification_notes ?? null }}
+        @markdown{{ $record->sop7_final_classification_notes ?? null }}@endmarkdown
       <div><a style="color:#000" href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/">
         Gene Clinical Validity Standard Operating Procedures (SOP) -
         {{ App\GeneLib::validityCriteriaString($record->specified_by->label ?? null) }}
