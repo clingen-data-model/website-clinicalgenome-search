@@ -1436,7 +1436,7 @@ class Graphql
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
-//dd($node);
+
 		return $node;
 
 	}
