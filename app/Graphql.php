@@ -1443,6 +1443,89 @@ class Graphql
 
 
 	/**
+     * Get information from new validity (only works against https://gg-genevalidity-dev.web.app/)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function newValidityDetail($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// special case where legacy perm value is passed
+		if (is_numeric($perm))
+			$perm = "CGGCIEX:assertion_" . $perm;
+
+		$query = '{
+			gene_validity_assertion('
+			. 'iri: "' . $perm
+			. '") {
+				curie
+				report_date
+				gene {
+					label
+					hgnc_id
+					curie
+				}
+				disease {
+					label
+					curie
+				}
+				mode_of_inheritance {
+					label
+					website_display_label
+					curie
+				}
+				attributed_to {
+					label
+					curie
+				}
+				classification {
+					label
+					curie
+				}
+				specified_by {
+					label
+					curie
+				}
+				legacy_json
+			}
+		}';
+
+		// query genegraph
+		$response = self::query($query,  __METHOD__);
+
+		if (empty($response))
+			return $response;
+dd($response);
+		// genegraph does return an error condition on an invalid assertion id, so handle it here
+		if (empty($response->gene_validity_assertion->specified_by))
+		{
+			Log::info("Validty Detail Error:  No specified by field in iri: " . $perm);
+			GeneLib::putError("Invalid gene validity assertion identifier");
+			return null;
+		}
+
+		$node = new Nodal((array) $response->gene_validity_assertion);
+
+		// overwrite the label with the website display label
+		if (!empty($node->mode_of_inheritance->website_display_label))
+			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
+
+		$node->json = json_decode($node->legacy_json, false);
+		$node->score_data = $node->json->scoreJson ?? $node->json;
+
+		// genegraph is not distinguishing gene express origin from others
+		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
+							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
+
+		return $node;
+
+	}
+
+
+	/**
      * Get listing of all affiliates
      *
      * @return Illuminate\Database\Eloquent\Collection

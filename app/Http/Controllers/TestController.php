@@ -51,6 +51,15 @@ class TestController extends Controller
     public function index()
     {
 
+        $id = "CGGCIEX:assertion_3210";
+
+        $g = Graphql::newValidityDetail(['page' => 0,
+                        'pagesize' => 20,
+                        'perm' => $id
+                        ]);
+
+        exit;
+
         $a = Panel::all();
 
         //CG-PCER-AGENT:CG_50015_EP.1551905782.01949
