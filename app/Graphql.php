@@ -577,12 +577,12 @@ class Graphql
 					}
 				}
 
-                 // blacklist bad assertions
-                 foreach ($condition->gene_validity_assertions as $inkey => $inassert)
-                 {
-                     if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
-                        unset($condition->gene_validity_assertions[$key]);
-                 }
+				// blacklist bad assertions
+				/*foreach ($condition->gene_validity_assertions as $inkey => $inassert)
+				{
+					if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+					unset($condition->gene_validity_assertions[$key]);
+				}*/
 
 			}
 		}
@@ -1333,8 +1333,8 @@ class Graphql
 				continue;	// TODO:  Log as gg error
 
             // blacklist bad assertions
-            if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
-                   continue;
+            /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                   continue;*/
 
 			$collection->push(new Nodal((array) $record));
 		}
@@ -1631,8 +1631,8 @@ class Graphql
 				continue;	// TODO:  Log this as a gg error
 
             // blacklist bad assertions
-            if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
-                   continue;
+            /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                   continue;*/
 
 				//dd($response->affiliation->curie);
 				foreach ($record->contributions as $contribution) {
