@@ -55,8 +55,18 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <p>ClinGen's curations and assertions are undertaken and maintained by Expert Panels and Working Groups assembled from experts around the world. The ClinGen Expert Panels and Working Groups contributing to curations and assertions for <strong>{{ $record->symbol }}</strong> are shown below.
-            </p>
+            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating {{  $record->label }} in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
+                <ul>
+                    <li>
+                        Under review: The group is actively evaluating the gene.  Once this evaluation is complete, it will appear on the “Curation Summaries” tab.
+                    </li>
+                    <li>
+                        Precuration: The group is considering which disease(s) they will evaluate as part of the curation.  This is often the first step in the curation process.
+                    </li>
+                    <li>
+                        Of interest: The group has indicated that this gene is of potential interest for future evaluation, but active curation has not yet begun.
+                    </li>
+                </ul>
             <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
             </p>
 

@@ -19,6 +19,8 @@
                     <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
                     @elseif ($gcep->bucket == 1)
                     <p>The {{ $gcep->smart_title }} is in the process of precurating <span class="badge">{{ $record->label }}</span></p>
+                    @elseif ($gcep->bucket == 3)
+                        <p>The {{ $gcep->smart_title }} has indicated an interest in <span class="badge">{{ $record->label }}</span></p>
                     @endif
                 </div>
             </div>

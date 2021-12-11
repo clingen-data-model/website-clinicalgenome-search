@@ -630,6 +630,8 @@ class GeneController extends Controller
                 switch ($precuration['status'])
 				{
 					case 'Uploaded':
+                        $bucket = 3;
+                        break;
                     case "Precuration":
                     case "Disease Entity Assigned":
                     case "Precuration Complete":
