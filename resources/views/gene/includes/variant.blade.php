@@ -13,20 +13,26 @@
                 <thead class="thead-labels">
                     <tr>
                         <th class="col-sm-1 th-curation-group text-left">Gene</th>
-                        <th class="col-sm-5"></th>
-                        <th class="col-sm-1"></th>
+                        <th class="col-sm-4">Disease</th>
+                        <th class="col-sm-2">Expert Panel</th>
                         <th class="col-sm-2">Classification</th>
                         <th class="col-sm-1 text-center">Date</th>
                     </tr>
                 </thead>
                 <tbody class="">
-                    @php $variant_key = 0 @endphp
-                    @foreach($variant_collection as $gene => $classes)
+                    @php $variant_name = "" @endphp
+                    @foreach($variant_collection as $condition => $classes)
                     @foreach($classes['classifications'] as $variant => $variant_count)
+                    @php $variant_key = ($variant_name == $condition ? 1 : 0) @endphp
                     <tr class="">
                         <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0){{ $record->label  }}@endif</td>
-                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">@if($variant_key == 0) Variants approved by <a href="{{ route('gene-groups', $record->hgnc_id) }}">{{  implode(', ', $classes['panels']) }}</a> @endif</td>
-                        <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 "></td>
+                        <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 ">
+                            @if($variant_key == 0)
+                            <a href="{{ route('condition-show', $classes['id']) }}">{{ $condition }}</a>
+                            <div class="text-muted small">{{ $classes['id'] }}</div>
+                            @endif
+                        </td>
+                        <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 ">@if($variant_key == 0)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($classes['panels'][0]['id']) }}">{{  implode(', ', array_column($classes['panels'], 'affiliation')) }}</a>@endif</td>
                         <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
                                 <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
                                     {{ $variant }}  <span class="badge pull-right"><small>{{ $variant_count }}</small></span><br>
@@ -41,7 +47,7 @@
                         </td>
 
                     </tr>
-                    @php $variant_key++ @endphp
+                    @php $variant_name = $condition @endphp
                     @endforeach
                     @endforeach
                 </tbody>

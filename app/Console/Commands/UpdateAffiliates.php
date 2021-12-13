@@ -10,6 +10,7 @@ use App\Gene;
 use App\GeneLib;
 use App\Panel;
 use App\Variant;
+use App\Disease;
 
 class UpdateAffiliates extends Command
 {
@@ -93,7 +94,7 @@ class UpdateAffiliates extends Command
                                 'search' =>  null,
                                 'direction' => 'ASC',
                                 'curated' => false
-    ]);
+                     ]);
 
         foreach($results->collection as $record)
         {
@@ -108,6 +109,21 @@ class UpdateAffiliates extends Command
                 if ($panel !== null)
                 {
                     $gene->panels()->syncWithoutDetaching([$panel->id]);
+                }
+            }
+
+
+            $disease = Disease::curie($record->disease->curie)->first();
+
+            if ($disease !== null)
+            {
+                $pid = Panel::gg_map_to_panel($record->attributed_to->curie);
+
+                $panel = Panel::allids($pid)->first();
+
+                if ($panel !== null)
+                {
+                    $disease->panels()->syncWithoutDetaching([$panel->id]);
                 }
             }
         }

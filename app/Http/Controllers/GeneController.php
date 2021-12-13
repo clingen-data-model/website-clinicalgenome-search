@@ -190,13 +190,24 @@ class GeneController extends Controller
 				->with('back', url()->previous())
 				->with('user', $this->user);
 
+        $gene = Gene::rosetta($id);
+
+        if ($gene === null)
+            return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene details')
+                    ->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+        $id = $gene->hgnc_id;
 
 		$record = GeneLib::geneDetail([
 										'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
 										'validity' => true,
-										'dosage' => true
+										'dosage' => true,
+                                        'variant' => true
 									]);
 
 		if ($record === null)
@@ -206,7 +217,37 @@ class GeneController extends Controller
 						->with('back', url()->previous())
                         ->with('user', $this->user);
 
+        // the new follow stuff.  protptype wip
+		$follow = false;
+		$email = '';
+		$user = Auth::guard('api')->user();
+
+		if (Auth::guard('api')->check())
+		{
+			$user = Auth::guard('api')->user();
+			//dd($user);
+			$follow = $user->genes->contains('hgnc_id', $id);
+		}
+		else
+		{
+
+			$cookie = $request->cookie('clingenfollow');
+
+			if ($cookie !== null)
+			{
+				$user = User::cookie($cookie)->first();
+
+				if ($user !== null)
+				{
+					$follow = $user->genes->contains('hgnc_id', $id);
+					$email = $user->email;
+				}
+			}
+		}
+		// end follow
+
 		$disease_collection = collect();
+        $variant_collection = collect();
 
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -229,16 +270,59 @@ class GeneController extends Controller
 			$disease_collection->push($node);
 
 		}
-
+//dd($disease_collection);
 		//dd($disease_collection->where('disease', $disease->disease->label)->first()->validity);
+
+        if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
+
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
+		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = collect();
+
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
+			{
+				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+					continue;
+
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
+
+				if ($panel == null)
+					continue;
+
+				$pregceps->push($panel);
+			}
+
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
+		}
+
+        $total_panels = /*$validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        + */ count($pregceps);
 
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-
-		return view('gene.by-disease', compact('display_tabs', 'record', 'disease_collection'))
+//dd($variant_collection);
+        return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
+                         'disease_collection', 'total_panels', 'variant_collection'))
 						->with('user', $this->user);;
 	}
 
@@ -258,17 +342,16 @@ class GeneController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
-        // check if the condition came in as an OMIM ID, and if so convert it.
-        if (strpos($id, "HGNC:") !== 0)
-        {
-            if (is_numeric($id))
-                $check = Gene::omim($id)->first();
-            else
-                $check = Gene::name($id)->first();
+        $gene = Gene::rosetta($id);
 
-            if ($check !== null)
-                $id = $check->hgnc_id;
-        }
+        if ($gene === null)
+            return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene details')
+                    ->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+        $id = $gene->hgnc_id;
 
 		$record = GeneLib::geneDetail([
 									'gene' => $id,
@@ -403,11 +486,11 @@ class GeneController extends Controller
 
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
-
+//dd($variant_collection);
         // collect all the unique panels
         $variant_panels = [];
         $variant_collection->each(function ($item) use (&$variant_panels){
-            $variant_panels = array_merge($variant_panels, $item['panels']);
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
         });
 
         $variant_panels = array_unique($variant_panels);
@@ -449,7 +532,8 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-//dd($pregceps);
+
+        //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
 												'variant_collection', 'validity_eps', 'variant_panels',
@@ -614,7 +698,7 @@ class GeneController extends Controller
         // collect all the unique panels
         $variant_panels = [];
         $variant_collection->each(function ($item) use (&$variant_panels){
-            $variant_panels = array_merge($variant_panels, $item['panels']);
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
         });
 
         $variant_panels = array_unique($variant_panels);
@@ -668,8 +752,6 @@ class GeneController extends Controller
             $remids = $gceps->pluck('id');
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
-
-        //dd($pregceps);
 
 		// set display context for view
 		$display_tabs = collect([

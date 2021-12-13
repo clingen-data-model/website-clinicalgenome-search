@@ -44,6 +44,9 @@
             </a>
           </li>
           <li class="" style="">
+            <a href="{{ route('condition-groups', \App\Disease::normal_base($record->iri)) }}" class="">Other Relevant Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels ?? 0 }}</span></a>
+          </li>
+          <li class="" style="">
             <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>
           <li class="" style="">
@@ -85,7 +88,8 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 text-left"> Disease</th>
+								<th class="col-sm-3 text-left"> Disease</th>
+                                <th class="col-sm-1 text-center"></th>
 								<th class="col-sm-2 text-center"></th>
 								<th class="col-sm-2">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -240,7 +244,7 @@
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2"></th>
+								<th class="col-sm-2">Working Group</th>
 								<th class="col-sm-2">Assertions</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -261,6 +265,14 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
+                                                    <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
+                                                        <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                @else
+                                                    <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
+                                                        <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                @endif
+
 											</td>
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">

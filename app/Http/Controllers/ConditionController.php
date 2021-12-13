@@ -11,6 +11,7 @@ use App\Nodal;
 use App\User;
 use App\Filter;
 use App\Disease;
+use App\Panel;
 
 /**
  *
@@ -122,13 +123,24 @@ class ConditionController extends Controller
 						->with('user', $this->user);
 
         // check if the condition came in as an OMIM ID, and if so convert it.
-        if (strpos($id, "MONDO:") !== 0)
+        /*if (strpos($id, "MONDO:") !== 0)
         {
             $check = Disease::omim($id)->first();
 
             if ($check !== null)
                 $id = $check->curie;
-        }
+        }*/
+
+        $disease = Disease::rosetta($id);
+
+        if ($disease === null)
+            return view('error.message-standard')
+                    ->with('title', 'Error retrieving Disease details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+        $id = $disease->curie;
 
 		$record = GeneLib::conditionDetail([
 										'condition' => $id,
@@ -184,14 +196,67 @@ class ConditionController extends Controller
          if ($record->nvariant > 0)
             $variant_collection = collect($record->variant);
 
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+
+        $validity_eps = count($validity_panels);
+        //$actionability_collection = $actionability_collection->sortByDesc('order');
+
+        if ($record->nvariant > 0)
+            $variant_collection = collect($record->variant);
+
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
+        $vceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+        $gceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = collect();
+
+        if ($record->curation_status !== null)
+        {
+            foreach ($record->curation_status as $precuration)
+            {
+                if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+                    continue;
+
+                if (empty($precuration['group_id']))
+                    $panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+                else
+                    $panel = Panel::allids($precuration['group_id'])->first();
+
+                if ($panel == null)
+                    continue;
+
+                $pregceps->push($panel);
+            }
+
+            $remids = $gceps->pluck('id');
+            $pregceps = $pregceps->whereNotIn('id', $remids);
+        }
+
+        $total_panels = /*$validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        + */ count($pregceps);
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "condition",
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
-
-		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection',
-                                                    'variant_collection'));
+//dd($record);
+        //dd($validity_collection);
+		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection', 'total_panels',
+                                                    'pregceps', 'variant_collection'));
 	}
 
 
@@ -203,6 +268,24 @@ class ConditionController extends Controller
 	 */
 	public function show_by_gene(Request $request, $id = null)
 	{
+        if ($id === null)
+			return view('error.message-standard')
+						->with('title', 'Error retrieving Disease details')
+						->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+						->with('back', url()->previous())
+						->with('user', $this->user);
+
+        $disease = Disease::rosetta($id);
+
+        if ($disease === null)
+            return view('error.message-standard')
+                    ->with('title', 'Error retrieving Disease details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+        $id = $disease->curie;
+
 		$record = GeneLib::conditionDetail([
                                 'condition' => $id,
                                 'curations' => true,
@@ -219,21 +302,305 @@ class ConditionController extends Controller
 						->with('back', url()->previous())
 						->with('user', $this->user);
 
+		$user = $this->user;
+//dd($variant_collection);
+        //reformat the response structure for view by activity
+        $validity_collection = collect();
         $variant_collection = collect();
 
-        // we don't do any special sorting on variant path at this time
+        foreach ($record->genetic_conditions as $key => $disease)
+		{
+			// actionability
+			/*foreach ($disease->actionability_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$actionability_collection->push($node);
+			}*/
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+									'gene' => $disease->gene, 'assertion' => $assertion]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			/*foreach ($disease->gene_dosage_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$dosage_collection->push($node);
+			}*/
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
+
+         // we don't do any special sorting on variant path at this time
+         if ($record->nvariant > 0)
+            $variant_collection = collect($record->variant);
+
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+
+        $validity_eps = count($validity_panels);
+
+        //$actionability_collection = $actionability_collection->sortByDesc('order');
+
         if ($record->nvariant > 0)
-			$variant_collection = collect($record->variant);
+            $variant_collection = collect($record->variant);
+
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
+        $vceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+        $gceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = collect();
+
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
+			{
+                switch ($precuration['status'])
+				{
+					case 'Uploaded':
+                    case "Disease Entity Assigned":
+                        $bucket = 3;
+                        break;
+                    case "Precuration":
+                    case "Precuration Complete":
+                        $bucket = 1;
+                        break;
+                    case "Curation Provisional":
+                    case "Curation Approved":
+                        $bucket = 2;
+                        break;
+                    case "Retired Assignment":
+                    case "Published":
+                        continue 2;
+				}
+
+				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+				//	continue;
+
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
+
+				if ($panel == null)
+				{
+					//dd($precuration);
+					continue;
+				}
+
+                $panel->bucket = $bucket;
+
+				$pregceps->push($panel);
+			}
+
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
+		}
+
+        //dd($pregceps);
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "condition",
-			'title' => $record->label . " curation results organized by gene"
+			'active' => "gene",
+			'title' => $record->label . " curation results"
 		]);
 
-		$user = $this->user;
+        $total_panels = /*$validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        +*/ count($pregceps);
 
-		return view('condition.by-gene', compact('display_tabs', 'record', 'user', 'variant_collection'));
+		return view('condition.by-gene', compact('display_tabs', 'record', 'user', 'variant_collection',
+                                                    'pregceps',
+                                                    'total_panels'));
+	}
+
+
+    /**
+	 * Display the specified conditions, precuration activity.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show_groups(Request $request, $id = null)
+	{
+		if ($id === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Disease details')
+			->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		$record = GeneLib::conditionDetail([
+                                    'condition' => $id,
+                                    'curations' => true,
+                                    'action_scores' => true,
+                                    'validity' => true,
+                                    'dosage' => true,
+                                    'variant' => true
+                                    ]);
+
+        if ($record === null)
+            return view('error.message-standard')
+            ->with('title', 'Error retrieving Disease details')
+            ->with('message', 'The system was not able to retrieve details for this Disease.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+            ->with('back', url()->previous())
+            ->with('user', $this->user);
+
+        //reformat the response structure for view by activity
+        $validity_collection = collect();
+        $variant_collection = collect();
+
+        foreach ($record->genetic_conditions as $key => $disease)
+		{
+			// actionability
+			/*foreach ($disease->actionability_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$actionability_collection->push($node);
+			}*/
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+									'gene' => $disease->gene, 'assertion' => $assertion]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			/*foreach ($disease->gene_dosage_assertions as $assertion)
+			{
+				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
+									'disease' => $disease->disease, 'assertion' => $assertion]);
+				$dosage_collection->push($node);
+			}*/
+		}
+
+		// reapply any sorting requirements
+		$validity_collection = $validity_collection->sortByDesc('order');
+
+         // we don't do any special sorting on variant path at this time
+         if ($record->nvariant > 0)
+            $variant_collection = collect($record->variant);
+
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+
+        $validity_eps = count($validity_panels);
+
+        //$actionability_collection = $actionability_collection->sortByDesc('order');
+
+        if ($record->nvariant > 0)
+            $variant_collection = collect($record->variant);
+
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
+        $vceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+        $gceps = Disease::curie($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = collect();
+
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
+			{
+                switch ($precuration['status'])
+				{
+					case 'Uploaded':
+                    case "Disease Entity Assigned":
+                        $bucket = 3;
+                        break;
+                    case "Precuration":
+                    case "Precuration Complete":
+                        $bucket = 1;
+                        break;
+                    case "Curation Provisional":
+                    case "Curation Approved":
+                        $bucket = 2;
+                        break;
+                    case "Retired Assignment":
+                    case "Published":
+                        continue 2;
+				}
+
+				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+				//	continue;
+
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
+
+				if ($panel == null)
+				{
+					//dd($precuration);
+					continue;
+				}
+
+                $panel->bucket = $bucket;
+
+				$pregceps->push($panel);
+			}
+
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
+		}
+
+        //dd($pregceps);
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene",
+			'title' => $record->label . " curation results"
+		]);
+
+        $total_panels = /*$validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        +*/ count($pregceps);
+
+		return view('condition.show-groups', compact(
+			'display_tabs',
+			'record',
+			'validity_collection',
+			'variant_collection',
+            'variant_panels',
+			//'group_collection',
+			'gceps',
+			'vceps',
+            'pregceps',
+            'total_panels'
+
+		))
+			->with('user', $this->user);
 	}
 
 

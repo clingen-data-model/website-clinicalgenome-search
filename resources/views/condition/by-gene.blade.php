@@ -25,7 +25,8 @@
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid ?? '0' }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage ?? '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
-			</ul>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->nvariant ?? '0' }}</span><br /> Variant Pathogenicity<br />Assertions</li>
+        </ul>
 
 </div>
 			@include("_partials.facts.condition-panel")
@@ -41,6 +42,9 @@
             <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="">
               <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
+          </li>
+          <li class="" style="">
+            <a href="{{ route('gene-groups', \App\Disease::normal_base($record->iri)) }}" class="">Other Relevant Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels ?? 0 }}</span></a>
           </li>
           <li class="" style="">
             <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
@@ -77,8 +81,9 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-3 th-curation-group text-left">Activity</th>
-								<th class="col-sm-2 text-left"></th>
-								<th class="col-sm-2  ">Classification</th>
+								<th class="col-sm-2 text-left">MOI</th>
+								<th class="col-sm-2 text-left">Expert Panel / Working Group</th>
+                                <th class="col-sm-2">Classification</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
@@ -95,12 +100,16 @@
 										@endif
 									</td>
 
-
-
-
 									<td class=" @if(!$loop->first) border-0 @endif ">{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }}
 										<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
 									</td>
+
+                                    <td>
+                                        <a class="text-muted" href="{{ route('gene-groups', $record->hgnc_id) }}">
+                                            {{ $validity->attributed_to->label }} GCEP
+                                            <i class="fas fa-external-link-alt fa-xs"></i>
+                                        </a>
+                                    </td>
 
 									<td class=" @if(!$loop->first) border-0 @endif ">
 										<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->curie }}">{{ \App\GeneLib::validityClassificationString($validity->classification->label) }}</a>
@@ -125,6 +134,16 @@
 
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
 
+                                    <td class=" @if(!$loop->first) border-0 @endif ">
+                                        @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
+                                        <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
+                                            <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                        @else
+                                        <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
+                                            <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                        @endif
+                                    </td>
+
 									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}"><div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
 													@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->classification->label)))</a></td>
 
@@ -141,6 +160,13 @@
 								<tr>
 									<td class=" @if(!$loop->first) border-0 @endif "><a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/dosage-sensitivity/" data-content="Is haploinsufficiency or triplosensitivity an established disease mechanism for this gene?"> <img style="width:20px" src="/images/dosageSensitivity-on.png" alt="Dosagesensitivity on"> Dosage Sensitivity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
+                                    <td class=" @if(!$loop->first) border-0 @endif ">
+                                        @if($first == true)
+                                            <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                Dosage Sensitivity WG
+                                                <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                        @endif
+                                    </td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system">
 											@if ($dosage->assertion_type == "HAPLOINSUFFICIENCY_ASSERTION")
@@ -161,6 +187,33 @@
 								@php ($first = false) @endphp
 						@endforeach
 
+                        <!-- Variant Pathogenicity -->
+                        @if (isset($variant_collection[$disease->gene->label]))
+                        @php $variant_key = 0 @endphp
+                        @foreach($variant_collection[$disease->gene->label]['classifications'] as $variant => $variant_count)
+                        <tr class="">
+                            <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0)<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/variant_pathogenicity/" data-content=""> <img style="width:20px" src="/images/variantPathogenicity-on.png" alt="VariantPathogenicity on"> Variant Pathogenicity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td> @endif</td>
+                            <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 "></td>
+                            <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 ">@if($variant_key == 0)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($variant_collection[$disease->gene->label]['panels'][0]['id']) }}">{{  implode(', ', array_column($variant_collection[$disease->gene->label]['panels'], 'affiliation')) }}</a>@endif</td>
+                            <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
+                                    <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
+                                        {{ $variant }}  <span class="badge pull-right"><small>{{ $variant_count }}</small></span><br>
+                                    </a>
+                                    </div>
+                            </td>
+                            <td class=" text-center @if($variant_key != 0) border-0 pt-0  @endif  pb-1 ">
+                                    <a class="btn btn-xs btn-success btn-block" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
+                                        <span class=""><i class="glyphicon glyphicon-file"></i>  Evidence</span>
+                                    </a>
+
+                            </td>
+
+                        </tr>
+                        @php $variant_key = 1 @endphp
+                        @endforeach
+                        @php unset($variant_collection[$disease->gene->label]); @endphp
+                        @endif
+
 					</tbody>
         		</table>
 			</div>
@@ -178,6 +231,7 @@
 								<tr>
 								<th class="col-sm-3 th-curation-group text-left">Activity</th>
 								<th class="col-sm-2 text-left"></th>
+                                <th class="col-sm-2 text-left">Expert Panel / Working Group</th>
 								<th class="col-sm-2  ">Classification</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -193,6 +247,13 @@
 										@endif
 									</td>
 									<td class=" @if(!$loop->first) border-0 @endif "></td>
+                                    <td class=" @if(!$loop->first) border-0 @endif ">
+                                        @if($first == true)
+                                            <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                Dosage Sensitivity WG
+                                                <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                        @endif
+                                    </td>
 									<td class=" @if(!$loop->first) border-0 @endif ">
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://dosage.clinicalgenome.org/help.shtml#review" data-content="Dosage Sensitivity rating system">
 											@if ($key == "haploinsufficiency_assertion")
@@ -220,6 +281,51 @@
 		</div>
 
 		@endif
+
+        <!-- any items that are only variant pathogenicity -->
+        @foreach ($variant_collection as $condition => $classes)
+        <h3  id="link-variant=path" style="" class="h3 mt-3 mb-0"><i><a class="text-dark" href="{{ route('gene-show', 'ENTREZ:' . $classes['id']) }}" >{{ $condition }}</a></i> - {{ $record->symbol }}</h3>
+
+        <div class="card mb-5 ">
+            <div class="card-body p-0 m-0">
+            <table class="panel-body table mb-0">
+                <thead class="thead-labels">
+                    <tr>
+                    <th class="col-sm-3 th-curation-group text-left">Activity</th>
+                    <th class="col-sm-2 text-left"></th>
+                    <th class="col-sm-2 text-left">Expert Panel</th>
+                    <th class="col-sm-2  ">Classification</th>
+                    <th class="col-sm-1 text-center">Report &amp; Date</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+        @php $variant_key = 0 @endphp
+        @foreach($classes['classifications'] as $variant => $variant_count)
+        <tr class="">
+            <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0)<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/variant_pathogenicity/" data-content=""> <img style="width:20px" src="/images/variantPathogenicity-on.png" alt="VariantPathogenicity on"> Variant Pathogenicity <i class="glyphicon glyphicon-question-sign text-muted"></i></a></td> @endif</td>
+            <td class="@if($variant_key != 0) border-0 pt-0   @endif pb-1 "></td>
+            <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 ">@if($variant_key == 0)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($classes['panels'][0]['id']) }}">{{  implode(', ', array_column($classes['panels'], 'affiliation')) }}</a>@endif</td>
+            <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
+                    <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
+                        {{ $variant }}  <span class="badge pull-right"><small>{{ $variant_count }}</small></span><br>
+                    </a>
+                    </div>
+            </td>
+            <td class=" text-center @if($variant_key != 0) border-0 pt-0  @endif  pb-1 ">
+                    <a class="btn btn-xs btn-success btn-block" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
+                        <span class=""><i class="glyphicon glyphicon-file"></i>  Evidence</span>
+                    </a>
+
+            </td>
+
+        </tr>
+        @php $variant_key = 1 @endphp
+        @endforeach
+        </tbody>
+    </table>
+</div>
+</div>
+    @endforeach
 
 				@if(empty($record->dosage_curation ) && empty($record->genetic_conditions ))
 				<br clear="both" />

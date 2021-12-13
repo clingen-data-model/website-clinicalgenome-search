@@ -172,12 +172,15 @@ class Variant extends Model
 
         foreach ($records as $record)
         {
-            if (!isset($genelist[$record->gene['label']]))
-                $genelist[$record->gene['label']] = ['classifications' => $classifications,
-                                                    'panels' => []];
+            $tag = ($disease ? $record->gene['label'] : $record->condition['label']);
 
-            $a =& $genelist[$record->gene['label']]['classifications'];
-            $b =& $genelist[$record->gene['label']]['panels'];
+            if (!isset($genelist[$tag]))
+                $genelist[$tag] = [ 'id' => ($disease ? $record->gene['NCBI_id'] : $record->condition['@id']),
+                                        'classifications' => $classifications,
+                                        'panels' => []];
+
+            $a =& $genelist[$tag]['classifications'];
+            $b =& $genelist[$tag]['panels'];
 
             foreach ($record->guidelines as $guideline)
             {
@@ -186,14 +189,12 @@ class Variant extends Model
 
                 foreach($guideline['agents'] as $agent)
                 {
-                    if (!in_array($agent["affiliation"], $b))
-                        $b[] = $agent["affiliation"];
+                    if (!in_array($agent["affiliation"], array_column($b, 'affiliation')))
+                        $b[] = ['affiliation' => $agent["affiliation"], 'id' => $agent['@id']] ;
                 }
             }
-
             //$genelist[$record->gene['label']] = $a;
         }
-
         return $genelist;
     }
 

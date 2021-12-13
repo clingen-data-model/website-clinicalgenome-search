@@ -1,61 +1,39 @@
 @extends('layouts.app')
 
-@section('content-heading')
-<div class="row mb-1 mt-1">
-	<div class="col-md-5">
-		<table class="mt-3 mb-4">
-            <tr>
-            <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
-            <td class="pl-2">
-                            <h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!}</h1>
-                            <a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                <i class="far fa-caret-square-down"></i> View Disease Facts
-                            </a>
-            </td>
-            </tr>
-        </table>
-
-			</h1>
-			{{-- <strong></strong> --}}
-
-    </div>
-
-	<div class="col-md-7 text-right mt-2 hidden-sm  hidden-xs">
-
-
-    </div>
-			@include("_partials.facts.condition-panel")
-
-			</div>
-			<ul class="nav nav-tabs mt-1" style="">
-          {{-- <li class="" style="margin-bottom: 0px;">
-            <a href="{{ route('gene-show', $record->hgnc_id) }}" class="pt-2 pb-2 text-primary">
-              Curations By Disease
-            </a>
-					</li> --}}
-		<li class="" style="">
-            <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}">
-                <span class='hidden-sm hidden-xs'>Curation </span>Summaries
-            </a>
-          </li>
-          <li class="" style="">
-            <a href="{{ route('condition-groups', $record->getMondoString($record->iri, true)) }}" class="">Other Relevant Expert Panels &amp; Groups </a>
-          </li>
-          <li class="active" style="">
-            <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white"><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
-          </li>
-          <li class="" style="">
-            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>
-          </li>
-		</ul>
-
-@endsection
-
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12">
-			<div class="panel">
+		  <h1 class=" display-4 ">{{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!}
+				@include("_partials.facts.condition-button")
+		  </h1>
+		</div>
+		<div class="col-md-12">
+
+			@include("_partials.facts.condition-panel")
+
+			{{-- <h2 class="h3 mb-0">ClinGen's Curations Summary Report</h2> --}}
+			<ul class="nav nav-tabs">
+          <li class="">
+            <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}">
+              <span class='hidden-sm hidden-xs'>Curation </span>Summaries
+            </a>
+          </li>
+          <li class="active">
+            <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white"><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
+          </li>
+          <li class="">
+            <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->symbol }}%5Bgene%5D" class="" target="clinvar">ClinVar Variants  <i class="glyphicon glyphicon-new-window text-xs" id="external_clinvar_gene_variants"></i></a>
+          </li>
+        </ul>
+			<div class="panel panel-default">
+          <div class="panel-heading" id="results_curation_summary_heading">
+            <div class="row">
+            	<div class="col-sm-12">
+	              External Resources
+	            </div>
+	          </div>
+          </div>
           <div id="results_curation_summary_details" class="panel-body results_curation_summary_details">
 
 

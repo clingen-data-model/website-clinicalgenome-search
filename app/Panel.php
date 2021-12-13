@@ -139,6 +139,15 @@ class Panel extends Model
     }
 
 
+    /*
+     * The diseases associated with this group
+     */
+    public function diseases()
+    {
+       return $this->belongsToMany('App\Disease');
+    }
+
+
 	/**
      * Query scope by ident
      *
@@ -280,9 +289,18 @@ class Panel extends Model
     /**
      * Map genegraph curie to affiliate ID
      */
-    public static function gg_map_to_panel($curie)
+    public static function gg_map_to_panel($curie, $adjust = false)
     {
-        return (strpos($curie, 'CGAGENT:') === 0 ? substr($curie, 8) : $curie);
+        $curie = (strpos($curie, 'CGAGENT:') === 0 ? substr($curie, 8) : $curie);
+
+        if (!$adjust)
+            return $curie;
+
+        if ($curie < 20000)
+            $curie += 30000;
+
+        return $curie;
+
 
     }
 

@@ -25,8 +25,7 @@
 
 		@include("_partials.facts.gene-panel")
 
-
-			</div>
+	</div>
 			<ul class="nav nav-tabs mt-1" style="">
           {{-- <li class="" style="margin-bottom: 0px;">
             <a href="{{ route('gene-show', $record->hgnc_id) }}" class="pt-2 pb-2 text-primary">
@@ -56,17 +55,30 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
             <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating {{  $record->label }} in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
-                <ul>
-                    <li>
-                        Under review: The group is actively evaluating the gene.  Once this evaluation is complete, it will appear on the “Curation Summaries” tab.
-                    </li>
-                    <li>
-                        Precuration: The group is considering which disease(s) they will evaluate as part of the curation.  This is often the first step in the curation process.
-                    </li>
-                    <li>
-                        Of interest: The group has indicated that this gene is of potential interest for future evaluation, but active curation has not yet begun.
-                    </li>
-                </ul>
+                <div class="row mb-2">
+                    <div class="col-md-offset-1 col-md-2 under-review-color text-center p-1 img-rounded">
+                        <span class=""><strong>Under review</strong></span>
+                    </div>
+                    <div class="col-md-9">
+                        The group is actively evaluating the gene.  Once this evaluation is complete, it will appear on the “Curation Summaries” tab.
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-offset-1 col-md-2 precuration-color text-center p-1 img-rounded">
+                        <span class=""><strong>Precuration</strong></span>
+                    </div>
+                    <div class="col-md-9">
+                        The group is considering which disease(s) they will evaluate as part of the curation.  This is often the first step in the curation process.
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-offset-1 col-md-2 in-scope-color text-center p-1 img-rounded">
+                        <span class=""><strong>In Scope</strong></span>
+                    </div>
+                    <div class="col-md-9">
+                        The group has indicated that this gene is of potential interest for future evaluation, but active curation has not yet begun.
+                    </div>
+                </div>
             <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
             </p>
 

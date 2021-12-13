@@ -148,6 +148,8 @@ Route::group(['prefix' => 'kb/conditions'], function () {
 
 		Route::get('/{id?}/by-gene', 'ConditionController@show_by_gene')->name('disease-by-gene');
 
+        Route::get('/{id?}/groups', 'ConditionController@show_groups')->name('condition-groups');
+
 		// TODO
 		Route::get('/{id?}/external-resources', 'ConditionController@external')->name('condition-external');
 

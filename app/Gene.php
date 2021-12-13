@@ -257,6 +257,42 @@ class Gene extends Model
     }
 
 
+    /**
+     * Query scope by uniprot id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUniprot($query, $id)
+    {
+       return $query->where('uniprot_id', $id);
+    }
+
+
+    /**
+     * Query scope by entrez id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeEntrez($query, $id)
+    {
+       return $query->where('entrez_id', $id);
+    }
+
+
+    /**
+     * Query scope by ucsc id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUcsc($query, $id)
+    {
+       return $query->where('ucsc_id', $id);
+    }
+
+
      /**
      * Query scope by cytoband
      *
@@ -673,5 +709,64 @@ class Gene extends Model
     public static function gg2local($node)
     {
 
+    }
+
+
+    /**
+     * Map various gene references gene record
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function rosetta($id)
+    {
+        if (empty($id))
+            return null;
+
+        // do some cleanup
+        $id = basename(trim($id));
+
+        $parts = explode(':', $id);
+
+        if (!isset($parts[1]))
+        {
+            if (is_numeric($id))
+                $check = Gene::omim($id)->first();
+            else
+                $check = Gene::name($id)->first();
+        }
+        else
+        {
+            $id = $parts[1];
+
+            switch (strtoupper($parts[0]))
+            {
+                case 'OMIM':
+                    $check = Gene::omim($id)->first();
+                    break;
+                case 'ENSEMBL':
+                case 'NCBI':
+                    $check = Gene::ensembl($id)->first();
+                    break;
+                case 'ENTREZ':
+                    $check = Gene::entrez($id)->first();
+                    break;
+                case 'HGNC':
+                    $check = Gene::hgnc('HGNC:' . $id)->first();
+                    break;
+                case 'UCSC':
+                    $check = Gene::ucsc($id)->first();
+                    break;
+                case 'UNIPROT':
+                    $check = Gene::uniprot($id)->first();
+                    break;
+                default:
+                    $check = null;
+
+            }
+
+        }
+
+        return $check;
     }
 }

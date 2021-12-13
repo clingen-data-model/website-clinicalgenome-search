@@ -318,6 +318,51 @@ class Precuration extends Model
                     }
                 }
             }
+
+
+            // we also want to keep the disease status updated
+            if ($current->mondo_id !== null)
+            {
+                $disease = Disease::curie($current->mondo_id)->first();
+
+                if ($disease !== null)
+                {
+                    $a = $disease->curation_status;
+                    if ($a === null)
+                    {
+                        $disease->curation_status = [ $record->id => [
+                                            'group' => $record->group->name,
+                                            'group_type' => $record->group->type->name ?? null,
+                                            'group_id' => $record->group->affiliation_id,
+                                            'status' => $record->status->name,
+                                            'status_date' => $record->status->effective_date
+                                        ]];
+
+                        //dd($gene->curation_status);
+
+                        $disease->save();
+                    }
+                    else
+                    {
+                        if (!isset($a[$record->id]) || ((self::$curation_priority[$record->status->name] ?? 0) >= (self::$curation_priority[$a[$record->id]['status']] ?? 0)))
+                        {
+                            $a[$record->id] = [ 'group' => $record->group->name,
+                                                'group_type' => $record->group->type->name ?? null,
+                                                'group_id' => $record->group->affiliation_id,
+                                                'status' => $record->status->name,
+                                                'status_date' => $record->status->effective_date
+                                            ];
+
+                            $disease->curation_status = $a;
+
+                            //dd($gene->curation_status);
+
+                            $disease->save();
+                        }
+                    }
+                }
+            }
+
         }
 
         // TODO:  resync the gene_panel table

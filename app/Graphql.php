@@ -1782,6 +1782,20 @@ dd($response);
 							curie
 						}
 						report_date
+                        attributed_to {
+                            curie
+                             label
+                        }
+                        contributions {
+                            realizes {
+                              curie
+                              label
+                            }
+                            agent {
+                              label
+                              curie
+                            }
+                          }
 						classification {
 							label
 							curie
@@ -1791,6 +1805,9 @@ dd($response);
 					actionability_assertions {
 						report_date
 						source
+                        attributed_to {
+                            label
+                        }
 						classification {
 							label
 							curie
@@ -1815,6 +1832,14 @@ dd($response);
 			return $response;
 
 		$node = new Nodal((array) $response->disease);
+
+        // add additional information from local db
+		$localdisease = Disease::curie($mondo)->first();
+
+		if ($localdisease !== null)
+		{
+            $node->curation_status = $localdisease->curation_status;
+		}
 
 		$naction = 0;
 		$nvalid = 0;
@@ -1863,7 +1888,10 @@ dd($response);
 			$node->variant = $entries;
             $node->nvariant = 0;
             foreach ($entries as $entry)
-			    $node->nvariant += array_sum($entry);
+            {
+                foreach($entry["classifications"] as $value)
+			        $node->nvariant += $value;
+            }
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;

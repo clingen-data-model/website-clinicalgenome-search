@@ -52,6 +52,7 @@ class Disease extends Model
 	protected $casts = [
 			'synonyms' => 'array',
             'curation_activities' => 'array',
+            'curation_status' => 'array'
 		];
 
      /**
@@ -114,6 +115,13 @@ class Disease extends Model
         parent::__construct($attributes);
 	}
 
+    /*
+     * The panels associated with this gene
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
 
 	/**
      * Query scope by ident
@@ -290,5 +298,82 @@ class Disease extends Model
 
         return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
 
+    }
+
+
+    /**
+     * Parse genegraph iri and map to standard format
+     *
+     * @@param  string  $id
+     * @return  array
+     */
+    public static function normal_base($id = null)
+    {
+        if (empty($id))
+            return '';
+
+        $id = basename($id);
+
+        $k = strpos($id, '_');
+
+        if ($k !== false)
+            $id = str_replace('_', ':', $id);
+
+        return $id;
+    }
+
+
+    /**
+     * Map various disease references to disease record
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function rosetta($id)
+    {
+        if (empty($id))
+            return null;
+
+        // do some cleanup
+        $id = basename(trim($id));
+
+        $parts = explode(':', $id);
+
+        if (!isset($parts[1]))
+        {
+            if (is_numeric($id))
+                $check = Disease::omim($id)->first();
+            else
+                $check = null;
+        }
+        else
+        {
+            $id = $parts[1];
+
+            switch (strtoupper($parts[0]))
+            {
+                case 'OMIM':
+                    $check = Disease::omim($id)->first();
+                    break;
+                //case 'DOID':
+                //    $check = Disease::doid($id)->first();
+                //    break;
+                //case 'ORPHANET':
+                //    $check = Disease::orphanet($id)->first();
+                //    break;
+                case 'MONDO':
+                    $check = Disease::curie('MONDO:' . $id)->first();
+                    break;
+                //case 'MEDGEN':
+                //    $check = Gene::medgen($id)->first();
+                //    break;
+                default:
+                    $check = null;
+
+            }
+
+        }
+
+        return $check;
     }
 }

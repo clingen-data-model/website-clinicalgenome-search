@@ -32,6 +32,18 @@
   border: 1px dotted #333;
 }
 
+.under-review-color {
+    background-color: lightgreen;
+}
+
+.precuration-color {
+    background-color:lightskyblue;
+}
+
+.in-scope-color {
+    background-color:moccasin;
+}
+
 .text-stats {
   font-size: .8rem !important;
   color: #222;

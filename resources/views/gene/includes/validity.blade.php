@@ -40,7 +40,7 @@
                         </td>
 
                         <td class="text-left">
-                            <a class="text-muted" href="{{ route('gene-groups', $record->hgnc_id) }}">
+                            <a class="text-muted" href="https://clinicalgenome.org/affiliation/{{ App\Panel::gg_map_to_panel($validity->assertion->attributed_to->curie, true) }}">
                             {{ $validity->assertion->attributed_to->label }} GCEP
                             <i class="fas fa-external-link-alt fa-xs"></i>
                             </a>
