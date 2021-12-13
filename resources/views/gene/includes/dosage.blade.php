@@ -38,7 +38,7 @@
                                                 @if($first == true)
                                                 <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
                                                     Dosage Sensitivity WG
-                                                    <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
                                                     @endif
 											</td>
 
@@ -152,7 +152,7 @@
                                                 @if($first == true)
                                                 <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
                                                     Dosage Sensitivity WG
-                                                    <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
                                                     @endif
 											</td>
 

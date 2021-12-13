@@ -23,6 +23,9 @@
                     @php $variant_name = "" @endphp
                     @foreach($variant_collection as $condition => $classes)
                     @foreach($classes['classifications'] as $variant => $variant_count)
+                    @if ($variant_count == 0)
+                    @continue
+                    @endif
                     @php $variant_key = ($variant_name == $condition ? 1 : 0) @endphp
                     <tr class="">
                         <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0){{ $record->label  }}@endif</td>
@@ -32,14 +35,14 @@
                             <div class="text-muted small">{{ $classes['id'] }}</div>
                             @endif
                         </td>
-                        <td class="@if($variant_key != 0) border-0 pt-0  @endif pb-1 ">@if($variant_key == 0)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($classes['panels'][0]['id']) }}">{{  implode(', ', array_column($classes['panels'], 'affiliation')) }}</a>@endif</td>
-                        <td class="text-center @if($variant_key != 0) border-0 pt-0 @endif pb-1 ">
+                        <td class="@if($variant_key != 0) border-0 pt-0 @endif pb-1 ">@if($variant_key == 0)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($classes['panels'][0]['id']) }}">{{  implode(', ', array_column($classes['panels'], 'affiliation')) }} <i class="fas fa-external-link-alt ml-1"></i></a>@endif</td>
+                        <td class="text-center @if($variant_key != 0) border-0 pt-0 @else valign-bottom @endif pb-1 ">
                                 <div class="mb-0"><a class="btn btn-default btn-block text-left pt-1 btn-classification" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
                                     {{ $variant }}  <span class="badge pull-right"><small>{{ $variant_count }}</small></span><br>
 								</a>
                                 </div>
                         </td>
-                        <td class=" text-center @if($variant_key != 0) border-0 pt-0  @endif  pb-1 ">
+                        <td class=" text-center @if($variant_key != 0) border-0 pt-0 @else valign-bottom @endif  pb-1 ">
                                 <a class="btn btn-xs btn-success btn-block" target="_erepo" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?assertion={{ $variant }}&matchMode=exact&gene={{ $record->label }}">
                                     <span class=""><i class="glyphicon glyphicon-file"></i>  Evidence</span>
                                 </a>

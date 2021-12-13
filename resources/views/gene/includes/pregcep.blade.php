@@ -13,10 +13,10 @@
             <b>In Scope</b>
         </div>
         @endif
-        <h2 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $gcep->affiliate_id }}">
+        <h3 class=""><a href="https://www.clinicalgenome.org/affiliation/{{ $gcep->affiliate_id }}">
             {{ $gcep->smart_title }}
             <i class="fas fa-external-link-alt ml-2"></i>
-        </a></h2>
+        </a></h3>
     </div>
     <div class="card-body">
         <div class="row">

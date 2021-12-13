@@ -90,7 +90,7 @@
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-3 text-left"> Disease</th>
                                 <th class="col-sm-1 text-center"></th>
-								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-2 text-left">Working Group</th>
 								<th class="col-sm-2">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -111,6 +111,14 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+											</td>
+
+                                            <td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if($first == true)
+                                                <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                    Dosage Sensitivity WG
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
+                                                    @endif
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
@@ -267,10 +275,10 @@
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
                                                 @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
                                                     <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
-                                                        <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                        <i class="fas fa-external-link-alt ml-1"></i></a>
                                                 @else
                                                     <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
-                                                        <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                                        <i class="fas fa-external-link-alt"></i></a>
                                                 @endif
 
 											</td>

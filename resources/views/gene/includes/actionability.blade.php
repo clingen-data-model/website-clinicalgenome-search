@@ -36,7 +36,7 @@
 
 						<td class="">
                             <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
-                                <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                <i class="fas fa-external-link-alt ml-1"></i></a>
 						</td>
 
 						<td class="text-center">
@@ -74,7 +74,7 @@
 
 						<td class="@if($adult_set != true) pb-0 @else border-0 pt-0 @endif ">
                             <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
-                                <i class="fas fa-external-link-alt fa-xs"></i></a>
+                                <i class="fas fa-external-link-alt"></i></a>
 						</td>
 
 						<td class="@if($adult_set != true) pb-0 @else border-0 pt-0 @endif text-center">
