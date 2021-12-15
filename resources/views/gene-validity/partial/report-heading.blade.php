@@ -12,7 +12,7 @@
     <div>Classification - {{ displayDate($record->report_date ?? null) }}</div>
     @if ($record->animalmode)
     <div class='badge badge-warning mt-1 p-2'>
-        Animal Mode Only
+        Animal Model Only
     </div>
     @endif
     </td>

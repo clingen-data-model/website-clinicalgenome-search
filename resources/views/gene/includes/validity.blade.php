@@ -15,7 +15,7 @@
                     <tr>
                         <th class="col-sm-1 th-curation-group text-left">Gene</th>
                         <th class="col-sm-3 text-left"> Disease</th>
-                        <th class="col-sm-1 text-left">MOI</th>
+                        <th class="col-sm-1 text-left">MOI/Animal Model Only</th>
                         <th class="col-sm-2 text-left">Expert Panel</th>
                         <th class="col-sm-2  ">Classification</th>
                         <th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -37,6 +37,9 @@
                         <td class="">
                             {{ \App\GeneLib::validityMoiAbvrString($validity->assertion->mode_of_inheritance->website_display_label) }}
                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->assertion->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
+                            @if (\App\Validity::isAnimalModelOnly($validity->assertion))
+                                <div class='badge badge-warning p-1'>Animal Model Only</div>
+                            @endif
                         </td>
 
                         <td class="text-left">

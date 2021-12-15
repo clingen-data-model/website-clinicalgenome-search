@@ -469,10 +469,12 @@
         </tr>
         <tr>
           <td colspan="2" class="table-heading-bg table-heading text-right table-border-thin">CALCULATED CLASSIFICATION</td>
-          <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive"><div class='col-sm-8'> {{ $record->score_data->summary->CalculatedClassification ?? null }}@if ($record->animalmode)
-            <span class='badge badge-warning'>Animal Mode Only</span>
-        @endif </div>
-            <div class='col-sm-4'> {{-- {{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null ) }} --}} </div></td>
+          <td colspan="3" class="table-heading-bg table-heading table-border-thin CalculatedClassificationsActive"><div class='col-sm-8'> {{ $record->score_data->summary->CalculatedClassification ?? null }} </div>
+            <div class='col-sm-4'>
+                @if ($record->animalmode)
+                    <span class='badge badge-warning'>Animal Model Only</span>
+                @endif
+                {{-- {{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null ) }} --}} </div></td>
         </tr>
       @if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES")
   <tr>
@@ -509,17 +511,20 @@
         <td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EXPERT CURATION (DATE)</td>
         <td colspan="3" class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive"><div class='col-sm-10'><span style="font-size: 145%;"> @if (isset($record->score_data->summary->FinalClassification) && strtoupper($record->score_data->summary->FinalClassification) == "NO REPORTED EVIDENCE")
           No Known Disease Relationship
-            @if ($record->animalmode)
-                <span class='badge badge-warning'>Animal Mode Only</span>
-            @endif
           @else
           {{ $record->score_data->summary->FinalClassification ?? null }}
-          @if ($record->animalmode)
-                <span class='badge badge-warning'>Animal Mode Only</span>
-            @endif
           @endif </span> </div>
           <div class='col-sm-2 text-right'> {{ displayDate($record->score_data->summary->FinalClassificationDate ?? null ) }} </div>
         </tr>
+        @if ($record->animalmode)
+        <tr>
+            <td colspan="2" valign="top" class="table-heading-bg table-heading text-right"></td>
+            <td colspan="3"
+                class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
+                <span class='badge badge-warning p-1'>Animal Model Only</span>
+            </td>
+        </tr>
+        @endif
       @if ($record->score_data->summary->FinalClassificationNotes ?? null)
   <tr>
     <td colspan="2" valign="top" class="table-heading-bg table-heading text-right">EVIDENCE SUMMARY</td>

@@ -494,6 +494,7 @@ class Graphql
 							  label
 							  curie
 						  }
+                          legacy_json
 						  curie
 						}
 						actionability_assertions {

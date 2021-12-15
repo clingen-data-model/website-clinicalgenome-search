@@ -600,7 +600,7 @@
                 </div>
                 <div class='col-sm-4'>
                     @if ($record->animalmode)
-                    <span class='badge badge-warning'>Animal Mode Only</span>
+                    <span class='badge badge-warning'>Animal Model Only</span>
                     @endif
                     {{-- {{ displayDate($record->score_data->summary->CalculatedClassificationDate ?? null ) }} --}}
                 </div>
@@ -680,7 +680,7 @@
             <td colspan="2" valign="top" class="table-heading-bg table-heading text-right"></td>
             <td colspan="3"
                 class="table-heading-bg table-heading CalculatedClassificationsActive-3 CalculatedClassificationsActive">
-                <span class='badge badge-warning p-1'>Animal Mode Only</span>
+                <span class='badge badge-warning p-1'>Animal Model Only</span>
             </td>
         </tr>
         @endif
