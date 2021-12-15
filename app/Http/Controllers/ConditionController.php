@@ -236,6 +236,10 @@ class ConditionController extends Controller
                 if ($panel == null)
                     continue;
 
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
+
                 $pregceps->push($panel);
             }
 
@@ -405,6 +409,10 @@ class ConditionController extends Controller
 					continue;
 				}
 
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
+
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);
@@ -564,6 +572,10 @@ class ConditionController extends Controller
 					//dd($precuration);
 					continue;
 				}
+
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
 
                 $panel->bucket = $bucket;
 

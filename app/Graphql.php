@@ -1437,6 +1437,14 @@ class Graphql
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
+        // Only SOP8 has NonHumanModel structures.  The rest will quickly exit the logic test
+        $node->animalmode = (
+                        ($node->score_data->summary->FinalClassification == "No Known Disease Relationship") &&
+                        (isset($node->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                        ($node->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                        ($node->score_data->ValidContradictoryEvidence->Value == "NO")
+                    );
+
 		return $node;
 
 	}

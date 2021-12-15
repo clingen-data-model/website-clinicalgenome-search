@@ -303,6 +303,10 @@ class GeneController extends Controller
 				if ($panel == null)
 					continue;
 
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
+
 				$pregceps->push($panel);
 			}
 
@@ -513,6 +517,10 @@ class GeneController extends Controller
 
 				if ($panel == null)
 					continue;
+
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
 
 				$pregceps->push($panel);
 			}
@@ -739,10 +747,11 @@ class GeneController extends Controller
 					$panel = Panel::allids($precuration['group_id'])->first();
 
 				if ($panel == null)
-				{
-					//dd($precuration);
 					continue;
-				}
+
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
 
                 $panel->bucket = $bucket;
 
