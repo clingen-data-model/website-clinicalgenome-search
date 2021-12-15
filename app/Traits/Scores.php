@@ -91,7 +91,7 @@ trait Scores
 
 		if (isset($j->scoreJson))
         {
-            $k = $j->scoreJson->summary->FinalClassificationNotes;
+            $k = $j->scoreJson->summary->FinalClassificationNotes ?? null;
         }
 		else
         {
@@ -477,7 +477,7 @@ trait Scores
 
 		if (isset($j->scoreJson))
         {
-            $k = $j->scoreJson->summary->FinalClassificationNotes;
+            $k = $j->scoreJson->summary->FinalClassificationNotes ?? null;
         }
 		else
         {
