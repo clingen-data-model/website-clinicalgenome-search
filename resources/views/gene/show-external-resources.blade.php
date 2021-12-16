@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="" style="">
-            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Other Relevant Expert Panels &amp; Groups </a>
+            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Status and Future Work </a>
           </li>
           <li class="active" style="">
             <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>

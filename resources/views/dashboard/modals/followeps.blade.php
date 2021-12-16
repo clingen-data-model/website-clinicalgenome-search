@@ -20,7 +20,7 @@
                                 @foreach ($gceps as $gcep)
                                 <li>
 
-                                    <input name="select[]" type="checkbox" value="{{ $gcep->ident }}">
+                                    <input class="api-update" name="select[]" type="checkbox" value="{{ $gcep->ident }}" {{ $user->panels()->where('panel_id', $gcep->id)->exists() ? "checked" : '' }}>
                                     <span>{{ $gcep->name }}</span>
 
                                 </li>
@@ -32,7 +32,7 @@
                                 @foreach ($vceps as $vcep)
                                 <li>
 
-                                    <input name="select[]" type="checkbox" value="{{ $vcep->ident }}">
+                                    <input class="api-update" name="select[]" type="checkbox" value="{{ $vcep->ident }}" {{ $user->panels()->where('panel_id', $vcep->id)->exists() ? "checked" : '' }}>
                                     <span>{{ $vcep->name }}</span>
 
                                 </li>

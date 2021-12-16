@@ -39,7 +39,7 @@
             </a>
           </li>
           <li class="" style="">
-            <a href="{{ route('condition-groups', $record->getMondoString($record->iri, true)) }}" class="">Other Relevant Expert Panels &amp; Groups </a>
+            <a href="{{ route('condition-groups', $record->getMondoString($record->iri, true)) }}" class="">Status and Future Work </a>
           </li>
           <li class="active" style="">
             <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=" bg-primary text-white"><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>

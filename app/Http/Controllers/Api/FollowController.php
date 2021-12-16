@@ -408,6 +408,18 @@ dd("not logged in");  }*/
         }
 
 
+        foreach ($user->panels as $panel)
+        {
+            $gene = new Gene(['name' => $panel->name,
+                                'hgnc_id' => $panel->affiliate_id,
+                                'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
+                                'type' => 4,
+                                'date_last_curated' => ''
+                            ]);
+
+            $genes->prepend($gene);
+        }
+
         return FollowResource::collection($genes);
         //return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
         //            'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));

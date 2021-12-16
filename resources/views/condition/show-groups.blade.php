@@ -44,7 +44,7 @@
             </a>
           </li>
           <li class="active" style="">
-            <a href="{{ route('condition-groups', \App\Disease::normal_base($record->iri)) }}" class="">Other Relevant Expert Panels &amp; Groups <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels ?? 0 }}</span></a>
+            <a href="{{ route('condition-groups', \App\Disease::normal_base($record->iri)) }}" class="">Status and Future Work <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels ?? 0 }}</span></a>
           </li>
           <li class="" style="">
             <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
