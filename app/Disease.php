@@ -52,6 +52,7 @@ class Disease extends Model
 	protected $casts = [
 			'synonyms' => 'array',
             'curation_activities' => 'array',
+            'curation_status' => 'array'
 		];
 
      /**
@@ -60,7 +61,7 @@ class Disease extends Model
      * @var array
      */
 	protected $fillable = ['curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
-					        'description', 'type', 'status',
+					        'omim', 'description', 'type', 'status',
                          ];
 
 	/**
@@ -72,6 +73,11 @@ class Disease extends Model
                             'first_synonym'];
 
      public const TYPE_NONE = 0;
+     public const TYPE_MONDO = 1;
+     public const TYPE_OMIM = 2;
+     public const TYPE_ORPHANET = 3;
+     public const TYPE_MEDGEN = 4;
+     public const TYPE_DOID = 5;
 
      /*
      * Type strings for display methods
@@ -109,6 +115,13 @@ class Disease extends Model
         parent::__construct($attributes);
 	}
 
+    /*
+     * The panels associated with this gene
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
 
 	/**
      * Query scope by ident
@@ -143,6 +156,26 @@ class Disease extends Model
 	public function scopeDeprecated($query)
     {
 		return $query->where('status', 9);
+    }
+
+
+    /**
+     * Query scope by omim value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeOmim($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'OMIM:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->where('omim', $value);
     }
 
 
@@ -210,4 +243,137 @@ class Disease extends Model
 		return (isset($this->curation_activities) ?
 			$this->curation_activities['validity'] : false);
 	}
+
+    /**
+     * Query title for mondo id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function titles($id)
+    {
+      $record = self::curie($id)->first();
+
+      if ($record === null)
+        return '';
+
+      return $record->label;
+    }
+
+    /**
+     * Determine ontology typle by parsing the id
+     *
+     * @@param  string  $id
+     * @return  array
+     */
+    public static function parseIdentifier($id = null)
+    {
+        if (empty($id))
+            return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        $k = strpos($id, ':');
+
+        if ($k === false)
+            if (is_numeric($id))
+                return ['type' => self::TYPE_OMIM, 'adjusted' => $id];         //default
+            else
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        switch (strtoupper(substr($id, 0, $k)))
+        {
+            case 'MONDO':
+                return ['type' => self::TYPE_MONDO, 'adjusted' => substr($id, $k + 1)];
+            case 'OMIM':
+                return ['type' => self::TYPE_OMIM, 'adjusted' => substr($id, $k + 1)];
+            case 'ORPHANET':
+                return ['type' => self::TYPE_ORPHANET, 'adjusted' => substr($id, $k + 1)];
+            case 'MEDGEN':
+                return ['type' => self::TYPE_MEDGEN, 'adjusted' => substr($id, $k + 1)];
+            case 'DOID':
+                return ['type' => self::TYPE_DOID, 'adjusted' => substr($id, $k + 1)];
+            default:
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+        }
+
+        return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+
+    }
+
+
+    /**
+     * Parse genegraph iri and map to standard format
+     *
+     * @@param  string  $id
+     * @return  array
+     */
+    public static function normal_base($id = null)
+    {
+        if (empty($id))
+            return '';
+
+        $id = basename($id);
+
+        $k = strpos($id, '_');
+
+        if ($k !== false)
+            $id = str_replace('_', ':', $id);
+
+        return $id;
+    }
+
+
+    /**
+     * Map various disease references to disease record
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function rosetta($id)
+    {
+        if (empty($id))
+            return null;
+
+        // do some cleanup
+        $id = basename(trim($id));
+
+        $parts = explode(':', $id);
+
+        if (!isset($parts[1]))
+        {
+            if (is_numeric($id))
+                $check = Disease::omim($id)->first();
+            else
+                $check = null;
+        }
+        else
+        {
+            $id = $parts[1];
+
+            switch (strtoupper($parts[0]))
+            {
+                case 'OMIM':
+                    $check = Disease::omim($id)->first();
+                    break;
+                //case 'DOID':
+                //    $check = Disease::doid($id)->first();
+                //    break;
+                //case 'ORPHANET':
+                //    $check = Disease::orphanet($id)->first();
+                //    break;
+                case 'MONDO':
+                    $check = Disease::curie('MONDO:' . $id)->first();
+                    break;
+                //case 'MEDGEN':
+                //    $check = Gene::medgen($id)->first();
+                //    break;
+                default:
+                    $check = null;
+
+            }
+
+        }
+
+        return $check;
+    }
 }
