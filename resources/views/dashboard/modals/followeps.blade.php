@@ -21,7 +21,7 @@
                                 <li>
 
                                     <input class="api-update" name="select[]" type="checkbox" value="{{ $gcep->ident }}" {{ $user->panels()->where('panel_id', $gcep->id)->exists() ? "checked" : '' }}>
-                                    <span>{{ $gcep->name }}</span>
+                                    <span>{{ $gcep->smart_name }}</span>
 
                                 </li>
                                 @endforeach
@@ -33,7 +33,7 @@
                                 <li>
 
                                     <input class="api-update" name="select[]" type="checkbox" value="{{ $vcep->ident }}" {{ $user->panels()->where('panel_id', $vcep->id)->exists() ? "checked" : '' }}>
-                                    <span>{{ $vcep->name }}</span>
+                                    <span>{{ $vcep->smart_name }}</span>
 
                                 </li>
                                 @endforeach

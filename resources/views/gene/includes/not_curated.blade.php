@@ -4,8 +4,8 @@
 <br />
 @if (count($pregceps) > 0)
 <br />
-<p><b>{{ $record->label  }}</b> is in scope for or is actively being curated by one or more expert panels or working groups.
-    Please see the <a href="{{ route('gene-groups', $record->hgnc_id) }}">"Status and Future Work"</a> for more information</p>
+<p><b><i>{{ $record->label  }}</i></b> is in scope or under active curation for one or more Expert Panels or Groups.
+    Please see the <a href="{{ route('gene-groups', $record->hgnc_id) }}">"Status and Future Work"</a> tab for more information</p>
 @endif
 <br />
 View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.

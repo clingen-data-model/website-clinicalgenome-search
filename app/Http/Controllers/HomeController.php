@@ -131,8 +131,8 @@ class HomeController extends Controller
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
 
-        $gceps = Panel::gcep()->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
-        $vceps = Panel::vcep()->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+        $gceps = Panel::gcep()->blacklist(['40018', '40019', '40058'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+        $vceps = Panel::vcep()->blacklist(['4acafdd5-80f3-47f0-8522-f4bd04da175f'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
 
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
                     'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',

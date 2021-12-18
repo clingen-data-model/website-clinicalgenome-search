@@ -54,7 +54,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating {{  $record->label }} in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
+            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating <strong><i>{{  $record->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
                 <div class="row mb-2">
                     <div class="col-md-offset-1 col-md-2 under-review-color text-center p-1 img-rounded">
                         <span class=""><strong>Under review</strong></span>

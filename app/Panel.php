@@ -221,6 +221,18 @@ class Panel extends Model
 
 
     /**
+     * Query scope by vcep type
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeblacklist($query, $list)
+    {
+        return $query->whereNotIn('affiliate_id', $list);
+    }
+
+
+    /**
      * Return an href suitable identifier
      *
      * @@param	string	$ident
@@ -262,6 +274,28 @@ class Panel extends Model
         return $this->title;
     }
 
+
+    /**
+     * Return an best choice of names
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getSmartNameAttribute()
+    {
+        if (!empty($this->name))
+            return $this->name;
+
+        if (!empty($this->title_short))
+            return $this->title_short;
+
+        if (!empty($this->title_abbreviated))
+            return $this->title_abbreviated;
+
+        $title = str_replace(' Expert Panel', '', $this->title);
+
+        return  $title;
+    }
 
     /**
      * Return an href suitable identifier
