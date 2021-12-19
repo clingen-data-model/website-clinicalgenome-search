@@ -2052,7 +2052,10 @@ class Graphql
 		$response = self::query($query, __METHOD__);
 
 		if (empty($response))
+        {
+            echo "ERROR:  Metric Checkpoint 1 Failed\n";
 			return $response;
+        }
 
 		$total_genes = $response->genes->count;
 
@@ -2180,7 +2183,10 @@ class Graphql
 		$response = self::query($query, __METHOD__);
 
 		if (empty($response))
-			return $response;
+        {
+            echo "ERROR:  Metric Checkpoint 2 Failed\n";
+            return $response;
+        }
 
 		$values[Metric::KEY_TOTAL_VALIDITY_CURATIONS] =
 									$response->gene_validity_assertions->count;
@@ -2481,7 +2487,10 @@ class Graphql
 		$response = self::query($query, __METHOD__);
 
 		if (empty($response))
+        {
+            echo "ERROR:  Metric Checkpoint 3 Failed\n";
 			return $response;
+        }
 
 		/*$response = '{
 			"data": {
