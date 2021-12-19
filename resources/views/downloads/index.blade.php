@@ -62,7 +62,7 @@
                 <table class="table table-striped table-hover  mb-0">
                     <tr>
                         <td colspan="4">
-                            <div><p class="text-danger text-center"><strong><i>Important changes are being made to the Dosage Sensitivity download files in December.  Please view the README file for more information.</i></strong></p></div>
+                            <div><p class="text-danger text-center"><strong><i>As previously announced, important changes were made to the Dosage Sensitivity download files on December 19th, 2921.<br />Please view the README file for more information.</i></strong></p></div>
                         </td>
                     <tr>
                         <td><strong>README</strong>
