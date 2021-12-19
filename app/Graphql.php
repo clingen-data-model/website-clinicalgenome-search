@@ -1467,40 +1467,164 @@ class Graphql
 			$perm = "CGGCIEX:assertion_" . $perm;
 
 		$query = '{
-			gene_validity_assertion('
-			. 'iri: "' . $perm
-			. '") {
+				resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56") {
+				  ...basicFields
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on VariantEvidence {
+					...variantFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				  subject_of {
+					...basicFields
+					...statementFields
+				  }
+				  ... on Statement {
+					...statementFields
+					contributions {
+					  attributed_to {
+						curie
+						label
+					  }
+					  date
+					  realizes {
+						curie
+						label
+					  }
+					}
+				  }
+				  __typename
+				  used_as_evidence_by {
+					...statementFields
+					...basicFields
+				  }
+				}
+			  }
+
+			  fragment probandFields on ProbandEvidence {
+				variants {
+				  curie
+				  label
+				  canonical_reference {
+					curie
+				  }
+				}
+			  }
+
+			  fragment variantFields on VariantEvidence {
+				variant {
+				  curie
+				  label
+				  canonical_reference {
+					curie
+				  }
+				}
+			  }
+
+			  fragment segregationFields on Segregation {
+				conditions {
+				  curie
+				  label
+				}
+				estimated_lod_score
+				published_lod_score
+				meets_inclusion_criteria
+				phenotype_negative_allele_negative_count
+				phenotype_positive_allele_positive_count
+				sequencing_method {
+				  curie
+				  label
+				}
+			  }
+
+			  fragment basicFields on Resource {
+				__typename
+				label
 				curie
-				report_date
-				gene {
-					label
-					hgnc_id
-					curie
+				description
+				source {
+				  __typename
+				  curie
+				  iri
+				  label
+				  short_citation
 				}
-				disease {
-					label
-					curie
+				type {
+				  __typename
+				  label
+				  curie
 				}
-				mode_of_inheritance {
-					label
-					website_display_label
-					curie
+			  }
+
+			  fragment statementFields on Statement {
+				subject {
+				  ...basicFields
 				}
-				attributed_to {
-					label
-					curie
+				predicate {
+				  ...basicFields
 				}
-				classification {
-					label
-					curie
+				object {
+				  ...basicFields
 				}
-				specified_by {
-					label
-					curie
+				qualifier {
+				  ...basicFields
 				}
-				legacy_json
-			}
-		}';
+				direct_evidence: evidence {
+				  ...basicFields
+				  ... on Statement {
+					score
+				  }
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				}
+				genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
+				  ...basicFields
+				  ... on Statement {
+					score
+					evidence {
+					  ...basicFields
+					  ... on ProbandEvidence {
+						...probandFields
+					  }
+					  ... on Segregation {
+						...segregationFields
+					  }
+					  ... on VariantEvidence {
+						...variantFields
+					  }
+					}
+				  }
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on VariantEvidence {
+					...variantFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				}
+				experimental_evidence: evidence(transitive: true, class: "SEPIO:0004105") {
+				  ...basicFields
+				  ... on Statement {
+					score
+					evidence {
+					  ...basicFields
+					  ... on ProbandEvidence {
+						...probandFields
+					  }
+					}
+				  }
+				}
+				score
+			  }';
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
