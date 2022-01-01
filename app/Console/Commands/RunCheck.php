@@ -10,6 +10,9 @@ use App\Gene;
 use App\GeneLib;
 use App\Health;
 use App\Validity;
+use App\Actionability;
+use App\Sensitivity;
+use App\Variantpath;
 
 class RunCheck extends Command
 {
@@ -113,12 +116,29 @@ class RunCheck extends Command
 
         echo "Genegraph OK ($hash)\n";
 
-        // update validy table (this is a trial to see impact during production)
+        echo "Checking for Validity changes...";
+        // update validy table
         $model = new Validity();
         $model->assertions();
+        echo "DONE\n";
 
+        echo "Checking for actionability changes...";
+        // update  actionability
+        $model = new Actionability();
+        $model->assertions();
+        echo "DONE\n";
 
-        // now check and update dosage related tables
+        echo "Checking for dosage changes...";
+        // update  actionability
+        $model = new Sensitivity();
+        $model->assertions();
+        echo "DONE\n";
+
+        //echo "Checking for variant changes...";
+        // update  variant
+        //$model = new Variantpath();
+        //$model->assertions();
+        //echo "DONE\n";
 
     }
 }

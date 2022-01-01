@@ -631,7 +631,7 @@ class Graphql
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
-
+//dd($node);
 		return $node;
 	}
 

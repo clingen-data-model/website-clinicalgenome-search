@@ -421,5 +421,31 @@
 @endsection
 
 @section('script_js')
+<script>
+
+$(function() {
+
+    $('.action-expand-curation').on('click', function() {
+
+        var uuid = $(this).attr('data-uuid');
+
+        var row = $(this).closest('tr').next('tr');
+        row.toggle();
+
+        var chk = $(this).find('small');
+        if (chk.html() == "show more  ")
+            chk.html('show less  ');
+        else
+            chk.html('show more  ');
+
+        chk = $(this).find('i.fas');
+        if (chk.hasClass('fa-caret-down'))
+            chk.removeClass('fa-caret-down').addClass('fa-caret-up');
+        else
+        chk.removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+});
+
+</script>
 
 @endsection

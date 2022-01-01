@@ -52,6 +52,9 @@
                     </tr>
                     @php $variant_name = $condition @endphp
                     @endforeach
+                    <tr class="">
+                        <td colspan=5 class="mb-3 border-0"></td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

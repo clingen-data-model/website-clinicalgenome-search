@@ -15,6 +15,7 @@ use App\User;
 use App\Gene;
 use App\Notification;
 use App\Group;
+use App\Panel;
 
 class FollowController extends Controller
 {
@@ -172,6 +173,24 @@ class FollowController extends Controller
 
             $notification->save();
         }
+        else if ($input['gene'][0] == '!')
+        {
+            $name = $input['gene'];
+            $panel = Panel::ident(substr($name, 1))->first();
+
+            $hasit = $user->panels()->where('panel.id', $panel->id)->exists();
+
+            if (($panel !== null) && ($hasit === false))
+            {
+                $user->panels()->attach($panel->id);
+            }
+
+            $bucket = $notification->checkGroup($name);
+            if ($bucket === false)
+                $notification->addDefault($name);
+
+            $notification->save();
+        }
         else
         {
 
@@ -299,6 +318,30 @@ dd("not logged in");  }*/
             if ($bucket !== false)
                 $notification->removeGroup($group->name, $bucket);
         }
+        else if ($input['gene'][0] == '!')
+        {
+            $name = $input['gene'];
+
+            $ident = substr($input['gene'], 1);
+
+            $panel = Panel::ident($ident)->first();
+
+            if ($panel === null)
+                return response()->json(['success' => 'false',
+                                        'status_code' => 2021,
+                                        'gene' => $ident,
+                                        'message' => "Panel Lookup Error"],
+                                        501);
+
+            $user->panels()->detach($panel->id);
+
+            $bucket = $notification->checkGroup($name);
+
+            if ($bucket !== false)
+                $notification->removeGroup($name, $bucket);
+
+            $name = $panel->smart_title;
+        }
         else
         {
 
@@ -307,7 +350,7 @@ dd("not logged in");  }*/
             if ($gene === null)
                 return response()->json(['success' => 'false',
                                         'status_code' => 2001,
-                                        'gene' => $name,
+                                        'gene' => $input['gene'],
                                         'message' => "Gene Lookup Error"],
                                         501);
 
@@ -337,7 +380,7 @@ dd("not logged in");  }*/
         return response()->json(['success' => 'true',
                                  'status_code' => 200,
                                  'gene' => $name,
-							 	 'message' => 'Gene UnFollowed'],
+							 	 'message' => 'Item UnFollowed'],
 							 	 200);
 
     }
@@ -410,8 +453,8 @@ dd("not logged in");  }*/
 
         foreach ($user->panels as $panel)
         {
-            $gene = new Gene(['name' => $panel->name,
-                                'hgnc_id' => $panel->affiliate_id,
+            $gene = new Gene(['name' => $panel->smart_title,
+                                'hgnc_id' => '!' . $panel->ident,
                                 'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
                                 'type' => 4,
                                 'date_last_curated' => ''
@@ -450,6 +493,29 @@ dd("not logged in");  }*/
         return view('dashboard.includes.expand-region')
             ->with('group', $region)
             ->with('genes', $genes->collection);
+	}
+
+
+    /**
+     * Expand a panel entry row.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function dape_expand(Request $request, $group = null)
+    {
+		if (empty($group))
+			return "Panel not found";
+
+		$panel = Panel::ident($group)->first();
+
+        if ($panel === null)
+			return "Panel not found";
+
+        $genes = $panel->genes;
+
+        return view('dashboard.includes.expand-panel')
+            ->with('group', $panel)
+            ->with('genes', $genes);
 	}
 /*
     @foreach ($genes as $gene)

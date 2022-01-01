@@ -89,7 +89,16 @@ class QueryOms extends Command
                 $alternate_id = (intval($entry['affiliation_id']) >= 40000 && intval($entry['affiliation_id']) < 50000) ?
                                         intval($entry['affiliation_id']) - 30000 : null;
 
-                //echo $entry['affiliation_id'] . "\n";
+                // cleanup the html apostrophe
+                $entry['title'] = str_replace('&#039;', "'", $entry['title']);
+
+                if(!empty($entry['title_short']))
+                    $entry['title_short'] = str_replace('&#039;', "'", $entry['title_short']);
+
+                if(!empty($entry['title_abbreviated']))
+                    $entry['title_abbreviated'] = str_replace('&#039;', "'", $entry['title_abbreviated']);
+
+
                 Panel::updateOrCreate(
                     ['affiliate_id' => $entry['affiliation_id']],
                     [

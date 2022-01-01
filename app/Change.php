@@ -306,6 +306,29 @@ class Change extends Model
                         });
             }
 
+            // panels
+            $groups = preg_grep('/^\!.*/', $genes);
+            foreach ($groups as $group)
+            {
+                // get list genes
+                $panel = Panel::ident(substr($group, 1))->first();
+
+                // if this is a non-recurrent report, build a psuedo region
+                if ($panel === null)
+                {
+                    continue;
+                }
+
+
+                $genes = $panel->genes();
+
+                $items = $genes->collection->pluck('name');
+
+                $query = $query->orWhereHas('element', function ($query) use ($items) {
+                            $query->whereIn('name', $items);
+                        });
+            }
+
         }
 
         /*$a = vsprintf(str_replace('?', '%s', $query->toSql()), collect($query->getBindings())->map(function ($binding) {

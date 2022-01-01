@@ -91,7 +91,7 @@
 										<td class=" @if(!$loop->first) border-0 @endif ">
 											@if($loop->first)
 											<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/" data-content="Can variation in this gene cause disease?"> <img style="width:20px" src="/images/clinicalValidity-on.png" alt="Clinicalvalidity on"> Gene-Disease Validity <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
-											@endif
+                                            @endif
 										</td>
 										<td class=" @if(!$loop->first) border-0 @endif ">{{ \App\GeneLib::validityMoiString($validity->assertion->mode_of_inheritance->website_display_label) }}
 											<span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="{{ \App\GeneLib::validityMoiString($validity->assertion->mode_of_inheritance->website_display_label) }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
@@ -102,6 +102,7 @@
                                                 {{ $validity->assertion->attributed_to->label }} GCEP
                                                 <i class="fas fa-external-link-alt ml-1"></i>
                                             </a>
+                                            <div class="action-expand-curation" data-uuid="{{ $validity->assertion->curie }}" data-toggle="tooltip" data-placement="top" title="Click to view additional information" ><span class="text-muted"><i><small>show more  </small></i><i class="fas fa-caret-down text-muted"></i></span></div>
                                         </td>
 
 										<td class=" @if(!$loop->first) border-0 @endif ">
@@ -111,6 +112,20 @@
 
 										<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->assertion->report_date) }}</a></td>
 									</tr>
+                                    <tr class="hide-element">
+                                        <td colspan="6" class="no-row-border">
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <table class="table-sm m-0">
+                                                        <tr class="noborder no-row-border">
+                                                            <td valign="top" class=" small text-muted pr-2">Secondary Contributors: </td>
+                                                            <td class="small">{{ App\Validity::secondaryContributor($validity->assertion) }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 									@php ($first = false) @endphp
 							@endforeach
 						@endif
@@ -483,6 +498,27 @@ $(function() {
 			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
 		}
 	});
+
+
+    $('.action-expand-curation').on('click', function() {
+
+        var uuid = $(this).attr('data-uuid');
+
+        var row = $(this).closest('tr').next('tr');
+        row.toggle();
+
+        var chk = $(this).find('small');
+        if (chk.html() == "show more  ")
+            chk.html('show less  ');
+        else
+            chk.html('show more  ');
+
+        chk = $(this).find('i.fas');
+        if (chk.hasClass('fa-caret-down'))
+            chk.removeClass('fa-caret-down').addClass('fa-caret-up');
+        else
+        chk.removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
 
 
 	$( '#unfollow_form' ).validate( {

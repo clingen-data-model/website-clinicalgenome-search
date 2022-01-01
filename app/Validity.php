@@ -165,6 +165,21 @@ class Validity extends Model
     }
 
 
+    public static function secondaryContributor($assertion)
+    {
+        if (empty($assertion->contributions))
+            return '';
+
+        $strings = [];
+
+        foreach($assertion->contributions as $contributor)
+            if ($contributor->realizes->curie == "SEPIO:0004099")
+                $strings[] = $contributor->agent->label;
+
+        return empty($strings) ? 'NONE' : implode(', ', $strings);
+    }
+
+
     /**
      * Retrieve, compare, and load a fresh dataset
      *

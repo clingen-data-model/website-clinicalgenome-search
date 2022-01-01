@@ -231,6 +231,12 @@ class DosageController extends Controller
 
 		$original = $region;
 
+        // normalize the type string
+        if (strcasecmp($type, "GRCh37") === 0)
+            $type = "GRCh37";
+        else if (strcasecmp($type, "GRCh38") === 0)
+            $type = "GRCh38";
+
 		// if the region is a cytoband, convert to chromosomal location
 		if (strtoupper(substr($region, 0, 3)) != 'CHR')
 		{

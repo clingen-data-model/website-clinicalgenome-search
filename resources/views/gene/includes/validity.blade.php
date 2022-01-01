@@ -44,6 +44,7 @@
                             {{ $validity->assertion->attributed_to->label }} GCEP
                             <i class="fas fa-external-link-alt ml-1"></i>
                             </a>
+                            <div class="action-expand-curation" data-uuid="{{ $validity->assertion->curie }}" data-toggle="tooltip" data-placement="top" title="Click to view additional information" ><span class="text-muted"><i><small>show more  </small></i><i class="fas fa-caret-down text-muted"></i></span></div>
                         </td>
 
                         <td class="text-center">
@@ -56,6 +57,20 @@
                             <a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->assertion->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->assertion->report_date) }}</a>
                         </td>
                     </tr>
+                    <tr class="hide-element">
+                        <td colspan="6" class="no-row-border">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <table class="table-sm m-0">
+                                        <tr class="noborder no-row-border">
+                                            <td valign="top" class=" small text-muted pr-2">Secondary Contributors: </td>
+                                            <td class="small">{{ App\Validity::secondaryContributor($validity->assertion) }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    <tr>
                 @endforeach
 
                 </tbody>

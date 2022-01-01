@@ -149,12 +149,28 @@ class SettingsController extends Controller
                 $panel = Panel::ident($input['ident'])->first();
                 if ($panel !== null)
                 {
+                    $notification = $user->notification;
+
                     if ($input['value'] == 1){
                         $user->panels()->syncWithoutDetaching([$panel->id]);
+
+                        $bucket = $notification->checkGroup('!' . $input['ident']);
+
+                        if ($bucket === false)
+                            $notification->addDefault('!' . $input['ident']);
+
                     }
                     else {
                         $user->panels()->detach($panel->id);
+
+                        $bucket = $notification->checkGroup('!' . $input['ident']);
+
+                        if ($bucket !== false)
+                            $notification->removeGroup('!' . $input['ident'], $bucket);
+
                     }
+
+                    $notification->save();
                 }
                 break;
 

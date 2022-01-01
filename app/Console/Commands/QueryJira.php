@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 
 use DB;
 
-use App\Gene;
 use App\Jira;
 
 class QueryJira extends Command
@@ -47,7 +46,17 @@ class QueryJira extends Command
 
 
 		$record = Jira::getIssue('ISCA-4799');
+        $record = Jira::getHistory('ISCA-4799');
 
+        /*$response = Jira::getIssues('project = ISCA AND issuetype in ("ISCA Region Curation") AND Resolution = Complete');
+
+          if (empty($response))
+               return $collection;
+;
+          foreach ($response->issues as $issue)
+          {
+               dd($issue);
+          }*/
 		dd($record);
 
 		echo "Update Complete\n";

@@ -112,6 +112,18 @@ class HomeController extends Controller
             $user->update(['profile' => $p]);
         }
 
+        foreach ($user->panels as $panel)
+        {
+            $gene = new Gene(['name' => $panel->smart_title,
+                                'hgnc_id' => '!' . $panel->ident,
+                                'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
+                                'type' => 4,
+                                'date_last_curated' => ''
+                            ]);
+
+            $genes->prepend($gene);
+        }
+
         $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
         $user_reports = $reports->where('type', Title::TYPE_USER)->count();
         $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
@@ -387,6 +399,20 @@ class HomeController extends Controller
                 $list = str_replace('||1', '(GRCh37)', $list);
                 $list = str_replace('||2', '(GRCh38)', $list);
 
+                // replace ep ident with name
+                foreach ($list as &$row)
+                {
+                    if (strpos($row, '!') === 0)
+                    {
+                        $panel = Panel::ident(substr($row, 1))->first();
+
+                        if ($panel !== null)
+                        {
+                            $row = $panel->smart_title;
+                        }
+                    }
+                }
+
                 if (is_array($report->filters['gene_label']))
                     sort($list);
 
@@ -399,7 +425,9 @@ class HomeController extends Controller
 
         }
 
-        $reports = $records;
+        $reports = $records->unique(function ($item){
+            return $item['element_id'].$item['element_type'].$item['change_date'].implode($item['description']);
+        });
 
         $genes = null;
         $total = 0;

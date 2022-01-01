@@ -57,6 +57,14 @@ class UpdateFollow extends Command
         foreach ($moreusers as $moreuser)
             $users->push($moreuser);
 
+        $moreusers = User::doesntHave('genes')->doesntHave('groups')->has('panels')->with('panels')->get();
+
+        foreach ($moreusers as $moreuser)
+            $users->push($moreuser);
+
+        // run unique to remove unintended duplication
+        $users = $users->unique('id');
+
         $history = [];
 
         foreach ($users as $user)
@@ -118,7 +126,7 @@ class UpdateFollow extends Command
                     $cc = preg_split('/[\s,;]+/', $notify->secondary['email']);
                     $mail->cc($cc);
                 }
-                    
+
                 $mail->send(new NotifyFrequency(['report' => $title->ident, 'date' => $date, 'genes' => $genes, 'name' => $user->name, 'content' => 'this is the custom message']));
             }
         }

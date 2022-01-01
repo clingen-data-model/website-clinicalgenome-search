@@ -84,6 +84,10 @@ class HomeController extends Controller
         {
             $name = $input['gene'];
         }
+        else if ($input['gene'][0] == '!')
+        {
+            $name = $input['gene'];
+        }
         else if ($input['gene'][0] == '%')
         {
             $name = $input['gene'];
