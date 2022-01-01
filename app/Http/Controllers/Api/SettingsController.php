@@ -14,6 +14,7 @@ use App\Gene;
 use App\Group;
 use App\Notification;
 use App\Region;
+use App\Panel;
 
 class SettingsController extends Controller
 {
@@ -36,7 +37,7 @@ class SettingsController extends Controller
      */
     public function update(Request $request)
     {
-        $input = $request->only(['name', 'value']);
+        $input = $request->only(['name', 'value', 'ident']);
 
         if (empty($input['name']))
             return response()->json(['success' => 'false',
@@ -143,6 +144,34 @@ class SettingsController extends Controller
                     $user->removeGroup('@' . $notify[0]);
                 }
                 $notification->save();
+                break;
+            case 'select[]':
+                $panel = Panel::ident($input['ident'])->first();
+                if ($panel !== null)
+                {
+                    $notification = $user->notification;
+
+                    if ($input['value'] == 1){
+                        $user->panels()->syncWithoutDetaching([$panel->id]);
+
+                        $bucket = $notification->checkGroup('!' . $input['ident']);
+
+                        if ($bucket === false)
+                            $notification->addDefault('!' . $input['ident']);
+
+                    }
+                    else {
+                        $user->panels()->detach($panel->id);
+
+                        $bucket = $notification->checkGroup('!' . $input['ident']);
+
+                        if ($bucket !== false)
+                            $notification->removeGroup('!' . $input['ident'], $bucket);
+
+                    }
+
+                    $notification->save();
+                }
                 break;
 
         }

@@ -488,6 +488,8 @@ $(function() {
                         field: 'symbol',
                         values: row
                     });
+                    $(":checkbox[value=" + hgnc.substring(1) + "]").prop("checked", false);
+
                 }
         });
     });

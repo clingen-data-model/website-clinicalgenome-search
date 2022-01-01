@@ -148,6 +148,18 @@ class GeneLib extends Model
           'Mitochondrial inheritance' => 'Mitochondrial inheritance'
      ];
 
+     protected static $validity_moi_abvr_strings = [
+          'Autosomal recessive inheritance' => 'AR',
+          'Autosomal dominant inheritance' => 'AD',
+          'X-linked inheritance' => 'XL',
+          'Mode of inheritance' => 'Other',
+          'Semidominant mode of inheritance' => 'SD',
+          'Undetermined mode of inheritance' => 'UD',
+          'Undetermined' => 'UD',
+          'X-linked recessive inheritance' => 'XLR',
+          'Mitochondrial inheritance' => 'MT'
+     ];
+
      protected static $validity_criteria_strings = [
           'ClinGen Dosage Sensitivity Evaluation Guideline' => 'Eval',
           'ClinGen Gene-Disease Validity Evaluation Guideline' => 'Eval',
@@ -1093,6 +1105,21 @@ class GeneLib extends Model
 
 		 return self::$validity_moi_strings[$str] ?? '';
      }
+
+     /**
+      * Return a displayable moi assertion description
+      *
+      * @return string
+      */
+     public static function validityMoiAbvrString($str)
+     {
+          if (empty($str))
+               return '';
+
+          return self::$validity_moi_abvr_strings[$str] ?? '';
+     }
+
+
 
 
      /**

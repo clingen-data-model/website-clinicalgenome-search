@@ -70,6 +70,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/{id?}/by-disease', 'GeneController@show_by_disease')->name('gene-by-disease');
 
+		Route::get('/{id?}/groups', 'GeneController@show_groups')->name('gene-groups');
+
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 
 		//Route::get('/{id?}/external_resources_genes', 'GeneController@external');
@@ -145,6 +147,8 @@ Route::group(['prefix' => 'kb/conditions'], function () {
 		Route::get('/{id?}', 'ConditionController@show')->name('condition-show');
 
 		Route::get('/{id?}/by-gene', 'ConditionController@show_by_gene')->name('disease-by-gene');
+
+        Route::get('/{id?}/groups', 'ConditionController@show_groups')->name('condition-groups');
 
 		// TODO
 		Route::get('/{id?}/external-resources', 'ConditionController@external')->name('condition-external');
@@ -240,6 +244,6 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 // Redirect and/or legacy routes
 Route::get('/kb/home', 'HomeController@home');
 
-Route::get('/test', 'TestController@index');
+//Route::get('/test', 'TestController@index');
 
 Auth::routes();

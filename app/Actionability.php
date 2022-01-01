@@ -238,7 +238,7 @@ class Actionability extends Model
                     {
                         if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                         {
-                            $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                            $new->adult_report_date = (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'));
                             $new->adult_source = $assertion->source;
                             $new->adult_attributed_to = $assertion->attributed_to->label;
                             $new->adult_classification = $assertion->classification->label;
@@ -246,7 +246,7 @@ class Actionability extends Model
                         }
                         if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
                         {
-                            $new->pediatric_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                            $new->pediatric_report_date = (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'));
                             $new->pediatric_source = $assertion->source;
                             $new->pediatric_attributed_to = $assertion->attributed_to->label;
                             $new->pediatric_classification = $assertion->classification->label;
@@ -304,7 +304,7 @@ class Actionability extends Model
                     }
                     if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                     {
-                        $new->adult_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                        $new->adult_report_date = (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'));
                         $new->adult_source = $assertion->source;
                         $new->adult_attributed_to = $assertion->attributed_to->label;
                         $new->adult_classification = $assertion->classification->label;
@@ -312,7 +312,7 @@ class Actionability extends Model
                     }
                     if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
                     {
-                        $new->pediatric_report_date = Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000');
+                        $new->pediatric_report_date = (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'));
                         $new->pediatric_source = $assertion->source;
                         $new->pediatric_attributed_to = $assertion->attributed_to->label;
                         $new->pediatric_classification = $assertion->classification->label;

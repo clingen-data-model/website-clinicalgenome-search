@@ -51,12 +51,16 @@ class UpdateSources extends Command
           $this->call('update:cpic');       // CPIC and PharmGKB
           $this->call('update:erepo');      // Erepo
           $this->call('update:cytobands');  // UCSC (goldenpath hg19)
+          $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
+          $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
           $this->call('update:dosages');    // DCI (Jira)
           $this->call('update:map');        // local file
           $this->call('update:ratings');    // DCI (Jira)
           $this->call('update:region');     // local file
           $this->call('update:disease');    // Genephap
           $this->call('gencc:query');       // Gencc souce
+          $this->call('query:oms');         // update afflisliates from website
+          $this->call('update:affiliates'); // Update from genegraph and erepo
           $this->call('update:changes');
           $this->call('update:follow');
           $this->call('update:summary');

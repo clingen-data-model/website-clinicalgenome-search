@@ -24,7 +24,8 @@
 		  <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid ?? '0' }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage ?? '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
+			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->nvariant ?? '0' }}</span><br /> Variant Pathogenicity<br />Assertions</li>
 			</ul>
 
 </div>
@@ -41,6 +42,9 @@
             <a href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="">
               <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
+          </li>
+          <li class="" style="">
+            <a href="{{ route('condition-groups', \App\Disease::normal_base($record->iri)) }}" class="">Status and Future Work <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels ?? 0 }}</span></a>
           </li>
           <li class="" style="">
             <a href="{{ route('condition-external', $record->getMondoString($record->iri, true)) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
@@ -84,8 +88,9 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2 text-center"></th>
+								<th class="col-sm-3 text-left"> Disease</th>
+                                <th class="col-sm-1 text-center"></th>
+								<th class="col-sm-2 text-left">Working Group</th>
 								<th class="col-sm-2">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -106,6 +111,14 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+											</td>
+
+                                            <td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if($first == true)
+                                                <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                    Dosage Sensitivity WG
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
+                                                    @endif
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
@@ -239,7 +252,7 @@
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2"></th>
+								<th class="col-sm-2">Working Group</th>
 								<th class="col-sm-2">Assertions</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
@@ -260,6 +273,14 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
+                                                    <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
+                                                        <i class="fas fa-external-link-alt ml-1"></i></a>
+                                                @else
+                                                    <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
+                                                        <i class="fas fa-external-link-alt"></i></a>
+                                                @endif
+
 											</td>
 
 											<td class="  @if($first != true) border-0  pt-0 @else pb-0 @endif text-center">
@@ -382,6 +403,8 @@
 				  </div>
 					@endif --}}
 
+                @include('condition.includes.variant')
+
 				{{-- Check to see if curations are showing --}}
 				@if($currations_set == false)
 						<br clear="both" />
@@ -398,5 +421,31 @@
 @endsection
 
 @section('script_js')
+<script>
+
+$(function() {
+
+    $('.action-expand-curation').on('click', function() {
+
+        var uuid = $(this).attr('data-uuid');
+
+        var row = $(this).closest('tr').next('tr');
+        row.toggle();
+
+        var chk = $(this).find('small');
+        if (chk.html() == "show more  ")
+            chk.html('show less  ');
+        else
+            chk.html('show more  ');
+
+        chk = $(this).find('i.fas');
+        if (chk.hasClass('fa-caret-down'))
+            chk.removeClass('fa-caret-down').addClass('fa-caret-up');
+        else
+        chk.removeClass('fa-caret-up').addClass('fa-caret-down');
+    });
+});
+
+</script>
 
 @endsection

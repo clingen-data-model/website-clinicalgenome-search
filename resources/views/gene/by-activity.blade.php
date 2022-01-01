@@ -34,6 +34,9 @@
               <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
         </li>
+          <li class="" style="">
+            <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Status and Future Work <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
+          </li>
 		<li class="" style="">
 			<a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
 		</li>
@@ -76,9 +79,14 @@
 
 			{{-- Check to see if curations are showing --}}
 			@if($currations_set == false)
-					<br clear="both" />
+
+                @include('gene.includes.not_curated')
+
+                <!--<br clear="both" />
 					<div class="mt-3 alert alert-info text-center" role="alert"><strong>ClinGen has not yet curated {{ $record->hgnc_id }}.</strong> <br />View <a href="{{ route('gene-external', $record->hgnc_id) }}">external genomic resources</a> or <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D">ClinVar</a>.</div>
-			@endif
+                -->
+
+            @endif
 
 @endsection
 
@@ -302,6 +310,26 @@ $(function() {
 		unhighlight: function (element, errorClass, validClass) {
 			$( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
 		}
+	});
+
+    $('.action-expand-curation').on('click', function() {
+
+        var uuid = $(this).attr('data-uuid');
+
+        var row = $(this).closest('tr').next('tr');
+        row.toggle();
+
+        var chk = $(this).find('small');
+        if (chk.html() == "show more  ")
+            chk.html('show less  ');
+        else
+            chk.html('show more  ');
+
+        chk = $(this).find('i.fas');
+        if (chk.hasClass('fa-caret-down'))
+            chk.removeClass('fa-caret-down').addClass('fa-caret-up');
+        else
+        chk.removeClass('fa-caret-up').addClass('fa-caret-down');
 	});
 
 });

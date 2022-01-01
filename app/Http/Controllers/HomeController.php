@@ -13,6 +13,7 @@ use App\Gene;
 use App\Title;
 use App\Report;
 use App\Region;
+use App\Panel;
 
 class HomeController extends Controller
 {
@@ -111,6 +112,18 @@ class HomeController extends Controller
             $user->update(['profile' => $p]);
         }
 
+        foreach ($user->panels as $panel)
+        {
+            $gene = new Gene(['name' => $panel->smart_title,
+                                'hgnc_id' => '!' . $panel->ident,
+                                'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
+                                'type' => 4,
+                                'date_last_curated' => ''
+                            ]);
+
+            $genes->prepend($gene);
+        }
+
         $system_reports = $reports->where('type', Title::TYPE_SYSTEM_NOTIFICATIONS)->count();
         $user_reports = $reports->where('type', Title::TYPE_USER)->count();
         $shared_reports = $reports->where('type', Title::TYPE_SHARED)->count();
@@ -130,12 +143,17 @@ class HomeController extends Controller
                         return (int)(Carbon::now()->diffInDays($last) <= 90);
                      });
 
+        $gceps = Panel::gcep()->blacklist(['40018', '40019', '40058'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+        $vceps = Panel::vcep()->blacklist(['4acafdd5-80f3-47f0-8522-f4bd04da175f'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
+
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
-                    'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
+                    'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',
+                    'gceps', 'vceps'));
     }
 
 
     /**
+     *
      * Show the ftp downloads page.
      *
      * @return \Illuminate\Http\Response
@@ -381,6 +399,20 @@ class HomeController extends Controller
                 $list = str_replace('||1', '(GRCh37)', $list);
                 $list = str_replace('||2', '(GRCh38)', $list);
 
+                // replace ep ident with name
+                foreach ($list as &$row)
+                {
+                    if (strpos($row, '!') === 0)
+                    {
+                        $panel = Panel::ident(substr($row, 1))->first();
+
+                        if ($panel !== null)
+                        {
+                            $row = $panel->smart_title;
+                        }
+                    }
+                }
+
                 if (is_array($report->filters['gene_label']))
                     sort($list);
 
@@ -393,7 +425,9 @@ class HomeController extends Controller
 
         }
 
-        $reports = $records;
+        $reports = $records->unique(function ($item){
+            return $item['element_id'].$item['element_type'].$item['change_date'].implode($item['description']);
+        });
 
         $genes = null;
         $total = 0;

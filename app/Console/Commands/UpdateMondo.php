@@ -157,6 +157,19 @@ class UpdateMondo extends Command
                 }
             }
             $disease->synonyms = $synonyms;
+
+            // see if there is an omim equivalent
+            if (isset($node->meta->basicPropertyValues))
+            {
+                foreach ($node->meta->basicPropertyValues as $property)
+                {
+                    if (($n = strpos($property->val, '/omim/')) > 0)
+                    {
+                        $disease->omim = substr($property->val, $n + 6);
+                    }
+                }
+            }
+
             $disease->save();
         }
 

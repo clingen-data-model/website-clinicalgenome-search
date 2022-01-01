@@ -1086,9 +1086,10 @@ class Jira extends Model
      */
     static function getHistory($issue)
     {
-         $collection = collect();
+        $collection = collect();
 
-          $changelog = self::getIssue($issue->key, 'changelog');
+        $changelog = (isset($issue->key) ? self::getIssue($issue->key, 'changelog') :
+                                                self::getIssue($issue, 'changelog'));
 
           $first = true;
 

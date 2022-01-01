@@ -21,23 +21,27 @@ class Follow extends JsonResource
 
         $notification = Auth::guard('api')->user()->notification;
 
-        return [
-                'symbol' => $this->name,
-                '_symbol_data' => ['value' => $this->name],
-                'curations' => ($this->type == 2 ?
-                    '<button type="button" class="btn btn-sm action-region-expand" data-uuid="' . $this->ident
-                    . '">Show region</button>' :
-                    '<img src="/images/clinicalValidity-' . ($this->hasActivity('validity') ? 'on' : 'off') . '.png" width="22" height="22">' .
+        if ($this->type == 2)
+            $actions = '<button type="button" class="btn btn-sm action-region-expand" data-uuid="' . $this->ident . '">Show Followed Genes</button>';
+        else if ($this->type == 4)
+            $actions = '<button type="button" class="btn btn-sm action-panel-expand" data-uuid="' . $this->ident . '">Show Followed Genes</button>';
+        else
+            $actions = '<img src="/images/clinicalValidity-' . ($this->hasActivity('validity') ? 'on' : 'off') . '.png" width="22" height="22">' .
                     '<img src="/images/dosageSensitivity-' . ($this->hasActivity('dosage') ? 'on' : 'off') . '.png" width="22" height="22">' .
                     '<img src="/images/clinicalActionability-' . ($this->hasActivity('actionability') ? 'on' : 'off') . '.png" width="22" height="22">' .
                     '<img src="/images/variantPathogenicity-' . ($this->hasActivity('varpath') ? 'on' : 'off') . '.png" width="22" height="22">' .
-                    '<img src="/images/Pharmacogenomics-' . ($this->hasActivity('pharma') ? 'on' : 'off') . '.png" width="22" height="22">'),
+                    '<img src="/images/Pharmacogenomics-' . ($this->hasActivity('pharma') ? 'on' : 'off') . '.png" width="22" height="22">';
+
+        return [
+                'symbol' => $this->name,
+                '_symbol_data' => ['value' => $this->name],
+                'curations' => $actions,
                 'hgnc' => $this->hgnc_id,
                 'ident' => $this->ident,
                 'display_last' => $this->displayDate($this->date_last_curated),
                 'notify' => '<div class="btn-group">' .
                                 ' <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
-                                '    <span class="selection">' . ($this->hgnc_id == '*' || $this->hgnc_id[0] == '@' || $this->hgnc_id[0] == '%' ? $notification->setting($this->hgnc_id) : $notification->setting($this->name)) . '</span><span class="caret"></span>' .
+                                '    <span class="selection">' . ($this->hgnc_id == '*' || $this->hgnc_id[0] == '@' || $this->hgnc_id[0] == '%'  || $this->hgnc_id[0] == '!' ? $notification->setting($this->hgnc_id) : $notification->setting($this->name)) . '</span><span class="caret"></span>' .
                                 '</button>' .
                                 '<ul class="dropdown-menu">' .
                                     '<li><a data-value="Daily">Daily</a></li>' .

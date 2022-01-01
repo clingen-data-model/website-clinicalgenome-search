@@ -73,7 +73,8 @@ class Gene extends Model
                'mane_select' => 'array',
                'mane_plus' => 'array',
                'genegraph' => 'array',
-               'disease' => 'array'
+               'disease' => 'array',
+               'curation_status' => 'array'
      ];
 
      /**
@@ -82,11 +83,11 @@ class Gene extends Model
      * @var array
      */
 	protected $fillable = ['name', 'hgnc_id', 'description', 'location', 'alias_symbol',
-					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli', 'lsdb',
+					   'prev_symbol', 'date_symbol_changed', 'hi', 'plof', 'pli', 'lsdb', 'vcep',
                             'haplo', 'triplo', 'omim_id', 'morbid', 'locus_group', 'locus_type',
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
-                            'notes', 'activity', 'date_last_curated', 'status', 'disease',
+                            'notes', 'activity', 'curation_status', 'date_last_curated', 'status', 'disease',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
 
 	/**
@@ -171,6 +172,15 @@ class Gene extends Model
 
 
      /*
+     * The panels associated with this gene
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
+
+
+     /*
      * The roles that belong to this user
      */
      public function users()
@@ -224,6 +234,62 @@ class Gene extends Model
 	public function scopeEnsembl($query, $id)
     {
        return $query->where('ensembl_gene_id', $id);
+    }
+
+
+    /**
+     * Query scope by omim value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeOmim($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'OMIM:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->whereJsonContains('omim_id', $value);
+    }
+
+
+    /**
+     * Query scope by uniprot id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUniprot($query, $id)
+    {
+       return $query->where('uniprot_id', $id);
+    }
+
+
+    /**
+     * Query scope by entrez id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeEntrez($query, $id)
+    {
+       return $query->where('entrez_id', $id);
+    }
+
+
+    /**
+     * Query scope by ucsc id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUcsc($query, $id)
+    {
+       return $query->where('ucsc_id', $id);
     }
 
 
@@ -643,5 +709,64 @@ class Gene extends Model
     public static function gg2local($node)
     {
 
+    }
+
+
+    /**
+     * Map various gene references gene record
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function rosetta($id)
+    {
+        if (empty($id))
+            return null;
+
+        // do some cleanup
+        $id = basename(trim($id));
+
+        $parts = explode(':', $id);
+
+        if (!isset($parts[1]))
+        {
+            if (is_numeric($id))
+                $check = Gene::omim($id)->first();
+            else
+                $check = Gene::name($id)->first();
+        }
+        else
+        {
+            $id = $parts[1];
+
+            switch (strtoupper($parts[0]))
+            {
+                case 'OMIM':
+                    $check = Gene::omim($id)->first();
+                    break;
+                case 'ENSEMBL':
+                case 'NCBI':
+                    $check = Gene::ensembl($id)->first();
+                    break;
+                case 'ENTREZ':
+                    $check = Gene::entrez($id)->first();
+                    break;
+                case 'HGNC':
+                    $check = Gene::hgnc('HGNC:' . $id)->first();
+                    break;
+                case 'UCSC':
+                    $check = Gene::ucsc($id)->first();
+                    break;
+                case 'UNIPROT':
+                    $check = Gene::uniprot($id)->first();
+                    break;
+                default:
+                    $check = null;
+
+            }
+
+        }
+
+        return $check;
     }
 }

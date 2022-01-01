@@ -165,6 +165,21 @@ class Validity extends Model
     }
 
 
+    public static function secondaryContributor($assertion)
+    {
+        if (empty($assertion->contributions))
+            return '';
+
+        $strings = [];
+
+        foreach($assertion->contributions as $contributor)
+            if ($contributor->realizes->curie == "SEPIO:0004099")
+                $strings[] = $contributor->agent->label;
+
+        return empty($strings) ? 'NONE' : implode(', ', $strings);
+    }
+
+
     /**
      * Retrieve, compare, and load a fresh dataset
      *
@@ -352,5 +367,26 @@ class Validity extends Model
         }
 
         return $annot;
+    }
+
+
+    /**
+     * Determine if the passed validity assertion is Animal Model Only
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public static function isAnimalModelOnly($assertion)
+    {
+        $json = json_decode($assertion->legacy_json, false);
+
+		$score_data = $json->scoreJson ?? $json;
+
+        return (
+            ($score_data->summary->FinalClassification == "No Known Disease Relationship") &&
+            (isset($score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+            ($score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+            ($score_data->ValidContradictoryEvidence->Value == "NO")
+        );
     }
 }

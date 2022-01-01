@@ -166,7 +166,7 @@ class Graphql
 		}
 
 		// get list of pharma and variant pathogenicity genes
-		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
+		$extras = Gene::select('name', 'hgnc_id', 'acmg59', 'activity', 'vcep')->where('has_varpath', 1)->orWhere('has_pharma', 1)->get();
 
 		// build list of genes not known by genegraph
 		$excludes = [];
@@ -185,6 +185,7 @@ class Graphql
 				if (!empty($extra->activity["varpath"]))
 					array_push($t, "VAR_PATH");
 				$node->curation_activities = $t;
+                $node->vcep = $extra->vcep;
 				$excludes[] = $node->hgnc_id;
 			}
 
@@ -208,6 +209,8 @@ class Graphql
 			$node = new Nodal(['label' => $extra->name, 'hgnc_id' => $extra->hgnc_id, 'curation_activities' => $t]);
 
 			$node->acmg59 = in_array($node->hgnc_id, $acmg59s);
+
+            $node->vcep = (empty($extra->vcep) ? null : $extra->vcep);
 
 			$collection->push($node);
 		}
@@ -472,11 +475,26 @@ class Graphql
 							  website_display_label
 							  curie
 						  }
+							attributed_to {
+                                curie
+								 label
+							}
+                            contributions {
+                                realizes {
+                                  curie
+                                  label
+                                }
+                                agent {
+                                  label
+                                  curie
+                                }
+                              }
 						  report_date
 						  classification {
 							  label
 							  curie
 						  }
+                          legacy_json
 						  curie
 						}
 						actionability_assertions {
@@ -535,6 +553,7 @@ class Graphql
 			$node->GRCh38_seqid = $localgene->seqid38;
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
+            $node->curation_status = $localgene->curation_status;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();
@@ -614,11 +633,13 @@ class Graphql
 		{
 			$entries = Variant::sortByClassifications($localgene->name);
 			$node->variant = $entries;
-			$node->nvariant = array_sum($entries);
+			$node->nvariant = 0;
+            foreach ($entries as $entry)
+			    $node->nvariant += array_sum($entry['classifications']);
 		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
-
+//dd($node);
 		return $node;
 	}
 
@@ -1314,6 +1335,7 @@ class Graphql
 							label
 						}
 						attributed_to {
+                            curie
 							label
 						}
 					}
@@ -1427,7 +1449,222 @@ class Graphql
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
-//dd($node);
+
+        // Only SOP8 has NonHumanModel structures.  The rest will quickly exit the logic test
+        $node->animalmode = (
+                        ($node->score_data->summary->FinalClassification == "No Known Disease Relationship") &&
+                        (isset($node->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                        ($node->score_data->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                        ($node->score_data->ValidContradictoryEvidence->Value == "NO")
+                    );
+
+		return $node;
+
+	}
+
+
+	/**
+     * Get information from new validity (only works against https://gg-genevalidity-dev.web.app/)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function newValidityDetail($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// special case where legacy perm value is passed
+		if (is_numeric($perm))
+			$perm = "CGGCIEX:assertion_" . $perm;
+
+		$query = '{
+				resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56") {
+				  ...basicFields
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on VariantEvidence {
+					...variantFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				  subject_of {
+					...basicFields
+					...statementFields
+				  }
+				  ... on Statement {
+					...statementFields
+					contributions {
+					  attributed_to {
+						curie
+						label
+					  }
+					  date
+					  realizes {
+						curie
+						label
+					  }
+					}
+				  }
+				  __typename
+				  used_as_evidence_by {
+					...statementFields
+					...basicFields
+				  }
+				}
+			  }
+
+			  fragment probandFields on ProbandEvidence {
+				variants {
+				  curie
+				  label
+				  canonical_reference {
+					curie
+				  }
+				}
+			  }
+
+			  fragment variantFields on VariantEvidence {
+				variant {
+				  curie
+				  label
+				  canonical_reference {
+					curie
+				  }
+				}
+			  }
+
+			  fragment segregationFields on Segregation {
+				conditions {
+				  curie
+				  label
+				}
+				estimated_lod_score
+				published_lod_score
+				meets_inclusion_criteria
+				phenotype_negative_allele_negative_count
+				phenotype_positive_allele_positive_count
+				sequencing_method {
+				  curie
+				  label
+				}
+			  }
+
+			  fragment basicFields on Resource {
+				__typename
+				label
+				curie
+				description
+				source {
+				  __typename
+				  curie
+				  iri
+				  label
+				  short_citation
+				}
+				type {
+				  __typename
+				  label
+				  curie
+				}
+			  }
+
+			  fragment statementFields on Statement {
+				subject {
+				  ...basicFields
+				}
+				predicate {
+				  ...basicFields
+				}
+				object {
+				  ...basicFields
+				}
+				qualifier {
+				  ...basicFields
+				}
+				direct_evidence: evidence {
+				  ...basicFields
+				  ... on Statement {
+					score
+				  }
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				}
+				genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
+				  ...basicFields
+				  ... on Statement {
+					score
+					evidence {
+					  ...basicFields
+					  ... on ProbandEvidence {
+						...probandFields
+					  }
+					  ... on Segregation {
+						...segregationFields
+					  }
+					  ... on VariantEvidence {
+						...variantFields
+					  }
+					}
+				  }
+				  ... on ProbandEvidence {
+					...probandFields
+				  }
+				  ... on VariantEvidence {
+					...variantFields
+				  }
+				  ... on Segregation {
+					...segregationFields
+				  }
+				}
+				experimental_evidence: evidence(transitive: true, class: "SEPIO:0004105") {
+				  ...basicFields
+				  ... on Statement {
+					score
+					evidence {
+					  ...basicFields
+					  ... on ProbandEvidence {
+						...probandFields
+					  }
+					}
+				  }
+				}
+				score
+			  }';
+
+		// query genegraph
+		$response = self::query($query,  __METHOD__);
+
+		if (empty($response))
+			return $response;
+dd($response);
+		// genegraph does return an error condition on an invalid assertion id, so handle it here
+		if (empty($response->gene_validity_assertion->specified_by))
+		{
+			Log::info("Validty Detail Error:  No specified by field in iri: " . $perm);
+			GeneLib::putError("Invalid gene validity assertion identifier");
+			return null;
+		}
+
+		$node = new Nodal((array) $response->gene_validity_assertion);
+
+		// overwrite the label with the website display label
+		if (!empty($node->mode_of_inheritance->website_display_label))
+			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
+
+		$node->json = json_decode($node->legacy_json, false);
+		$node->score_data = $node->json->scoreJson ?? $node->json;
+
+		// genegraph is not distinguishing gene express origin from others
+		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
+							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
+
 		return $node;
 
 	}
@@ -1473,18 +1710,18 @@ class Graphql
 					gene_validity_assertions(role: ANY, limit: null){
 						count
 						curation_list{
-              curie
-              contributions {
-                realizes {
-                  curie
-                  label
-                }
-                agent {
-                  curie
-                  label
-                }
+                            curie
+                            contributions {
+                                realizes {
+                                curie
+                                label
+                                }
+                                agent {
+                                curie
+                                label
+                                }
 							}
-            }
+                        }
 					}
 				}
 			}
@@ -1672,6 +1909,8 @@ class Graphql
 		if (strpos($condition, 'MONDO:') === false && strpos($condition, 'MONDO_') === false)
 			$condition = 'MONDO:' . $condition;
 
+        $mondo = $condition;
+
 		$query = '{
 			disease('
 			. 'iri: "' . $condition
@@ -1691,6 +1930,20 @@ class Graphql
 							curie
 						}
 						report_date
+                        attributed_to {
+                            curie
+                             label
+                        }
+                        contributions {
+                            realizes {
+                              curie
+                              label
+                            }
+                            agent {
+                              label
+                              curie
+                            }
+                          }
 						classification {
 							label
 							curie
@@ -1700,6 +1953,9 @@ class Graphql
 					actionability_assertions {
 						report_date
 						source
+                        attributed_to {
+                            label
+                        }
 						classification {
 							label
 							curie
@@ -1725,6 +1981,14 @@ class Graphql
 
 		$node = new Nodal((array) $response->disease);
 
+        // add additional information from local db
+		$localdisease = Disease::curie($mondo)->first();
+
+		if ($localdisease !== null)
+		{
+            $node->curation_status = $localdisease->curation_status;
+		}
+
 		$naction = 0;
 		$nvalid = 0;
 		$ndosage = 0;
@@ -1741,16 +2005,11 @@ class Graphql
 
 		if (!empty($node->genetic_conditions)) {
 			foreach ($node->genetic_conditions as $condition) {
-				//$nodeCollect = collect($node);
-				//dd($nodeCollect);
-				//dd(count($condition->gene_validity_assertions));
+
 				$naction = $naction + count($condition->actionability_assertions);
 				$nvalid = $nvalid + count($condition->gene_validity_assertions);
 				$ndosage = $ndosage + count($condition->gene_dosage_assertions);
 
-				//dd($naction);
-				//dd($nvalid);
-				//dd($ndosage);
 				foreach ($condition->gene_dosage_assertions as $dosage) {
 					if(!empty($dosage->assertion_type)) {
 						switch ($dosage->assertion_type) {
@@ -1771,11 +2030,20 @@ class Graphql
 		$node->nvalid = $nvalid;
 		$node->ndosage = $ndosage;
 
-		//dd($node);
+        if (!empty($variant))
+		{
+			$entries = Variant::sortByClassifications($mondo, true);
+			$node->variant = $entries;
+            $node->nvariant = 0;
+            foreach ($entries as $entry)
+            {
+                foreach($entry["classifications"] as $value)
+			        $node->nvariant += $value;
+            }
+		}
 
 		$node->dosage_curation_map = $dosage_curation_map;
 
-		//dd($node);
 		return $node;
 	}
 

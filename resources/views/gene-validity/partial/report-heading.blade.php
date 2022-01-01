@@ -9,7 +9,13 @@
     <div class='badge badge-primary' style="font-size: 20px; padding:15px;">
       <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ App\GeneLib::validityClassificationString($record->classification->label ?? null) }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
     </div>
-    <div>Classification - {{ displayDate($record->report_date ?? null) }}</div></td>
+    <div>Classification - {{ displayDate($record->report_date ?? null) }}</div>
+    @if ($record->animalmode)
+    <div class='badge badge-warning mt-1 p-2'>
+        Animal Model Only
+    </div>
+    @endif
+    </td>
   </tr>
   <tr style="font-size:14px">
     <td style="" nowrap class="text-left">Disease:</td>
@@ -57,7 +63,7 @@
   <tr style="font-size:14px">
     <td style="vertical-align:top" nowrap class="text-left">Evidence Summary:</td>
     <td colspan="3" style="">
-        @markdown{{ $record->sop7_final_classification_notes ?? null }}@endmarkdown
+      @markdown{{ $record->sop7_final_classification_notes ?? null }}@endmarkdown
       <div><a style="color:#000" href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/">
         Gene Clinical Validity Standard Operating Procedures (SOP) -
         {{ App\GeneLib::validityCriteriaString($record->specified_by->label ?? null) }}

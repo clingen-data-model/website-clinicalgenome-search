@@ -78,6 +78,15 @@ class User extends Authenticatable implements MustVerifyEmail
        return $this->hasMany('App\Group');
     }
 
+
+    /*
+     * The panels that this user is following
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
+
     /*
      * The notification preferences for this user
      */

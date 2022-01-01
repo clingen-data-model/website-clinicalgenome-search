@@ -168,6 +168,17 @@ function hgncFormatter(index, row) {
 }
 
 
+function vcepFormatter(index, row) {
+
+    console.log(index);
+    if (index == null)
+        return '';
+
+    return  '<a target="external" href="https://clinicalgenome.org/affiliation/' + index + '" class="badge-info badge pointer ml-2">VCEP <i class="fas fa-external-link-alt"></i></a>';
+
+}
+
+
 function location01Formatter(index, row) {
 
     //if (row.type == 0)

@@ -4,16 +4,18 @@
 				@php global $currations_set; $currations_set = true; @endphp
 				@if($header_dos == true)
 					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-3">
+					<div class="card mb-4">
 						<div class="card-body p-0 m-0">
-
-						<table class="panel-body table mb-0">
+                            <!--
+							<div class="p-2 text-muted small">The following <strong>{{ $record->ndosage }} curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
+                            -->
+                            <table class="panel-body table mb-0">
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left"> Disease</th>
-								<th class="col-sm-2 text-center"></th>
-								<th class="col-sm-2">HI Score &amp; TS Score</th>
+								<th class="col-sm-2 text-left">Working Group</th>
+								<th class="col-sm-2 text-left">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
@@ -33,6 +35,11 @@
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if($first == true)
+                                                <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                    Dosage Sensitivity WG
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
+                                                    @endif
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">
@@ -101,16 +108,18 @@
 					@if($header_dos == true)
 					@php global $currations_set; $currations_set = true; @endphp
 					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-3">
+					<div class="card mb-4">
 						<div class="card-body p-0 m-0">
-
+                            <!--
+							<div class="p-2 text-muted small bg-light">The following <strong>2 curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
+                            -->
 						<table class="panel-body table mb-0">
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
 								<th class="col-sm-4 text-left">Disease</th>
-								<th class="col-sm-2 text-center"></th>
-								<th class="col-sm-2">HI Score &amp; TS Score</th>
+								<th class="col-sm-2 text-left">Working Group</th>
+								<th class="col-sm-2 text-left">HI Score &amp; TS Score</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
 								</tr>
 							</thead>
@@ -138,7 +147,13 @@
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 											</td>
 
+
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+                                                @if($first == true)
+                                                <a href="https://clinicalgenome.org/working-groups/dosage-sensitivity-curation/" >
+                                                    Dosage Sensitivity WG
+                                                    <i class="fas fa-external-link-alt ml-1"></i></a>
+                                                    @endif
 											</td>
 
 											<td class="  @if($first != true) border-0 pt-0 @else pb-0 @endif text-center">

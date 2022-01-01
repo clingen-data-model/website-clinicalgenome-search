@@ -58,6 +58,7 @@
     @include('modals.search')
     @include('modals.searchregion')
 	@include('modals.settings')
+    @include('dashboard.modals.followeps')
 	@include('modals.report')
 
 @endsection
@@ -174,7 +175,7 @@
 
             $(this).removeClass('action-region-expand')
                 .addClass('action-region-collapse')
-                .html('Hide region');
+                .html('Hide Followed Genes');
         });
 
         $('#follow-table').on('click', '.action-region-collapse', function() {
@@ -185,7 +186,29 @@
 
             $(this).addClass('action-region-expand')
                 .removeClass('action-region-collapse')
-                .html('Show region');
+                .html('Show Followed Genes');
+        });
+
+        $('#follow-table').on('click', '.action-panel-expand', function() {
+
+            var uuid = $(this).attr('data-uuid');
+
+            $table.bootstrapTable('expandRowByUniqueId', uuid);
+
+            $(this).removeClass('action-panel-expand')
+                .addClass('action-panel-collapse')
+                .html('Hide Followed Genes');
+        });
+
+        $('#follow-table').on('click', '.action-panel-collapse', function() {
+
+            var uuid = $(this).attr('data-uuid');
+
+            $table.bootstrapTable('collapseRowByUniqueId', uuid);
+
+            $(this).addClass('action-panel-expand')
+                .removeClass('action-panel-collapse')
+                .html('Show Follow Genes');
         });
 
         $table.on('expand-row.bs.table', function (e, index, row, $obj) {
@@ -194,9 +217,40 @@
 
             console.log(row.hgnc.substring(1));
 
-            $obj.load( "/api/home/dare/expand/" + row.hgnc.substring(1));
+            if (row.hgnc.charAt(0) == '!')
+                $obj.load( "/api/home/dape/expand/" + row.hgnc.substring(1));
+            else
+                $obj.load( "/api/home/dare/expand/" + row.hgnc.substring(1));
 
             return false;
+        });
+
+        $('.action-new-ep').on('click', function() {
+            $('#modalFollowEp').modal('show');
+        });
+
+        $('.action-show-gcep').on('click', function() {
+
+            if ($(this).hasClass('active'))
+                return;
+
+            $(this).addClass('active');
+            $('.vcep-content').addClass('display-hide');
+            $('.gcep-content').removeClass('display-hide');
+            $('.action-show-vcep').removeClass('active');
+
+        });
+
+        $('.action-show-vcep').on('click', function() {
+
+            if ($(this).hasClass('active'))
+                return;
+
+            $(this).addClass('active');
+            $('.gcep-content').addClass('display-hide');
+            $('.vcep-content').removeClass('display-hide');
+            $('.action-show-gcep').removeClass('active');
+
         });
 	});
 
@@ -227,6 +281,11 @@
             return value;
         else if (row.hgnc.charAt(0) == '%')
             return value;
+        else if (row.hgnc.charAt(0) == '!')
+        {
+            console.log(row);
+            return value;
+        }
         else
 		    return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
 	}

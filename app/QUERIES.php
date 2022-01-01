@@ -94,6 +94,7 @@
 
 
 // Actionability List (reports)
+// may no longer be used.
 {
     genes(limit: null, curation_activity: ACTIONABILITY) {
         gene_list{
@@ -621,6 +622,7 @@
 
 
 // Disease Suggester
+// no longer used
 {
     suggest(contexts: ALL, suggest: DISEASE, text: "ABC") {
             curie

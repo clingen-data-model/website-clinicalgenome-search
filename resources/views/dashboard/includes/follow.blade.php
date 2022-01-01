@@ -1,7 +1,8 @@
 <div class="pl-3 pr-3 pr-3 pb-0 collapse in" id="collapseFollow">
     <div id="follow-toolbar" class="text-right">
         <button class="btn action-new-gene">Follow New Gene</button>
-        <button class="btn action-new-region">Follow New Region</button>
+        <button class="btn action-new-region">Follow By Region</button>
+        <button class="btn action-new-ep">Follow By G/VCEP</button>
     </div>
 
     <div class="row mb-3">
@@ -62,7 +63,11 @@
                         <td>
                             @if (strpos($gene->hgnc_id, '%') === 0)
                             <button type="button" class="btn btn-sm action-region-expand" data-uuid="{{ $gene->ident }}">
-                                Show region
+                                Show Followed Genes
+                            </button>
+                            @elseif ($gene->type == 4)
+                            <button type="button" class="btn btn-sm action-panel-expand" data-uuid="{{ $gene->ident }}">
+                                Show Followed Genes
                             </button>
                             @else
                             <img src="/images/clinicalValidity-{{ $gene->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
@@ -76,7 +81,7 @@
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="selection">{{ $gene->hgnc_id == '*' || $gene->hgnc_id[0] == '@' || $gene->hgnc_id[0] == '%' ? $notification->setting($gene->hgnc_id) : $notification->setting($gene->name) }}</span><span class="caret"></span>
+                                    <span class="selection">{{ $gene->hgnc_id == '*' || $gene->hgnc_id[0] == '@' || $gene->hgnc_id[0] == '%' || $gene->hgnc_id[0] == '!' ? $notification->setting($gene->hgnc_id) : $notification->setting($gene->name) }}</span><span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
                                     <li><a data-value="Daily">Daily</a></li>

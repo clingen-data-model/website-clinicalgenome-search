@@ -137,36 +137,65 @@ class Variant extends Model
     }
 
 
-    /**
-     * Query scope by symbol name
+     /**
+     * Query scope by symbol or condition name
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public static function sortByClassifications($symbol)
-     {
-          $classifications = [
-               'Pathogenic' => 0,
-               'Likely Pathogenic' => 0,
-               'Uncertain Significance' => 0,
-               'Likely Benign' => 0,
-               'Benign' => 0
-          ];
+	public static function sortByClassifications($symbol, $disease = false)
+    {
+        $classifications = [
+            'Pathogenic' => 0,
+            'Likely Pathogenic' => 0,
+            'Uncertain Significance' => 0,
+            'Likely Benign' => 0,
+            'Benign' => 0
+        ];
 
-          $records = self::where('gene->label', $symbol)->get();
+        if (!$disease)
+        {
+            $records = self::where('gene->label', $symbol)->get();
+        }
+        else
+        {
+            $records = self::where('condition->@id', $symbol)->get();
+        }
 
-          if (empty($records))
-               return $classifications;
+        if (empty($records))
+            return [$symbol => ['classifications' => $classifications,
+                                'panels' => []]];
 
-          foreach ($records as $record)
-               foreach ($record->guidelines as $guideline)
-                    if (isset($classifications[$guideline["outcome"]["label"]]))
-                         $classifications[$guideline["outcome"]["label"]]++;
+        $genelist = [];
 
-          return $classifications;
-     }
+       // dd($records[0]->guidelines);
 
+        foreach ($records as $record)
+        {
+            $tag = ($disease ? $record->gene['label'] : $record->condition['label']);
 
+            if (!isset($genelist[$tag]))
+                $genelist[$tag] = [ 'id' => ($disease ? $record->gene['NCBI_id'] : $record->condition['@id']),
+                                        'classifications' => $classifications,
+                                        'panels' => []];
 
+            $a =& $genelist[$tag]['classifications'];
+            $b =& $genelist[$tag]['panels'];
+
+            foreach ($record->guidelines as $guideline)
+            {
+                if (isset($a[$guideline["outcome"]["label"]]))
+                    $a[$guideline["outcome"]["label"]]++;
+
+                foreach($guideline['agents'] as $agent)
+                {
+                    if (!in_array($agent["affiliation"], array_column($b, 'affiliation')))
+                        $b[] = ['affiliation' => $agent["affiliation"], 'id' => $agent['@id']] ;
+                }
+            }
+            //$genelist[$record->gene['label']] = $a;
+        }
+        return $genelist;
+    }
 
 }

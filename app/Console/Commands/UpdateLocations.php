@@ -42,8 +42,8 @@ class UpdateLocations extends Command
         // ftp://ftp.ncbi.nlm.nih.gov/genomes/H_sapiens/GRCh37.p13_interim_annotation/interim_GRCh37.p13_top_level_2017-01-13.gff3.gz
         // https://ftp.ncbi.nlm.nih.gov/genomes/refseq/vertebrate_mammalian/Homo_sapiens/all_assembly_versions/GCF_000001405.25_GRCh37.p13/GCF_000001405.25_GRCh37.p13_genomic.gff.gz
         echo "Importing ncbi location information ...\n";
-		
-		$handle = fopen(base_path() . '/data/hg19/interim_GRCh37.p13_top_level_2017-01-13.gff3', "r");
+
+		$handle = fopen(base_path() . '/data/hg19/GCF_000001405.25_GRCh37.p13_genomic.gff', "r");
         if ($handle)
         {
             while (($line = fgets($handle)) !== false)
@@ -83,13 +83,13 @@ class UpdateLocations extends Command
                 $hgncid = $split[0];
 
                 //echo "Updating 37 " . $hgncid . "\n";
-                
+
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
                     $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
 
-                        
+
             }
 
             fclose($handle);
@@ -141,13 +141,13 @@ class UpdateLocations extends Command
                 $hgncid = $split[0];
 
                 //echo "Updating 38 " . $hgncid . "\n";
-                
+
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
                     $record->update(['start38' => $start, 'stop38' => $stop, 'seqid38' => $parts[0]]);
 
-                        
+
             }
 
             fclose($handle);

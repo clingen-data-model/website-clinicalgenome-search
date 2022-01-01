@@ -8,6 +8,10 @@ td.valign-top {
   vertical-align: top;
 }
 
+td.valign-bottom {
+    vertical-align: bottom !important;
+}
+
 .table-spacing table td {
   padding: 10px !important;
   margin: 10px !important;
