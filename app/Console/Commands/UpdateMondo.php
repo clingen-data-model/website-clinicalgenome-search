@@ -163,9 +163,9 @@ class UpdateMondo extends Command
             {
                 foreach ($node->meta->basicPropertyValues as $property)
                 {
-                    if (($n = strpos($property->val, '/omim/')) > 0)
+                    if (($n = strpos($property->val, '/omim.org/entry/')) > 0)
                     {
-                        $disease->omim = substr($property->val, $n + 6);
+                        $disease->omim = substr($property->val, $n + 16);
                     }
                 }
             }

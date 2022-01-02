@@ -320,9 +320,9 @@ class Change extends Model
                 }
 
 
-                $temp = $panel->genes();
+                $temp = $panel->genes;
 
-                $items = $temp->collection->pluck('name');
+                $items = $temp->pluck('name');
 
                 $query = $query->orWhereHas('element', function ($query) use ($items) {
                             $query->whereIn('name', $items);
