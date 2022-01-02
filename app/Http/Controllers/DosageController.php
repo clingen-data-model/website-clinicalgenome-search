@@ -12,6 +12,7 @@ use Auth;
 
 use App\Exports\DosageExport;
 use App\GeneLib;
+use App\Gene;
 use App\Filter;
 
 /**
@@ -111,6 +112,18 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
+        if (stripos('HGNC:', $id) !== 0)
+        {
+            $gene = Gene::name($id)->first();
+
+            if ($gene === null)
+            {
+                $gene = Gene::previous($id)->first();
+            }
+
+            $id = ($gene === null) ? $id : $gene->hgnc_id;
+        }
+
 		$record = GeneLib::dosageDetail([ 'gene' => $id,
 										'curations' => true,
 										'action_scores' => true,
