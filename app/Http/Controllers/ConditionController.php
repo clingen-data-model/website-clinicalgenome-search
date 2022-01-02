@@ -272,6 +272,7 @@ class ConditionController extends Controller
 	 */
 	public function show_by_gene(Request $request, $id = null)
 	{
+
         if ($id === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Disease details')
@@ -449,12 +450,24 @@ class ConditionController extends Controller
 	 */
 	public function show_groups(Request $request, $id = null)
 	{
+
 		if ($id === null)
 			return view('error.message-standard')
 			->with('title', 'Error retrieving Disease details')
 			->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
 			->with('back', url()->previous())
 				->with('user', $this->user);
+
+        $disease = Disease::rosetta($id);
+
+        if ($disease === null)
+            return view('error.message-standard')
+                    ->with('title', 'Error retrieving Disease details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+        $id = $disease->curie;
 
 		$record = GeneLib::conditionDetail([
                                     'condition' => $id,
