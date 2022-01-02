@@ -295,11 +295,11 @@ class Change extends Model
 
                 $type = ($region->type == Group::TYPE_REGION_38 ? 'GRCh38' : 'GRCh37');
 
-                $genes = Gene::searchList(['type' => $type,
+                $temp = Gene::searchList(['type' => $type,
                         "region" => $region->description,
                         'option' => 1 ]);
 
-                $items = $genes->collection->pluck('name');
+                $items = $temp->collection->pluck('name');
 
                 $query = $query->orWhereHas('element', function ($query) use ($items) {
                             $query->whereIn('name', $items);
@@ -320,9 +320,9 @@ class Change extends Model
                 }
 
 
-                $genes = $panel->genes();
+                $temp = $panel->genes();
 
-                $items = $genes->collection->pluck('name');
+                $items = $temp->collection->pluck('name');
 
                 $query = $query->orWhereHas('element', function ($query) use ($items) {
                             $query->whereIn('name', $items);

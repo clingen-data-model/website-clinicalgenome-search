@@ -294,7 +294,7 @@ class Filter extends Model
             {
                 $cookie = explode('%%', $screen);
 
-                if ($cookie[0] == $scrid && isset($cookie[1]))
+                if ($user !== null && $cookie[0] == $scrid && isset($cookie[1]))
                     return $user->filters()->ident($cookie[1])->first();
             }
         }
