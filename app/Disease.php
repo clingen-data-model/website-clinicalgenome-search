@@ -61,6 +61,7 @@ class Disease extends Model
      * @var array
      */
 	protected $fillable = ['curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
+                            'do_id', 'orpha_id', 'gard_id', 'umls_id',
 					        'omim', 'description', 'type', 'status',
                          ];
 
@@ -178,6 +179,85 @@ class Disease extends Model
 		return $query->where('omim', $value);
     }
 
+
+    /**
+     * Query scope by disease ontology value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDoid($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'DOID:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->where('do_id', $value);
+    }
+
+
+    /**
+     * Query scope by Orphanet value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeOrpha($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'Orphanet:') === 0)
+            $value = substr($value, 9);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->where('orpha_id', $value);
+    }
+
+
+    /**
+     * Query scope by gard value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeGard($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'GARD:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+        if (!is_numeric($value))
+            return $query;
+
+		return $query->where('gard_id', $value);
+    }
+
+
+    /**
+     * Query scope by UMLS value
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeUmls($query, $value)
+    {
+        // strip out the prefix if present
+        if (strpos($value, 'UMLS:') === 0)
+            $value = substr($value, 5);
+
+        // should be left with just a numeric string
+       // if (!is_numeric($value))
+        //    return $query;
+
+		return $query->where('umls_id', $value);
+    }
 
     /**
      * Query scope by symbol name
@@ -355,18 +435,22 @@ class Disease extends Model
                 case 'OMIM':
                     $check = Disease::omim($id)->first();
                     break;
-                //case 'DOID':
-                //    $check = Disease::doid($id)->first();
-                //    break;
-                //case 'ORPHANET':
-                //    $check = Disease::orphanet($id)->first();
-                //    break;
+                case 'DOID':
+                    $check = Disease::doid($id)->first();
+                    break;
+                case 'ORPHANET':
+                    $check = Disease::orpha($id)->first();
+                    break;
+                case 'GARD':
+                    $check = Disease::gard($id)->first();
+                    break;
                 case 'MONDO':
                     $check = Disease::curie('MONDO:' . $id)->first();
                     break;
-                //case 'MEDGEN':
-                //    $check = Gene::medgen($id)->first();
-                //    break;
+                case 'MEDGEN':
+                case 'UMLS':
+                    $check = Disease::umls($id)->first();
+                    break;
                 default:
                     $check = null;
 

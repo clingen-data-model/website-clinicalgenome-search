@@ -170,6 +170,34 @@ class UpdateMondo extends Command
                 }
             }
 
+            // get all cross references
+            if (isset($node->meta->xrefs))
+            {
+                foreach ($node->meta->xrefs as $property)
+                {
+                    $val = explode(':', $property->val);
+
+                    switch ($val[0])
+                    {
+                        case 'DOID':
+                            $disease->do_id = $val[1];
+                            break;
+                        case 'OMIM':
+                            $disease->omim = $val[1];
+                            break;
+                        case 'Orphanet':
+                            $disease->orpha_id = $val[1];
+                            break;
+                        case 'GARD':
+                            $disease->gard_id = $val[1];
+                            break;
+                        case 'UMLS':
+                            $disease->umls_id = $val[1];
+                            break;
+                    }
+                }
+            }
+
             $disease->save();
         }
 
