@@ -110,10 +110,14 @@
         @endif
         @if (!empty($record->links))
         <div class="row pb-2 pt-3">
-          <div class="col-sm-3 text-right">Related Regions:</div>
+          <div class="col-sm-3 text-right">Related Links:</div>
           <div class="col-sm-9 border-left-4 border-info bold" >
               @foreach ($record->links as $link)
+                @if ($link->type == 2)
                 <div><a href="/kb/gene-dosage/region/{{ $link->key }}">{{ $link->label }}</a></div>
+                @elseif ($link->type == 1)
+                <div><a href="/kb/gene-dosage/{{ $link->label }}">{{ $link->label }}</a></div>
+                @endif
               @endforeach
           </div>
         </div>

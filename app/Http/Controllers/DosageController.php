@@ -218,7 +218,7 @@ class DosageController extends Controller
 		]);
 
 		$user = $this->user;
-
+//dd($record);
 		return view('gene-dosage.region_show', compact('display_tabs', 'record', 'user'));
 	}
 

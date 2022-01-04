@@ -319,9 +319,51 @@ class Jira extends Model
                  {
                    //$t[] = $link;
                    $a = self::getIssue($link->inwardIssue->key);
-                   $t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $a->customfield_10202 ?? $a->summary];
+                   if ($a !== null)
+                   {
+                      // dd($a);
+                        switch ($a->issuetype->name)
+                        {
+                            case "ISCA Gene Curation":
+                                $label = $a->customfield_10030;
+                                $type = 1;
+                                break;
+                            case 'ISCA Region Curation':
+                                $label = $a->customfield_10202;
+                                $type = 2;
+                                break;
+                            default:
+                                $label = $a->summary;
+                                $type = 2;
+                        }
+                    }
+                   $t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $label, 'type' => $type];
                  }
-             }
+                 else  if (isset($link->outwardIssue))
+                 {
+                   //$t[] = $link;
+                   $a = self::getIssue($link->outwardIssue->key);
+                    if ($a !== null)
+                    {
+                     //   dd($a);
+                        switch ($a->issuetype->name)
+                        {
+                            case "ISCA Gene Curation":
+                                $label = $a->customfield_10030;
+                                $type = 1;
+                                break;
+                            case 'ISCA Region Curation':
+                                $label = $a->customfield_10202;
+                                $type = 2;
+                                break;
+                            default:
+                                $label = $a->summary;
+                                $type = 2;
+                        }
+                    }
+                     $t[] = (object) ['key' => $link->outwardIssue->key, 'label' => $label, 'type' => $type];
+                   }
+                }
 
              if (empty($t))
                $node->links = null;
@@ -388,7 +430,7 @@ class Jira extends Model
               'issue_type' => $response->issuetype->name,
                'jira_status' => $response->status->name
          ]);
-//dd($node);
+
 
           //  Hide ot yet evaluated from these items.
           if ($node->knownhits == "Not yet evaluated")
@@ -534,7 +576,7 @@ class Jira extends Model
                $node->haplo_score = 40;
           else if ($node->haplo_score == "Not yet evaluated")
                $node->haplo_score = -5;
-
+//dd($node);
          // condense the links to only inward issues
          if ($node->links !== null)
          {
@@ -543,8 +585,54 @@ class Jira extends Model
              foreach ($node->links as $link)
              {
                  if (isset($link->inwardIssue))
-                   $t[] = $link;
-             }
+                 {
+                   //$t[] = $link;
+                   $a = self::getIssue($link->inwardIssue->key);
+                   if ($a !== null)
+                   {
+                      // dd($a);
+                        switch ($a->issuetype->name)
+                        {
+                            case "ISCA Gene Curation":
+                                $label = $a->customfield_10030;
+                                $type = 1;
+                                break;
+                            case 'ISCA Region Curation':
+                                $label = $a->customfield_10202;
+                                $type = 2;
+                                break;
+                            default:
+                                $label = $a->summary;
+                                $type = 2;
+                        }
+                    }
+                   $t[] = (object) ['key' => $link->inwardIssue->key, 'label' => $label, 'type' => $type];
+                 }
+                 else  if (isset($link->outwardIssue))
+                 {
+                   //$t[] = $link;
+                   $a = self::getIssue($link->outwardIssue->key);
+                    if ($a !== null)
+                    {
+                     //   dd($a);
+                        switch ($a->issuetype->name)
+                        {
+                            case "ISCA Gene Curation":
+                                $label = $a->customfield_10030;
+                                $type = 1;
+                                break;
+                            case 'ISCA Region Curation':
+                                $label = $a->customfield_10202;
+                                $type = 2;
+                                break;
+                            default:
+                                $label = $a->summary;
+                                $type = 2;
+                        }
+                    }
+                     $t[] = (object) ['key' => $link->outwardIssue->key, 'label' => $label, 'type' => $type];
+                   }
+                }
 
              if (empty($t))
                $node->links = null;

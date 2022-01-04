@@ -302,14 +302,48 @@ class Mysql
 			$$key = $value;
 
         $array = [];
-        if (stripos($search, 'MONDO') === 0)
+
+        $pair = explode(':', $search);
+
+        $is_symbol = count($pair) > 1;
+
+        switch (strtoupper($pair[0]))
         {
-            $records = Disease::query()->where('curie', 'like', $search . '%')
+            case 'OMIM':
+                $records = Disease::query()->where('omim', 'like', $pair[1] . '%')
                             ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+            case 'DOID':
+                $records = Disease::query()->where('do-id', 'like', $pair[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+            case 'ORPHANET':
+                $records = Disease::query()->where('orpha_id', 'like', $pair[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+            case 'GARD':
+                $records = Disease::query()->where('gard_id', 'like', $pair[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+            case 'MONDO':
+                $records = Disease::query()->where('curie', 'like', $search . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+            case 'MEDGEN':
+            case 'UMLS':
+                $records = Disease::query()->where('umls_id', 'like', $pair[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+                break;
+        }
+
+        if ($is_symbol)             //(stripos($search, 'MONDO') === 0)
+        {
+            //$records = Disease::query()->where('curie', 'like', $search . '%')
+             //               ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
 
             foreach($records as $record)
             {
-                $array[] = ['label' => $record->curie,
+                $array[] = ['label' => $search,         //$record->curie,
                             'alias' => '',
                             'hgnc' => $record->label,
                             'url' => route('condition-show', $record->curie),
@@ -518,10 +552,46 @@ class Mysql
 			$$key = $value;
 
         $array = [];
-        if (stripos($search, 'HGNC') === 0)
+
+        $pair = explode(':', $search);
+
+        $is_symbol = count($pair) > 1;
+
+        switch (strtoupper($pair[0]))
         {
-            $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
-                            ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+            case 'HGNC':
+                $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+                break;
+            case 'OMIM':
+                $records = Gene::query()->where('omim_id', 'like', '%' . $pair[1] . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+
+                break;
+            case 'ENSEMBL':
+            case 'NCBI':
+                $records = Gene::query()->where('ensembl_gene_id', 'like', $pair[1] . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+                break;
+            case 'ENTREZ':
+                $records = Gene::query()->where('entrez_id', 'like', $pair[1] . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+                break;
+            case 'UCSC':
+                $records = Gene::query()->where('ucsc_id', 'like', $pair[1] . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+                break;
+            case 'UNIPROT':
+                $records = Gene::query()->where('uniprot_id', 'like', $pair[1] . '%')
+                                        ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+                break;
+            default:
+        }
+
+        if ($is_symbol)     // (strpos($search, ':') === 0)
+        {
+            //$records = Gene::query()->where('hgnc_id', 'like', $search . '%')
+            //                ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
 
             foreach($records as $record)
             {
@@ -539,7 +609,7 @@ class Mysql
                 // $ctag .= (empty($record->curated) ? '' : ' CURATED');
                 //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
                 //                . $ctag,
-                $array[] = ['label' => $record->hgnc_id,
+                $array[] = ['label' => $search, //$record->hgnc_id,
                             'alias' => '',
                             'hgnc' => $record->name,
                             'url' => route('gene-show', $record->hgnc_id),
