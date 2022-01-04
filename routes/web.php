@@ -244,6 +244,6 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 // Redirect and/or legacy routes
 Route::get('/kb/home', 'HomeController@home');
 
-//Route::get('/test', 'TestController@index');
+Route::get('/test', 'TestController@index');
 
 Auth::routes();
