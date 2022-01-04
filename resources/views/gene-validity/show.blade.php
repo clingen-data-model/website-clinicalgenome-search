@@ -71,6 +71,8 @@
 </div>
 @endsection
 
+@include('gene-validity.partial.rich_data_table')
+
 @section('heading')
 <div class="content ">
     <div class="section-heading-content">
