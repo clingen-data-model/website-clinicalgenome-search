@@ -712,7 +712,7 @@ class GeneLib extends Model
                foreach(['summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
                'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
+               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name', 'history',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
                'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)

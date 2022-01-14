@@ -14,6 +14,7 @@ use App\Exports\DosageExport;
 use App\GeneLib;
 use App\Gene;
 use App\Filter;
+use App\Jira;
 
 /**
 *
@@ -137,6 +138,13 @@ class DosageController extends Controller
 						->with('message', 'The system was not able to retrieve details for this report.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
 						->with('back', url()->previous())
                         ->with('user', $this->user);
+
+        // Dosage has a strange publication workflow where part occurs on genegraph and part oj Jira.  To mimic
+        // that we need to act like genegraph would.
+        if ($record->issue_status != "Complete" || $record->jira_status != "Closed")
+        {
+            $record = Jira::rollback($record);
+        }
 
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
