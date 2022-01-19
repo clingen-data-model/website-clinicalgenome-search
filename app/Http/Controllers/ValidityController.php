@@ -136,7 +136,6 @@ class ValidityController extends Controller
             'title' => $record->label . " curation results for Gene-Disease Validity"
         ]);
 
-        //dd($record);
         return view('gene-validity.show', compact('display_tabs', 'record'))
                             ->with('user', $this->user);
 	}

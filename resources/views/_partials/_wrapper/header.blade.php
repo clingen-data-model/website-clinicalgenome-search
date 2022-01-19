@@ -127,16 +127,33 @@
 
           </li>
 
-          <li class='nav-item  '>
+          <li class='nav-item '>
             <a class='nav-link nav-link-header'  href='https://www.clinicalgenome.org/working-groups/'>Working Groups</a>
 
 
 
           </li>
 
-          <li class='nav-item   '>
-            <a class='nav-link nav-link-header '  href='https://www.clinicalgenome.org/affiliation/'>Expert Panels</a>
+          <li class='nav-item active dropdown'>
+            <a class='nav-link nav-link-header dropdown-toggle'  href='https://www.clinicalgenome.org/affiliation/'>Expert Panels</a>
 
+            <ul class=' row dropdown-menu dropdown-width-normal  dropdown-menu-right dropdown-menu-lg-left'>
+                <li class='nav-item '>
+                  <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/affiliation/gcep/#ep_table_heading'><span class=' d-inline-block text-truncate'> Gene Curation Expert Panels</span></a>
+                </li>
+
+                <li class='nav-item '>
+                  <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/affiliation/vcep/#ep_table_heading'><span class=' d-inline-block text-truncate'> Variant Curation Expert Panels</span></a>
+                </li>
+
+                <li class='nav-item '>
+                    <span class=' d-inline-block text-truncate'> &nbsp;</span>
+                  </li>
+
+                <li class='nav-item '>
+                  <a class='nav-link nav-link-header' href='http://search.clinicalgenome.org/docs/guidelines-for-applying-for-variant-or-gene-curation-expert-panel-status'><span class=' d-inline-block text-truncate'> Learn how to start n Expert Panel </span></a>
+                </li>
+            </ul>
 
           </li>
 

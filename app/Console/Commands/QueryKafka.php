@@ -107,12 +107,11 @@ class QueryKafka extends Command
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        /*$availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics()
-        ;
+        $availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
         echo "Available Topics: \n";
         foreach ($availableTopics as $idx => $avlTopic) {
             echo $idx.': '.$avlTopic->getTopic()."\n";
-        }*/
+        }
 
         //$a = $consumer->getCommittedOffsets([new \RdKafka\TopicPartition('gene_dosage', 0)], 60*1000);
         //$low = $high = 0;

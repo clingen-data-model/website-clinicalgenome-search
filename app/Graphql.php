@@ -13,6 +13,7 @@ use App\Jira;
 use App\Variant;
 use App\Cpic;
 use App\Gencc;
+use App\Curation;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -1358,7 +1359,17 @@ class Graphql
             /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
                    continue;*/
 
-			$collection->push(new Nodal((array) $record));
+            $nodal = new Nodal((array) $record);
+
+            $id = substr($record->curie, 15, 36);
+
+            $a = Curation::type(Curation::TYPE_GENE_VALIDITY)->source('gene_validity')
+                            ->sid($id)->orderBy('id', 'desc')->first();
+
+            $nodal->animal_model_only = $a->animal_model_only ?? false;
+            $nodal->gdm_uuid = $a->assertion_uuid ?? null;
+
+			$collection->push($nodal);
 		}
 
 		$ngenes = $collection->unique('gene')->count();

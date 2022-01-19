@@ -30,6 +30,7 @@ class Validity extends JsonResource
             'classification' => $temp,
             'order' => Genelib::ValiditySortOrder($temp),
             'perm_id' => $this->curie,
+            'animal_model_only' => $this->animal_model_only,
             'released' => $this->displayDate($this->report_date),
             'date' => $this->report_date
         ];

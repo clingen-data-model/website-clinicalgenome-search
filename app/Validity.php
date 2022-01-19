@@ -389,4 +389,213 @@ class Validity extends Model
             ($score_data->ValidContradictoryEvidence->Value == "NO")
         );
     }
+
+
+    /**
+     * Map a gdv record to a model
+     *
+     */
+    public static function parser($data)
+    {
+        dd($data);
+
+        $record = $data->data;
+
+        $current = self::gtid($record->id)->first();
+
+        if ($current === null)
+        {
+            // the minimal required are id, uuid, gene, and group
+            $current = new self([
+                'type' => self::TYPE_GENE_TRACKER,
+                'gtid' => $record->id,
+                'gt_uuid' => $record->uuid,
+                'hgnc_id' => $record->gene->hgnc_id,
+                'group_id' => $record->group->affiliation_id ?? "",
+                'group_detail' => (array) $record->group
+            ]);
+        }
+
+        // update with optional fields
+        $current->fill([
+                        'gdm_uuid' => $record->gdm_uuid ?? null,
+                        'mondo_id' => $record->disease_entity->mondo_id ?? null,
+                        'hp_id' => $record->mode_of_inheritance->hp_id ?? null,
+                        'group_id' => $record->group->affiliation_id ?? "",
+                        'group_detail' => (array) $record->group,
+                        'curator_detail' => (array) ($record->curator ?? null),
+                        'rationale' => (array) ($record->rationales ?? null),
+                        'curation_type' => (array) ($record->curation_type ?? null),
+                        'omim_phenotypes' => (array) ($record->omim_phenotypes ?? null),
+                        'notes' => $record->notes ?? null
+                    ]);
+
+        switch ($data->event_type)
+        {
+            case 'created':
+                $current->status = self::STATUS_CREATED;
+                break;
+            case 'updated':
+                $current->status = self::STATUS_UPDATED;
+                break;
+            case 'deleted':
+                $current->status = self::STATUS_DELETED;
+                break;
+        }
+
+        // if event type is deleted, then no extra status detail will be present
+        if ($current->status !== self::STATUS_DELETED)
+        {
+            switch ($record->status->name)
+            {
+                case 'Uploaded':
+                    $current->date_uploaded = $record->status->effective_date;
+                    break;
+                case "Precuration":
+                    $current->date_precuration = $record->status->effective_date;
+                    break;
+                case "Disease Entity Assigned":
+                    $current->date_disease_assigned = $record->status->effective_date;
+                    break;
+                case "Precuration Complete":
+                    $current->date_precuration_complete = $record->status->effective_date;
+                    break;
+                case "Curation Provisional":
+                    $current->date_curation_provisional = $record->status->effective_date;
+                    break;
+                case "Curation Approved":
+                    $current->date_curation_approved = $record->status->effective_date;
+                    break;
+                case "Retired Assignment":
+                    $current->date_retired = $record->status->effective_date;
+                    break;
+                case "Published":
+                    $current->date_published = $record->status->effective_date;
+                    break;
+            }
+        }
+
+        $current->save();
+
+        if ($current->status !== self::STATUS_DELETED)
+        {
+
+            // we want to copy the latest status into a gene column, but we can't garuntee order
+            $gene = Gene::hgnc('HGNC:' . $current->hgnc_id)->first();
+
+            if ($gene !== null)
+            {
+                $a = $gene->curation_status;
+                if ($a === null)
+                {
+                    $gene->curation_status = [ $record->id => [
+                                        'group' => $record->group->name,
+                                        'group_type' => $record->group->type->name ?? null,
+                                        'group_id' => $record->group->affiliation_id,
+                                        'status' => $record->status->name,
+                                        'status_date' => $record->status->effective_date
+                                    ]];
+
+                    //dd($gene->curation_status);
+
+                    $gene->save();
+                }
+                else
+                {
+                    if (!isset($a[$record->id]) || ((self::$curation_priority[$record->status->name] ?? 0) >= (self::$curation_priority[$a[$record->id]['status']] ?? 0)))
+                    {
+                        $a[$record->id] = [ 'group' => $record->group->name,
+                                            'group_type' => $record->group->type->name ?? null,
+                                            'group_id' => $record->group->affiliation_id,
+                                            'status' => $record->status->name,
+                                            'status_date' => $record->status->effective_date
+                                        ];
+
+                        $gene->curation_status = $a;
+
+                        //dd($gene->curation_status);
+
+                        $gene->save();
+                    }
+                }
+            }
+
+
+            // we also want to keep the disease status updated
+            if ($current->mondo_id !== null)
+            {
+                $disease = Disease::curie($current->mondo_id)->first();
+
+                if ($disease !== null)
+                {
+                    $a = $disease->curation_status;
+                    if ($a === null)
+                    {
+                        $disease->curation_status = [ $record->id => [
+                                            'group' => $record->group->name,
+                                            'group_type' => $record->group->type->name ?? null,
+                                            'group_id' => $record->group->affiliation_id,
+                                            'status' => $record->status->name,
+                                            'status_date' => $record->status->effective_date
+                                        ]];
+
+                        //dd($gene->curation_status);
+
+                        $disease->save();
+                    }
+                    else
+                    {
+                        if (!isset($a[$record->id]) || ((self::$curation_priority[$record->status->name] ?? 0) >= (self::$curation_priority[$a[$record->id]['status']] ?? 0)))
+                        {
+                            $a[$record->id] = [ 'group' => $record->group->name,
+                                                'group_type' => $record->group->type->name ?? null,
+                                                'group_id' => $record->group->affiliation_id,
+                                                'status' => $record->status->name,
+                                                'status_date' => $record->status->effective_date
+                                            ];
+
+                            $disease->curation_status = $a;
+
+                            //dd($gene->curation_status);
+
+                            $disease->save();
+                        }
+                    }
+                }
+            }
+
+        }
+
+        // TODO:  resync the gene_panel table
+        /*$precurations = self::all();
+
+        foreach ($preccurations as $precuration)
+        {
+            // if published and not deleted and not retired...
+        }*/
+
+        // Check if the group exists, if not, add
+        if (!empty($record->group->affiliation_id))
+        {
+            $id = ($record->group->affiliation_id < 20000 ? $record->group->affiliation_id + 30000 :
+                                                $record->group->affiliation_id);
+
+            $panel = Panel::affiliate($id)->first();
+
+            if ($panel === null)
+            {
+                $panel = new Panel(['affiliate_id' => $id,
+                                    'alternate_id' => $record->group->affiliation_id,
+                                    'name' => $record->group->name,
+                                    'title' => $record->group->name,
+                                    'title_abbreviated' => $record->group->name,
+                                    'title_short' => $record->group->name,
+                                    'summary' => '',
+                                    'affiliate_type' => '',
+                                    'type' => Panel::TYPE_WG,
+                                    'status' => 1]);
+                $panel->save();
+            }
+        }
+    }
 }

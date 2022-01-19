@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Gene;
 use App\GeneLib;
 use App\Morbid;
+use App\Panel;
 
 class RunReport extends Command
 {
@@ -44,7 +45,7 @@ class RunReport extends Command
     public function handle()
     {
         echo "Running Erin Report ...";
-        $this->report2();
+        $this->report3();
 
     }
 
@@ -148,5 +149,44 @@ class RunReport extends Command
 
         echo "\n $lines processed \n";
         $con->output($results);
+    }
+
+
+    public function report3()
+    {
+        $panels = Panel::all();
+
+        $ofd = fopen("/tmp/panelreport.tsv", "w");
+
+        foreach ($panels as $panel)
+        {
+            $line = [];
+
+            $title = $panel->title;
+            $status = $panel->affiliate_status;
+
+            if ($status === null)
+                continue;
+
+            // change epochs to dates
+            foreach (["gene_date_step_1", "gene_date_step_2", "variant_date_step_1", "variant_date_step_2", "variant_date_step_3", "variant_date_step_4"] as $key)
+            {
+                if (!empty($status[$key]))
+                    $status[$key] = date("Y-m-d H:i:s", $status[$key]);
+            }
+
+            if ($status["gene"] === null)
+                $status["gene"] = "";
+
+            if ($status["variant"] === null)
+                $status["variant"] = "";
+
+            echo "$title\n";
+
+            fwrite($ofd, $title . "\t" . implode("\t", $status) . PHP_EOL);
+
+        }
+
+        fclose($ofd);
     }
 }
