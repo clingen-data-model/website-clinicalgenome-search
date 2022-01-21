@@ -1489,8 +1489,10 @@ class Graphql
 		if (is_numeric($perm))
 			$perm = "CGGCIEX:assertion_" . $perm;
 
+        //resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56"
+
 		$query = '{
-				resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56") {
+				resource(iri: "' . $perm . '") {
 				  ...basicFields
 				  ... on ProbandEvidence {
 					...probandFields
@@ -1654,27 +1656,29 @@ class Graphql
 
 		if (empty($response))
 			return $response;
-dd($response);
+
 		// genegraph does return an error condition on an invalid assertion id, so handle it here
-		if (empty($response->gene_validity_assertion->specified_by))
+		/*if (empty($response->gene_validity_assertion->specified_by))
 		{
 			Log::info("Validty Detail Error:  No specified by field in iri: " . $perm);
 			GeneLib::putError("Invalid gene validity assertion identifier");
 			return null;
-		}
+		}*/
+//dd($response);
+		$node = new Nodal((array) $response->resource);
 
-		$node = new Nodal((array) $response->gene_validity_assertion);
+        //dd($node);
 
 		// overwrite the label with the website display label
-		if (!empty($node->mode_of_inheritance->website_display_label))
-			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
+		//if (!empty($node->mode_of_inheritance->website_display_label))
+		//	$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
 
-		$node->json = json_decode($node->legacy_json, false);
-		$node->score_data = $node->json->scoreJson ?? $node->json;
+		//$node->json = json_decode($node->legacy_json, false);
+		//$node->score_data = $node->json->scoreJson ?? $node->json;
 
 		// genegraph is not distinguishing gene express origin from others
-		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
-							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
+		//$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
+		//					&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
 		return $node;
 

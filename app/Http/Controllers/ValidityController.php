@@ -130,6 +130,18 @@ class ValidityController extends Controller
                             ->with('back', url()->previous())
                             ->with('user', $this->user);
 
+        $extrecord = GeneLib::newValidityDetail(['page' => 0,
+                    'pagesize' => 20,
+                    'perm' => $id
+                        ]);
+
+        if ($extrecord === null)
+                return view('error.message-standard')
+                            ->with('title', 'Error retrieving extended Gene Validity details')
+                            ->with('message', 'The system was not able to retrieve extended details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+                            ->with('back', url()->previous())
+                            ->with('user', $this->user);
+
         // set display context for view
         $display_tabs = collect([
             'active' => "validity",

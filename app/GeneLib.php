@@ -603,6 +603,28 @@ class GeneLib extends Model
 	}
 
 
+    /**
+     * Get details of a gene validity assertion
+     *
+     * (Neo4j)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function newValidityDetail($args)
+    {
+       if (is_null($args) || !is_array($args))
+           return collect([]);
+
+       // The gene validity data is currently in neo4j...
+         //$response = Neo4j::validityDetail($args);
+
+         // The gene validity data is currently in graphql...
+       $response = Graphql::newValidityDetail($args);
+
+       return $response;
+   }
+
+
      /**
      * Get a list of all genes and regions within the search params
      *
