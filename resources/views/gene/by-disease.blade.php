@@ -106,7 +106,12 @@
                                         </td>
 
 										<td class=" @if(!$loop->first) border-0 @endif ">
-											<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->assertion->curie }}">{{ \App\GeneLib::validityClassificationString($validity->assertion->classification->label) }}</a>
+											<a class="btn btn-default btn-block text-left btn-classification" href="/kb/gene-validity/{{ $validity->assertion->curie }}">{{ \App\GeneLib::validityClassificationString($validity->assertion->classification->label) }}</a>
+                                            @if ($validity->assertion->animal_model_only)
+                                            <div class='badge badge-warning text-left -'>
+                                                Animal Model Only
+                                            </div>
+                                            @endif
 										</td>
 
 

@@ -135,20 +135,20 @@ class ValidityController extends Controller
                     'perm' => $id
                         ]);
 
-        if ($extrecord === null)
+        /*if ($extrecord === null)
                 return view('error.message-standard')
                             ->with('title', 'Error retrieving extended Gene Validity details')
                             ->with('message', 'The system was not able to retrieve extended details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
                             ->with('back', url()->previous())
-                            ->with('user', $this->user);
+                            ->with('user', $this->user);*/
 
         // set display context for view
         $display_tabs = collect([
             'active' => "validity",
             'title' => $record->label . " curation results for Gene-Disease Validity"
         ]);
-
-        return view('gene-validity.show', compact('display_tabs', 'record'))
+//dd($extrecord);
+        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord'))
                             ->with('user', $this->user);
 	}
 

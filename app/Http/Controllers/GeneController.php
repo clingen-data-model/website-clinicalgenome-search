@@ -16,6 +16,7 @@ use App\Gene;
 use App\Panel;
 use App\Nodal;
 use App\Filter;
+use App\Omim;
 
 /**
 *
@@ -348,6 +349,15 @@ class GeneController extends Controller
 
         $gene = Gene::rosetta($id);
 
+		$mimflag = false;
+
+        if ($gene === null && stripos($id, 'OMIM:') === 0)
+        {
+            $t = substr($id, 5 );
+            $gene = Omim::omimid($t)->first();
+            $mimflag = ($gene === null ? false : $t);
+        }
+
         if ($gene === null)
             return view('error.message-standard')
                     ->with('title', 'Error retrieving Gene details')
@@ -409,6 +419,10 @@ class GeneController extends Controller
 		$dosage_collection = collect();
 		$variant_collection = collect();
 		$pharma_collection = collect();
+        // mim st
+        $mims = [];
+        $key = 0;
+
 
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -463,8 +477,10 @@ class GeneController extends Controller
 			foreach ($disease->gene_validity_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
-									'disease' => $disease->disease, 'assertion' => $assertion]);
+									'disease' => $disease->disease, 'assertion' => $assertion, 'key' => $key++]);
+
 				$validity_collection->push($node);
+                $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
 			}
 
 			// dosage
@@ -475,6 +491,15 @@ class GeneController extends Controller
 				$dosage_collection->push($node);
 			}
 		}
+
+        // get the mim names
+        $mim_names = OMIM::whereIn('omimid', $mims)->get();
+
+        $mims = [];
+
+        foreach ($mim_names as $mim)
+            $mims[$mim->omimid] = $mim->titles;
+
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
@@ -541,11 +566,12 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
+        //dd($mimflag);
         //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection',
 												'variant_collection', 'validity_eps', 'variant_panels',
-                                                'pregceps', 'total_panels',
+                                                'pregceps', 'total_panels', 'mimflag', 'mims',
             'vceps',
 			'gceps'))
 												->with('user', $this->user);

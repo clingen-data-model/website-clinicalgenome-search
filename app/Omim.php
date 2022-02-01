@@ -39,7 +39,7 @@ class Omim extends Model
      *
      * @var array
      */
-     protected $fillable = ['prefix', 'omimid', 'titles', 'alt_titles',
+     protected $fillable = ['prefix', 'omimid', 'titles', 'alt_titles', 'hgnc_id',
                             'inc_titles', 'status', 'type' ];
 
 	  /**

@@ -191,6 +191,18 @@ class Precuration extends Model
 
 
     /**
+     * Query scope by subtype
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeGdmid($query, $id)
+    {
+		return $query->where('gdm_uuid', $id);
+    }
+
+
+    /**
      * Map a gt precuration record to a model
      *
      */

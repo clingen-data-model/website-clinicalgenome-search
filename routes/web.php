@@ -206,6 +206,8 @@ Route::group(['prefix' => 'kb/actionability'], function () {
 
 	Route::get('/', 'ActionabilityController@index')->name('actionability-index');
 
+    Route::get('/report-index', 'ActionabilityController@report_index')->name('actionability-report-index-index');
+
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');
 });
 

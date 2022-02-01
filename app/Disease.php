@@ -34,117 +34,108 @@ class Disease extends Model
      * @var array
      */
     public static $rules = [
-		'ident' => 'alpha_dash|max:80|required',
-		'curie' => 'name|max:80|required',
-		'label' => 'string|nullable',
-		'synonyms' => 'json|nullable',
+        'ident' => 'alpha_dash|max:80|required',
+        'curie' => 'name|max:80|required',
+        'label' => 'string|nullable',
+        'synonyms' => 'json|nullable',
         'curation_activities' => 'json|nullable',
         'last_curated_date' => 'string|nullable',
-		'type' => 'integer',
-		'status' => 'integer'
-	];
+        'type' => 'integer',
+        'status' => 'integer'
+    ];
 
-	/**
+    /**
      * Map the json attributes to associative arrays.
      *
      * @var array
      */
-	protected $casts = [
-			'synonyms' => 'array',
-            'curation_activities' => 'array',
-            'curation_status' => 'array'
-		];
+    protected $casts = [
+        'synonyms' => 'array',
+        'curation_activities' => 'array',
+        'curation_status' => 'array'
+    ];
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-	protected $fillable = ['curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
-                            'do_id', 'orpha_id', 'gard_id', 'umls_id',
-					        'omim', 'description', 'type', 'status',
-                         ];
+    protected $fillable = [
+        'curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
+        'do_id', 'orpha_id', 'gard_id', 'umls_id',
+        'omim', 'description', 'type', 'status',
+    ];
 
-	/**
+    /**
      * Non-persistent storage model attributes.
      *
      * @var array
      */
-     protected $appends = ['display_date', 'list_date', 'display_status',
-                            'first_synonym'];
+    protected $appends = [
+        'display_date', 'list_date', 'display_status',
+        'first_synonym'
+    ];
 
-     public const TYPE_NONE = 0;
-     public const TYPE_MONDO = 1;
-     public const TYPE_OMIM = 2;
-     public const TYPE_ORPHANET = 3;
-     public const TYPE_MEDGEN = 4;
-     public const TYPE_DOID = 5;
+    public const TYPE_NONE = 0;
+    public const TYPE_MONDO = 1;
+    public const TYPE_OMIM = 2;
+    public const TYPE_ORPHANET = 3;
+    public const TYPE_MEDGEN = 4;
+    public const TYPE_DOID = 5;
 
-     /*
+    /*
      * Type strings for display methods
      *
      * */
-     protected $type_strings = [
-	 		0 => 'Unknown',
-	 		9 => 'Deleted'
-	];
+    protected $type_strings = [
+        0 => 'Unknown',
+        9 => 'Deleted'
+    ];
 
-     public const STATUS_INITIALIZED = 0;
-     public const STATUS_ACTIVE = 1;
-     public const STATUS_GG_DEPRECATED = 9;
-     public const STATUS_DEPRECATED = 10;
+    public const STATUS_INITIALIZED = 0;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_GG_DEPRECATED = 9;
+    public const STATUS_DEPRECATED = 10;
 
-     /*
+    /*
      * Status strings for display methods
      *
      * */
-     protected $status_strings = [
-	 		0 => 'Initialized',
-	 		9 => 'Deleted'
-	];
+    protected $status_strings = [
+        0 => 'Initialized',
+        9 => 'Deleted'
+    ];
 
 
-	/**
+    /**
      * Automatically assign an ident on instantiation
      *
      * @param	array	$attributes
      * @return 	void
      */
-     public function __construct(array $attributes = array())
-     {
+    public function __construct(array $attributes = array())
+    {
         $this->attributes['ident'] = (string) Uuid::generate(4);
         parent::__construct($attributes);
-	}
+    }
 
     /*
      * The panels associated with this gene
      */
     public function panels()
     {
-       return $this->belongsToMany('App\Panel');
+        return $this->belongsToMany('App\Panel');
     }
 
-	/**
+    /**
      * Query scope by ident
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeIdent($query, $ident)
-     {
-		return $query->where('ident', $ident);
-     }
-
-
-    /**
-     * Query scope by symbol name
-     *
-     * @@param	string	$ident
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-	public function scopeCurie($query, $curie)
+    public function scopeIdent($query, $ident)
     {
-		return $query->where('curie', $curie);
+        return $query->where('ident', $ident);
     }
 
 
@@ -154,9 +145,21 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeDeprecated($query)
+    public function scopeCurie($query, $curie)
     {
-		return $query->where('status', 9);
+        return $query->where('curie', $curie);
+    }
+
+
+    /**
+     * Query scope by symbol name
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeDeprecated($query)
+    {
+        return $query->where('status', 9);
     }
 
 
@@ -166,17 +169,17 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeOmim($query, $value)
+    public function scopeOmim($query, $value)
     {
         // strip out the prefix if present
-        if (strpos($value, 'OMIM:') === 0)
+        if (stripos($value, 'OMIM:') === 0)
             $value = substr($value, 5);
 
         // should be left with just a numeric string
         if (!is_numeric($value))
             return $query;
 
-		return $query->where('omim', $value);
+        return $query->where('omim', $value);
     }
 
 
@@ -186,17 +189,17 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeDoid($query, $value)
+    public function scopeDoid($query, $value)
     {
         // strip out the prefix if present
-        if (strpos($value, 'DOID:') === 0)
+        if (stripos($value, 'DOID:') === 0)
             $value = substr($value, 5);
 
         // should be left with just a numeric string
         if (!is_numeric($value))
             return $query;
 
-		return $query->where('do_id', $value);
+        return $query->where('do_id', $value);
     }
 
 
@@ -206,17 +209,19 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeOrpha($query, $value)
+    public function scopeOrpha($query, $value)
     {
         // strip out the prefix if present
-        if (strpos($value, 'Orphanet:') === 0)
+        if (stripos($value, 'Orphanet:') === 0)
             $value = substr($value, 9);
+        else if (stripos($value, 'Orpha:') === 0)
+            $value = substr($value, 6);
 
         // should be left with just a numeric string
         if (!is_numeric($value))
             return $query;
 
-		return $query->where('orpha_id', $value);
+        return $query->where('orpha_id', $value);
     }
 
 
@@ -226,17 +231,17 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeGard($query, $value)
+    public function scopeGard($query, $value)
     {
         // strip out the prefix if present
-        if (strpos($value, 'GARD:') === 0)
+        if (stripos($value, 'GARD:') === 0)
             $value = substr($value, 5);
 
         // should be left with just a numeric string
         if (!is_numeric($value))
             return $query;
 
-		return $query->where('gard_id', $value);
+        return $query->where('gard_id', $value);
     }
 
 
@@ -246,17 +251,17 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeUmls($query, $value)
+    public function scopeUmls($query, $value)
     {
         // strip out the prefix if present
-        if (strpos($value, 'UMLS:') === 0)
+        if (stripos($value, 'UMLS:') === 0)
             $value = substr($value, 5);
 
         // should be left with just a numeric string
-       // if (!is_numeric($value))
+        // if (!is_numeric($value))
         //    return $query;
 
-		return $query->where('umls_id', $value);
+        return $query->where('umls_id', $value);
     }
 
     /**
@@ -265,28 +270,28 @@ class Disease extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeFilter($query)
+    public function scopeFilter($query)
     {
-		return $query->whereIn('status', [1, 9]);
+        return $query->whereIn('status', [1, 9]);
     }
 
 
-	/**
+    /**
      * Get a display formatted form of aliases
      *
      * @@param
      * @return
      */
-     public function getFirstSynonymAttribute()
-     {
-		if (empty($this->synonyms))
-			return '';
+    public function getFirstSynonymAttribute()
+    {
+        if (empty($this->synonyms))
+            return '';
 
-		return $this->syonyms[0] ?? '';
-     }
+        return $this->syonyms[0] ?? '';
+    }
 
 
-     /**
+    /**
      * Flag indicating if gene has any dosage curations
      *
      * @@param
@@ -294,12 +299,12 @@ class Disease extends Model
      */
     public function getHasDosageAttribute()
     {
-		return (isset($this->curation_activities) ?
-			$this->curation_activities['dosage'] : false);
-     }
+        return (isset($this->curation_activities) ?
+            $this->curation_activities['dosage'] : false);
+    }
 
 
-     /**
+    /**
      * Flag indicating if gene has any actionability curations
      *
      * @@param
@@ -307,12 +312,12 @@ class Disease extends Model
      */
     public function getHasActionabilityAttribute()
     {
-		return (isset($this->curation_activities) ?
-			$this->curation_activities['actionability'] : false);
-     }
+        return (isset($this->curation_activities) ?
+            $this->curation_activities['actionability'] : false);
+    }
 
 
-     /**
+    /**
      * Flag indicating if gene has any validity curations
      *
      * @@param
@@ -320,9 +325,9 @@ class Disease extends Model
      */
     public function getHasValidityAttribute()
     {
-		return (isset($this->curation_activities) ?
-			$this->curation_activities['validity'] : false);
-	}
+        return (isset($this->curation_activities) ?
+            $this->curation_activities['validity'] : false);
+    }
 
     /**
      * Query title for mondo id
@@ -332,12 +337,12 @@ class Disease extends Model
      */
     public static function titles($id)
     {
-      $record = self::curie($id)->first();
+        $record = self::curie($id)->first();
 
-      if ($record === null)
-        return '';
+        if ($record === null)
+            return '';
 
-      return $record->label;
+        return $record->label;
     }
 
     /**
@@ -349,7 +354,7 @@ class Disease extends Model
     public static function parseIdentifier($id = null)
     {
         if (empty($id))
-            return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+            return ['type' => self::TYPE_NONE, 'adjusted' => $id];
 
         $k = strpos($id, ':');
 
@@ -357,10 +362,9 @@ class Disease extends Model
             if (is_numeric($id))
                 return ['type' => self::TYPE_OMIM, 'adjusted' => $id];         //default
             else
-                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id];
 
-        switch (strtoupper(substr($id, 0, $k)))
-        {
+        switch (strtoupper(substr($id, 0, $k))) {
             case 'MONDO':
                 return ['type' => self::TYPE_MONDO, 'adjusted' => substr($id, $k + 1)];
             case 'OMIM':
@@ -372,12 +376,10 @@ class Disease extends Model
             case 'DOID':
                 return ['type' => self::TYPE_DOID, 'adjusted' => substr($id, $k + 1)];
             default:
-                return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
-
+                return ['type' => self::TYPE_NONE, 'adjusted' => $id];
         }
 
-        return ['type' => self::TYPE_NONE, 'adjusted' => $id ];
-
+        return ['type' => self::TYPE_NONE, 'adjusted' => $id];
     }
 
 
@@ -419,19 +421,15 @@ class Disease extends Model
 
         $parts = explode(':', $id);
 
-        if (!isset($parts[1]))
-        {
+        if (!isset($parts[1])) {
             if (is_numeric($id))
                 $check = Disease::omim($id)->first();
             else
                 $check = null;
-        }
-        else
-        {
+        } else {
             $id = $parts[1];
 
-            switch (strtoupper($parts[0]))
-            {
+            switch (strtoupper($parts[0])) {
                 case 'OMIM':
                     $check = Disease::omim($id)->first();
                     break;
@@ -439,6 +437,7 @@ class Disease extends Model
                     $check = Disease::doid($id)->first();
                     break;
                 case 'ORPHANET':
+                case 'ORPHA':
                     $check = Disease::orpha($id)->first();
                     break;
                 case 'GARD':
@@ -453,9 +452,7 @@ class Disease extends Model
                     break;
                 default:
                     $check = null;
-
             }
-
         }
 
         return $check;

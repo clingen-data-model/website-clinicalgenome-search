@@ -4,12 +4,18 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use DB;
+use Mail;
+
 use Carbon\Carbon;
 
 use App\Gene;
 use App\GeneLib;
 use App\Morbid;
 use App\Panel;
+use App\Sensitivity;
+use App\Validity;
+use App\Gdmmap;
 
 class RunReport extends Command
 {
@@ -45,7 +51,7 @@ class RunReport extends Command
     public function handle()
     {
         echo "Running Erin Report ...";
-        $this->report3();
+        $this->report4();
 
     }
 
@@ -189,4 +195,183 @@ class RunReport extends Command
 
         fclose($ofd);
     }
+
+
+    public function report4()
+    {
+        $threeyears = Carbon::now()->subYears(3);
+
+        /*$curations = Sensitivity::select('*', DB::raw('MAX(id) AS maxversion'))
+                    ->where(function($query) {
+                        $query->where('haplo_classification', '<', 3);
+                        $query->orWhere('triplo_classification', '<', 3);
+                    })->where('report_date', '<=', $threeyears)->groupBy('gene_label')->take(10)->get();
+
+                    //        ->where('course_id', $courseId)
+        //        ->where('user_id', Auth::id())
+        //        ->groupby('gene_label')
+          //      ->get();
+
+         /* $messages = Message::select(DB::raw('t.*'))
+            ->from(DB::raw('(SELECT * FROM messages ORDER BY created_at DESC) t'))
+            ->groupBy('t.from')
+            ->get();*/
+
+        $curations = Sensitivity::select()->latest('id')->get()
+                        ->unique('gene_label')->sortBy('gene_label');
+
+        // apply the filters
+
+        $curations = $curations->filter(function($item) use ($threeyears) {
+                    return ($item->haplo_classification < 3 || $item->triplo_classification < 3)
+                            && $item->report_date <= $threeyears;
+        });
+
+        /*$curations = Sensitivity::where(function($query) {
+                        $query->where('haplo_classification', '<', 3);
+                        $query->orWhere('triplo_classification', '<', 3);
+                    })->where('report_date', '<=', $threeyears)->latest('id')->get()
+                    ->unique('gene_label')->sortBy('gene_label');*/
+
+//dd($curations);
+       /* $curations = Sensitivity::where(function($query) {
+            $query->where('haplo_classification', '<', 3);
+            $query->orWhere('triplo_classification', '<', 3);
+        })->where('report_date', '<=', $threeyears)->groupBy('gene_label')->max('version')->get();
+*/
+        $header = [   "ISCA",
+                        "Gene Symbol",
+                        "Haplo_Classification",
+                        "Triplo Classification",
+                        "Dosage Report",
+                        'AD/XL',
+                        "LOF Score",
+                        "Validity Classification",
+                        "Validity Report",
+                        "Website Link",
+                        "GCI Link"
+                    ];
+
+        $handle = fopen(base_path() . '/data/dosage_recuration_report.tsv', "w");
+        fwrite($handle, implode("\t", $header) . PHP_EOL);
+
+        foreach($curations as $curation)
+        {
+            //dd($curation);
+            // strip ISCA out of curie
+            $isca = substr($curation->curie, 9);
+            $stop = strpos($isca, '-', 5);
+            $isca = substr($isca, 0, $stop);
+
+            // get the latest validity report
+            $validity = Validity::hgnc($curation->gene_hgnc_id)->orderBy('version', 'desc')->first();
+
+            if ($validity === null)
+                continue;
+
+            // if the validity report is older than the dosage report, skip it
+            if ($validity->report_date <= $curation->report_date)
+                continue;
+
+            $properties = json_decode($validity->properties);
+
+            // Proband w/ predicted or proven null variant must be > 0
+
+            if (isset($properties->jsonMessageVersion))
+            {
+                switch ($properties->jsonMessageVersion)
+                {
+                    case "GCILite.5":
+                        $sop = "SOP5";
+                        $proband_w_proven = $properties->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value ?? 0;
+                        break;
+                    case "GCI.6":
+                    case "GCI.7":
+                        $proband_w_proven = $properties->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->TotalPoints ?? 0;
+                        break;
+                    case "GCI.8.1":
+                        $sop = "SOP8";
+                        $proband_w_proven = $properties->scoreJson->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNull->TotalPoints ?? 0;
+                        break;
+                    default:
+                        echo "unrecognized message " . $properties->jsonMessageVersion . "\n";
+                        $porband_w_proven = 0;
+                }
+            }
+            else
+            {
+                //old style SOP 4, SOP 5 or SOP6
+                $proband_w_proven = $properties->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantDisease->ProbandWithLOF->Value ??
+                                    ( $properties->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->Value ??
+                                    ( $properties->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->ProbandWithPredictedOrProvenNullVariant->TotalPoints ??
+                                    0));
+
+            }
+
+            if ($proband_w_proven <= 0)
+                continue;
+
+            // TODO - Pick up AR one too
+
+            // strip GCI ID out of curie
+            if (strpos($validity->curie, 'CGGCIEX:') === 0)
+                $gci = "";
+            else
+            {
+                // if record_id, use that.  Otherwise look it up
+                if (isset($properties->report_id))
+                    $gci = $properties->report_id;
+                else
+                {
+                    $gci = substr($validity->curie, 15, 36);
+                    $map = Gdmmap::gg($gci)->first();
+                    $gci = ($map === null ? '' : $map->gdm_uuid);
+                }
+            }
+
+
+            //CGGV:assertion_a3ada757-6500-46a1-a89e-42668bbdb934-2021-01-26T170000.000Z
+
+            $list = [   $isca,
+                        $curation->gene_label,
+                        $curation->haplo_classification,
+                        $curation->triplo_classification,
+                        $curation->report_date,
+                        'AD/XL',
+                        $proband_w_proven,
+                        $validity->classification,
+                        $validity->report_date,
+                        '=HYPERLINK("https://search.clinicalgenome.org/kb/genes/' . $curation->gene_hgnc_id . '")',
+                        ($gci == "" ? '' : '=HYPERLINK("https://curation.clinicalgenome.org/curation-central/' . $gci . '")')
+                    ];
+
+            //echo implode("\t", $list) . "\n";
+            fwrite($handle, implode("\t", $list) . PHP_EOL);
+
+        }
+
+        fclose($handle);
+
+        // attach and send email
+        $data["email"] = "phillip.weller3@gmail.com";
+        $data["title"] = "ClinGen Dosage Sensitivity Re-Curation Report";
+        $data["body"] = "This is Demo";
+
+        $files = [
+            base_path() . '/data/dosage_recuration_report.tsv'
+        ];
+
+        Mail::send('mail.reports.dosage-recuration', $data, function($message)use($data, $files) {
+            $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+
+            foreach ($files as $file){
+                $message->attach($file);
+            }
+
+        });
+
+        echo "DONE\n";
+    }
+
 }

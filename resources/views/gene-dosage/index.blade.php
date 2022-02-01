@@ -62,6 +62,7 @@
 				<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 			</button>
 		</div>
+
 		<div class="col-md-12 light-arrows dark-table">
 
 			@include('_partials.genetable', ['expand' => true])
@@ -92,6 +93,7 @@
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -108,6 +110,7 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -236,6 +239,15 @@
 			sortName:  "symbol",
 			sortOrder: "asc",
       		filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
+			onCreatedControls () {
+				var $select = $('select.bootstrap-table-filter-control-haplo_assertion');
+				$select.attr('multiple','multiple');
+				$select.find('option[value=""]').remove();
+				$select.multipleSelect({
+					filter: true,
+					selectAll:true
+				});
+			},
 	  		rowStyle:  function(row, index) {
 				if (index % 2 === 0) {
      				return {
@@ -316,8 +328,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          filterData: 'var:hapChoices',
-          filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
+          			filterData: 'var:hapChoices',
+          			filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
@@ -528,7 +540,7 @@
 
 		$( ".fixed-table-toolbar" ).show();
     	$('[data-toggle="tooltip"]').tooltip();
-    	$('[data-toggle="popover"]').popover();
+    	//$('[data-toggle="popover"]').popover();
 
 		var html = `@include("gene-dosage.panels.search")`;
 
@@ -539,8 +551,33 @@
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');
 
-		region_listener();
+        $('[data-toggle="popover"]').popover();
 
+		region_listener();
+/*
+		$('button[name="clearSearch"]').click(function() {
+			$('select.bootstrap-table-filter-control-city').multipleSelect('setSelects', [])
+			filterData()
+		})
+
+		function customFilter(row,filter){
+			const filterCities = filter['cities']
+			return filterCities.length == 0 || filterCities.includes(row.city)
+		}
+
+		function filterData() {
+			$table.bootstrapTable('filterBy', {
+			cities: $('select.bootstrap-table-filter-control-city').multipleSelect('getSelects')
+			}, {
+			'filterAlgorithm': customFilter
+			})
+		}
+
+		$('select.bootstrap-table-filter-control-halplo_assertion').change(function () {
+			console.log("check1");
+			filterData()
+		})
+*/
   	});
 
 </script>

@@ -597,15 +597,64 @@ class Graphql
 					}
 				}
 
-				// blacklist bad assertions
-				/*foreach ($condition->gene_validity_assertions as $inkey => $inassert)
+				// Check for Animal Model Only and workaround to promote GDM_uuid
+				foreach ($condition->gene_validity_assertions as $inkey => &$inassert)
 				{
+                    $score = json_decode($inassert->legacy_json);
+
+                    // GCI has added a field, but only for new assertions.  Need to check for older ones
+                    $inassert->report_id = $score->report_id ?? null;
+                    if ($inassert->report_id === null)
+                    {
+                       // GC Express wont have an iri
+                        if (isset($score->iri))
+                        {
+                            $map = Gdmmap::gg($score->iri)->first();
+                            if ($map !== null)
+                                $inassert->report_id = $map->gdm_uuid;
+                        }
+                    }
+
+                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+                    $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                    if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                        $inassert->animal_model_only = (
+                            ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                            (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                            ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                            ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                        );
+                    else
+                        $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+
+
+                    // create additional entries for lumping and splitting
+                    $inassert->las_included = null;
+                    $inassert->las_excluded = null;
+                    $inassert->las_rationale = null;
+
+                    if ($inassert->report_id !== null)
+                    {
+                        $map = Precuration::gdmid($inassert->report_id)->first();
+                        if ($map !== null)
+                        {
+                            $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
+                            $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+                            $inassert->las_rationale =$map->rationale;
+                        }
+
+                    }
+
+                    /* blacklist
 					if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
-					unset($condition->gene_validity_assertions[$key]);
-				}*/
+					unset($condition->gene_validity_assertions[$key]);*/
+                    //dd($inassert);
+				}
 
 			}
 		}
+
+        //dd($node);
 
 		//if ($ndosage == 0 && (!empty($dosage_curation_map["haploinsufficiency_assertion"]) || !empty($dosage_curation_map["triplosensitivity_assertion"])))
 		//	$ndosage++;
@@ -1339,6 +1388,12 @@ class Graphql
                             curie
 							label
 						}
+            ';
+
+        if (!empty($properties))
+            $query .= 'legacy_json';
+
+        $query .= '
 					}
 				}
 			}';
@@ -1653,7 +1708,7 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-
+//dd($response);
 		if (empty($response))
 			return $response;
 
@@ -1664,7 +1719,7 @@ class Graphql
 			GeneLib::putError("Invalid gene validity assertion identifier");
 			return null;
 		}*/
-//dd($response);
+
 		$node = new Nodal((array) $response->resource);
 
         //dd($node);
@@ -2917,6 +2972,71 @@ class Graphql
 		}
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
+
+        // ===== adult actionability assertion graph
+        $template = ['total_adult_assertion_definitive' => 0, 'total_adult_assertion_strong' => 0, 'total_adult_assertion_moderate' => 0, 'total_adult_assertion_limited' => 0,
+                    'total_adult_assertion_na_expert_review' => 0, 'total_adult_assertion_na_early_rule_out' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		$topcounters['classtotals']['total_adult_assertion_definitive'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_definitive'];
+		$topcounters['classtotals']['total_adult_assertion_strong'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_strong'];
+        $topcounters['classtotals']['total_adult_assertion_moderate'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_moderate'];
+        $topcounters['classtotals']['total_adult_assertion_limited'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_limited'];
+        $topcounters['classtotals']['total_adult_assertion_na_expert_review'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_expert_review'];
+        $topcounters['classtotals']['total_adult_assertion_na_early_rule_out'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_early_rule_out'];
+
+		$offset = 0;
+
+        $nopending = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion'] - $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending'];
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $nopending * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH] = $topcounters;
+        // ====== end adult actionability assertion graph
+        // ===== pediatric actionability assertion graph
+        $template = ['total_peds_assertion_definitive' => 0, 'total_peds_assertion_strong' => 0, 'total_peds_assertion_moderate' => 0, 'total_peds_assertion_limited' => 0,
+                    'total_peds_assertion_na_expert_review' => 0, 'total_peds_assertion_na_early_rule_out' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		$topcounters['classtotals']['total_peds_assertion_definitive'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_definitive'];
+		$topcounters['classtotals']['total_peds_assertion_strong'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_strong'];
+        $topcounters['classtotals']['total_peds_assertion_moderate'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_moderate'];
+        $topcounters['classtotals']['total_peds_assertion_limited'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_limited'];
+        $topcounters['classtotals']['total_peds_assertion_na_expert_review'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_expert_review'];
+        $topcounters['classtotals']['total_peds_assertion_na_early_rule_out'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_early_rule_out'];
+
+		$offset = 0;
+
+        $nopending = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] - $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'];
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $nopending * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH] = $topcounters;
+        // ====== end pediatric actionability assertion graph
 
 		// Pharmacogenomics
 

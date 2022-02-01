@@ -125,6 +125,8 @@ class Metric extends Model
     public const KEY_TOTAL_ACTIONABILITY_ADULT_SCORE = "total_actionability_adult_score";
     public const KEY_TOTAL_ACTIONABILITY_PED_SCORE = "total_actionability_ped_score";
     public const KEY_TOTAL_ACTIONABILITY_GRAPH = "total_actionability_graph";
+    public const KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH = "total_actionability_adult_graph";
+    public const KEY_TOTAL_ACTIONABILITY_PED_GRAPH = "total_actionability_ped_graph";
     public const KEY_TOTAL_ACTIONABILITY_ADULT_RULEOUT = "total_actionability_adult_ruleout";
     public const KEY_TOTAL_ACTIONABILITY_PED_RULEOUT = "total_actionability_ped_ruleout";
     public const KEY_TOTAL_ACTIONABILITY_ASSERTIONS = "total_actionability_assertions";
@@ -457,6 +459,24 @@ class Metric extends Model
 
     $pct = (int) ($this->values[self::KEY_TOTAL_PATHOGENICITY_BENIGN] /
                 $this->values[self::KEY_TOTAL_PATHOGENICITY_CURATIONS] * 100);
+
+    return ($pct == 0 ? 1 : $pct);
+  }
+
+
+  /**
+   * Get the percentages for actionability score charts
+   *
+   * @@param
+   * @return
+   */
+  public function actionabilityByGenePercent($value = 0)
+  {
+
+    if (empty($value) || empty($this->values[self::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion']))
+      return 0;
+
+    $pct = (int) ($value / $this->values[self::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion'] * 100);
 
     return ($pct == 0 ? 1 : $pct);
   }

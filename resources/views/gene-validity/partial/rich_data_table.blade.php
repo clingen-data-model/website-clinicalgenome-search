@@ -3,9 +3,12 @@
 	<div class="row " id="validity_supporting_data_genetic">
 		<hr />
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_with_proband'>
-			<h3>Genetic Evidence: Case Level (variants, segregation)</h3>
-			[COMMON SEARCH/FILTER FEATURES]
-
+			<h3>Genetic Evidence: Case Level (variants)</h3>
+            @if (empty($extrecord->genetic_evidence))
+            <div class="alert alert-warning" role="alert">
+				No  evidence for a Family with a proband was found.
+			</div>
+            @else
 			<div class="table-responsive">
 				<!-- START DEMO DATA -->
 				<table role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
@@ -29,60 +32,89 @@
 							<th colspan="1" role="columnheader"># Unaff<span></span></th>
 							<th colspan="1" role="columnheader">LOD Score<span></span></th>
 							<th colspan="1" role="columnheader">Counted<span></span></th>
-							<th colspan="1" role="columnheader">Sequencing<span></span></th>
+							<th colspan="1" role="columnheader">Sequencing Method<span></span></th>
 							<th colspan="1" role="columnheader">Proband Previous Testing<span></span></th>
 							<th colspan="1" role="columnheader">Proband Methods of Detection<span></span></th>
 							<th colspan="1" role="columnheader">Score Status<span></span></th>
 							<th colspan="1" role="columnheader">Proband Points (default points)<span></span></th>
 							<th colspan="1" role="columnheader" style="max-width: 240px;">Reason for Changed
-								Score<span></span></th>
+								Score<span></span>
+                            </th>
 						</tr>
 					</thead>
 					<tbody role="rowgroup">
+                        @foreach ($extrecord->genetic_evidence as $record)
+                        @php
+                            $evidence = null;
+                            foreach ($record->evidence as $ev)
+                            {
+                                if ($ev->__typename == "VariantEvidence")
+                                {
+                                    $evidence = $ev;
+                                    break;
+                                }
+                            }
+                            if ($evidence === null)
+                                continue;
+                        @endphp
 						<tr role="row">
 							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Patient 1 (III-2)</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
+								{{ $evidence->label }}
+                            </td>
 							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.481G&gt;A (p.Gly161Ser)</div>
+                                ### NO PROPER TYPE STRING FOUND ###
+                            </td>
+							<td class="vertical-align-center" role="cell">
+								<div class="variant-info">
+                                    {{ $evidence->variant->label }}
+                                </div>
 								<span><strong></strong></span>
 							</td>
-							<td class="vertical-align-center" role="cell"><span>Thevenon J, et al.,
-									<strong>2015</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/25846674"
-										target="_blank" rel="noopener noreferrer">PMID: 25846674</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Delayed speech and language development</span>
-										</li>
-										<li class="hpo-term-item"><span>Global developmental delay</span></li>
-										<li class="hpo-term-item"><span>Cryptorchidism</span></li>
-										<li class="hpo-term-item"><span>Ataxia</span></li>
-										<li class="hpo-term-item"><span>Intellectual disability</span></li>
-										<li class="hpo-term-item"><span>Wide nasal bridge</span></li>
-										<li class="hpo-term-item"><span>Protruding ear</span></li>
-									</ul>
-								</span></td>
-							<td class="vertical-align-center" role="cell">3</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span><strong>Published:</strong> 2.1</span>
+							<td class="vertical-align-center" role="cell">
+                                <span>##NO PPOPER CITATION, et al.,
+									<strong>NO PROPER YEAR</strong>, <a href="{{ $evidence->source->iri }}"
+										target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a></span>
+                            </td>
+							<td class="vertical-align-center" role="cell" style="max-width: 80px;">
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                ##3##
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                ##-##
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span><strong>##Published:</strong> 2.1##</span>
 							</td>
-							<td class="vertical-align-center" role="cell">No</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Exome
-									sequencing</span></td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>1.5</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">This variant was
-								upgraded because the phenotypes observed in these 4 affected males are similar to the
-								phenotypes reported in Brooks et al., 2014, PMID: 25316788 and Bourque et al., 2018,
-								PMID:29066376. Additionally, this is supported by functional evidence of LoF mechanism
-								in a variant affecting the same amino acid.</td>
+							<td class="vertical-align-center" role="cell">
+                                ##No##
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                ##
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                ##
+                            </td>
+							<td class="vertical-align-center" role="cell"><span><strong>##Method 1:</strong> Exome
+									sequencing##</span></td>
+							<td class="vertical-align-center" role="cell">
+                                Score
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span><strong>{{ $record->score }}</strong> (##0.5##)</span>
+                            </td>
+							<td class="vertical-align-center" role="cell" style="max-width: 240px;">
+                                {{ $record->description }}
+                            </td>
 						</tr>
+                        @endforeach
+                        <!--
 						<tr role="row">
 							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
 								Proband III:1</td>
@@ -323,21 +355,23 @@
 								functional data suggests loss of function. It is absent from gnomAD. The phenotypes of
 								this proband are consistent with those associated with X-linked syndromic intellectual
 								disability. This score is the top of the range for missense using SOP v. 8. </td>
-						</tr>
+						</tr>-->
 					</tbody>
 				</table>
-				<!-- END DEMO DATA -->
 			</div>
-			<div class="alert alert-warning" role="alert">
-				No segregation evidence for a Family with a proband was found.
-			</div>
+            @endif
 		</div>
 
+        <div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
+			<h3>Scored Genetic Evidence: Case Level (segregation)</h3>
+			<div class="alert alert-warning" role="alert">
+				No segregated case level scored genetic evidence was found.
+			</div>
+		</div>
 
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_without_proband'>
 			<h3>Genetic Evidence: Case Level (family segregation information without proband data or scored proband
 				data)</h3>
-
 			<div class="alert alert-warning" role="alert">
 				No segregation evidence for a Family without a proband was found.
 			</div>
@@ -355,11 +389,14 @@
 
 		<div class="col-12 pb-4" id='tag_experimental_evidence'>
 			<h3>Experimental Evidence</h3>
-
-			[COMMON SEARCH/FILTER FEATURES]
+            @if (empty($extrecord->experimental_evidence))
+            <div class="alert alert-warning" role="alert">
+				No experimental evidence was found.
+			</div>
+            @else
 			<div class="table-responsive">
 				<!-- START DEMO DATA -->
-				<table role="table" class="table table-validity-data table-bordered small">
+				<table id="table" role="table" class="table table-validity-data table-bordered small">
 					<thead>
 						<tr role="row">
 							<th colspan="1" role="columnheader" style="word-break: normal;">Label<span></span></th>
@@ -374,88 +411,35 @@
 						</tr>
 					</thead>
 					<tbody role="rowgroup">
+                        @foreach($extrecord->experimental_evidence as $record)
 						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="word-break: normal;">Brooks Expression
+							<td class="vertical-align-center" role="cell" style="word-break: normal;">
+                                {{ $record->evidence[0]->label }}
 							</td>
-							<td class="vertical-align-center" role="cell"><strong>Expression</strong><span> B</span>
+							<td class="vertical-align-center" role="cell"><strong>### Missing category string</strong><span> ###</span>
 							</td>
-							<td class="vertical-align-center" role="cell"><span>Brooks SS, et al.,
-									<strong>2014</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/25316788"
-										target="_blank" rel="noopener noreferrer">PMID: 25316788</a> </span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">Analyzed
-								polyribosome structure in anterior and posterior portions of MO-knockdown zebrafish
-								larvae. Morphant anterior structures showed increase in 80S ribosome abundance and
-								decrease in polyribosomes. Posterior was relatively unchanged. Additionally, they found
-								a six-fold increase in cell death in forebrain of rpl10 morphants compared to controls.
-								This suggests apoptosis as a mechanism of microcephaly.</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">There are a plethora
-								of genes expressed in the brain therefore, the ID/Autism GCEP has decided not to score
-								this expression evidence.</td>
+							<td class="vertical-align-center" role="cell"><span>##missing proper author##, et al.,
+									<strong>##missing proper year##</strong>, <a href="{{ $record->evidence[0]->source->iri }}"
+										target="_blank" rel="noopener noreferrer">PMID: {{ basename($record->evidence[0]->source->iri) }}</a> </span></td>
+							<td class="vertical-align-center" role="cell" style="max-width: 600px;">
+                                {{ $record->evidence[0]->description }}
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                Score
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span><strong>{{ $record->score }}</strong> (###)</span>
+                            </td>
+							<td class="vertical-align-center" role="cell" style="max-width: 600px;">
+                                {{  $record->description }}
+                            </td>
 						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="word-break: normal;">Brooks Rescue</td>
-							<td class="vertical-align-center" role="cell"><strong>Rescue</strong><span> Non-human model
-									organism</span></td>
-							<td class="vertical-align-center" role="cell"><span>Brooks SS, et al.,
-									<strong>2014</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/25316788"
-										target="_blank" rel="noopener noreferrer">PMID: 25316788</a> </span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">Co-injection of WT
-								human RPL10 mRNA with tb-MO resulted in significant improvement of microcephaly
-								phenotype in MO-knockdown zebrafish, while co-injection of p.K78E with tb-MO failed to
-								rescue morphant phenotype and resulted in significantly decreased forebrain
-								cross-sectional area. Again, co-injection with p.H213Q or p.L206M fully rescued the
-								microcephaly phenotype.</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>1</strong> (2)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">Downgraded to be
-								conservative because it is a zebrafish model.</td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="word-break: normal;">Brooks Animal
-								Model</td>
-							<td class="vertical-align-center" role="cell"><strong>Model Systems</strong><span> Non-human
-									model organism</span></td>
-							<td class="vertical-align-center" role="cell"><span>Brooks SS, et al.,
-									<strong>2014</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/25316788"
-										target="_blank" rel="noopener noreferrer">PMID: 25316788</a> </span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">The model had a
-								significant decrease in head size, which corresponds to microcephaly nad other facial
-								dismorphia phenotypes seen in humans. Lack of affects to other body part than head
-								suggests suppression of rpl10 affects mostly anterior structures</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>1</strong> (2)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">Downgraded because
-								this model is a morpholino.</td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="word-break: normal;">Klauck Rescue</td>
-							<td class="vertical-align-center" role="cell"><strong>Rescue</strong><span> Non-human model
-									organism</span></td>
-							<td class="vertical-align-center" role="cell"><span>Klauck SM, et al.,
-									<strong>2006</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/16940977"
-										target="_blank" rel="noopener noreferrer">PMID: 16940977</a> </span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">The temperature
-								sensitive growth defect of RPL p.G161D mutant yeast at the restrictive temperature is
-								complemented by human WT RPL10, human mutant RPL10 p.L206M and RPL10 p.H213Q alleles.
-							</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0</strong> (2)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 600px;">Expert panel met on
-								1/20/21 and discussed not scoring this experimental evidence because it is variant-level
-								data using yeast, and the variants were later suggested to be benign in Brooks et al.
-								(2014). </td>
-						</tr>
+                        @endforeach
 					</tbody>
 				</table>
-				<!-- END DEMO DATA -->
-			</div>
-			<div class="alert alert-warning" role="alert">
-				No experimental evidence was found.
 			</div>
 		</div>
-
+        @endif
 		<hr />
 	</div>
 </section>

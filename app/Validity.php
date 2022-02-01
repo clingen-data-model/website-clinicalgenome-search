@@ -52,6 +52,7 @@ class Validity extends Model
         'classification' => 'string',
         'specified_by' => 'string',
         'attributed_to' => 'string',
+        'properties' => 'text',
 		'type' => 'integer',
 		'status' => 'integer'
 	];
@@ -76,7 +77,7 @@ class Validity extends Model
      */
 	protected $fillable = ['ident', 'curie', 'report_date', 'disease_label',
                             'disease_mondo', 'gene_label', 'gene_hgnc_id',
-                            'mode_of_inheritance', 'classification',
+                            'mode_of_inheritance', 'classification', 'properties',
                             'specified_by', 'attributed_to', 'version', 'type', 'status',
                          ];
 
@@ -165,6 +166,18 @@ class Validity extends Model
     }
 
 
+    /**
+     * Query scope by hgnc id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeHgnc($query, $id)
+    {
+		return $query->where('gene_hgnc_id', $id);
+    }
+
+
     public static function secondaryContributor($assertion)
     {
         if (empty($assertion->contributions))
@@ -194,6 +207,7 @@ class Validity extends Model
                                             'sort' => 'GENE_LABEL',
                                             'search' => null,
                                             'direction' => 'ASC',
+                                            'properties' => true,
                                             'curated' => false
                                         ]);
 
@@ -221,6 +235,7 @@ class Validity extends Model
                                     'classification' => $assertion->classification->label,
                                     'specified_by' => $assertion->specified_by->label,
                                     'attributed_to' => $assertion->attributed_to->label,
+                                    'properties' => $assertion->legacy_json,
                                     'version' => 1,
                                     'type' => 1,
                                     'status' => 1
@@ -256,6 +271,7 @@ class Validity extends Model
                                     'classification' => $assertion->classification->label,
                                     'specified_by' => $assertion->specified_by->label,
                                     'attributed_to' => $assertion->attributed_to->label,
+                                    'properties' => $assertion->legacy_json,
                                     'version' => $current->version + 1,
                                     'type' => 1,
                                     'status' => 1
@@ -285,6 +301,11 @@ class Validity extends Model
                                 'description' => $this->scribe($differences)
                     ]);
             }
+            else
+            {
+                // even if they match, keep the properties updates
+                $current->update(['properties' => $new->properties]);
+            }
         }
 
         return $assertions;
@@ -305,10 +326,10 @@ class Validity extends Model
         // unset a few fields we don't care about
         unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
               $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
-              $old_array['list_date'], $old_array['display_status']);
+              $old_array['list_date'], $old_array['display_status'], $old_array['properties']);
         unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'],
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
-              $new_array['list_date'], $new_array['display_status']);
+              $new_array['list_date'], $new_array['display_status'], $new_array['properties']);
 
         $diff = array_diff_assoc($new_array, $old_array);
 

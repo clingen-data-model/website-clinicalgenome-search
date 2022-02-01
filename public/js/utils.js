@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
-  typeof define === 'function' && define.amd ? define(['jquery'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.jQuery));
-}(this, (function ($) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery')) :
+  typeof define === 'function' && define.amd ? define(['exports', 'jquery'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.BootstrapTable = {}, global.jQuery));
+}(this, (function (exports, $) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -22,170 +22,6 @@
     }
 
     return _typeof(obj);
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  function _defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-
-  function _createClass(Constructor, protoProps, staticProps) {
-    if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) _defineProperties(Constructor, staticProps);
-    return Constructor;
-  }
-
-  function _inherits(subClass, superClass) {
-    if (typeof superClass !== "function" && superClass !== null) {
-      throw new TypeError("Super expression must either be null or a function");
-    }
-
-    subClass.prototype = Object.create(superClass && superClass.prototype, {
-      constructor: {
-        value: subClass,
-        writable: true,
-        configurable: true
-      }
-    });
-    if (superClass) _setPrototypeOf(subClass, superClass);
-  }
-
-  function _getPrototypeOf(o) {
-    _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
-      return o.__proto__ || Object.getPrototypeOf(o);
-    };
-    return _getPrototypeOf(o);
-  }
-
-  function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
-      o.__proto__ = p;
-      return o;
-    };
-
-    return _setPrototypeOf(o, p);
-  }
-
-  function _isNativeReflectConstruct() {
-    if (typeof Reflect === "undefined" || !Reflect.construct) return false;
-    if (Reflect.construct.sham) return false;
-    if (typeof Proxy === "function") return true;
-
-    try {
-      Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  function _assertThisInitialized(self) {
-    if (self === void 0) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-
-    return self;
-  }
-
-  function _possibleConstructorReturn(self, call) {
-    if (call && (typeof call === "object" || typeof call === "function")) {
-      return call;
-    }
-
-    return _assertThisInitialized(self);
-  }
-
-  function _createSuper(Derived) {
-    var hasNativeReflectConstruct = _isNativeReflectConstruct();
-
-    return function _createSuperInternal() {
-      var Super = _getPrototypeOf(Derived),
-          result;
-
-      if (hasNativeReflectConstruct) {
-        var NewTarget = _getPrototypeOf(this).constructor;
-
-        result = Reflect.construct(Super, arguments, NewTarget);
-      } else {
-        result = Super.apply(this, arguments);
-      }
-
-      return _possibleConstructorReturn(this, result);
-    };
-  }
-
-  function _superPropBase(object, property) {
-    while (!Object.prototype.hasOwnProperty.call(object, property)) {
-      object = _getPrototypeOf(object);
-      if (object === null) break;
-    }
-
-    return object;
-  }
-
-  function _get(target, property, receiver) {
-    if (typeof Reflect !== "undefined" && Reflect.get) {
-      _get = Reflect.get;
-    } else {
-      _get = function _get(target, property, receiver) {
-        var base = _superPropBase(target, property);
-
-        if (!base) return;
-        var desc = Object.getOwnPropertyDescriptor(base, property);
-
-        if (desc.get) {
-          return desc.get.call(receiver);
-        }
-
-        return desc.value;
-      };
-    }
-
-    return _get(target, property, receiver || target);
-  }
-
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) return _arrayLikeToArray(arr);
-  }
-
-  function _iterableToArray(iter) {
-    if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-  }
-
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-
-    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-    return arr2;
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
   }
 
   var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -1032,219 +868,56 @@
   // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
   addToUnscopables(FIND);
 
-  var SPECIES$2 = wellKnownSymbol('species');
+  // a string of all valid unicode whitespaces
+  var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' +
+    '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
-  var arrayMethodHasSpeciesSupport = function (METHOD_NAME) {
-    // We can't use this feature detection in V8 since it causes
-    // deoptimization and serious performance degradation
-    // https://github.com/zloirock/core-js/issues/677
-    return engineV8Version >= 51 || !fails(function () {
-      var array = [];
-      var constructor = array.constructor = {};
-      constructor[SPECIES$2] = function () {
-        return { foo: 1 };
-      };
-      return array[METHOD_NAME](Boolean).foo !== 1;
+  var whitespace = '[' + whitespaces + ']';
+  var ltrim = RegExp('^' + whitespace + whitespace + '*');
+  var rtrim = RegExp(whitespace + whitespace + '*$');
+
+  // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
+  var createMethod$1 = function (TYPE) {
+    return function ($this) {
+      var string = String(requireObjectCoercible($this));
+      if (TYPE & 1) string = string.replace(ltrim, '');
+      if (TYPE & 2) string = string.replace(rtrim, '');
+      return string;
+    };
+  };
+
+  var stringTrim = {
+    // `String.prototype.{ trimLeft, trimStart }` methods
+    // https://tc39.es/ecma262/#sec-string.prototype.trimstart
+    start: createMethod$1(1),
+    // `String.prototype.{ trimRight, trimEnd }` methods
+    // https://tc39.es/ecma262/#sec-string.prototype.trimend
+    end: createMethod$1(2),
+    // `String.prototype.trim` method
+    // https://tc39.es/ecma262/#sec-string.prototype.trim
+    trim: createMethod$1(3)
+  };
+
+  var non = '\u200B\u0085\u180E';
+
+  // check that a method works with the correct list
+  // of whitespaces and has a correct name
+  var stringTrimForced = function (METHOD_NAME) {
+    return fails(function () {
+      return !!whitespaces[METHOD_NAME]() || non[METHOD_NAME]() != non || whitespaces[METHOD_NAME].name !== METHOD_NAME;
     });
   };
 
-  var $filter = arrayIteration.filter;
+  var $trim = stringTrim.trim;
 
 
-  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
-
-  // `Array.prototype.filter` method
-  // https://tc39.es/ecma262/#sec-array.prototype.filter
-  // with adding support of @@species
-  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
-    filter: function filter(callbackfn /* , thisArg */) {
-      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  // `String.prototype.trim` method
+  // https://tc39.es/ecma262/#sec-string.prototype.trim
+  _export({ target: 'String', proto: true, forced: stringTrimForced('trim') }, {
+    trim: function trim() {
+      return $trim(this);
     }
   });
-
-  var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
-
-  // `Object.keys` method
-  // https://tc39.es/ecma262/#sec-object.keys
-  _export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
-    keys: function keys(it) {
-      return objectKeys(toObject(it));
-    }
-  });
-
-  var createProperty = function (object, key, value) {
-    var propertyKey = toPrimitive(key);
-    if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));
-    else object[propertyKey] = value;
-  };
-
-  var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
-  var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
-  var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
-
-  // We can't use this feature detection in V8 since it causes
-  // deoptimization and serious performance degradation
-  // https://github.com/zloirock/core-js/issues/679
-  var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
-    var array = [];
-    array[IS_CONCAT_SPREADABLE] = false;
-    return array.concat()[0] !== array;
-  });
-
-  var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
-
-  var isConcatSpreadable = function (O) {
-    if (!isObject(O)) return false;
-    var spreadable = O[IS_CONCAT_SPREADABLE];
-    return spreadable !== undefined ? !!spreadable : isArray(O);
-  };
-
-  var FORCED$2 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
-
-  // `Array.prototype.concat` method
-  // https://tc39.es/ecma262/#sec-array.prototype.concat
-  // with adding support of @@isConcatSpreadable and @@species
-  _export({ target: 'Array', proto: true, forced: FORCED$2 }, {
-    // eslint-disable-next-line no-unused-vars -- required for `.length`
-    concat: function concat(arg) {
-      var O = toObject(this);
-      var A = arraySpeciesCreate(O, 0);
-      var n = 0;
-      var i, k, length, len, E;
-      for (i = -1, length = arguments.length; i < length; i++) {
-        E = i === -1 ? O : arguments[i];
-        if (isConcatSpreadable(E)) {
-          len = toLength(E.length);
-          if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
-          for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
-        } else {
-          if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
-          createProperty(A, n++, E);
-        }
-      }
-      A.length = n;
-      return A;
-    }
-  });
-
-  var $includes = arrayIncludes.includes;
-
-
-  // `Array.prototype.includes` method
-  // https://tc39.es/ecma262/#sec-array.prototype.includes
-  _export({ target: 'Array', proto: true }, {
-    includes: function includes(el /* , fromIndex = 0 */) {
-      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-
-  // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
-  addToUnscopables('includes');
-
-  var MATCH$1 = wellKnownSymbol('match');
-
-  // `IsRegExp` abstract operation
-  // https://tc39.es/ecma262/#sec-isregexp
-  var isRegexp = function (it) {
-    var isRegExp;
-    return isObject(it) && ((isRegExp = it[MATCH$1]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
-  };
-
-  var notARegexp = function (it) {
-    if (isRegexp(it)) {
-      throw TypeError("The method doesn't accept regular expressions");
-    } return it;
-  };
-
-  var MATCH = wellKnownSymbol('match');
-
-  var correctIsRegexpLogic = function (METHOD_NAME) {
-    var regexp = /./;
-    try {
-      '/./'[METHOD_NAME](regexp);
-    } catch (error1) {
-      try {
-        regexp[MATCH] = false;
-        return '/./'[METHOD_NAME](regexp);
-      } catch (error2) { /* empty */ }
-    } return false;
-  };
-
-  // `String.prototype.includes` method
-  // https://tc39.es/ecma262/#sec-string.prototype.includes
-  _export({ target: 'String', proto: true, forced: !correctIsRegexpLogic('includes') }, {
-    includes: function includes(searchString /* , position = 0 */) {
-      return !!~String(requireObjectCoercible(this))
-        .indexOf(notARegexp(searchString), arguments.length > 1 ? arguments[1] : undefined);
-    }
-  });
-
-  // iterable DOM collections
-  // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
-  var domIterables = {
-    CSSRuleList: 0,
-    CSSStyleDeclaration: 0,
-    CSSValueList: 0,
-    ClientRectList: 0,
-    DOMRectList: 0,
-    DOMStringList: 0,
-    DOMTokenList: 1,
-    DataTransferItemList: 0,
-    FileList: 0,
-    HTMLAllCollection: 0,
-    HTMLCollection: 0,
-    HTMLFormElement: 0,
-    HTMLSelectElement: 0,
-    MediaList: 0,
-    MimeTypeArray: 0,
-    NamedNodeMap: 0,
-    NodeList: 1,
-    PaintRequestList: 0,
-    Plugin: 0,
-    PluginArray: 0,
-    SVGLengthList: 0,
-    SVGNumberList: 0,
-    SVGPathSegList: 0,
-    SVGPointList: 0,
-    SVGStringList: 0,
-    SVGTransformList: 0,
-    SourceBufferList: 0,
-    StyleSheetList: 0,
-    TextTrackCueList: 0,
-    TextTrackList: 0,
-    TouchList: 0
-  };
-
-  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
-    var method = [][METHOD_NAME];
-    return !!method && fails(function () {
-      // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
-      method.call(null, argument || function () { throw 1; }, 1);
-    });
-  };
-
-  var $forEach = arrayIteration.forEach;
-
-
-  var STRICT_METHOD$3 = arrayMethodIsStrict('forEach');
-
-  // `Array.prototype.forEach` method implementation
-  // https://tc39.es/ecma262/#sec-array.prototype.foreach
-  var arrayForEach = !STRICT_METHOD$3 ? function forEach(callbackfn /* , thisArg */) {
-    return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
-  // eslint-disable-next-line es/no-array-prototype-foreach -- safe
-  } : [].forEach;
-
-  for (var COLLECTION_NAME in domIterables) {
-    var Collection = global_1[COLLECTION_NAME];
-    var CollectionPrototype = Collection && Collection.prototype;
-    // some Chrome versions have non-configurable methods on DOMTokenList
-    if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach) try {
-      createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach);
-    } catch (error) {
-      CollectionPrototype.forEach = arrayForEach;
-    }
-  }
 
   var TO_STRING_TAG$1 = wellKnownSymbol('toStringTag');
   var test$1 = {};
@@ -1322,24 +995,108 @@
     }, { unsafe: true });
   }
 
-  /* eslint-disable es/no-array-prototype-indexof -- required for testing */
+  var createProperty = function (object, key, value) {
+    var propertyKey = toPrimitive(key);
+    if (propertyKey in object) objectDefineProperty.f(object, propertyKey, createPropertyDescriptor(0, value));
+    else object[propertyKey] = value;
+  };
 
-  var $indexOf = arrayIncludes.indexOf;
+  var SPECIES$2 = wellKnownSymbol('species');
 
+  var arrayMethodHasSpeciesSupport = function (METHOD_NAME) {
+    // We can't use this feature detection in V8 since it causes
+    // deoptimization and serious performance degradation
+    // https://github.com/zloirock/core-js/issues/677
+    return engineV8Version >= 51 || !fails(function () {
+      var array = [];
+      var constructor = array.constructor = {};
+      constructor[SPECIES$2] = function () {
+        return { foo: 1 };
+      };
+      return array[METHOD_NAME](Boolean).foo !== 1;
+    });
+  };
 
-  var nativeIndexOf = [].indexOf;
+  var IS_CONCAT_SPREADABLE = wellKnownSymbol('isConcatSpreadable');
+  var MAX_SAFE_INTEGER = 0x1FFFFFFFFFFFFF;
+  var MAXIMUM_ALLOWED_INDEX_EXCEEDED = 'Maximum allowed index exceeded';
 
-  var NEGATIVE_ZERO = !!nativeIndexOf && 1 / [1].indexOf(1, -0) < 0;
-  var STRICT_METHOD$2 = arrayMethodIsStrict('indexOf');
+  // We can't use this feature detection in V8 since it causes
+  // deoptimization and serious performance degradation
+  // https://github.com/zloirock/core-js/issues/679
+  var IS_CONCAT_SPREADABLE_SUPPORT = engineV8Version >= 51 || !fails(function () {
+    var array = [];
+    array[IS_CONCAT_SPREADABLE] = false;
+    return array.concat()[0] !== array;
+  });
 
-  // `Array.prototype.indexOf` method
-  // https://tc39.es/ecma262/#sec-array.prototype.indexof
-  _export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD$2 }, {
-    indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
-      return NEGATIVE_ZERO
-        // convert -0 to +0
-        ? nativeIndexOf.apply(this, arguments) || 0
-        : $indexOf(this, searchElement, arguments.length > 1 ? arguments[1] : undefined);
+  var SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('concat');
+
+  var isConcatSpreadable = function (O) {
+    if (!isObject(O)) return false;
+    var spreadable = O[IS_CONCAT_SPREADABLE];
+    return spreadable !== undefined ? !!spreadable : isArray(O);
+  };
+
+  var FORCED$1 = !IS_CONCAT_SPREADABLE_SUPPORT || !SPECIES_SUPPORT;
+
+  // `Array.prototype.concat` method
+  // https://tc39.es/ecma262/#sec-array.prototype.concat
+  // with adding support of @@isConcatSpreadable and @@species
+  _export({ target: 'Array', proto: true, forced: FORCED$1 }, {
+    // eslint-disable-next-line no-unused-vars -- required for `.length`
+    concat: function concat(arg) {
+      var O = toObject(this);
+      var A = arraySpeciesCreate(O, 0);
+      var n = 0;
+      var i, k, length, len, E;
+      for (i = -1, length = arguments.length; i < length; i++) {
+        E = i === -1 ? O : arguments[i];
+        if (isConcatSpreadable(E)) {
+          len = toLength(E.length);
+          if (n + len > MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+          for (k = 0; k < len; k++, n++) if (k in E) createProperty(A, n, E[k]);
+        } else {
+          if (n >= MAX_SAFE_INTEGER) throw TypeError(MAXIMUM_ALLOWED_INDEX_EXCEEDED);
+          createProperty(A, n++, E);
+        }
+      }
+      A.length = n;
+      return A;
+    }
+  });
+
+  var arrayMethodIsStrict = function (METHOD_NAME, argument) {
+    var method = [][METHOD_NAME];
+    return !!method && fails(function () {
+      // eslint-disable-next-line no-useless-call,no-throw-literal -- required for testing
+      method.call(null, argument || function () { throw 1; }, 1);
+    });
+  };
+
+  var test = [];
+  var nativeSort = test.sort;
+
+  // IE8-
+  var FAILS_ON_UNDEFINED = fails(function () {
+    test.sort(undefined);
+  });
+  // V8 bug
+  var FAILS_ON_NULL = fails(function () {
+    test.sort(null);
+  });
+  // Old WebKit
+  var STRICT_METHOD$3 = arrayMethodIsStrict('sort');
+
+  var FORCED = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD$3;
+
+  // `Array.prototype.sort` method
+  // https://tc39.es/ecma262/#sec-array.prototype.sort
+  _export({ target: 'Array', proto: true, forced: FORCED }, {
+    sort: function sort(comparefn) {
+      return comparefn === undefined
+        ? nativeSort.call(toObject(this))
+        : nativeSort.call(toObject(this), aFunction(comparefn));
     }
   });
 
@@ -1454,156 +1211,6 @@
   // https://tc39.es/ecma262/#sec-regexp.prototype.exec
   _export({ target: 'RegExp', proto: true, forced: /./.exec !== regexpExec }, {
     exec: regexpExec
-  });
-
-  // a string of all valid unicode whitespaces
-  var whitespaces = '\u0009\u000A\u000B\u000C\u000D\u0020\u00A0\u1680\u2000\u2001\u2002' +
-    '\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
-
-  var whitespace = '[' + whitespaces + ']';
-  var ltrim = RegExp('^' + whitespace + whitespace + '*');
-  var rtrim = RegExp(whitespace + whitespace + '*$');
-
-  // `String.prototype.{ trim, trimStart, trimEnd, trimLeft, trimRight }` methods implementation
-  var createMethod$1 = function (TYPE) {
-    return function ($this) {
-      var string = String(requireObjectCoercible($this));
-      if (TYPE & 1) string = string.replace(ltrim, '');
-      if (TYPE & 2) string = string.replace(rtrim, '');
-      return string;
-    };
-  };
-
-  var stringTrim = {
-    // `String.prototype.{ trimLeft, trimStart }` methods
-    // https://tc39.es/ecma262/#sec-string.prototype.trimstart
-    start: createMethod$1(1),
-    // `String.prototype.{ trimRight, trimEnd }` methods
-    // https://tc39.es/ecma262/#sec-string.prototype.trimend
-    end: createMethod$1(2),
-    // `String.prototype.trim` method
-    // https://tc39.es/ecma262/#sec-string.prototype.trim
-    trim: createMethod$1(3)
-  };
-
-  var trim = stringTrim.trim;
-
-
-  var $parseInt = global_1.parseInt;
-  var hex = /^[+-]?0[Xx]/;
-  var FORCED$1 = $parseInt(whitespaces + '08') !== 8 || $parseInt(whitespaces + '0x16') !== 22;
-
-  // `parseInt` method
-  // https://tc39.es/ecma262/#sec-parseint-string-radix
-  var numberParseInt = FORCED$1 ? function parseInt(string, radix) {
-    var S = trim(String(string));
-    return $parseInt(S, (radix >>> 0) || (hex.test(S) ? 16 : 10));
-  } : $parseInt;
-
-  // `parseInt` method
-  // https://tc39.es/ecma262/#sec-parseint-string-radix
-  _export({ global: true, forced: parseInt != numberParseInt }, {
-    parseInt: numberParseInt
-  });
-
-  var non = '\u200B\u0085\u180E';
-
-  // check that a method works with the correct list
-  // of whitespaces and has a correct name
-  var stringTrimForced = function (METHOD_NAME) {
-    return fails(function () {
-      return !!whitespaces[METHOD_NAME]() || non[METHOD_NAME]() != non || whitespaces[METHOD_NAME].name !== METHOD_NAME;
-    });
-  };
-
-  var $trim = stringTrim.trim;
-
-
-  // `String.prototype.trim` method
-  // https://tc39.es/ecma262/#sec-string.prototype.trim
-  _export({ target: 'String', proto: true, forced: stringTrimForced('trim') }, {
-    trim: function trim() {
-      return $trim(this);
-    }
-  });
-
-  // eslint-disable-next-line es/no-object-assign -- safe
-  var $assign = Object.assign;
-  // eslint-disable-next-line es/no-object-defineproperty -- required for testing
-  var defineProperty = Object.defineProperty;
-
-  // `Object.assign` method
-  // https://tc39.es/ecma262/#sec-object.assign
-  var objectAssign = !$assign || fails(function () {
-    // should have correct order of operations (Edge bug)
-    if (descriptors && $assign({ b: 1 }, $assign(defineProperty({}, 'a', {
-      enumerable: true,
-      get: function () {
-        defineProperty(this, 'b', {
-          value: 3,
-          enumerable: false
-        });
-      }
-    }), { b: 2 })).b !== 1) return true;
-    // should work with symbols and should have deterministic property order (V8 bug)
-    var A = {};
-    var B = {};
-    // eslint-disable-next-line es/no-symbol -- safe
-    var symbol = Symbol();
-    var alphabet = 'abcdefghijklmnopqrst';
-    A[symbol] = 7;
-    alphabet.split('').forEach(function (chr) { B[chr] = chr; });
-    return $assign({}, A)[symbol] != 7 || objectKeys($assign({}, B)).join('') != alphabet;
-  }) ? function assign(target, source) { // eslint-disable-line no-unused-vars -- required for `.length`
-    var T = toObject(target);
-    var argumentsLength = arguments.length;
-    var index = 1;
-    var getOwnPropertySymbols = objectGetOwnPropertySymbols.f;
-    var propertyIsEnumerable = objectPropertyIsEnumerable.f;
-    while (argumentsLength > index) {
-      var S = indexedObject(arguments[index++]);
-      var keys = getOwnPropertySymbols ? objectKeys(S).concat(getOwnPropertySymbols(S)) : objectKeys(S);
-      var length = keys.length;
-      var j = 0;
-      var key;
-      while (length > j) {
-        key = keys[j++];
-        if (!descriptors || propertyIsEnumerable.call(S, key)) T[key] = S[key];
-      }
-    } return T;
-  } : $assign;
-
-  // `Object.assign` method
-  // https://tc39.es/ecma262/#sec-object.assign
-  // eslint-disable-next-line es/no-object-assign -- required for testing
-  _export({ target: 'Object', stat: true, forced: Object.assign !== objectAssign }, {
-    assign: objectAssign
-  });
-
-  var test = [];
-  var nativeSort = test.sort;
-
-  // IE8-
-  var FAILS_ON_UNDEFINED = fails(function () {
-    test.sort(undefined);
-  });
-  // V8 bug
-  var FAILS_ON_NULL = fails(function () {
-    test.sort(null);
-  });
-  // Old WebKit
-  var STRICT_METHOD$1 = arrayMethodIsStrict('sort');
-
-  var FORCED = FAILS_ON_UNDEFINED || !FAILS_ON_NULL || !STRICT_METHOD$1;
-
-  // `Array.prototype.sort` method
-  // https://tc39.es/ecma262/#sec-array.prototype.sort
-  _export({ target: 'Array', proto: true, forced: FORCED }, {
-    sort: function sort(comparefn) {
-      return comparefn === undefined
-        ? nativeSort.call(toObject(this))
-        : nativeSort.call(toObject(this), aFunction(comparefn));
-    }
   });
 
   // TODO: Remove from `core-js@4` since it's moved to entry points
@@ -1912,6 +1519,20 @@
     ];
   });
 
+  var $filter = arrayIteration.filter;
+
+
+  var HAS_SPECIES_SUPPORT = arrayMethodHasSpeciesSupport('filter');
+
+  // `Array.prototype.filter` method
+  // https://tc39.es/ecma262/#sec-array.prototype.filter
+  // with adding support of @@species
+  _export({ target: 'Array', proto: true, forced: !HAS_SPECIES_SUPPORT }, {
+    filter: function filter(callbackfn /* , thisArg */) {
+      return $filter(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
   // @@match logic
   fixRegexpWellKnownSymbolLogic('match', 1, function (MATCH, nativeMatch, maybeCallNative) {
     return [
@@ -1948,6 +1569,15 @@
       }
     ];
   });
+
+  var MATCH = wellKnownSymbol('match');
+
+  // `IsRegExp` abstract operation
+  // https://tc39.es/ecma262/#sec-isregexp
+  var isRegexp = function (it) {
+    var isRegExp;
+    return isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : classofRaw(it) == 'RegExp');
+  };
 
   var SPECIES = wellKnownSymbol('species');
 
@@ -2082,20 +1712,124 @@
     ];
   }, UNSUPPORTED_Y);
 
+  var $includes = arrayIncludes.includes;
+
+
+  // `Array.prototype.includes` method
+  // https://tc39.es/ecma262/#sec-array.prototype.includes
+  _export({ target: 'Array', proto: true }, {
+    includes: function includes(el /* , fromIndex = 0 */) {
+      return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  // https://tc39.es/ecma262/#sec-array.prototype-@@unscopables
+  addToUnscopables('includes');
+
+  // iterable DOM collections
+  // flag - `iterable` interface - 'entries', 'keys', 'values', 'forEach' methods
+  var domIterables = {
+    CSSRuleList: 0,
+    CSSStyleDeclaration: 0,
+    CSSValueList: 0,
+    ClientRectList: 0,
+    DOMRectList: 0,
+    DOMStringList: 0,
+    DOMTokenList: 1,
+    DataTransferItemList: 0,
+    FileList: 0,
+    HTMLAllCollection: 0,
+    HTMLCollection: 0,
+    HTMLFormElement: 0,
+    HTMLSelectElement: 0,
+    MediaList: 0,
+    MimeTypeArray: 0,
+    NamedNodeMap: 0,
+    NodeList: 1,
+    PaintRequestList: 0,
+    Plugin: 0,
+    PluginArray: 0,
+    SVGLengthList: 0,
+    SVGNumberList: 0,
+    SVGPathSegList: 0,
+    SVGPointList: 0,
+    SVGStringList: 0,
+    SVGTransformList: 0,
+    SourceBufferList: 0,
+    StyleSheetList: 0,
+    TextTrackCueList: 0,
+    TextTrackList: 0,
+    TouchList: 0
+  };
+
+  var $forEach = arrayIteration.forEach;
+
+
+  var STRICT_METHOD$2 = arrayMethodIsStrict('forEach');
+
+  // `Array.prototype.forEach` method implementation
+  // https://tc39.es/ecma262/#sec-array.prototype.foreach
+  var arrayForEach = !STRICT_METHOD$2 ? function forEach(callbackfn /* , thisArg */) {
+    return $forEach(this, callbackfn, arguments.length > 1 ? arguments[1] : undefined);
+  // eslint-disable-next-line es/no-array-prototype-foreach -- safe
+  } : [].forEach;
+
+  for (var COLLECTION_NAME in domIterables) {
+    var Collection = global_1[COLLECTION_NAME];
+    var CollectionPrototype = Collection && Collection.prototype;
+    // some Chrome versions have non-configurable methods on DOMTokenList
+    if (CollectionPrototype && CollectionPrototype.forEach !== arrayForEach) try {
+      createNonEnumerableProperty(CollectionPrototype, 'forEach', arrayForEach);
+    } catch (error) {
+      CollectionPrototype.forEach = arrayForEach;
+    }
+  }
+
+  var FAILS_ON_PRIMITIVES = fails(function () { objectKeys(1); });
+
+  // `Object.keys` method
+  // https://tc39.es/ecma262/#sec-object.keys
+  _export({ target: 'Object', stat: true, forced: FAILS_ON_PRIMITIVES }, {
+    keys: function keys(it) {
+      return objectKeys(toObject(it));
+    }
+  });
+
   var nativeJoin = [].join;
 
   var ES3_STRINGS = indexedObject != Object;
-  var STRICT_METHOD = arrayMethodIsStrict('join', ',');
+  var STRICT_METHOD$1 = arrayMethodIsStrict('join', ',');
 
   // `Array.prototype.join` method
   // https://tc39.es/ecma262/#sec-array.prototype.join
-  _export({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD }, {
+  _export({ target: 'Array', proto: true, forced: ES3_STRINGS || !STRICT_METHOD$1 }, {
     join: function join(separator) {
       return nativeJoin.call(toIndexedObject(this), separator === undefined ? ',' : separator);
     }
   });
 
-  var Utils$1 = $__default['default'].fn.bootstrapTable.utils;
+  /* eslint-disable es/no-array-prototype-indexof -- required for testing */
+
+  var $indexOf = arrayIncludes.indexOf;
+
+
+  var nativeIndexOf = [].indexOf;
+
+  var NEGATIVE_ZERO = !!nativeIndexOf && 1 / [1].indexOf(1, -0) < 0;
+  var STRICT_METHOD = arrayMethodIsStrict('indexOf');
+
+  // `Array.prototype.indexOf` method
+  // https://tc39.es/ecma262/#sec-array.prototype.indexof
+  _export({ target: 'Array', proto: true, forced: NEGATIVE_ZERO || !STRICT_METHOD }, {
+    indexOf: function indexOf(searchElement /* , fromIndex = 0 */) {
+      return NEGATIVE_ZERO
+        // convert -0 to +0
+        ? nativeIndexOf.apply(this, arguments) || 0
+        : $indexOf(this, searchElement, arguments.length > 1 ? arguments[1] : undefined);
+    }
+  });
+
+  var Utils = $__default['default'].fn.bootstrapTable.utils;
   var searchControls = 'select, input:not([type="checkbox"]):not([type="radio"])';
   function getOptionsFromSelectControl(selectControl) {
     return selectControl.get(selectControl.length - 1).options;
@@ -2116,9 +1850,9 @@
     for (var i = 0; i < options.length; i++) {
       if (options[i].value !== '') {
         if (!uniqueValues.hasOwnProperty(options[i].value)) {
-          selectControl.find(Utils$1.sprintf('option[value=\'%s\']', options[i].value)).hide();
+          selectControl.find(Utils.sprintf('option[value=\'%s\']', options[i].value)).hide();
         } else {
-          selectControl.find(Utils$1.sprintf('option[value=\'%s\']', options[i].value)).show();
+          selectControl.find(Utils.sprintf('option[value=\'%s\']', options[i].value)).show();
         }
       }
     }
@@ -2127,7 +1861,7 @@
     var options = getOptionsFromSelectControl(selectControl);
 
     for (var i = 0; i < options.length; i++) {
-      if (options[i].value === Utils$1.unescapeHTML(value)) {
+      if (options[i].value === Utils.unescapeHTML(value)) {
         // The value is not valid to add
         return true;
       }
@@ -2156,7 +1890,7 @@
 
     if (orderBy !== 'server') {
       $opts.sort(function (a, b) {
-        return Utils$1.sort(a.textContent, b.textContent, orderBy === 'desc' ? -1 : 1);
+        return Utils.sort(a.textContent, b.textContent, orderBy === 'desc' ? -1 : 1);
       });
     }
 
@@ -2171,7 +1905,7 @@
     return $element.attr('class').replace('form-control', '').replace('focus-temp', '').replace('search-input', '').trim();
   }
   function getCursorPosition(el) {
-    if (Utils$1.isIEBrowser()) {
+    if (Utils.isIEBrowser()) {
       if ($__default['default'](el).is('input[type=text]')) {
         var pos = 0;
 
@@ -2325,12 +2059,12 @@
 
         for (var i = 0; i < z; i++) {
           // Added a new value
-          var fieldValue = Utils$1.getItemField(data[i], field, false);
+          var fieldValue = Utils.getItemField(data[i], field, false);
           var formatter = that.options.editable && column.editable ? column._formatter : that.header.formatters[j];
-          var formattedValue = Utils$1.calculateObjectValue(that.header, formatter, [fieldValue, data[i], i], fieldValue);
+          var formattedValue = Utils.calculateObjectValue(that.header, formatter, [fieldValue, data[i], i], fieldValue);
 
           if (column.filterDataCollector) {
-            formattedValue = Utils$1.calculateObjectValue(that.header, column.filterDataCollector, [fieldValue, data[i], formattedValue], formattedValue);
+            formattedValue = Utils.calculateObjectValue(that.header, column.filterDataCollector, [fieldValue, data[i], formattedValue], formattedValue);
           }
 
           if (column.searchFormatter) {
@@ -2684,485 +2418,30 @@
     }
   };
 
-  var Utils = $__default['default'].fn.bootstrapTable.utils;
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.defaults, {
-    filterControl: false,
-    filterControlVisible: true,
-    // eslint-disable-next-line no-unused-vars
-    onColumnSearch: function onColumnSearch(field, text) {
-      return false;
-    },
-    onCreatedControls: function onCreatedControls() {
-      return false;
-    },
-    alignmentSelectControlOptions: undefined,
-    filterTemplate: {
-      input: function input(that, field, placeholder, value) {
-        return Utils.sprintf('<input type="search" class="form-control bootstrap-table-filter-control-%s search-input" style="width: 100%;" placeholder="%s" value="%s">', field, 'undefined' === typeof placeholder ? '' : placeholder, 'undefined' === typeof value ? '' : value);
-      },
-      select: function select(_ref, field) {
-        var options = _ref.options;
-        return Utils.sprintf('<select class="form-control bootstrap-table-filter-control-%s" style="width: 100%;" dir="%s"></select>', field, getDirectionOfSelectOptions(options.alignmentSelectControlOptions));
-      },
-      datepicker: function datepicker(that, field, value) {
-        return Utils.sprintf('<input type="text" class="form-control date-filter-control bootstrap-table-filter-control-%s" style="width: 100%;" value="%s">', field, 'undefined' === typeof value ? '' : value);
-      }
-    },
-    disableControlWhenSearch: false,
-    searchOnEnterKey: false,
-    showFilterControlSwitch: false,
-    // internal variables
-    valuesFilterControl: []
-  });
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.columnDefaults, {
-    filterControl: undefined,
-    // input, select, datepicker
-    filterDataCollector: undefined,
-    filterData: undefined,
-    filterDatepickerOptions: {},
-    filterStrictSearch: false,
-    filterStartsWithSearch: false,
-    filterControlPlaceholder: '',
-    filterDefault: '',
-    filterOrderBy: 'asc' // asc || desc
+  exports.addOptionToSelectControl = addOptionToSelectControl;
+  exports.collectBootstrapTableFilterCookies = collectBootstrapTableFilterCookies;
+  exports.copyValues = copyValues;
+  exports.createControls = createControls;
+  exports.escapeID = escapeID;
+  exports.existOptionInSelectControl = existOptionInSelectControl;
+  exports.fixHeaderCSS = fixHeaderCSS;
+  exports.getControlContainer = getControlContainer;
+  exports.getCursorPosition = getCursorPosition;
+  exports.getDirectionOfSelectOptions = getDirectionOfSelectOptions;
+  exports.getElementClass = getElementClass;
+  exports.getFilterDataMethod = getFilterDataMethod;
+  exports.getOptionsFromSelectControl = getOptionsFromSelectControl;
+  exports.getSearchControls = getSearchControls;
+  exports.hasSelectControlElement = hasSelectControlElement;
+  exports.hideUnusedSelectOptions = hideUnusedSelectOptions;
+  exports.initFilterSelectControls = initFilterSelectControls;
+  exports.isColumnSearchableViaSelect = isColumnSearchableViaSelect;
+  exports.isFilterDataNotGiven = isFilterDataNotGiven;
+  exports.setCursorPosition = setCursorPosition;
+  exports.setValues = setValues;
+  exports.sortSelectControl = sortSelectControl;
+  exports.syncControls = syncControls;
 
-  });
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.Constructor.EVENTS, {
-    'column-search.bs.table': 'onColumnSearch',
-    'created-controls.bs.table': 'onCreatedControls'
-  });
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.defaults.icons, {
-    filterControlSwitchHide: {
-      bootstrap3: 'glyphicon-zoom-out icon-zoom-out',
-      bootstrap5: 'bi-zoom-out',
-      materialize: 'zoom_out'
-    }[$__default['default'].fn.bootstrapTable.theme] || 'fa-search-minus',
-    filterControlSwitchShow: {
-      bootstrap3: 'glyphicon-zoom-in icon-zoom-in',
-      bootstrap5: 'bi-zoom-in',
-      materialize: 'zoom_in'
-    }[$__default['default'].fn.bootstrapTable.theme] || 'fa-search-plus'
-  });
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.locales, {
-    formatFilterControlSwitch: function formatFilterControlSwitch() {
-      return 'Hide/Show controls';
-    },
-    formatFilterControlSwitchHide: function formatFilterControlSwitchHide() {
-      return 'Hide controls';
-    },
-    formatFilterControlSwitchShow: function formatFilterControlSwitchShow() {
-      return 'Show controls';
-    }
-  });
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.defaults, $__default['default'].fn.bootstrapTable.locales);
-  $__default['default'].extend($__default['default'].fn.bootstrapTable.defaults, {
-    formatClearSearch: function formatClearSearch() {
-      return 'Clear filters';
-    }
-  });
-  $__default['default'].fn.bootstrapTable.methods.push('triggerSearch');
-  $__default['default'].fn.bootstrapTable.methods.push('clearFilterControl');
-  $__default['default'].fn.bootstrapTable.methods.push('toggleFilterControl');
-
-  $__default['default'].BootstrapTable = /*#__PURE__*/function (_$$BootstrapTable) {
-    _inherits(_class, _$$BootstrapTable);
-
-    var _super = _createSuper(_class);
-
-    function _class() {
-      _classCallCheck(this, _class);
-
-      return _super.apply(this, arguments);
-    }
-
-    _createClass(_class, [{
-      key: "init",
-      value: function init() {
-        var _this = this;
-
-        // Make sure that the filterControl option is set
-        if (this.options.filterControl) {
-          // Make sure that the internal variables are set correctly
-          this.options.valuesFilterControl = [];
-          this.$el.on('reset-view.bs.table', function () {
-            // Create controls on $tableHeader if the height is set
-            if (!_this.options.height) {
-              return;
-            } // Avoid recreate the controls
-
-
-            var $controlContainer = getControlContainer(_this);
-
-            if (($controlContainer.find('select').length > 0 || $controlContainer.find('input:not([type="checkbox"]):not([type="radio"])').length > 0) && !_this.options.filterControlContainer) {
-              return;
-            }
-
-            createControls(_this, $controlContainer);
-          }).on('post-header.bs.table', function () {
-            setValues(_this);
-          }).on('post-body.bs.table', function () {
-            if (_this.options.height && !_this.options.filterControlContainer) {
-              fixHeaderCSS(_this);
-            }
-
-            _this.$tableLoading.css('top', _this.$header.outerHeight() + 1);
-          }).on('column-switch.bs.table', function () {
-            setValues(_this);
-          }).on('load-success.bs.table', function () {
-            _this.enableControls(true);
-          }).on('load-error.bs.table', function () {
-            _this.enableControls(true);
-          });
-        }
-
-        _get(_getPrototypeOf(_class.prototype), "init", this).call(this);
-      }
-    }, {
-      key: "load",
-      value: function load(data) {
-        _get(_getPrototypeOf(_class.prototype), "load", this).call(this, data);
-
-        if (!this.options.filterControl) {
-          return;
-        }
-
-        createControls(this, getControlContainer(this));
-      }
-    }, {
-      key: "initHeader",
-      value: function initHeader() {
-        _get(_getPrototypeOf(_class.prototype), "initHeader", this).call(this);
-
-        if (!this.options.filterControl || this.options.height) {
-          return;
-        }
-
-        createControls(this, getControlContainer(this));
-      }
-    }, {
-      key: "initBody",
-      value: function initBody() {
-        _get(_getPrototypeOf(_class.prototype), "initBody", this).call(this);
-
-        syncControls(this);
-        initFilterSelectControls(this);
-      }
-    }, {
-      key: "initSearch",
-      value: function initSearch() {
-        var _this2 = this;
-
-        var that = this;
-        var filterPartial = $__default['default'].isEmptyObject(that.filterColumnsPartial) ? null : that.filterColumnsPartial;
-
-        _get(_getPrototypeOf(_class.prototype), "initSearch", this).call(this);
-
-        if (this.options.sidePagination === 'server' || filterPartial === null) {
-          return;
-        } // Check partial column filter
-
-
-        that.data = filterPartial ? that.data.filter(function (item, i) {
-          var itemIsExpected = [];
-          var keys1 = Object.keys(item);
-          var keys2 = Object.keys(filterPartial);
-          var keys = keys1.concat(keys2.filter(function (item) {
-            return !keys1.includes(item);
-          }));
-          keys.forEach(function (key) {
-            var thisColumn = that.columns[that.fieldsColumnsIndex[key]];
-            var filterValue = (filterPartial[key] || '').toLowerCase();
-            var value = Utils.unescapeHTML(Utils.getItemField(item, key, false));
-            var tmpItemIsExpected;
-
-            if (filterValue === '') {
-              tmpItemIsExpected = true;
-            } else {
-              // Fix #142: search use formatted data
-              if (thisColumn && thisColumn.searchFormatter) {
-                value = $__default['default'].fn.bootstrapTable.utils.calculateObjectValue(that.header, that.header.formatters[$__default['default'].inArray(key, that.header.fields)], [value, item, i], value);
-              }
-
-              if ($__default['default'].inArray(key, that.header.fields) !== -1) {
-                if (value === undefined || value === null) {
-                  tmpItemIsExpected = false;
-                } else if (_typeof(value) === 'object') {
-                  value.forEach(function (objectValue) {
-                    if (tmpItemIsExpected) {
-                      return;
-                    }
-
-                    if (_this2.options.searchAccentNeutralise) {
-                      objectValue = Utils.normalizeAccent(objectValue);
-                    }
-
-                    tmpItemIsExpected = that.isValueExpected(filterValue, objectValue, thisColumn, key);
-                  });
-                } else if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-                  if (_this2.options.searchAccentNeutralise) {
-                    value = Utils.normalizeAccent(value);
-                  }
-
-                  tmpItemIsExpected = that.isValueExpected(filterValue, value, thisColumn, key);
-                }
-              }
-            }
-
-            itemIsExpected.push(tmpItemIsExpected);
-          });
-          return !itemIsExpected.includes(false);
-        }) : that.data;
-        that.unsortedData = _toConsumableArray(that.data);
-      }
-    }, {
-      key: "isValueExpected",
-      value: function isValueExpected(searchValue, value, column, key) {
-        var tmpItemIsExpected = false;
-
-        if (column.filterStrictSearch) {
-          tmpItemIsExpected = value.toString().toLowerCase() === searchValue.toString().toLowerCase();
-        } else if (column.filterStartsWithSearch) {
-          tmpItemIsExpected = "".concat(value).toLowerCase().indexOf(searchValue) === 0;
-        } else if (this.options.regexSearch) {
-          tmpItemIsExpected = Utils.regexCompare(value, searchValue);
-        } else {
-          tmpItemIsExpected = "".concat(value).toLowerCase().includes(searchValue);
-        }
-
-        var largerSmallerEqualsRegex = /(?:(<=|=>|=<|>=|>|<)(?:\s+)?(\d+)?|(\d+)?(\s+)?(<=|=>|=<|>=|>|<))/gm;
-        var matches = largerSmallerEqualsRegex.exec(searchValue);
-
-        if (matches) {
-          var operator = matches[1] || "".concat(matches[5], "l");
-          var comparisonValue = matches[2] || matches[3];
-          var int = parseInt(value, 10);
-          var comparisonInt = parseInt(comparisonValue, 10);
-
-          switch (operator) {
-            case '>':
-            case '<l':
-              tmpItemIsExpected = int > comparisonInt;
-              break;
-
-            case '<':
-            case '>l':
-              tmpItemIsExpected = int < comparisonInt;
-              break;
-
-            case '<=':
-            case '=<':
-            case '>=l':
-            case '=>l':
-              tmpItemIsExpected = int <= comparisonInt;
-              break;
-
-            case '>=':
-            case '=>':
-            case '<=l':
-            case '=<l':
-              tmpItemIsExpected = int >= comparisonInt;
-              break;
-          }
-        }
-
-        if (column.filterCustomSearch) {
-          var customSearchResult = Utils.calculateObjectValue(this, column.filterCustomSearch, [searchValue, value, key, this.options.data], true);
-
-          if (customSearchResult !== null) {
-            tmpItemIsExpected = customSearchResult;
-          }
-        }
-
-        return tmpItemIsExpected;
-      }
-    }, {
-      key: "initColumnSearch",
-      value: function initColumnSearch(filterColumnsDefaults) {
-        copyValues(this);
-
-        if (filterColumnsDefaults) {
-          this.filterColumnsPartial = filterColumnsDefaults;
-          this.updatePagination(); // eslint-disable-next-line guard-for-in
-
-          for (var filter in filterColumnsDefaults) {
-            this.trigger('column-search', filter, filterColumnsDefaults[filter]);
-          }
-        }
-      }
-    }, {
-      key: "onColumnSearch",
-      value: function onColumnSearch(_ref2) {
-        var currentTarget = _ref2.currentTarget,
-            keyCode = _ref2.keyCode;
-
-        if ($__default['default'].inArray(keyCode, [37, 38, 39, 40]) > -1) {
-          return;
-        }
-
-        copyValues(this);
-        var text = $__default['default'].trim($__default['default'](currentTarget).val());
-        var $field = $__default['default'](currentTarget).closest('[data-field]').data('field');
-        this.trigger('column-search', $field, text);
-
-        if ($__default['default'].isEmptyObject(this.filterColumnsPartial)) {
-          this.filterColumnsPartial = {};
-        }
-
-        if (text) {
-          this.filterColumnsPartial[$field] = text;
-        } else {
-          delete this.filterColumnsPartial[$field];
-        }
-
-        this.options.pageNumber = 1;
-        this.enableControls(false);
-        this.onSearch({
-          currentTarget: currentTarget
-        }, false);
-      }
-    }, {
-      key: "initToolbar",
-      value: function initToolbar() {
-        this.showToolbar = this.showToolbar || this.options.showFilterControlSwitch;
-        this.showSearchClearButton = this.options.filterControl && this.options.showSearchClearButton;
-
-        if (this.options.showFilterControlSwitch) {
-          this.buttons = Object.assign(this.buttons, {
-            filterControlSwitch: {
-              text: this.options.filterControlVisible ? this.options.formatFilterControlSwitchHide() : this.options.formatFilterControlSwitchShow(),
-              icon: this.options.filterControlVisible ? this.options.icons.filterControlSwitchHide : this.options.icons.filterControlSwitchShow,
-              event: this.toggleFilterControl,
-              attributes: {
-                'aria-label': this.options.formatFilterControlSwitch(),
-                title: this.options.formatFilterControlSwitch()
-              }
-            }
-          });
-        }
-
-        _get(_getPrototypeOf(_class.prototype), "initToolbar", this).call(this);
-      }
-    }, {
-      key: "resetSearch",
-      value: function resetSearch(text) {
-        if (this.options.filterControl && this.options.showSearchClearButton) {
-          this.clearFilterControl();
-        }
-
-        _get(_getPrototypeOf(_class.prototype), "resetSearch", this).call(this, text);
-      }
-    }, {
-      key: "clearFilterControl",
-      value: function clearFilterControl() {
-        if (this.options.filterControl) {
-          var that = this;
-          var cookies = collectBootstrapTableFilterCookies();
-          var table = this.$el.closest('table');
-          var controls = getSearchControls(that);
-          var search = Utils.getSearchInput(this);
-          var hasValues = false;
-          var timeoutId = 0;
-          $__default['default'].each(that.options.valuesFilterControl, function (i, item) {
-            hasValues = hasValues ? true : item.value !== '';
-            item.value = '';
-          });
-          $__default['default'].each(that.options.filterControls, function (i, item) {
-            item.text = '';
-          });
-          setValues(that); // clear cookies once the filters are clean
-
-          clearTimeout(timeoutId);
-          timeoutId = setTimeout(function () {
-            if (cookies && cookies.length > 0) {
-              $__default['default'].each(cookies, function (i, item) {
-                if (that.deleteCookie !== undefined) {
-                  that.deleteCookie(item);
-                }
-              });
-            }
-          }, that.options.searchTimeOut); // If there is not any value in the controls exit this method
-
-          if (!hasValues) {
-            return;
-          } // Clear each type of filter if it exists.
-          // Requires the body to reload each time a type of filter is found because we never know
-          // which ones are going to be present.
-
-
-          if (controls.length > 0) {
-            this.filterColumnsPartial = {};
-            $__default['default'](controls[0]).trigger(controls[0].tagName === 'INPUT' ? 'keyup' : 'change', {
-              keyCode: 13
-            });
-          } else {
-            return;
-          }
-
-          if (search.length > 0) {
-            that.resetSearch();
-          } // use the default sort order if it exists. do nothing if it does not
-
-
-          if (that.options.sortName !== table.data('sortName') || that.options.sortOrder !== table.data('sortOrder')) {
-            var sorter = this.$header.find(Utils.sprintf('[data-field="%s"]', $__default['default'](controls[0]).closest('table').data('sortName')));
-
-            if (sorter.length > 0) {
-              that.onSort({
-                type: 'keypress',
-                currentTarget: sorter
-              });
-              $__default['default'](sorter).find('.sortable').trigger('click');
-            }
-          }
-        }
-      }
-    }, {
-      key: "triggerSearch",
-      value: function triggerSearch() {
-        var searchControls = getSearchControls(this);
-        searchControls.each(function () {
-          var el = $__default['default'](this);
-
-          if (el.is('select')) {
-            el.change();
-          } else {
-            el.keyup();
-          }
-        });
-      }
-    }, {
-      key: "enableControls",
-      value: function enableControls(enable) {
-        if (this.options.disableControlWhenSearch && this.options.sidePagination === 'server') {
-          var searchControls = getSearchControls(this);
-
-          if (!enable) {
-            searchControls.prop('disabled', 'disabled');
-          } else {
-            searchControls.removeProp('disabled');
-          }
-        }
-      }
-    }, {
-      key: "toggleFilterControl",
-      value: function toggleFilterControl() {
-        this.options.filterControlVisible = !this.options.filterControlVisible;
-        var $filterControls = getControlContainer(this).find('.filter-control, .no-filter-control');
-
-        if (this.options.filterControlVisible) {
-          $filterControls.show();
-        } else {
-          $filterControls.hide();
-          this.clearFilterControl();
-        }
-
-        var icon = this.options.showButtonIcons ? this.options.filterControlVisible ? this.options.icons.filterControlSwitchHide : this.options.icons.filterControlSwitchShow : '';
-        var text = this.options.showButtonText ? this.options.filterControlVisible ? this.options.formatFilterControlSwitchHide() : this.options.formatFilterControlSwitchShow() : '';
-        this.$toolbar.find('>.columns').find('.filter-control-switch').html("".concat(Utils.sprintf(this.constants.html.icon, this.options.iconsPrefix, icon), " ").concat(text));
-      }
-    }]);
-
-    return _class;
-  }($__default['default'].BootstrapTable);
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 })));

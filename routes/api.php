@@ -70,6 +70,9 @@ Route::get('/dosage/expand/{id}', 'Api\DosageController@expand')->name('dosage.e
 // gene validity
 Route::resource('validity', 'Api\ValidityController')->only(['index']);
 
+// clinical actionability
+Route::resource('actionability', 'Api\ActionabilityController')->only(['index']);
+
 // drugs
 Route::resource('drugs', 'Api\DrugController')->only(['index']);
 Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look');

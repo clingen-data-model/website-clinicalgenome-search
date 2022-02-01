@@ -302,6 +302,135 @@ class Mysql
 			$$key = $value;
 
         $array = [];
+
+        // do some cleanup
+        $search = trim($search);
+
+        $parts = explode(':', $search);
+
+        if (!isset($parts[1]))
+        {
+            $records = Disease::where('label', 'like', '%' . $search . '%')
+                        ->orderByRaw('CHAR_LENGTH(label)')
+                        //->orderBy('synonyms')
+                        //->orderBy('weight', 'desc')
+                        ->take(10)->get();
+            foreach($records as $record)
+            {
+                /*switch ($record->type)
+                {
+                    case 2:
+                        $ctag = "(previous of " . $record->alias . ")";
+                        break;
+                    case 3:
+                        $ctag = "(alias of " . $record->alias . ")";
+                        break;
+                    default:
+                        $ctag = '';
+                }*/
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->label,
+                            'alias' => '',
+                            'hgnc' => $record->curie,
+                            'url' => route('condition-show', $record->curie),
+                            'curated' => !empty($record->curation_activities)];
+            }
+        }
+        else
+        {
+            $id = $parts[1];
+
+            switch (strtoupper($parts[0]))
+            {
+                case 'OMIM':
+                    $records = Disease::query()->where('omim', 'like', $parts[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => 'OMIM:' . $record->omim,
+                                    'alias' => '(' . $record->curie . ')',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                case 'DOID':
+                    $records = Disease::query()->where('do_id', 'like', $parts[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => 'DOID:' . $record->do_id,
+                                    'alias' => '(' . $record->curie . ')',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                case 'ORPHANET':
+                case 'ORPHA':
+                    $records = Disease::query()->where('orpha_id', 'like', $parts[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => 'ORPHANET:' . $record->orpha_id,
+                                    'alias' => '(' . $record->curie . ')',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                case 'GARD':
+                    $records = Disease::query()->where('gard_id', 'like', $parts[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => 'GARD:' . $record->gard_id,
+                                    'alias' => '(' . $record->curie . ')',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                case 'MONDO':
+                    $records = Disease::query()->where('curie', 'like', $search . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => $record->curie,
+                                    'alias' => '',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                case 'MEDGEN':
+                case 'UMLS':
+                    $records = Disease::query()->where('umls_id', 'like', $parts[1] . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')->take(10)->get();
+
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => 'UMLS:' . $record->umls_id,
+                                    'alias' => '(' . $record->curie . ')',
+                                    'hgnc' => $record->label,
+                                    'url' => route('condition-show', $record->curie),
+                                    'curated' => !empty($record->curation_activities)];
+                    }
+                    break;
+                default:
+                    $check = null;
+
+            }
+
+        }
+        /*$array = [];
         if (stripos($search, 'MONDO') === 0)
         {
             $records = Disease::query()->where('curie', 'like', $search . '%')
@@ -339,13 +468,14 @@ class Mysql
                 // $ctag .= (empty($record->curated) ? '' : ' CURATED');
                 //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
                 //                . $ctag,
-                $array[] = ['label' => $record->label,
+                /*$array[] = ['label' => $record->label,
                             'alias' => '',
                             'hgnc' => $record->curie,
                             'url' => route('condition-show', $record->curie),
                             'curated' => !empty($record->curation_activities)];
             }
-        }
+        } */
+
 		return json_encode($array);
 	}
 

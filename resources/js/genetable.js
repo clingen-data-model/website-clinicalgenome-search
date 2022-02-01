@@ -526,6 +526,57 @@ function badgeFormatter(index, row) {
     return html;
 }
 
+function ardiseaseFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        html += '<div><a href="/kb/conditions/' + item.curie + '">' + item.label + '</a></div><div class="text-muted small">' + item.curie + '</div>';
+        if (idx < index.length - 1 )
+         html += '<hr>'
+    });
+
+    return html;
+}
+
+function adultFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        if (item == null)
+            html += '<div> </div><div> </div>';
+        else
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification" href="' + item.source
+                     + '">' + item.classification + '<div class="text-muted small">' + item.report_date
+                    + '</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+
+    });
+
+    return html;
+}
+
+function pedFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        if (item == null)
+            html += '<div> </div><div> </div>';
+        else {
+            html += '<div><a class="btn btn-default btn-block text-left  btn-classification" href="' + item.source
+                     + '">' + item.classification + '<div class="text-muted small">' + item.report_date
+                    + '</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+    });
+
+    return html;
+}
+
+
 function ashgncFormatter(index, row) {
     return '<a href="/kb/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
 }

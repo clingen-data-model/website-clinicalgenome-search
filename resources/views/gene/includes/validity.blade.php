@@ -26,12 +26,27 @@
                 @foreach($validity_collection as $validity)
                     <tr>
                         <td class="">
+                            <div>
                             {{ $record->label }}
+                            </div>
+                            <div class="badge badge-pill badge-light action-expand-curation" data-uuid="{{ $validity->assertion->curie }}">
+                                @if (!empty($validity->assertion->las_included) || !empty($validity->assertion->las_excluded))
+                                    <i class="fas fa-random fa-xs mr-1"></i>
+                                @endif
+                                @if (App\Validity::secondaryContributor($validity->assertion) != "NONE")
+                                <i class="fas fa-users fa-xs mr-1"></i>
+                                @endif
+                                <i class="fas fa-caret-down text-muted"></i>
+                            </div>
                         </td>
 
                         <td class="">
                             <a href="{{ route('condition-show', $record->getMondoString($validity->disease->iri, true)) }}">{{ displayMondoLabel($validity->disease->label) }}</a>
-                            <div class="text-muted small">{{ $record->getMondoString($validity->disease->iri, true) }} {!! displayMondoObsolete($validity->disease->label) !!}</div>
+                            <div class="text-muted small">{{ $record->getMondoString($validity->disease->iri, true) }} {!! displayMondoObsolete($validity->disease->label) !!}
+                                <!-- @if (!empty($validity->assertion->las_included) || !empty($validity->assertion->las_excluded))
+                                <span class="badge badge-pill badge-light action-expand-curation" data-uuid="{{ $validity->assertion->curie }}">Lumping & Splitting  <i class="fas fa-caret-down text-muted"></i></span>
+                                @endif -->
+                            </div>
                         </td>
 
                         <td class="">
@@ -44,30 +59,160 @@
                             {{ $validity->assertion->attributed_to->label }} GCEP
                             <i class="fas fa-external-link-alt ml-1"></i>
                             </a>
+                            <!-- @if (App\Validity::secondaryContributor($validity->assertion) != "NONE")
                             <div class="action-expand-curation" data-uuid="{{ $validity->assertion->curie }}" data-toggle="tooltip" data-placement="top" title="Click to view additional information" ><span class="text-muted"><i><small>show more  </small></i><i class="fas fa-caret-down text-muted"></i></span></div>
+                            @endif  -->
                         </td>
 
-                        <td class="text-center">
-                            <a class="btn btn-default btn-block text-left mb-2 btn-classification" href="/kb/gene-validity/{{ $validity->assertion->curie }}">
+                        <td class="">
+                            <a class="btn btn-default btn-block text-left btn-classification" href="/kb/gene-validity/{{ $validity->assertion->curie }}">
                             {{ \App\GeneLib::validityClassificationString($validity->assertion->classification->label) }}
                             </a>
+                            @if ($validity->assertion->animal_model_only)
+                            <div class='badge badge-warning text-left -'>
+                                Animal Model Only
+                            </div>
+                            @endif
                         </td>
 
                         <td class="text-center">
                             <a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/{{ $validity->assertion->curie }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($validity->assertion->report_date) }}</a>
                         </td>
                     </tr>
+                    @if ($mimflag && (in_array($mimflag, $validity->assertion->las_included) || in_array($mimflag, $validity->assertion->las_excluded)))
+                    <tr>
+                    @else
                     <tr class="hide-element">
-                        <td colspan="6" class="no-row-border">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <table class="table-sm m-0">
-                                        <tr class="noborder no-row-border">
-                                            <td valign="top" class=" small text-muted pr-2">Secondary Contributors: </td>
-                                            <td class="small">{{ App\Validity::secondaryContributor($validity->assertion) }}</td>
-                                        </tr>
-                                    </table>
+                    @endif
+                        <td class="no-row-border"></td>
+                        <td colspan="5" class="no-row-border">
+                            <div class="shadow-none bg-light rounded">
+                            <ul class="nav nav-pills border-bottom">
+                                <li role="presentation" class="active">
+                                    <a href="#las-{{ $validity->key }}" aria-controls="las-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-random mr-2"></i>Lumping & Splitting</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#sec-{{ $validity->key }}" aria-controls="sec-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-users mr-2"></i>Secondary Contributors</a>
+                                </li>
+                               <!-- <li role="presentation">
+                                    <a href="#history-{{ $validity->key }}" aria-controls="history-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-history mr-2"></i>History</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#three-{{ $validity->key }}" aria-controls="three-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-disease mr-2"></i>Other Stuff</a>
+                                </li>-->
+                            </ul>
+                            <div class="tab-content">
+                                <div role="tabpanel" class="pt-3 pl-3 tab-pane fade in active" id="las-{{ $validity->key }}">
+                                    @if (!empty($validity->assertion->las_included))
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-3">Included Phenotypes:</dt>
+                                            <dd class="col-sm-9">
+                                                @foreach ($validity->assertion->las_included as $mim)
+                                                    <div class="mb-1">
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                    <div>
+                                                @endforeach
+                                            <dd>
+                                        </dl>
+                                    @else
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-3">Included Phenotypes:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                                <i>No Included Phenotypes were specified</i>
+                                            <div>
+                                        <dd>
+                                    </dl>
+                                    @endif
+                                    @if (!empty($validity->assertion->las_excluded))
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-3">Excluded Phenotypes:</dt>
+                                            <dd class="col-sm-9">
+                                                @foreach ($validity->assertion->las_excluded as $mim)
+                                                    <div class="mb-1">
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                    </div>
+                                                @endforeach
+                                            </dd>
+                                         </dl>
+                                    @else
+                                        <dl class="row mb-0">
+                                            <dt class="col-sm-3">Excluded Phenotypes:</dt>
+                                            <dd class="col-sm-9">
+                                                <div class="mb-1">
+                                                    <i>No Excluded Phenotypes were specified</i>
+                                                <div>
+                                            <dd>
+                                        </dl>
+                                     @endif
+                                     <dl class="row mb-0">
+                                        <dt class="col-sm-3">Rationales:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                            @if (!empty($validity->assertion->las_rationale['rationales']))
+                                                    {{ implode(', ', $validity->assertion->las_rationale['rationales']) }}
+                                            @else
+                                                <i>No rationales were specified</i>
+                                            @endif
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                     <dl class="row mb-0">
+                                        <dt class="col-sm-3">PMIDs:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                            @if (!empty($validity->assertion->las_rationale['pmids']))
+                                                    {{ implode(', ', $validity->assertion->las_rationale['pmids']) }}
+                                            @else
+                                                <i>No PMIDs were specified</i>
+                                            @endif
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                     <dl class="row mb-0">
+                                        <dt class="col-sm-3">Notes:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                            @if (!empty($validity->assertion->las_rationale['notes']))
+                                                     {{ $validity->assertion->las_rationale['pmids'] }}
+                                            @else
+                                                <i>No Notes were specified</i>
+                                            @endif
+                                            </div>
+                                        </dd>
+                                     </dl>
                                 </div>
+                                <div role="tabpanel" class="pt-3 pl-3 tab-pane" id="sec-{{ $validity->key }}">
+                                    <dl class="row">
+                                        <dt class="col-sm-3 pl-3">Expert Panel:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                                {{ App\Validity::secondaryContributor($validity->assertion) }}
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                </div>
+                                <div role="tabpanel" class="pt-3 pl-3 tab-pane" id="history-{{ $validity->key }}">
+                                    <dl class="row">
+                                        <dt class="col-sm-3">History:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                                None
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                </div>
+                                <div role="tabpanel" class="pt-3 pl-3 tab-pane" id="three-{{ $validity->key }}">
+                                    <dl class="row">
+                                        <dt class="col-sm-3">Other Stuff:</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                                Lorem Epsum
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                </div>
+                            </div>
                             </div>
                         </td>
                     <tr>

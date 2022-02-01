@@ -317,6 +317,18 @@ class Gene extends Model
     }
 
 
+    /**
+     * Query scope by gene alias symbol
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAlias($query, $symbol)
+    {
+        return $query->whereJsonContains('alias_symbol', $symbol);
+    }
+
+
      /**
      * Query scope by cytoband
      *

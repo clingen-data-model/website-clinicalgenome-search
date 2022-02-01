@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Setting;
 
 use App\Omim;
+use App\Gene;
 
 class UpdateOmim extends Command
 {
@@ -71,10 +72,26 @@ class UpdateOmim extends Command
 
                 if (strpos($value[0], '#') !== 0)
                 {
+                    // check if there is a symbol
+                    $parts = explode(';', $value[2]);
+                    if (isset($parts[1]))
+                    {
+                        $gene = Gene::name(trim($parts[1]))->first();
+                        if ($gene === null)
+                        {
+                            $gene = Gene::previous(trim($parts[1]))->first();
+                            if ($gene === null)
+                                $gene = Gene::alias(trim($parts[1]))->first();
+
+
+                        }
+
+                    }
 
                     $issue = Omim::updateOrCreate(['omimid' => trim($value[1])],
                                     ['prefix' => trim($value[0]),
                                     'titles' => trim($value[2]),
+                                    'hgnc_id' => (empty($gene) ? null : $gene->hgnc_id),
                                     'alt_titles' => trim($value[3]),
                                     'inc_titles' => trim($value[4]),
                                     'status' => 1,

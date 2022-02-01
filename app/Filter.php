@@ -106,6 +106,7 @@ class Filter extends Model
     public const SCREEN_ALL_GENES = 9;
     public const SCREEN_ALL_DISEASES = 10;
     public const SCREEN_ALL_DRUGS = 11;
+    public const SCREEN_ACTIONABILITY_CURATIONS = 12;
 
 	/**
      * Automatically assign an ident on instantiation
