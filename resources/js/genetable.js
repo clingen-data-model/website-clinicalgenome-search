@@ -530,7 +530,7 @@ function ardiseaseFormatter(index, row) {
     var html = '';
 
     index.forEach(function (item, idx, index){
-        html += '<div><a href="/kb/conditions/' + item.curie + '">' + item.label + '</a></div><div class="text-muted small">' + item.curie + '</div>';
+        html += '<div><a href="/kb/conditions/' + item.curie + '">' + item.label + '</a></div><div class="text-muted small">' + item.curie + '<br><br></div>';
         if (idx < index.length - 1 )
          html += '<hr>'
     });
@@ -543,11 +543,19 @@ function adultFormatter(index, row) {
 
     index.forEach(function (item, idx, index){
         if (item == null)
-            html += '<div> </div><div> </div>';
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
+                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
         else
         {
             html += '<div><a class="btn btn-default btn-block text-left btn-classification" href="' + item.source
-                     + '">' + item.classification + '<div class="text-muted small">' + item.report_date
+                     + '">' + item.classification;
+            if (item.classification.length < 30)
+                html += '<br><br>';
+            html += '<div class="text-muted small">' + item.report_date
                     + '</div></a></div>';
             if (idx < index.length - 1 )
                         html += '<hr>'
@@ -563,10 +571,18 @@ function pedFormatter(index, row) {
 
     index.forEach(function (item, idx, index){
         if (item == null)
-            html += '<div> </div><div> </div>';
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
+                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
         else {
             html += '<div><a class="btn btn-default btn-block text-left  btn-classification" href="' + item.source
-                     + '">' + item.classification + '<div class="text-muted small">' + item.report_date
+                     + '">' + item.classification;
+            if (item.classification.length < 30)
+                html += '<br><br>';
+            html += '<div class="text-muted small">' + item.report_date
                     + '</div></a></div>';
             if (idx < index.length - 1 )
                         html += '<hr>'

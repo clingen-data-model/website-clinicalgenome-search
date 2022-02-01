@@ -54,39 +54,55 @@ class ActionabilityController extends Controller
 
             foreach($gene->genetic_conditions as $condition)
             {
+                if (empty($condition->actionability_assertions))
+                    continue;
+
+                // because of a genegraph anomoly, have to parse throug the diseases too
                 $diseases[] = $condition->disease;
 
-                // Map the proper adult and ped fields
+                $adult_entry = null;
+                $pedentry = null;
+
+                // Map the proper adult and ped fields and deal with the strange way genegraph handles diseases
                 foreach ($condition->actionability_assertions as $assertion)
                 {
                     if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                     {
-                        $adults[] = [ 'report_date' => (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('m/d/Y')),
+                        $adult_entry = [ 'report_date' => (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('m/d/Y')),
                                     'source' => $assertion->source,
                                     'attributed_to' => $assertion->attributed_to->label,
-                                    'classification' => $assertion->classification->label
+                                    'classification' => Genelib::actionabilityAssertionString($assertion->classification->label)
                                 ];
                         $total++;
 
                     }
-                    else
-                    {
-                        $adults[] = null;
-                    }
                     if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
                     {
-                        $pediatrics[] = [ 'report_date' => (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('m/d/Y')),
+                        $pedentry = [ 'report_date' => (empty($assertion->report_date) ? null : Carbon::parse($assertion->report_date)->format('m/d/Y')),
                                     'source' => $assertion->source,
                                     'attributed_to' => $assertion->attributed_to->label,
-                                    'classification' => $assertion->classification->label
+                                    'classification' => Genelib::actionabilityAssertionString($assertion->classification->label)
                                 ];
                         $total++;
                     }
-                    else
-                    {
-                        $pediatrics[] = null;
-                    }
                 }
+
+                if ($adult_entry !== null & $pedentry !== null)
+                {
+                    $adults[] = $adult_entry;
+                    $pediatrics[] = $pedentry;
+                }
+                else if ($adult_entry === null)
+                {
+                    $adults[] = $adult_entry;
+                    $pediatrics[] = $pedentry;
+                }
+                else{
+                    $adults[] = $adult_entry;
+                    $pediatrics[] = $pedentry;
+                }
+
+
             }
 
             $node->diseases = $diseases;

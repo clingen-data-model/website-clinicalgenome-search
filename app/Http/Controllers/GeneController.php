@@ -512,7 +512,7 @@ class GeneController extends Controller
 
         $validity_eps = count($validity_panels);
 		$actionability_collection = $actionability_collection->sortByDesc('order');
-
+//dd($validity_collection);
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
 //dd($variant_collection);

@@ -15925,6 +15925,18 @@ a.svg-link:hover {
   text-align: left;
 }
 
+.btn.btn-classification-blank {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 500 !important;
+  line-height: normal;
+  border-radius: 0.45rem;
+  background-color: white;
+  border: none;
+  white-space: normal !important;
+  text-align: left;
+}
+
 btn.btn-wrap {
   white-space: normal !important;
 }

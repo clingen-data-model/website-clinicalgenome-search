@@ -174,7 +174,7 @@
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['notes']))
-                                                     {{ $validity->assertion->las_rationale['pmids'] }}
+                                                     {{ $validity->assertion->las_rationale['notes'] }}
                                             @else
                                                 <i>No Notes were specified</i>
                                             @endif

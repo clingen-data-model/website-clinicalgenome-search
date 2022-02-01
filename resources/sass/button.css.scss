@@ -13,6 +13,19 @@
   text-align: left;
 }
 
+.btn.btn-classification-blank {
+    padding: .1rem .4rem;
+    font-size: .90rem;
+    font-weight: 500 !important;
+    line-height: normal;
+    border-radius: .45rem;
+    background-color: rgb(255, 255, 255);
+    //background-color: #fff;
+    border:none;
+    white-space: normal !important;
+    text-align: left;
+  }
+
 btn.btn-wrap {
   white-space: normal !important;
 }

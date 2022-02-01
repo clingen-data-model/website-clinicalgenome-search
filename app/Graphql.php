@@ -629,9 +629,9 @@ class Graphql
 
 
                     // create additional entries for lumping and splitting
-                    $inassert->las_included = null;
-                    $inassert->las_excluded = null;
-                    $inassert->las_rationale = null;
+                    $inassert->las_included = [];
+                    $inassert->las_excluded = [];
+                    $inassert->las_rationale = [];
 
                     if ($inassert->report_id !== null)
                     {
