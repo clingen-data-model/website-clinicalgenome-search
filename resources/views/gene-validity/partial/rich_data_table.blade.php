@@ -3,7 +3,7 @@
 	<div class="row " id="validity_supporting_data_genetic">
 		<hr />
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_with_proband'>
-			<h3>Genetic Evidence: Case Level (variants)</h3>
+			<h3> Scored Genetic Evidence: Case Level (variants)</h3>
             @if (empty($extrecord->genetic_evidence))
             <div class="alert alert-warning" role="alert">
 				No  evidence for a Family with a proband was found.
@@ -11,35 +11,25 @@
             @else
 			<div class="table-responsive">
 				<!-- START DEMO DATA -->
-				<table role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
+				<table id="geclv" role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
 					<thead>
 						<tr role="row">
-							<th colspan="8" role="columnheader"> <span></span></th>
-							<th colspan="5" role="columnheader">Segregations<span></span></th>
-							<th colspan="5" role="columnheader"> <span></span></th>
-						</tr>
-						<tr role="row">
-							<th colspan="1" role="columnheader" style="min-width: 80px; word-break: normal;">
-								Label<span></span></th>
-							<th colspan="1" role="columnheader" title="Toggle SortBy">Variant Type<span></span></th>
-							<th colspan="1" role="columnheader">Variant<span></span></th>
-							<th colspan="1" role="columnheader" title="Toggle SortBy">Reference (PMID)<span></span></th>
-							<th colspan="1" role="columnheader" style="max-width: 80px;">Proband Sex<span></span></th>
-							<th colspan="1" role="columnheader">Proband Age<span></span></th>
-							<th colspan="1" role="columnheader">Proband Ethnicity<span></span></th>
-							<th colspan="1" role="columnheader">Proband Phenotypes<span></span></th>
-							<th colspan="1" role="columnheader"># Aff<span></span></th>
-							<th colspan="1" role="columnheader"># Unaff<span></span></th>
-							<th colspan="1" role="columnheader">LOD Score<span></span></th>
-							<th colspan="1" role="columnheader">Counted<span></span></th>
-							<th colspan="1" role="columnheader">Sequencing Method<span></span></th>
-							<th colspan="1" role="columnheader">Proband Previous Testing<span></span></th>
-							<th colspan="1" role="columnheader">Proband Methods of Detection<span></span></th>
-							<th colspan="1" role="columnheader">Score Status<span></span></th>
-							<th colspan="1" role="columnheader">Proband Points (default points)<span></span></th>
-							<th colspan="1" role="columnheader" style="max-width: 240px;">Reason for Changed
-								Score<span></span>
-                            </th>
+							<th colspan="1" role="columnheader">Proband<br>Label</th>
+							<th colspan="1" role="columnheader">Variant<br>Type</th>
+							<th colspan="1" role="columnheader">Variant</th>
+							<th colspan="1" role="columnheader">Reference<br>(PMID)</th>
+							<th colspan="1" role="columnheader">Proband<br>Sex</th>
+							<th colspan="1" role="columnheader">Proband<br>Age</th>
+							<th colspan="1" role="columnheader">Proband<br>Ethnicity</th>
+							<th colspan="1" role="columnheader">Proband<br>Phenotypes</th>
+							<th colspan="1" role="columnheader">Proband<br>Previous<br>Testing</th>
+                            <th colspan="1" role="columnheader">Proband<br>Methods<br>of<br>Detection</th>
+                            <th colspan="1" role="columnheader">Functional<br>Data<br>(Explanation)</th>
+                            <th colspan="1" role="columnheader">De Novo (paternity/<br>maternity<br>confirmed)</th>
+							<th colspan="1" role="columnheader">Score<br>Status</th>
+							<th colspan="1" role="columnheader">Proband<br>Points<br>(default<br>points)</th>
+                            <th colspan="1" role="columnheader">Proband<br>Counted<br>Points</th>
+							<th colspan="1" role="columnheader">Explanation</th>
 						</tr>
 					</thead>
 					<tbody role="rowgroup">
@@ -68,7 +58,6 @@
 								<div class="variant-info">
                                     {{ $evidence->variant->label }}
                                 </div>
-								<span><strong></strong></span>
 							</td>
 							<td class="vertical-align-center" role="cell">
                                 <span>##NO PPOPER CITATION, et al.,
@@ -76,38 +65,37 @@
 										target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a></span>
                             </td>
 							<td class="vertical-align-center" role="cell" style="max-width: 80px;">
+                                ## No Proband Sex Field ##
                             </td>
 							<td class="vertical-align-center" role="cell">
+                                ## No Proband Age Field ##
                             </td>
 							<td class="vertical-align-center" role="cell">
+                                ## No Proband Ethnicity Field ##
                             </td>
 							<td class="vertical-align-center" role="cell">
+                                No Proband Phenotypes Fields ##
                             </td>
 							<td class="vertical-align-center" role="cell">
-                                ##3##
+                                ## No Proband Previous Testing Field##
                             </td>
 							<td class="vertical-align-center" role="cell">
-                                ##-##
+                                ## Probands Metthods of Detection fields##
                             </td>
 							<td class="vertical-align-center" role="cell">
-                                <span><strong>##Published:</strong> 2.1##</span>
+                                ## No Functionnal Data field ##
 							</td>
 							<td class="vertical-align-center" role="cell">
-                                ##No##
+                                ##No DeNovo Field ##
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ##
-                            </td>
-							<td class="vertical-align-center" role="cell">
-                                ##
-                            </td>
-							<td class="vertical-align-center" role="cell"><span><strong>##Method 1:</strong> Exome
-									sequencing##</span></td>
 							<td class="vertical-align-center" role="cell">
                                 Score
                             </td>
 							<td class="vertical-align-center" role="cell">
-                                <span><strong>{{ $record->score }}</strong> (##0.5##)</span>
+                                <span><strong>{{ $record->score }}</strong> (####)</span>
+                            </td>
+                            <td class="vertical-align-center" role="cell">
+                                ## No Proband Counted Points ##
                             </td>
 							<td class="vertical-align-center" role="cell" style="max-width: 240px;">
                                 {{ $record->description }}
@@ -264,97 +252,6 @@
 								contradicted by Brooks et al. (2014) functional data. The proband was only screened for
 								the RPL10 gene, and the variant is present in gnomAD: 8/191959, including 1 hemizygous
 								individual. </td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Brooks Proband</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.232A&gt;G (p.Lys78Glu)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Brooks SS, et al.,
-									<strong>2014</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/25316788"
-										target="_blank" rel="noopener noreferrer">PMID: 25316788</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell">Not Hispanic or Latino</td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Congenital sensorineural hearing
-												impairment</span></li>
-										<li class="hpo-term-item"><span>Abnormal digit morphology</span></li>
-										<li class="hpo-term-item"><span>Cryptorchidism</span></li>
-										<li class="hpo-term-item"><span>Sacral dimple</span></li>
-										<li class="hpo-term-item"><span>Mandibular prognathia</span></li>
-										<li class="hpo-term-item"><span>Thin upper lip vermilion</span></li>
-										<li class="hpo-term-item"><span>Seizure</span></li>
-										<li class="hpo-term-item"><span>Generalized hypotonia</span></li>
-									</ul>
-								</span></td>
-							<td class="vertical-align-center" role="cell">1</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span>-</span></td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Sanger
-									sequencing</span><br><strong>Description of genotyping method: </strong>X-linked
-								next generation sequencing panel of 82 genes</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>1.5</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">This variant was
-								upgraded to 1.5 points because the functional data suggests loss of function. This
-								variant segregates and phenotypes are consistent with X-linked syndromic intellectual
-								disability. Common clinical features include ID, seizures, microcephaly, hypotonia,
-								hearing loss, ataxia, dysmorphic facial features (only common feature prominent
-								jaw/prognathism), cardiac defects, and short stature. Variant is absent from gnomAD.
-								This is scored at the top of the range for missense, as this variant was also reported
-								in Borque et al., 2018, PMID:29066376 as de novo in the proband. In addition, the
-								variant was shown to result in LoF in a zebrafish complementation assay.</td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Bourque Proband</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.232A&gt;G (p.Lys78Glu)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Bourque DK, et al.,
-									<strong>2018</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/29066376"
-										target="_blank" rel="noopener noreferrer">PMID: 29066376</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"><span><strong>Age of Report: </strong>16
-									Years</span></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Seizure</span></li>
-										<li class="hpo-term-item"><span>Intellectual disability, severe</span></li>
-										<li class="hpo-term-item"><span>Microcephaly</span></li>
-										<li class="hpo-term-item"><span>Ataxia</span></li>
-										<li class="hpo-term-item"><span>Autism</span></li>
-									</ul>
-								</span></td>
-							<td class="vertical-align-center" role="cell">1</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span>-</span></td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Exome
-									sequencing</span><span>; <strong>Method 2:</strong> Sanger
-									sequencing</span><br><strong>Description of genotyping method: </strong>WES</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>1.5</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">Upgraded to be
-								consistent with the scoring of this same variant reported in Brooks et al. (2014). The
-								functional data suggests loss of function. It is absent from gnomAD. The phenotypes of
-								this proband are consistent with those associated with X-linked syndromic intellectual
-								disability. This score is the top of the range for missense using SOP v. 8. </td>
 						</tr>-->
 					</tbody>
 				</table>
@@ -364,9 +261,33 @@
 
         <div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
 			<h3>Scored Genetic Evidence: Case Level (segregation)</h3>
-			<div class="alert alert-warning" role="alert">
-				No segregated case level scored genetic evidence was found.
+            @if (empty($extrecord->genetic_evidence))
+            <div class="alert alert-warning" role="alert">
+				No  evidence for a Family with a proband was found.
 			</div>
+            @else
+			<div class="table-responsive">
+				<!-- START DEMO DATA -->
+				<table id="geclv" role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
+					<thead>
+						<tr role="row">
+							<th colspan="1" role="columnheader">Family (Proband) Label</th>
+							<th colspan="1" role="columnheader">Reference (PMID)</th>
+							<th colspan="1" role="columnheader">Family Ethnicity</th>
+							<th colspan="1" role="columnheader">Family Phenotypes</th>
+							<th colspan="1" role="columnheader">Family MOI</th>
+							<th colspan="1" role="columnheader"># Aff</th>
+							<th colspan="1" role="columnheader"># Unaff</th>
+							<th colspan="1" role="columnheader">LOD Score</th>
+							<th colspan="1" role="columnheader">LOD Score Counted</th>
+                            <th colspan="1" role="columnheader">Sequencing Method</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+                    </tbody>
+                </table>
+            </div>
+            @endif
 		</div>
 
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_without_proband'>

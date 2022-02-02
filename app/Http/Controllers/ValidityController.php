@@ -145,7 +145,9 @@ class ValidityController extends Controller
         // set display context for view
         $display_tabs = collect([
             'active' => "validity",
-            'title' => $record->label . " curation results for Gene-Disease Validity"
+            'scrid' => Filter::SCREEN_VALIDITY_CURATIONS,
+            'title' => $record->label . " curation results for Gene-Disease Validity",
+            'display' => "Gene-Disease Validity"
         ]);
 //dd($extrecord);
         return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord'))

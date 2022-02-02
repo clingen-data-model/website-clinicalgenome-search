@@ -757,7 +757,7 @@
               <table class="table table-condensed ml-4" style="width: 90%">
 
                 <tr class="">
-                    <td class="col-sm-6 border-0"><strong>Definitive</strong></td>
+                    <td class="col-sm-7 border-0"><strong>Definitive</strong></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_definitive'] ?? 0) }}%; background-color:#65ba59; opacity:1">
@@ -768,7 +768,7 @@
                   </tr>
 
                   <tr class="">
-                    <td class="col-sm-6 border-0"><strong>Strong</strong></td>
+                    <td class="col-sm-7 border-0"><strong>Strong</strong></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_strong'] ?? 0) }}%; background-color:#469c50; opacity:1">
@@ -779,7 +779,7 @@
                   </tr>
 
                   <tr class="">
-                    <td class="col-sm-6 border-0"><strong>Moderate</strong></td>
+                    <td class="col-sm-7 border-0"><strong>Moderate</strong></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_moderate'] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
@@ -790,7 +790,7 @@
                   </tr>
 
                   <tr class="">
-                    <td class="col-sm-6 border-0"><strong>Limited</strong></td>
+                    <td class="col-sm-7 border-0"><strong>Limited</strong></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_limited'] ?? 0) }}%; background-color:#55b2e3; opacity:1">
@@ -801,7 +801,7 @@
                   </tr>
 
                   <tr class="">
-                    <td class="col-sm-6 border-0"><strong>N/A - Insufficient evidence: expert review</strong></td>
+                    <td class="col-sm-7 border-0"><strong>N/A - Insufficient evidence: expert review</strong></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_expert_review'] ?? 0) }}%; background-color:#69399a; opacity:1">
@@ -812,7 +812,7 @@
                   </tr>
 
                   <tr class="">
-                    <td class="col-sm-6 border-0"><strong>N/A - Insufficient evidence: early rule-out</strong><br></td>
+                    <td class="col-sm-7 border-0"><strong>N/A - Insufficient evidence: early rule-out</strong><br></td>
                     <td class="border-0">
                       <div class="progress progress-no-bg mb-0 mt-0">
                         <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_early_rule_out'] ?? 0) }}%; background-color:#913699; opacity:1">

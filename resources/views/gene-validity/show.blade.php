@@ -135,109 +135,76 @@
     return res
   }
 
-  var choices=[
-                'Definitive',
-                'Strong',
-                'Moderate',
-                'Limited',
-                'Animal Model Only',
-                'Disputed',
-                'Refuted',
-                'No Known Disease Relationship'
-  ];
 
   function inittable() {
-    $table.bootstrapTable('destroy').bootstrapTable({
+    $('#geclv').bootstrapTable();
+
+    $table.bootstrapTable({
       locale: 'en-US',
       sortName:  "symbol",
-			sortOrder: "asc",
-      filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
+	  sortOrder: "asc",
       columns: [
         {
-          title: 'Gene',
-          field: 'symbol',
-          formatter: geneFormatter,
+          title: 'Label',
+          //field: 'symbol',
+          //formatter: geneFormatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
           sortable: true
         },
         {
-          title: 'HGNC',
-          field: 'hgnc_id',
-          formatter: ashgncFormatter,
-          cellStyle: cellFormatter,
-          filterControl: 'input',
-          searchFormatter: false,
-          sortable: true,
-          visible: false
-        },
-        {
-          title: 'Disease',
-          field: 'disease',
-          formatter: asdiseaseFormatter,
+          title: 'Experimental Category',
+          //field: 'disease',
+          //formatter: asdiseaseFormatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
           sortable: true
         },
         {
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mondo Disease Ontology"></i></div> MONDO',
-          field: 'mondo',
-          formatter: asmondoFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
+          title: 'Reference',
+          //field: 'moi',
+          sortable: true,
           filterControl: 'input',
-          sortable: true,
-          visible: false
-        },
-        {
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mode Of Inheritance"></i></div> MOI',
-          field: 'moi',
-          sortable: true,
-          filterControl: 'select',
           searchFormatter: false,
           //align: 'center',
-          formatter: moiFormatter,
+          //formatter: moiFormatter,
           cellStyle: cellFormatter,
         },
         {
-            title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
-          field: 'ep',
+          title: 'Explanation',
+          //field: 'ep',
           cellStyle: cellFormatter,
           searchFormatter: false,
-          filterControl: 'select',
+          filterControl: 'innput',
           sortable: true
         },
         {
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Gene Curation Standard Operating Procedure"></i></div> SOP',
-          field: 'sop',
+          title: 'Score Status',
+          //field: 'sop',
           cellStyle: cellFormatter,
           searchFormatter: false,
-          filterControl: 'select',
-          sortable: true
-        },
-		    {
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Clinical Validity Classification"></i></div> Classification',
-          field: 'classification',
-          formatter: asbadgeFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'select',
-          filterData: 'var:choices',
-          filterDefault: "{{ $col_search['col_search'] === "classification" ? $col_search['col_search_val'] : "" }}",
-          sortable: true,
-          sortName: 'order'
-        },
-		    {
-          field: 'released',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
-          cellStyle: cellFormatter,
-          formatter: datebadgeFormatter,
-          searchFormatter: false,
-          sortable: true,
           filterControl: 'input',
-          sortName: 'date'
+          sortable: true
+        },
+		{
+          title: 'Points<br>(default points)',
+          //field: 'classification',
+          //formatter: asbadgeFormatter,
+          cellStyle: cellFormatter,
+          searchFormatter: false,
+          filterControl: 'input',
+          sortable: true
+        },
+		{
+          //field: 'abc',
+          title: 'Reason for Changed Score',
+          cellStyle: cellFormatter,
+          //formatter: datebadgeFormatter,
+          searchFormatter: false,
+          sortable: true,
+          filterControl: 'input'
         }
       ]
     })

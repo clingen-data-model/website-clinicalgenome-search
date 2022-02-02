@@ -154,7 +154,7 @@
           sortable: false
         },
         {
-            title: ' Adult Assertion',
+          title: 'Adult Assertion',
           field: 'adults',
           formatter: adultFormatter,
           cellStyle: cellFormatter,
