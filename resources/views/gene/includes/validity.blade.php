@@ -31,10 +31,10 @@
                             </div>
                             <div class="badge badge-pill badge-light action-expand-curation" data-uuid="{{ $validity->assertion->curie }}">
                                 @if (!empty($validity->assertion->las_included) || !empty($validity->assertion->las_excluded))
-                                    <i class="fas fa-random fa-xs mr-1"></i>
+                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Lumping & Splitting"><i class="fas fa-random fa-sm mr-1"></i></span>
                                 @endif
                                 @if (App\Validity::secondaryContributor($validity->assertion) != "NONE")
-                                <i class="fas fa-users fa-xs mr-1"></i>
+                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Secondary Contributor"><i class="fas fa-users fa-sm mr-1"></i></span>
                                 @endif
                                 <i class="fas fa-caret-down text-muted"></i>
                             </div>
@@ -84,9 +84,8 @@
                     @else
                     <tr class="hide-element">
                     @endif
-                        <td class="no-row-border"></td>
-                        <td colspan="5" class="no-row-border">
-                            <div class="shadow-none bg-light rounded">
+                        <td colspan="6" class="no-row-border">
+                            <div class="ml-2 mr-2 shadow-none bg-lumping rounded">
                             <ul class="nav nav-pills border-bottom">
                                 <li role="presentation" class="active">
                                     <a href="#las-{{ $validity->key }}" aria-controls="las-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-random mr-2"></i>Lumping & Splitting</a>
@@ -101,7 +100,7 @@
                                     <a href="#three-{{ $validity->key }}" aria-controls="three-{{ $validity->key }}" role="tab" data-toggle="pill"><i class="fas fa-disease mr-2"></i>Other Stuff</a>
                                 </li>-->
                             </ul>
-                            <div class="tab-content">
+                            <div class=" ml-2 mr-2 mb-2 tab-content">
                                 <div role="tabpanel" class="pt-3 pl-3 tab-pane fade in active" id="las-{{ $validity->key }}">
                                     @if (!empty($validity->assertion->las_included))
                                         <dl class="row mb-0">

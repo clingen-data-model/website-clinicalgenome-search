@@ -2,6 +2,7 @@
 <a href="#validity_summary" class="badge badge-pill badge-light border-1 p-2 mr-2">Classification Summary <i class="fas fa-arrow-circle-down"></i></a>
 <a href="#validity_classification_matrix" class="badge badge-pill badge-light border-1 p-2 mr-2">Classification Matrix <i class="fas fa-arrow-circle-down"></i></a>
 <a href="#tag_genetic_evidence_case_level_with_proband" class="badge badge-pill badge-light border-1 p-2 mr-2">Genetic Evidence: Case Level <i class="fas fa-arrow-circle-down"></i></a>
+<a href="#tag_genetic_evidence_segregation" class="badge badge-pill badge-light border-1 p-2 mr-2">Genetic Evidence: Segregation <i class="fas fa-arrow-circle-down"></i></a>
 <a href="#tag_genetic_evidence_case_control" class="badge badge-pill badge-light border-1 p-2 mr-2">Genetic Evidence: Case-Control <i class="fas fa-arrow-circle-down"></i></a>
 <a href="#tag_experimental_evidence" class="badge badge-pill badge-light border-1 p-2 mr-2">Experimental Evidence <i class="fas fa-arrow-circle-down"></i></a>
 <hr />

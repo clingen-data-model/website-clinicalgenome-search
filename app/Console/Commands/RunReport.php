@@ -3,6 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use JiraRestApi\Issue\IssueService;
+use JiraRestApi\Issue\Comment;
+use JiraRestApi\Issue\IssueField;
+use JiraRestApi\User\UserService;
+use JiraRestApi\JiraException;
 
 use DB;
 use Mail;
@@ -255,6 +260,8 @@ class RunReport extends Command
         $handle = fopen(base_path() . '/data/dosage_recuration_report.tsv', "w");
         fwrite($handle, implode("\t", $header) . PHP_EOL);
 
+        $records = [];
+
         foreach($curations as $curation)
         {
             //dd($curation);
@@ -348,9 +355,52 @@ class RunReport extends Command
             //echo implode("\t", $list) . "\n";
             fwrite($handle, implode("\t", $list) . PHP_EOL);
 
+            $records[] = [  $isca,
+                            $curation->gene_label,
+                            $curation->haplo_classification,
+                            $curation->triplo_classification,
+                            $curation->report_date,
+                            'AD/XL',
+                            $proband_w_proven,
+                            $validity->classification,
+                            $validity->report_date,
+                            'https://search.clinicalgenome.org/kb/genes/' . $curation->gene_hgnc_id,
+                            'https://curation.clinicalgenome.org/curation-central/' . $gci
+        ];
+
         }
 
         fclose($handle);
+
+        //update jira
+        foreach ($records as $record)
+        {
+            echo "Updating Jira Record for " . $record[0] . "\n";
+
+            $comment = new Comment();
+
+            $body = '
+This issue was selected for recuration based on the results of the Recuration Report.
+
+Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
+
+   LOF Score:  ' . $record[6] . '
+   Validity Classification:  ' . $record[7] . '
+   Validity Report Date:  ' . $record[8] . '
+   ClinGen Report:  ' . $record[9] . '
+   GCI Report:  ' . $record[10] . '
+            ';
+
+            $comment->setBody($body);
+            $issueService = new IssueService();
+            $ret = $issueService->addComment($record[0], $comment);
+
+            $ret = $issueService->updateLabels($record[0],
+                        ['RecurationReport'],
+                        [],
+                        $notifyUsers = false
+                    );
+        }
 
         // attach and send email
         $data["email"] = "phillip.weller3@gmail.com";

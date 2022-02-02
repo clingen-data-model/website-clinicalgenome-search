@@ -3,33 +3,211 @@
 	<div class="row " id="validity_supporting_data_genetic">
 		<hr />
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_with_proband'>
-			<h3> Scored Genetic Evidence: Case Level (variants)</h3>
+			<h3 class="text-white bg-dark p-1"> SCORED GENETIC EVIDENCE: CASE LEVEL (VARIANTS)</h3>
             @if (empty($extrecord->genetic_evidence))
             <div class="alert alert-warning" role="alert">
 				No  evidence for a Family with a proband was found.
 			</div>
             @else
 			<div class="table-responsive">
-				<!-- START DEMO DATA -->
-				<table id="geclv" role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
+				<table id="geclv" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                        data-classes="table"
+                        data-locale="en-US"
+                        data-addrbar="true"
+                        data-search="true"
+                        data-filter-control="true"
+                        data-filter-control-visible="false"
+                        data-id-table="advancedTable"
+                        data-search-align="left"
+                        data-trim-on-search="true"
+                        data-show-search-clear-button="true"
+                        data-buttons="table_buttons"
+                        data-show-align="left"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+                        data-search-formatter="false"
+                        data-show-export="true"
+                        data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
+                        data-minimum-count-columns="2"
+                        data-pagination="true"
+                        data-id-field="id"
+                        {{-- data-ajax-options="ajaxOptions" --}}
+                        data-page-list="[10, 25, 50, 100, 250, all]"
+                        data-page-size="{{ $display_list ?? 25 }}"
+                        data-show-footer="false"
+                        data-side-pagination="client"
+                        data-pagination-v-align="both"
+                        data-show-extended-pagination="false"
+                        {{-- data-url="{{  $apiurl }}" --}}
+                        data-query-params="queryParams"
+                        data-response-handler="responseHandler"
+                        data-header-style="headerStyle"
+                        data-show-filter-control-switch="true"
+                        data-group-by="true"
+                        data-group-by-field="pheno">
 					<thead>
 						<tr role="row">
-							<th colspan="1" role="columnheader">Proband<br>Label</th>
-							<th colspan="1" role="columnheader">Variant<br>Type</th>
-							<th colspan="1" role="columnheader">Variant</th>
-							<th colspan="1" role="columnheader">Reference<br>(PMID)</th>
-							<th colspan="1" role="columnheader">Proband<br>Sex</th>
-							<th colspan="1" role="columnheader">Proband<br>Age</th>
-							<th colspan="1" role="columnheader">Proband<br>Ethnicity</th>
-							<th colspan="1" role="columnheader">Proband<br>Phenotypes</th>
-							<th colspan="1" role="columnheader">Proband<br>Previous<br>Testing</th>
-                            <th colspan="1" role="columnheader">Proband<br>Methods<br>of<br>Detection</th>
-                            <th colspan="1" role="columnheader">Functional<br>Data<br>(Explanation)</th>
-                            <th colspan="1" role="columnheader">De Novo (paternity/<br>maternity<br>confirmed)</th>
-							<th colspan="1" role="columnheader">Score<br>Status</th>
-							<th colspan="1" role="columnheader">Proband<br>Points<br>(default<br>points)</th>
-                            <th colspan="1" role="columnheader">Proband<br>Counted<br>Points</th>
-							<th colspan="1" role="columnheader">Explanation</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Label</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Age</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Ethnicity</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Phenotypes</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Previous<br>Testing</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Methods<br>of<br>Detection</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo (paternity/<br>maternity<br>confirmed)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+                        @foreach ($extrecord->genetic_evidence as $record)
+
+                        @php
+                            $evidence = null;
+                            $function = null;
+                            foreach ($record->evidence as $ev)
+                            {
+                                if ($ev->__typename == "VariantEvidence")
+                                {
+                                    $evidence = $ev;
+                                }
+                                else if ($ev->__typename == "GenericResource")
+                                {
+                                    $function = $ev;
+                                }
+                            }
+                            if ($evidence === null)
+                            {
+                                continue;
+                            }
+                        @endphp
+
+						<tr>
+							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
+								{{ $evidence->label }}
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+								<div class="variant-info">
+                                    {{ $evidence->variant->label }}
+                                </div>
+							</td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>, et al.,
+								<span class="text-danger"><strong>####</strong></span>, <a href="{{ $evidence->source->iri }}"
+										target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                            </td>
+							<td class="vertical-align-center" role="cell" style="max-width: 80px;">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
+							</td>
+							<td class="vertical-align-center" role="cell">
+                                <span class="text-danger"><strong>####</strong></span>
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                Score
+                            </td>
+							<td class="vertical-align-center" role="cell">
+                                <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
+                            </td>
+                            <td class="vertical-align-center" role="cell">
+                                <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
+                            </td>
+							<td class="vertical-align-center" role="cell" style="max-width: 240px;">
+                                {{ $record->description }}
+                            </td>
+						</tr>
+                        @endforeach
+					</tbody>
+				</table>
+			</div>
+            @endif
+		</div>
+
+        <hr />
+
+        <div class="col-12 pb-4" id='tag_genetic_evidence_segregation'>
+			<h3 class="text-white bg-dark p-1">SCORED GENETIC EVIDENCE: CASE LEVEL (SEGREGATION)</h3>
+            @if (empty($extrecord->genetic_evidence))
+            <div class="alert alert-warning" role="alert">
+				No  evidence for a Family with a proband was found.
+			</div>
+            @else
+			<div class="table-responsive">
+				<table id="gecls" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                        data-classes="table"
+                        data-locale="en-US"
+                        data-addrbar="true"
+                        data-search="true"
+                        data-filter-control="true"
+                        data-filter-control-visible="false"
+                        data-id-table="advancedTable"
+                        data-search-align="left"
+                        data-trim-on-search="true"
+                        data-show-search-clear-button="true"
+                        data-buttons="table_buttons"
+                        data-show-align="left"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+                        data-search-formatter="false"
+                        data-show-export="true"
+                        data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
+                        data-minimum-count-columns="2"
+                        data-pagination="true"
+                        data-id-field="id"
+                        {{-- data-ajax-options="ajaxOptions" --}}
+                        data-page-list="[10, 25, 50, 100, 250, all]"
+                        data-page-size="{{ $display_list ?? 25 }}"
+                        data-show-footer="false"
+                        data-side-pagination="client"
+                        data-pagination-v-align="both"
+                        data-show-extended-pagination="false"
+                        {{-- data-url="{{  $apiurl }}" --}}
+                        data-query-params="queryParams"
+                        data-response-handler="responseHandler"
+                        data-header-style="headerStyle"
+                        data-show-filter-control-switch="true"
+                        data-group-by="true"
+                        data-group-by-field="pheno">
+					<thead>
+						<tr>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family (Proband) Label</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference (PMID)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Ethnicity</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Phenotypes</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family MOI</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Aff</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Unaff</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">LOD Score</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">LOD Score Counted</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Sequencing Method</th>
 						</tr>
 					</thead>
 					<tbody role="rowgroup">
@@ -38,7 +216,7 @@
                             $evidence = null;
                             foreach ($record->evidence as $ev)
                             {
-                                if ($ev->__typename == "VariantEvidence")
+                                if ($ev->__typename == "Segregation")
                                 {
                                     $evidence = $ev;
                                     break;
@@ -47,269 +225,71 @@
                             if ($evidence === null)
                                 continue;
                         @endphp
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								{{ $evidence->label }}
+                        <tr>
+                            <td>
+                                {{ $evidence->label }} (<span class="text-danger"><strong>####</strong></span>)
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ### NO PROPER TYPE STRING FOUND ###
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>, et al.,
+								<span class="text-danger"><strong>####</strong></span>, <a href="{{ $evidence->source->iri }}"
+										target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
                             </td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">
-                                    {{ $evidence->variant->label }}
-                                </div>
-							</td>
-							<td class="vertical-align-center" role="cell">
-                                <span>##NO PPOPER CITATION, et al.,
-									<strong>NO PROPER YEAR</strong>, <a href="{{ $evidence->source->iri }}"
-										target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a></span>
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>
                             </td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">
-                                ## No Proband Sex Field ##
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ## No Proband Age Field ##
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ## No Proband Ethnicity Field ##
+                            <td>
+                                {{ $evidence->phenotype_positive_allele_positive_count }}
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                No Proband Phenotypes Fields ##
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ## No Proband Previous Testing Field##
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>: {{ $evidence->estimated_lod_score }}
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ## Probands Metthods of Detection fields##
+                            <td>
+                                <span class="text-danger"><strong>####</strong></span>
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                ## No Functionnal Data field ##
-							</td>
-							<td class="vertical-align-center" role="cell">
-                                ##No DeNovo Field ##
+                            <td>
+                                {{ $evidence->sequencing_method }}
                             </td>
-							<td class="vertical-align-center" role="cell">
-                                Score
-                            </td>
-							<td class="vertical-align-center" role="cell">
-                                <span><strong>{{ $record->score }}</strong> (####)</span>
-                            </td>
-                            <td class="vertical-align-center" role="cell">
-                                ## No Proband Counted Points ##
-                            </td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">
-                                {{ $record->description }}
-                            </td>
-						</tr>
+                        </tr>
                         @endforeach
-                        <!--
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Proband III:1</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.191C&gt;T (p.Ala64Val)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Zanni G, et al., <strong>2015</strong>,
-									<a href="https://www.ncbi.nlm.nih.gov/pubmed/26290468" target="_blank"
-										rel="noopener noreferrer">PMID: 26290468</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell">2</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span><span><strong>Calculated:</strong>
-										0.3</span></span></td>
-							<td class="vertical-align-center" role="cell">No</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Exome
-									sequencing</span><br><strong>Description of genotyping method: </strong>X-chromosome
-								exome resequencing</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0.5</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">The functional data
-								published in this study is not supportive, but the phenotypes associated with this
-								proband are consistent with X-linked syndromic intellectual disability. Further studies
-								are needed to determine the effect of p.Ala64Val. Scored at 0.5 to be consistent with
-								the variant reported in Thevenon et al. (2015). </td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Twin 1</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.616C&gt;A (p.Leu206Met)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Klauck SM, et al.,
-									<strong>2006</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/16940977"
-										target="_blank" rel="noopener noreferrer">PMID: 16940977</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"><span><strong>Age of Onset: </strong>1
-									Years</span></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Hemiparesis</span></li>
-										<li class="hpo-term-item"><span>Absent speech</span></li>
-										<li class="hpo-term-item"><span>Aggressive behavior</span></li>
-									</ul>
-								</span><span><strong>Free text:</strong><br>Left-sided hemiparesis, seizure
-									disorder</span></td>
-							<td class="vertical-align-center" role="cell">2</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span><span><strong>Calculated:</strong>
-										0.3</span></span></td>
-							<td class="vertical-align-center" role="cell">No</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Sanger
-									sequencing</span><br><strong>Description of genotyping method: </strong>Only
-								screened RPL10</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">Functional data in
-								Brooks et al., 2014, PMID: 25316788 contradicts variant's pathogenicity. </td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Family 277 Proband</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.639C&gt;G (p.His213Gln)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Klauck SM, et al.,
-									<strong>2006</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/16940977"
-										target="_blank" rel="noopener noreferrer">PMID: 16940977</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Autistic behavior</span></li>
-										<li class="hpo-term-item"><span>Severe expressive language delay</span></li>
-									</ul>
-								</span></td>
-							<td class="vertical-align-center" role="cell">2</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span><span><strong>Calculated:</strong>
-										0.3</span></span></td>
-							<td class="vertical-align-center" role="cell">No</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Sanger
-									sequencing</span><br><strong>Description of genotyping method: </strong>Only RPL10
-								screened</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">Brooks et al., 2014,
-								PMID: 25316788 functional data contradicts this variant's pathogenicity. This variant is
-								also seen at a high frequency in gnomAD: 8/191959, including 1 hemizygous individual.
-							</td>
-						</tr>
-						<tr role="row">
-							<td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-								Chiocchetti Family Proband</td>
-							<td class="vertical-align-center" role="cell">Proband with other variant type with some
-								evidence of gene impact</td>
-							<td class="vertical-align-center" role="cell">
-								<div class="variant-info">NM_006013.5(RPL10):c.639C&gt;G (p.His213Gln)</div>
-								<span><strong></strong></span>
-							</td>
-							<td class="vertical-align-center" role="cell"><span>Chiocchetti A, et al.,
-									<strong>2011</strong>, <a href="https://www.ncbi.nlm.nih.gov/pubmed/21567917"
-										target="_blank" rel="noopener noreferrer">PMID: 21567917</a></span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 80px;">Male</td>
-							<td class="vertical-align-center" role="cell"><span><strong>Age of Report: </strong>15
-									Years</span></td>
-							<td class="vertical-align-center" role="cell">Not Hispanic or Latino</td>
-							<td class="vertical-align-center" role="cell"><span><strong>HPO term(s):</strong>
-									<ul class="hpo-terms-list">
-										<li class="hpo-term-item"><span>Absent speech</span></li>
-										<li class="hpo-term-item"><span>Stereotypy</span></li>
-									</ul>
-								</span></td>
-							<td class="vertical-align-center" role="cell">1</td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"><span>-</span></td>
-							<td class="vertical-align-center" role="cell">-</td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"></td>
-							<td class="vertical-align-center" role="cell"><span><strong>Method 1:</strong> Sanger
-									sequencing</span><br><strong>Description of genotyping method: </strong>Direct
-								sequencing of RPL10</td>
-							<td class="vertical-align-center" role="cell">Score</td>
-							<td class="vertical-align-center" role="cell"><span><strong>0</strong> (0.5)</span></td>
-							<td class="vertical-align-center" role="cell" style="max-width: 240px;">Variant is not
-								scored because it is the same variant identified by Klauk et al. (2006), which was
-								contradicted by Brooks et al. (2014) functional data. The proband was only screened for
-								the RPL10 gene, and the variant is present in gnomAD: 8/191959, including 1 hemizygous
-								individual. </td>
-						</tr>-->
-					</tbody>
-				</table>
-			</div>
-            @endif
-		</div>
-
-        <div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
-			<h3>Scored Genetic Evidence: Case Level (segregation)</h3>
-            @if (empty($extrecord->genetic_evidence))
-            <div class="alert alert-warning" role="alert">
-				No  evidence for a Family with a proband was found.
-			</div>
-            @else
-			<div class="table-responsive">
-				<!-- START DEMO DATA -->
-				<table id="geclv" role="table" class="table-validity-data table table-bordered table-sm table-striped table-hover">
-					<thead>
-						<tr role="row">
-							<th colspan="1" role="columnheader">Family (Proband) Label</th>
-							<th colspan="1" role="columnheader">Reference (PMID)</th>
-							<th colspan="1" role="columnheader">Family Ethnicity</th>
-							<th colspan="1" role="columnheader">Family Phenotypes</th>
-							<th colspan="1" role="columnheader">Family MOI</th>
-							<th colspan="1" role="columnheader"># Aff</th>
-							<th colspan="1" role="columnheader"># Unaff</th>
-							<th colspan="1" role="columnheader">LOD Score</th>
-							<th colspan="1" role="columnheader">LOD Score Counted</th>
-                            <th colspan="1" role="columnheader">Sequencing Method</th>
-						</tr>
-					</thead>
-					<tbody role="rowgroup">
                     </tbody>
                 </table>
             </div>
             @endif
 		</div>
 
+        <hr />
+
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_without_proband'>
-			<h3>Genetic Evidence: Case Level (family segregation information without proband data or scored proband
+			<h3 class="text-white bg-dark p-1">GENETIC EVIDENCE: CASE LEVEL (FAMILY SEGREGATION INFORMTAION WITHOUT PROBAND DATA OR SCORED PROBAND)
 				data)</h3>
 			<div class="alert alert-warning" role="alert">
 				No segregation evidence for a Family without a proband was found.
 			</div>
 		</div>
 
+        <hr />
 
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
-			<h3>Genetic Evidence: Case-Control</h3>
+			<h3 class="text-white bg-dark p-1">GENETIC EVIDENCE: CASE-CONTROL</h3>
 
 			<div class="alert alert-warning" role="alert">
 				No case-control genetic evidence was found.
 			</div>
 		</div>
 
+        <hr />
 
 		<div class="col-12 pb-4" id='tag_experimental_evidence'>
-			<h3>Experimental Evidence</h3>
+			<h3 class="text-white bg-dark p-1">EXPERIMENTAL EVIDENCE</h3>
             @if (empty($extrecord->experimental_evidence))
             <div class="alert alert-warning" role="alert">
 				No experimental evidence was found.
@@ -317,31 +297,64 @@
             @else
 			<div class="table-responsive">
 				<!-- START DEMO DATA -->
-				<table id="table" role="table" class="table table-validity-data table-bordered small">
+				<table id="table" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                    data-classes="table"
+                        data-locale="en-US"
+                        data-addrbar="true"
+                        data-search="true"
+                        data-filter-control="true"
+                        data-filter-control-visible="false"
+                        data-id-table="advancedTable"
+                        data-search-align="left"
+                        data-trim-on-search="true"
+                        data-show-search-clear-button="true"
+                        data-buttons="table_buttons"
+                        data-show-align="left"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+                        data-search-formatter="false"
+                        data-show-export="true"
+                        data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
+                        data-minimum-count-columns="2"
+                        data-pagination="true"
+                        data-id-field="id"
+                        {{-- data-ajax-options="ajaxOptions" --}}
+                        data-page-list="[10, 25, 50, 100, 250, all]"
+                        data-page-size="{{ $display_list ?? 25 }}"
+                        data-show-footer="false"
+                        data-side-pagination="client"
+                        data-pagination-v-align="both"
+                        data-show-extended-pagination="false"
+                        {{-- data-url="{{  $apiurl }}" --}}
+                        data-query-params="queryParams"
+                        data-response-handler="responseHandler"
+                        data-header-style="headerStyle"
+                        data-show-filter-control-switch="true"
+                        data-group-by="true"
+                        data-group-by-field="pheno">
 					<thead>
 						<tr role="row">
-							<th colspan="1" role="columnheader" style="word-break: normal;">Label<span></span></th>
-							<th colspan="1" role="columnheader" title="Toggle SortBy">Experimental Category<span></span>
-							</th>
-							<th colspan="1" role="columnheader" title="Toggle SortBy">Reference<span></span></th>
-							<th colspan="1" role="columnheader" style="max-width: 600px;">Explanation<span></span></th>
-							<th colspan="1" role="columnheader" title="Toggle SortBy">Score Status<span></span></th>
-							<th colspan="1" role="columnheader">Points (default points)<span></span></th>
-							<th colspan="1" role="columnheader" style="max-width: 600px;">Reason for Changed
-								Score<span></span></th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Label</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Experimental Category</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score Status</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Points (default points)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reason for Changed Score</th>
 						</tr>
 					</thead>
 					<tbody role="rowgroup">
                         @foreach($extrecord->experimental_evidence as $record)
-						<tr role="row">
+						<tr>
 							<td class="vertical-align-center" role="cell" style="word-break: normal;">
                                 {{ $record->evidence[0]->label }}
 							</td>
-							<td class="vertical-align-center" role="cell"><strong>### Missing category string</strong><span> ###</span>
+							<td class="vertical-align-center" role="cell"><span class="text-danger"><strong>####</strong></span>
 							</td>
-							<td class="vertical-align-center" role="cell"><span>##missing proper author##, et al.,
-									<strong>##missing proper year##</strong>, <a href="{{ $record->evidence[0]->source->iri }}"
-										target="_blank" rel="noopener noreferrer">PMID: {{ basename($record->evidence[0]->source->iri) }}</a> </span></td>
+							<td class="vertical-align-center" role="cell"><span class="text-danger"><strong>####</strong></span>, et al.,
+								<span class="text-danger"><strong>####</strong></span>, <a href="{{ $record->evidence[0]->source->iri }}"
+										target="_blank" rel="noopener noreferrer">PMID: {{ basename($record->evidence[0]->source->iri) }}</a></td>
 							<td class="vertical-align-center" role="cell" style="max-width: 600px;">
                                 {{ $record->evidence[0]->description }}
                             </td>
@@ -349,7 +362,7 @@
                                 Score
                             </td>
 							<td class="vertical-align-center" role="cell">
-                                <span><strong>{{ $record->score }}</strong> (###)</span>
+                                <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
                             </td>
 							<td class="vertical-align-center" role="cell" style="max-width: 600px;">
                                 {{  $record->description }}

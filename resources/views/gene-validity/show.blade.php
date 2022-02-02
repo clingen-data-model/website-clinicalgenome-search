@@ -138,76 +138,9 @@
 
   function inittable() {
     $('#geclv').bootstrapTable();
+    $('#gecls').bootstrapTable();
+    $table.bootstrapTable();
 
-    $table.bootstrapTable({
-      locale: 'en-US',
-      sortName:  "symbol",
-	  sortOrder: "asc",
-      columns: [
-        {
-          title: 'Label',
-          //field: 'symbol',
-          //formatter: geneFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
-        },
-        {
-          title: 'Experimental Category',
-          //field: 'disease',
-          //formatter: asdiseaseFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
-        },
-        {
-          title: 'Reference',
-          //field: 'moi',
-          sortable: true,
-          filterControl: 'input',
-          searchFormatter: false,
-          //align: 'center',
-          //formatter: moiFormatter,
-          cellStyle: cellFormatter,
-        },
-        {
-          title: 'Explanation',
-          //field: 'ep',
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'innput',
-          sortable: true
-        },
-        {
-          title: 'Score Status',
-          //field: 'sop',
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
-        },
-		{
-          title: 'Points<br>(default points)',
-          //field: 'classification',
-          //formatter: asbadgeFormatter,
-          cellStyle: cellFormatter,
-          searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
-        },
-		{
-          //field: 'abc',
-          title: 'Reason for Changed Score',
-          cellStyle: cellFormatter,
-          //formatter: datebadgeFormatter,
-          searchFormatter: false,
-          sortable: true,
-          filterControl: 'input'
-        }
-      ]
-    })
 
     $table.on('load-error.bs.table', function (e, name, args) {
       $("body").css("cursor", "default");
@@ -241,7 +174,7 @@
 $(function() {
 
   // Set cursor to busy prior to table init
-  $("body").css("cursor", "progress");
+  //$("body").css("cursor", "progress");
 
   // initialize the table and load the data
   inittable();
