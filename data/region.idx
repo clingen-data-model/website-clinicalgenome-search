@@ -5586,8 +5586,8 @@ chr10:111567369-111567925	ISCA-4678	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr22:22838767-22863505	ISCA-4677	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.283	
 chr15:45206818-45222820	ISCA-4676	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr3:110790606-110913017	ISCA-4675	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.734	607147
-	ISCA-46742	ISCA Region Curation	Awaiting Review	7p22.1 region (includes ACTB)	N/A	N/A		
-Chr9:	ISCA-46741	ISCA Region Curation	Awaiting Review	9p24.3 Region (includes DMRT1)	N/A	N/A		
+chr7:5536848-5799722	ISCA-46742	ISCA Region Curation	Awaiting Review	7p22.1 region (includes ACTB)	N/A	N/A		
+Chr9:883300-918342	ISCA-46741	ISCA Region Curation	Awaiting Review	9p24.3 Region (includes DMRT1)	N/A	N/A		
 	ISCA-46740	ISCA Region Curation	Awaiting Review	SHOX region	N/A	N/A		
 chr1:93615299-93646246	ISCA-4674	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.002	
 chrY:25853189-26146959	ISCA-46739	ISCA Region Curation	Complete	Yq11.223 population region (DGV_Gold_Standard_June_2021_gssvL138428)	0	40: Dosage sensitivity unlikely		
@@ -33415,7 +33415,7 @@ chr14:32544625-32545905	ISCA-20466	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chrX:153759605-153775801	ISCA-20465	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.966	305900
 chr5:131746465-131811736	ISCA-20464	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.108	
 chr6:2663863-2770564	ISCA-20463	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr15:40453210-40513337	ISCA-20462	ISCA Gene Curation	Under Group Review		N/A	N/A		602860
+chr15:40453210-40513337	ISCA-20462	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype		602860
 chr8:110346552-110358189	ISCA-20461	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.798	
 chr7:63961203-63962107	ISCA-20460	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:16370231-16383821	ISCA-2046	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype		602023

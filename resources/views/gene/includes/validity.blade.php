@@ -29,8 +29,9 @@
                             <div>
                             {{ $record->label }}
                             </div>
-                            <div class="badge badge-pill badge-light action-expand-curation" data-uuid="{{ $validity->assertion->curie }}">
-                                @if (!empty($validity->assertion->las_included) || !empty($validity->assertion->las_excluded))
+                            @if (App\Validity::hasLumpingContent($validity->assertion) || App\Validity::secondaryContributor($validity->assertion) != "NONE")
+                            <div class="badge badge-pill badge-light border-1 border-secondary action-expand-curation" data-uuid="{{ $validity->assertion->curie }}">
+                                @if (App\Validity::hasLumpingContent($validity->assertion))
                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Lumping & Splitting"><i class="fas fa-random fa-sm mr-1"></i></span>
                                 @endif
                                 @if (App\Validity::secondaryContributor($validity->assertion) != "NONE")
@@ -38,6 +39,7 @@
                                 @endif
                                 <i class="fas fa-caret-down text-muted"></i>
                             </div>
+                            @endif
                         </td>
 
                         <td class="">
@@ -101,10 +103,12 @@
                                 </li>-->
                             </ul>
                             <div class=" ml-2 mr-2 mb-2 tab-content">
-                                <div role="tabpanel" class="pt-3 pl-3 tab-pane fade in active" id="las-{{ $validity->key }}">
+                                <div role="tabpanel" class="pt-3 pl-3 pb-2 tab-pane fade in active" id="las-{{ $validity->key }}">
                                     @if (!empty($validity->assertion->las_included))
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3">Included Phenotypes:</dt>
+                                            <dt class="col-sm-3 text-right">Included Phenotypes
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_included as $mim)
                                                     <div class="mb-1">
@@ -115,7 +119,9 @@
                                         </dl>
                                     @else
                                     <dl class="row mb-0">
-                                        <dt class="col-sm-3">Included Phenotypes:</dt>
+                                        <dt class="col-sm-3 text-right">Included Phenotypes
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                                 <i>No Included Phenotypes were specified</i>
@@ -125,7 +131,9 @@
                                     @endif
                                     @if (!empty($validity->assertion->las_excluded))
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3">Excluded Phenotypes:</dt>
+                                            <dt class="col-sm-3 text-right">Excluded Phenotypes
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_excluded as $mim)
                                                     <div class="mb-1">
@@ -136,7 +144,9 @@
                                          </dl>
                                     @else
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3">Excluded Phenotypes:</dt>
+                                            <dt class="col-sm-3 text-right">Excluded Phenotypes
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                :</dt>
                                             <dd class="col-sm-9">
                                                 <div class="mb-1">
                                                     <i>No Excluded Phenotypes were specified</i>
@@ -145,7 +155,9 @@
                                         </dl>
                                      @endif
                                      <dl class="row mb-0">
-                                        <dt class="col-sm-3">Rationales:</dt>
+                                        <dt class="col-sm-3 text-right">Rationales
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['rationales']))
@@ -157,7 +169,9 @@
                                         </dd>
                                      </dl>
                                      <dl class="row mb-0">
-                                        <dt class="col-sm-3">PMIDs:</dt>
+                                        <dt class="col-sm-3 text-right">PMIDs
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['pmids']))
@@ -169,7 +183,9 @@
                                         </dd>
                                      </dl>
                                      <dl class="row mb-0">
-                                        <dt class="col-sm-3">Notes:</dt>
+                                        <dt class="col-sm-3 text-right">Notes
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['notes']))
@@ -181,12 +197,16 @@
                                         </dd>
                                      </dl>
                                 </div>
-                                <div role="tabpanel" class="pt-3 pl-3 tab-pane" id="sec-{{ $validity->key }}">
-                                    <dl class="row">
-                                        <dt class="col-sm-3 pl-3">Expert Panel:</dt>
+                                <div role="tabpanel" class="pt-3 pl-3 pb-2 tab-pane" id="sec-{{ $validity->key }}">
+                                    <dl class="row mb-0">
+                                        <dt class="col-sm-3 text-right">Expert Panel:</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
-                                                {{ App\Validity::secondaryContributor($validity->assertion) }}
+                                                @if (App\Validity::secondaryContributor($validity->assertion) == "NONE")
+                                                    <i>No Secondary Contributors were specified</i>
+                                                @else
+                                                    {{ App\Validity::secondaryContributor($validity->assertion) }}
+                                                @endif
                                             </div>
                                         </dd>
                                      </dl>

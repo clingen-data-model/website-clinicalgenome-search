@@ -413,6 +413,25 @@ class Validity extends Model
 
 
     /**
+     * Determine if the passed validity assertion has lumping and splitting content
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public static function hasLumpingContent($assertion)
+    {
+        if (empty($assertion->las_included) && empty($assertion->las_excluded)
+            && empty($assertion->las_rationale['rationales'])
+            && empty($assertion->las_rationale['pmids'])
+            && empty($assertion->las_rationale['notes'])
+            )
+                return false;
+
+        return true;
+    }
+
+
+    /**
      * Map a gdv record to a model
      *
      */
