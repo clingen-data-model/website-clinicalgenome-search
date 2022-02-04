@@ -94,6 +94,8 @@
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
 	<link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/multiple-select@1.5.2/dist/themes/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -110,6 +112,7 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap-table-sticky-header.min.js"></script>
 <script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
@@ -235,6 +238,9 @@
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
+            stickyHeader: true,
+    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
 			locale: 'en-US',
 			sortName:  "symbol",
 			sortOrder: "asc",

@@ -494,8 +494,11 @@ class Graphql
 						  classification {
 							  label
 							  curie
-						  }
-                          legacy_json
+						  }'
+                         // . '
+                         // report_id
+                         // '
+                          . 'legacy_json
 						  curie
 						}
 						actionability_assertions {
@@ -614,7 +617,7 @@ class Graphql
                                 $inassert->report_id = $map->gdm_uuid;
                         }
                     }
-
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
                     // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
                     $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
                     if ($inassert->animal_model_only === false && isset($score->scoreJson))

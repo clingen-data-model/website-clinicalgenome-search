@@ -358,7 +358,7 @@ class GeneController extends Controller
             $mimflag = ($gene === null ? false : $t);
         }
 
-        if ($gene === null)
+        if ($gene === null || $gene->hgnc_id === null)
             return view('error.message-standard')
                     ->with('title', 'Error retrieving Gene details')
                     ->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')

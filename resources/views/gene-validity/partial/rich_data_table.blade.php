@@ -273,6 +273,7 @@
 				data)</h3>
 			<div class="alert alert-warning" role="alert">
 				No segregation evidence for a Family without a proband was found.
+                <span class="text-danger"><strong>Need a gene example of what this table looks like</strong></span>
 			</div>
 		</div>
 
@@ -281,9 +282,121 @@
 		<div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
 			<h3 class="text-white bg-dark p-1">GENETIC EVIDENCE: CASE-CONTROL</h3>
 
+            @if (false)
 			<div class="alert alert-warning" role="alert">
 				No case-control genetic evidence was found.
-			</div>
+            </div>
+            @else
+            <span class="text-danger"><strong>Need structure to determine how to key show/nowhow</strong></span>
+			<div class="table-responsive">
+				<table id="gecc" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                        data-classes="table"
+                        data-locale="en-US"
+                        data-addrbar="true"
+                        data-search="true"
+                        data-filter-control="true"
+                        data-filter-control-visible="false"
+                        data-id-table="advancedTable"
+                        data-search-align="left"
+                        data-trim-on-search="true"
+                        data-show-search-clear-button="true"
+                        data-buttons="table_buttons"
+                        data-show-align="left"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+                        data-search-formatter="false"
+                        data-show-export="true"
+                        data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
+                        data-minimum-count-columns="2"
+                        data-pagination="true"
+                        data-id-field="id"
+                        {{-- data-ajax-options="ajaxOptions" --}}
+                        data-page-list="[10, 25, 50, 100, 250, all]"
+                        data-page-size="{{ $display_list ?? 25 }}"
+                        data-show-footer="false"
+                        data-side-pagination="client"
+                        data-pagination-v-align="both"
+                        data-show-extended-pagination="false"
+                        {{-- data-url="{{  $apiurl }}" --}}
+                        data-query-params="queryParams"
+                        data-response-handler="responseHandler"
+                        data-header-style="headerStyle"
+                        data-show-filter-control-switch="true"
+                        data-group-by="true"
+                        data-group-by-field="pheno">
+					<thead>
+                        <tr role="row">
+                            <th colspan="5"></th>
+							<th colspan="2">Power</th>
+                            <th></th>
+                            <th colspan="3">Statistics</th>
+                            <th colspan="2"></th>
+                            <th></th>
+                        </tr>
+						<tr role="row">
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Label</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Disease<br>(Case)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Study<br>Type</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Detection Method (Case)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># of Cases<br>Genotype/Sequenced</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># of Controls<br>Genotype/Sequenced</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Bias Confounding</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Cases with<br>Variant in Gene<br>/ All Cases<br>Genotype/Sequenced</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Controls with<br>Variant in Gene<br>/ All Cases<br>Genotype/Sequenced</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Test<br>Statistic:<br>Value</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">P-value</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Confidence<br>interval</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Points</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            @endif
 		</div>
 
         <hr />

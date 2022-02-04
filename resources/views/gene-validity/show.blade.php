@@ -139,6 +139,7 @@
   function inittable() {
     $('#geclv').bootstrapTable();
     $('#gecls').bootstrapTable();
+    $('#gecc').bootstrapTable();
     $table.bootstrapTable();
 
 
