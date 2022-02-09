@@ -6,6 +6,8 @@ use App\ActionabilitySummary;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+use App\ActionabilityAssertion;
+
 class UpdateActionabilitySummaries extends Command
 {
     /**
@@ -188,6 +190,8 @@ class UpdateActionabilitySummaries extends Command
         }
 
         // DO THIS FOR ADULT Assertion- PEDS AFTER (CLEANUP IN FUTURE)
+         // clear the table since the import has no remove facility
+         ActionabilityAssertion::query()->forceDelete();
         unset($row);
         unset($all);
         $header = true;
@@ -207,14 +211,49 @@ class UpdateActionabilitySummaries extends Command
 
         //dd($heading);
         $this->line('Building Adult Assertion data rows');
-        foreach ($all as $row) {
+        foreach ($all as $row)
+        {
+            $data = new ActionabilityAssertion([
+                    'type' => ActionabilityAssertion::TYPE_ADULT,
+                    'docid' => $row['# docId'],
+                    'iri' => $row['iri'],
+                    'latest_search_date' => $row['latestSearchDate'],
+                    'last_updated' => $row['lastUpdated'],
+                    'last_author' => $row['lastAuthor'],
+                    'context' => $row['context'],
+                    'contextiri' => $row['contextIri'],
+                    'release' => $row['release'],
+                    'gene' => $row['gene'],
+                    'gene_omim' => $row['geneOmim'],
+                    'disease' => $row['disease'],
+                    'omim' => $row['omim'],
+                    'mondo' => $row['mondo'],
+                    'consensus_assertion' => $row['consensusAssertion'],
+                    'status_assertion' => $row['status-assertion'],
+                    'status_overall' => $row['status-overall'],
+                    'status_stg1' => $row['status-stg1'],
+                    'status' => 1
+            ]);
+            $data->save();
 
             //dd($row);
-            $data = ActionabilitySummary::where([
-                ['contextIri', '=', $row['contextIri']],
-                ['geneOmim', '=', $row['geneOmim']],
-                ['disease', '=', $row['disease']]
-                ])->first();
+            if (stripos($row['consensusAssertion'], 'N/A - ') === 0)
+            {
+                $data = ActionabilitySummary::where([
+                        ['contextIri', '=', $row['contextIri']],
+                        ['geneOmim', '=', $row['geneOmim']],
+                        ['disease', '=', $row['disease']]
+                    ])->first();
+            }
+            else
+            {
+                $data = ActionabilitySummary::where([
+                        ['contextIri', '=', $row['contextIri']],
+                        ['geneOmim', '=', $row['geneOmim']],
+                        ['disease', '=', $row['disease']],
+                        ['omim', '=', $row['omim']]
+                    ])->first();
+            }
             if($data){
                 $data->consensusAssertion                = $row['consensusAssertion'] ?? "";
                 $data->save();
@@ -242,15 +281,54 @@ class UpdateActionabilitySummaries extends Command
 
         //dd($heading);
         $this->line('Building Peds Assertion data rows');
-        foreach ($all as $row) {
-            $data = ActionabilitySummary::where([
-                ['contextIri', '=', $row['contextIri']],
-                ['geneOmim', '=', $row['geneOmim']],
-                ['disease', '=', $row['disease']]
-            ])->first();
+        foreach ($all as $row)
+        {
+            $data = new ActionabilityAssertion([
+                    'type' => ActionabilityAssertion::TYPE_PEDIATRIC,
+                    'docid' => $row['# docId'],
+                    'iri' => $row['iri'],
+                    'latest_search_date' => $row['latestSearchDate'],
+                    'last_updated' => $row['lastUpdated'],
+                    'last_author' => $row['lastAuthor'],
+                    'context' => $row['context'],
+                    'contextiri' => $row['contextIri'],
+                    'release' => $row['release'],
+                    'gene' => $row['gene'],
+                    'gene_omim' => $row['geneOmim'],
+                    'disease' => $row['disease'],
+                    'omim' => $row['omim'],
+                    'mondo' => $row['mondo'],
+                    'consensus_assertion' => $row['consensusAssertion'],
+                    'status_assertion' => $row['status-assertion'],
+                    'status_overall' => $row['status-overall'],
+                    'status_stg1' => $row['status-stg1'],
+                    'status' => 1
+            ]);
+            $data->save();
+            //echo implode(',', $row) . "\n";
+            if (stripos($row['consensusAssertion'], 'N/A - ') === 0)
+            {
+                $data = ActionabilitySummary::where([
+                    ['contextIri', '=', $row['contextIri']],
+                    ['geneOmim', '=', $row['geneOmim']],
+                    ['disease', '=', $row['disease']]
+                    ])->first();
+            }
+            else
+            {
+                $data = ActionabilitySummary::where([
+                    ['contextIri', '=', $row['contextIri']],
+                    ['geneOmim', '=', $row['geneOmim']],
+                    ['disease', '=', $row['disease']],
+                    ['omim', '=', $row['omim']]
+                    ])->first();
+            }
             if ($data) {
                 $data->consensusAssertion                = $row['consensusAssertion'] ?? "";
                 $data->save();
+            }
+            else{
+                echo implode(',', $row) . "\n";
             }
         }
 

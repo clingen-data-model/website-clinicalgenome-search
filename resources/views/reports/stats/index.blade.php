@@ -832,7 +832,7 @@
 
               <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
                 <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
+                <a  target="report" href="/kb/actionability/report-index?context=adult"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
 
                 <div class="row">
                     <div class="col-sm-5">
@@ -997,7 +997,7 @@
 
               <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
                 <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
+                <a  target="report" href="/kb/actionability/report-index?context=pediatric"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
 
                 <div class="row">
                     <div class="col-sm-5">

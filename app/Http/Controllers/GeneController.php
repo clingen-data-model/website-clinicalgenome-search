@@ -17,6 +17,7 @@ use App\Panel;
 use App\Nodal;
 use App\Filter;
 use App\Omim;
+use App\Mim;
 
 /**
 *
@@ -351,11 +352,17 @@ class GeneController extends Controller
 
 		$mimflag = false;
 
-        if ($gene === null && stripos($id, 'OMIM:') === 0)
+        if ($gene === null && (stripos($id, 'OMIM:') === 0 ||stripos($id, 'MIM:') === 0))
         {
-            $t = substr($id, 5 );
-            $gene = Omim::omimid($t)->first();
-            $mimflag = ($gene === null ? false : $t);
+			$t = explode(':', $id);
+            //$t = substr($id, 5 );
+			if (isset($t[1]))
+			{
+				$mim = Mim::mim($t[1])->first();
+				if ($mim !== null)
+					$gene = $mim->gene;
+				$mimflag = ($gene === null ? false : $t[1]);
+			}
         }
 
         if ($gene === null || $gene->hgnc_id === null)
@@ -493,13 +500,12 @@ class GeneController extends Controller
 		}
 
         // get the mim names
-        $mim_names = OMIM::whereIn('omimid', $mims)->get();
+        $mim_names = MIM::whereIn('mim', $mims)->get();
 
         $mims = [];
 
         foreach ($mim_names as $mim)
-            $mims[$mim->omimid] = $mim->titles;
-
+            $mims[$mim->mim] = $mim->title;
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');

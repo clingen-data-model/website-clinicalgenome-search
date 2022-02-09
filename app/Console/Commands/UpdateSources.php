@@ -73,6 +73,7 @@ class UpdateSources extends Command
           $this->call('update:mane');       // NCBI MANE
           $this->call('update:omim');       // OMIM
           $this->call('update:morbid');     // OMIM Morbid
+          $this->call('update:mim');       // OMIM
           $this->call('update:plof');       // local file Gnomad EXAC
           $this->call('update:uniprot');    // Uniprot
           $this->call('update:mondo');      // Monarch

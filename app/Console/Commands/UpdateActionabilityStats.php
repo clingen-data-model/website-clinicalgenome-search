@@ -6,6 +6,8 @@ use App\ActionabilitySummary;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+use App\ActionabilityAssertion;
+
 class UpdateActionabilityStats extends Command
 {
     /**
@@ -242,7 +244,6 @@ class UpdateActionabilityStats extends Command
             $report[$item->id] = $item->docId . "-" . $item->context . "-" . Str::of($item->outcome)->slug('') . "-" . Str::of($item->intervention)->slug('') . "-" . Str::of($item->outcomeScoringGroup)->slug('') . "-" . Str::of($item->interventionScoringGroup)->slug('');
         }
 
-
         //dd($overall);
         $total_adult_io_pairs                   = count($report);
         $total_adult_io_pairs_unique_array      = array_unique($report);
@@ -358,11 +359,11 @@ class UpdateActionabilityStats extends Command
 
 
         // Total IO Pediatric Assertions
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["context", "=", "Pediatric"],
             //["status_overall", "!=", "Released"],
             //["omim", "!=", "(No paired disease(s) for gene)"],
-            ["consensusAssertion", "!=", ""]
+            ["consensus_assertion", "!=", ""]
         ])->get();
         $total_peds_assertion_definitive            = 0;
         $total_peds_assertion_strong                = 0;
@@ -387,13 +388,13 @@ class UpdateActionabilityStats extends Command
         // foreach ($total_peds_io_pairs_unique_array as $key => $item) {
         //     $find[] = $key;
         // }
-
+    //dd($data);
         //$results = ActionabilitySummary::findMany($find);
         foreach ($data as $item) {
             //$overall = (int) preg_replace('/[^0-9]/', '', $item->overall);
             //$total_peds_io_pairs++;
             //dd($overall);
-            switch ($item->consensusAssertion) {
+            switch ($item->consensus_assertion) {
                 case "Definitive Actionability":
                     $total_peds_assertion_definitive++;
                     break;
@@ -421,11 +422,11 @@ class UpdateActionabilityStats extends Command
         }
 
         // Total IO Adult Assertions
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["context", "=", "Adult"],
             //["status_overall", "!=", "Released"],
             //["omim", "!=", "(No paired disease(s) for gene)"],
-            ["consensusAssertion", "!=", ""]
+            ["consensus_assertion", "!=", ""]
         ])->get();
         $total_adult_assertion_definitive            = 0;
         $total_adult_assertion_strong                = 0;
@@ -456,7 +457,7 @@ class UpdateActionabilityStats extends Command
             //$overall = (int) preg_replace('/[^0-9]/', '', $item->overall);
             //$total_peds_io_pairs++;
             //dd($overall);
-            switch ($item->consensusAssertion) {
+            switch ($item->consensus_assertion) {
                 case "Definitive Actionability":
                     $total_adult_assertion_definitive++;
                     break;
@@ -572,6 +573,7 @@ class UpdateActionabilityStats extends Command
             $array['total_peds_assertion_unknown']              = $total_peds_assertion_unknown;
 
             $this->line(json_encode($array));
+            //dd($array);
     } else {
         $this->line("Total Actionability Topics ----------------------------- " . $total_topics);
         $this->line("Total Updated Topics ----------------------------------- " . $total_updated_topics);

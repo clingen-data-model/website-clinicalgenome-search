@@ -104,56 +104,99 @@
                             </ul>
                             <div class=" ml-2 mr-2 mb-2 tab-content">
                                 <div role="tabpanel" class="pt-3 pl-3 pb-2 tab-pane fade in active" id="las-{{ $validity->key }}">
+                                    <div class="bg-white border border-2 border-warning mr-3 p-2 mt-1 mb-3 rounded">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                        <a href="https://www.clinicalgenome.org/working-groups/lumping-and-splitting/" target="_doc">Lumping and Splitting Working Group</a>
+                                    </div>
                                     @if (!empty($validity->assertion->las_included))
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3 text-right">Included Phenotypes
+                                            <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_included as $mim)
                                                     <div class="mb-1">
+                                                        @if ($mimflag == $mim)
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        @else
                                                         <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        @endif
                                                     <div>
                                                 @endforeach
                                             <dd>
                                         </dl>
                                     @else
                                     <dl class="row mb-0">
-                                        <dt class="col-sm-3 text-right">Included Phenotypes
+                                        <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
-                                                <i>No Included Phenotypes were specified</i>
+                                                <i>No Included MIM Phenotypes were specified</i>
                                             <div>
                                         <dd>
                                     </dl>
                                     @endif
                                     @if (!empty($validity->assertion->las_excluded))
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3 text-right">Excluded Phenotypes
+                                            <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_excluded as $mim)
                                                     <div class="mb-1">
+                                                        @if ($mimflag == $mim)
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        @else
                                                         <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        @endif
                                                     </div>
                                                 @endforeach
                                             </dd>
                                          </dl>
                                     @else
                                         <dl class="row mb-0">
-                                            <dt class="col-sm-3 text-right">Excluded Phenotypes
+                                            <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 <div class="mb-1">
-                                                    <i>No Excluded Phenotypes were specified</i>
+                                                    <i>No Excluded MIM Phenotypes were specified</i>
                                                 <div>
                                             <dd>
                                         </dl>
                                      @endif
+                                     <dl class="row mb-0">
+                                        <dt class="col-sm-3 text-right">Evaluation Date
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                            @if (!empty($validity->assertion->las_date))
+                                                    {{ date('m/d/Y', strtotime($validity->assertion->las_date)) }}
+                                            @else
+                                                <i>No Date was specified</i>
+                                            @endif
+                                            </div>
+                                        </dd>
+                                     </dl>
+                                     <dl class="row mb-0">
+                                        <dt class="col-sm-3 text-right">Curation Type
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            :</dt>
+                                        <dd class="col-sm-9">
+                                            <div class="mb-1">
+                                            @if (!empty($validity->assertion->las_curation))
+                                                    {{ $validity->assertion->las_curation }}
+                                            @else
+                                                <i>No curation type was specified</i>
+                                            @endif
+                                            </div>
+                                        </dd>
+                                     </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Rationales
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
@@ -175,7 +218,9 @@
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['pmids']))
-                                                    {{ implode(', ', $validity->assertion->las_rationale['pmids']) }}
+                                                @foreach ($validity->assertion->las_rationale['pmids'] as $pmid)
+                                                    <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid">{{ $pmid }}</a>@if(!$loop->last), @endif
+                                                @endforeach
                                             @else
                                                 <i>No PMIDs were specified</i>
                                             @endif

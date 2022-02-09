@@ -75,8 +75,9 @@ class ActionabilityController extends Controller
     public function report_index(Request $request, $page = 1, $size = 50)
     {
 		// process request args
-		foreach ($request->only(['page', 'size', 'order', 'sort','search', 'col_search', 'col_search_val']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'order', 'sort','search', 'col_search', 'col_search_val', 'context']) as $key => $value)
 			$$key = $value;
+
 
 		// set display context for view
         $display_tabs = collect([
@@ -116,6 +117,7 @@ class ActionabilityController extends Controller
                         ->with('user', $this->user)
                         ->with('display_list', $display_list)
 						->with('bookmarks', $bookmarks)
+                        ->with('context', $context ?? null)
                         ->with('currentbookmark', $filter);
     }
 

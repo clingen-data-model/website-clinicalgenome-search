@@ -84,6 +84,7 @@
 
 
 @section('script_css')
+    <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet">
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 @endsection
@@ -95,9 +96,14 @@
 <script src="/js/xlsx.core.min.js"></script>
 <script src="/js/jspdf.plugin.autotable.js"></script>
 
+<script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
+
 <script src="/js/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
+
 
 <script src="/js/sweetalert.min.js"></script>
 
@@ -139,6 +145,7 @@
   function inittable() {
     $('#geclv').bootstrapTable();
     $('#gecls').bootstrapTable();
+    $('#geclfs').bootstrapTable();
     $('#gecc').bootstrapTable();
     $table.bootstrapTable();
 
@@ -172,6 +179,13 @@
 		})
   }
 
+  function toggleChevron(e) {
+    $(e.target)
+        .prev('.panel-heading')
+        .find('i.fas')
+        .toggleClass('fa-compress-arrows-alt fa-expand-arrows-alt');
+}
+
 $(function() {
 
   // Set cursor to busy prior to table init
@@ -190,6 +204,12 @@ $(function() {
 
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
+
+  $('#tag_genetic_evidence_case_level_with_proband').on('hide.bs.collapse show.bs.collapse', toggleChevron);
+  $('#tag_genetic_evidence_segregation').on('hide.bs.collapse show.bs.collapse', toggleChevron);
+  $('#tag_genetic_evidence_case_level_without_proband').on('hide.bs.collapse show.bs.collapse', toggleChevron);
+  $('#tag_genetic_evidence_case_control').on('hide.bs.collapse show.bs.collapse', toggleChevron);
+  $('#tag_experimental_evidence').on('hide.bs.collapse show.bs.collapse', toggleChevron);
 
 });
 

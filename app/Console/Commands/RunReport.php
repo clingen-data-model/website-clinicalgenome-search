@@ -20,6 +20,7 @@ use App\Morbid;
 use App\Panel;
 use App\Sensitivity;
 use App\Validity;
+use App\Nodal;
 use App\Gdmmap;
 
 class RunReport extends Command
@@ -29,7 +30,7 @@ class RunReport extends Command
      *
      * @var string
      */
-    protected $signature = 'run:report';
+    protected $signature = 'run:report {report=none}';
 
     /**
      * The console command description.
@@ -55,9 +56,24 @@ class RunReport extends Command
      */
     public function handle()
     {
-        echo "Running Erin Report ...";
-        $this->report4();
+        $report = $this->argument('report');
 
+        switch ($report)
+        {
+            case 'gcexpress':
+                echo "Creating GC Express Report\n";
+                $this->report5();
+                echo "Update Complete\n";
+                break;
+            case 'acmg':
+                echo "Creating ACMG BED Report\n";
+                $this->report6();
+                echo "Update Complete\n";
+                break;
+            default:
+                echo "Nothing to do, exiting\n";
+                break;
+        }
     }
 
     public function report1()
@@ -420,6 +436,119 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
             }
 
         });
+
+        echo "DONE\n";
+    }
+
+
+    public function report5()
+    {
+
+        $curations = GeneLib::validityList([	'page' =>  0,
+                                                'pagesize' => "null",
+                                                'sort' => 'GENE_LABEL',
+                                                'direction' => 'ASC',
+                                                'search' => null,
+                                                'forcegg' => true,
+                                                'curated' => true ]);
+
+        $header = [
+                        "Gene Symbol",
+                        "HGNC ID",
+                        "Validity Classification",
+                        "Validity Report Date",
+                        "Expert Panel",
+                        "Validity Summary Report"
+                    ];
+
+        $handle = fopen(base_path() . '/data/gcexpress_report.tsv', "w");
+        fwrite($handle, implode("\t", $header) . PHP_EOL);
+
+        $records = [];
+
+        foreach($curations->collection as $curation)
+        {
+
+            if (strpos($curation->curie, 'CGGCIEX:assertion_') !== 0)
+                continue;
+
+            $list = [   $curation->gene->label,
+                        $curation->gene->hgnc_id,
+                        $curation->classification->label,
+                        $curation->report_date,
+                        $curation->attributed_to->label,
+                        '=HYPERLINK("https://search.clinicalgenome.org/kb/gene-validity/' . $curation->curie . '")'
+                    ];
+
+            fwrite($handle, implode("\t", $list) . PHP_EOL);
+
+        }
+
+        fclose($handle);
+
+        // attach and send email
+        $data["email"] = "pweller1@geisinger.edu";
+        $data["title"] = "GC Express Report";
+        $data["body"] = "This is Demo";
+
+        $files = [
+            base_path() . '/data/gcexpress_report.tsv'
+        ];
+
+        Mail::send('mail.reports.gcexpress', $data, function($message)use($data, $files) {
+            $message->to($data["email"], $data["email"])
+                    ->subject($data["title"]);
+
+            foreach ($files as $file){
+                $message->attach($file);
+            }
+
+        });
+
+        echo "DONE\n";
+    }
+
+
+    /**
+     * Create the ACMG .BED file
+     */
+    public function report6()
+    {
+
+        $curations = Gene::acmg59()->where('date_last_curated', '!=', null)->orderBy('name', 'asc')->get();
+
+        $banner = "track name='ClinGen ACMG SF 3.0 Curated Genes' db=hg19\n";
+
+        $collection = collect();
+
+        foreach($curations as $curation)
+        {
+
+            // chromosome	start	stop	gene_symbol	haplo_score
+            $node = new Nodal(['chromosome' => $curation->chr, 'start' => $curation->start37 - 1, 'stop' => $curation->stop37,
+                                'label' => $curation->name,
+                                'hs' => 1
+                            ]);
+
+            $collection->push($node);
+        }
+
+        // sort by chromosome, start
+        $sorted = $collection->sortBy([['chromosome', 'asc'], ['start', 'asc']]);
+
+        $handle = fopen(base_path() . '/data/acmg_sf3.bed', "w");
+
+        fwrite($handle, $banner);
+
+        //content
+        foreach ($sorted as $item)
+        {
+            $item = $item->toArray();
+            unset($item['symbol']);
+            fwrite($handle, implode("\t", $item) . PHP_EOL);
+        }
+
+        fclose($handle);
 
         echo "DONE\n";
     }

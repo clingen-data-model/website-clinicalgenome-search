@@ -90,6 +90,8 @@
   window.scrid = {{ $display_tabs['scrid'] }};
   window.token = "{{ csrf_token() }}";
 
+  var context = "{{ $context }}";
+
   window.ajaxOptions = {
     beforeSend: function (xhr) {
       xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
@@ -103,6 +105,11 @@
     $('.countEps').html(res.npanels);
 
     return res
+  }
+
+  function queryParams(params) {
+    params.context = context;
+    return params
   }
 
   var choices=[
@@ -157,8 +164,9 @@
           widthUnit: '%',
           width: "40",
           sortable: false
-        },
-        {
+        }
+        @if ($context != "pediatric")
+        ,{
           title: 'Adult Assertion',
           field: 'adults',
           formatter: adultFormatter,
@@ -168,8 +176,10 @@
           widthUnit: '%',
           width: "20",
           sortable: false
-        },
-        {
+        }
+        @endif
+        @if ($context != "adult")
+        ,{
             title: 'Pediatric Assertion',
           field: 'pediatrics',
           formatter: pedFormatter,
@@ -180,6 +190,7 @@
           width: "20",
           sortable: false
         }
+        @endif
       ]
     })
 

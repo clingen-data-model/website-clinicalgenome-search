@@ -1,9 +1,19 @@
 @section('content-full-width')
 <section id='validity_supporting_data' class="container-fluid">
-	<div class="row " id="validity_supporting_data_genetic">
-		<hr />
-		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_with_proband'>
-			<h3 class="text-white bg-dark p-1"> SCORED GENETIC EVIDENCE: CASE LEVEL (VARIANTS)</h3>
+
+    <div class="panel panel-default" id="tag_genetic_evidence_case_level_with_proband">
+        <!-- Default panel contents -->
+        <div class="panel-heading bg-evidence1" role="tab" id="genev_case_level_variants"">
+            <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE</h4>
+            Case Level Variants
+            <div class="pull-right">
+                <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_with_proband" href="#tableone" aria-expanded="true" aria-controls="tableone">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div id="tableone" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_variants">
+        <div class="panel-body">
             @if (empty($extrecord->genetic_evidence))
             <div class="alert alert-warning" role="alert">
 				No  evidence for a Family with a proband was found.
@@ -44,13 +54,14 @@
                         data-response-handler="responseHandler"
                         data-header-style="headerStyle"
                         data-show-filter-control-switch="true"
+                        data-resizable="true"
                         data-group-by="true"
                         data-group-by-field="pheno">
 					<thead>
 						<tr role="row">
 							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Label</th>
 							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
-							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-width="180">Variant</th>
 							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
 							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
 							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Age</th>
@@ -148,12 +159,27 @@
 				</table>
 			</div>
             @endif
-		</div>
+        </div>
+        </div>
+        <div class="panel-footer text-right bg-evidence1">
+            <b>Total Variant Points:  ####</b>
+        </div>
+	</div>
 
-        <hr />
+    <div class="m-4">&nbsp;</div>
 
-        <div class="col-12 pb-4" id='tag_genetic_evidence_segregation'>
-			<h3 class="text-white bg-dark p-1">SCORED GENETIC EVIDENCE: CASE LEVEL (SEGREGATION)</h3>
+    <div class="panel panel-default" id="tag_genetic_evidence_segregation">
+        <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
+            <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE</h4>
+            Case Level Segregation
+            <div class="pull-right">
+                <a data-toggle="collapse" data-parent="#tag_genetic_evidence_segregation" href="#tabletwo" aria-expanded="true" aria-controls="tabletwo">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div id="tabletwo" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_segregation">
+        <div class="panel-body">
             @if (empty($extrecord->genetic_evidence))
             <div class="alert alert-warning" role="alert">
 				No  evidence for a Family with a proband was found.
@@ -224,6 +250,7 @@
                             }
                             if ($evidence === null)
                                 continue;
+
                         @endphp
                         <tr>
                             <td>
@@ -256,7 +283,7 @@
                                 <span class="text-danger"><strong>####</strong></span>
                             </td>
                             <td>
-                                {{ $evidence->sequencing_method }}
+                                {{ $evidence->sequencing_method->label }}
                             </td>
                         </tr>
                         @endforeach
@@ -265,23 +292,136 @@
             </div>
             @endif
 		</div>
+        </div>
+    </div>
 
-        <hr />
+    <div class="m-4">&nbsp;</div>
 
-		<div class="col-12 pb-4" id='tag_genetic_evidence_case_level_without_proband'>
-			<h3 class="text-white bg-dark p-1">GENETIC EVIDENCE: CASE LEVEL (FAMILY SEGREGATION INFORMTAION WITHOUT PROBAND DATA OR SCORED PROBAND)
-				data)</h3>
+    <div class="panel panel-default" id="tag_genetic_evidence_case_level_without_proband">
+        <div class="panel-heading bg-evidence3" role="tab" id="genev_case_level_family"">
+            <h4 class="mb-0 mt-0">GENETIC EVIDENCE</h4>
+            Case Level Family Segregation Information Without Proband Data or Scored Proband
+            <div class="pull-right">
+                <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_without_proband" href="#tablethree" aria-expanded="true" aria-controls="tablethree">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div id="tablethree" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_family">
+        <div class="panel-body">
+            @if (false)
 			<div class="alert alert-warning" role="alert">
 				No segregation evidence for a Family without a proband was found.
                 <span class="text-danger"><strong>Need a gene example of what this table looks like</strong></span>
 			</div>
+            @else
+            <span class="text-danger"><strong>Need structure to determine how to key show/nowhow</strong></span>
+			<div class="table-responsive">
+				<table id="geclfs" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                        data-classes="table"
+                        data-locale="en-US"
+                        data-addrbar="true"
+                        data-search="true"
+                        data-filter-control="true"
+                        data-filter-control-visible="false"
+                        data-id-table="advancedTable"
+                        data-search-align="left"
+                        data-trim-on-search="true"
+                        data-show-search-clear-button="true"
+                        data-buttons="table_buttons"
+                        data-show-align="left"
+                        data-show-fullscreen="true"
+                        data-show-columns="true"
+                        data-show-columns-toggle-all="true"
+                        data-search-formatter="false"
+                        data-show-export="true"
+                        data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
+                        data-minimum-count-columns="2"
+                        data-pagination="true"
+                        data-id-field="id"
+                        {{-- data-ajax-options="ajaxOptions" --}}
+                        data-page-list="[10, 25, 50, 100, 250, all]"
+                        data-page-size="{{ $display_list ?? 25 }}"
+                        data-show-footer="false"
+                        data-side-pagination="client"
+                        data-pagination-v-align="both"
+                        data-show-extended-pagination="false"
+                        {{-- data-url="{{  $apiurl }}" --}}
+                        data-query-params="queryParams"
+                        data-response-handler="responseHandler"
+                        data-header-style="headerStyle"
+                        data-show-filter-control-switch="true"
+                        data-group-by="true"
+                        data-group-by-field="pheno">
+					<thead>
+						<tr role="row">
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Label</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Ethnicity</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Phenotypes</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>MOI</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Number of<br>Affected<br>Individuals</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Number of<br>Unaffected<br>Individuals</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">LOD Score</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">LOD Score<br>Counted</th>
+							<th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Sequencing<br>Method</th>
+						</tr>
+					</thead>
+					<tbody role="rowgroup">
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            <span class="text-danger"><strong>####</strong></span>
+                        </td>
+                    </tbody>
+                </table>
+            </div>
+            @endif
 		</div>
+        </div>
+        <div class="panel-footer text-right bg-evidence3">
+            <b>Total LOD Score:  ####</b>
+        </div>
+    </div>
 
-        <hr />
+    <div class="m-4">&nbsp;</div>
 
-		<div class="col-12 pb-4" id='tag_genetic_evidence_case_control'>
-			<h3 class="text-white bg-dark p-1">GENETIC EVIDENCE: CASE-CONTROL</h3>
-
+    <div class="panel panel-default" id="tag_genetic_evidence_case_control">
+        <div class="panel-heading bg-evidence4" role="tab" id="genev_case_control"">
+            <h4 class="mb-0 mt-0">GENETIC EVIDENCE</h4>
+            Case Control
+            <div class="pull-right">
+                <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_control" href="#tablefour" aria-expanded="true" aria-controls="tablefour">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div id="tablefour" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_control">
+        <div class="panel-body">
             @if (false)
 			<div class="alert alert-warning" role="alert">
 				No case-control genetic evidence was found.
@@ -398,11 +538,26 @@
             </div>
             @endif
 		</div>
+        </div>
+        <div class="panel-footer text-right bg-evidence4">
+            <b>Total Points:  ####</b>
+        </div>
+    </div>
 
-        <hr />
+    <div class="m-4">&nbsp;</div>
 
-		<div class="col-12 pb-4" id='tag_experimental_evidence'>
-			<h3 class="text-white bg-dark p-1">EXPERIMENTAL EVIDENCE</h3>
+    <div class="panel panel-default" id="tag_experimental_evidence">
+        <div class="panel-heading bg-evidence5" role="tab" id="expevid"">
+            <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE</h4>
+            &nbsp;
+            <div class="pull-right">
+                <a data-toggle="collapse" data-parent="#tag_experimental_evidence" href="#tablefive" aria-expanded="true" aria-controls="tablefive">
+                    <i class="fas fa-compress-arrows-alt"></i>
+                </a>
+            </div>
+        </div>
+        <div id="tablefive" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="expevid">
+        <div class="panel-body">
             @if (empty($extrecord->experimental_evidence))
             <div class="alert alert-warning" role="alert">
 				No experimental evidence was found.
@@ -487,7 +642,10 @@
 			</div>
 		</div>
         @endif
-		<hr />
-	</div>
+        </div>
+        <div class="panel-footer text-right bg-evidence5">
+            <b>Total Points:  ####</b>
+        </div>
+    </div>
 </section>
 @endsection

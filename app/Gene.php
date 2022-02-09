@@ -180,6 +180,15 @@ class Gene extends Model
     }
 
 
+    /*
+     * The MIMs associated with this gene
+     */
+    public function mims()
+    {
+       return $this->hasMany('App\Mim');
+    }
+
+
      /*
      * The roles that belong to this user
      */
@@ -753,6 +762,7 @@ class Gene extends Model
 
             switch (strtoupper($parts[0]))
             {
+                case 'MIM':
                 case 'OMIM':
                     $check = Gene::omim($id)->first();
                     break;

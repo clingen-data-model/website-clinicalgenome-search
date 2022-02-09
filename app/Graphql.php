@@ -495,9 +495,9 @@ class Graphql
 							  label
 							  curie
 						  }'
-                         // . '
-                         // report_id
-                         // '
+                          . '
+                          report_id
+                          '
                           . 'legacy_json
 						  curie
 						}
@@ -635,6 +635,8 @@ class Graphql
                     $inassert->las_included = [];
                     $inassert->las_excluded = [];
                     $inassert->las_rationale = [];
+                    $inassert->las_curation = '';
+                    $inassert->las_date = null;
 
                     if ($inassert->report_id !== null)
                     {
@@ -644,6 +646,8 @@ class Graphql
                             $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
                             $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
                             $inassert->las_rationale =$map->rationale;
+                            $inassert->las_curation = $map->curation_type['description'] ?? '';
+                            $inassert->las_date = $map->disease_date;
                         }
 
                     }
@@ -2352,6 +2356,8 @@ class Graphql
 		$actionability_stats = Artisan::output();
 
 		$actionability_stats = json_decode($actionability_stats);
+
+        //dd($actionability_stats);
 
 
 		// break out the args

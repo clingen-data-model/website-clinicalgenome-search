@@ -44,7 +44,7 @@ class UpdateGdmmap extends Command
 
 		try {
 
-            $results = file_get_contents(base_path() . "/data/gdmPublished.json");
+            $results = file_get_contents(base_path() . "/data/allGdms.json");
 
 		} catch (\Exception $e) {
 
@@ -58,16 +58,13 @@ class UpdateGdmmap extends Command
 		foreach ($data as $record)
 		{
             /*
-                Multiple classifications for 45802e0e-b9cd-4012-937a-7baa958f2ead
-                Multiple classifications for c5ace529-6b4e-41af-ac51-a76a844e642e
-                Multiple classifications for b848f70c-c07c-4ecf-82e2-ddfc6605eeb9
-                Multiple classifications for 1c9c851d-bb87-4311-adff-e1239fee42c3
-                Multiple classifications for 981bf8d6-a559-4345-aa07-2d81b92fe58b
-                Multiple classifications for 9f294c4e-5964-41b5-96c0-4920d3bc23b8
-                Multiple classifications for 0a788226-5113-4b55-aa38-7d92372520cf
                 Multiple classifications for 352ca78d-b94b-4205-a385-ed16d6ae8d05
+                Multiple classifications for b1219ced-5b9b-421d-9449-edd0071839e2
                 Multiple classifications for d1819cd5-2591-4a98-af44-c34cc9790ae2
                 Multiple classifications for e5df2f5f-7a3c-48cf-a2cc-260485af7003
+                Multiple classifications for c5353aa5-906f-4ec1-8eb9-ddf3cbd0a653
+                Multiple classifications for c8e925b7-1d59-4b40-920a-5987c3b056e3
+                Multiple classifications for e2267ada-584b-4368-a73a-90174d74f1d3
             */
             if (count($record['provisionalClassifications']) > 1)
                 echo "Multiple classifications for " . $record['PK']. " \n";
