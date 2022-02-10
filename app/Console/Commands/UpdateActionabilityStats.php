@@ -247,7 +247,7 @@ class UpdateActionabilityStats extends Command
         //dd($overall);
         $total_adult_io_pairs                   = count($report);
         $total_adult_io_pairs_unique_array      = array_unique($report);
-        dd($total_adult_io_pairs_unique_array);
+        //dd($total_adult_io_pairs_unique_array);
         $total_adult_io_pairs_unique            = count($total_adult_io_pairs_unique_array);
 
         foreach ($total_adult_io_pairs_unique_array as $key => $item) {

@@ -134,7 +134,7 @@
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
-                                            <div class="mb-1">
+                                            <div class="mb-1 text-muted">
                                                 <i>No Included MIM Phenotypes were specified</i>
                                             <div>
                                         <dd>
@@ -163,7 +163,7 @@
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
-                                                <div class="mb-1">
+                                                <div class="mb-1 text-muted">
                                                     <i>No Excluded MIM Phenotypes were specified</i>
                                                 <div>
                                             <dd>
@@ -178,7 +178,7 @@
                                             @if (!empty($validity->assertion->las_date))
                                                     {{ date('m/d/Y', strtotime($validity->assertion->las_date)) }}
                                             @else
-                                                <i>No Date was specified</i>
+                                                <i class="text-muted">No Date was specified</i>
                                             @endif
                                             </div>
                                         </dd>
@@ -192,7 +192,7 @@
                                             @if (!empty($validity->assertion->las_curation))
                                                     {{ $validity->assertion->las_curation }}
                                             @else
-                                                <i>No curation type was specified</i>
+                                                <i class="text-muted">No curation type was specified</i>
                                             @endif
                                             </div>
                                         </dd>
@@ -206,7 +206,7 @@
                                             @if (!empty($validity->assertion->las_rationale['rationales']))
                                                     {{ implode(', ', $validity->assertion->las_rationale['rationales']) }}
                                             @else
-                                                <i>No rationales were specified</i>
+                                                <i class="text-muted">No rationales were specified</i>
                                             @endif
                                             </div>
                                         </dd>
@@ -222,7 +222,7 @@
                                                     <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid">{{ $pmid }}</a>@if(!$loop->last), @endif
                                                 @endforeach
                                             @else
-                                                <i>No PMIDs were specified</i>
+                                                <i class="text-muted">No PMIDs were specified</i>
                                             @endif
                                             </div>
                                         </dd>
@@ -236,7 +236,7 @@
                                             @if (!empty($validity->assertion->las_rationale['notes']))
                                                      {{ $validity->assertion->las_rationale['notes'] }}
                                             @else
-                                                <i>No Notes were specified</i>
+                                                <i class="text-muted">No Notes were specified</i>
                                             @endif
                                             </div>
                                         </dd>
@@ -248,7 +248,7 @@
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
                                                 @if (App\Validity::secondaryContributor($validity->assertion) == "NONE")
-                                                    <i>No Secondary Contributors were specified</i>
+                                                    <i class="text-muted">No Secondary Contributors were specified</i>
                                                 @else
                                                     {{ App\Validity::secondaryContributor($validity->assertion) }}
                                                 @endif
