@@ -247,6 +247,7 @@ class UpdateActionabilityStats extends Command
         //dd($overall);
         $total_adult_io_pairs                   = count($report);
         $total_adult_io_pairs_unique_array      = array_unique($report);
+        dd($total_adult_io_pairs_unique_array);
         $total_adult_io_pairs_unique            = count($total_adult_io_pairs_unique_array);
 
         foreach ($total_adult_io_pairs_unique_array as $key => $item) {
@@ -497,7 +498,7 @@ class UpdateActionabilityStats extends Command
 
         $total_peds_assertion = ((int)$total_peds_assertion_definitive + (int)$total_peds_assertion_strong + (int)$total_peds_assertion_moderate + (int)$total_peds_assertion_limited + (int)$total_peds_assertion_na_expert_review + (int)$total_peds_assertion_na_early_rule_out + (int)$total_peds_assertion_assertion_pending + (int)$total_peds_assertion_unknown);
 
-        $total_assertion = ((int)$total_adult_assertion + (int)$total_adult_assertion);
+        $total_assertion = ((int)$total_adult_assertion + (int)$total_peds_assertion);
 
     if($output_json) {
             $array = array();

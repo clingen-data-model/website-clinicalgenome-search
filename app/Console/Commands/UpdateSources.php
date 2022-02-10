@@ -84,6 +84,7 @@ class UpdateSources extends Command
           break;
         case 'init':
           $this->call('update:acmg59c');     // local file
+          $this->call('update:Gdmmap');     // local file
           break;
 
       }

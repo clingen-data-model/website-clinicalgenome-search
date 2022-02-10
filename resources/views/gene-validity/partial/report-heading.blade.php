@@ -9,7 +9,7 @@
         <a href="#tag_genetic_evidence_segregation" class="badge badge-pill badge-light border-1 p-2 ml-3 bg-evidence2">Scored Genetic Evidence: Case Level Segregation <i class="fas fa-arrow-circle-down"></i></a>
     </div>
     <div class="col-md-6">
-        <a href="#tag_genetic_evidence_case_level_without_proband" class="badge badge-pill badge-light border-1 p-2 mb-2 bg-evidence3">Genetic Evidence: Case Level Family Segregation Info w/o Proband Data or Scored Proband <i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#tag_genetic_evidence_case_level_without_proband" class="badge badge-pill badge-light border-1 p-2 mb-2 bg-evidence3">Genetic Evidence: Case Level Family Segregation w/o Proband Data or Scored Proband <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#tag_genetic_evidence_case_control" class="badge badge-pill badge-light border-1 p-2 bg-evidence4 mr-4">Genetic Evidence: Case-Control <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#tag_experimental_evidence" class=" pull-right badge badge-pill badge-light border-1 p-2 ml-4 bg-evidence5">Experimental Evidence <i class="fas fa-arrow-circle-down"></i></a>
     </div>

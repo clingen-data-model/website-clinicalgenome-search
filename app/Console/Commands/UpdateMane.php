@@ -45,7 +45,7 @@ class UpdateMane extends Command
 
 		try {
 
-			$results = file_get_contents("https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/MANE.GRCh38.v0.95.summary.txt.gz");
+			$results = file_get_contents("https://ftp.ncbi.nlm.nih.gov/refseq/MANE/MANE_human/current/MANE.GRCh38.v1.0.summary.txt.gz");
 
 		} catch (\Exception $e) {
 

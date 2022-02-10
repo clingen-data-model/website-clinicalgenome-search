@@ -620,6 +620,7 @@ class Graphql
 // 03bb8479-2ed3-4b15-9e54-378ea0729ab2
                     // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
                     $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                    //dd($score);
                     if ($inassert->animal_model_only === false && isset($score->scoreJson))
                         $inassert->animal_model_only = (
                             ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
@@ -1518,6 +1519,8 @@ class Graphql
 
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
+
+        //dd($node->score_data);
 
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
