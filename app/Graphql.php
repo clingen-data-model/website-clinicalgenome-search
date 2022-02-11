@@ -2014,6 +2014,9 @@ class Graphql
 		if (empty($response))
 			return $response;
 
+        // get legacy list of animal mode only assertions
+        $amo = Validity::animal()->get(['curie']);
+
 		// add each gene to the collection
 		foreach($response->affiliation->gene_validity_assertions->curation_list as $record)
 		{
@@ -2025,10 +2028,7 @@ class Graphql
             /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
                    continue;*/
 
-				//dd($response->affiliation->curie);
-				foreach ($record->contributions as $contribution) {
-            //dd($contribution);
-            // Check if the current agent is this one.
+			foreach ($record->contributions as $contribution) {
                 if ($response->affiliation->curie == $contribution->agent->curie) {
                     if ($contribution->realizes->curie == "SEPIO:0000155") {
                         $record->contributor_type = "Primary";
@@ -2037,7 +2037,38 @@ class Graphql
                         $record->contributor_type = "Secondary";
                     }
                 }
-        }
+
+
+            }
+
+            // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+            if (!isset($record->animal_model) || $record->animal_model === null)
+            {
+                // if in report mode, then pull from legacy_json
+                /*if (!empty($record->legacy_json))
+                {
+                    $score = json_decode($record->legacy_json);
+                    $nodal->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+
+                    if ($nodal->animal_model_only === false && isset($score->scoreJson))
+                        $nodal->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                    else
+                        $nodal->animal_model_only = ( $nodal->animal_model_only == "YES");
+                }
+                else
+                {*/
+                    $record->animal_model_only = $amo->contains('curie', $record->curie);
+                //}
+            }
+            else
+            {
+                $record->animal_model_only = $record->animal_model;
+            }
 			//dd($record);
 			$collection->push(new Nodal((array) $record));
 		}

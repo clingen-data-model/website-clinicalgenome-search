@@ -414,7 +414,7 @@ function asmondoFormatter(index, row) {
 function asbadgeFormatter(index, row) {
   var txt = row.classification;
   if (row.classification == "No Known Disease Relationship*") txt = "No Known Disease Relationship";
-  if (row.animal_model_only) return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">' + '' + txt + '<span class="pull-right" data-toggle="tooltip" data-placement="top" title="Animal Model Only"><img height="18" src="/images/mouse.jpg"></span></a>';
+  if (row.animal_model_only) return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">' + '' + txt + '<span class="ml-4" data-toggle="tooltip" data-placement="top" title="Animal Model Only"><img height="18" src="/images/rat.jpeg"></span></a>';
   return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">' + '' + txt + '</a>';
 }
 

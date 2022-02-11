@@ -62,8 +62,8 @@
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
     <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css">
-    <link href="https://unpkg.com/multiple-select@1.5.2/dist/themes/bootstrap.min.css" rel="stylesheet">
+    <!--link rel="stylesheet" href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css"-->
+    <!--link href="https://unpkg.com/multiple-select@1.5.2/dist/themes/bootstrap.min.css" rel="stylesheet"-->
 @endsection
 
 @section('script_js')
@@ -81,7 +81,7 @@
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
 <script src="/js/bootstrap-table-sticky-header.min.js"></script>
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
+<!--script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script-->
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -140,7 +140,7 @@
 			return text == value.toLowerCase();
 	}
 
-  function customFilter(row,filter){
+  /*function customFilter(row,filter){
     const filterCities = filter['sops']
     return filterCities.length == 0 || filterCities.includes(row.sop)
   }
@@ -151,7 +151,7 @@
     }, {
       'filterAlgorithm': customFilter
     })
-  }
+  }*/
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
@@ -275,18 +275,18 @@
       $("body").css("cursor", "default");
       window.update_addr();
 
-				var $select = $('select.bootstrap-table-filter-control-sop');
+				/*var $select = $('select.bootstrap-table-filter-control-sop');
 				$select.attr('multiple','multiple');
 				$select.find('option[value=""]').remove();
 				$select.multipleSelect({
 					filter: true,
 					selectAll:true
-				});
+				});*/
 
-   $('select.bootstrap-table-filter-control-sop').change(function () {
+   /*$('select.bootstrap-table-filter-control-sop').change(function () {
        console.log("trigger");
         filterData()
-    })
+    })*/
 
       if (name.hasOwnProperty('error'))
       {
