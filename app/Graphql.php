@@ -659,7 +659,19 @@ class Graphql
                             $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
                             $inassert->las_rationale =$map->rationale;
                             $inassert->las_curation = $map->curation_type['description'] ?? '';
-                            $inassert->las_date = $map->disease_date;
+
+                            // the dates aren't always populated in the gene tracker, so we may need to restrict them.
+                            $prec_date = $map->disease_date;
+                            if ($prec_date !== null)
+                            {
+                                $dd = Carbon::parse($prec_date);
+                                $rd = Carbon::parse($inassert->report_date);
+                                $inassert->las_date = ($dd->gt($rd) ? $inassert->report_date : $prec_date);
+                            }
+                            else
+                            {
+                                $inassert->las_date = $inassert->report_date;
+                            }
                         }
 
                     }
@@ -1425,6 +1437,9 @@ class Graphql
 		if (empty($response))
 			return $response;
 
+        // get legacy list of animal mode only assertions
+        $amo = Validity::animal()->get(['curie']);
+
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
 		{
@@ -1439,11 +1454,11 @@ class Graphql
 
             $id = substr($record->curie, 15, 36);
 
-            $a = Curation::type(Curation::TYPE_GENE_VALIDITY)->source('gene_validity')
-                            ->sid($id)->orderBy('id', 'desc')->first();
+            //$a = Curation::type(Curation::TYPE_GENE_VALIDITY)->source('gene_validity')
+            //                ->sid($id)->orderBy('id', 'desc')->first();
 
-            $nodal->animal_model_only = $a->animal_model_only ?? false;
-            $nodal->gdm_uuid = $a->assertion_uuid ?? null;
+            //$nodal->animal_model_only = $a->animal_model_only ?? false;
+            //$nodal->gdm_uuid = $a->assertion_uuid ?? null;
 
             // GCI has added a field, but only for new assertions.  Need to check for older ones
             /*if (!isset($record->report_id) || $record->report_id === null)
@@ -1459,28 +1474,37 @@ class Graphql
                             $inassert->report_id = $map->gdm_uuid;
                     }
                 }
-            }
+            }*/
 // 03bb8479-2ed3-4b15-9e54-378ea0729ab2
 
             // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
             if (!isset($record->animal_model) || $record->animal_model === null)
             {
-                //$inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
-                //dd($score);
-                if ($inassert->animal_model_only === false && isset($score->scoreJson))
-                    $inassert->animal_model_only = (
-                        ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
-                        (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
-                        ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
-                        ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
-                    );
+                // if in report mode, then pull from legacy_json
+                if (!empty($record->legacy_json))
+                {
+                    $score = json_decode($record->legacy_json);
+                    $nodal->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+
+                    if ($nodal->animal_model_only === false && isset($score->scoreJson))
+                        $nodal->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                    else
+                        $nodal->animal_model_only = ( $nodal->animal_model_only == "YES");
+                }
                 else
-                    $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+                {
+                    $nodal->animal_model_only = $amo->contains('curie', $record->curie);
+                }
             }
             else
             {
-                $inassert->animal_model_only = $inassert->animal_model;
-            }*/
+                $nodal->animal_model_only = $record->animal_model;
+            }
 
 			$collection->push($nodal);
 		}

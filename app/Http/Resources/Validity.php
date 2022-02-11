@@ -18,6 +18,9 @@ class Validity extends JsonResource
     {
         $temp = Genelib::ValidityClassificationString($this->classification->label);
 
+        if ($this->animal_model_only)
+            $temp .= '*';
+
         return [
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,

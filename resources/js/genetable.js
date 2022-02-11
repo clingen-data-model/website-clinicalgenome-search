@@ -606,8 +606,13 @@ function asmondoFormatter(index, row) {
 }
 
 function asbadgeFormatter(index, row) {
+    var txt = row.classification;
+
+    if (row.classification == "No Known Disease Relationship*")
+        txt = "No Known Disease Relationship";
+
     return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
-        + '' + row.classification + '</a>';
+        + '' + txt + '</a>';
 }
 
 function datebadgeFormatter(index, row) {

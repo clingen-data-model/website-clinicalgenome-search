@@ -194,6 +194,18 @@ class Validity extends Model
 
 
     /**
+     * Query scope by animal model only
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAnimal($query)
+    {
+		return $query->where('animal_model_only', true);
+    }
+
+
+    /**
      * Retrieve, compare, and load a fresh dataset
      *
      * @@param	string	$ident
@@ -308,7 +320,7 @@ class Validity extends Model
             else
             {
                 // even if they match, keep the properties updates
-                $current->update(['properties' => $new->properties]);
+                $current->update(['properties' => $new->properties, 'animal_model_only' => $new->animal_model_only]);
             }
         }
 

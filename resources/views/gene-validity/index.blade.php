@@ -126,6 +126,20 @@
                 'No Known Disease Relationship'
   ];
 
+  function checkclass(text, value, field, data)
+	{
+		if (text == 'animal model only')
+        {
+            return value == "No Known Disease Relationship*";
+        }
+        else if (text == 'no known disease relationship')
+        {
+            return value == "No Known Disease Relationship" || value == "No Known Disease Relationship*"
+        }
+		else
+			return text == value.toLowerCase();
+	}
+
   function customFilter(row,filter){
     const filterCities = filter['sops']
     return filterCities.length == 0 || filterCities.includes(row.sop)
@@ -221,6 +235,7 @@
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',
+          filterCustomSearch: checkclass,
           filterDefault: "{{ $col_search['col_search'] === "classification" ? $col_search['col_search_val'] : "" }}",
           sortable: true,
           sortName: 'order'

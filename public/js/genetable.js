@@ -412,7 +412,9 @@ function asmondoFormatter(index, row) {
 }
 
 function asbadgeFormatter(index, row) {
-  return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">' + '' + row.classification + '</a>';
+  var txt = row.classification;
+  if (row.classification == "No Known Disease Relationship*") txt = "No Known Disease Relationship";
+  return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">' + '' + txt + '</a>';
 }
 
 function datebadgeFormatter(index, row) {
