@@ -105,16 +105,14 @@
                             <div class=" ml-2 mr-2 mb-2 tab-content">
                                 <div role="tabpanel" class="pt-3 pl-3 pb-2 tab-pane fade in active" id="las-{{ $validity->key }}">
                                     <div class="bg-white border border-2 border-warning mr-3 p-2 mt-1 mb-3 rounded">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                        <a href="https://www.clinicalgenome.org/working-groups/lumping-and-splitting/" target="_doc">Lumping and Splitting Working Group</a>
+                                        Lumping and Splitting is the process by which ClinGen curation groups determine which disease entity they will use for evaluation.
+                                        Groups review current disease and/or phenotype assertions (e.g. OMIM MIM phenotypes) and select the included and excluded phenotypes according to <a href="https://www.clinicalgenome.org/working-groups/lumping-and-splitting/" target="_doc">current guidelines</a>.
+                                        MIM phenotypes represented below are those that were available on the stated evaluation date
                                     </div>
                                     @if (!empty($validity->assertion->las_included))
                                         <dl class="row mb-0">
                                             <dt class="col-sm-3 text-right">Included MIM Phenotypes
-                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_included as $mim)
@@ -131,7 +129,7 @@
                                     @else
                                     <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Included MIM Phenotypes
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1 text-muted">
@@ -143,7 +141,7 @@
                                     @if (!empty($validity->assertion->las_excluded))
                                         <dl class="row mb-0">
                                             <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
-                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 @foreach ($validity->assertion->las_excluded as $mim)
@@ -160,7 +158,7 @@
                                     @else
                                         <dl class="row mb-0">
                                             <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
-                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                                <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
                                             <dd class="col-sm-9">
                                                 <div class="mb-1 text-muted">
@@ -171,7 +169,7 @@
                                      @endif
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Evaluation Date
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="The date Lumping and Splitting assessment was performed."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
@@ -213,7 +211,7 @@
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">PMIDs
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Literature supporting the Lumping and Splitting decisions."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
@@ -229,7 +227,7 @@
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Notes
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Optional free text explanation of the Lumping and Splitting decision."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
