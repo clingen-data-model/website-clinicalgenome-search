@@ -91,25 +91,22 @@ class UpdateActionabilityStats extends Command
 
 
         // Total Genes Pairs & Unique Pairs
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["omim", "!=", "(No paired disease(s) for gene)"],
-            ["status_overall", "!=", "Retracted"],
-        ])->orWhere([
-            //["context", "=", "Adult"],
-            ["status_overall", "!=", "Retracted"],
-            ["omim", "!=", "(No paired disease(s) for gene)"],
+            ["status_stg1", "!=", "Failed"],
+            ["status_overall", "!=", "Retracted"]
         ])->get();
         $report = array();
         $reportPediatric = array();
         $reportAdult = array();
         foreach ($data as $item) {
             //dd($item);
-            $report[$item->id] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+            $report[$item->id] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             if ($item->context == "Pediatric") {
-                $reportPediatric[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+                $reportPediatric[] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             }
             if ($item->context == "Adult") {
-                $reportAdult[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+                $reportAdult[] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             }
         }
         //dd($report);
@@ -118,6 +115,7 @@ class UpdateActionabilityStats extends Command
         $total_genes_pairs_unique            = array_unique($report);
         $total_genes_pairs_unique            = count($total_genes_pairs_unique);
         $total_genes_pairs_unique_adult      = array_values(array_unique($reportAdult));
+        //dd($reportAdult);
         $total_genes_pairs_unique_adult      = count($total_genes_pairs_unique_adult);
         $total_genes_pairs_unique_peds       = array_values(array_unique($reportPediatric));
         $total_genes_pairs_unique_peds       = count($total_genes_pairs_unique_peds);

@@ -497,6 +497,7 @@ class Graphql
 						  }'
                           . '
                           report_id
+                          animal_model
                           '
                           . 'legacy_json
 						  curie
@@ -606,31 +607,41 @@ class Graphql
                     $score = json_decode($inassert->legacy_json);
 
                     // GCI has added a field, but only for new assertions.  Need to check for older ones
-                    $inassert->report_id = $score->report_id ?? null;
-                    if ($inassert->report_id === null)
+                    if (!isset($inassert->report_id) || $inassert->report_id === null)
                     {
-                       // GC Express wont have an iri
-                        if (isset($score->iri))
+                        $inassert->report_id = $score->report_id ?? null;
+                        if ($inassert->report_id === null)
                         {
-                            $map = Gdmmap::gg($score->iri)->first();
-                            if ($map !== null)
-                                $inassert->report_id = $map->gdm_uuid;
+                        // GC Express wont have an iri
+                            if (isset($score->iri))
+                            {
+                                $map = Gdmmap::gg($score->iri)->first();
+                                if ($map !== null)
+                                    $inassert->report_id = $map->gdm_uuid;
+                            }
                         }
                     }
 // 03bb8479-2ed3-4b15-9e54-378ea0729ab2
-                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
-                    $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
-                    //dd($score);
-                    if ($inassert->animal_model_only === false && isset($score->scoreJson))
-                        $inassert->animal_model_only = (
-                            ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
-                            (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
-                            ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
-                            ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
-                        );
-                    else
-                        $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
 
+                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+                    if (!isset($inassert->animal_model) || $inassert->animal_model === null)
+                    {
+                        $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                        //dd($score);
+                        if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                            $inassert->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                        else
+                            $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+                    }
+                    else
+                    {
+                        $inassert->animal_model_only = $inassert->animal_model;
+                    }
 
                     // create additional entries for lumping and splitting
                     $inassert->las_included = [];
@@ -1396,6 +1407,8 @@ class Graphql
                             curie
 							label
 						}
+                        report_id
+                        animal_model
             ';
 
         if (!empty($properties))
@@ -1431,6 +1444,43 @@ class Graphql
 
             $nodal->animal_model_only = $a->animal_model_only ?? false;
             $nodal->gdm_uuid = $a->assertion_uuid ?? null;
+
+            // GCI has added a field, but only for new assertions.  Need to check for older ones
+            /*if (!isset($record->report_id) || $record->report_id === null)
+            {
+                //$inassert->report_id = $score->report_id ?? null;
+                if ($record->report_id === null)
+                {
+                // GC Express wont have an iri
+                    if (isset($score->iri))
+                    {
+                        $map = Gdmmap::gg($score->iri)->first();
+                        if ($map !== null)
+                            $inassert->report_id = $map->gdm_uuid;
+                    }
+                }
+            }
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
+
+            // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+            if (!isset($record->animal_model) || $record->animal_model === null)
+            {
+                //$inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                //dd($score);
+                if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                    $inassert->animal_model_only = (
+                        ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                        (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                        ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                        ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                    );
+                else
+                    $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+            }
+            else
+            {
+                $inassert->animal_model_only = $inassert->animal_model;
+            }*/
 
 			$collection->push($nodal);
 		}

@@ -75,8 +75,8 @@ class Validity extends Model
      *
      * @var array
      */
-	protected $fillable = ['ident', 'curie', 'report_date', 'disease_label',
-                            'disease_mondo', 'gene_label', 'gene_hgnc_id',
+	protected $fillable = ['ident', 'curie', 'report_date', 'report_id', 'disease_label',
+                            'disease_mondo', 'gene_label', 'gene_hgnc_id', 'animal_model_only',
                             'mode_of_inheritance', 'classification', 'properties',
                             'specified_by', 'attributed_to', 'version', 'type', 'status',
                          ];
@@ -236,6 +236,8 @@ class Validity extends Model
                                     'specified_by' => $assertion->specified_by->label,
                                     'attributed_to' => $assertion->attributed_to->label,
                                     'properties' => $assertion->legacy_json,
+                                    'report_id' => $assertion->report_id,
+                                    'animal_model_only' => $assertion->animal_model_only,
                                     'version' => 1,
                                     'type' => 1,
                                     'status' => 1
@@ -272,6 +274,8 @@ class Validity extends Model
                                     'specified_by' => $assertion->specified_by->label,
                                     'attributed_to' => $assertion->attributed_to->label,
                                     'properties' => $assertion->legacy_json,
+                                    'report_id' => $assertion->report_id,
+                                    'animal_model_only' => $assertion->animal_model_only,
                                     'version' => $current->version + 1,
                                     'type' => 1,
                                     'status' => 1
@@ -326,9 +330,11 @@ class Validity extends Model
         // unset a few fields we don't care about
         unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
               $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
-              $old_array['list_date'], $old_array['display_status'], $old_array['properties']);
+              $old_array['list_date'], $old_array['display_status'], $old_array['properties'],
+              $old_array['report-id'], $old_array['animal_model_only']);
         unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'],
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
+              $new_array['report-id'], $new_array['animal_model_only'],
               $new_array['list_date'], $new_array['display_status'], $new_array['properties']);
 
         $diff = array_diff_assoc($new_array, $old_array);

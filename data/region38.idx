@@ -4093,7 +4093,7 @@ chr4:17911624-17913044	ISCA-6091	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr6:86970434-86971258	ISCA-609	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr19:11756511-11757644	ISCA-6089	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr10:61016275-61026417	ISCA-6088	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr14:95086228-95158263	ISCA-6087	ISCA Gene Curation	Under Group Review		N/A	N/A	1	606241
+chr14:95086228-95158263	ISCA-6087	ISCA Gene Curation	Complete		0	3	1	606241
 chr7:87833568-87876360	ISCA-6086	ISCA Gene Curation	Awaiting Review		N/A	N/A		610821
 chr5:141402953-141512979	ISCA-6085	ISCA Gene Curation	Awaiting Review		N/A	N/A		606296
 chr7:90403461-90415954	ISCA-6084	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.101	611232
@@ -29252,7 +29252,7 @@ chr20:33407957-33443853	ISCA-24452	ISCA Gene Curation	Awaiting Review		N/A	N/A	0
 chr19:6379569-6393186	ISCA-24451	ISCA Gene Curation	Awaiting Review		N/A	N/A	0.029	189968
 chrY:25009703-25010769	ISCA-24450	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr6:145734869-145886585	ISCA-2445	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr15:90717346-90816166	ISCA-24449	ISCA Gene Curation	Under Group Review		N/A	N/A		604610
+chr15:90717346-90816166	ISCA-24449	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype		604610
 chr9:108867517-108934332	ISCA-24448	ISCA Gene Curation	Awaiting Review		N/A	N/A		603722
 chr5:105099474-105100098	ISCA-24447	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr18:8411985-8414631	ISCA-24446	ISCA Gene Curation	Awaiting Review		N/A	N/A		
@@ -40133,7 +40133,7 @@ chr3:128851620-128853008	ISCA-14061	ISCA Gene Curation	Awaiting Review		N/A	N/A
 chr2:203238982-203306026	ISCA-14060	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr10:31362776-31364077	ISCA-1406	ISCA Gene Curation	Reopened		N/A	N/A		
 chr1:81098195-81099026	ISCA-14059	ISCA Gene Curation	Awaiting Review		N/A	N/A		
-chr5:177511577-177516961	ISCA-14058	ISCA Gene Curation	Under Primary Review		N/A	N/A	0.001	608170
+chr5:177511577-177516961	ISCA-14058	ISCA Gene Curation	Complete		0	3	0.001	608170
 chr8:93754844-93832653	ISCA-14057	ISCA Gene Curation	Complete		0	30: Gene associated with autosomal recessive phenotype		613550
 chrX:83748625-83750102	ISCA-14056	ISCA Gene Curation	Awaiting Review		N/A	N/A		
 chr1:52991782-52993703	ISCA-14055	ISCA Gene Curation	Awaiting Review		N/A	N/A		
