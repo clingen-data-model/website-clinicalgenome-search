@@ -18,6 +18,7 @@ use App\Nodal;
 use App\Filter;
 use App\Omim;
 use App\Mim;
+use App\Pmid;
 
 /**
 *
@@ -428,6 +429,7 @@ class GeneController extends Controller
 		$pharma_collection = collect();
         // mim st
         $mims = [];
+        $pmids = [];
         $key = 0;
 
 
@@ -488,6 +490,8 @@ class GeneController extends Controller
 
 				$validity_collection->push($node);
                 $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
+                if (isset($assertion->las_rationale['pmids']))
+                    $pmids = array_merge($pmids, $assertion->las_rationale['pmids']);
 			}
 
 			// dosage
@@ -506,6 +510,19 @@ class GeneController extends Controller
 
         foreach ($mim_names as $mim)
             $mims[$mim->mim] = $mim->title;
+
+        // get the pmids
+        $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
+
+        $pmids = [];
+
+        foreach($pmid_names as $pmid)
+            $pmids[$pmid->pmid] = ['title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
+                               //     'author' => $pmid->sortfirstauthor,
+                                //    'published' =>  $pmid->pubdate,
+                                    'abstract' => $pmid->abstract];
+
+        //dd($pmids);
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
@@ -575,7 +592,7 @@ class GeneController extends Controller
         //dd($mimflag);
         //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
-												'validity_collection', 'actionability_collection',
+												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims',
             'vceps',

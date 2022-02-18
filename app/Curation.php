@@ -344,6 +344,17 @@ class Curation extends Model
         }
     }
 
+    /**
+     * Parse a gene disease validity record raw record
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public static function parse_gene_validity_raw($record)
+    {
+        dd($record);
+    }
+
 
 
 }

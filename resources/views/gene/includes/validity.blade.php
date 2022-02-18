@@ -129,7 +129,7 @@
                                     @else
                                     <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Included MIM Phenotypes
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span class="cursor-pointer" style="white-space: nowrap;" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1 text-muted">
@@ -217,8 +217,12 @@
                                             <div class="mb-1">
                                             @if (!empty($validity->assertion->las_rationale['pmids']))
                                                 @foreach ($validity->assertion->las_rationale['pmids'] as $pmid)
+                                                @if (isset($pmids[$pmid]))
+                                                    <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{ $pmids[$pmid]['title'] }}">{{ $pmid }}</a>@if(!$loop->last), @endif
+                                                @else
                                                     <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid">{{ $pmid }}</a>@if(!$loop->last), @endif
-                                                @endforeach
+                                               @endif
+                                                    @endforeach
                                             @else
                                                 <i class="text-muted">No PMIDs were specified</i>
                                             @endif

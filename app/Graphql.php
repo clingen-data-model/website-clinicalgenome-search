@@ -1419,8 +1419,10 @@ class Graphql
                             curie
 							label
 						}
-                        report_id
-                        animal_model
+                        '
+						. 'report_id
+                        animal_model'
+						 . '
             ';
 
         if (!empty($properties))

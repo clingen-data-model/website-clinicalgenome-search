@@ -90,7 +90,7 @@ class UpdateActionabilitySummaries extends Command
         unset($all);
         $header = true;
         $count = 0;
-        while ($row = fgetcsv($results_adult, 1000, "\t")) {
+        while ($row = fgetcsv($results_adult, 0, "\t")) {
             if ($header) {
                 $header = false;
                 $heading = $row;
@@ -142,7 +142,7 @@ class UpdateActionabilitySummaries extends Command
         unset($all);
         $header = true;
         $count = 0;
-        while ($row = fgetcsv($results_peds, 1000, "\t")) {
+        while ($row = fgetcsv($results_peds, 0, "\t")) {
             if ($header) {
                 $header = false;
                 $heading = $row;
@@ -150,6 +150,8 @@ class UpdateActionabilitySummaries extends Command
                 $row;
             }
             if ($count) {
+                //var_dump($heading);
+                //var_dump($row);
                 $all[] = array_combine($heading, $row);
             }
             $count++;
@@ -196,7 +198,7 @@ class UpdateActionabilitySummaries extends Command
         unset($all);
         $header = true;
         $count = 0;
-        while ($row = fgetcsv($results_adult_assertion, 1000, "\t")) {
+        while ($row = fgetcsv($results_adult_assertion, 0, "\t")) {
             if ($header) {
                 $header = false;
                 $heading = $row;
@@ -266,7 +268,7 @@ class UpdateActionabilitySummaries extends Command
         unset($all);
         $header = true;
         $count = 0;
-        while ($row = fgetcsv($results_peds_assertion, 1000, "\t")) {
+        while ($row = fgetcsv($results_peds_assertion, 0, "\t")) {
             if ($header) {
                 $header = false;
                 $heading = $row;
@@ -328,7 +330,7 @@ class UpdateActionabilitySummaries extends Command
                 $data->save();
             }
             else{
-                echo implode(',', $row) . "\n";
+                //echo implode(',', $row) . "\n";
             }
         }
 

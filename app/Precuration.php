@@ -314,6 +314,16 @@ class Precuration extends Model
 
         $current->save();
 
+        // regardless of status, add to the pmids list
+        if (isset($current->rationale['pmids']))
+        {
+            foreach($current->rationale['pmids'] as $pmid)
+            {
+                    $entry = Pmid::firstOrCreate(['pmid' => $pmid, 'uid' => $pmid],
+                                    [ 'status' => 20]);
+            }
+        }
+
         if ($current->status !== self::STATUS_DELETED)
         {
 
