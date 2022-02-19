@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use Setting;
+
 use App\Pmid;
 use App\Task;
 
@@ -40,9 +42,17 @@ class QueryPubmed extends Command
      */
     public function handle()
     {
+        $key = Setting::get('pubmed', false);
+
+        if (!$key)
+        {
+            echo "\n(E002) Error retreiving Pubmed key\n";
+            exit;
+        }
+
 		// set up search array
 		$parms = ['db' => 'pubmed', 'id' => '',
-				  'api_key' => '59e073ce6f18becd93e36bd2613dfde47509',
+				  'api_key' => $key,
 				  'retmode' => 'json'];
 
         // Get the query strings
