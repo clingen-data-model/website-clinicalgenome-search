@@ -118,9 +118,9 @@
                                                 @foreach ($validity->assertion->las_included as $mim)
                                                     <div class="mb-1">
                                                         @if ($mimflag == $mim)
-                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
                                                         @else
-                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
                                                         @endif
                                                     <div>
                                                 @endforeach
@@ -147,9 +147,9 @@
                                                 @foreach ($validity->assertion->las_excluded as $mim)
                                                     <div class="mb-1">
                                                         @if ($mimflag == $mim)
-                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
                                                         @else
-                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim"># {{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
                                                         @endif
                                                     </div>
                                                 @endforeach
@@ -183,7 +183,7 @@
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Curation Type
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span><i class="fas fa-info-circle mr-1 ml-1 text-light"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
@@ -192,12 +192,13 @@
                                             @else
                                                 <i class="text-muted">No curation type was specified</i>
                                             @endif
+                                            <a href="https://www.clinicalgenome.org/docs/lumping-and-splitting" class="ml-2 small" target="_doc">(Read more about curation type)</a>
                                             </div>
                                         </dd>
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Rationales
-                                            <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="TBA"><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
+                                            <span><i class="fas fa-info-circle mr-1 ml-1 text-light"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
@@ -206,6 +207,7 @@
                                             @else
                                                 <i class="text-muted">No rationales were specified</i>
                                             @endif
+                                            <a href="https://www.clinicalgenome.org/docs/lumping-and-splitting" class="ml-2 small" target="_doc">(Read more about curation type)</a>
                                             </div>
                                         </dd>
                                      </dl>
