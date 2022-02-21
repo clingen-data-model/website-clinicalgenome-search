@@ -610,7 +610,7 @@
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><a href="https://actionability.clinicalgenome.org/ac/?col=statusOverall&search=Released"><h4><b><a  target="report" href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Topics</a></b></h4></a></div>
+          <div class="col-sm-12 text-left"><a href="https://actionability.clinicalgenome.org/ac/?col=statusOverall&search=Released"><h4><b><a  target="report" href="https://actionability.clinicalgenome.org/ac/?col=statusOverall&search=Released"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Topics</a></b></h4></a></div>
 
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
@@ -830,8 +830,8 @@
           <div class="col-sm-6">
             <h5 class="mb-1">Adult Context </h4>
 
-              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
+              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=all&context=Adult"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=status-stg1&search=Failed"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
                 <a  target="report" href="/kb/actionability/report-index?context=adult"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
 
                 <div class="row">
@@ -857,7 +857,8 @@
                         <circle class="donut-segment chart-stroke-actionability-naruleout" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_early_rule_out'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_early_rule_out'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_na_early_rule_out'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_na_early_rule_out'] }} N/A Early Rule-Out');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.cliniclagenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20early%20rule-out');"/>
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
-                            <text x="50%" y="45%" class="chart-number">
+                          <a href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?searchType=allassertions"  target="report">
+                          <text x="50%" y="45%" class="chart-number">
                             {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion']  - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending']?? '' }}
                             </text>
                             <text x="50%" y="45%" class="chart-label">
@@ -868,7 +869,7 @@
                                 </text>
                                 <text x="50%" y="59%" class="chart-label">
                                 Assertions
-                                </text>
+                                </text></a>
                         </g>
                         </svg>
                     </div>
@@ -995,8 +996,8 @@
           <div class="col-sm-6 border-left-1">
             <h5 class="mb-1">Pediatric Context </h4>
 
-              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
+              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=all&context=Pediatric"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=status-stg1&search=Failed/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
                 <a  target="report" href="/kb/actionability/report-index?context=pediatric"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
 
                 <div class="row">
@@ -1022,6 +1023,7 @@
                         <circle class="donut-segment chart-stroke-actionability-naruleout" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_early_rule_out'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_early_rule_out'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_na_early_rule_out'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_na_early_rule_out'] }} N/A Early Rule-Out');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20early%20rule-out');"/>
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
+                          <a href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?searchType=allassertions" target="report">
                             <text x="50%" y="45%" class="chart-number">
                             {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'] ?? '' }}
                             </text>
@@ -1034,6 +1036,7 @@
                                 <text x="50%" y="59%" class="chart-label">
                                 Assertions
                                 </text>
+                          </a>
                         </g>
                         </svg>
                     </div>
