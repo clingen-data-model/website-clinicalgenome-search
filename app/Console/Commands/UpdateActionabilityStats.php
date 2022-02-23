@@ -69,7 +69,7 @@ class UpdateActionabilityStats extends Command
 
 
         // Total Genes
-        $data = ActionabilitySummary::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released - Under Revision")->get();
+        $data = ActionabilityAssertion::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released - Under Revision")->get();
         $report = array();
         foreach ($data as $item) {
             //dd($item);
@@ -85,6 +85,7 @@ class UpdateActionabilityStats extends Command
         $total_genes                   = array_values(array_unique($report));
         $total_genes                   = count($total_genes);
         $total_genes_adult                   = array_values(array_unique($reportAdult));
+        //dd($total_genes_adult);
         $total_genes_adult                   = count($total_genes_adult);
         $total_genes_peds                   = array_values(array_unique($reportPediatric));
         $total_genes_peds                   = count($total_genes_peds);
