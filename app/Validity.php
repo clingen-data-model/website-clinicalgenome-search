@@ -111,6 +111,42 @@ class Validity extends Model
      ];
 
 
+    protected static $evidence_type_strings = [
+            'null variant evidence line' => "Predicted or proven null variant type",
+            'SEPIO:0000247' => "Candidate gene sequencing",
+            'SEPIO:0004017' => "Predicted or proven null variant type",
+            'SEPIO:0004018' => "Predicted or proven null variant type",
+            'SEPIO:0004019' => "Other variant type",
+            'SEPIO:0004020' => "Single variant analysis",
+            'SEPIO:0004021' => "Aggregate variant analysis",
+            'SEPIO:0004022' => "Bochemical Function",
+            'SEPIO:0004023' => "Protein Interaction",
+            'SEPIO:0004024' => "Expression",
+            'SEPIO:0004025' => "Patient cells",
+            'SEPIO:0004026' => "Non-patient cells",
+            'SEPIO:0004027' => "Non-human model organism",
+            'SEPIO:0004028' => "Cell culture model",
+            'SEPIO:0004029' => "Rescue in human",
+            'SEPIO:0004030' => "Rescue in non-human model organism",
+            'SEPIO:0004031' => "Rescue in cell culture model",
+            'SEPIO:0004032' => "Rescue in patient cells",
+            'SEPIO:0004029' => "",
+            'SEPIO:0004078' => "Predicted or proven null variant type",
+            'SEPIO:0004079' => "Predicted or proven null variant type",
+            'SEPIO:0004080' => "Other variant type",
+          //  'variant functional impact evidence item' => "No translation",
+            'SEPIO:0004119' => "Other variant type",
+          //  'null variant evidence item' => "No translation",
+            'SEPIO:0004118' => "Other Variant Type",
+            'SEPIO:0004117' => "Predicted or proven null",
+          //  'non-null variant evidence line' => "Other variant type",
+            'SEPIO:0004119' => "Other variant type",
+            'SEPIO:0004120' => "Predicted or proven null",
+            'SEPIO:0004121' => "Other variant type"
+            //'SEPIO:0004042' => "Other variant type",
+     ];
+
+
 	/**
      * Automatically assign an ident on instantiation
      *
@@ -655,5 +691,17 @@ class Validity extends Model
                 $panel->save();
             }
         }
+    }
+
+    /**
+     * Displayable evidence type string
+     *
+     */
+    public static function evidenceTypeString($x)
+    {
+
+       //return $x;
+
+        return self::$evidence_type_strings[$x] ?? $x;
     }
 }

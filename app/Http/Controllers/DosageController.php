@@ -219,6 +219,8 @@ class DosageController extends Controller
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
 
+        //$record->GRCh37_seqid = "NC_000014.8";
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "dosage",

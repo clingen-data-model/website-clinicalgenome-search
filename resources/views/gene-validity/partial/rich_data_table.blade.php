@@ -1,5 +1,3 @@
-@section('content-full-width')
-<section id='validity_supporting_data' class="container-fluid">
 
     <div class="panel panel-default" id="tag_genetic_evidence_case_level_with_proband">
         <!-- Default panel contents -->
@@ -283,7 +281,7 @@
                                 <span class="text-danger"><strong>####</strong></span>
                             </td>
                             <td>
-                                {{ $evidence->sequencing_method->label }}
+                                {{ $evidence->sequencing_method->label ?? '' }}
                             </td>
                         </tr>
                         @endforeach
@@ -647,5 +645,3 @@
             <b>Total Points:  ####</b>
         </div>
     </div>
-</section>
-@endsection

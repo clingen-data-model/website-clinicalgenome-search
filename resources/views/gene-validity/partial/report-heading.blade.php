@@ -1,5 +1,5 @@
 <hr class="mt-0" />
-<div class="row">
+<!--<div class="row">
     <div class="col-md-2">
         <a href="#validity_summary" class="badge badge-pill badge-light border-1 p-2 mb-2">Classification Summary <i class="fas fa-arrow-circle-down"></i></a>
         <a href="#validity_classification_matrix" class="badge badge-pill badge-light border-1 p-2">Classification Matrix <i class="fas fa-arrow-circle-down"></i></a>
@@ -14,12 +14,12 @@
         <a href="#tag_experimental_evidence" class=" pull-right badge badge-pill badge-light border-1 p-2 ml-4 bg-evidence5">Experimental Evidence <i class="fas fa-arrow-circle-down"></i></a>
     </div>
 </div>
-<hr />
+<hr />-->
 <h3>{{ $record->gene->label }} - {{ displayMondoLabel($record->disease->label) }} {!! displayMondoObsolete($record->disease->label) !!}</h3>
 {{ $record->interface }}
 <div class="form-group">
 <table class='table table-striped text-left' style="width:100%;" >
-<tr style="font-size:14px">
+<!--<tr style="font-size:14px">
     <td style="border-top-width:6px" nowrap class="text-left">Gene:</td>
     <td  style="border-top-width:6px">{{ $record->gene->label }} ({{ $record->gene->hgnc_id }})</td>
     <td colspan="2" rowspan="3"  style="border-top-width:6px; border-left-width:6px; border-left-color:rgb(221, 221, 221); border-left-style:solid; text-align: center;">
@@ -47,7 +47,7 @@
       </td>
   </tr>
   @endif
-
+-->
   <tr style="font-size:14px">
     <td style="width:10%;  border-top-width:6px" nowrap class="text-left">Replication over time:</td>
     <td style="width:40%;  border-top-width:6px">

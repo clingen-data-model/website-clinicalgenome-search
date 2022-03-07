@@ -183,7 +183,6 @@
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Curation Type
-                                            <span><i class="fas fa-info-circle mr-1 ml-1 text-light"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">
@@ -198,7 +197,6 @@
                                      </dl>
                                      <dl class="row mb-0">
                                         <dt class="col-sm-3 text-right">Rationales
-                                            <span><i class="fas fa-info-circle mr-1 ml-1 text-light"></i></span>
                                             :</dt>
                                         <dd class="col-sm-9">
                                             <div class="mb-1">

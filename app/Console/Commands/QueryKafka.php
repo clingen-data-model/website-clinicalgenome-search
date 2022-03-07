@@ -134,7 +134,12 @@ class QueryKafka extends Command
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
                         $payload = json_decode($message->payload);
-                        //dd($payload);
+                        //echo $payload->genes[0]->symbol . "\n";
+                        //if ($payload->genes[0]->symbol == "PDLIM3")
+                        //{
+                        //    dd($payload);
+                        //}
+                        //dd($payload->genes[0]);
                         $a = $stream->parser;
                         $a($payload);
                     $stream->update(['offset' => $message->offset + 1]);
