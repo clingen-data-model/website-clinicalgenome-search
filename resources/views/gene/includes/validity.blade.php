@@ -110,7 +110,7 @@
                                         MIM phenotypes represented below are those that were available on the stated evaluation date
                                     </div>
                                     @if (!empty($validity->assertion->las_included))
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -127,7 +127,7 @@
                                             <dd>
                                         </dl>
                                     @else
-                                    <dl class="row mb-0">
+                                    <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                             <span class="cursor-pointer" style="white-space: nowrap;" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
@@ -139,7 +139,7 @@
                                     </dl>
                                     @endif
                                     @if (!empty($validity->assertion->las_excluded))
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -156,7 +156,7 @@
                                             </dd>
                                          </dl>
                                     @else
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -167,7 +167,7 @@
                                             <dd>
                                         </dl>
                                      @endif
-                                     <dl class="row mb-0">
+                                     <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">Evaluation Date
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="The date Lumping and Splitting assessment was performed."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
@@ -181,7 +181,7 @@
                                             </div>
                                         </dd>
                                      </dl>
-                                     <dl class="row mb-0">
+                                     <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">Curation Type
                                             :</dt>
                                         <dd class="col-sm-9">
@@ -195,7 +195,7 @@
                                             </div>
                                         </dd>
                                      </dl>
-                                     <dl class="row mb-0">
+                                     <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">Rationales
                                             :</dt>
                                         <dd class="col-sm-9">
@@ -209,7 +209,7 @@
                                             </div>
                                         </dd>
                                      </dl>
-                                     <dl class="row mb-0">
+                                     <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">PMIDs
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Literature supporting the Lumping and Splitting decisions."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>
@@ -229,7 +229,7 @@
                                             </div>
                                         </dd>
                                      </dl>
-                                     <dl class="row mb-0">
+                                     <dl class="row mb-2">
                                         <dt class="col-sm-3 text-right">Notes
                                             <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Optional free text explanation of the Lumping and Splitting decision."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                             :</dt>

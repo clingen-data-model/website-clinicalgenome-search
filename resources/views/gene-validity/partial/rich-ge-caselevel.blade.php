@@ -56,9 +56,9 @@
                     data-group-by-field="pheno">
                 <thead>
                     <tr role="row">
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Label</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" >Proband<br>Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-width="180">Variant</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-width="100">Variant</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Age</th>

@@ -47,23 +47,42 @@
                     {{ $record->disease->label }}
                     <div class="text-muted small">{{ $record->disease->curie }}</div>
                 </dd>
-                <dt class="col-sm-3">Mode of Inheritance:
+                <!--<dt class="col-sm-3">Mode of Inheritance:
                 <dd class="col-sm-9">
                     {{ $record->mode_of_inheritance->label ?? '-' }}
                     <div class="text-muted small">{{ $record->mode_of_inheritance->curie ?? '' }}</div>
-                </dd>
+                </dd>-->
             </div>
         </div>
         <div class="col-md-4 text-center">
             <div class='badge badge-primary' style="font-size: 20px; padding:15px;">
                 <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ App\GeneLib::validityClassificationString($record->classification->label ?? null) }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
-              </div>
-              <div>Classification - {{ displayDate($record->report_date ?? null) }}</div>
-              @if ($record->animalmode)
-              <div class='badge badge-warning mt-1 p-2'>
-                  Animal Model Only
-              </div>
-              @endif
+            </div>
+            <div>Classification - {{ displayDate($record->report_date ?? null) }}</div>
+            @if ($record->animalmode)
+            <div class='badge badge-warning mt-1 p-2'>
+                Animal Model Only
+            </div>
+            @endif
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <dt class="col-sm-4">Mode of Inheritance:
+                <dd class="col-sm-8">
+                    {{ $record->mode_of_inheritance->label ?? '-' }}
+                    <div class="text-muted small">{{ $record->mode_of_inheritance->curie ?? '' }}</div>
+                </dd>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <dt class="col-sm-2">SOP:
+                <dd class="col-sm-10">
+                    {{ $record->specified_by->label ?? 'Not Specified' }}
+                </dd>
+            </div>
         </div>
     </div>
 
@@ -73,26 +92,26 @@
 	<ul class="nav nav-tabs mt-1" style="">
 		<li role="presentation" class="active" style="">
             <a href="#gdvt1" aria-controls="gdvt1" role="tab" data-toggle="tab">
-              <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-1"></i>Summary </span>
+              <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-2"></i>Summary </span>
             </a>
         </li>
         @if ($extrecord !== null)
           <li role="presentation" class="" style="">
-            <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab"><i class="fas fa-dna mr-1"></i>Genetic Evidence
+            <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab"><i class="fas fa-dna mr-2"></i>Genetic Evidence
                 @if ($ge_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $ge_count ?? 0 }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $ge_count ?? 0 }}</span>
                 @endif
             </a>
           </li>
 		<li role="presentation" class="" style="">
-			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab"><i class="fas fa-microscope mr-1"></i>Experimental Evidence
+			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab"><i class="fas fa-microscope mr-2"></i>Experimental Evidence
                 @if ($exp_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $exp_count ?? 0 }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $exp_count ?? 0 }}</span>
                 @endif
             </a>
 		</li>
         <li role="presentation" class="" style="">
-			<a href="#gdvt5" aria-controls="gdvt5" role="tab" data-toggle="tab"><i class="fas fa-random fa-sm mr-1"></i>Lumping & Splitting </span></a>
+			<a href="#gdvt5" aria-controls="gdvt5" role="tab" data-toggle="tab"><i class="fas fa-random fa-sm mr-2"></i>Lumping & Splitting </span></a>
 		</li>
         @endif
 	</ul>
@@ -165,16 +184,16 @@
                 <div class="panel panel-primary with-nav-tabs">
                     <div class="panel-heading">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab2-1" data-toggle="tab"><i class="fas {{ empty($extrecord->caselevel) ?  'fa-times-circle' : 'fa-check-circle' }}"></i>  Case Level Variants
+                                <li class="active"><a href="#tab2-1" data-toggle="tab"><i class="fas {{ empty($extrecord->caselevel) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case Level Variants
                                     @if ($ge_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $ge_count ?? 0 }}</span>
+                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $ge_count ?? 0 }}</span>
                                     @endif
                                 </a></li>
-                                <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas {{ empty($extrecord->segregation) ?  'fa-times-circle' : 'fa-check-circle' }}"></i>  Case Level Segregation</a></li>
-                                <li class="ml-2"><a href="#tab2-3" data-toggle="tab"><i class="fas {{ empty($extrecord->segregationwo) ?  'fa-times-circle' : 'fa-check-circle' }}"></i>  Case Level Family Segregation w/o Proband Data or Scored Proband</a></li>
-                                <li class="ml-2"><a href="#tab2-4" data-toggle="tab"><i class="fas {{ empty($extrecord->casecontrol) ?  'fa-times-circle' : 'fa-check-circle' }}"></i>  Case-Control
+                                <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas {{ empty($extrecord->segregation) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case Level Segregation</a></li>
+                                <li class="ml-2"><a href="#tab2-3" data-toggle="tab"><i class="fas {{ empty($extrecord->segregationwo) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case Level Family Segregation w/o Proband Data or Scored Proband</a></li>
+                                <li class="ml-2"><a href="#tab2-4" data-toggle="tab"><i class="fas {{ empty($extrecord->casecontrol) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case-Control
                                     @if ($cc_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $cc_count ?? 0 }}</span>
+                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cc_count ?? 0 }}</span>
                                     @endif
                                 </a></li>
                             </ul>
@@ -233,7 +252,7 @@
                 <div class="panel panel-primary with-nav-tabs">
                     <div class="panel-heading">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="#tab4-1" data-toggle="tab"><i class="fas fa-check-circle"></i>  Experimental Evidence  <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $exp_count ?? 0 }}</span></a></li>
+                                <li class="active"><a href="#tab4-1" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>  Experimental Evidence  <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $exp_count ?? 0 }}</span></a></li>
                             </ul>
                     </div>
                     <div class="panel-body p-0">
@@ -266,7 +285,7 @@
                                             MIM phenotypes represented below are those that were available on the stated evaluation date
                                         </div>
                                         @if (!empty($record->las_included))
-                                            <dl class="row mb-0">
+                                            <dl class="row mb-2">
                                                 <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                                     <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                     :</dt>
@@ -279,7 +298,7 @@
                                                 <dd>
                                             </dl>
                                         @else
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Included MIM Phenotypes
                                                 <span class="cursor-pointer" style="white-space: nowrap;" data-toggle="tooltip" data-placement="top" title="These phenotypes are part of the disease entity used for curation."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -291,7 +310,7 @@
                                         </dl>
                                         @endif
                                         @if (!empty($record->las_excluded))
-                                            <dl class="row mb-0">
+                                            <dl class="row mb-2">
                                                 <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                     <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                     :</dt>
@@ -304,7 +323,7 @@
                                                 </dd>
                                                 </dl>
                                         @else
-                                            <dl class="row mb-0">
+                                            <dl class="row mb-2">
                                                 <dt class="col-sm-3 text-right">Excluded MIM Phenotypes
                                                     <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="These phenotypes are not part of the disease entity used for curation.  This does not mean that these are not valid assertions, and could be curated separately."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                     :</dt>
@@ -315,7 +334,7 @@
                                                 <dd>
                                             </dl>
                                         @endif
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Evaluation Date
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="The date Lumping and Splitting assessment was performed."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -329,7 +348,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Curation Type  :</dt>
                                             <dd class="col-sm-9">
                                                 <div class="mb-1">
@@ -342,7 +361,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Rationales  :</dt>
                                             <dd class="col-sm-9">
                                                 <div class="mb-1">
@@ -355,7 +374,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">PMIDs
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Literature supporting the Lumping and Splitting decisions."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>
@@ -375,7 +394,7 @@
                                                 </div>
                                             </dd>
                                         </dl>
-                                        <dl class="row mb-0">
+                                        <dl class="row mb-2">
                                             <dt class="col-sm-3 text-right">Notes
                                                 <span class="cursor-pointer" data-toggle="tooltip" data-placement="top" title="Optional free text explanation of the Lumping and Splitting decision."><i class="fas fa-info-circle mr-1 ml-1 text-muted"></i></span>
                                                 :</dt>

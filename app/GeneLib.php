@@ -142,6 +142,7 @@ class GeneLib extends Model
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
           'Semidominant mode of inheritance' => 'Semidominant',
+          'Semidominant inheritance' => 'Semidominant',
           'Undetermined mode of inheritance' => 'Undetermined',
           'Undetermined' => 'Undetermined',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
@@ -155,6 +156,7 @@ class GeneLib extends Model
           'Mode of inheritance' => 'Other',
           'Semidominant mode of inheritance' => 'SD',
           'Undetermined mode of inheritance' => 'UD',
+          'Semidominant inheritance' => 'SD',
           'Undetermined' => 'UD',
           'X-linked recessive inheritance' => 'XLR',
           'Mitochondrial inheritance' => 'MT'
