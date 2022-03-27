@@ -221,28 +221,62 @@ class ValidityController extends Controller
         $segregation = [];
         $casecontrol = [];
         $caselevel = [];
+        $nonscorable = [];
+        $pmids = [];
 
         if ($extrecord !== null)
         {
             $genev = collect($extrecord->genetic_evidence);
 
-            $genev->each(function($item) use (&$segregation, &$casecontrol, &$caselevel){
+            $genev->each(function($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids){
                     if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
                         $segregation[] = $item;
                     else if ($item->type[0]->curie == "SEPIO:0004021")
                         $casecontrol[] = $item;
                     else
                         $caselevel[] = $item;
+
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
+
+            });
+
+            $nosev = collect($extrecord->direct_evidence);
+
+            $nosev->each(function($item) use (&$nonscorable, &$pmids){
+                    if ($item->type[0]->curie == "SEPIO:0004127")
+                        $nonscorable[] = $item;
+
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
+            });
+
+            $expev = collect($extrecord->experimental_evidence);
+
+            $expev->each(function($item) use (&$pmids){
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
             });
 
             $extrecord->segregation = $segregation;
             $extrecord->casecontrol = $casecontrol;
             $extrecord->caselevel = $caselevel;
+            $extrecord->nonscorable = $nonscorable;
+            $extrecord->pmids = $pmids;
         }
 
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')),2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')),2) : null);
-//dd($record);
+//dd($extrecord);
+
+        // collect the non-scorable records
+
         return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims'))
                             ->with('user', $this->user);
 	}

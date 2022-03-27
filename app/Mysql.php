@@ -84,7 +84,11 @@ class Mysql
 			}
 			else
 			{
+                $usearch = strtoupper($search);
+
 				$collection = Gene::where('name', 'like', '%' . $search . '%')
+                    ->orWhere('alias_symbol', 'like', '%' . $usearch . '%')
+                    ->orWhere('prev_symbol', 'like', '%' . $usearch . '%')
                     ->orderByRaw('CHAR_LENGTH(name)')
                     //->offset($page * $pagesize)
                     //->take($pagesize)
@@ -310,7 +314,40 @@ class Mysql
 
         if (!isset($parts[1]))
         {
-            $records = Disease::where('label', 'like', '%' . $search . '%')
+            $records = Term::where('name', 'like', '%' . $search . '%')
+                        ->whereIn('type', [11, 12, 13, 14])
+                        ->orderByRaw('CHAR_LENGTH(name)')
+                        ->orderBy('alias')
+                        ->orderBy('weight', 'desc')
+                        ->take(10)->get();
+            foreach($records as $record)
+            {
+                switch ($record->type)
+                {
+                    case 12:
+                        $ctag = "(MONDO synonym)";
+                        break;
+                    case 13:
+                        $ctag = "(Orphanet match)";
+                        break;
+                    case 14:
+                        $ctag = "(OMIM match)";
+                        break;
+                    default:
+                        $ctag = '';
+                }
+                // $ctag .= (empty($record->curated) ? '' : ' CURATED');
+                //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
+                //                . $ctag,
+                $array[] = ['label' => $record->name,
+                            'alias' => $ctag,
+                            'hgnc' => $record->value,
+                            'url' => route('condition-show', $record->value),
+                            'curated' => !empty($record->curated)];
+            }
+
+
+            /*$records = Disease::where('label', 'like', '%' . $search . '%')
                         ->orderByRaw('CHAR_LENGTH(label)')
                         //->orderBy('synonyms')
                         //->orderBy('weight', 'desc')
@@ -331,12 +368,13 @@ class Mysql
                 // $ctag .= (empty($record->curated) ? '' : ' CURATED');
                 //$array[] = ['label' => $record->name . '  (' . $record->value . ')'
                 //                . $ctag,
-                $array[] = ['label' => $record->label,
+                /*$array[] = ['label' => $record->label,
                             'alias' => '',
                             'hgnc' => $record->curie,
                             'url' => route('condition-show', $record->curie),
                             'curated' => !empty($record->curation_activities)];
-            }
+
+            }*/
         }
         else
         {
@@ -499,6 +537,8 @@ class Mysql
 		else
 		{
 			$collection = Disease::where('label', 'like', '%' . $search . '%')
+                    ->orWhere('synonyms', 'like', '%' . $search . '%')
+                    ->orWhere('orpha_label', 'like', '%' . $search . '%')
                     ->orderByRaw('CHAR_LENGTH(label)')
                     ->get();
 
@@ -753,6 +793,7 @@ class Mysql
         else
         {
             $records = Term::where('name', 'like', '%' . $search . '%')
+                        ->whereIn('type', [1, 2, 3])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
                         ->orderBy('weight', 'desc')

@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 use App\Variant;
 use App\Gene;
+use App\Disease;
 
 class UpdateErepo extends Command
 {
@@ -78,6 +79,18 @@ class UpdateErepo extends Command
             $activity['varpath'] = true;
             $gene->activity = $activity;
             $gene->save();
+        }
+
+        $disease = Disease::curie($variant->condition->{'@id'})->first();
+
+        if ($disease !== null)
+        {
+            $activity = $disease->curation_activities;
+            if (empty($activity) || !isset($activity['dosage']))
+                $activity = ['dosage' => false, 'validity' => false, 'actionability' => 'false'];
+            $activity['varpath'] = true;
+            $disease->curation_activities = $activity;
+            $disease->save();
         }
       }
 

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Disease;
+use App\Term;
 
 class UpdateMondo extends Command
 {
@@ -115,7 +116,7 @@ class UpdateMondo extends Command
             $term = basename($node->id);
             $term = str_replace('_', ':', $term);
 
-            //echo "$term \n";
+            echo "$term \n";
             if (strpos($term, 'MONDO') !== 0)
                 continue;
 
@@ -199,6 +200,19 @@ class UpdateMondo extends Command
             }
 
             $disease->save();
+
+            echo "adding $disease->curie to term \n";
+
+            // update the term Library
+            $stat = Term::updateOrCreate(['name' => $disease->label, 'value' => $disease->curie],
+                                        ['type' => Term::TYPE_DISEASE_NAME, 'status -> 1']);
+
+            foreach ($synonyms as $synonym)
+            {
+                $stat = Term::updateOrCreate(['name' => $synonym, 'value' => $disease->curie],
+                                        ['alias' => $disease->label, 'type' => Term::TYPE_DISEASE_SYN, 'status -> 1']);
+            }
+
         }
 
         echo "DONE\n";

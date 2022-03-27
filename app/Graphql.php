@@ -14,6 +14,7 @@ use App\Variant;
 use App\Cpic;
 use App\Gencc;
 use App\Curation;
+use App\Mim;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -495,10 +496,10 @@ class Graphql
 							  label
 							  curie
 						  }'
-                          . '
-                          report_id
-                          animal_model
-                          '
+                          //. '
+                          //report_id
+                          //animal_model
+                          //'
                           . 'legacy_json
 						  curie
 						}
@@ -1420,8 +1421,8 @@ class Graphql
 							label
 						}
                         '
-						. 'report_id
-                        animal_model'
+						//. 'report_id
+                       // animal_model'
 						 . '
             ';
 
@@ -2135,6 +2136,7 @@ class Graphql
 							label
 							curie
 						}
+                        legacy_json
 						curie
 					}
 					actionability_assertions {
@@ -2208,6 +2210,87 @@ class Graphql
 								break;
 						}
 					}
+				}
+
+                // Check for Animal Model Only and workaround to promote GDM_uuid
+				foreach ($condition->gene_validity_assertions as $inkey => &$inassert)
+				{
+                    $score = json_decode($inassert->legacy_json);
+
+                    // GCI has added a field, but only for new assertions.  Need to check for older ones
+                    if (!isset($inassert->report_id) || $inassert->report_id === null)
+                    {
+                        $inassert->report_id = $score->report_id ?? null;
+                        if ($inassert->report_id === null)
+                        {
+                        // GC Express wont have an iri
+                            if (isset($score->iri))
+                            {
+                                $map = Gdmmap::gg($score->iri)->first();
+                                if ($map !== null)
+                                    $inassert->report_id = $map->gdm_uuid;
+                            }
+                        }
+                    }
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
+
+                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+                    if (!isset($inassert->animal_model) || $inassert->animal_model === null)
+                    {
+                        $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                        //dd($score);
+                        if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                            $inassert->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                        else
+                            $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+                    }
+                    else
+                    {
+                        $inassert->animal_model_only = $inassert->animal_model;
+                    }
+
+                    // create additional entries for lumping and splitting
+                    $inassert->las_included = [];
+                    $inassert->las_excluded = [];
+                    $inassert->las_rationale = [];
+                    $inassert->las_curation = '';
+                    $inassert->las_date = null;
+
+                    if ($inassert->report_id !== null)
+                    {
+                        $map = Precuration::gdmid($inassert->report_id)->first();
+                        if ($map !== null)
+                        {
+                            $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
+                            $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+                            $inassert->las_rationale =$map->rationale;
+                            $inassert->las_curation = $map->curation_type['description'] ?? '';
+
+                            // the dates aren't always populated in the gene tracker, so we may need to restrict them.
+                            $prec_date = $map->disease_date;
+                            if ($prec_date !== null)
+                            {
+                                $dd = Carbon::parse($prec_date);
+                                $rd = Carbon::parse($inassert->report_date);
+                                $inassert->las_date = ($dd->gt($rd) ? $inassert->report_date : $prec_date);
+                            }
+                            else
+                            {
+                                $inassert->las_date = $inassert->report_date;
+                            }
+                        }
+
+                    }
+
+                    /* blacklist
+					if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+					unset($condition->gene_validity_assertions[$key]);*/
+                    //dd($inassert);
 				}
 			}
 		}

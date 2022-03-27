@@ -81,6 +81,30 @@
                 <dt class="col-sm-2">SOP:
                 <dd class="col-sm-10">
                     {{ $record->specified_by->label ?? 'Not Specified' }}
+                    <div class="text-muted small">&nbsp;</div>
+                </dd>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <dt class="col-sm-4">Expert Panel:
+                <dd class="col-sm-8">
+                    {{ $record->sop7_affiliation_name ?? '' }}
+                </dd>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <div class="row">
+                <dt class="col-sm-3">Contributors:
+                <dd class="col-sm-9">
+                    @if ($record->sop7_contributors ?? null)
+                        @foreach ($record->sop7_contributors as $contributor)
+                            {{ $contributor->name ?? null }}
+                            <div class="text-muted small">({{ ucwords($contributor->role) ?? null }})</div>
+                        @endforeach
+                    @endif
                 </dd>
             </div>
         </div>
@@ -111,7 +135,15 @@
             </a>
 		</li>
         <li role="presentation" class="" style="">
+			<a href="#gdvt6" aria-controls="gdvt6" role="tab" data-toggle="tab"><i class="far fa-clipboard mr-2"></i>Non-Scorable Evidence
+            </a>
+		</li>
+        <li role="presentation" class="" style="">
 			<a href="#gdvt5" aria-controls="gdvt5" role="tab" data-toggle="tab"><i class="fas fa-random fa-sm mr-2"></i>Lumping & Splitting </span></a>
+		</li>
+        <li role="presentation" class="" style="">
+			<a href="#gdvt7" aria-controls="gdvt7" role="tab" data-toggle="tab"><i class="fas fa-asterisk mr-2"></i>References
+            </a>
 		</li>
         @endif
 	</ul>
@@ -272,6 +304,25 @@
                     </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="gdvt6">
+                <div class="panel panel-primary with-nav-tabs">
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="gene_nonscrorable" class="container">
+                                <div class="row geneValidityScoresWrapper">
+                                    <div class="col-sm-12">
+                                        @foreach ($extrecord->nonscorable as $evidence)
+                                        <p><strong>Explanation:  </strong>@markdown{{ $evidence->description }}@endmarkdown
+                                        </p>
+                                        <hr>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div role="tabpanel" class="tab-pane" id="gdvt5">
                 <div class="panel panel-primary with-nav-tabs">
                     <div class="panel-body">
@@ -408,6 +459,25 @@
                                                 </div>
                                             </dd>
                                         </dl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="gdvt7">
+                <div class="panel panel-primary with-nav-tabs">
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="gene_nonscrorable" class="container">
+                                <div class="row geneValidityScoresWrapper">
+                                    <div class="col-sm-12">
+                                        @foreach ($extrecord->pmids as $pmid)
+                                        <p><strong>PMID:  </strong>{{ $pmid->curie }}, {{ $pmid->label }}, {{ $pmid->iri }},
+                                        </p>
+                                        <hr>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>

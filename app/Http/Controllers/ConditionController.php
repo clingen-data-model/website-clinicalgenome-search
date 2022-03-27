@@ -11,6 +11,8 @@ use App\Nodal;
 use App\User;
 use App\Filter;
 use App\Disease;
+use App\Mim;
+use App\Pmid;
 use App\Panel;
 
 /**
@@ -133,6 +135,21 @@ class ConditionController extends Controller
 
         $disease = Disease::rosetta($id);
 
+        $mimflag = false;
+
+        /*if ($disease === null && (stripos($id, 'OMIM:') === 0 ||stripos($id, 'MIM:') === 0))
+        {
+			$t = explode(':', $id);
+            //$t = substr($id, 5 );
+			if (isset($t[1]))
+			{
+				$mim = Mim::mim($t[1])->first();
+				if ($mim !== null)
+					$gene = $mim->gene;
+				$mimflag = ($gene === null ? false : $t[1]);
+			}
+        }*/
+
         if ($disease === null)
             return view('error.message-standard')
                     ->with('title', 'Error retrieving Disease details')
@@ -161,6 +178,8 @@ class ConditionController extends Controller
 		//reformat the response structure for view by activity
 		$validity_collection = collect();
         $variant_collection = collect();
+        $mims = [];
+        $pmids = [];
 
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -178,6 +197,9 @@ class ConditionController extends Controller
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
 									'gene' => $disease->gene, 'assertion' => $assertion]);
 				$validity_collection->push($node);
+                $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
+                if (isset($assertion->las_rationale['pmids']))
+                    $pmids = array_merge($pmids, $assertion->las_rationale['pmids']);
 			}
 
 			// dosage
@@ -188,6 +210,25 @@ class ConditionController extends Controller
 				$dosage_collection->push($node);
 			}*/
 		}
+
+        // get the mim names
+        $mim_names = MIM::whereIn('mim', $mims)->get();
+
+        $mims = [];
+
+        foreach ($mim_names as $mim)
+            $mims[$mim->mim] = $mim->title;
+
+        // get the pmids
+        $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
+
+        $pmids = [];
+
+        foreach($pmid_names as $pmid)
+            $pmids[$pmid->pmid] = ['title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
+                               //     'author' => $pmid->sortfirstauthor,
+                                //    'published' =>  $pmid->pubdate,
+                                    'abstract' => $pmid->abstract];
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
@@ -260,7 +301,7 @@ class ConditionController extends Controller
 //dd($record);
         //dd($validity_collection);
 		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection', 'total_panels',
-                                                    'pregceps', 'variant_collection'));
+                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection'));
 	}
 
 
@@ -281,6 +322,21 @@ class ConditionController extends Controller
 						->with('user', $this->user);
 
         $disease = Disease::rosetta($id);
+
+        $mimflag = false;
+
+        /*if ($disease === null && (stripos($id, 'OMIM:') === 0 ||stripos($id, 'MIM:') === 0))
+        {
+			$t = explode(':', $id);
+            //$t = substr($id, 5 );
+			if (isset($t[1]))
+			{
+				$mim = Mim::mim($t[1])->first();
+				if ($mim !== null)
+					$gene = $mim->gene;
+				$mimflag = ($gene === null ? false : $t[1]);
+			}
+        }*/
 
         if ($disease === null)
             return view('error.message-standard')
@@ -312,6 +368,8 @@ class ConditionController extends Controller
         //reformat the response structure for view by activity
         $validity_collection = collect();
         $variant_collection = collect();
+        $mims = [];
+        $pmids = [];
 
         foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -329,6 +387,9 @@ class ConditionController extends Controller
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
 									'gene' => $disease->gene, 'assertion' => $assertion]);
 				$validity_collection->push($node);
+                $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
+                if (isset($assertion->las_rationale['pmids']))
+                    $pmids = array_merge($pmids, $assertion->las_rationale['pmids']);
 			}
 
 			// dosage
@@ -339,6 +400,26 @@ class ConditionController extends Controller
 				$dosage_collection->push($node);
 			}*/
 		}
+
+        // get the mim names
+        $mim_names = MIM::whereIn('mim', $mims)->get();
+
+        $mims = [];
+
+        foreach ($mim_names as $mim)
+            $mims[$mim->mim] = $mim->title;
+
+        // get the pmids
+        $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
+
+        $pmids = [];
+
+        foreach($pmid_names as $pmid)
+            $pmids[$pmid->pmid] = ['title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
+                               //     'author' => $pmid->sortfirstauthor,
+                                //    'published' =>  $pmid->pubdate,
+                                    'abstract' => $pmid->abstract];
+
 
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
@@ -423,7 +504,7 @@ class ConditionController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
-        //dd($pregceps);
+     //   dd($record);
 
 		// set display context for view
 		$display_tabs = collect([
@@ -437,7 +518,7 @@ class ConditionController extends Controller
                         +*/ count($pregceps);
 
 		return view('condition.by-gene', compact('display_tabs', 'record', 'user', 'variant_collection',
-                                                    'pregceps',
+                                                    'pregceps', 'pmids', 'mims', 'mimflag', 'validity_collection',
                                                     'total_panels'));
 	}
 

@@ -57,7 +57,9 @@ class UpdateSources extends Command
           $this->call('update:map');        // local file
           $this->call('update:ratings');    // DCI (Jira)
           $this->call('update:region');     // local file
+          $this->call('update:mondo');
           $this->call('update:disease');    // Genephap
+          $this->call('update:orpha');      // Orphanet
           $this->call('gencc:query');       // Gencc souce
           $this->call('query:oms');         // update afflisliates from website
           $this->call('update:affiliates'); // Update from genegraph and erepo
@@ -76,7 +78,7 @@ class UpdateSources extends Command
           $this->call('update:mim');       // OMIM
           $this->call('update:plof');       // local file Gnomad EXAC
           $this->call('update:uniprot');    // Uniprot
-          $this->call('update:mondo');      // Monarch
+         // $this->call('update:mondo');      // Monarch
           break;
         case 'monthly':
           $this->call('update:acmg59');     // local file

@@ -329,6 +329,19 @@ class Disease extends Model
             $this->curation_activities['validity'] : false);
     }
 
+
+    /**
+     * Flag indicating if gene has any variant curations
+     *
+     * @@param
+     * @return
+     */
+    public function getHasVariantAttribute()
+    {
+        return (isset($this->curation_activities) ?
+            ($this->curation_activities['varpath'] ?? false) : false);
+    }
+
     /**
      * Query title for mondo id
      *

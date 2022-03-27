@@ -116,6 +116,7 @@
   function responseHandler(res) {
     $('.countDisease').html(res.total);
     $('.countCurated').html(res.ncurated);
+    window.searchterm = currentsearch;
 
     return res
   }
@@ -149,6 +150,16 @@
     stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
       columns: [
+        {
+          title: 'Search String',
+          field: 'search',
+          formatter: searchFormatter,
+          //cellStyle: cellFormatter,
+          //filterControl: 'input',
+          searchFormatter: true,
+          sortable: false,
+          visible: false
+        },
         {
           title: 'Name',
           field: 'label',

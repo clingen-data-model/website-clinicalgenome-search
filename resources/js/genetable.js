@@ -158,6 +158,10 @@ function geneFormatter(index, row) {
     return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
 }
 
+function searchFormatter(index, row) {
+    return window.searchterm;
+}
+
 function hgncFormatter(index, row) {
 
     if (row.type == 0 || row.type == 3)

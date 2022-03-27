@@ -8,6 +8,7 @@ use Carbon\Carbon;
 
 use App\Disease;
 use App\GeneLib;
+use App\Term;
 
 class UpdateDisease extends Command
 {
@@ -86,6 +87,16 @@ class UpdateDisease extends Command
                                         'last_curated_date' => $disease->last_curated_date,
                                         'curation_activities' => $flags,
                                         'type' => 1, 'status' => $status]);
+
+            $terms = Term::where('value', $record->curie)->get();
+
+            foreach ($terms as $term)
+            {
+                if ($term->alias === null)
+                    $term->update(['curated' => 1, 'weight' => 2]);     // one for parent, one for curated
+                else
+                    $term->update(['curated' => 1, 'weight' => 1]);     // one for curated
+            }
         }
 
         // now hide all the obsolete, non-curated diseases
