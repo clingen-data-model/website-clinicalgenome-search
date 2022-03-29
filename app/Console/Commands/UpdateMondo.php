@@ -116,7 +116,7 @@ class UpdateMondo extends Command
             $term = basename($node->id);
             $term = str_replace('_', ':', $term);
 
-            echo "$term \n";
+            //echo "$term \n";
             if (strpos($term, 'MONDO') !== 0)
                 continue;
 
@@ -201,7 +201,7 @@ class UpdateMondo extends Command
 
             $disease->save();
 
-            echo "adding $disease->curie to term \n";
+           // echo "adding $disease->curie to term \n";
 
             // update the term Library
             $stat = Term::updateOrCreate(['name' => $disease->label, 'value' => $disease->curie],

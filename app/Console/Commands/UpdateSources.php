@@ -49,7 +49,7 @@ class UpdateSources extends Command
           $this->call('update:Genenames');  // HGNC
           $this->call('update:activity');   // Genegraph
           $this->call('update:cpic');       // CPIC and PharmGKB
-          $this->call('update:erepo');      // Erepo
+          //$this->call('update:erepo');      // Erepo
           $this->call('update:cytobands');  // UCSC (goldenpath hg19)
           $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
           $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
@@ -59,6 +59,7 @@ class UpdateSources extends Command
           $this->call('update:region');     // local file
           $this->call('update:mondo');
           $this->call('update:disease');    // Genephap
+          $this->call('update:erepo');      // Erepo
           $this->call('update:orpha');      // Orphanet
           $this->call('gencc:query');       // Gencc souce
           $this->call('query:oms');         // update afflisliates from website
