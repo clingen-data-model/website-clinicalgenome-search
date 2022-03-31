@@ -151,7 +151,7 @@
       locale: 'en-US',
       columns: [
         {
-          title: 'Search String',
+          title: '',
           field: 'search',
           formatter: searchFormatter,
           //cellStyle: cellFormatter,
@@ -218,7 +218,7 @@
 
         var hidden = $table.bootstrapTable('getHiddenColumns');
 
-        if (hidden.length > 0)
+        if (hidden.length > 0  && !(hidden.length == 1 && hidden[0].title == ''))
             $('.action-hidden-columns').removeClass('hidden');
         else
             $('.action-hidden-columns').addClass('hidden');
@@ -227,7 +227,7 @@
     $table.on('column-switch.bs.table', function (e, name, args) {
 			var hidden = $table.bootstrapTable('getHiddenColumns');
 
-			if (hidden.length > 0)
+			if (hidden.length > 0  && !(hidden.length == 1 && hidden[0].title == ''))
 				$('.action-hidden-columns').removeClass('hidden');
 			else
 				$('.action-hidden-columns').addClass('hidden');
@@ -327,7 +327,7 @@
 
         var hidden = $table.bootstrapTable('getHiddenColumns');
 
-        if (hidden.length > 0)
+        if (hidden.length > 0  && !(hidden.length == 1 && hidden[0].title == ''))
             $('.action-hidden-columns').removeClass('hidden');
         else
             $('.action-hidden-columns').addClass('hidden');

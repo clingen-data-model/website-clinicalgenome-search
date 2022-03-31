@@ -241,21 +241,12 @@
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
             stickyHeader: true,
-    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+    		stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
             stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
 			locale: 'en-US',
 			sortName:  "symbol",
 			sortOrder: "asc",
       		filterControlVisible: {{ $col_search['col_search'] === null ? "false" : "true" }},
-			onCreatedControls () {
-				var $select = $('select.bootstrap-table-filter-control-haplo_assertion');
-				$select.attr('multiple','multiple');
-				$select.find('option[value=""]').remove();
-				$select.multipleSelect({
-					filter: true,
-					selectAll:true
-				});
-			},
 	  		rowStyle:  function(row, index) {
 				if (index % 2 === 0) {
      				return {
@@ -367,8 +358,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          filterData: 'var:tripChoices',
-          filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
+          			filterData: 'var:tripChoices',
+          			filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
@@ -447,7 +438,7 @@
 				{
 					field: 'date',
 					//title: 'Last Eval.',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          			title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
@@ -589,30 +580,6 @@
 			else
 				$('.action-hidden-columns').addClass('hidden');
 		});
-/*
-		$('button[name="clearSearch"]').click(function() {
-			$('select.bootstrap-table-filter-control-city').multipleSelect('setSelects', [])
-			filterData()
-		})
-
-		function customFilter(row,filter){
-			const filterCities = filter['cities']
-			return filterCities.length == 0 || filterCities.includes(row.city)
-		}
-
-		function filterData() {
-			$table.bootstrapTable('filterBy', {
-			cities: $('select.bootstrap-table-filter-control-city').multipleSelect('getSelects')
-			}, {
-			'filterAlgorithm': customFilter
-			})
-		}
-
-		$('select.bootstrap-table-filter-control-halplo_assertion').change(function () {
-			console.log("check1");
-			filterData()
-		})
-*/
   	});
 
 </script>
