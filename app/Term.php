@@ -74,6 +74,13 @@ class Term extends Model
     protected $appends = ['display_date', 'list_date', 'display_status'];
 
     public const TYPE_NONE = 0;
+    public const TYPE_GENE_NAME = 1;
+    public const TYPE_GENE_PREV = 2;
+    public const TYPE_GENE_ALIAS = 3;
+    public const TYPE_DISEASE_NAME = 11;
+    public const TYPE_DISEASE_SYN = 12;
+    public const TYPE_DISEASE_ORPHA = 13;
+
 
     /*
      * Type strings for display methods

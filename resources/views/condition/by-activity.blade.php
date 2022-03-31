@@ -444,6 +444,7 @@ $(function() {
         else
         chk.removeClass('fa-caret-up').addClass('fa-caret-down');
     });
+
 });
 
 </script>

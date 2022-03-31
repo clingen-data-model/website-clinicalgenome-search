@@ -10,11 +10,16 @@ use App\Imports\Excel;
 use App\Exports\ValidityExport;
 
 use Auth;
+use Carbon\Carbon;
 
 require app_path() .  '/Helpers/helper.php';
 
 use App\GeneLib;
 use App\Filter;
+use App\Gdmmap;
+use App\Precuration;
+use App\Mim;
+use App\Pmid;
 
 /**
  *
@@ -130,13 +135,149 @@ class ValidityController extends Controller
                             ->with('back', url()->previous())
                             ->with('user', $this->user);
 
+        $extrecord = GeneLib::newValidityDetail(['page' => 0,
+                    'pagesize' => 20,
+                    'perm' => $id
+                        ]);
+
+        $exp_count = ($extrecord && $extrecord->experimental_evidence ? number_format(array_sum(array_column($extrecord->experimental_evidence, 'score')), 2) : null);
+
         // set display context for view
         $display_tabs = collect([
             'active' => "validity",
-            'title' => $record->label . " curation results for Gene-Disease Validity"
+            'scrid' => Filter::SCREEN_VALIDITY_CURATIONS,
+            'title' => $record->label . " curation results for Gene-Disease Validity",
+            'display' => "Gene-Disease Validity"
         ]);
 
-        return view('gene-validity.show', compact('display_tabs', 'record'))
+        // genegraph changed so extrecord is not null on GC Express, so force it.
+        if (!isset($extrecord) || strpos($extrecord->curie, 'CGGCIEX') === 0)
+            $extrecord = null;
+
+        // organize all the l&s data.  First the report_i
+        $iri = $record->json->iri ?? null;
+        $map = Gdmmap::gg($iri)->first();
+        if ($map !== null)
+            $record->report_id = $map->gdm_uuid;
+
+        $record->las_included = [];
+        $record->las_excluded = [];
+        $record->las_rationale = [];
+        $record->las_curation = '';
+        $record->las_date = null;
+
+        if ($record->report_id !== null)
+        {
+            $map = Precuration::gdmid($record->report_id)->first();
+            if ($map !== null)
+            {
+                $record->las_included = $map->omim_phenotypes['included'] ?? [];
+                $record->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+                $record->las_rationale =$map->rationale;
+                $record->las_curation = $map->curation_type['description'] ?? '';
+
+                // the dates aren't always populated in the gene tracker, so we may need to restrict them.
+                $prec_date = $map->disease_date;
+                if ($prec_date !== null)
+                {
+                    $dd = Carbon::parse($prec_date);
+                    $rd = Carbon::parse($record->report_date);
+                    $record->las_date = ($dd->gt($rd) ? $record->report_date : $prec_date);
+                }
+                else
+                {
+                    $record->las_date = $record->report_date;
+                }
+            }
+
+        }
+
+        $mims = array_merge($record->las_included, $record->las_excluded);
+        $pmids = [];
+
+        if (isset($record->las_rationale['pmids']))
+                    $pmids = array_merge($pmids, $record->las_rationale['pmids']);
+
+        // get the mim names
+        $mim_names = Mim::whereIn('mim', $mims)->get();
+
+        $mims = [];
+
+        foreach ($mim_names as $mim)
+            $mims[$mim->mim] = $mim->title;
+
+        // get the pmids
+        $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
+
+        $pmids = [];
+
+        foreach($pmid_names as $pmid)
+            $pmids[$pmid->pmid] = ['title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
+                               //     'author' => $pmid->sortfirstauthor,
+                                //    'published' =>  $pmid->pubdate,
+                                    'abstract' => $pmid->abstract];
+
+        // unfortunately, genegraph mixes all the genetic evidence data in one big response set, so we are forced to separate out.
+        $segregation = [];
+        $casecontrol = [];
+        $caselevel = [];
+        $nonscorable = [];
+        $pmids = [];
+
+        if ($extrecord !== null)
+        {
+            $genev = collect($extrecord->genetic_evidence);
+
+            $genev->each(function($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids){
+                    if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
+                        $segregation[] = $item;
+                    else if ($item->type[0]->curie == "SEPIO:0004021")
+                        $casecontrol[] = $item;
+                    else
+                        $caselevel[] = $item;
+
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
+
+            });
+
+            $nosev = collect($extrecord->direct_evidence);
+
+            $nosev->each(function($item) use (&$nonscorable, &$pmids){
+                    if ($item->type[0]->curie == "SEPIO:0004127")
+                        $nonscorable[] = $item;
+
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
+            });
+
+            $expev = collect($extrecord->experimental_evidence);
+
+            $expev->each(function($item) use (&$pmids){
+                    if (!empty($item->evidence))
+                        foreach($item->evidence as $evidence)
+                            if ($evidence->source !== null)
+                                $pmids[] = $evidence->source;
+            });
+
+            $extrecord->segregation = $segregation;
+            $extrecord->casecontrol = $casecontrol;
+            $extrecord->caselevel = $caselevel;
+            $extrecord->nonscorable = $nonscorable;
+            $extrecord->pmids = $pmids;
+        }
+
+        $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')),2) : null);
+        $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')),2) : null);
+//dd($extrecord);
+
+        // collect the non-scorable records
+
+        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims'))
                             ->with('user', $this->user);
 	}
 

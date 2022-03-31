@@ -107,12 +107,11 @@ class QueryKafka extends Command
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        /*$availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics()
-        ;
+        $availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
         echo "Available Topics: \n";
         foreach ($availableTopics as $idx => $avlTopic) {
             echo $idx.': '.$avlTopic->getTopic()."\n";
-        }*/
+        }
 
         //$a = $consumer->getCommittedOffsets([new \RdKafka\TopicPartition('gene_dosage', 0)], 60*1000);
         //$low = $high = 0;
@@ -135,7 +134,12 @@ class QueryKafka extends Command
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
                         $payload = json_decode($message->payload);
-                        //dd($payload);
+                        //echo $payload->genes[0]->symbol . "\n";
+                        //if ($payload->genes[0]->symbol == "PDLIM3")
+                        //{
+                        //    dd($payload);
+                        //}
+                        //dd($payload->genes[0]);
                         $a = $stream->parser;
                         $a($payload);
                     $stream->update(['offset' => $message->offset + 1]);

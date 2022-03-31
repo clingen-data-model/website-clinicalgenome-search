@@ -237,6 +237,11 @@
             @include('modals.forgot')
           </div>
         </section>
+
+        @hasSection ('content-full-width')
+        @yield('content-full-width')
+        @endif
+
       </main>
 
       @include('_partials._wrapper.footer',['navActive' => "summary"])

@@ -1,7 +1,4 @@
-
-
-
-<table class="table table-compact table-bordered table-border-normal">
+<table id='validity_classification_matrix' class="table table-compact table-bordered table-border-normal">
 	<tbody>
 		<tr>
 			<td rowspan="15" class="table-heading-line-thick table-title table-title-vertical">

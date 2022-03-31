@@ -158,6 +158,10 @@ function geneFormatter(index, row) {
     return '<a href="/kb/genes/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a>';
 }
 
+function searchFormatter(index, row) {
+    return window.searchterm;
+}
+
 function hgncFormatter(index, row) {
 
     if (row.type == 0 || row.type == 3)
@@ -526,6 +530,73 @@ function badgeFormatter(index, row) {
     return html;
 }
 
+function ardiseaseFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        html += '<div><a href="/kb/conditions/' + item.curie + '">' + item.label + '</a></div><div class="text-muted small">' + item.curie + '<br><br></div>';
+        if (idx < index.length - 1 )
+         html += '<hr>'
+    });
+
+    return html;
+}
+
+function adultFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        if (item == null)
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
+                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+        else
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification" href="' + item.source
+                     + '">' + item.classification;
+            if (item.classification.length < 30)
+                html += '<br><br>';
+            html += '<div class="text-muted small">' + item.report_date
+                    + '</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+
+    });
+
+    return html;
+}
+
+function pedFormatter(index, row) {
+    var html = '';
+
+    index.forEach(function (item, idx, index){
+        if (item == null)
+        {
+            html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
+                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+        else {
+            html += '<div><a class="btn btn-default btn-block text-left  btn-classification" href="' + item.source
+                     + '">' + item.classification;
+            if (item.classification.length < 30)
+                html += '<br><br>';
+            html += '<div class="text-muted small">' + item.report_date
+                    + '</div></a></div>';
+            if (idx < index.length - 1 )
+                        html += '<hr>'
+        }
+    });
+
+    return html;
+}
+
+
 function ashgncFormatter(index, row) {
     return '<a href="/kb/genes/' + row.hgnc_id + '">' + row.hgnc_id + '</a>';
 }
@@ -539,8 +610,18 @@ function asmondoFormatter(index, row) {
 }
 
 function asbadgeFormatter(index, row) {
+    var txt = row.classification;
+
+    if (row.classification == "No Known Disease Relationship*")
+        txt = "No Known Disease Relationship";
+
+    if (row.animal_model_only)
+        return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
+        + '' + txt + '<div class="badge badge-warning">'
+        + 'Animal Model Only</div></a>';
+
     return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
-        + '' + row.classification + '</a>';
+        + '' + txt + '</a>';
 }
 
 function datebadgeFormatter(index, row) {

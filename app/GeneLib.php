@@ -142,6 +142,7 @@ class GeneLib extends Model
           'X-linked inheritance' => 'X-Linked',
           'Mode of inheritance' => 'Other',
           'Semidominant mode of inheritance' => 'Semidominant',
+          'Semidominant inheritance' => 'Semidominant',
           'Undetermined mode of inheritance' => 'Undetermined',
           'Semidominant inheritance' => 'Semidominant',
           'Undetermined' => 'Undetermined',
@@ -605,6 +606,28 @@ class GeneLib extends Model
 	}
 
 
+    /**
+     * Get details of a gene validity assertion
+     *
+     * (Neo4j)
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function newValidityDetail($args)
+    {
+       if (is_null($args) || !is_array($args))
+           return collect([]);
+
+       // The gene validity data is currently in neo4j...
+         //$response = Neo4j::validityDetail($args);
+
+         // The gene validity data is currently in graphql...
+       $response = Graphql::newValidityDetail($args);
+
+       return $response;
+   }
+
+
      /**
      * Get a list of all genes and regions within the search params
      *
@@ -714,7 +737,7 @@ class GeneLib extends Model
                foreach(['summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
                'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
                'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name',
+               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name', 'history',
                'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
                'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
                'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)

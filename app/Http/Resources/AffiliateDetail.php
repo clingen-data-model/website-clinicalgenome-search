@@ -30,6 +30,11 @@ class AffiliateDetail extends JsonResource
         //         }
         // }
 
+        $temp = Genelib::ValidityClassificationString($this->classification->label);
+
+        if ($this->animal_model_only)
+            $temp .= '*';
+
         return [
             'symbol' => $this->gene->label,
             'hgnc_id' => $this->gene->hgnc_id,
@@ -38,9 +43,11 @@ class AffiliateDetail extends JsonResource
             'mondo' => $this->disease->curie,
             'moi' => $this->displayMoi($this->mode_of_inheritance->curie ?? ''),
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
-            'classification' => Genelib::ValidityClassificationString($this->classification->label ?? ''),
+            'classification' => $temp,
             'perm_id' => $this->curie,
             'contributor_type' => $this->contributor_type,
+            'animal_model_only' => $this->animal_model_only,
+            'report_id' => $this->report_id ?? null,
             'released' => $this->displayDate($this->report_date),
             'date' => $this->report_date
         ];

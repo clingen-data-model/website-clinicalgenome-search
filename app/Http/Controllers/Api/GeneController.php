@@ -34,6 +34,7 @@ class GeneController extends Controller
         return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,
                 'rows'=> GeneResource::collection($results->collection),
+                'search' => $input['search'] ?? null,
                 'naction' => $results->naction,
                 'ndosage' => $results->ndosage,
                 'nvalid' => $results->nvalid,

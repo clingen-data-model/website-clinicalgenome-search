@@ -13,6 +13,8 @@ use App\Jira;
 use App\Variant;
 use App\Cpic;
 use App\Gencc;
+use App\Curation;
+use App\Mim;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Artisan;
@@ -493,8 +495,12 @@ class Graphql
 						  classification {
 							  label
 							  curie
-						  }
-                          legacy_json
+						  }'
+                          //. '
+                          //report_id
+                          //animal_model
+                          //'
+                          . 'legacy_json
 						  curie
 						}
 						actionability_assertions {
@@ -596,15 +602,91 @@ class Graphql
 					}
 				}
 
-				// blacklist bad assertions
-				/*foreach ($condition->gene_validity_assertions as $inkey => $inassert)
+				// Check for Animal Model Only and workaround to promote GDM_uuid
+				foreach ($condition->gene_validity_assertions as $inkey => &$inassert)
 				{
+                    $score = json_decode($inassert->legacy_json);
+
+                    // GCI has added a field, but only for new assertions.  Need to check for older ones
+                    if (!isset($inassert->report_id) || $inassert->report_id === null)
+                    {
+                        $inassert->report_id = $score->report_id ?? null;
+                        if ($inassert->report_id === null)
+                        {
+                        // GC Express wont have an iri
+                            if (isset($score->iri))
+                            {
+                                $map = Gdmmap::gg($score->iri)->first();
+                                if ($map !== null)
+                                    $inassert->report_id = $map->gdm_uuid;
+                            }
+                        }
+                    }
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
+
+                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+                    if (!isset($inassert->animal_model) || $inassert->animal_model === null)
+                    {
+                        $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                        //dd($score);
+                        if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                            $inassert->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                        else
+                            $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+                    }
+                    else
+                    {
+                        $inassert->animal_model_only = $inassert->animal_model;
+                    }
+
+                    // create additional entries for lumping and splitting
+                    $inassert->las_included = [];
+                    $inassert->las_excluded = [];
+                    $inassert->las_rationale = [];
+                    $inassert->las_curation = '';
+                    $inassert->las_date = null;
+
+                    if ($inassert->report_id !== null)
+                    {
+                        $map = Precuration::gdmid($inassert->report_id)->first();
+                        if ($map !== null)
+                        {
+                            $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
+                            $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+                            $inassert->las_rationale =$map->rationale;
+                            $inassert->las_curation = $map->curation_type['description'] ?? '';
+
+                            // the dates aren't always populated in the gene tracker, so we may need to restrict them.
+                            $prec_date = $map->disease_date;
+                            if ($prec_date !== null)
+                            {
+                                $dd = Carbon::parse($prec_date);
+                                $rd = Carbon::parse($inassert->report_date);
+                                $inassert->las_date = ($dd->gt($rd) ? $inassert->report_date : $prec_date);
+                            }
+                            else
+                            {
+                                $inassert->las_date = $inassert->report_date;
+                            }
+                        }
+
+                    }
+
+                    /* blacklist
 					if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
-					unset($condition->gene_validity_assertions[$key]);
-				}*/
+					unset($condition->gene_validity_assertions[$key]);*/
+                    //dd($inassert);
+				}
 
 			}
 		}
+
+        //dd($node);
 
 		//if ($ndosage == 0 && (!empty($dosage_curation_map["haploinsufficiency_assertion"]) || !empty($dosage_curation_map["triplosensitivity_assertion"])))
 		//	$ndosage++;
@@ -1338,6 +1420,16 @@ class Graphql
                             curie
 							label
 						}
+                        '
+						//. 'report_id
+                       // animal_model'
+						 . '
+            ';
+
+        if (!empty($properties))
+            $query .= 'legacy_json';
+
+        $query .= '
 					}
 				}
 			}';
@@ -1347,6 +1439,9 @@ class Graphql
 
 		if (empty($response))
 			return $response;
+
+        // get legacy list of animal mode only assertions
+        $amo = Validity::animal()->get(['curie']);
 
 		// add each gene to the collection
 		foreach($response->gene_validity_assertions->curation_list as $record)
@@ -1358,7 +1453,63 @@ class Graphql
             /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
                    continue;*/
 
-			$collection->push(new Nodal((array) $record));
+            $nodal = new Nodal((array) $record);
+
+            $id = substr($record->curie, 15, 36);
+
+            //$a = Curation::type(Curation::TYPE_GENE_VALIDITY)->source('gene_validity')
+            //                ->sid($id)->orderBy('id', 'desc')->first();
+
+            //$nodal->animal_model_only = $a->animal_model_only ?? false;
+            //$nodal->gdm_uuid = $a->assertion_uuid ?? null;
+
+            // GCI has added a field, but only for new assertions.  Need to check for older ones
+            /*if (!isset($record->report_id) || $record->report_id === null)
+            {
+                //$inassert->report_id = $score->report_id ?? null;
+                if ($record->report_id === null)
+                {
+                // GC Express wont have an iri
+                    if (isset($score->iri))
+                    {
+                        $map = Gdmmap::gg($score->iri)->first();
+                        if ($map !== null)
+                            $inassert->report_id = $map->gdm_uuid;
+                    }
+                }
+            }*/
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
+
+            // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+            if (!isset($record->animal_model) || $record->animal_model === null)
+            {
+                // if in report mode, then pull from legacy_json
+                if (!empty($record->legacy_json))
+                {
+                    $score = json_decode($record->legacy_json);
+                    $nodal->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+
+                    if ($nodal->animal_model_only === false && isset($score->scoreJson))
+                        $nodal->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                    else
+                        $nodal->animal_model_only = ( $nodal->animal_model_only == "YES");
+                }
+                else
+                {
+                    $nodal->animal_model_only = $amo->contains('curie', $record->curie);
+                }
+            }
+            else
+            {
+                $nodal->animal_model_only = $record->animal_model;
+            }
+
+			$collection->push($nodal);
 		}
 
 		$ngenes = $collection->unique('gene')->count();
@@ -1446,10 +1597,12 @@ class Graphql
 		$node->json = json_decode($node->legacy_json, false);
 		$node->score_data = $node->json->scoreJson ?? $node->json;
 
+        //dd($node->score_data);
+
 		// genegraph is not distinguishing gene express origin from others
 		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
 							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
-
+//dd($node);
         // Only SOP8 has NonHumanModel structures.  The rest will quickly exit the logic test
         $node->animalmode = (
                         ($node->score_data->summary->FinalClassification == "No Known Disease Relationship") &&
@@ -1478,8 +1631,10 @@ class Graphql
 		if (is_numeric($perm))
 			$perm = "CGGCIEX:assertion_" . $perm;
 
+        //resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56"
+
 		$query = '{
-				resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56") {
+				resource(iri: "' . $perm . '") {
 				  ...basicFields
 				  ... on ProbandEvidence {
 					...probandFields
@@ -1640,30 +1795,32 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-
+//dd($response);
 		if (empty($response))
 			return $response;
-dd($response);
+
 		// genegraph does return an error condition on an invalid assertion id, so handle it here
-		if (empty($response->gene_validity_assertion->specified_by))
+		/*if (empty($response->gene_validity_assertion->specified_by))
 		{
 			Log::info("Validty Detail Error:  No specified by field in iri: " . $perm);
 			GeneLib::putError("Invalid gene validity assertion identifier");
 			return null;
-		}
+		}*/
 
-		$node = new Nodal((array) $response->gene_validity_assertion);
+		$node = new Nodal((array) $response->resource);
+
+        //dd($node);
 
 		// overwrite the label with the website display label
-		if (!empty($node->mode_of_inheritance->website_display_label))
-			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
+		//if (!empty($node->mode_of_inheritance->website_display_label))
+		//	$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
 
-		$node->json = json_decode($node->legacy_json, false);
-		$node->score_data = $node->json->scoreJson ?? $node->json;
+		//$node->json = json_decode($node->legacy_json, false);
+		//$node->score_data = $node->json->scoreJson ?? $node->json;
 
 		// genegraph is not distinguishing gene express origin from others
-		$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
-							&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
+		//$node->origin = ($node->specified_by->label == "ClinGen Gene Validity Evaluation Criteria SOP5" && isset($node->json->jsonMessageVersion)
+		//					&& $node->json->jsonMessageVersion == "GCILite.5" ? true : false);
 
 		return $node;
 
@@ -1860,6 +2017,9 @@ dd($response);
 		if (empty($response))
 			return $response;
 
+        // get legacy list of animal mode only assertions
+        $amo = Validity::animal()->get(['curie']);
+
 		// add each gene to the collection
 		foreach($response->affiliation->gene_validity_assertions->curation_list as $record)
 		{
@@ -1871,10 +2031,7 @@ dd($response);
             /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
                    continue;*/
 
-				//dd($response->affiliation->curie);
-				foreach ($record->contributions as $contribution) {
-            //dd($contribution);
-            // Check if the current agent is this one.
+			foreach ($record->contributions as $contribution) {
                 if ($response->affiliation->curie == $contribution->agent->curie) {
                     if ($contribution->realizes->curie == "SEPIO:0000155") {
                         $record->contributor_type = "Primary";
@@ -1883,7 +2040,38 @@ dd($response);
                         $record->contributor_type = "Secondary";
                     }
                 }
-        }
+
+
+            }
+
+            // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+            if (!isset($record->animal_model) || $record->animal_model === null)
+            {
+                // if in report mode, then pull from legacy_json
+                /*if (!empty($record->legacy_json))
+                {
+                    $score = json_decode($record->legacy_json);
+                    $nodal->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+
+                    if ($nodal->animal_model_only === false && isset($score->scoreJson))
+                        $nodal->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                    else
+                        $nodal->animal_model_only = ( $nodal->animal_model_only == "YES");
+                }
+                else
+                {*/
+                    $record->animal_model_only = $amo->contains('curie', $record->curie);
+                //}
+            }
+            else
+            {
+                $record->animal_model_only = $record->animal_model;
+            }
 			//dd($record);
 			$collection->push(new Nodal((array) $record));
 		}
@@ -1948,6 +2136,7 @@ dd($response);
 							label
 							curie
 						}
+                        legacy_json
 						curie
 					}
 					actionability_assertions {
@@ -2021,6 +2210,87 @@ dd($response);
 								break;
 						}
 					}
+				}
+
+                // Check for Animal Model Only and workaround to promote GDM_uuid
+				foreach ($condition->gene_validity_assertions as $inkey => &$inassert)
+				{
+                    $score = json_decode($inassert->legacy_json);
+
+                    // GCI has added a field, but only for new assertions.  Need to check for older ones
+                    if (!isset($inassert->report_id) || $inassert->report_id === null)
+                    {
+                        $inassert->report_id = $score->report_id ?? null;
+                        if ($inassert->report_id === null)
+                        {
+                        // GC Express wont have an iri
+                            if (isset($score->iri))
+                            {
+                                $map = Gdmmap::gg($score->iri)->first();
+                                if ($map !== null)
+                                    $inassert->report_id = $map->gdm_uuid;
+                            }
+                        }
+                    }
+// 03bb8479-2ed3-4b15-9e54-378ea0729ab2
+
+                    // GCI has added a flag, but only for new assertions.  A few older ones require manual checking
+                    if (!isset($inassert->animal_model) || $inassert->animal_model === null)
+                    {
+                        $inassert->animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+                        //dd($score);
+                        if ($inassert->animal_model_only === false && isset($score->scoreJson))
+                            $inassert->animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                        else
+                            $inassert->animal_model_only = ( $inassert->animal_model_only == "YES");
+                    }
+                    else
+                    {
+                        $inassert->animal_model_only = $inassert->animal_model;
+                    }
+
+                    // create additional entries for lumping and splitting
+                    $inassert->las_included = [];
+                    $inassert->las_excluded = [];
+                    $inassert->las_rationale = [];
+                    $inassert->las_curation = '';
+                    $inassert->las_date = null;
+
+                    if ($inassert->report_id !== null)
+                    {
+                        $map = Precuration::gdmid($inassert->report_id)->first();
+                        if ($map !== null)
+                        {
+                            $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
+                            $inassert->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+                            $inassert->las_rationale =$map->rationale;
+                            $inassert->las_curation = $map->curation_type['description'] ?? '';
+
+                            // the dates aren't always populated in the gene tracker, so we may need to restrict them.
+                            $prec_date = $map->disease_date;
+                            if ($prec_date !== null)
+                            {
+                                $dd = Carbon::parse($prec_date);
+                                $rd = Carbon::parse($inassert->report_date);
+                                $inassert->las_date = ($dd->gt($rd) ? $inassert->report_date : $prec_date);
+                            }
+                            else
+                            {
+                                $inassert->las_date = $inassert->report_date;
+                            }
+                        }
+
+                    }
+
+                    /* blacklist
+					if ($inassert->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+					unset($condition->gene_validity_assertions[$key]);*/
+                    //dd($inassert);
 				}
 			}
 		}
@@ -2279,6 +2549,8 @@ dd($response);
 		$actionability_stats = Artisan::output();
 
 		$actionability_stats = json_decode($actionability_stats);
+
+        //dd($actionability_stats);
 
 
 		// break out the args
@@ -2902,6 +3174,71 @@ dd($response);
 		}
 
 		$values[Metric::KEY_TOTAL_ACTIONABILITY_GRAPH] = $topcounters;
+
+        // ===== adult actionability assertion graph
+        $template = ['total_adult_assertion_definitive' => 0, 'total_adult_assertion_strong' => 0, 'total_adult_assertion_moderate' => 0, 'total_adult_assertion_limited' => 0,
+                    'total_adult_assertion_na_expert_review' => 0, 'total_adult_assertion_na_early_rule_out' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		$topcounters['classtotals']['total_adult_assertion_definitive'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_definitive'];
+		$topcounters['classtotals']['total_adult_assertion_strong'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_strong'];
+        $topcounters['classtotals']['total_adult_assertion_moderate'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_moderate'];
+        $topcounters['classtotals']['total_adult_assertion_limited'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_limited'];
+        $topcounters['classtotals']['total_adult_assertion_na_expert_review'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_expert_review'];
+        $topcounters['classtotals']['total_adult_assertion_na_early_rule_out'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_na_early_rule_out'];
+
+		$offset = 0;
+
+        $nopending = $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion'] - $values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending'];
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $nopending * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH] = $topcounters;
+        // ====== end adult actionability assertion graph
+        // ===== pediatric actionability assertion graph
+        $template = ['total_peds_assertion_definitive' => 0, 'total_peds_assertion_strong' => 0, 'total_peds_assertion_moderate' => 0, 'total_peds_assertion_limited' => 0,
+                    'total_peds_assertion_na_expert_review' => 0, 'total_peds_assertion_na_early_rule_out' => 0
+					];
+
+		// calculate top level graph size and offsets
+		$topcounters = ['classtotals' => $template, 'classoffsets' => $template, 'classlength' => $template];
+
+		$topcounters['classtotals']['total_peds_assertion_definitive'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_definitive'];
+		$topcounters['classtotals']['total_peds_assertion_strong'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_strong'];
+        $topcounters['classtotals']['total_peds_assertion_moderate'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_moderate'];
+        $topcounters['classtotals']['total_peds_assertion_limited'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_limited'];
+        $topcounters['classtotals']['total_peds_assertion_na_expert_review'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_expert_review'];
+        $topcounters['classtotals']['total_peds_assertion_na_early_rule_out'] = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_na_early_rule_out'];
+
+		$offset = 0;
+
+        $nopending = $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] - $values[Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'];
+
+		foreach ($topcounters['classlength'] as $key => &$value)
+		{
+			$value = round($topcounters['classtotals'][$key] / $nopending * 100, 2);
+		}
+
+		foreach ($topcounters['classoffsets'] as $key => &$value)
+		{
+			$value = -$offset;
+			$offset += $topcounters['classlength'][$key];
+		}
+
+		$values[Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH] = $topcounters;
+        // ====== end pediatric actionability assertion graph
 
 		// Pharmacogenomics
 

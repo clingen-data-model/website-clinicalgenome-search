@@ -133,8 +133,12 @@ class Jira extends Model
             $issue = $gene;
 
         if ($response === null)
-            $response = self::getIssue($issue);
-//dd($response);
+            $response = self::getIssue($issue, 'changelog', true);
+
+            // temp adjustment to accomodate changelog while dci model is being backported
+            $changelog = $response->changelog;
+            $response = $response->fields;
+
           // map the jira response into a somewhat sane structure
 		$node = new Nodal([
                'label' => $response->customfield_10030 ?? 'unknown',
@@ -166,7 +170,8 @@ class Jira extends Model
                'genereviews' => $response->customfield_10150 ?? null,
                'locusdb' => $response->customfield_10161 ?? null,
                'reduced_penetrance' => $response->customfield_12245 ?? null,
-               'reduced_penetrance_comment' => $response->customfield_12246 ?? null
+               'reduced_penetrance_comment' => $response->customfield_12246 ?? null,
+               'history' => $changelog->histories ?? null
           ]);
 
           // create a custom status string based on legacy comparisons
@@ -201,31 +206,31 @@ class Jira extends Model
           // create the structures for pmid.  Jira will not send the fields if empty
           $pmids = [];
           if (isset($response->customfield_10183))
-               $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10183, 'desc' => $response->customfield_10184 ?? null, 'key' => 1];
           if (isset($response->customfield_10185))
-               $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186  ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10185, 'desc' => $response->customfield_10186  ?? null, 'key' => 2];
           if (isset($response->customfield_10187))
-               $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10187, 'desc' => $response->customfield_10188 ?? null, 'key' => 3];
           if (isset($response->customfield_12231))
-               $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12231, 'desc' => $response->customfield_12237 ?? null, 'key' => 4];
           if (isset($response->customfield_12232))
-               $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12232, 'desc' => $response->customfield_12238 ?? null, 'key' => 5];
           if (isset($response->customfield_12233))
-               $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12233, 'desc' => $response->customfield_12239 ?? null, 'key' => 6];
           $node->loss_pmids = $pmids;
           $pmids = [];
           if (isset($response->customfield_10189))
-               $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10189, 'desc' => $response->customfield_10190 ?? null, 'key' => 1];
           if (isset($response->customfield_10191))
-               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10191, 'desc' => $response->customfield_10192 ?? null, 'key' => 2];
           if (isset($response->customfield_10193))
-               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10194 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_10193, 'desc' => $response->customfield_10194 ?? null, 'key' => 3];
           if (isset($response->customfield_12234))
-               $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12234, 'desc' => $response->customfield_12240 ?? null, 'key' => 4];
           if (isset($response->customfield_12235))
-               $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12235, 'desc' => $response->customfield_12241 ?? null, 'key' => 5];
           if (isset($response->customfield_12236))
-               $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242 ?? null];
+               $pmids[] = ['pmid' => $response->customfield_12236, 'desc' => $response->customfield_12242 ?? null, 'key' => 6];
           $node->gain_pmids = $pmids;
 
           // for the omim fields, transform into structure and add title
@@ -1318,6 +1323,203 @@ class Jira extends Model
     }
 
 
+    /**
+     * Return jira record to a designated point
+     *
+     * @param string $str
+     * @param integer $type
+     * @return integer
+     */
+    public static function rollback($node)
+    {
+        $sid = 0;
+        $quit = false;
+        $save = $node;
+
+        foreach(array_reverse($node->history) as $history)
+        {
+           // dd($history);
+
+            foreach ($history->items as $item)
+            {
+                $map = Dosage::mapHistory($item->field);
+
+                if ($map === null)
+                {
+                    echo "ERROR:  " . $item->field . " not found\n";
+                    continue;
+                }
+
+                if ($map === false)
+                    continue;
+
+                if (is_array($map))
+                {
+                    if ($map['key'] == 'loss_pheno_omim')
+                    {
+                        $key = array_search($item->toString, array_column($node->loss_pheno_omim, $map['value']));
+
+                       //dd($node->loss_pheno_omim[$key]);
+                       //dd($item);
+
+                        $cat = Disease::parseIdentifier($item->fromString);
+//dd($cat);
+                        switch ($cat['type'])
+                        {
+                            case Disease::TYPE_NONE:
+                                break;
+                            case Disease::TYPE_MONDO:
+                                $title = Disease::titles($map['id']);
+                                break;
+                            case Disease::TYPE_OMIM:
+                                $title = Omim::titles($map['id']);
+                                break;
+                        }
+
+                        if ($key === false && $item->fromString !== null)
+                        {
+                            $node->loss_pheno_omim[] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                        }
+                        else if ($item->fromString === null)
+                        {
+                            $a = $node->loss_pheno_omim;
+                            unset($a[$key]);
+                            $node->loss_pheno_omim = $a;
+                        }
+                        else{
+                            $node->loss_pheno_omim[$key] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                        }
+
+
+
+                        dd($node);
+                        //                             $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
+
+                        $element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
+
+                        if ($element === null)
+                        {
+                            $element = new Evidence(['type' => Evidence::TYPE_DOSAGE,
+                                                    'subtype' => $map['type'],
+                                                    'sid' => $map['sid'],
+                                                    'is_pmid' => true,
+                                                    'status' => 1
+                                                    ]);
+                        }
+                        $element->{$map['value']} = $history->from_string;
+
+                        $evidences = $evidences->filter(function ($item) use ($element) {
+                            return $item->ident != $element->ident;
+                        });
+
+                        $evidences->push($element);
+                    }
+                    if ($map['key'] == 'gain_pheno_omim')
+                    {
+                        $element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
+
+                        if ($element === null)
+                        {
+                            $element = new Evidence(['type' => Evidence::TYPE_DOSAGE,
+                                                    'subtype' => $map['type'],
+                                                    'sid' => $map['sid'],
+                                                    'is_pmid' => true,
+                                                    'status' => 1
+                                                    ]);
+                        }
+                        $element->{$map['value']} = $history->from_string;
+
+                        $evidences = $evidences->filter(function ($item) use ($element) {
+                            return $item->ident != $element->ident;
+                        });
+
+                        $evidences->push($element);
+                    }
+                    else
+                    {
+                        $change = $record->{$map['key']};
+                        $change[$map['value']] = $history->from_string;
+                        $record->{$map['key']} = $change;
+                        //$record->{$map['key']}[$map['value']] = $history->from_sString;
+                    }
+                }
+                else
+                {
+                        $node->$map = $item->fromString;
+                }
+
+
+            }
+
+            if ($node->issue_status == "Complete" && $node->jira_status == "Closed")
+                break;
+        }
+/*
+            //some values are in the record, some in the attributes
+            $map = Dosage::mapHistory($history->attribute);
+
+            if ($map === null)
+            {
+                echo "ERROR:  " . $history->attribute . " not found\n";
+                continue;
+            }
+
+            if ($map === false)
+                continue;
+
+            if (is_array($map))
+            {
+                if ($map['key'] == 'evidences')
+                {
+                    $element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
+
+                    if ($element === null)
+                    {
+                        $element = new Evidence(['type' => Evidence::TYPE_DOSAGE,
+                                                'subtype' => $map['type'],
+                                                'sid' => $map['sid'],
+                                                'is_pmid' => true,
+                                                'status' => 1
+                                                ]);
+                    }
+                    $element->{$map['value']} = $history->from_string;
+
+                    $evidences = $evidences->filter(function ($item) use ($element) {
+                        return $item->ident != $element->ident;
+                    });
+
+                    $evidences->push($element);
+                }
+                else
+                {
+                    $change = $record->{$map['key']};
+                    $change[$map['value']] = $history->from_string;
+                    $record->{$map['key']} = $change;
+                    //$record->{$map['key']}[$map['value']] = $history->from_sString;
+                }
+            }
+            else
+            {
+                if ($map == "status")
+                {
+                    $record->status = self::map_activity_status($history->from_string, self::TYPE_DOSAGE);
+                }
+                else
+                    $record->$map = $history->from_string;
+            }
+
+            //$record->attributes[$history->attribute] = $history->from_string;
+
+            if ($record->status == self::STATUS_CLOSED && $record->resolution == "Complete")
+                $quit = true;
+        }
+        */
+
+
+        return ($quit ? $node : null);
+    }
+
+
 
      /*-------------------------library methods---------------------------*/
 
@@ -1371,17 +1573,17 @@ class Jira extends Model
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-     static function getIssue($issue, $field = 'fields')
+     static function getIssue($issue, $field = 'fields', $expand = false)
      {
           try {
                $issueService = new IssueService();
 
                $queryParam = [
                     'expand' => [
-                         'renderedFields',
+                         //'renderedFields',
                          'names',
-                         'schema',
-                         'transitions',
+                         //'schema',
+                         //'transitions',
                          'operations',
                          'editmeta',
                          'changelog',
@@ -1407,7 +1609,7 @@ class Jira extends Model
                print("Error Occured! " . $e->getMessage());
           }
 
-          if ($field == null)
+          if ($field == null || $expand)
                return $issue;
 
           return $issue->$field ?? null;

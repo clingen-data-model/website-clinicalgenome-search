@@ -6,6 +6,8 @@ use App\ActionabilitySummary;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+use App\ActionabilityAssertion;
+
 class UpdateActionabilityStats extends Command
 {
     /**
@@ -67,7 +69,7 @@ class UpdateActionabilityStats extends Command
 
 
         // Total Genes
-        $data = ActionabilitySummary::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released - Under Revision")->get();
+        $data = ActionabilityAssertion::where("status_overall", "=", "Released")->orWhere("status_overall", "=", "Released - Under Revision")->get();
         $report = array();
         foreach ($data as $item) {
             //dd($item);
@@ -83,31 +85,29 @@ class UpdateActionabilityStats extends Command
         $total_genes                   = array_values(array_unique($report));
         $total_genes                   = count($total_genes);
         $total_genes_adult                   = array_values(array_unique($reportAdult));
+        //dd($total_genes_adult);
         $total_genes_adult                   = count($total_genes_adult);
         $total_genes_peds                   = array_values(array_unique($reportPediatric));
         $total_genes_peds                   = count($total_genes_peds);
 
 
         // Total Genes Pairs & Unique Pairs
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["omim", "!=", "(No paired disease(s) for gene)"],
-            ["status_overall", "!=", "Retracted"],
-        ])->orWhere([
-            //["context", "=", "Adult"],
-            ["status_overall", "!=", "Retracted"],
-            ["omim", "!=", "(No paired disease(s) for gene)"],
+            ["status_stg1", "!=", "Failed"],
+            ["status_overall", "!=", "Retracted"]
         ])->get();
         $report = array();
         $reportPediatric = array();
         $reportAdult = array();
         foreach ($data as $item) {
             //dd($item);
-            $report[$item->id] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+            $report[$item->id] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             if ($item->context == "Pediatric") {
-                $reportPediatric[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+                $reportPediatric[] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             }
             if ($item->context == "Adult") {
-                $reportAdult[] = $item->docId . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
+                $reportAdult[] = $item->docid . "-" . $item->gene . "-" . $item->omim . "-" . $item->context;
             }
         }
         //dd($report);
@@ -116,6 +116,7 @@ class UpdateActionabilityStats extends Command
         $total_genes_pairs_unique            = array_unique($report);
         $total_genes_pairs_unique            = count($total_genes_pairs_unique);
         $total_genes_pairs_unique_adult      = array_values(array_unique($reportAdult));
+        //dd($reportAdult);
         $total_genes_pairs_unique_adult      = count($total_genes_pairs_unique_adult);
         $total_genes_pairs_unique_peds       = array_values(array_unique($reportPediatric));
         $total_genes_pairs_unique_peds       = count($total_genes_pairs_unique_peds);
@@ -242,10 +243,10 @@ class UpdateActionabilityStats extends Command
             $report[$item->id] = $item->docId . "-" . $item->context . "-" . Str::of($item->outcome)->slug('') . "-" . Str::of($item->intervention)->slug('') . "-" . Str::of($item->outcomeScoringGroup)->slug('') . "-" . Str::of($item->interventionScoringGroup)->slug('');
         }
 
-
         //dd($overall);
         $total_adult_io_pairs                   = count($report);
         $total_adult_io_pairs_unique_array      = array_unique($report);
+        //dd($total_adult_io_pairs_unique_array);
         $total_adult_io_pairs_unique            = count($total_adult_io_pairs_unique_array);
 
         foreach ($total_adult_io_pairs_unique_array as $key => $item) {
@@ -358,11 +359,11 @@ class UpdateActionabilityStats extends Command
 
 
         // Total IO Pediatric Assertions
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["context", "=", "Pediatric"],
             //["status_overall", "!=", "Released"],
             //["omim", "!=", "(No paired disease(s) for gene)"],
-            ["consensusAssertion", "!=", ""]
+            ["consensus_assertion", "!=", ""]
         ])->get();
         $total_peds_assertion_definitive            = 0;
         $total_peds_assertion_strong                = 0;
@@ -387,13 +388,13 @@ class UpdateActionabilityStats extends Command
         // foreach ($total_peds_io_pairs_unique_array as $key => $item) {
         //     $find[] = $key;
         // }
-
+    //dd($data);
         //$results = ActionabilitySummary::findMany($find);
         foreach ($data as $item) {
             //$overall = (int) preg_replace('/[^0-9]/', '', $item->overall);
             //$total_peds_io_pairs++;
             //dd($overall);
-            switch ($item->consensusAssertion) {
+            switch ($item->consensus_assertion) {
                 case "Definitive Actionability":
                     $total_peds_assertion_definitive++;
                     break;
@@ -421,11 +422,11 @@ class UpdateActionabilityStats extends Command
         }
 
         // Total IO Adult Assertions
-        $data = ActionabilitySummary::Where([
+        $data = ActionabilityAssertion::Where([
             ["context", "=", "Adult"],
             //["status_overall", "!=", "Released"],
             //["omim", "!=", "(No paired disease(s) for gene)"],
-            ["consensusAssertion", "!=", ""]
+            ["consensus_assertion", "!=", ""]
         ])->get();
         $total_adult_assertion_definitive            = 0;
         $total_adult_assertion_strong                = 0;
@@ -456,7 +457,7 @@ class UpdateActionabilityStats extends Command
             //$overall = (int) preg_replace('/[^0-9]/', '', $item->overall);
             //$total_peds_io_pairs++;
             //dd($overall);
-            switch ($item->consensusAssertion) {
+            switch ($item->consensus_assertion) {
                 case "Definitive Actionability":
                     $total_adult_assertion_definitive++;
                     break;
@@ -496,7 +497,7 @@ class UpdateActionabilityStats extends Command
 
         $total_peds_assertion = ((int)$total_peds_assertion_definitive + (int)$total_peds_assertion_strong + (int)$total_peds_assertion_moderate + (int)$total_peds_assertion_limited + (int)$total_peds_assertion_na_expert_review + (int)$total_peds_assertion_na_early_rule_out + (int)$total_peds_assertion_assertion_pending + (int)$total_peds_assertion_unknown);
 
-        $total_assertion = ((int)$total_adult_assertion + (int)$total_adult_assertion);
+        $total_assertion = ((int)$total_adult_assertion + (int)$total_peds_assertion);
 
     if($output_json) {
             $array = array();
@@ -572,6 +573,7 @@ class UpdateActionabilityStats extends Command
             $array['total_peds_assertion_unknown']              = $total_peds_assertion_unknown;
 
             $this->line(json_encode($array));
+            //dd($array);
     } else {
         $this->line("Total Actionability Topics ----------------------------- " . $total_topics);
         $this->line("Total Updated Topics ----------------------------------- " . $total_updated_topics);

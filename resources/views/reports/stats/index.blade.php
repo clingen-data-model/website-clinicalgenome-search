@@ -603,19 +603,19 @@
 
 
 
-        <hr class="mt-4 pb-4" />
+        <hr class="mt-4 pb-2" />
         <h2 id="clinical-actionability">
                       <img src="https://www.clinicalgenome.org/site/assets/files/1144/untitled-1_icon-actionability-interface_color.600x600.png" width="50px"  style="margin-top:-10px; margin-left:-50px"  />  Clinical Actionability</h2>
         <p>The overarching goal of the Clinical Actionability curation process is to identify those human genes that, when significantly altered, confer a high risk of serious disease that could be prevented or mitigated.</p>
 <div class="row text-center">
     <div class="col-md-7 mt-4">
 
-          <div class="col-sm-12 text-left"><h4><a  target="report" href="https://actionability.clinicalgenome.org/ac/"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Topics</a></h4></div>
+          <div class="col-sm-12 text-left"><a href="https://actionability.clinicalgenome.org/ac/?col=statusOverall&search=Released"><h4><b><a  target="report" href="https://actionability.clinicalgenome.org/ac/?col=statusOverall&search=Released"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_REPORTS] ?? '' }} Total Clinical Actionability Topics</a></b></h4></a></div>
 
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=all" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                      {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_COMPLETED] ?? '' }}
                   </div>
@@ -627,7 +627,7 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/?col=statusStg1&search=Failed" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_FAILED] ?? '' }}
                   </div>
@@ -663,11 +663,11 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="/kb/actionability/report-index" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES] ?? '' }}
                   </div>
-                  <div class="mb-2 lineheight-tight">Total Genes Included in <br>Actionability Reports</div>
+                  <div class="mb-2 lineheight-tight"><a target="report" href="/kb/actionability/report-index" class="text-dark">Total Genes Included in <br>Actionability Reports</a></div>
                   </a>
                 </div>
               </div>
@@ -675,7 +675,7 @@
           <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
-                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/" class="text-dark">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=updated" class="text-dark">
                   <div class="text-size-lg lineheight-tight">
                     {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_UPDATED_REPORTS] ?? '' }}
                   </div>
@@ -695,8 +695,8 @@
                   </a>
                 </div>
               </div>
-          </div> --}}
-          <!--<div class="col-sm-6 px-1">
+          </div>
+          <div class="col-sm-6 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">
@@ -705,9 +705,9 @@
                   <div class="mb-2 lineheight-tight">Total Outcome-Intervention<br> Pairs</div>
                 </div>
               </div>
-          </div>-->
+          </div>
 
-          {{-- <div class="col-sm-4 px-1">
+          <div class="col-sm-4 px-1">
             <div class="panel panel-default border-primary">
                 <div class="panel-body p-1">
                   <div class="text-size-lg lineheight-tight">
@@ -725,9 +725,9 @@
                         <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" transform="rotate(-90 21 21)" fill="none"/>
                         <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
 
-                        <circle class="donut-segment chart-stroke-actionability-peds" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Adult'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Adult'] }} Adult Context');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ');"/>
+                        <circle class="donut-segment chart-stroke-actionability-peds" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" data-container="body"  fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Adult'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Adult'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Adult'] }} Adult Context');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?searchType=allgdpairs');"/>
 
-                        <circle class="donut-segment chart-stroke-actionability-adult" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Ped'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Ped'] }} Pediatric Context');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ');"/>
+                        <circle class="donut-segment chart-stroke-actionability-adult" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classlength']['Ped'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classoffsets']['Ped'] }}" onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GRAPH]['classtotals']['Ped'] }} Pediatric Context');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?searchType=allgdpairs');"/>
 
                         <!-- unused 10% -->
                         <g class="chart-text chart-small">
@@ -748,202 +748,413 @@
           </div>
         </div>
 
+        <!-- New actionability section -->
+        <div class="row">
+            <div class="col-sm-8">
+              <h4 class="mb-0"><b>{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion'] ?? 0 }} Total Actionability Assertions (by gene)</b></h4>
+              <h5 class="mb-4">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_assertion_pending'] ?? 0 }} assertions under revision <span data-toggle="tooltip" data-placement="top" title="These reports were generated prior to the implementation of the process for making actionability assertions. Topics requiring assertions are currently in the queue for assertions to be added retroactively or we plan on updating the entire report soon (and will include assertions at that time)." aria-describedby="tooltip"><i class="fas fa-info-circle text-muted ml-2"></i></span></h4>
+
+              <table class="table table-condensed ml-4" style="width: 90%">
+
+                <tr class="">
+                    <td class="col-sm-7 border-0"><strong>Definitive</strong></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_definitive'] ?? 0) }}%; background-color:#65ba59; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_definitive'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="">
+                    <td class="col-sm-7 border-0"><strong>Strong</strong></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_strong'] ?? 0) }}%; background-color:#469c50; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_strong'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="">
+                    <td class="col-sm-7 border-0"><strong>Moderate</strong></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_moderate'] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_moderate'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="">
+                    <td class="col-sm-7 border-0"><strong>Limited</strong></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_limited'] ?? 0) }}%; background-color:#55b2e3; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_limited'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="">
+                    <td class="col-sm-7 border-0"><strong>N/A - Insufficient evidence: expert review</strong></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_expert_review'] ?? 0) }}%; background-color:#69399a; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_expert_review'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr class="">
+                    <td class="col-sm-7 border-0"><strong>N/A - Insufficient evidence: early rule-out</strong><br></td>
+                    <td class="border-0">
+                      <div class="progress progress-no-bg mb-0 mt-0">
+                        <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityByGenePercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_early_rule_out'] ?? 0) }}%; background-color:#913699; opacity:1">
+                        </div>
+                        <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ASSERTIONS]['total_assertion_na_early_rule_out'] ?? 0 }}</span>
+                      </div>
+                    </td>
+                  </tr>
+
+              </table>
+            </div>
+          </div>
+
         <div class="row mt-2">
           <div class="col-sm-6">
-            <h5 class="mb-0">Adult Context </h4>
+            <h5 class="mb-1">Adult Context </h4>
 
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Pairs</a><br/>
+              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=all&context=Adult"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_COMPLETED] ?? '' }} Adult Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=status-stg1&search=Failed"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_FAILED] ?? '' }} Total Topics Failed Early Rule-out</a><br/>
+                <a  target="report" href="/kb/actionability/report-index?context=adult"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_ADULT] ?? '' }} Unique Genes In Adult Actionability Topics</a><br/>
+
+                <div class="row">
+                    <div class="col-sm-5">
+                        {{-- <div class="text-size-lg lineheight-tight">
+                        <span style="border: 6px #13a89e solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#0e665c">{{ $panel['count'] }}</span>
+                        </div> --}}
+
+                        <svg width="110%" height="110%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" fill="none"/>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-definitive" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_definitive'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_definitive'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_definitive'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_definitive'] }} Definitive');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=Definitive%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-strong" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_strong'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_strong'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_strong'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_strong'] }} Strong');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=Strong%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-moderate" cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_moderate'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_moderate'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_moderate'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_moderate'] }} Moderate');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=Moderate%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-limited " cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_limited'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_limited'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_limited'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_limited'] }} Limited');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=Limited%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-nareview" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_expert_review'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_expert_review'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_na_expert_review'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_na_expert_review'] }} N/A Expert Review');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20expert%20review');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-naruleout" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_early_rule_out'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classlength']['total_adult_assertion_na_early_rule_out'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classoffsets']['total_adult_assertion_na_early_rule_out'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_GRAPH]['classtotals']['total_adult_assertion_na_early_rule_out'] }} N/A Early Rule-Out');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20early%20rule-out');"/>
+                        <!-- unused 10% -->
+                        <g class="chart-text chart-small">
+                          <a href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ/assertion?searchType=allassertions"  target="report">
+                          <text x="50%" y="45%" class="chart-number">
+                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion']  - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_ASSERTIONS]['total_adult_assertion_assertion_pending']?? '' }}
+                            </text>
+                            <text x="50%" y="45%" class="chart-label">
+                                Adult
+                                </text>
+                                <text x="50%" y="52%" class="chart-label">
+                                Actionability
+                                </text>
+                                <text x="50%" y="59%" class="chart-label">
+                                Assertions
+                                </text></a>
+                        </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ/oi?searchType=oiScored"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_OUTCOME] ?? '' }} Total Adult Outcome-Intervention Scored Pairs</a><br/>
                 {{-- <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GD_PAIRS_ADULT] ?? '' }} Total Adult Gene-Disease Pairs</a> --}}
               </p>
 
-              <p><strong>Total Scores Visualized</strong></p>
+              <!--<p><strong>Total Scores Visualized</strong></p>-->
 
             <table class="table table-condensed">
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=12" class="text-dark"><strong>12 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=12" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][12] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=11" class="text-dark"><strong>11 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=11" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][11] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=10" class="text-dark"><strong>10 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=10" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][10] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=9" class="text-dark"><strong>9 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=9" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][9] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=8" class="text-dark"><strong>8 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=8" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][8] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=7" class="text-dark"><strong>7 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=7" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][7] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=6" class="text-dark"><strong>6 Score</strong></a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=6" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_ADULT_SCORE][6] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=5&matchOp=%3C=" class="text-dark"><strong>5 or less</strong><br><a></td>
                 <td class="border-0">
+                  <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ?col=overall&search=5&matchOp=%3C=" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityAdultPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->actionabilityAdultOrLess() }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
             </table>
           </div>
           <div class="col-sm-6 border-left-1">
-            <h5 class="mb-0">Pediatric Context </h4>
+            <h5 class="mb-1">Pediatric Context </h4>
 
-              <p><a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
-                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Adult/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a><br/>
+              <p class="ml-1"><a  target="report" href="https://actionability.clinicalgenome.org/ac/?searchType=all&context=Pediatric"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_COMPLETED] ?? '' }} Pediatric Actionability Reports</a><br/>
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=status-stg1&search=Failed"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_FAILED] ?? '' }} Total Pediatric Topics Failed Early Rule-out</a><br/>
+                <a  target="report" href="/kb/actionability/report-index?context=pediatric"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_GENES_PED] ?? '' }} Unique Genes In Pediatric Actionability Topics</a><br/>
+
+                <div class="row">
+                    <div class="col-sm-5">
+                        {{-- <div class="text-size-lg lineheight-tight">
+                        <span style="border: 6px #13a89e solid; border-radius:100rem; margin-bottom:.25rem; padding:1.0rem .5rem .5rem .5rem; min-width:6.5rem; min-height:6.5rem; display:inline-block; color:#0e665c">{{ $panel['count'] }}</span>
+                        </div> --}}
+
+                        <svg width="110%" height="110%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="13.91549430918954" fill="none"/>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke="#000" stroke-width="3"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-definitive" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_definitive'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_definitive'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_definitive'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_definitive'] }} Definitive');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=Definitive%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-strong" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_strong'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_strong'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_strong'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_strong'] }} Strong');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=Strong%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-moderate" cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_moderate'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_moderate'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_moderate'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_moderate'] }} Moderate');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=Moderate%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-limited " cx="21" cy="21" r="15.91549430918954"  transform="rotate(-90 21 21)" fill="none"  stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_limited'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_limited'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_limited'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_limited'] }} Limited');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=Limited%20Actionability');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-nareview" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_expert_review'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_expert_review'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_na_expert_review'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_na_expert_review'] }} N/A Expert Review');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20expert%20review');"/>
+
+                        <circle class="donut-segment chart-stroke-actionability-naruleout" cx="21" cy="21" r="15.91549430918954" transform="rotate(-90 21 21)" fill="none" stroke-width="3" stroke-dasharray="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_early_rule_out'] }} {{ 100.00 - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classlength']['total_peds_assertion_na_early_rule_out'] }}" stroke-dashoffset="{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classoffsets']['total_peds_assertion_na_early_rule_out'] }}"  onmousemove="showSvgTooltip(evt, '{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_GRAPH]['classtotals']['total_peds_assertion_na_early_rule_out'] }} N/A Early Rule-Out');" onmouseout="hideSvgTooltip();" onclick="SvgTooltipLink('https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?col=consensusAssertion&search=N/A%20-%20Insufficient%20evidence:%20early%20rule-out');"/>
+                        <!-- unused 10% -->
+                        <g class="chart-text chart-small">
+                          <a href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/assertion?searchType=allassertions" target="report">
+                            <text x="50%" y="45%" class="chart-number">
+                            {{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion'] - $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_ASSERTIONS]['total_peds_assertion_assertion_pending'] ?? '' }}
+                            </text>
+                            <text x="50%" y="45%" class="chart-label">
+                                Pediatric
+                                </text>
+                                <text x="50%" y="52%" class="chart-label">
+                                Actionability
+                                </text>
+                                <text x="50%" y="59%" class="chart-label">
+                                Assertions
+                                </text>
+                          </a>
+                        </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ/oi?searchType=oiScored"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Scored Pairs</a><br/>
                 {{-- <a  target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ"  class="text-dark">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_OUTCOME] ?? '' }} Total Pediatric Outcome-Intervention Pairs</a> --}}
               </p>
 
-              <p><strong>Total Scores Visualized</strong></p>
+              <!--<p><strong>Total Scores Visualized</strong></p>-->
             <table class="table table-condensed">
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>12 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=12" class="text-dark"><strong>12 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=12" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0) }}%; background-color:#a2cb50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][12] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>11 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=11" class="text-dark"><strong>11 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=11" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0) }}%; background-color:#65ba59; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][11] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>10 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=10" class="text-dark"><strong>10 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=10" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0) }}%; background-color:#469c50; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][10] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>9 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=9" class="text-dark"><strong>9 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=9" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0) }}%; background-color:#4fb0a8; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][9] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>8 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=8" class="text-dark"><strong>8 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=8" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0) }}%; background-color:#55b2e3; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][8] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
 
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>7 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=7" class="text-dark"><strong>7 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=7" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0) }}%; background-color:#367fc2; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][7] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>6 Score</strong></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=6" class="text-dark"><strong>6 Score</strong></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=6" class="text-dark">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercent($metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0) }}%; background-color:#69399a; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_ACTIONABILITY_PED_SCORE][6] ?? 0 }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
               <tr class="">
-                <td class="col-sm-2 text-right border-0"><strong>5 or less</strong><br></td>
+                <td class="col-sm-2 text-right border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=5&matchOp=%3C=" class="text-dark"><strong>5 or less</strong><br></a></td>
                 <td class="border-0">
+                  <a target="report" href="https://actionability.clinicalgenome.org/ac/Pediatric/ui/summ?col=overall&search=5&matchOp=%3C=">
                   <div class="progress progress-no-bg mb-0 mt-0">
                     <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->actionabilityPedPercentOrLess() }}%; background-color:#913699; opacity:1">
                     </div>
                     <span class="ml-2">{{ $metrics->actionabilityPedOrLess() }}</span>
                   </div>
+                  </a>
                 </td>
               </tr>
             </table>

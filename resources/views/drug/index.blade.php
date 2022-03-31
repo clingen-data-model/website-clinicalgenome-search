@@ -33,6 +33,14 @@
             </div>
         </div>
 
+        <div class="col-md-12">
+            <!--<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
+             <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
+         </button>-->
+         <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
+
+        </div>
+
         <div class="col-md-12 light-arrows dark-table">
 
             @include('_partials.genetable')
@@ -60,6 +68,7 @@
 <link href="/css/bootstrap-table.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 <link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+<link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -76,6 +85,7 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap-table-sticky-header.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -137,6 +147,9 @@
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
+        stickyHeader: true,
+    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+    stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
       columns: [
         {
@@ -200,7 +213,23 @@
               icon: "error"
           });
         }
+
+        var hidden = $table.bootstrapTable('getHiddenColumns');
+
+			if (hidden.length > 0)
+				$('.action-hidden-columns').removeClass('hidden');
+			else
+				$('.action-hidden-columns').addClass('hidden');
     })
+
+    $table.on('column-switch.bs.table', function (e, name, args) {
+			var hidden = $table.bootstrapTable('getHiddenColumns');
+
+			if (hidden.length > 0)
+				$('.action-hidden-columns').removeClass('hidden');
+			else
+				$('.action-hidden-columns').addClass('hidden');
+		});
 
     $table.on('post-body.bs.table', function (e, name, args) {
 
@@ -291,6 +320,16 @@ $(function() {
                 });
         }
     })
+
+    $('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
+
+        var hidden = $table.bootstrapTable('getHiddenColumns');
+
+        if (hidden.length > 0)
+            $('.action-hidden-columns').removeClass('hidden');
+        else
+            $('.action-hidden-columns').addClass('hidden');
+    });
 
 });
 

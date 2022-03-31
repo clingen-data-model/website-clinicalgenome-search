@@ -58,6 +58,8 @@ class TestController extends Controller
                         'perm' => $id
                         ]);
 
+        dd($g);
+
         exit;
 
         $a = Panel::all();

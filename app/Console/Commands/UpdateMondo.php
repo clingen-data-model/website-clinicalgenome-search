@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Disease;
+use App\Term;
 
 class UpdateMondo extends Command
 {
@@ -170,7 +171,48 @@ class UpdateMondo extends Command
                 }
             }
 
+            // get all cross references
+            if (isset($node->meta->xrefs))
+            {
+                foreach ($node->meta->xrefs as $property)
+                {
+                    $val = explode(':', $property->val);
+
+                    switch ($val[0])
+                    {
+                        case 'DOID':
+                            $disease->do_id = $val[1];
+                            break;
+                        case 'OMIM':
+                            $disease->omim = $val[1];
+                            break;
+                        case 'Orphanet':
+                            $disease->orpha_id = $val[1];
+                            break;
+                        case 'GARD':
+                            $disease->gard_id = $val[1];
+                            break;
+                        case 'UMLS':
+                            $disease->umls_id = $val[1];
+                            break;
+                    }
+                }
+            }
+
             $disease->save();
+
+           // echo "adding $disease->curie to term \n";
+
+            // update the term Library
+            $stat = Term::updateOrCreate(['name' => $disease->label, 'value' => $disease->curie],
+                                        ['type' => Term::TYPE_DISEASE_NAME, 'status -> 1']);
+
+            foreach ($synonyms as $synonym)
+            {
+                $stat = Term::updateOrCreate(['name' => $synonym, 'value' => $disease->curie],
+                                        ['alias' => $disease->label, 'type' => Term::TYPE_DISEASE_SYN, 'status -> 1']);
+            }
+
         }
 
         echo "DONE\n";

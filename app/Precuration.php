@@ -191,6 +191,44 @@ class Precuration extends Model
 
 
     /**
+     * Query scope by subtype
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeGdmid($query, $id)
+    {
+		return $query->where('gdm_uuid', $id);
+    }
+
+    /**
+     * Get the closest date for disease evaluation
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function getDiseaseDateAttribute()
+    {
+        //if ($this->date_disease_assigned !== null)
+         //   return $this->date_disease_assigned;
+
+        // deal with the situation where this date was not assigned but others are
+        if ($this->date_precuration_complete !== null)
+            return  $this->date_precuration_complete;
+        else if ($this->date_curation_provisional !== null)
+            return  $this->date_curation_provisional;
+        else if ($this->date_curation_provisional !== null)
+            return  $this->date_curation_provisional;
+        else if ($this->date_published !== null)
+            return  $this->date_published;
+        else
+            return null;
+
+        return null;
+    }
+
+
+    /**
      * Map a gt precuration record to a model
      *
      */
@@ -275,6 +313,16 @@ class Precuration extends Model
         }
 
         $current->save();
+
+        // regardless of status, add to the pmids list
+        if (isset($current->rationale['pmids']))
+        {
+            foreach($current->rationale['pmids'] as $pmid)
+            {
+                    $entry = Pmid::firstOrCreate(['pmid' => $pmid, 'uid' => $pmid],
+                                    [ 'status' => 20]);
+            }
+        }
 
         if ($current->status !== self::STATUS_DELETED)
         {

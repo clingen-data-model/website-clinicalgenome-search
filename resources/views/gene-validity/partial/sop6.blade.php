@@ -41,7 +41,7 @@
 			<td class="input-width-numbers points-given-bg">
 				<div class="form-group">
 						{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->TotalPoints ?? null }}
-				</div>
+			    </div>
 			</td>
 			<td class="points-tally-bg">
 				{{ $record->score_data->GeneticEvidence->CaseLevelData->VariantEvidence->AutosomalDominantOrXlinkedDisorder->VariantIsDeNovo->PointsCounted ?? null }}

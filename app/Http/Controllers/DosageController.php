@@ -14,6 +14,7 @@ use App\Exports\DosageExport;
 use App\GeneLib;
 use App\Gene;
 use App\Filter;
+use App\Jira;
 
 /**
 *
@@ -138,6 +139,13 @@ class DosageController extends Controller
 						->with('back', url()->previous())
                         ->with('user', $this->user);
 
+        // Dosage has a strange publication workflow where part occurs on genegraph and part oj Jira.  To mimic
+        // that we need to act like genegraph would.
+        if ($record->issue_status != "Complete" || $record->jira_status != "Closed")
+        {
+            $record = Jira::rollback($record);
+        }
+
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
 		// moved back into the library
 		if ($record->genetype == "pseudogene")
@@ -210,6 +218,8 @@ class DosageController extends Controller
 		$record->sv_stop = $record->formatPosition($record->grch37, 'svto');
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
+
+        //$record->GRCh37_seqid = "NC_000014.8";
 
 		// set display context for view
 		$display_tabs = collect([

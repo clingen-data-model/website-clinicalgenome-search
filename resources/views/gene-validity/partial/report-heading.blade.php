@@ -1,8 +1,25 @@
+<hr class="mt-0" />
+<!--<div class="row">
+    <div class="col-md-2">
+        <a href="#validity_summary" class="badge badge-pill badge-light border-1 p-2 mb-2">Classification Summary <i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#validity_classification_matrix" class="badge badge-pill badge-light border-1 p-2">Classification Matrix <i class="fas fa-arrow-circle-down"></i></a>
+    </div>
+    <div class="col-md-4">
+        <a href="#tag_genetic_evidence_case_level_with_proband" class="badge badge-pill badge-light border-1 p-2 mb-2 ml-3 bg-evidence1">Scored Genetic Evidence: Case Level Variants <i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#tag_genetic_evidence_segregation" class="badge badge-pill badge-light border-1 p-2 ml-3 bg-evidence2">Scored Genetic Evidence: Case Level Segregation <i class="fas fa-arrow-circle-down"></i></a>
+    </div>
+    <div class="col-md-6">
+        <a href="#tag_genetic_evidence_case_level_without_proband" class="badge badge-pill badge-light border-1 p-2 mb-2 bg-evidence3">Genetic Evidence: Case Level Family Segregation w/o Proband Data or Scored Proband <i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#tag_genetic_evidence_case_control" class="badge badge-pill badge-light border-1 p-2 bg-evidence4 mr-4">Genetic Evidence: Case-Control <i class="fas fa-arrow-circle-down"></i></a>
+        <a href="#tag_experimental_evidence" class=" pull-right badge badge-pill badge-light border-1 p-2 ml-4 bg-evidence5">Experimental Evidence <i class="fas fa-arrow-circle-down"></i></a>
+    </div>
+</div>
+<hr />-->
 <h3>{{ $record->gene->label }} - {{ displayMondoLabel($record->disease->label) }} {!! displayMondoObsolete($record->disease->label) !!}</h3>
 {{ $record->interface }}
 <div class="form-group">
 <table class='table table-striped text-left' style="width:100%;" >
-<tr style="font-size:14px">
+<!--<tr style="font-size:14px">
     <td style="border-top-width:6px" nowrap class="text-left">Gene:</td>
     <td  style="border-top-width:6px">{{ $record->gene->label }} ({{ $record->gene->hgnc_id }})</td>
     <td colspan="2" rowspan="3"  style="border-top-width:6px; border-left-width:6px; border-left-color:rgb(221, 221, 221); border-left-style:solid; text-align: center;">
@@ -30,7 +47,7 @@
       </td>
   </tr>
   @endif
-
+-->
   <tr style="font-size:14px">
     <td style="width:10%;  border-top-width:6px" nowrap class="text-left">Replication over time:</td>
     <td style="width:40%;  border-top-width:6px">
@@ -63,7 +80,9 @@
   <tr style="font-size:14px">
     <td style="vertical-align:top" nowrap class="text-left">Evidence Summary:</td>
     <td colspan="3" style="">
-      @markdown{{ $record->sop7_final_classification_notes ?? null }}@endmarkdown
+@markdown
+{{ $record->sop7_final_classification_notes ?? null }}
+@endmarkdown
       <div><a style="color:#000" href="https://www.clinicalgenome.org/curation-activities/gene-disease-validity/educational-and-training-materials/standard-operating-procedures/">
         Gene Clinical Validity Standard Operating Procedures (SOP) -
         {{ App\GeneLib::validityCriteriaString($record->specified_by->label ?? null) }}

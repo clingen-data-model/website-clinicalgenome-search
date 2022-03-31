@@ -61,7 +61,10 @@
        		<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
 				<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 			</button>
+			<span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
+
 		</div>
+
 		<div class="col-md-12 light-arrows dark-table">
 
 			@include('_partials.genetable', ['expand' => true])
@@ -92,6 +95,9 @@
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/multiple-select@1.5.2/dist/themes/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -108,6 +114,8 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap-table-sticky-header.min.js"></script>
+<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -232,6 +240,9 @@
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
+            stickyHeader: true,
+    		stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
 			locale: 'en-US',
 			sortName:  "symbol",
 			sortOrder: "asc",
@@ -316,8 +327,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          filterData: 'var:hapChoices',
-          filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
+          			filterData: 'var:hapChoices',
+          			filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
@@ -347,8 +358,8 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          filterData: 'var:tripChoices',
-          filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
+          			filterData: 'var:tripChoices',
+          			filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
 					sortable: true
 				},
 				{
@@ -427,7 +438,7 @@
 				{
 					field: 'date',
 					//title: 'Last Eval.',
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          			title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
@@ -449,6 +460,15 @@
 			});
 		})
 
+		$table.on('column-switch.bs.table', function (e, name, args) {
+			var hidden = $table.bootstrapTable('getHiddenColumns');
+
+			if (hidden.length > 0)
+				$('.action-hidden-columns').removeClass('hidden');
+			else
+				$('.action-hidden-columns').addClass('hidden');
+		});
+
 		$table.on('load-success.bs.table', function (e, name, args) {
 
 			$("body").css("cursor", "default");
@@ -462,6 +482,14 @@
 					icon: "error"
 				});
 			}
+
+			var hidden = $table.bootstrapTable('getHiddenColumns');
+
+			if (hidden.length > 0)
+				$('.action-hidden-columns').removeClass('hidden');
+			else
+				$('.action-hidden-columns').addClass('hidden');
+
 		})
 
 		var html = `@include("gene-dosage.panels.selector")`;
@@ -528,7 +556,7 @@
 
 		$( ".fixed-table-toolbar" ).show();
     	$('[data-toggle="tooltip"]').tooltip();
-    	$('[data-toggle="popover"]').popover();
+    	//$('[data-toggle="popover"]').popover();
 
 		var html = `@include("gene-dosage.panels.search")`;
 
@@ -539,8 +567,19 @@
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');
 
+        $('[data-toggle="popover"]').popover();
+
 		region_listener();
 
+		$('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
+
+			var hidden = $table.bootstrapTable('getHiddenColumns');
+
+			if (hidden.length > 0)
+				$('.action-hidden-columns').removeClass('hidden');
+			else
+				$('.action-hidden-columns').addClass('hidden');
+		});
   	});
 
 </script>
