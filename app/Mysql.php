@@ -307,13 +307,6 @@ class Mysql
 
         $array = [];
 
-<<<<<<< HEAD
-        $pair = explode(':', $search);
-
-        $is_symbol = count($pair) > 1;
-
-        switch (strtoupper($pair[0]))
-=======
         // do some cleanup
         $search = trim($search);
 
@@ -477,7 +470,6 @@ class Mysql
         }
         /*$array = [];
         if (stripos($search, 'MONDO') === 0)
->>>>>>> development
         {
             case 'OMIM':
                 $records = Disease::query()->where('omim', 'like', $pair[1] . '%')
