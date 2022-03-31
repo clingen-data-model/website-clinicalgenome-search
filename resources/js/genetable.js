@@ -617,7 +617,8 @@ function asbadgeFormatter(index, row) {
 
     if (row.animal_model_only)
         return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
-        + '' + txt + '<span class="ml-4" data-toggle="tooltip" data-placement="top" title="Animal Model Only"><img height="18" src="/images/rat.jpeg"></span></a>';
+        + '' + txt + '<div class="badge badge-warning">'
+        + 'Animal Model Only</div></a>';
 
     return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
         + '' + txt + '</a>';
