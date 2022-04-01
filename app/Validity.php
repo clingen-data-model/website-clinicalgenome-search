@@ -379,10 +379,10 @@ class Validity extends Model
         unset($old_array['id'], $old_array['ident'], $old_array['version'], $old_array['type'], $old_array['status'],
               $old_array['created_at'], $old_array['updated_at'], $old_array['deleted_at'], $old_array['display_date'],
               $old_array['list_date'], $old_array['display_status'], $old_array['properties'],
-              $old_array['report-id'], $old_array['animal_model_only']);
+              $old_array['report_id'], $old_array['animal_model_only']);
         unset($new_array['id'], $new_array['ident'], $new_array['version'], $new_array['type'], $new_array['status'],
               $new_array['created_at'], $new_array['updated_at'], $new_array['deleted_at'], $new_array['display_date'],
-              $new_array['report-id'], $new_array['animal_model_only'],
+              $new_array['report_id'], $new_array['animal_model_only'],
               $new_array['list_date'], $new_array['display_status'], $new_array['properties']);
 
         $diff = array_diff_assoc($new_array, $old_array);
