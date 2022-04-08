@@ -478,8 +478,9 @@ class Validity extends Model
             && empty($assertion->las_rationale['rationales'])
             && empty($assertion->las_rationale['pmids'])
             && empty($assertion->las_rationale['notes'])
+            && empty($assertion->las_curation)
             )
-                return false;
+               return false;
 
         return true;
     }

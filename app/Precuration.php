@@ -319,7 +319,10 @@ class Precuration extends Model
         {
             foreach($current->rationale['pmids'] as $pmid)
             {
-                    $entry = Pmid::firstOrCreate(['pmid' => $pmid, 'uid' => $pmid],
+                if (empty($pmid))
+                    continue;
+
+                $entry = Pmid::firstOrCreate(['pmid' => $pmid, 'uid' => $pmid],
                                     [ 'status' => 20]);
             }
         }
