@@ -221,6 +221,15 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/gene-curation/'><span class=' d-inline-block text-truncate'> Gene Curation</span></a>
               </li>
+
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://clinicalgenome.org/working-groups/jedi-advisory-board/'><span class=' d-inline-block text-truncate'> Justice, Equity, Diversity, and Inclusion (JEDI) Advisory Board</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://clinicalgenome.org/working-groups/justice-equity-diversity-and-inclusion-coordination-team/'><span class=' d-inline-block text-truncate'> Justice, Equity, Diversity, and Inclusion (JEDI) Coordination Team</span></a>
+              </li>
+
+
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/low-penetrance-risk-allele-working-group/'><span class=' d-inline-block text-truncate'> Low Penetrance/Risk Allele</span></a>
               </li>
