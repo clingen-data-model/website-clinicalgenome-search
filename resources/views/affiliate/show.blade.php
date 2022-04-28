@@ -77,6 +77,7 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap-table-sticky-header.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -109,9 +110,48 @@
     return res
   }
 
+  var choices=[
+                'Definitive',
+                'Strong',
+                'Moderate',
+                'Limited',
+                'Animal Model Only',
+                'Disputed',
+                'Refuted',
+                'No Known Disease Relationship'
+  ];
+
+  var sopChoices=[
+                'SOP4',
+                'SOP5',
+                'SOP6',
+                'SOP7',
+                'SOP8',
+                'SOP9'
+  ];
+
+  function checkclass(text, value, field, data)
+	{
+		if (text == 'animal model only')
+        {
+            return value == "No Known Disease Relationship*";
+        }
+        else if (text == 'no known disease relationship')
+        {
+            return value == "No Known Disease Relationship" || value == "No Known Disease Relationship*"
+        }
+		else
+			return text == value.toLowerCase();
+	}
+
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
+      stickyHeader: true,
+    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
+      sortName:  "symbol",
+			sortOrder: "asc",
       columns: [
 
         {
@@ -164,8 +204,9 @@
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Gene Curation Standard Operating Procedure"></i></div> SOP',
           field: 'sop',
           cellStyle: cellFormatter,
-          filterControl: 'select',
           searchFormatter: false,
+          filterControl: 'select',
+          filterData: 'var:sopChoices',
           sortable: true
         },
 		    {
@@ -182,10 +223,12 @@
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          //align: 'center',
-          searchFormatter: false,
-          filterControl: 'input',
-          sortable: true
+          Formatter: false,
+          filterControl: 'select',
+          filterData: 'var:choices',
+          filterCustomSearch: checkclass,
+          sortable: true,
+          sortName: 'order'
         },
 		    {
           field: 'released',
