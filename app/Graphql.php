@@ -496,10 +496,10 @@ class Graphql
 							  label
 							  curie
 						  }'
-                          . '
-                          report_id
-                          animal_model
-                          '
+                          //. '
+                          //report_id
+                          //animal_model
+                          //'
                           . 'legacy_json
 						  curie
 						}
@@ -1421,8 +1421,8 @@ class Graphql
 							label
 						}
                         '
-						. 'report_id
-                        animal_model'
+						//. 'report_id
+                        //animal_model'
 						 . '
             ';
 
@@ -1635,162 +1635,316 @@ class Graphql
 
 		$query = '{
 				resource(iri: "' . $perm . '") {
-				  ...basicFields
-				  ... on ProbandEvidence {
-					...probandFields
-				  }
-				  ... on VariantEvidence {
-					...variantFields
-				  }
-				  ... on Segregation {
-					...segregationFields
-				  }
-				  subject_of {
 					...basicFields
-					...statementFields
-				  }
-				  ... on Statement {
-					...statementFields
-					contributions {
-					  attributed_to {
-						curie
-						label
+					... on ProbandEvidence {
+					  ...probandFields
+					}
+					... on VariantEvidence {
+					  ...variantFields
+					}
+					... on Segregation {
+					  ...segregationFields
+					}
+					... on Family {
+					  segregation {
+						... basicFields
+						... segregationFields
 					  }
-					  date
-					  realizes {
-						curie
-						label
+					  probands {
+						... basicFields
+						... probandFields
 					  }
 					}
-				  }
-				  __typename
-				  used_as_evidence_by {
-					...statementFields
+					... on Agent {
+					  contributions {
+						artifact {
+						  __typename
+						  label
+						  curie
+						  ... on Statement {
+							subject {
+							  __typename
+							  curie
+							  label
+							  ... on Statement {
+								subject {
+								  curie
+								  label
+								}
+								predicate {
+								  curie
+								  label
+								}
+								object {
+								  curie
+								  label
+								}
+							  }
+							}
+							predicate {
+							  ...basicFields
+							}
+							object {
+							  ...basicFields
+							}
+							qualifier {
+							  ...basicFields
+							}
+							specified_by {
+							  curie
+							  label
+							}
+						  }
+						}
+						date
+						realizes {
+						  curie
+						  label
+						}
+					  }
+					}
+					subject_of {
+					  ...basicFields
+					  ...statementFields
+					}
+					... on Statement {
+					  ...statementFields
+					  contributions {
+						attributed_to {
+						  curie
+						  label
+						}
+						date
+						realizes {
+						  curie
+						  label
+						}
+					  }
+					  direct_evidence: evidence {
 					...basicFields
+					... on Statement {
+					  score
+					  calculated_score
+					}
+					... on ProbandEvidence {
+					  ...probandFields
+					}
+					... on VariantEvidence {
+					  ...variantFields
+					}
+					... on Segregation {
+					  ...segregationFields
+					}
+					  }
+					  genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
+					...basicFields
+					... on Statement {
+					  score
+					  calculated_score
+					  evidence {
+							...basicFields
+							... on ProbandEvidence {
+							  ...probandFields
+							}
+							... on Segregation {
+							  ...segregationFields
+							}
+							... on VariantEvidence {
+							  ...variantFields
+							}
+							... on CaseControlEvidence {
+							  ...caseControlFields
+							}
+
+					  }
+					}
+					... on ProbandEvidence {
+					  ...probandFields
+					}
+					... on VariantEvidence {
+					  ...variantFields
+					}
+					... on Segregation {
+					  ...segregationFields
+					}
+					  }
+					  experimental_evidence: evidence(transitive: true, class: "SEPIO:0004105") {
+					...basicFields
+					... on Statement {
+					  score
+					  calculated_score
+					  evidence {
+							...basicFields
+							... on ProbandEvidence {
+							  ...probandFields
+							}
+					  }
+					}
+					  }
+					}
+					__typename
+					used_as_evidence_by {
+					  ...statementFields
+					  ...basicFields
+					}
 				  }
 				}
-			  }
-
-			  fragment probandFields on ProbandEvidence {
-				variants {
-				  curie
-				  label
-				  canonical_reference {
-					curie
-				  }
-				}
-			  }
-
-			  fragment variantFields on VariantEvidence {
-				variant {
-				  curie
-				  label
-				  canonical_reference {
-					curie
-				  }
-				}
-			  }
-
-			  fragment segregationFields on Segregation {
-				conditions {
-				  curie
-				  label
-				}
-				estimated_lod_score
-				published_lod_score
-				meets_inclusion_criteria
-				phenotype_negative_allele_negative_count
-				phenotype_positive_allele_positive_count
-				sequencing_method {
-				  curie
-				  label
-				}
-			  }
-
-			  fragment basicFields on Resource {
-				__typename
-				label
-				curie
-				description
-				source {
+				fragment probandFields on ProbandEvidence {
 				  __typename
 				  curie
 				  iri
-				  label
-				  short_citation
+				  age_type {
+					label
+				  }
+				  age_unit {
+					label
+				  }
+				  age_value
+				  ethnicity {
+					label
+				  }
+				  sex {
+					label
+				  }
+				  previous_testing
+				  previous_testing_description
+				  testing_methods
+				  phenotypes
+				  phenotype_free_text
+				  variants {
+					curie
+					label
+					canonical_reference {
+					  curie
+					}
+				  }
 				}
-				type {
+				fragment variantFields on VariantEvidence {
+				  variant {
+					curie
+					label
+					canonical_reference {
+					  curie
+					}
+				  }
+				  zygosity {
+					curie
+					label
+				  }
+				  variant_type
+				  proband {
+					curie
+					label
+				  }
+				}
+				fragment caseControlFields on CaseControlEvidence {
+				  iri
+				  curie
+				  label
+				  description
+				  p_value
+				  confidence_interval_from
+				  confidence_interval_to
+				  statitical_significance_type
+				  statitical_significance_value
+				  statitical_significance_value_type
+				  case_cohort {
+					all_genotyped_sequenced
+					allele_frequency
+					case_detection_method
+					curie
+					description
+					iri
+					label
+					num_with_variant
+				  }
+					 control_cohort {
+					   all_genotyped_sequenced
+					   allele_frequency
+					   case_detection_method
+					   curie
+					   description
+					   iri
+					   label
+					   num_with_variant
+					 }
+				}
+				fragment segregationFields on Segregation {
+				  conditions {
+					curie
+					label
+				  }
+				  estimated_lod_score
+				  published_lod_score
+				  meets_inclusion_criteria
+				  phenotype_negative_allele_negative_count
+				  phenotype_positive_allele_positive_count
+				  sequencing_method {
+					curie
+					label
+				  }
+				  family {
+					__typename
+					curie
+					label
+				  }
+				}
+				fragment basicFields on Resource {
 				  __typename
 				  label
 				  curie
+				  description
+				  source {
+					__typename
+					curie
+					iri
+					label
+					short_citation
+				  }
+				  type {
+					__typename
+					label
+					curie
+				  }
 				}
-			  }
 
-			  fragment statementFields on Statement {
-				subject {
-				  ...basicFields
-				}
-				predicate {
-				  ...basicFields
-				}
-				object {
-				  ...basicFields
-				}
-				qualifier {
-				  ...basicFields
-				}
-				direct_evidence: evidence {
-				  ...basicFields
-				  ... on Statement {
-					score
+				fragment statementFields on Statement {
+				  score_status {
+					label
 				  }
-				  ... on ProbandEvidence {
-					...probandFields
-				  }
-				  ... on Segregation {
-					...segregationFields
-				  }
-				}
-				genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
-				  ...basicFields
-				  ... on Statement {
-					score
-					evidence {
-					  ...basicFields
-					  ... on ProbandEvidence {
-						...probandFields
+				  score
+				  calculated_score
+				  subject {
+					...basicFields
+					... on Statement {
+					  subject {
+						curie
+						label
 					  }
-					  ... on Segregation {
-						...segregationFields
+					  predicate {
+						curie
+						label
 					  }
-					  ... on VariantEvidence {
-						...variantFields
+					  object {
+						curie
+						label
 					  }
 					}
 				  }
-				  ... on ProbandEvidence {
-					...probandFields
+				  predicate {
+					...basicFields
 				  }
-				  ... on VariantEvidence {
-					...variantFields
+				  object {
+					...basicFields
 				  }
-				  ... on Segregation {
-					...segregationFields
+				  qualifier {
+					...basicFields
 				  }
-				}
-				experimental_evidence: evidence(transitive: true, class: "SEPIO:0004105") {
-				  ...basicFields
-				  ... on Statement {
-					score
-					evidence {
-					  ...basicFields
-					  ... on ProbandEvidence {
-						...probandFields
-					  }
-					}
+				  specified_by {
+					curie
+					label
 				  }
 				}
-				score
 			  }';
 
 		// query genegraph
