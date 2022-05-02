@@ -2061,6 +2061,11 @@ class Graphql
 				foreach ($affilate->contributions as $contribution) {
 					//dd($contribution);
 					// Check if the current agent is this one.
+                    if (empty($contribution->agent))
+                    {
+                        echo "!!ERROR:  Null contributor for $affilate->curie \n";
+                        continue;
+                    }
 					if ($node->curie == $contribution->agent->curie) {
 						if($contribution->realizes->curie == "SEPIO:0000155") {
 						$total_approver_curations++;

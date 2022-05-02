@@ -44,6 +44,7 @@ class AffiliateDetail extends JsonResource
             'moi' => $this->displayMoi($this->mode_of_inheritance->curie ?? ''),
             'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
             'classification' => $temp,
+            'order' => Genelib::ValiditySortOrder($temp),
             'perm_id' => $this->curie,
             'contributor_type' => $this->contributor_type,
             'animal_model_only' => $this->animal_model_only,
