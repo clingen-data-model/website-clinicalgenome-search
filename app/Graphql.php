@@ -653,7 +653,10 @@ class Graphql
 
                     if ($inassert->report_id !== null)
                     {
+
                         $map = Precuration::gdmid($inassert->report_id)->first();
+                        //dd($map);
+
                         if ($map !== null)
                         {
                             $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
