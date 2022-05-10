@@ -22,6 +22,7 @@ use App\Sensitivity;
 use App\Validity;
 use App\Nodal;
 use App\Gdmmap;
+use App\Precuration;
 
 class RunReport extends Command
 {
@@ -68,6 +69,11 @@ class RunReport extends Command
             case 'acmg':
                 echo "Creating ACMG BED Report\n";
                 $this->report6();
+                echo "Update Complete\n";
+                break;
+            case 'overlap':
+                echo "Creating Gene Overlap Report\n";
+                $this->report7();
                 echo "Update Complete\n";
                 break;
             default:
@@ -551,6 +557,110 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
         fclose($handle);
 
         echo "DONE\n";
+    }
+
+
+    public function report7()
+    {
+
+        $records = Gene::whereNotNull('omim_id')->where('morbid', 1)->orWhere(function ($query) {
+            $query->whereJsonContains('activity->validity', true);
+        })->get();
+
+       //dd($records);
+
+        $fd = fopen("/tmp/omimreport.tsv", "w");
+
+        $header = "Gene\tHGNC\tOMIM\tClinGen\tGCEPS";
+
+        fwrite($fd, $header . PHP_EOL);
+
+        $clingen_count = 0;
+        $omim_count = 0;
+        $clingen_exc = 0;
+        $omim_exc = 0;
+        $scope_count = 0;
+
+        $exclude_groups = ['Illumina curations', 'UNC Biocuration Core', 'Counsyl curations', 'Broad-Geisinger Biocuration Core'];
+
+        foreach($records as $record)
+        {
+            $clingen = false;
+            $omim = false;
+            $groups = [];
+
+            if (isset($record->activity['validity']) && $record->activity['validity'] == true)
+            {
+                $clingen = true;
+                $clingen_count++;
+            }
+
+            if ($record->omim_id !== null && $record->morbid == 1)
+            {
+                $omim_count++;
+                $omim = true;
+            }
+
+            if ($clingen && !$omim)
+                $clingen_exc++;
+
+            if ($omim && !$clingen)
+            {
+                $omim_exc++;
+            }
+
+            // get list of inscope gceps
+
+            $precurations = Precuration::hgnc($record->hgnc_id)->whereNull('date_retired')->get();
+
+            foreach ($precurations as $precuration)
+            {
+                // exclude $these
+                if (in_array($precuration->group_detail['name'], $exclude_groups))
+                    continue;
+
+                if (!in_array($precuration->group_detail['name'], $groups))
+                    $groups[] = $precuration->group_detail['name'];
+            }
+
+            if ($omim && !$clingen && !empty($groups))
+            {
+                $scope_count++;
+            }
+
+            $data = [ $record->name, $record->hgnc_id, ($omim ? 'X' : ''), ($clingen ? 'X' : ''), implode(', ', $groups)];
+
+
+            // get all the omim phenotypes for this gene
+            $oids = $record->omim_id;
+            if ($oids !== null)
+            {
+                    $phenotypes = Morbid::whereIn('mim', $oids)->get();
+                    foreach ($phenotypes as $phenotype)
+                    {
+                        $name = $phenotype->original_phenotype;
+                        if (!empty($phenotype->pheno_omim))
+                            $name .= '  ' . $phenotype->pheno_omim;
+
+                        if (!empty($phenotype->mapkey))
+                            $name .= '  (' . $phenotype->mapkey . ')';
+
+                        $data[] = $name;
+                    }
+            }
+
+            fwrite($fd, implode("\t", $data) . PHP_EOL);
+        }
+
+        fclose($fd);
+
+        echo "Number of genes in either:  " . $records->count() . "\n";
+        echo "Number of Clingen genes:  $clingen_count \n";
+        echo "Number of Omim genes:  $omim_count \n";
+        echo "Number of Exclusive Clingen genes:  $clingen_exc \n";
+        echo "Number of Exclusive Omim genes:  $omim_exc \n";
+        echo "Percent overlap:  " . ($clingen_count / $records->count() * 100) . "\n";
+        echo "Number of Exclusive Omim Genes in GCEP scope:  $scope_count \n";
     }
 
 }

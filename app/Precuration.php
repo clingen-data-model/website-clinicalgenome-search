@@ -167,6 +167,21 @@ class Precuration extends Model
 
 
     /**
+     * Query scope by hgnc_id
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeHgnc($query, $id)
+    {
+        if (strpos($id, 'HGNC:') === 0)
+            $id = substr($id, 5);
+
+		return $query->where('hgnc_id', $id);
+    }
+
+
+    /**
      * Query scope by type
      *
      * @@param	string	$ident

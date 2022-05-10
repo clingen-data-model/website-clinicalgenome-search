@@ -88,6 +88,23 @@ class Morbid extends Model
     }
 
 
+    public function getOriginalPhenotypeAttribute()
+    {
+        $name = $this->phenotype;
+
+        if ($this->disputing == 'Y')
+            $name = '?' . $name;
+
+        if ($this->nondisease == 'Y')
+            $name = '[' . $name . ']';
+        else if ($this->mutations == 'Y')
+            $name = '{' . $name . '}';
+
+        return $name;
+
+    }
+
+
     /**
      * Parse the phenotype string to separate out titles, omim, and map key
      */

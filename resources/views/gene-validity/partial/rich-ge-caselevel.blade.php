@@ -99,7 +99,7 @@
 
                     <tr>
                         <td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
-                            {{ $evidence->label }}
+                            {{ $evidence->proband->label ?? $evidence->label }}
                         </td>
                         <td class="vertical-align-center" role="cell">
                             {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}
@@ -119,22 +119,42 @@
                                     target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 80px;">
-                            <span class="text-danger"><strong>####</strong></span>
+                            {{ $evidence->proband->sex->label ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            @if (!empty($evidence->proband->age_type->label))
+                            <strong>Age of {{ $evidence->proband->age_type->label }}: </strong>
+                            @endif
+                            {{ $evidence->proband->age_value ?? '' }} {{ $evidence->proband->age_unit->label ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            {{ $evidence->proband->ethnicity ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            @if (!empty($evidence->proband->phenotypes))
+                            <strong>HPO terms(s):</strong>
+                            <ul>
+                                @foreach($evidence->proband->phenotypes as $term)
+                                <li><span class="text-danger"><strong>{{ basename($term) }}</strong></span></li>
+                                @endforeach
+                            </ul>
+                            @endif
+                            @if(!empty($evidence->proband->phenotype_free_text))
+                            <strong>Free text:</strong><br>
+                            {{ $evidence->proband->phenotype_free_text }}
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            {{ $evidence->proband->previous_testing_description ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            @if (!empty($evidence->proband->testing_methods))
+                                @foreach($evidence->proband->testing_methods as $key => $value)
+                                <strong>Method {{ $key + 1 }}:</strong><br>{{ $value }}<br>
+                                @endforeach
+                                <strong>Description of genotyping method:</strong>
+                                <span class="text-danger"><strong>####</strong></span>
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
@@ -149,7 +169,7 @@
                             <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span> (<span class="text-danger"><strong>####</strong></span>)</span>
+                            <span class="text-danger"><strong>####</strong></span>
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 240px;">
                             {{ $record->description }}
