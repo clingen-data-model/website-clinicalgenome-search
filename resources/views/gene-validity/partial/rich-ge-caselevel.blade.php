@@ -153,7 +153,7 @@
                                 <strong>Method {{ $key + 1 }}:</strong><br>{{ $value }}<br>
                                 @endforeach
                                 <strong>Description of genotyping method:</strong>
-                                <span class="text-danger"><strong>####</strong></span>
+                                {{ $evidence->proband->genotyping_method ?? '' }}
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">

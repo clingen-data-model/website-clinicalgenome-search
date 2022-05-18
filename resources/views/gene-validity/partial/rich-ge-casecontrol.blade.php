@@ -97,31 +97,33 @@
                                     {{ App\Validity::evidenceTypeString($casecontrol->type[0]->curie ?? '') }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->case_cohort->case_detection_method ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->case_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->control_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ $casecontrol->description }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->case_cohort->num_with_variant ?? '' }}/{{ $evidence->case_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->control_cohort->num_with_variant ?? '' }}/{{ $evidence->control_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->statitical_significance_value ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->p_value ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    @if (isset($evidence->confidence_interval_from) && $evidence->confidence_interval_from !== null)
+                                        {{ $evidence->confidence_interval_from }} - {{ $evidence->confidence_interval_to }}
+                                    @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ $casecontrol->score }}
