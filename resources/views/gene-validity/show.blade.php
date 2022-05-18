@@ -116,33 +116,38 @@
 	<ul class="nav nav-tabs mt-1" style="">
 		<li role="presentation" class="active" style="">
             <a href="#gdvt1" aria-controls="gdvt1" role="tab" data-toggle="tab">
-              <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-2"></i>Summary </span>
+              <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-1"></i>Summary</span>
             </a>
         </li>
         @if ($extrecord !== null)
           <li role="presentation" class="" style="">
-            <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab"><i class="fas fa-dna mr-2"></i>Genetic Evidence
+            <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-dna mr-1"></i>Genetic Evidence</span>
                 @if ($ge_count !== null)
                     <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $ge_count ?? 0 }}</span>
                 @endif
             </a>
           </li>
 		<li role="presentation" class="" style="">
-			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab"><i class="fas fa-microscope mr-2"></i>Experimental Evidence
+			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-microscope mr-1"></i>Experimental Evidence</span>
                 @if ($exp_count !== null)
                     <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $exp_count ?? 0 }}</span>
                 @endif
             </a>
 		</li>
         <li role="presentation" class="" style="">
-			<a href="#gdvt6" aria-controls="gdvt6" role="tab" data-toggle="tab"><i class="far fa-clipboard mr-2"></i>Non-Scorable Evidence
+			<a href="#gdvt6" aria-controls="gdvt6" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="far fa-clipboard mr-1"></i>Non-Scorable Evidence</span>
             </a>
 		</li>
         <li role="presentation" class="" style="">
-			<a href="#gdvt5" aria-controls="gdvt5" role="tab" data-toggle="tab"><i class="fas fa-random fa-sm mr-2"></i>Lumping & Splitting </span></a>
+			<a href="#gdvt5" aria-controls="gdvt5" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-random fa-sm mr-1"></i>Lumping & Splitting </span></a>
 		</li>
         <li role="presentation" class="" style="">
-			<a href="#gdvt7" aria-controls="gdvt7" role="tab" data-toggle="tab"><i class="fas fa-asterisk mr-2"></i>References
+			<a href="#gdvt7" aria-controls="gdvt7" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
             </a>
 		</li>
         @endif
