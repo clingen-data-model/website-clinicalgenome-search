@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <tbody role="rowgroup">
-                    @foreach ($extrecord->caselevel as $record)
+                    @foreach ($extrecord->caselevel as $key => $record)
 
                     @php
                         $evidence = null;
@@ -114,9 +114,16 @@
                             </div>
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>, et al.,
-                            <span class="text-danger"><strong>####</strong></span>, <a href="{{ $evidence->source->iri }}"
+                            @if (empty($evidence->source))
+                            <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                            @else
+                            {{ $evidence->source->first_author }},
+                            @if ($evidence->source->multiple_authors)
+                            et al.,
+                            @endif
+                            {{ $evidence->source->year_published }}, <a href="{{ $evidence->source->iri }}"
                                     target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 80px;">
                             {{ $evidence->proband->sex->label ?? '' }}
@@ -128,7 +135,7 @@
                             {{ $evidence->proband->age_value ?? '' }} {{ $evidence->proband->age_unit->label ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            {{ $evidence->proband->ethnicity ?? '' }}
+                            {{ $evidence->proband->ethnicity->label ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
                             @if (!empty($evidence->proband->phenotypes))

@@ -72,9 +72,18 @@
                                 </td>
                                 <td class="vertical-align-center" role="cell"><span class="text-danger"><strong>{{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</strong></span>
                                 </td>
-                                <td class="vertical-align-center" role="cell"><span class="text-danger"><strong>####</strong></span>, et al.,
-                                    <span class="text-danger"><strong>####</strong></span>, <a href="{{ $record->evidence[0]->source->iri }}"
-                                            target="_blank" rel="noopener noreferrer">PMID: {{ basename($record->evidence[0]->source->iri) }}</a></td>
+                                <td class="vertical-align-center" role="cell">
+                                    @if (empty($record->evidence[0]->source))
+                                    <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                                    @else
+                                    {{ $record->evidence[0]->source->first_author }},
+                                    @if ($record->evidence[0]->source->multiple_authors)
+                                    et al.,
+                                    @endif
+                                    {{ $record->evidence[0]->source->year_published }}, <a href="{{ $record->evidence[0]->source->iri }}"
+                                            target="_blank" rel="noopener noreferrer">PMID: {{ basename($record->evidence[0]->source->iri) }}</a>
+                                    @endif
+                                </td>
                                 <td class="vertical-align-center" role="cell" style="max-width: 600px;">
                                     {{ $record->evidence[0]->description }}
                                 </td>

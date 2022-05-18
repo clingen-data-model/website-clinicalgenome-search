@@ -1853,9 +1853,9 @@ class Graphql
 				  p_value
 				  confidence_interval_from
 				  confidence_interval_to
-				  statitical_significance_type
-				  statitical_significance_value
-				  statitical_significance_value_type
+				  statistical_significance_type
+				  statistical_significance_value
+				  statistical_significance_value_type
 				  case_cohort {
 					all_genotyped_sequenced
 					allele_frequency
@@ -1908,10 +1908,10 @@ class Graphql
 					iri
 					label
 					short_citation
-				#	multiple_authors
-				#	abstract
-				#	year_published
-				#	first_author
+					multiple_authors
+					abstract
+					year_published
+					first_author
 				  }
 				  type {
 					__typename

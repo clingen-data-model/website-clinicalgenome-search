@@ -86,9 +86,16 @@
                                     {{ $evidence->label }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>, et al.,
-                                    <span class="text-danger"><strong>####</strong></span>, <a href="{{ $evidence->source->iri }}"
-                                            target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                                    @if (empty($evidence->source))
+                                    <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                                    @else
+                                    {{ $evidence->source->first_author }},
+                                    @if ($evidence->source->multiple_authors)
+                                    et al.,
+                                    @endif
+                                    {{ $evidence->source->year_published }}, <a href="{{ $evidence->source->iri }}"
+                                    target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                                    @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     <span class="text-danger"><strong>####</strong></span>
@@ -115,14 +122,17 @@
                                     {{ $evidence->control_cohort->num_with_variant ?? '' }}/{{ $evidence->control_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    {{ $evidence->statitical_significance_value ?? '' }}
+                                    @if (isset($evidence->statistical_significance_value_type) && $evidence->statistical_significance_value_type !== null)
+                                    <strong>{{ $evidence->statistical_significance_value_type }}:</strong>
+                                    @endif
+                                    {{ $evidence->statistical_significance_value ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ $evidence->p_value ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     @if (isset($evidence->confidence_interval_from) && $evidence->confidence_interval_from !== null)
-                                        {{ $evidence->confidence_interval_from }} - {{ $evidence->confidence_interval_to }}
+                                        {{ $evidence->confidence_interval_from }}-{{ $evidence->confidence_interval_to }} (%)
                                     @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell">

@@ -62,16 +62,16 @@ class ValidityController extends Controller
      */
     public function index(Request $request, $page = 1, $size = 50)
     {
-		// process request args
-		foreach ($request->only(['page', 'size', 'order', 'sort','search', 'col_search', 'col_search_val']) as $key => $value)
-			$$key = $value;
+        // process request args
+        foreach ($request->only(['page', 'size', 'order', 'sort', 'search', 'col_search', 'col_search_val']) as $key => $value)
+            $$key = $value;
 
-		// set display context for view
+        // set display context for view
         $display_tabs = collect([
             'active' => "validity",
             'title' => "ClinGen Gene-Disease Validity Curations",
             'scrid' => Filter::SCREEN_VALIDITY_CURATIONS,
-			'display' => "Gene-Disease Validity"
+            'display' => "Gene-Disease Validity"
         ]);
 
         $col_search = collect([
@@ -96,15 +96,15 @@ class ValidityController extends Controller
         else
             $display_list = $settings['size'];
 
-		return view('gene-validity.index', compact('display_tabs'))
-						->with('apiurl', $this->api)
-						->with('pagesize', $size)
-						->with('page', $page)
-                        ->with('col_search', $col_search)
-                        ->with('user', $this->user)
-                        ->with('display_list', $display_list)
-						->with('bookmarks', $bookmarks)
-                        ->with('currentbookmark', $filter);
+        return view('gene-validity.index', compact('display_tabs'))
+            ->with('apiurl', $this->api)
+            ->with('pagesize', $size)
+            ->with('page', $page)
+            ->with('col_search', $col_search)
+            ->with('user', $this->user)
+            ->with('display_list', $display_list)
+            ->with('bookmarks', $bookmarks)
+            ->with('currentbookmark', $filter);
     }
 
 
@@ -116,29 +116,31 @@ class ValidityController extends Controller
      */
     public function show(Request $request, $id = null)
     {
-		if ($id === null)
+        if ($id === null)
             return view('error.message-standard')
                 ->with('title', 'Error retrieving Gene Validity details')
                 ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
 
-		$record = GeneLib::validityDetail(['page' => 0,
-										'pagesize' => 20,
-										'perm' => $id
-										 ]);
+        $record = GeneLib::validityDetail([
+            'page' => 0,
+            'pagesize' => 20,
+            'perm' => $id
+        ]);
 
         if ($record === null)
-                return view('error.message-standard')
-                            ->with('title', 'Error retrieving Gene Validity details')
-                            ->with('message', 'The system was not able to retrieve details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
-                            ->with('back', url()->previous())
-                            ->with('user', $this->user);
+            return view('error.message-standard')
+                ->with('title', 'Error retrieving Gene Validity details')
+                ->with('message', 'The system was not able to retrieve details for this Gene Validity.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+                ->with('back', url()->previous())
+                ->with('user', $this->user);
 
-        $extrecord = GeneLib::newValidityDetail(['page' => 0,
-                    'pagesize' => 20,
-                    'perm' => $id
-                        ]);
+        $extrecord = GeneLib::newValidityDetail([
+            'page' => 0,
+            'pagesize' => 20,
+            'perm' => $id
+        ]);
 
         $exp_count = ($extrecord && $extrecord->experimental_evidence ? number_format(array_sum(array_column($extrecord->experimental_evidence, 'score')), 2) : null);
 
@@ -166,37 +168,31 @@ class ValidityController extends Controller
         $record->las_curation = '';
         $record->las_date = null;
 
-        if ($record->report_id !== null)
-        {
+        if ($record->report_id !== null) {
             $map = Precuration::gdmid($record->report_id)->first();
-            if ($map !== null)
-            {
+            if ($map !== null) {
                 $record->las_included = $map->omim_phenotypes['included'] ?? [];
                 $record->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
-                $record->las_rationale =$map->rationale;
+                $record->las_rationale = $map->rationale;
                 $record->las_curation = $map->curation_type['description'] ?? '';
 
                 // the dates aren't always populated in the gene tracker, so we may need to restrict them.
                 $prec_date = $map->disease_date;
-                if ($prec_date !== null)
-                {
+                if ($prec_date !== null) {
                     $dd = Carbon::parse($prec_date);
                     $rd = Carbon::parse($record->report_date);
                     $record->las_date = ($dd->gt($rd) ? $record->report_date : $prec_date);
-                }
-                else
-                {
+                } else {
                     $record->las_date = $record->report_date;
                 }
             }
-
         }
 
         $mims = array_merge($record->las_included, $record->las_excluded);
         $pmids = [];
 
         if (isset($record->las_rationale['pmids']))
-                    $pmids = array_merge($pmids, $record->las_rationale['pmids']);
+            $pmids = array_merge($pmids, $record->las_rationale['pmids']);
 
         // get the mim names
         $mim_names = Mim::whereIn('mim', $mims)->get();
@@ -211,11 +207,13 @@ class ValidityController extends Controller
 
         $pmids = [];
 
-        foreach($pmid_names as $pmid)
-            $pmids[$pmid->pmid] = ['title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
-                               //     'author' => $pmid->sortfirstauthor,
-                                //    'published' =>  $pmid->pubdate,
-                                    'abstract' => $pmid->abstract];
+        foreach ($pmid_names as $pmid)
+            $pmids[$pmid->pmid] = [
+                'title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
+                //     'author' => $pmid->sortfirstauthor,
+                //    'published' =>  $pmid->pubdate,
+                'abstract' => $pmid->abstract
+            ];
 
         // unfortunately, genegraph mixes all the genetic evidence data in one big response set, so we are forced to separate out.
         $segregation = [];
@@ -224,44 +222,42 @@ class ValidityController extends Controller
         $nonscorable = [];
         $pmids = [];
 
-        if ($extrecord !== null)
-        {
+        if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
 
-            $genev->each(function($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids){
-                    if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
-                        $segregation[] = $item;
-                    else if ($item->type[0]->curie == "SEPIO:0004021")
-                        $casecontrol[] = $item;
-                    else
-                        $caselevel[] = $item;
+            $genev->each(function ($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids) {
+                if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
+                    $segregation[] = $item;
+                else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
+                    $casecontrol[] = $item;
+                else
+                    $caselevel[] = $item;
 
-                    if (!empty($item->evidence))
-                        foreach($item->evidence as $evidence)
-                            if ($evidence->source !== null)
-                                $pmids[] = $evidence->source;
-
+                if (!empty($item->evidence))
+                    foreach ($item->evidence as $evidence)
+                        if ($evidence->source !== null)
+                            $pmids[] = $evidence->source;
             });
 
             $nosev = collect($extrecord->direct_evidence);
 
-            $nosev->each(function($item) use (&$nonscorable, &$pmids){
-                    if ($item->type[0]->curie == "SEPIO:0004127")
-                        $nonscorable[] = $item;
+            $nosev->each(function ($item) use (&$nonscorable, &$pmids) {
+                if ($item->type[0]->curie == "SEPIO:0004127")
+                    $nonscorable[] = $item;
 
-                    if (!empty($item->evidence))
-                        foreach($item->evidence as $evidence)
-                            if ($evidence->source !== null)
-                                $pmids[] = $evidence->source;
+                if (!empty($item->evidence))
+                    foreach ($item->evidence as $evidence)
+                        if ($evidence->source !== null)
+                            $pmids[] = $evidence->source;
             });
 
             $expev = collect($extrecord->experimental_evidence);
 
-            $expev->each(function($item) use (&$pmids){
-                    if (!empty($item->evidence))
-                        foreach($item->evidence as $evidence)
-                            if ($evidence->source !== null)
-                                $pmids[] = $evidence->source;
+            $expev->each(function ($item) use (&$pmids) {
+                if (!empty($item->evidence))
+                    foreach ($item->evidence as $evidence)
+                        if ($evidence->source !== null)
+                            $pmids[] = $evidence->source;
             });
 
             $extrecord->segregation = $segregation;
@@ -271,18 +267,18 @@ class ValidityController extends Controller
             $extrecord->pmids = $pmids;
         }
 
-        $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')),2) : null);
-        $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')),2) : null);
-//dd($extrecord->casecontrol);
+        $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
+        $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
+        //dd($extrecord->caselevel);
 
         // collect the non-scorable records
 
         return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims'))
-                            ->with('user', $this->user);
-	}
+            ->with('user', $this->user);
+    }
 
 
-	/**
+    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -292,6 +288,6 @@ class ValidityController extends Controller
     {
         $date = date('Y-m-d');
 
-		return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
+        return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
     }
 }

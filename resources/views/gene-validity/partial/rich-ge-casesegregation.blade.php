@@ -75,9 +75,16 @@
                             {{ $evidence->label }} (<span class="text-danger"><strong>####</strong></span>)
                         </td>
                         <td>
-                            <span class="text-danger"><strong>####</strong></span>, et al.,
-                            <span class="text-danger"><strong>####</strong></span>, <a href="{{ $evidence->source->iri }}"
+                            @if (empty($evidence->source))
+                            <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                            @else
+                            {{ $evidence->source->first_author }},
+                            @if ($evidence->source->multiple_authors)
+                            et al.,
+                            @endif
+                            {{ $evidence->source->year_published }}, <a href="{{ $evidence->source->iri }}"
                                     target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                            @endif
                         </td>
                         <td>
                             <span class="text-danger"><strong>####</strong></span>
