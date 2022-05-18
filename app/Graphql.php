@@ -1589,7 +1589,7 @@ class Graphql
 		}
 
 		$node = new Nodal((array) $response->gene_validity_assertion);
-
+//dd($node);
 		// overwrite the label with the website display label
 		if (!empty($node->mode_of_inheritance->website_display_label))
 			$node->mode_of_inheritance->label = $node->mode_of_inheritance->website_display_label;
@@ -1809,7 +1809,12 @@ class Graphql
 				  previous_testing
 				  previous_testing_description
 				  testing_methods
-				  phenotypes
+				  phenotypes {
+					curie
+					description
+					iri
+					label
+				  }
 				  phenotype_free_text
 				  variants {
 					curie
@@ -1901,6 +1906,10 @@ class Graphql
 					iri
 					label
 					short_citation
+				#	multiple_authors
+				#	abstract
+				#	year_published
+				#	first_author
 				  }
 				  type {
 					__typename
@@ -1964,7 +1973,7 @@ class Graphql
 
 		$node = new Nodal((array) $response->resource);
 
-       // dd($node);
+     //   dd($node);
 
 		// overwrite the label with the website display label
 		//if (!empty($node->mode_of_inheritance->website_display_label))

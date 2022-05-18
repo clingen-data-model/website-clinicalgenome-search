@@ -135,7 +135,7 @@
                             <strong>HPO terms(s):</strong>
                             <ul>
                                 @foreach($evidence->proband->phenotypes as $term)
-                                <li><span class="text-danger"><strong>{{ basename($term) }}</strong></span></li>
+                                <li>{{ $term->label }} ({{ $term->curie }})</li>
                                 @endforeach
                             </ul>
                             @endif
