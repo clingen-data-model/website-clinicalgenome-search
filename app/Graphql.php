@@ -1800,6 +1800,7 @@ class Graphql
 					label
 				  }
 				  age_value
+                  # allele_origin
 				  ethnicity {
 					label
 				  }
@@ -1816,6 +1817,7 @@ class Graphql
 					label
 				  }
 				  phenotype_free_text
+                  genotyping_method
 				  variants {
 					curie
 					label
@@ -1973,7 +1975,7 @@ class Graphql
 
 		$node = new Nodal((array) $response->resource);
 
-     //   dd($node);
+        dd($node);
 
 		// overwrite the label with the website display label
 		//if (!empty($node->mode_of_inheritance->website_display_label))
