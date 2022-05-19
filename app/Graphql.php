@@ -1800,7 +1800,6 @@ class Graphql
 					label
 				  }
 				  age_value
-                  # allele_origin
 				  ethnicity {
 					label
 				  }
@@ -1838,6 +1837,7 @@ class Graphql
 					curie
 					label
 				  }
+                  allele_origin
 				  variant_type
 				  proband {
                       ...probandFields

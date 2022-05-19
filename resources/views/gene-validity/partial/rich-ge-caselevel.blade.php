@@ -162,7 +162,17 @@
                             {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            @switch($evidence->allele_origin)
+                                @case("http://purl.obolibrary.org/obo/GENO_0000880")
+                                Yes
+                                @break
+                                @case("http://purl.obolibrary.org/obo/GENO_0000888")
+                                No
+                                @break
+                                @case("http://purl.obolibrary.org/obo/GENO_0000877")
+                                @default
+                                Unknown
+                            @endswitch
                         </td>
                         <td class="vertical-align-center" role="cell">
                             Score
