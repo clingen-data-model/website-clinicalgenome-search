@@ -479,8 +479,7 @@
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
                                         @foreach ($extrecord->pmids as $pmid)
-                                        <p><strong>PMID:  </strong>{{ $pmid->curie }}, {{ $pmid->label }}, {{ $pmid->iri }},
-                                        </p>
+                                        <p>{!! displayCitation($pmid, true) !!}</p>
                                         <hr>
                                         @endforeach
                                     </div>
@@ -683,7 +682,29 @@
     $table.on('post-body.bs.table', function (e, name, args) {
 
 			$('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="popover"]').popover();
 		})
+
+        $('#geclv').on('post-body.bs.table', function (e, name, args) {
+
+$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="popover"]').popover();
+})
+    $('#gecls').on('post-body.bs.table', function (e, name, args) {
+
+$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="popover"]').popover();
+})
+    $('#geclfs').on('post-body.bs.table', function (e, name, args) {
+
+$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="popover"]').popover();
+})
+    $('#gecc').on('post-body.bs.table', function (e, name, args) {
+
+$('[data-toggle="tooltip"]').tooltip();
+$('[data-toggle="popover"]').popover();
+})
   }
 
   function toggleChevron(e) {

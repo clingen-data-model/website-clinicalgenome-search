@@ -236,7 +236,7 @@ class ValidityController extends Controller
                 if (!empty($item->evidence))
                     foreach ($item->evidence as $evidence)
                         if ($evidence->source !== null)
-                            $pmids[] = $evidence->source;
+                            $pmids[$evidence->source->curie] = $evidence->source;
             });
 
             $nosev = collect($extrecord->direct_evidence);
@@ -248,7 +248,7 @@ class ValidityController extends Controller
                 if (!empty($item->evidence))
                     foreach ($item->evidence as $evidence)
                         if ($evidence->source !== null)
-                            $pmids[] = $evidence->source;
+                            $pmids[$evidence->source->curie] = $evidence->source;
             });
 
             $expev = collect($extrecord->experimental_evidence);
@@ -257,13 +257,14 @@ class ValidityController extends Controller
                 if (!empty($item->evidence))
                     foreach ($item->evidence as $evidence)
                         if ($evidence->source !== null)
-                            $pmids[] = $evidence->source;
+                            $pmids[$evidence->source->curie] = $evidence->source;
             });
 
             $extrecord->segregation = $segregation;
             $extrecord->casecontrol = $casecontrol;
             $extrecord->caselevel = $caselevel;
             $extrecord->nonscorable = $nonscorable;
+            ksort($pmids);
             $extrecord->pmids = $pmids;
         }
 

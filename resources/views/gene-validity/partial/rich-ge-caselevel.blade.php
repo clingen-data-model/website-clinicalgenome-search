@@ -117,12 +117,7 @@
                             @if (empty($evidence->source))
                             <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
                             @else
-                            {{ $evidence->source->first_author }},
-                            @if ($evidence->source->multiple_authors)
-                            et al.,
-                            @endif
-                            {{ $evidence->source->year_published }}, <a href="{{ $evidence->source->iri }}"
-                                    target="_blank" rel="noopener noreferrer">PMID: {{ basename($evidence->source->iri) }}</a>
+                            {!! displayCitation($evidence->source) !!}
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 80px;">
