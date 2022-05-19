@@ -317,7 +317,9 @@
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
                                         @foreach ($extrecord->nonscorable as $evidence)
-                                        <p><strong>Explanation:  </strong>@markdown{{ $evidence->description }}@endmarkdown
+                                        <p>
+                                            <strong>PMID:</strong><br>
+                                            <strong>Explanation:  </strong>@markdown{{ $evidence->description }}@endmarkdown
                                         </p>
                                         <hr>
                                         @endforeach
