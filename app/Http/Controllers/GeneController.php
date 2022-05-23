@@ -356,6 +356,8 @@ class GeneController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
+		$pregceps = $pregceps->unique();
+
         $total_panels = /*$validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
                         + ($actionability_collection->isEmpty() ? 0 : 1)
@@ -617,6 +619,8 @@ class GeneController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
+		$pregceps = $pregceps->unique();
+
         $total_panels = /*$validity_eps + count($variant_panels)
                         + ($record->ndosage > 0 ? 1 : 0)
                         + ($actionability_collection->isEmpty() ? 0 : 1)
@@ -850,6 +854,8 @@ class GeneController extends Controller
             $remids = $gceps->pluck('id');
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
+
+		$pregceps = $pregceps->unique();
 
 		// set display context for view
 		$display_tabs = collect([
