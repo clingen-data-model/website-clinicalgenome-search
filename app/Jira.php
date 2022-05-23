@@ -1338,7 +1338,6 @@ class Jira extends Model
 
         foreach(array_reverse($node->history) as $history)
         {
-           // dd($history);
 
             foreach ($history->items as $item)
             {
@@ -1363,7 +1362,7 @@ class Jira extends Model
                        //dd($item);
 
                         $cat = Disease::parseIdentifier($item->fromString);
-//dd($cat);
+dd($cat);
                         switch ($cat['type'])
                         {
                             case Disease::TYPE_NONE:

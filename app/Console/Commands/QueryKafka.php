@@ -135,14 +135,15 @@ class QueryKafka extends Command
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
                         $payload = json_decode($message->payload);
                         //echo $payload->genes[0]->symbol . "\n";
-                        //if ($payload->genes[0]->symbol == "PDLIM3")
-                        //{
-                        //    dd($payload);
+                        //dd($payload);
+                        //if ($payload->genes[0]->symbol == "LDLR")
+                       // {
+                        //   var_dump($payload);
                         //}
-                        //dd($payload->genes[0]);
+                       // //dd($payload->genes[0]);
                         $a = $stream->parser;
                         $a($payload);
-                    $stream->update(['offset' => $message->offset + 1]);
+                        $stream->update(['offset' => $message->offset + 1]);
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                     echo "No more messages; will wait for more\n";
