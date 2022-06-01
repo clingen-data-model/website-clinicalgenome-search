@@ -550,6 +550,7 @@ class Validity extends Model
                     $current->date_precuration = $record->status->effective_date;
                     break;
                 case "Disease Entity Assigned":
+                case "Disease entity assigned":
                     $current->date_disease_assigned = $record->status->effective_date;
                     break;
                 case "Precuration Complete":

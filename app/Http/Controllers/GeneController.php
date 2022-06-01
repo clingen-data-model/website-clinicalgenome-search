@@ -807,7 +807,7 @@ class GeneController extends Controller
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = collect();
-//dd($record->curation_status);
+//dd($record);
 		if ($record->curation_status !== null)
 		{
 			foreach ($record->curation_status as $precuration)
@@ -819,6 +819,7 @@ class GeneController extends Controller
                         break;
                     case "Precuration":
                     case "Disease Entity Assigned":
+                    case "Disease entity assigned":
                     case "Precuration Complete":
                         $bucket = 1;
                         break;
@@ -830,7 +831,7 @@ class GeneController extends Controller
                     case "Published":
                         continue 2;
 				}
-
+//dd($precuration);
 				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 				//	continue;
 
@@ -845,7 +846,7 @@ class GeneController extends Controller
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
-
+//dd($bucket);
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);

@@ -462,6 +462,7 @@ class ConditionController extends Controller
 				{
 					case 'Uploaded':
                     case "Disease Entity Assigned":
+                    case "Disease entity assigned":
                         $bucket = 3;
                         break;
                     case "Precuration":
@@ -638,6 +639,7 @@ class ConditionController extends Controller
 				{
 					case 'Uploaded':
                     case "Disease Entity Assigned":
+                    case "Disease entity assigned":
                         $bucket = 3;
                         break;
                     case "Precuration":

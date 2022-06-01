@@ -614,6 +614,7 @@ class Graphql
                         if ($inassert->report_id === null)
                         {
                         // GC Express wont have an iri
+                        //dd($score);
                             if (isset($score->iri))
                             {
                                 $map = Gdmmap::gg($score->iri)->first();

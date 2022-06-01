@@ -133,6 +133,7 @@ class Precuration extends Model
         'Uploaded' => 10,
         "Precuration" => 15,
         "Disease Entity Assigned" => 20,
+        "Disease entity assigned" => 20,
         "Precuration Complete" => 25,
         "Curation Provisional" => 30,
         "Curation Approved" => 35,
@@ -307,6 +308,7 @@ class Precuration extends Model
                     $current->date_precuration = $record->status->effective_date;
                     break;
                 case "Disease Entity Assigned":
+                case "Disease entity assigned":
                     $current->date_disease_assigned = $record->status->effective_date;
                     break;
                 case "Precuration Complete":

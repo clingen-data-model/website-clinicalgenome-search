@@ -76,6 +76,16 @@ class RunReport extends Command
                 $this->report7();
                 echo "Update Complete\n";
                 break;
+            case 'taylor':
+                echo "Creating Leuko Report\n";
+                $this->report9();
+                echo "Update Complete\n";
+                break;
+            case 'test':
+                echo "Running test report\n";
+                $this->report10();
+                echo "Update Complete\n";
+                break;
             default:
                 echo "Nothing to do, exiting\n";
                 break;
@@ -661,6 +671,108 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
         echo "Number of Exclusive Omim genes:  $omim_exc \n";
         echo "Percent overlap:  " . ($clingen_count / $records->count() * 100) . "\n";
         echo "Number of Exclusive Omim Genes in GCEP scope:  $scope_count \n";
+    }
+
+
+    public function report9()
+    {
+
+        $lines = 1;
+
+        $handle = fopen(base_path() . '/data/leuko.csv', "r");
+        $ohandle = fopen(base_path() . '/data/newleuko.tsv', "w");
+
+        $header = "Original\tCorrected\tCurated Panels\tPrecurated Panels\n";
+
+        if ($handle)
+        {
+
+            // skip over header
+            $line = fgetcsv($handle);
+
+            fwrite($ohandle, $header);
+
+
+            while (($line = fgetcsv($handle)) !== false)
+            {
+                $lines++;
+
+                $row = array_values($line);
+
+                // remove any unprintables
+                $row[0] = preg_replace('/[[:^print:]]/', '', $row[0]);
+
+                if (empty($row[0]))
+                    break;
+
+                $gene = Gene::name($row[0])->first();
+
+                if ($gene === null)
+                {
+                    $gene = Gene::alias($row[0])->first();
+
+                    if ($gene == null)
+                        $gene = Gene::previous($row[0])->first();
+                }
+
+                if ($gene === null)
+                {
+                    echo "Lookup of gene $row[0] failed...skipping\n";
+                    continue;
+                }
+
+                $groups = [];
+
+                // gather curated panels
+                foreach ($gene->panels as $panel)
+                {
+                    $groups[] = $panel->title_abbreviated;
+                }
+
+                // gather precurated $panels
+                $pgroups = [];
+
+                $pcurs = Precuration::hgnc($gene->hgnc_id)->get();
+
+                // gather curated panels
+                foreach ($pcurs as $pcur)
+                {
+                    if ($pcur->date_retired !== null)
+                        continue;
+
+                    if (empty($pcur->group_id))
+                        continue;
+
+                    $pgroups[] = $pcur->group_id;
+                }
+
+                $ppgroups = Panel::whereIn('affiliate_id', $pgroups)->get();
+
+                $pppgroups = [];
+                foreach ($ppgroups as $t)
+                    $pppgroups[] = $t->title_abbreviated;
+
+
+                fwrite($ohandle, $row[0] . "\t" . $gene->name . "\t" . implode(", ", $groups) . "\t" . implode(", ", $pppgroups) . PHP_EOL);
+
+            }
+
+            fclose($handle);
+            fclose($ohandle);
+        }
+    }
+
+    public function report10()
+    {
+        $genes = Gene::whereNotNull('curation_status')->get();
+
+        foreach ($genes as $gene)
+        {
+            foreach ($gene->curation_status as $prec)
+            {
+                echo $prec['status'] . "\n";
+            }
+        }
     }
 
 }
