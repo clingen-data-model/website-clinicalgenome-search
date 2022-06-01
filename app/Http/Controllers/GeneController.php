@@ -819,6 +819,7 @@ class GeneController extends Controller
                         break;
                     case "Precuration":
                     case "Disease Entity Assigned":
+                    case "Disease entity assigned":
                     case "Precuration Complete":
                         $bucket = 1;
                         break;
@@ -828,6 +829,7 @@ class GeneController extends Controller
                         break;
                     case "Retired Assignment":
                     case "Published":
+                    default:
                         continue 2;
 				}
 

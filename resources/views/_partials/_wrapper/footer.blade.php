@@ -157,6 +157,10 @@
           <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/data-platform/'><span class='d-inline-block text-truncate'>Data Platform</span></a>
         </li>
 
+        <li class='col-md-6 text-truncate '>
+            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/disease-naming-advisory-committee/'><span class=' d-inline-block text-truncate'> Disease Naming Advisory Committee</span></a>
+          </li>
+
         <li class='col-md-6 text-truncate'>
           <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/dosage-sensitivity-curation/'><span class='d-inline-block text-truncate'>Dosage Sensitivity Curation</span></a>
         </li>
@@ -188,6 +192,10 @@
         <li class='col-md-6 text-truncate'>
           <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/lumping-and-splitting/'><span class='d-inline-block text-truncate'>Lumping and Splitting</span></a>
         </li>
+
+        <li class='col-md-6 text-truncate '>
+            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics</span></a>
+          </li>
 
         <li class='col-md-6 text-truncate'>
           <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/sequence-variant-inter-laboratory-discrepancy-resolution/'><span class='d-inline-block text-truncate'>Sequence Variant Inter-Laboratory Discrepancy Resolution</span></a>

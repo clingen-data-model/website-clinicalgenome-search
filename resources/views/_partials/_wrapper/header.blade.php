@@ -207,6 +207,9 @@
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/data-platform/'><span class=' d-inline-block text-truncate'> Data Platform</span></a>
               </li>
               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/disease-naming-advisory-committee/'><span class=' d-inline-block text-truncate'> Disease Naming Advisory Committee</span></a>
+              </li>
+              <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/dosage-sensitivity-curation/'><span class=' d-inline-block text-truncate'> Dosage Sensitivity Curation</span></a>
               </li>
               <li class='nav-item '>
@@ -235,6 +238,9 @@
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/lumping-and-splitting/'><span class=' d-inline-block text-truncate'> Lumping and Splitting</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/sequence-variant-interpretation/'><span class=' d-inline-block text-truncate'> Sequence Variant Interpretation</span></a>
