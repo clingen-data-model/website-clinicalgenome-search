@@ -1818,6 +1818,7 @@ class Graphql
 				  }
 				  phenotype_free_text
                   genotyping_method
+                  paternity_maternity_confirmed
 				  variants {
 					curie
 					label
@@ -1957,6 +1958,12 @@ class Graphql
 					curie
 					label
 				  }
+                  earliest_articles {
+                    curie
+                    description
+                    iri
+                    label
+                  }
 				}
 			  }';
 

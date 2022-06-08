@@ -260,18 +260,29 @@ class ValidityController extends Controller
                             $pmids[$evidence->source->curie] = $evidence->source;
             });
 
+            // build a quick list of the eariest earliest_articles
+            $eas = [];
+            if (isset($extrecord->earliest_articles))
+            {
+                foreach ($extrecord->earliest_articles as $article)
+                    $eas[] = $article->curie;
+            }
+
             $extrecord->segregation = $segregation;
             $extrecord->casecontrol = $casecontrol;
             $extrecord->caselevel = $caselevel;
             $extrecord->nonscorable = $nonscorable;
+            $extrecord->eas = $eas;
             ksort($pmids);
             $extrecord->pmids = $pmids;
+
+
         }
 
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
-        //dd($extrecord->nonscorable);
+       // dd($extrecord);
 
         // collect the non-scorable records
 

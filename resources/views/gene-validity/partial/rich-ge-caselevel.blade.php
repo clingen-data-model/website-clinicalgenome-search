@@ -118,6 +118,9 @@
                             <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
                             @else
                             {!! displayCitation($evidence->source) !!}
+                            @if (in_array($evidence->source->curie, $extrecord->eas))
+                            <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                            @endif
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 80px;">
@@ -164,7 +167,7 @@
                         <td class="vertical-align-center" role="cell">
                             @switch($evidence->allele_origin)
                                 @case("http://purl.obolibrary.org/obo/GENO_0000880")
-                                Yes
+                                Yes ({{ $evidence->proband->paternity_maternity_confirmed }})
                                 @break
                                 @case("http://purl.obolibrary.org/obo/GENO_0000888")
                                 No
