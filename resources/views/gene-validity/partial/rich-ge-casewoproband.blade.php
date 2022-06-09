@@ -10,13 +10,11 @@
     </div>
     <div id="tablethree" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_family">
     <div class="panel-body">
-        @if (false)
+        @if (!$clfswopb)
         <div class="alert alert-warning" role="alert">
             No segregation evidence for a Family without a proband was found.
-            <span class="text-danger"><strong>Need a gene example of what this table looks like</strong></span>
         </div>
         @else
-        <span class="text-danger"><strong>Need structure to determine how to key show/nowhow</strong></span>
         <div class="table-responsive">
             <table id="geclfs" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                     data-classes="table"
@@ -69,35 +67,59 @@
                     </tr>
                 </thead>
                 <tbody role="rowgroup">
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
-                    <td class="vertical-align-center" role="cell">
-                        <span class="text-danger"><strong>####</strong></span>
-                    </td>
+                    @foreach ($extrecord->segregation as $record)
+                        @foreach($record->evidence as $evidence)
+                        @if ($evidence->proband !== null)
+                        @continue
+                        @endif
+                    <tr>
+                        <td>
+                            {{ $evidence->label }}
+                        </td>
+                        <td>
+                            @if (empty($evidence->source))
+                            <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                            @else
+                            {!! displayCitation($evidence->source) !!}
+                            @if (in_array($evidence->source->curie, $extrecord->eas))
+                            <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                            @endif
+                            @endif
+                        </td>
+                        <td>
+                            {{ $evidence->family->ethnicity ?? '' }}
+                        </td>
+                        <td class="vertical-align-center text-left" role="cell">
+                            @if($evidence->conditions !== null)
+                            <strong>HPO terms(s)</strong>
+                            <ul>
+                                @foreach($evidence->conditions as $condition)
+                                <li>{{ $condition->label }} ({{ $condition->curie }})</li>
+                                @endforeach
+                            </ul>
+                            @endif
+                        </td>
+                        <td>
+                            {{ $evidence->family->mode_of_inheritance ?? '' }}
+                        </td>
+                        <td>
+                            {{ $evidence->phenotype_positive_allele_positive_count }}
+                        </td>
+                        <td>
+                            {{ $evidence->phenotype_negative_allele_negative_count }}
+                        </td>
+                        <td>
+                            <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
+                        </td>
+                        <td>
+                            {{ $evidence->meets_inclusion_criteria ? 'Yes' : 'No' }}
+                        </td>
+                        <td>
+                            {{ ucfirst($evidence->sequencing_method->label ?? '') }}
+                        </td>
+                    </tr>
+                        @endforeach
+                    @endforeach
                 </tbody>
             </table>
         </div>

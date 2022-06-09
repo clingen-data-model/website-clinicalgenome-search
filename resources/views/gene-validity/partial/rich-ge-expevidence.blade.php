@@ -70,13 +70,17 @@
                                 <td class="vertical-align-center" role="cell" style="word-break: normal;">
                                     {{ $record->evidence[0]->label }}
                                 </td>
-                                <td class="vertical-align-center" role="cell"><span class="text-danger"><strong>{{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</strong></span>
+                                <td class="vertical-align-center" role="cell"><span class="text-danger" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Placeholder for blue text content">
+                                    <strong>{{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</strong></span>
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     @if (empty($record->evidence[0]->source))
                                     <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
                                     @else
                                     {!! displayCitation($record->evidence[0]->source) !!}
+                                    @if (in_array($record->evidence[0]->source->curie, $extrecord->eas))
+                                    <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                                    @endif
                                     @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell" style="max-width: 600px;">

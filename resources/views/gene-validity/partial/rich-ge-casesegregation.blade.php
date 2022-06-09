@@ -10,7 +10,7 @@
     </div>
     <div id="tabletwo" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_segregation">
     <div class="panel-body">
-        @if (empty($extrecord->genetic_evidence))
+        @if (!$clfs)
         <div class="alert alert-warning" role="alert">
             No  evidence for a Family with a proband was found.
         </div>
@@ -69,20 +69,26 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-
+                        @if ($evidence->proband === null)
+                        @continue
+                        @endif
                     <tr>
                         <td>
-                            {{ $evidence->label }} (<span class="text-danger"><strong>####</strong></span>)
+                            {{ $evidence->label }}
+                            <div>({{ $evidence->proband->label }})</div>
                         </td>
                         <td>
                             @if (empty($evidence->source))
                             <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
                             @else
                             {!! displayCitation($evidence->source) !!}
+                            @if (in_array($evidence->source->curie, $extrecord->eas))
+                            <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                            @endif
                             @endif
                         </td>
                         <td>
-                            <span class="text-danger"><strong>####</strong></span>
+                            {{ $evidence->family->ethnicity ?? '' }}
                         </td>
                         <td class="vertical-align-center text-left" role="cell">
                             @if($evidence->conditions !== null)
@@ -95,7 +101,7 @@
                             @endif
                         </td>
                         <td>
-                            <span class="text-danger"><strong>####</strong></span>
+                            {{ $evidence->family->mode_of_inheritance ?? '' }}
                         </td>
                         <td>
                             {{ $evidence->phenotype_positive_allele_positive_count }}

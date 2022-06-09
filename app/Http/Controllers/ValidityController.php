@@ -222,12 +222,26 @@ class ValidityController extends Controller
         $nonscorable = [];
         $pmids = [];
 
+        // uhg, since all the segregation is in one structure we need to maintain watch flags
+        $clfs = false;
+        $clfswopb = false;
+
         if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
 
-            $genev->each(function ($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids) {
+            $genev->each(function ($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids, &$clfs, &$clfswopb) {
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
+                {
+                    foreach ($item->evidence as $e)
+                    {
+                        if ($e->proband === null)
+                            $clfswopb = true;
+                        else
+                            $clfs = true;
+                    }
+
                     $segregation[] = $item;
+                }
                 else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
                     $casecontrol[] = $item;
                 else
@@ -282,11 +296,11 @@ class ValidityController extends Controller
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
-       // dd($extrecord);
+   // dd($extrecord);
 
         // collect the non-scorable records
 
-        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims'))
+        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);
     }
 

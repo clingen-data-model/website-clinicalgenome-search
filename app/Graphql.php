@@ -1897,6 +1897,19 @@ class Graphql
 					__typename
 					curie
 					label
+                    mode_of_inheritance
+                    ethnicity {
+                        curie
+                        description
+                        iri
+                        label
+                    }
+                }
+                proband {
+                    curie
+                    description
+                    iri
+                    label
 				  }
 				}
 				fragment basicFields on Resource {

@@ -165,6 +165,7 @@
                             {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
                         </td>
                         <td class="vertical-align-center" role="cell">
+                            @if (isset($evidence->allele_origin))
                             @switch($evidence->allele_origin)
                                 @case("http://purl.obolibrary.org/obo/GENO_0000880")
                                 Yes ({{ $evidence->proband->paternity_maternity_confirmed }})
@@ -176,6 +177,7 @@
                                 @default
                                 Unknown
                             @endswitch
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             Score
