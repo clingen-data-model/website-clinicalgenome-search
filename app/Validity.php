@@ -110,13 +110,14 @@ class Validity extends Model
 	 		9 => 'Deleted'
      ];
 
+     //             'SEPIO:0004018' => "Predicted or proven null variant type",
 
     protected static $evidence_type_strings = [
             'null variant evidence line' => "Predicted or proven null variant type",
             'SEPIO:0000247' => "Candidate gene sequencing",
             'SEPIO:0004017' => "Predicted or proven null variant type",
-            'SEPIO:0004018' => "Predicted or proven null variant type",
-            'SEPIO:0004019' => "Other variant type",
+            'SEPIO:0004018' => "Two variants in trans and at least one de novo or a predicted/proven null variant",
+            'SEPIO:0004019' => "Two variants (not predicted/proven null) with some evidence of gene impact in trans",
             'SEPIO:0004020' => "Single variant analysis",
             'SEPIO:0004021' => "Aggregate variant analysis",
             'SEPIO:0004022' => "Bochemical Function",
@@ -132,8 +133,8 @@ class Validity extends Model
             'SEPIO:0004032' => "Rescue in patient cells",
             'SEPIO:0004029' => "",
             'SEPIO:0004078' => "Predicted or proven null variant type",
-            'SEPIO:0004079' => "Predicted or proven null variant type",
-            'SEPIO:0004080' => "Other variant type",
+            'SEPIO:0004079' => "Proband with predicted or proven null variant",
+            'SEPIO:0004080' => "Proband with other variant type with some evidence of gene impact",
           //  'variant functional impact evidence item' => "No translation",
             'SEPIO:0004119' => "Other variant type",
           //  'null variant evidence item' => "No translation",
@@ -145,6 +146,15 @@ class Validity extends Model
             'SEPIO:0004121' => "Other variant type"
             //'SEPIO:0004042' => "Other variant type",
      ];
+
+     protected static $location_sop = [
+        'ClinGen Gene Validity Evaluation Criteria SOP9' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-9',
+        'ClinGen Gene Validity Evaluation Criteria SOP8' => 'https://clinicalgenome.org/docs/genetic-evidence-scoring-metric-sop-version-8',
+        'ClinGen Gene Validity Evaluation Criteria SOP7' => 'https://clinicalgenome.org/docs/summary-of-updates-to-the-clingen-gene-clinical-validity-curation-sop-version-7',
+        'ClinGen Gene Validity Evaluation Criteria SOP6' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedures-version-6',
+        'ClinGen Gene Validity Evaluation Criteria SOP5' => 'https://clinicalgenome.org/docs/gene-disease-validity-sop-version-5',
+        'ClinGen Gene Validity Evaluation Criteria SOP4' => 'https://clinicalgenome.org/docs/gene-disease-validity-sop-version-4'
+    ];
 
 
 	/**
@@ -705,5 +715,18 @@ class Validity extends Model
        //return $x;
 
         return self::$evidence_type_strings[$x] ?? $x;
+    }
+
+
+    /**
+     * Displayable location url for the sop
+     *
+     */
+    public static function locationSOP($x)
+    {
+
+       //return $x;
+
+        return self::$location_sop[$x] ?? '#';
     }
 }

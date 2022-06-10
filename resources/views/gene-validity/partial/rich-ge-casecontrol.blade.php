@@ -15,7 +15,7 @@
                 No case-control genetic evidence was found.
             </div>
             @else
-            <div class="table-responsive">
+            <div class="table-responsive light-arrows">
                 <table id="gecc" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                         data-classes="table"
                         data-locale="en-US"
@@ -26,6 +26,8 @@
                         data-id-table="advancedTable"
                         data-search-align="left"
                         data-trim-on-search="true"
+                        data-sort-order="asc"
+                        data-sort-name="label"
                         data-show-search-clear-button="true"
                         data-buttons="table_buttons"
                         data-show-align="left"
@@ -62,7 +64,7 @@
                             <th></th>
                         </tr>
                         <tr role="row">
-                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Label</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Disease<br>(Case)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Study<br>Type</th>

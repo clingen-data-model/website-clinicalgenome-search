@@ -15,7 +15,7 @@
             No segregation evidence for a Family without a proband was found.
         </div>
         @else
-        <div class="table-responsive">
+        <div class="table-responsive light-arrows">
             <table id="geclfs" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
@@ -25,6 +25,8 @@
                     data-filter-control-visible="false"
                     data-id-table="advancedTable"
                     data-search-align="left"
+                    data-sort-order="asc"
+                    data-sort-name="label"
                     data-trim-on-search="true"
                     data-show-search-clear-button="true"
                     data-buttons="table_buttons"
@@ -54,7 +56,7 @@
                     data-group-by-field="pheno">
                 <thead>
                     <tr role="row">
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Label</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Phenotypes</th>

@@ -81,6 +81,7 @@
                 <dt class="col-sm-2">SOP:
                 <dd class="col-sm-10">
                     {{ $record->specified_by->label ?? 'Not Specified' }}
+                    <a href="{{ App\Validity::locationSOP($record->specified_by->label ?? '#') }}" target="_sop"><i class="fas fa-external-link-alt ml-1"></i></a>
                     <div class="text-muted small">&nbsp;</div>
                 </dd>
             </div>

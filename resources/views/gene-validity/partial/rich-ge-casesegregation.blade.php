@@ -15,7 +15,7 @@
             No  evidence for a Family with a proband was found.
         </div>
         @else
-        <div class="table-responsive">
+        <div class="table-responsive light-arrows">
             <table id="gecls" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
@@ -26,6 +26,8 @@
                     data-id-table="advancedTable"
                     data-search-align="left"
                     data-trim-on-search="true"
+                    data-sort-order="asc"
+                    data-sort-name="label"
                     data-show-search-clear-button="true"
                     data-buttons="table_buttons"
                     data-show-align="left"
@@ -54,7 +56,7 @@
                     data-group-by-field="pheno">
                 <thead>
                     <tr>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family (Proband) Label</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Family (Proband) Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference (PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Phenotypes</th>

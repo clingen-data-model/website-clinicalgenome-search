@@ -16,7 +16,7 @@
             No  evidence for a Family with a proband was found.
         </div>
         @else
-        <div class="table-responsive">
+        <div class="table-responsive light-arrows">
             <table id="geclv" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
@@ -35,6 +35,8 @@
                     data-show-columns-toggle-all="true"
                     data-search-formatter="false"
                     data-show-export="true"
+                    data-sort-order="asc"
+                    data-sort-name="label"
                     data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                     data-minimum-count-columns="2"
                     data-pagination="true"
@@ -56,7 +58,7 @@
                     data-group-by-field="pheno">
                 <thead>
                     <tr role="row">
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" >Proband<br>Label</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Proband<br>Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-width="100">Variant</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
@@ -107,7 +109,7 @@
                         <td class="vertical-align-center" role="cell">
                             <div class="variant-info">
                                 @if(isset($evidence->variants) && is_array($evidence->variants))
-                                    {{ $evidence->variants[0]->label ?? 'NT' }}
+                                    {{ $evidence->variants[0]->label ?? 'VARIANT LABEL MISSING' }}
                                 @else
                                     {{ $evidence->variant->label ?? '' }}
                                 @endif
