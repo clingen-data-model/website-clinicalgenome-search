@@ -143,7 +143,7 @@ class DosageController extends Controller
         // that we need to act like genegraph would.
         if ($record->issue_status != "Complete" || $record->jira_status != "Closed")
         {
-            $record = Jira::rollback($record);
+            //$record = Jira::rollback($record);
         }
 
 		// since we don't run through resources, we add some helpers here for now.  To be eventually
