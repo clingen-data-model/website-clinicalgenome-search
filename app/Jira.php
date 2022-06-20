@@ -1336,12 +1336,18 @@ class Jira extends Model
         $quit = false;
         $save = $node;
 
+        //dd($node);
         foreach(array_reverse($node->history) as $history)
         {
 
             foreach ($history->items as $item)
             {
+                echo $item->field . "\n";
+
                 $map = Dosage::mapHistory($item->field);
+
+                //if ($item->field == "Loss phenotype ontology identifier")
+                //    dd($node);
 
                 if ($map === null)
                 {
@@ -1358,20 +1364,17 @@ class Jira extends Model
                     {
                         $key = array_search($item->toString, array_column($node->loss_pheno_omim, $map['value']));
 
-                       //dd($node->loss_pheno_omim[$key]);
-                       //dd($item);
-
                         $cat = Disease::parseIdentifier($item->fromString);
-dd($cat);
+
                         switch ($cat['type'])
                         {
                             case Disease::TYPE_NONE:
                                 break;
                             case Disease::TYPE_MONDO:
-                                $title = Disease::titles($map['id']);
+                                $title = Disease::titles($item->fromString); // $map['id']);
                                 break;
                             case Disease::TYPE_OMIM:
-                                $title = Omim::titles($map['id']);
+                                $title = Omim::titles($item->fromString); //$map['id']);
                                 break;
                         }
 
@@ -1386,15 +1389,17 @@ dd($cat);
                             $node->loss_pheno_omim = $a;
                         }
                         else{
-                            $node->loss_pheno_omim[$key] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                            //dd($node->loss_pheno_omim);
+                            $a = $node->loss_pheno_omim;
+                            $a[$key] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                            $node->loss_pheno_omim = $a;
                         }
 
 
 
-                        dd($node);
+                       // dd($node);
                         //                             $omims[] = ['id' => $item, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => Disease::titles($item)];
-
-                        $element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
+                        /*$element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
 
                         if ($element === null)
                         {
@@ -1411,34 +1416,48 @@ dd($cat);
                             return $item->ident != $element->ident;
                         });
 
-                        $evidences->push($element);
+                        $evidences->push($element);*/
                     }
                     if ($map['key'] == 'gain_pheno_omim')
                     {
-                        $element = $evidences->where('subtype', $map['type'])->where('sid', $map['sid'])->first();
+                        $key = array_search($item->toString, array_column($node->gain_pheno_omim, $map['value']));
 
-                        if ($element === null)
+                        $cat = Disease::parseIdentifier($item->fromString);
+
+                        switch ($cat['type'])
                         {
-                            $element = new Evidence(['type' => Evidence::TYPE_DOSAGE,
-                                                    'subtype' => $map['type'],
-                                                    'sid' => $map['sid'],
-                                                    'is_pmid' => true,
-                                                    'status' => 1
-                                                    ]);
+                            case Disease::TYPE_NONE:
+                                break;
+                            case Disease::TYPE_MONDO:
+                                $title = Disease::titles($item->fromString); // $map['id']);
+                                break;
+                            case Disease::TYPE_OMIM:
+                                $title = Omim::titles($item->fromString); //$map['id']);
+                                break;
                         }
-                        $element->{$map['value']} = $history->from_string;
 
-                        $evidences = $evidences->filter(function ($item) use ($element) {
-                            return $item->ident != $element->ident;
-                        });
-
-                        $evidences->push($element);
+                        if ($key === false && $item->fromString !== null)
+                        {
+                            $node->gain_pheno_omim[] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                        }
+                        else if ($item->fromString === null)
+                        {
+                            $a = $node->gain_pheno_omim;
+                            unset($a[$key]);
+                            $node->gain_pheno_omim = $a;
+                        }
+                        else{
+                            //dd($node->loss_pheno_omim);
+                            $a = $node->gain_pheno_omim;
+                            $a[$key] = ['id' => $item->fromString, 'type' => $cat['type'], 'no_prefix' => $cat['adjusted'], 'titles' => $title];
+                            $node->gain_pheno_omim = $a;
+                        }
                     }
                     else
                     {
-                        $change = $record->{$map['key']};
-                        $change[$map['value']] = $history->from_string;
-                        $record->{$map['key']} = $change;
+                        $change = $node->{$map['key']};
+                        $change[$map['value']] = $item->fromString;
+                        $node->{$map['key']} = $change;
                         //$record->{$map['key']}[$map['value']] = $history->from_sString;
                     }
                 }
@@ -1447,11 +1466,13 @@ dd($cat);
                         $node->$map = $item->fromString;
                 }
 
-
             }
 
-            if ($node->issue_status == "Complete" && $node->jira_status == "Closed")
+            if ($node->resolution == "Complete" && $node->jira_status == "Closed")
+            {
+                $quit = true;
                 break;
+            }
         }
 /*
             //some values are in the record, some in the attributes
@@ -1513,7 +1534,7 @@ dd($cat);
                 $quit = true;
         }
         */
-
+dd($node);
 
         return ($quit ? $node : null);
     }

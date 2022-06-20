@@ -483,6 +483,7 @@ class GeneController extends Controller
 				$adult = null;
 				$pediatric = null;
 				$order = 0;
+                $reports = [];
 
 				// regroup the adult and pediatric assertions
 				foreach ($disease->actionability_assertions as $assertion)
@@ -491,10 +492,18 @@ class GeneController extends Controller
                     {
                         if ($assertion->attributed_to->label == "Adult Actionability Working Group")
                         {
+                            $label = $assertion->report_label;
+                            if (!array_key_exists($label, $reports))
+                                $reports[$label] = ['adult' => null, 'pediatric' => null];
+                            $reports[$label]['adult'] = $assertion;
                             $adult = $assertion;
                         }
                         if ($assertion->attributed_to->label == "Pediatric Actionability Working Group")
                         {
+                            $label = $assertion->report_label;
+                            if (!array_key_exists($label, $reports))
+                                $reports[$label] = ['adult' => null, 'pediatric' => null];
+                            $reports[$label]['pediatric'] = $assertion;
                             $pediatric = $assertion;
                         }
                     }
@@ -502,10 +511,18 @@ class GeneController extends Controller
                         // workaround for genegraph bug 5/11/2021
                         if (strpos($assertion->source, "Adult") !== false)
                         {
+                            $label = $assertion->report_label;
+                            if (!array_key_exists($label, $reports))
+                                $reports[$label] = ['adult' => null, 'pediatric' => null];
+                            $reports[$label]['adult'] = $assertion;
                             $adult = $assertion;
                         }
                         if (strpos($assertion->source, "Pediatric") !== false)
                         {
+                            $label = $assertion->report_label;
+                            if (!array_key_exists($label, $reports))
+                                $reports[$label] = ['adult' => null, 'pediatric' => null];
+                            $reports[$label]['pediatric'] = $assertion;
                             $pediatric = $assertion;
                         }
 
@@ -518,11 +535,11 @@ class GeneController extends Controller
 
 				$node = new Nodal([	'order' => $order,
 										'disease' => $disease->disease, 'adult_assertion' => $adult,
-										'pediatric_assertion' => $pediatric]);
+										'pediatric_assertion' => $pediatric,
+                                        'reports' => $reports ]);
 
 				$actionability_collection->push($node);
 			}
-			//dd($actionability_collection);
 
 			// validity
 			foreach ($disease->gene_validity_assertions as $assertion)
@@ -544,7 +561,7 @@ class GeneController extends Controller
 				$dosage_collection->push($node);
 			}
 		}
-
+       // dd($actionability_collection);
         // get the mim names
         $mim_names = MIM::whereIn('mim', $mims)->get();
 

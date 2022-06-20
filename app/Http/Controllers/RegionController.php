@@ -98,15 +98,37 @@ class RegionController extends Controller
 
 			try {
 
-				$response = $client->request('POST', 'band2bp.cgi?taxid=9606&assm=' . $type, ['body' => $region]);
+                $regions = explode('-', $region);
+
+				$response = $client->request('POST', 'band2bp.cgi?taxid=9606&assm=' . $type, ['body' => $regions[0]]);
 
 				$cords = json_decode($response->getBody()->getContents());
 
 				if (isset($cords->coords[0]->bp))
 					$region = 'chr' . $cords->coords[0]->bp->chrom . ':'
-								. $cords->coords[0]->bp->bp->from . '-' . $cords->coords[0]->bp->bp->to;
+								. $cords->coords[0]->bp->bp->from . '-';
 				else
 					$region = 'INVALID';
+
+                if (isset($regions[1]))
+                {
+                    // allow user to drop the second chromosome
+                    if (!(is_numeric($regions[1][0]) || $regions[1][0] == 'X'  || $regions[1][0] == 'Y'))
+                        $regions[1] = $cords->coords[0]->bp->chrom . $regions[1];
+
+                    $response = $client->request('POST', 'band2bp.cgi?taxid=9606&assm=' . $type, ['body' => $regions[1]]);
+
+                    $seccords = json_decode($response->getBody()->getContents());
+
+                    if (isset($seccords->coords[0]->bp))
+                        $region .=  $seccords->coords[0]->bp->bp->to;
+                    else
+                        $region = 'INVALID';
+                }
+                else
+                {
+                    $region .=  $cords->coords[0]->bp->bp->to;
+                }
 
 			} catch (ClientException $e) {
 				$region = 'INVALID';

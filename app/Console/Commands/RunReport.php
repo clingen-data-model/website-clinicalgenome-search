@@ -533,7 +533,7 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
 
         $curations = Gene::acmg59()->where('date_last_curated', '!=', null)->orderBy('name', 'asc')->get();
 
-        $banner = "track name='ClinGen ACMG SF 3.0 Curated Genes' db=hg19\n";
+        $banner = "track name='ClinGen ACMG SF 3.1 Curated Genes' db=hg19\n";
 
         $collection = collect();
 

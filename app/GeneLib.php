@@ -1163,6 +1163,22 @@ class GeneLib extends Model
     }
 
 
+    /**
+     * Return a displayable actionability report label
+     *
+     * @return string
+     */
+    public static function actionabilityReportString($str)
+    {
+         if (empty($str))
+              return '';
+
+         $x = explode(' - ', $str);
+
+         return $x[0] ?? '';
+    }
+
+
      /**
      * Return a displayable validity assertion description
      *

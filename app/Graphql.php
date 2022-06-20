@@ -505,6 +505,7 @@ class Graphql
 						}
 						actionability_assertions {
 							report_date
+                            report_label
 							source
 							classification {
 							  label
@@ -529,7 +530,7 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-
+;
 		if (empty($response))
 			return $response;
 
@@ -1911,6 +1912,7 @@ class Graphql
                     iri
                     label
 				  }
+                  phenotype_free_text
 				}
 				fragment basicFields on Resource {
 				  __typename
@@ -3587,7 +3589,7 @@ class Graphql
 						'curated' => 2,
 						'hgncid' => '@AllVariant'
 					],
-					['label' => 'ACMG SF 3.0 Genes',
+					['label' => 'ACMG SF 3.1 Genes',
 						'short' => '@ACMG59',
 						'curated' => 2,
 						'hgncid' => '@ACMG59'

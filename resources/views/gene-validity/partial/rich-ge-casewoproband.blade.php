@@ -100,6 +100,10 @@
                                 @endforeach
                             </ul>
                             @endif
+                            @if(!empty($evidence->phenotype_free_text))
+                            <strong>Free text:</strong><br>
+                            {{ $evidence->phenotype_free_text }}
+                            @endif
                         </td>
                         <td>
                             {{ $evidence->family->mode_of_inheritance ?? '' }}

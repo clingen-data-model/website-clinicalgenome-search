@@ -39,8 +39,12 @@ class UpdateAcmg59 extends Command
      */
     public function handle()
     {
+        /**
+         * If revving, dont forget to update files Graphql, UpdateAcmg59c, RunReport,
+         * Group, Jira,
+         */
         echo "Updating ACMG curation file from DCI ...";
-            
+
         $handle = fopen(base_path() . '/data/acmg56_curation.ini', "r");
         if ($handle)
         {
@@ -54,7 +58,7 @@ class UpdateAcmg59 extends Command
                 // the ini file has a funky structure that inherits certain fields
                 if (!empty(trim($value[0])))
                     $pheno = trim($value[0]);
-                
+
                 if (!empty(trim($value[1])))
                     $omims = trim($value[1]);
 
@@ -69,7 +73,7 @@ class UpdateAcmg59 extends Command
 
                 //while (isset($value[$subsect]))
                 //{
-                    $issue = Acmg59::updateOrCreate(['pheno' => $pheno, 'omims' => $omims, 
+                    $issue = Acmg59::updateOrCreate(['pheno' => $pheno, 'omims' => $omims,
                                                  'pmids' => $pmids, 'age' => $age,
                                                  'gene' => trim($value[$subsect])], [
                                                  'omimgene' => trim($value[$subsect + 1]),
@@ -79,7 +83,7 @@ class UpdateAcmg59 extends Command
                                                  'status' => 1
                                                 ] );
 
-                    //$subsect += 4;  
+                    //$subsect += 4;
                 //}
             }
 
@@ -89,7 +93,7 @@ class UpdateAcmg59 extends Command
         {
             echo "\n(E001) Cannot access ACMG curation file\n";
             exit;
-        } 
+        }
 
         echo "DONE\n";
 

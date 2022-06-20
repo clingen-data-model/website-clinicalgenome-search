@@ -74,7 +74,7 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-3 th-curation-group text-left">Activity</th>
-								<th class="col-sm-2 text-left">MOI</th>
+								<th class="col-sm-2 text-left">MOI / Report</th>
                                 <th class="col-sm-2 text-left">Expert Panel / Working Group</th>
 								<th class="col-sm-2  ">Classification</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -350,7 +350,8 @@
 							@endforeach
 						@endif
 
-						<!-- Actionability					-->
+						<!-- Actionability		-->
+                        @php ($show_report = true) @endphp
 						@foreach($disease->actionability_assertions as $key => $actionability)
 								@php ($first = true) @endphp
 								<tr>
@@ -361,15 +362,21 @@
 									</td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif "></td>
+									<td class=" @if(!$loop->first) border-0 @endif ">
+                                        @if ($show_report)
+                                        <span class="small">{{ App\Genelib::actionabilityReportString($actionability->report_label) }}</span>
+                                        @endif
+                                    </td>
 
                                     <td class=" @if(!$loop->first) border-0 @endif ">
                                         @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
                                         <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
                                             <i class="fas fa-external-link-alt ml-1"></i></a>
+                                            @php ($show_report = false) @endphp
                                         @else
                                         <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
                                             <i class="fas fa-external-link-alt"></i></a>
+                                            @php ($show_report = true) @endphp
                                         @endif
                                     </td>
 
