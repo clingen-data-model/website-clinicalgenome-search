@@ -622,6 +622,17 @@ class Graphql
                                 if ($map !== null)
                                     $inassert->report_id = $map->gdm_uuid;
                             }
+                            else
+                            {
+                                // some of the old SOP5s don't have the iri in the score data
+                                if (strpos($inassert->curie, 'CGGV:assertion_') === 0)
+                                {
+                                    $i = substr($inassert->curie, 15, 36);
+                                    $map = Gdmmap::gg($i)->first();
+                                    if ($map !== null)
+                                         $inassert->report_id = $map->gdm_uuid;
+                                }
+                            }
                         }
                     }
 // 03bb8479-2ed3-4b15-9e54-378ea0729ab2
@@ -655,7 +666,10 @@ class Graphql
 
                     if ($inassert->report_id !== null)
                     {
+
                         $map = Precuration::gdmid($inassert->report_id)->first();
+                        //dd($map);
+
                         if ($map !== null)
                         {
                             $inassert->las_included = $map->omim_phenotypes['included'] ?? [];
@@ -2423,6 +2437,17 @@ class Graphql
                                 $map = Gdmmap::gg($score->iri)->first();
                                 if ($map !== null)
                                     $inassert->report_id = $map->gdm_uuid;
+                            }
+                            else
+                            {
+                                // some of the old SOP5s don't have the iri in the score data
+                                if (strpos($inassert->curie, 'CGGV:assertion_') === 0)
+                                {
+                                    $i = substr($inassert->curie, 15, 36);
+                                    $map = Gdmmap::gg($i)->first();
+                                    if ($map !== null)
+                                         $inassert->report_id = $map->gdm_uuid;
+                                }
                             }
                         }
                     }

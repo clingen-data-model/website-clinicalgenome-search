@@ -846,6 +846,7 @@ class GeneController extends Controller
                         break;
                     case "Retired Assignment":
                     case "Published":
+                    default:
                         continue 2;
 				}
 //dd($precuration);

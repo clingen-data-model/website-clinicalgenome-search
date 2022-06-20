@@ -475,6 +475,7 @@ class ConditionController extends Controller
                         break;
                     case "Retired Assignment":
                     case "Published":
+                    default:
                         continue 2;
 				}
 
@@ -652,6 +653,7 @@ class ConditionController extends Controller
                         break;
                     case "Retired Assignment":
                     case "Published":
+                    default:
                         continue 2;
 				}
 
