@@ -228,14 +228,23 @@
                                     @endif
                                 </a></li>
                                 @if ($clfs)
-                                <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation</a></li>
+                                <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
+                                    @if ($cls_count !== null)
+                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cls_count ?? 0 }}</span>
+                                    @endif
+                                </a></li>
                                 @else
-                                <li class="ml-2"><a href="#tab2-2" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Segregation</a></li>
+                                <li class="ml-2"><a href="#tab2-2" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Segregation
+                                </a></li>
                                 @endif
                                 @if ($clfswopb)
-                                <li class="ml-2"><a href="#tab2-3" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Family Segregation w/o Proband Data or Scored Proband</a></li>
+                                <li class="ml-2"><a href="#tab2-3" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Family Segregation w/o a Scored Proband
+                                    @if ($clfs_count !== null)
+                                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $clfs_count ?? 0 }}</span>
+                                @endif
+                                </a></li>
                                 @else
-                                <li class="ml-2"><a href="#tab2-3" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Family Segregation w/o Proband Data or Scored Proband</a></li>
+                                <li class="ml-2"><a href="#tab2-3" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Family Segregation w/o a Scored Proband</a></li>
                                 @endif
                                 <li class="ml-2"><a href="#tab2-4" data-toggle="{{ empty($extrecord->casecontrol) ?  'notab' : 'tab' }}"><i class="fas {{ empty($extrecord->casecontrol) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case-Control
                                     @if ($cc_count !== null)

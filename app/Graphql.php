@@ -1755,6 +1755,10 @@ class Graphql
 					  genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
 					...basicFields
 					... on Statement {
+                        score_status {
+                            label
+                            curie
+                        }
 					  score
 					  calculated_score
 					  evidence {
@@ -1787,6 +1791,9 @@ class Graphql
 					  experimental_evidence: evidence(transitive: true, class: "SEPIO:0004105") {
 					...basicFields
 					... on Statement {
+                        score_status {
+                            label
+                        }
 					  score
 					  calculated_score
 					  evidence {
