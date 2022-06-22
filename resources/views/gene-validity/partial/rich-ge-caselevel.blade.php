@@ -1,7 +1,7 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_with_proband">
     <!-- Default panel contents -->
     <div class="panel-heading bg-evidence1" role="tab" id="genev_case_level_variants"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right">Total Variant Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Variant Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
         Case Level Variants
         <div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_with_proband" href="#tableone" aria-expanded="true" aria-controls="tableone">
@@ -64,10 +64,10 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Age</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Ethnicity</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Phenotypes</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Previous<br>Testing</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Methods<br>of<br>Detection</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Ethnicity</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Phenotypes</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Previous<br>Testing</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Methods<br>of<br>Detection</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo (paternity/<br>maternity<br>confirmed)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
@@ -185,7 +185,7 @@
                             Score
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
+                            <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
                         </td>
                         <td class="vertical-align-center" role="cell">
                             <span class="text-danger"><strong>####</strong></span>

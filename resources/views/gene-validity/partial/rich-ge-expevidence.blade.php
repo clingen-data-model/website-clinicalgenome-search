@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_experimental_evidence">
     <div class="panel-heading bg-evidence5" role="tab" id="expevid"">
-        <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE</h4>
+        <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE <span class="pull-right small">Total Points:  <u>{{ $exp_count ?? 'N/A' }}</u></span></h4>
         &nbsp;
         <div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_experimental_evidence" href="#tablefive" aria-expanded="true" aria-controls="tablefive">
@@ -72,8 +72,8 @@
                                 <td class="vertical-align-center" role="cell" style="word-break: normal;">
                                     {{ $record->evidence[0]->label }}
                                 </td>
-                                <td class="vertical-align-center" role="cell"><span class="" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Placeholder for blue text content">
-                                    {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</span>
+                                <td class="vertical-align-center" role="cell"><span class="" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{ App\Validity::evidenceTypePopupString($record->type[0]->curie ?? '') }}">
+                                    {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</span><div><i class="fas fa-info-circle text-muted"></i></div>
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     @if (empty($record->evidence[0]->source))
@@ -92,7 +92,7 @@
                                     Score
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span><strong>{{ $record->score }}</strong> (<span class="text-danger"><strong>####</strong></span>)</span>
+                                    <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
                                 </td>
                                 <td class="vertical-align-center" role="cell" style="max-width: 600px;">
                                     {{  $record->description }}

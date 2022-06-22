@@ -56,7 +56,7 @@
         </div>
         <div class="col-md-4 text-center">
             <div class='badge badge-primary' style="font-size: 20px; padding:15px;">
-                <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more about classifications " data-href="https://www.clinicalgenome.org/site/assets/files/5967/gene-validity_classification.pdf" data-content="Gene-Disease Validity classification and scoring information">{{ App\GeneLib::validityClassificationString($record->classification->label ?? null) }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
+                <a tabindex="0" class="text-white" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" role="button" data-title="Learn more about classifications" href="https://www.clinicalgenome.org/docs/gene-disease-validity-classification-information/" target="_info" data-content="Click here to learn more about Gene-Disease Validity classification and scoring.">{{ App\GeneLib::validityClassificationString($record->classification->label ?? null) }}  <i class="glyphicon glyphicon-info-sign text-white"></i></a>
             </div>
             <div>Classification - {{ displayDate($record->report_date ?? null) }}</div>
             @if ($record->animalmode)
@@ -98,15 +98,15 @@
         </div>
         <div class="col-md-5">
             <div class="row">
+                @if ($record->sop7_contributors ?? null)
                 <dt class="col-sm-3">Contributors:
                 <dd class="col-sm-9">
-                    @if ($record->sop7_contributors ?? null)
                         @foreach ($record->sop7_contributors as $contributor)
                             {{ $contributor->name ?? null }}
                             <div class="text-muted small">({{ ucwords($contributor->role) ?? null }})</div>
                         @endforeach
-                    @endif
                 </dd>
+                @endif
             </div>
         </div>
     </div>
@@ -639,7 +639,7 @@
 	*/
 
   var $table = $('#table');
-  var bookmarksonly = true;
+  var bookmarksonly = false;
   window.scrid = {{ $display_tabs['scrid'] }};
   window.token = "{{ csrf_token() }}";
 

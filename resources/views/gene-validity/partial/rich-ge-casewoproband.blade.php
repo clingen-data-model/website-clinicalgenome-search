@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_without_proband">
     <div class="panel-heading bg-evidence3" role="tab" id="genev_case_level_family"">
-        <h4 class="mb-0 mt-0">GENETIC EVIDENCE</h4>
+        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score:  <u>{{ $clfs_count ?? 'N/A' }}</u></span></h4>
         Case Level Family Segregation Information Without Proband Data or Scored Proband
         <div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_without_proband" href="#tablethree" aria-expanded="true" aria-controls="tablethree">
@@ -58,8 +58,8 @@
                     <tr role="row">
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Ethnicity</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>Phenotypes</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Ethnicity</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>MOI</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Number of<br>Affected<br>Individuals</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Number of<br>Unaffected<br>Individuals</th>
@@ -133,6 +133,6 @@
     </div>
     </div>
     <div class="panel-footer text-right bg-evidence3">
-        <b>Total LOD Score:  ####</b>
+        <b>Total LOD Score:  {{ $clfs_count ?? 'N/A' }}</b>
     </div>
 </div>

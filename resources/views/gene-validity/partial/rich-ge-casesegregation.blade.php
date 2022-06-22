@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_segregation">
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE</h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
         Case Level Segregation
         <div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_segregation" href="#tabletwo" aria-expanded="true" aria-controls="tabletwo">
@@ -58,8 +58,8 @@
                     <tr>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Family (Proband) Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference (PMID)</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Ethnicity</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family Phenotypes</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Ethnicity</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family MOI</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Aff</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Unaff</th>
@@ -132,5 +132,8 @@
         </div>
         @endif
     </div>
+    </div>
+    <div class="panel-footer text-right bg-evidence2">
+        <b>Total LOD Score:  {{ $cls_count ?? 'N/A' }}</b>
     </div>
 </div>

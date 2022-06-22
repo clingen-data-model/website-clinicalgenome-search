@@ -155,6 +155,45 @@ class Validity extends Model
             //'SEPIO:0004042' => "Other variant type",
      ];
 
+     protected static $evidence_type_popup_strings = [
+        'null variant evidence line' => "Predicted or proven null variant type",
+        'SEPIO:0000247' => "",
+        'SEPIO:0004017' => "",
+        'SEPIO:0004018' => "",
+        'SEPIO:0004019' => "",
+        'SEPIO:0004020' => "",
+        'SEPIO:0004021' => "",
+        'SEPIO:0004022' => "The gene product performs a biochemical function shared with other known genes in the disease of interest (A), OR the gene product is consistent with the observed phenotype(s) (B)",
+        'SEPIO:0004023' => "The gene product interacts with proteins previously implicated (genetically or biochemically) in the disease of interest",
+        'SEPIO:0004024' => "The gene is expressed in tissues relevant to the disease of interest (A), OR the gene is altered in expression in patients who have the disease (B)",
+        'SEPIO:0004025' => "The gene and/or gene product function is demonstrably altered in cultured patient or non-patient cells carrying candidate variant(s)",
+        'SEPIO:0004026' => "The gene and/or gene product function is demonstrably altered in cultured patient or non-patient cells carrying candidate variant(s)",
+        'SEPIO:0004027' => "Non-human model organism OR cell culture model with a similarly disrupted copy of the affected gene shows a phenotype consistent with human disease state",
+        'SEPIO:0004028' => "",
+        'SEPIO:0004029' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
+        'SEPIO:0004030' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
+        'SEPIO:0004031' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
+        'SEPIO:0004032' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
+        'SEPIO:0004029' => "",
+        'SEPIO:0004078' => "",
+        'SEPIO:0004079' => "",
+        'SEPIO:0004080' => "",
+        'SEPIO:0004119' => "",
+        'SEPIO:0004118' => "",
+        'SEPIO:0004117' => "",
+        'SEPIO:0004119' => "",
+        'SEPIO:0004120' => "",
+        'SEPIO:0004121' => "",
+        "SEPIO:0004180" => "The gene product performs a biochemical function shared with other known genes in the disease of interest (A), OR the gene product is consistent with the observed phenotype(s) (B)",
+        "SEPIO:0004181" => "The gene product performs a biochemical function shared with other known genes in the disease of interest (A), OR the gene product is consistent with the observed phenotype(s) (B)",
+        "SEPIO:0004182" => "The gene product interacts with proteins previously implicated (genetically or biochemically) in the disease of interest",
+        "SEPIO:0004183" => "The gene product interacts with proteins previously implicated (genetically or biochemically) in the disease of interest",
+        "SEPIO:0004184" => "The gene product interacts with proteins previously implicated (genetically or biochemically) in the disease of interest",
+        "SEPIO:0004185" => "The gene product interacts with proteins previously implicated (genetically or biochemically) in the disease of interest",
+        "SEPIO:0004188" => "The gene is expressed in tissues relevant to the disease of interest (A), OR the gene is altered in expression in patients who have the disease (B)",
+        "SEPIO:0004189" => "The gene is expressed in tissues relevant to the disease of interest (A), OR the gene is altered in expression in patients who have the disease (B)",
+ ];
+
      protected static $location_sop = [
         'ClinGen Gene Validity Evaluation Criteria SOP9' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-9',
         'ClinGen Gene Validity Evaluation Criteria SOP8' => 'https://clinicalgenome.org/docs/genetic-evidence-scoring-metric-sop-version-8',
@@ -723,6 +762,19 @@ class Validity extends Model
        //return $x;
 
         return self::$evidence_type_strings[$x] ?? $x;
+    }
+
+
+    /**
+     * Displayable evidence type definition for popup
+     *
+     */
+    public static function evidenceTypePopupString($x)
+    {
+
+       //return $x;
+
+        return self::$evidence_type_popup_strings[$x] ?? $x;
     }
 
 

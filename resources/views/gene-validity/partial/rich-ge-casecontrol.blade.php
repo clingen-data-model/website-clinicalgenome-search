@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_control">
     <div class="panel-heading bg-evidence4" role="tab" id="genev_case_control"">
-        <h4 class="mb-0 mt-0">GENETIC EVIDENCE</h4>
+        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total Points:  <u>{{ $cc_count ?? 'N/A' }}</u></span></h4>
         Case Control
         <div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_control" href="#tablefour" aria-expanded="true" aria-controls="tablefour">

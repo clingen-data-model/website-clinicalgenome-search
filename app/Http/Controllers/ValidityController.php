@@ -296,11 +296,32 @@ class ValidityController extends Controller
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
-  // dd($extrecord->segregation);
+        // the segregation statements are strangly formatted in that they are an array within an array and the scores are mixed
+        $cls_count = 0;
+        $clfs_count = 0;
+
+        if ($extrecord && !empty($extrecord->segregation))
+        {
+            foreach ($extrecord->segregation[0]->evidence as $evidence)
+            {
+                if ($evidence->meets_inclusion_criteria)
+                {
+                    if ($evidence->proband !== null)
+                        $cls_count += $evidence->estimated_lod_score;
+                    else
+                        $clfs_count += $evidence->estimated_lod_score;
+                }
+            }
+        }
+
+        $cls_count = number_format($cls_count, 2);
+        $clfs_count = number_format($clfs_count, 2);
+
+//dd($extrecord->segregation);
 
         // collect the non-scorable records
 
-        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'pmids', 'mims','clfs', 'clfswopb'))
+        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);
     }
 
