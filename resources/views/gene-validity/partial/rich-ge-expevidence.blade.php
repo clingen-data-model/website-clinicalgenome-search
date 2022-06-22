@@ -72,8 +72,8 @@
                                 <td class="vertical-align-center" role="cell" style="word-break: normal;">
                                     {{ $record->evidence[0]->label }}
                                 </td>
-                                <td class="vertical-align-center" role="cell"><span class="text-danger" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Placeholder for blue text content">
-                                    <strong>{{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</strong></span>
+                                <td class="vertical-align-center" role="cell"><span class="" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="Placeholder for blue text content">
+                                    {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}</span>
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     @if (empty($record->evidence[0]->source))

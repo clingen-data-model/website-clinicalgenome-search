@@ -77,7 +77,7 @@
                     <tr>
                         <td>
                             {{ $evidence->label }}
-                            <div>({{ $evidence->proband->label }})</div>
+                            <div>({{ $evidence->proband->label ?? '' }})</div>
                         </td>
                         <td>
                             @if (empty($evidence->source))
@@ -90,7 +90,7 @@
                             @endif
                         </td>
                         <td>
-                            {{ $evidence->family->ethnicity ?? '' }}
+                            {{ $evidence->family->ethnicity->label ?? '' }}
                         </td>
                         <td class="vertical-align-center text-left" role="cell">
                             @if($evidence->conditions !== null)
@@ -110,13 +110,13 @@
                             {{ $evidence->family->mode_of_inheritance ?? '' }}
                         </td>
                         <td>
-                            {{ $evidence->phenotype_positive_allele_positive_count }}
+                            {{ $evidence->phenotype_positive_allele_positive_count ?? ''}}
                         </td>
                         <td>
-                            {{ $evidence->phenotype_negative_allele_negative_count }}
+                            {{ $evidence->phenotype_negative_allele_negative_count ?? ''}}
                         </td>
                         <td>
-                            <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
+                            <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score ?? ''}}
                         </td>
                         <td>
                             {{ $evidence->meets_inclusion_criteria ? 'Yes' : 'No' }}

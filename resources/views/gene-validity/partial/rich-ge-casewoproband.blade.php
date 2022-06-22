@@ -89,7 +89,7 @@
                             @endif
                         </td>
                         <td>
-                            {{ $evidence->family->ethnicity ?? '' }}
+                            {{ $evidence->family->ethnicity->label ?? '' }}
                         </td>
                         <td class="vertical-align-center text-left" role="cell">
                             @if($evidence->conditions !== null)
