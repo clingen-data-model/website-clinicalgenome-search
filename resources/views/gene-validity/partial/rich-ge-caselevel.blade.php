@@ -84,9 +84,16 @@
                         $function = null;
                         foreach ($record->evidence as $ev)
                         {
-                            if ($ev->__typename == "VariantEvidence" || $ev->__typename == 'ProbandEvidence')
+                            if ($ev->__typename == "VariantEvidence")
                             {
                                 $evidence = $ev;
+                            }
+                            else if ($ev->__typename == 'ProbandEvidence')
+                            {
+                                $evidence = $ev;
+
+                                // ugly hack to account for different structures for essentially the same evidence model in genegraph
+                                $evidence->proband = $ev;
                             }
                             else if ($ev->__typename == "GenericResource")
                             {
@@ -109,7 +116,7 @@
                         <td class="vertical-align-center" role="cell">
                             <div class="variant-info">
                                 @if(isset($evidence->variants) && is_array($evidence->variants))
-                                    {{ $evidence->variants[0]->label ?? 'VARIANT LABEL MISSING' }}
+                                    {{ $evidence->variants[0]->label ?? '***VARIANT LABEL MISSING***' }}
                                 @else
                                     {{ $evidence->variant->label ?? '' }}
                                 @endif

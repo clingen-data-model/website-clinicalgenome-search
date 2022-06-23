@@ -650,7 +650,7 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-        //dd($mimflag);
+        //dd($record);
         //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',

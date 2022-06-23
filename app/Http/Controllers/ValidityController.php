@@ -317,7 +317,7 @@ class ValidityController extends Controller
         $cls_count = number_format($cls_count, 2);
         $clfs_count = number_format($clfs_count, 2);
 
- //dd($extrecord->caselevel);
+ //dd($extrecord);
 
         // collect the non-scorable records
 
