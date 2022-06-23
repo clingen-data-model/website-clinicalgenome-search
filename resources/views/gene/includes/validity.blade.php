@@ -118,9 +118,9 @@
                                                 @foreach ($validity->assertion->las_included as $mim)
                                                     <div class="mb-1">
                                                         @if ($mimflag == $mim)
-                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] ?? '' }}</a>
                                                         @else
-                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] ?? '' }}</a>
                                                         @endif
                                                     <div>
                                                 @endforeach
@@ -147,9 +147,9 @@
                                                 @foreach ($validity->assertion->las_excluded as $mim)
                                                     <div class="mb-1">
                                                         @if ($mimflag == $mim)
-                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a class="highlight" href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] ?? '' }}</a>
                                                         @else
-                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] }}</a>
+                                                        <a href="https://omim.org/entry/{{ $mim }}" target="_mim">MIM:{{ $mim }} -  {{ $mims[$mim] ?? '' }}</a>
                                                         @endif
                                                     </div>
                                                 @endforeach
