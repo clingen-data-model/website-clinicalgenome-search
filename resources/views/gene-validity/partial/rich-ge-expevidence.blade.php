@@ -90,7 +90,7 @@
                                     {{ $record->evidence[0]->description }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    Score
+                                    {{ $record->score_status->label ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>

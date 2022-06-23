@@ -16,7 +16,7 @@
             No  evidence for a Family with a proband was found.
         </div>
         @else
-        <div class="table-responsive light-arrows">
+        <div class="table-responsive light-arrows"  style="overflow-x: scroll;">
             <table id="geclv" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
@@ -182,7 +182,7 @@
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            Score
+                            {{ $record->score_status->label ?? '' }}
                         </td>
                         <td class="vertical-align-center" role="cell">
                             <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
