@@ -82,6 +82,7 @@
                     @php
                         $evidence = null;
                         $function = null;
+                        $nodenovo = false;
                         foreach ($record->evidence as $ev)
                         {
                             if ($ev->__typename == "VariantEvidence")
@@ -94,6 +95,8 @@
 
                                 // ugly hack to account for different structures for essentially the same evidence model in genegraph
                                 $evidence->proband = $ev;
+
+                                $nodenovo = true;
                             }
                             else if ($ev->__typename == "GenericResource")
                             {
