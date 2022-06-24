@@ -19,6 +19,7 @@ use App\Filter;
 use App\Gdmmap;
 use App\Precuration;
 use App\Mim;
+use App\Omim;
 use App\Pmid;
 
 /**
@@ -197,10 +198,22 @@ class ValidityController extends Controller
         // get the mim names
         $mim_names = Mim::whereIn('mim', $mims)->get();
 
+        $msave = $mims;
         $mims = [];
 
         foreach ($mim_names as $mim)
             $mims[$mim->mim] = $mim->title;
+
+        foreach ($msave as $value)
+        {
+            if (!isset($mims[intval($value)]))
+            {
+                $omim = Omim::omimid($value)->first();
+
+                if ($omim !== null)
+                    $mims[$omim->omimid] = $omim->titles;
+            }
+        }
 
         // get the pmids
         $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
