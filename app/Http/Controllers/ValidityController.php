@@ -257,7 +257,7 @@ class ValidityController extends Controller
                 }
                 else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
                     $casecontrol[] = $item;
-                else
+                else if ($item->type[0]->curie != "SEPIO:0004097")
                     $caselevel[] = $item;
 
                 if (!empty($item->evidence))

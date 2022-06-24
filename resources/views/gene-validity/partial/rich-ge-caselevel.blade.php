@@ -92,6 +92,8 @@
                             }
                             else if ($ev->__typename == 'ProbandEvidence')
                             {
+                                if ($record->type[0]->curie == "SEPIO:0004097")
+                                    continue;
                                 $evidence = $ev;
 
                                 // ugly hack to account for different structures for essentially the same evidence model in genegraph
