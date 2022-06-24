@@ -115,7 +115,11 @@
                             {{ $evidence->phenotype_negative_allele_negative_count }}
                         </td>
                         <td>
+                            @if ($evidence->estimated_lod_score !== null)
                             <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
+                            @elseif ($evidence->published_lod_score !== null)
+                            <strong>Calculated:</strong><br>{{ $evidence->published_lod_score }}
+                            @endif
                         </td>
                         <td>
                             {{ $evidence->meets_inclusion_criteria ? 'Yes' : 'No' }}

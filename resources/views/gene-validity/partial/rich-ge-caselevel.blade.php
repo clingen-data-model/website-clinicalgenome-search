@@ -41,6 +41,7 @@
                     data-minimum-count-columns="2"
                     data-pagination="true"
                     data-id-field="id"
+                    data-sticky-header="true"
                     {{-- data-ajax-options="ajaxOptions" --}}
                     data-page-list="[10, 25, 50, 100, 250, all]"
                     data-page-size="{{ $display_list ?? 25 }}"
@@ -169,8 +170,10 @@
                                 @foreach($evidence->proband->testing_methods as $key => $value)
                                 <strong>Method {{ $key + 1 }}:</strong><br>{{ $value }}<br>
                                 @endforeach
+                                @if (!empty($evidence->proband->genotyping_method))
                                 <strong>Description of genotyping method:</strong>
                                 {{ $evidence->proband->genotyping_method ?? '' }}
+                                @endif
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
@@ -201,7 +204,7 @@
                             <span class="text-danger"><strong>####</strong></span>
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 240px;">
-                            {{ $record->description }}
+                            @markdown {{ $record->description }} @endmarkdown
                         </td>
                     </tr>
                     @endforeach

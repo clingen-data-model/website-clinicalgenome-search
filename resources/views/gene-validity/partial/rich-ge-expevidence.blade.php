@@ -41,6 +41,8 @@
                             data-minimum-count-columns="2"
                             data-pagination="true"
                             data-id-field="id"
+                            data-sticky-header="true"
+
                             {{-- data-ajax-options="ajaxOptions" --}}
                             data-page-list="[10, 25, 50, 100, 250, all]"
                             data-page-size="{{ $display_list ?? 25 }}"
@@ -87,7 +89,7 @@
                                     @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell" style="max-width: 600px;">
-                                    {{ $record->evidence[0]->description }}
+                                    @markdown {{ $record->evidence[0]->description }} @endmarkdown
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ $record->score_status->label ?? '' }}
@@ -96,7 +98,7 @@
                                     <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
                                 </td>
                                 <td class="vertical-align-center" role="cell" style="max-width: 600px;">
-                                    {{  $record->description }}
+                                    @markdown {{  $record->description }} @endmarkdown
                                 </td>
                             </tr>
                             @endforeach

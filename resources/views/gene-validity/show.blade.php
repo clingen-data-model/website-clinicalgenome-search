@@ -613,6 +613,7 @@
     <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet">
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
+    <link rel="stylesheet" href="/css/sticky-header/bootstrap-table-sticky-header.css">
 @endsection
 
 @section('script_js')
@@ -634,6 +635,8 @@
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
+<script src="/js/bootstrap-table-sticky-header.min.js"></script>
+
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
