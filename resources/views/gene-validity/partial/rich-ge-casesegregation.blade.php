@@ -2,11 +2,11 @@
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
         <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
         Case Level Segregation
-        <div class="pull-right">
+        <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_segregation" href="#tabletwo" aria-expanded="true" aria-controls="tabletwo">
                 <i class="fas fa-compress-arrows-alt"></i>
             </a>
-        </div>
+        </div>-->
     </div>
     <div id="tabletwo" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_segregation">
     <div class="panel-body">
@@ -16,7 +16,7 @@
         </div>
         @else
         <div class="table-responsive light-arrows">
-            <table id="gecls" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+            <table id="gecls" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
                     data-addrbar="true"
@@ -35,11 +35,13 @@
                     data-show-columns="true"
                     data-show-columns-toggle-all="true"
                     data-search-formatter="false"
+                    data-show-multi-sort="true"
                     data-show-export="true"
                     data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                     data-minimum-count-columns="2"
                     data-pagination="true"
                     data-id-field="id"
+                    data-sticky-header="true"
                     {{-- data-ajax-options="ajaxOptions" --}}
                     data-page-list="[10, 25, 50, 100, 250, all]"
                     data-page-size="{{ $display_list ?? 25 }}"
@@ -57,7 +59,7 @@
                 <thead>
                     <tr>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Family (Proband) Label</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference (PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference (PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family MOI</th>
@@ -93,7 +95,7 @@
                             {{ $evidence->family->ethnicity->label ?? '' }}
                         </td>
                         <td class="vertical-align-center text-left" role="cell">
-                            @if($evidence->conditions !== null)
+                            @if(!empty($evidence->conditions))
                             <strong>HPO terms(s)</strong>
                             <ul>
                                 @foreach($evidence->conditions as $condition)
@@ -116,10 +118,10 @@
                             {{ $evidence->phenotype_negative_allele_negative_count ?? ''}}
                         </td>
                         <td>
-                            @if ($evidence->estimated_lod_score !== null)
-                            <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
-                            @elseif ($evidence->published_lod_score !== null)
+                            @if ($evidence->published_lod_score !== null)
                             <strong>Published:</strong><br>{{ $evidence->published_lod_score }}
+                            @elseif ($evidence->estimated_lod_score !== null)
+                            <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
                             @endif
                         </td>
                         <td>

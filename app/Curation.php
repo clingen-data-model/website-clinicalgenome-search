@@ -124,17 +124,49 @@ class Curation extends Model
 	 		1 => 'Dosage Sensitivity'
         ];
 
-    public const STATUS_INITIALIZED = 0;
-    public const STATUS_ACTIVE = 1;
 
     /*
-     * Status strings for display methods
-     *
-     * */
+    * Status constants and strings for display methods
+    *
+    *
+    */
+    public const STATUS_INITIALIZED = 0;
+    public const STATUS_ACTIVE = 1;
+    public const STATUS_DEPRECATED = 2;
+    public const STATUS_DELETED = 9;
+    public const STATUS_OPEN = 10;
+    public const STATUS_PRIMARY_REVIEW = 11;
+    public const STATUS_SECONDARY_REVIEW = 12;
+    public const STATUS_GROUP_REVIEW = 14;
+    public const STATUS_CLOSED = 20;
+    public const STATUS_REOPENED = 30;
+
+
+    /*
+    * Status strings for display methods
+    *
+    * */
     protected $status_strings = [
 	 		0 => 'Initialized',
-            1=> 'Active',
-	 		9 => 'Deleted'
+            1 => 'Active',
+            2 => 'Deprecated',
+	 		9 => 'Deleted',
+            // DCI Workflows
+            10 => 'Open',
+            11 => 'Under Primary Review',
+            12 => 'Under Secondary Review',
+            14 => 'Under Group Review',
+            20 => 'Closed',
+            30 => 'Reopened'
+	];
+
+    protected static $dci_status_keys = [
+            'Open' => 10,
+            'Under Primary Review' => 11,
+            'Under Secondary Review' => 12,
+            'Under Group Review' => 14,
+            'Closed' => 20,
+            'Reopened' => 30
     ];
 
 
@@ -353,6 +385,25 @@ class Curation extends Model
 	public static function parse_gene_validity_raw($record)
     {
         dd($record);
+    }
+
+
+    /**
+     * Return enumerated value for curation activity workflow status
+     *
+     * @param string $str
+     * @param integer $type
+     * @return integer
+     */
+    public static function map_activity_status($str, $activity)
+    {
+        switch ($activity)
+        {
+            case self::TYPE_DOSAGE_SENSITIVITY:
+                return self::$dci_status_keys[$str] ?? 0;
+        }
+
+        return 0;
     }
 
 

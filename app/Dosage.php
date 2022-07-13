@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Display;
 
 use Uuid;
+use App\Curation;
 
 /**
  *
@@ -212,6 +213,70 @@ class Dosage extends Model
     ];
 
 
+    protected static $pmid_fields = [
+        'Loss 1' => [
+            'evidence_id' => 'customfield_10183',
+            'evidence_type' => 'customfield_12331',
+            'description' => 'customfield_10184',
+        ],
+        'Loss 2' => [
+            'evidence_id' => 'customfield_10185',
+            'evidence_type' => '',
+            'description' => 'customfield_10186',
+        ],
+        'Loss 3' => [
+            'evidence_id' => 'customfield_10187',
+            'evidence_type' => 'customfield_12333',
+            'description' => 'customfield_10188',
+        ],
+        'Loss 4' => [
+            'evidence_id' => 'customfield_12231',
+            'evidence_type' => 'customfield_12334',
+            'description' => 'customfield_12237',
+        ],
+        'Loss 5' => [
+            'evidence_id' => 'customfield_12232',
+            'evidence_type' => 'customfield_12335',
+            'description' => 'customfield_12238',
+        ],
+        'Loss 6' => [
+            'evidence_id' => 'customfield_12233',
+            'evidence_type' => 'customfield_12336',
+            'description' => 'customfield_12239',
+        ],
+        'Gain 1' => [
+            'evidence_id' => 'customfield_10189',
+            'evidence_type' => 'customfield_12337',
+            'description' => 'customfield_10190',
+        ],
+        'Gain 2' => [
+            'evidence_id' => 'customfield_10191',
+            'evidence_type' => 'customfield_12338',
+            'description' => 'customfield_10192',
+        ],
+        'Gain 3' => [
+            'evidence_id' => 'customfield_10193',
+            'evidence_type' => 'customfield_12339',
+            'description' => 'customfield_10194',
+        ],
+        'Gain 4' => [
+            'evidence_id' => 'customfield_12234',
+            'evidence_type' => 'customfield_12340',
+            'description' => 'customfield_12240',
+        ],
+        'Gain 5' => [
+            'evidence_id' => 'customfield_12235',
+            'evidence_type' => 'customfield_12341',
+            'description' => 'customfield_12241',
+        ],
+        'Gain 6' => [
+            'evidence_id' => 'customfield_12236',
+            'evidence_type' => 'customfield_12342',
+            'description' => 'customfield_12242',
+        ],
+    ];
+
+
     /**
      * Automatically assign an ident on instantiation
      *
@@ -356,5 +421,327 @@ class Dosage extends Model
             return self::$field_map[$attribute];
 
         return null;
+    }
+
+
+    /**
+     * Map a dosage record to a curation
+     *
+     */
+    public static function parser($message)
+    {
+        $data = json_decode($message->payload);
+
+        $fields = $data->fields;
+
+        // is this a gene or region
+        if ($fields->issuetype->name == 'ISCA Gene Curation')
+        {
+            echo "key=" . $data->key . ", gene=" . $fields->customfield_10030 . "\n";
+
+            if ($message->offset == 15557 || $message->offset == 17941 || $message->offset == 18996 || $message->offset == 19411)
+            {
+                var_dump($message);
+            }
+
+            // older messages wont have an hgnc_id and may be a previous symbol
+            if (isset($fields->customfield_12230))
+                $record = Gene::hgnc($fields->customfield_12230)->first();
+            else
+            {
+                $record = Gene::name($fields->customfield_10030)->first();
+
+                if ($record === null)
+                {
+                    // check previous names
+                    $record = Gene::previous($fields->customfield_10030)->first();
+
+                    if ($record === null)
+                    {
+                        echo "Gene not found " . $fields->customfield_10030 . "\n";
+                        return;
+                    }
+
+                }
+            }
+
+            return;
+
+            $morph_type = 'App\Models\Gene';
+
+            /**
+             * Need to work in all the miscRNA and other special genes
+             */
+
+            if ($record === null)
+            {
+                echo "parser:  gene not found issue $data->key \n";
+                return;
+            }
+        }
+        else if ($fields->issuetype->name == 'ISCA Region Curation')
+        {
+            return;
+            $record = Region::source($data->key)-> first();
+
+            // create if non existant
+            if ($record === null)
+            {
+                $record = new Region(['type' => Region::TYPE_DOSAGE, 'name' => $fields->customfield_10202,
+                                    'source_id' => $data->key, 'location' => $fields->customfield_10145,
+                                    'grch37' => explode_genomic_coordinates($fields->customfield_10160 ?? null, $fields->customfield_10533 ?? null),
+                                    'grch38' => explode_genomic_coordinates($fields->customfield_10532 ?? null),
+                                    'curation_status' => null,
+                                    'curation_activity' => null,
+                                    'date_last_curated' => null, 'status' => Region::STATUS_INITIALIZED
+
+                                ]);
+                $record->save();
+            }
+
+            $morph_type = 'App\Models\Region';
+
+
+        }
+        else
+        {
+            // unknown dosage curation record
+            die("parsed:  unknown record");
+        }
+
+        // eventually we'll want to reload without deletes.
+        //$curation = Curation::source($message->topic_name . ':' . $message->key . ':' . $message->timestamp . ':' .  $message->offset)->first();
+
+        $curation = null;
+
+        if ($curation === null)
+        {
+            // see if there are existing versions
+            $old = Curation::source("gene_dosage_raw")->sid($message->key)->orderBy('version', 'desc')->first();
+
+            // build up the new curation record
+            $curation = new Curation([
+                            'type' => Curation::TYPE_DOSAGE_SENSITIVITY,
+                            'type_string' => 'Dosage Sensitivity',
+                            'subtype' => $fields->project->id,
+                            'subtype_string' => $fields->project->key,
+                            'group_id' => 0,
+                            'sop_version' => 1,
+                            'source' => $message->topic_name,
+                            'source_uuid' => $data->key,
+                            'assertion_uuid' => $message->topic_name . ':' . $data->key . ':' . $message->timestamp . ':' .  $message->offset,
+                            'alternate_uuid' => $message->timestamp,
+                            'affiliate_id' => null,
+                            'affiliate_details' => ["id" => "", "name" => "Dosage Sensitivity Curation"],
+                            'gene_hgnc_id' => $record->hgnc_id,
+                            'gene_details' => [],
+                            'title' => $fields->issuetype->name,
+                            'summary' => $fields->summary,
+                            'description' => $fields->description,
+                            'comments' => null,
+                            'conditions' => null,
+                            'condition_details' => null,
+                            'evidence' => null,
+                            'evidence_details' => [
+                                'targeting_decision_comment' => $fields->customfield_10196 ?? null,
+                                "phenotype_comment" =>  $fields->customfield_10197 ?? null,
+                                "gnomad_allele_frequency" => $fields->customfield_12530 ?? null,
+                                "loss_phenotype_comments" => $fields->customfield_10198 ?? null,
+                                "triplosensitive_phenotype_comments" => $fields->customfield_10199,
+                                "breakpoint_type" => $fields->customfield_12531 ?? null,
+                                "do_population_variants_overlap_this_region" => $fields->customfield_12533 ?? null,
+                                "triplosensitive_phenotype_name" => $fields->customfield_11831 ?? null,
+                                "reduced_penetrance_comment" => $fields->customfield_12246 ?? null,
+                                "epic_link" => $fields->customfield_11431 ?? null,
+                                "associated_with_reduced_penetrance" => $fields->customfield_12245 ?? null,
+                                "loss_phenotype_name" => $fields->customfield_11830 ?? null,
+                                "loss_phenotype_omim_id_specificity" => $fields->customfield_12247 ?? null,
+                                "linked_issues" => $fields->issuelinks ?? null,
+                                "on_180k_chip" => $fields->customfield_10164 ?? null,
+                                "contains_known_hits_region" => $fields->customfield_12343 ?? null,
+                                "loss_phenotype_omim_id" => $fields->customfield_10200 ?? null,
+                                "number_of_probands_with_a_loss" => $fields->customfield_10167 ?? null,
+                                "triplosensitive_phenotype_omim_id" => $fields->customfield_10201 ?? null,
+                                "number_of_probands_with_a_gain" => $fields->customfield_10168 ?? null,
+                                "targeting_decision_based_on" => $fields->customfield_10169->value ?? null,
+                                "inheritance_pattern" => $fields->customfield_12330 ?? null,
+                                "should_be_targeted" => $fields->customfield_10152->value ?? null,
+                                "triplosensitive_phenotype_ontology_identifier" => $fields->customfield_11633 ?? null,
+                                "loss_phenotype_ontology " => $fields->customfield_11630 ?? null,
+                                "triplosensitive_phenotype_ontology" => $fields->customfield_11632 ?? null,
+                                "loss phenotype_ontology_identifier" => $fields->customfield_11631 ?? null,
+                                "cgd_inheritance" => $fields->customfield_11331 ?? null,
+                                "cgd_condition" => $fields->customfield_11330 ?? null,
+                                "cgd_references" => $fields->customfield_11332 ?? null,
+                                "population_variants_description" => $fields->customfield_12536 ?? null,
+                                "population_variants_frequency" => $fields->customfield_12535 ?? null,
+                                "population_variants_data_source" => $fields->customfield_12537 ?? null,
+                                "labels" => $fields->labels,
+                                "resolution" => $fields->resolution->name ?? "ERROR",
+                                'loss1' => [
+                                    'evidence_id' => $fields->customfield_10183 ?? null,
+                                    'evidence_type' => $fields->customfield_12331 ?? null,
+                                    'description' => $fields->customfield_10184 ?? null,
+                                ],
+                                'loss2' => [
+                                    'evidence_id' => $fields->customfield_10185 ?? null,
+                                    'evidence_type' => '',
+                                    'description' => $fields->customfield_10186 ?? null,
+                                ],
+                                'loss3' => [
+                                    'evidence_id' => $fields->customfield_10187 ?? null,
+                                    'evidence_type' => $fields->customfield_12333 ?? null,
+                                    'description' => $fields->customfield_10188 ?? null,
+                                ],
+                                'loss4' => [
+                                    'evidence_id' => $fields->customfield_12231 ?? null,
+                                    'evidence_type' => $fields->customfield_12334 ?? null,
+                                    'description' => $fields->customfield_12237 ?? null,
+                                ],
+                                'loss5' => [
+                                    'evidence_id' => $fields->customfield_12232 ?? null,
+                                    'evidence_type' => $fields->customfield_12335 ?? null,
+                                    'description' => $fields->customfield_12238 ?? null,
+                                ],
+                                'loss6' => [
+                                    'evidence_id' => $fields->customfield_12233 ?? null,
+                                    'evidence_type' => $fields->customfield_12336 ?? null,
+                                    'description' => $fields->customfield_12239 ?? null,
+                                ],
+                                'gain1' => [
+                                    'evidence_id' => $fields->customfield_10189 ?? null,
+                                    'evidence_type' => $fields->customfield_12337 ?? null,
+                                    'description' => $fields->customfield_10190 ?? null,
+                                ],
+                                'gain2' => [
+                                    'evidence_id' => $fields->customfield_10191 ?? null,
+                                    'evidence_type' => $fields->customfield_12338 ?? null,
+                                    'description' => $fields->customfield_10192 ?? null,
+                                ],
+                                'gain3' => [
+                                    'evidence_id' => $fields->customfield_10193 ?? null,
+                                    'evidence_type' => $fields->customfield_12339 ?? null,
+                                    'description' => $fields->customfield_10194 ?? null,
+                                ],
+                                'gain4' => [
+                                    'evidence_id' => $fields->customfield_12234 ?? null,
+                                    'evidence_type' => $fields->customfield_12340 ?? null,
+                                    'description' => $fields->customfield_12240 ?? null,
+                                ],
+                                'gain5' => [
+                                    'evidence_id' => $fields->customfield_12235 ?? null,
+                                    'evidence_type' => $fields->customfield_12341 ?? null,
+                                    'description' => $fields->customfield_12241 ?? null,
+                                ],
+                                'gain6' => [
+                                    'evidence_id' => $fields->customfield_12236 ?? null,
+                                    'evidence_type' => $fields->customfield_12342 ?? null,
+                                    'description' => $fields->customfield_12242 ?? null,
+                                ],
+                            ],
+                            'scores' => [
+                                'Haploinsufficiency score' => $fields->customfield_10165->value ?? null,
+                                'Triplosensitivity score' => $fields->customfield_10166->value ?? null
+                            ],
+                            'score_details' => null,
+                            'curators' => [
+                                'reporter' => [ 'name' => $fields->reporter->displayName, 'email' => $fields->reporter->emailAddress ],
+                                'creator' => [ 'name' => $fields->creator->displayName , 'email' => $fields->creator->emailAddress ],
+                                'assingee' => [ 'name' => $fields->assignee->displayName ?? null, 'email' => $fields->assignee->emailAddress ?? null ]
+                            ],
+                            'published' => !empty($fields->resolutiondate),
+                            'animal_model_only' => false,
+                            'contributors' => [],
+                            'events' => [
+                                'created' => $fields->created,
+                                'updated' => $fields->updated ?? null,
+                                'resolved' => $fields->resolutiondate ?? null
+                            ],
+                            'version' => ($old->version ?? 0) + 1,
+                            'status' => Curation::map_activity_status($fields->status->name, Curation::TYPE_DOSAGE_SENSITIVITY)
+
+                          //  'curation_class' => $fields->issuetype->name,
+                          //  'curatable_type' => $morph_type,
+                          //  'curatable_id' => $record->id,
+
+                          //  'is_closed' => !empty($fields->resolutiondate),
+
+
+
+                         //   'resolution' => $fields->resolution->name  ?? null,
+                        ]);
+//dd($curation);
+            //$record->curations()->save($curation);
+            $curation->save();
+
+            // unpublish the old record if necessary
+            if ($curation->published && ($old->published ?? false))
+                $old->update(['published' => false]);
+
+        }
+//dd($curation);
+        // Create or attach named labels
+        /*foreach ($fields->labels as $label)
+        {
+            $tag = Tag::dosage()->label($label)->first();
+
+            if ($tag === null)
+            {
+                $tag = new Tag(['type' => Tag::TYPE_DOSAGE, 'label' => $label, 'status' => Tag::STATUS_INITIALIZED]);
+
+                $tag->save();
+            }
+
+            if ($curation->tags()->where('tags.id', $tag->id)->doesntExist())
+                $curation->tags()->attach($tag->id);
+        }*/
+
+        // Create or attach evidence
+        /*
+        foreach(self::$pmid_fields as $key => $value)
+        {
+            if (isset($fields->{$value['evidence_id']}))
+            {
+                $pmid = $fields->{$value['evidence_id']};
+
+                //$pmid = normalize_pmid();
+
+                $subtype = (strpos($key, 'Loss') === false ? Evidence::SUBTYPE_GAIN :
+                                                             Evidence::SUBTYPE_LOSS);
+
+                if ($subtype == Evidence::SUBTYPE_LOSS)
+                    $evidence = $curation->evidences()->eid($pmid)->loss()->first();
+                else
+                    $evidence = $curation->evidences()->eid($pmid)->gain()->first();
+
+                if ($evidence === null)
+                {
+                    $evidence = new Evidence(['type' => Evidence::TYPE_DOSAGE,
+                                            'subtype' => $subtype,
+                                            'is_pmid' => true,
+                                            'evidence_id' => $pmid,
+                                            'evidence_type' => $fields->{$value['evidence_type']}->value ?? null,
+                                            'description' => $fields->{$value['description']} ?? null,
+                                            'status' => Evidence::STATUS_INITIALIZED
+                    ]);
+
+                    $curation->evidences()->save($evidence);
+                }
+
+            }
+
+        */
+
+        // update status
+        /*
+        if ($morph_type == 'App\Models\Gene' && $curation->is_published && $curation->resolution == 'Complete')
+        {
+            Gene::where('id', $record->id)->update(['curation_status' => ['dosage_sensitivity' => true], 'date_last_curated' => Carbon
+            ::parse($fields->updated ?? null)]);
+        }
+        */
+
+        //dd($curation);
+
     }
 }

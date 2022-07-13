@@ -1741,6 +1741,23 @@ class Graphql
 					... on Statement {
 					  score
 					  calculated_score
+                      evidence {
+                        curie
+                        description
+                        iri
+                        label
+                        source {
+                           abstract
+                           curie
+                           description
+                           first_author
+                           iri
+                           label
+                           multiple_authors
+                           short_citation
+                           year_published
+                            }
+                        }
 					}
 					... on ProbandEvidence {
 					  ...probandFields
@@ -1763,6 +1780,9 @@ class Graphql
 					  calculated_score
 					  evidence {
 							...basicFields
+                            ... on Statement {
+                                ...statementFields
+                              }
 							... on ProbandEvidence {
 							  ...probandFields
 							}
@@ -1848,6 +1868,10 @@ class Graphql
 					  curie
 					}
 				  }
+                  zygosity {
+                    curie
+                    label
+                   }
 				}
 				fragment variantFields on VariantEvidence {
 				  variant {

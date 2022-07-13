@@ -2,11 +2,11 @@
     <div class="panel-heading bg-evidence4" role="tab" id="genev_case_control"">
         <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total Points:  <u>{{ $cc_count ?? 'N/A' }}</u></span></h4>
         Case Control
-        <div class="pull-right">
+        <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_control" href="#tablefour" aria-expanded="true" aria-controls="tablefour">
                 <i class="fas fa-compress-arrows-alt"></i>
             </a>
-        </div>
+        </div>-->
     </div>
     <div id="tablefour" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_control">
         <div class="panel-body">
@@ -16,7 +16,7 @@
             </div>
             @else
             <div class="table-responsive light-arrows">
-                <table id="gecc" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                <table id="gecc" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                         data-classes="table"
                         data-locale="en-US"
                         data-addrbar="true"
@@ -35,11 +35,13 @@
                         data-show-columns="true"
                         data-show-columns-toggle-all="true"
                         data-search-formatter="false"
+                        data-show-multi-sort="true"
                         data-show-export="true"
                         data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                         data-minimum-count-columns="2"
                         data-pagination="true"
                         data-id-field="id"
+                        data-sticky-header="true"
                         {{-- data-ajax-options="ajaxOptions" --}}
                         data-page-list="[10, 25, 50, 100, 250, all]"
                         data-page-size="{{ $display_list ?? 25 }}"
@@ -65,7 +67,7 @@
                         </tr>
                         <tr role="row">
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
-                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Disease<br>(Case)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Study<br>Type</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Detection Method (Case)</th>

@@ -58,7 +58,7 @@
       {{ $record->sop7_valid_contradictory_evidence }}
     </td>
   </tr>
-  <tr style="font-size:14px">
+  <!--<tr style="font-size:14px">
     <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">Expert Panel:</td>
     <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid">
       {{ $record->sop7_affiliation_name }}
@@ -75,7 +75,7 @@
       @endforeach
     @endif
     </td>
-  </tr>
+  </tr>-->
 
   <tr style="font-size:14px">
     <td style="vertical-align:top" nowrap class="text-left">Evidence Summary:</td>

@@ -1139,3 +1139,70 @@ function locationSorter(one, two) {
 
     return 0;
 }
+
+
+function referenceSorter(one, two) {
+
+    var pmidone = 0;
+    var pmidtwo = 0;
+
+    var oneloc = one.match(/PMID:\s*(\d+)/);
+
+    if (oneloc[1] !== undefined)
+        pmidone = oneloc[1];
+
+    var twoloc = two.match(/PMID:\s*(\d+)/);
+
+    if (twoloc[1] !== undefined)
+        pmidtwo = twoloc[1];
+
+    if (pmidone < pmidtwo)
+        return -1;
+    else if (pmidone > pmidtwo)
+        return 1;
+
+    return 0;
+}
+
+
+function ageSorter(one, two) {
+
+    var ageone = 0;
+    var agetwo = 0;
+
+    var oneloc = one.match(/(\d+)\s*(Years|Months|Weeks|Days)/);
+
+    if (oneloc !== null && oneloc[1] !== undefined)
+    {
+        ageone = parseInt(oneloc[1]);
+
+        if (oneloc[2] == "Years")
+            ageone *= 365;
+        else if (oneloc[2] == "Months")
+            ageone *= 30;
+        else if (oneloc[2] == "Weeks")
+            ageone *= 7;
+
+    }
+
+    var twoloc = two.match(/(\d+)\s*(Years|Months|Weeks|Days)/);
+
+    if (twoloc !== null && twoloc[1] !== undefined)
+    {
+        agetwo = parseInt(twoloc[1]);
+
+        if (twoloc[2] == "Years")
+            agetwo *= 365;
+        else if (twoloc[2] == "Months")
+            agetwo *= 30;
+        else if (twoloc[2] == "Weeks")
+            agetwo *= 7;
+    }
+
+    if (ageone < agetwo)
+        return -1;
+    else if (ageone > agetwo)
+        return 1;
+
+    return 0;
+}

@@ -2,11 +2,11 @@
     <div class="panel-heading bg-evidence3" role="tab" id="genev_case_level_family"">
         <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score:  <u>{{ $clfs_count ?? 'N/A' }}</u></span></h4>
         Case Level Family Segregation Information Without Proband Data or Scored Proband
-        <div class="pull-right">
+        <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_without_proband" href="#tablethree" aria-expanded="true" aria-controls="tablethree">
                 <i class="fas fa-compress-arrows-alt"></i>
             </a>
-        </div>
+        </div>-->
     </div>
     <div id="tablethree" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_family">
     <div class="panel-body">
@@ -16,7 +16,7 @@
         </div>
         @else
         <div class="table-responsive light-arrows">
-            <table id="geclfs" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+            <table id="geclfs" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
                     data-addrbar="true"
@@ -35,11 +35,13 @@
                     data-show-columns="true"
                     data-show-columns-toggle-all="true"
                     data-search-formatter="false"
+                    data-show-multi-sort="true"
                     data-show-export="true"
                     data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                     data-minimum-count-columns="2"
                     data-pagination="true"
                     data-id-field="id"
+                    data-sticky-header="true"
                     {{-- data-ajax-options="ajaxOptions" --}}
                     data-page-list="[10, 25, 50, 100, 250, all]"
                     data-page-size="{{ $display_list ?? 25 }}"
@@ -57,7 +59,7 @@
                 <thead>
                     <tr role="row">
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>MOI</th>

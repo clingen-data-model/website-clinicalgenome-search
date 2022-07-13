@@ -263,6 +263,10 @@ class Variantpath extends Model
 
                 $gene = Gene::hgnc($new->gene_hgnc_id)->first();
 
+                // it seems that there can be published records with no gene information.  Bail out if this is the case
+                if ($gene === null)
+                    return null;
+
                 // we'll use the current date for search, since there is no concept of a reissue date in GCI
                 Change::create([
                                 'type' => Change::TYPE_VARIANT,

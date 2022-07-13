@@ -2,11 +2,11 @@
     <div class="panel-heading bg-evidence5" role="tab" id="expevid"">
         <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE <span class="pull-right small">Total Points:  <u>{{ $exp_count ?? 'N/A' }}</u></span></h4>
         &nbsp;
-        <div class="pull-right">
+        <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_experimental_evidence" href="#tablefive" aria-expanded="true" aria-controls="tablefive">
                 <i class="fas fa-compress-arrows-alt"></i>
             </a>
-        </div>
+        </div>-->
     </div>
     <div id="tablefive" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="expevid">
         <div class="panel-body">
@@ -17,7 +17,7 @@
             @else
                 <div class="table-responsive light-arrows">
                     <!-- START DEMO DATA -->
-                    <table id="table" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+                    <table id="table" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                         data-classes="table"
                             data-locale="en-US"
                             data-addrbar="true"
@@ -36,13 +36,13 @@
                             data-show-columns="true"
                             data-show-columns-toggle-all="true"
                             data-search-formatter="false"
+                            data-show-multi-sort="true"
                             data-show-export="true"
                             data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                             data-minimum-count-columns="2"
                             data-pagination="true"
                             data-id-field="id"
                             data-sticky-header="true"
-
                             {{-- data-ajax-options="ajaxOptions" --}}
                             data-page-list="[10, 25, 50, 100, 250, all]"
                             data-page-size="{{ $display_list ?? 25 }}"
@@ -61,7 +61,7 @@
                             <tr role="row">
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Experimental Category</th>
-                                <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference</th>
+                                <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score Status</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Points (default points)</th>
@@ -74,8 +74,8 @@
                                 <td class="vertical-align-center" role="cell" style="word-break: normal;">
                                     {{ $record->evidence[0]->label }}
                                 </td>
-                                <td class="vertical-align-center" role="cell">{{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}
-                                <div> <span class="" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{ App\Validity::evidenceTypePopupString($record->type[0]->curie ?? '') }}">
+                                <td class="vertical-align-center" role="cell">{!! App\Validity::evidenceTypeString($record->type[0]->curie ?? '') !!}
+                                <div> <span class="" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{  App\Validity::evidenceTypePopupString($record->type[0]->curie ?? '')  }}">
                                     <i class="fas fa-info-circle text-muted"></i></span></div>
                                 </td>
                                 <td class="vertical-align-center" role="cell">

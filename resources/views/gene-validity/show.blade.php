@@ -109,6 +109,15 @@
                 @endif
             </div>
         </div>
+        @if ($gcilink !== null)
+        <div class="col-md-12 mt-4">
+            <div class="row">
+                <dt class="col-sm-4">GCI LINK:
+                    <dd class="col-sm-8"><a href="{{ $gcilink }}" target="_gci">{{ $gcilink }}</a>
+                    </dd>
+            </div>
+        </div>
+        @endif
     </div>
 
     <hr />
@@ -196,14 +205,19 @@
                                                 @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.rich-sop8-1')
                                             @elseif(strpos($record->specified_by->label,"SOP8"))
+                                                @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop7')
                                             @elseif(strpos($record->specified_by->label,"SOP7"))
+                                                @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop7')
                                             @elseif (strpos($record->specified_by->label,"SOP6"))
+                                                @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop6')
                                             @elseif (strpos($record->specified_by->label,"SOP5") && $record->origin == true)
+                                                @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop5-legacy')
                                             @elseif (strpos($record->specified_by->label,"SOP5"))
+                                                @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop5')
                                             @elseif (strpos($record->specified_by->label,"SOP4"))
                                                 @include('gene-validity.partial.sop4-legacy')
@@ -334,13 +348,26 @@
                             <div id="gene_nonscrorable" class="container">
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
-                                        @foreach ($extrecord->nonscorable as $evidence)
+                                        @forelse ($extrecord->nonscorable as $evidence)
+                                        @foreach ($evidence->evidence as $source)
                                         <p>
-                                            <strong>PMID:</strong><br>
+                                            <a href="{{ $source->source->iri }}" target="_pubmed">
+                                                <strong>{{ $source->source->curie ?? '' }}</strong>
+                                                <i class="glyphicon glyphicon-new-window"></i>
+                                            </a>
+                                            @if (in_array($source->source->curie, $extrecord->eas))
+                                            <span class="ml-1" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span>
+                                            @endif
+                                            <br>
+                                            {{ $source->source->first_author ?? ''}}, et. al., {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
+                                            <br>
                                             <strong>Explanation:  </strong>@markdown{{ $evidence->description }}@endmarkdown
                                         </p>
                                         <hr>
                                         @endforeach
+                                        @empty
+                                        No non-scorable evidence was found.
+                                        @endforelse
                                     </div>
                                 </div>
                             </div>
@@ -610,10 +637,10 @@
     border-bottom-color: transparent;
 }
 </style>
-    <link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet">
+    <!-- link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet" -->
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-    <link rel="stylesheet" href="/css/sticky-header/bootstrap-table-sticky-header.css">
+    <link rel="stylesheet" href="/css/bootstrap-table-sticky-header.css">
 @endsection
 
 @section('script_js')
@@ -623,10 +650,9 @@
 <script src="/js/xlsx.core.min.js"></script>
 <script src="/js/jspdf.plugin.autotable.js"></script>
 
-<script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
+<!-- script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script -->
 
 <script src="/js/bootstrap-table.min.js"></script>
-<script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
 
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
@@ -636,6 +662,10 @@
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
 <script src="/js/bootstrap-table-sticky-header.min.js"></script>
+
+<script src="/js/bootstrap-table-multiple-sort.min.js"></script>
+
+<!-- script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script -->
 
 
 <!-- load up all the local formatters and stylers -->

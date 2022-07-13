@@ -3,11 +3,11 @@
     <div class="panel-heading bg-evidence1" role="tab" id="genev_case_level_variants"">
         <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Variant Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
         Case Level Variants
-        <div class="pull-right">
+        <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_with_proband" href="#tableone" aria-expanded="true" aria-controls="tableone">
                 <i class="fas fa-compress-arrows-alt"></i>
             </a>
-        </div>
+        </div>-->
     </div>
     <div id="tableone" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_variants">
     <div class="panel-body">
@@ -17,7 +17,7 @@
         </div>
         @else
         <div class="table-responsive light-arrows"  style="overflow-x: scroll;">
-            <table id="geclv" role="table" class="table table-validity-data table-bordered small table-striped table-hover"
+            <table id="geclv" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
                     data-addrbar="true"
@@ -34,6 +34,7 @@
                     data-show-columns="true"
                     data-show-columns-toggle-all="true"
                     data-search-formatter="false"
+                    data-show-multi-sort="true"
                     data-show-export="true"
                     data-sort-order="asc"
                     data-sort-name="label"
@@ -42,14 +43,12 @@
                     data-pagination="true"
                     data-id-field="id"
                     data-sticky-header="true"
-                    {{-- data-ajax-options="ajaxOptions" --}}
                     data-page-list="[10, 25, 50, 100, 250, all]"
                     data-page-size="{{ $display_list ?? 25 }}"
                     data-show-footer="false"
                     data-side-pagination="client"
                     data-pagination-v-align="both"
                     data-show-extended-pagination="false"
-                    {{-- data-url="{{  $apiurl }}" --}}
                     data-query-params="queryParams"
                     data-response-handler="responseHandler"
                     data-header-style="headerStyle"
@@ -61,16 +60,16 @@
                     <tr role="row">
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Proband<br>Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-width="100">Variant</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Reference<br>(PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" style="max-width: 100px;">Variant</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Age</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="ageSorter">Proband<br>Age</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Previous<br>Testing</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Methods<br>of<br>Detection</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo (paternity/<br>maternity<br>confirmed)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo<br>(paternity/<br>maternity<br>confirmed)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
@@ -92,7 +91,7 @@
                             }
                             else if ($ev->__typename == 'ProbandEvidence')
                             {
-                                if ($record->type[0]->curie == "SEPIO:0004097")
+                                if ($record->type[0]->curie == "SEPIO:0004174")
                                     continue;
                                 $evidence = $ev;
 
@@ -109,6 +108,7 @@
                         if ($evidence === null)
                         {
                             continue;
+                            //dd($record);
                         }
                     @endphp
 
@@ -117,16 +117,43 @@
                             {{ $evidence->proband->label ?? $evidence->label }}
                         </td>
                         <td class="vertical-align-center" role="cell">
+                            @if (isset($evidence->type[0]->curie))
+                            {{ App\Validity::evidenceTypeString($evidence->type[0]->curie ?? '') }}
+                            @else
                             {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             <div class="variant-info">
-                                @if(isset($evidence->variants) && is_array($evidence->variants))
-                                    {{ $evidence->variants[0]->label ?? '***VARIANT LABEL MISSING***' }}
+                                @if(!isset($evidence->variant->label) && isset($evidence->variants) && is_array($evidence->variants))
+                                    {{ $evidence->variants[0]->label ?? '' }}
+                                    @if (isset($evidence->variants[0]->canonical_reference[0]->curie))
+                                    <div class="mt-3">
+                                    <a  target="_cgar" href="{{ App\Validity::alleleUrlString($evidence->variants[0]->canonical_reference[0]->curie) }}" >
+                                        <i>ClinGen Allele Registry:</i><br>
+                                        {{ basename($evidence->variants[0]->canonical_reference[0]->curie) }}
+                                        <i class="glyphicon glyphicon-new-window"></i>
+                                    </a>
+                                    </div>
+                                    @endif
                                 @else
                                     {{ $evidence->variant->label ?? '' }}
+                                    @if (isset($evidence->variant->canonical_reference[0]->curie))
+                                    <div class="mt-3">
+                                        <a target="_cgar"  href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
+                                            <i>Clingen Allele Registry:</i><br>
+                                            {{ basename($evidence->variant->canonical_reference[0]->curie) }}
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    </div>
+                                    @endif
                                 @endif
                             </div>
+                            @if ($showzygosity && isset($evidence->zygosity->curie))
+                            <div class="variant-info">
+                            <strong>{{ App\Validity::zygosityTypeString($evidence->zygosity->curie) }}</strong>
+                            </div>
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             @if (empty($evidence->source))
@@ -203,7 +230,13 @@
                             <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            <span class="text-danger"><strong>####</strong></span>
+                            @if (isset($propoints[$evidence->proband->label]))
+                                {{ number_format($propoints[$evidence->proband->label],2) }}
+                            @elseif (isset($propoints[$evidence->label]))
+                                {{ number_format($propoints[$evidence->label],2) }}
+                            @else
+                                {{ $record->score }}
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 240px;">
                             @markdown {{ $record->description }} @endmarkdown

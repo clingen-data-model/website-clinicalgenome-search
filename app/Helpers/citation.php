@@ -24,7 +24,7 @@ if (!function_exists('dislpayCitation')) {
         if ($obj->multiple_authors)
             $str .= 'et al., ';
 
-        $str .= $obj->year_published . ', <a href="' . $obj->iri . '" rel="noopener noreferrer" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="'
+        $str .= '<strong>' .$obj->year_published . '</strong>, <a href="' . $obj->iri . '" rel="noopener noreferrer" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="'
                 . ($obj->label ?? 'No title') . '">PMID: ' . basename($obj->iri) . '  <i class="glyphicon glyphicon-new-window"></i></a>';
 
         return $str;

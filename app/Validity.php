@@ -125,7 +125,7 @@ class Validity extends Model
             'SEPIO:0004024' => "Expression",
             'SEPIO:0004025' => "Functional Alteration Patient cells",
             'SEPIO:0004026' => "Functional Alteration Non-patient cells",
-            'SEPIO:0004027' => "Model Systems Non-human model organism",
+            'SEPIO:0004027' => ["Model Systems", "Non-human model organism"],
             'SEPIO:0004028' => "Cell culture model",
             'SEPIO:0004029' => "Rescue in human",
             'SEPIO:0004030' => "Rescue Non-human model organism",
@@ -135,6 +135,7 @@ class Validity extends Model
             'SEPIO:0004078' => "Predicted or proven null variant type",
             'SEPIO:0004079' => "Proband with predicted or proven null variant",
             'SEPIO:0004080' => "Proband with other variant type with some evidence of gene impact",
+            'SEPIO:0004081' => "Variant is de novo",
           //  'variant functional impact evidence item' => "No translation",
             'SEPIO:0004119' => "Other variant type",
           //  'null variant evidence item' => "No translation",
@@ -144,14 +145,14 @@ class Validity extends Model
             'SEPIO:0004119' => "Other variant type",
             'SEPIO:0004120' => "Predicted or proven null",
             'SEPIO:0004121' => "Other variant type",
-            "SEPIO:0004180" => "Biochemical Function A",
-            "SEPIO:0004181" => "Biochemical Function B",
-            "SEPIO:0004182" => "Protein interactions genetic interaction (MI:0208)",
-            "SEPIO:0004183" => "Protein interactions negative genetic interaction (MI:0933)",
-            "SEPIO:0004184" => "Protein interactions physical association (MI:0915)",
-            "SEPIO:0004185" => "Protein interactions positive genetic interaction (MI:0935)",
-            "SEPIO:0004188" => "Expression A",
-            "SEPIO:0004189" => "Expression B",
+            "SEPIO:0004180" => ["Biochemical Function", "A"],
+            "SEPIO:0004181" => ["Biochemical Function", "B"],
+            "SEPIO:0004182" => ["Protein interactions",  "genetic interaction (MI:0208)"],
+            "SEPIO:0004183" => ["Protein interactions", "negative genetic interaction (MI:0933)"],
+            "SEPIO:0004184" => ["Protein interactions", "physical association (MI:0915)"],
+            "SEPIO:0004185" => ["Protein interactions", "positive genetic interaction (MI:0935)"],
+            "SEPIO:0004188" => ["Expression", "A"],
+            "SEPIO:0004189" => ["Expression", "B"],
             //'SEPIO:0004042' => "Other variant type",
      ];
 
@@ -201,6 +202,12 @@ class Validity extends Model
         'ClinGen Gene Validity Evaluation Criteria SOP6' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedures-version-6',
         'ClinGen Gene Validity Evaluation Criteria SOP5' => 'https://clinicalgenome.org/docs/gene-disease-validity-sop-version-5',
         'ClinGen Gene Validity Evaluation Criteria SOP4' => 'https://clinicalgenome.org/docs/gene-disease-validity-sop-version-4'
+    ];
+
+    protected static $zygosity_type_strings = [
+        'GENO:0000402' => 'Biallelic compound heterozygous',
+        'GENO:0000136' => 'Biallelic homozygous',
+        'GENO:0000135' => 'Monoallelic heterozygous'
     ];
 
 
@@ -759,9 +766,12 @@ class Validity extends Model
     public static function evidenceTypeString($x)
     {
 
-       //return $x;
+       $t = self::$evidence_type_strings[$x] ?? '';
 
-        return self::$evidence_type_strings[$x] ?? $x;
+       if (is_array($t))
+            return "<strong>" . $t[0] . "</strong> " . $t[1];
+
+        return $t;
     }
 
 
@@ -774,7 +784,19 @@ class Validity extends Model
 
        //return $x;
 
-        return self::$evidence_type_popup_strings[$x] ?? $x;
+        return self::$evidence_type_popup_strings[$x] ?? '';
+    }
+
+
+    /**
+     * Displayable evidence type definition for popup
+     *
+     */
+    public static function zygosityTypeString($x)
+    {
+
+       //return $x;
+        return self::$zygosity_type_strings[$x] ?? '';
     }
 
 
@@ -787,6 +809,22 @@ class Validity extends Model
 
        //return $x;
 
-        return self::$location_sop[$x] ?? '#';
+        return self::$location_sop[$x] ?? '';
+    }
+
+
+    /**
+     * Displayable Allele Registy Link
+     */
+    public static function alleleUrlString($x)
+    {
+        if (strpos($x, "CLINVAR:variation/") === 0)
+        {
+            return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.variationId=" . basename($x);
+        }
+        else
+        {
+            return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=" . basename($x);
+        }
     }
 }

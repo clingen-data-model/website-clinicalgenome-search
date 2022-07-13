@@ -133,14 +133,21 @@ class QueryKafka extends Command
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                        $payload = json_decode($message->payload);
-                        //echo $payload->genes[0]->symbol . "\n";
-                        //dd($payload);
-                        //if ($payload->genes[0]->symbol == "LDLR")
-                       // {
-                        //   var_dump($payload);
-                        //}
-                       // //dd($payload->genes[0]);
+                        if ($topic == "dosage")
+                        {
+                            $payload = $message;
+                        }
+                        else
+                        {
+                            $payload = json_decode($message->payload);
+                            //echo $payload->genes[0]->symbol . "\n";
+                            //dd($payload);
+                            //if ($payload->genes[0]->symbol == "LDLR")
+                        // {
+                            //   var_dump($payload);
+                            //}
+                        // //dd($payload->genes[0]);
+                        }
                         $a = $stream->parser;
                         $a($payload);
                         $stream->update(['offset' => $message->offset + 1]);

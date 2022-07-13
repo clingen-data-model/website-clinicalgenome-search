@@ -234,6 +234,8 @@ class ValidityController extends Controller
         $caselevel = [];
         $nonscorable = [];
         $pmids = [];
+        $propoints = [];
+        $temp = [];
 
         // uhg, since all the segregation is in one structure we need to maintain watch flags
         $clfs = false;
@@ -242,7 +244,7 @@ class ValidityController extends Controller
         if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
 
-            $genev->each(function ($item) use (&$segregation, &$casecontrol, &$caselevel, &$pmids, &$clfs, &$clfswopb) {
+            $genev->each(function ($item) use (&$temp, &$segregation, &$casecontrol, &$caselevel, &$propoints, &$pmids, &$clfs, &$clfswopb) {
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
                 {
                     foreach ($item->evidence as $e)
@@ -257,7 +259,25 @@ class ValidityController extends Controller
                 }
                 else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
                     $casecontrol[] = $item;
-                else if ($item->type[0]->curie != "SEPIO:0004097")
+                else if ($item->type[0]->curie == "SEPIO:0004174") // the separate proband counted points records
+                {
+                    // this is stupid.  you have to go hunting for the proper reference
+                    $label = null;
+                    foreach ($item->evidence as $evidence)
+                    {
+                        if ($evidence->__typename == "ProbandEvidence")
+                        {
+                            $temp[] = $item;
+                            $label = $evidence->label;
+                        }
+                    }
+
+                    if ($label !== null)
+                        $propoints[$label] = $item->score;
+
+                    return true;
+                }
+                else
                     $caselevel[] = $item;
 
                 if (!empty($item->evidence))
@@ -305,7 +325,7 @@ class ValidityController extends Controller
 
 
         }
-
+//dd($temp);
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
@@ -317,12 +337,14 @@ class ValidityController extends Controller
         {
             foreach ($extrecord->segregation[0]->evidence as $evidence)
             {
-                if ($evidence->meets_inclusion_criteria)
+                if ($evidence->meets_inclusion_criteria == true)
                 {
                     if ($evidence->proband !== null)
-                        $cls_count += $evidence->estimated_lod_score;
+                        $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                     else
-                        $clfs_count += $evidence->estimated_lod_score;
+                    {
+                        $clfs_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
+                    }
                 }
             }
         }
@@ -330,11 +352,24 @@ class ValidityController extends Controller
         $cls_count = number_format($cls_count, 2);
         $clfs_count = number_format($clfs_count, 2);
 
- //dd($extrecord);
+        // temporary way to allow a link to the corresponding GCI page.
+        $gdm_uuid = $record->report_id;
 
-        // collect the non-scorable records
+        if ($gdm_uuid === null)
+        {
+            $gg_uuid = substr($id, 5);
 
-        return view('gene-validity.show', compact('display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
+            $map = Gdmmap::gg($gg_uuid)->first();
+
+            $gdm_uuid = $map->gdm_uuid ?? null;
+        }
+
+        $gcilink = ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
+
+        $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
+     //dd($extrecord->nonscorable);
+        return view('gene-validity.show',
+                compact('gcilink', 'showzygosity', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);
     }
 
