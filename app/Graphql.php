@@ -496,10 +496,10 @@ class Graphql
 							  label
 							  curie
 						  }'
-                          //. '
-                          //report_id
-                          //animal_model
-                          //'
+                          . '
+                          report_id
+                          animal_model
+                          '
                           . 'legacy_json
 						  curie
 						}
@@ -1437,8 +1437,8 @@ class Graphql
 							label
 						}
                         '
-						//. 'report_id
-                        //animal_model'
+						. 'report_id
+                        animal_model'
 						 . '
             ';
 
@@ -1587,6 +1587,7 @@ class Graphql
 					curie
 				}
 				legacy_json
+                report_id
 			}
 		}';
 

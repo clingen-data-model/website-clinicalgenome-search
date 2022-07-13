@@ -354,7 +354,7 @@ class ValidityController extends Controller
 
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;
-
+//dd($record);
         if ($gdm_uuid === null)
         {
             $gg_uuid = substr($id, 5);
