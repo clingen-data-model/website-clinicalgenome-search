@@ -27,7 +27,7 @@
                         data-search-align="left"
                         data-trim-on-search="true"
                         data-sort-order="asc"
-                        data-sort-name="label"
+                        data-sort-name="reference"
                         data-show-search-clear-button="true"
                         data-buttons="table_buttons"
                         data-show-align="left"
@@ -67,7 +67,7 @@
                         </tr>
                         <tr role="row">
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
-                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference<br>(PMID)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Disease<br>(Case)</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Study<br>Type</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Detection Method (Case)</th>

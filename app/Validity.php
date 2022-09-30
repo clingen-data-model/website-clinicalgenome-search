@@ -110,8 +110,6 @@ class Validity extends Model
 	 		9 => 'Deleted'
      ];
 
-     //             'SEPIO:0004018' => "Predicted or proven null variant type",
-
     protected static $evidence_type_strings = [
             'null variant evidence line' => "Predicted or proven null variant type",
             'SEPIO:0000247' => "Candidate gene sequencing",
@@ -123,16 +121,15 @@ class Validity extends Model
             'SEPIO:0004022' => "Bochemical Function",
             'SEPIO:0004023' => "Protein Interaction",
             'SEPIO:0004024' => "Expression",
-            'SEPIO:0004025' => "Functional Alteration Patient cells",
-            'SEPIO:0004026' => "Functional Alteration Non-patient cells",
+            'SEPIO:0004025' => ["Functional Alteration", "Patient cells"],
+            'SEPIO:0004026' => ["Functional Alteration", "Non-patient cells"],
             'SEPIO:0004027' => ["Model Systems", "Non-human model organism"],
-            'SEPIO:0004028' => "Cell culture model",
-            'SEPIO:0004029' => "Rescue in human",
-            'SEPIO:0004030' => "Rescue Non-human model organism",
-            'SEPIO:0004031' => "Rescue Cell culture model",
-            'SEPIO:0004032' => "Rescue Patient cells",
-            'SEPIO:0004029' => "",
-            'SEPIO:0004078' => "Predicted or proven null variant type",
+            'SEPIO:0004028' => ["Model Systems", "Cell culture model"],
+            'SEPIO:0004029' => ["Rescue", "Human"],
+            'SEPIO:0004030' => ["Rescue", "Non-human model organism"],
+            'SEPIO:0004031' => ["Rescue", "Cell culture model"],
+            'SEPIO:0004032' => ["Rescue", " Patient cells"],
+            'SEPIO:0004078' => "Variant is de novo", // changed 8/3 per Terry
             'SEPIO:0004079' => "Proband with predicted or proven null variant",
             'SEPIO:0004080' => "Proband with other variant type with some evidence of gene impact",
             'SEPIO:0004081' => "Variant is de novo",
@@ -170,12 +167,11 @@ class Validity extends Model
         'SEPIO:0004025' => "The gene and/or gene product function is demonstrably altered in cultured patient or non-patient cells carrying candidate variant(s)",
         'SEPIO:0004026' => "The gene and/or gene product function is demonstrably altered in cultured patient or non-patient cells carrying candidate variant(s)",
         'SEPIO:0004027' => "Non-human model organism OR cell culture model with a similarly disrupted copy of the affected gene shows a phenotype consistent with human disease state",
-        'SEPIO:0004028' => "",
+        'SEPIO:0004028' => "Non-human model organism OR cell culture model with a similarly disrupted copy of the affected gene shows a phenotype consistent with human disease state",
         'SEPIO:0004029' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
         'SEPIO:0004030' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
         'SEPIO:0004031' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
         'SEPIO:0004032' => "The phenotype in humans, non-human model organisms, cell culture models, or patient cells can be rescued by exogenous wild-type gene or gene product",
-        'SEPIO:0004029' => "",
         'SEPIO:0004078' => "",
         'SEPIO:0004079' => "",
         'SEPIO:0004080' => "",
@@ -765,7 +761,7 @@ class Validity extends Model
      */
     public static function evidenceTypeString($x)
     {
-
+//dd($x);
        $t = self::$evidence_type_strings[$x] ?? '';
 
        if (is_array($t))
@@ -820,7 +816,9 @@ class Validity extends Model
     {
         if (strpos($x, "CLINVAR:variation/") === 0)
         {
-            return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.variationId=" . basename($x);
+            //return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.variationId=" . basename($x);
+
+            return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.RCV=" . basename($x);
         }
         else
         {

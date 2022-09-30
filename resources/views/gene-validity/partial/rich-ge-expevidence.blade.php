@@ -28,7 +28,7 @@
                             data-search-align="left"
                             data-trim-on-search="true"
                             data-sort-order="asc"
-                            data-sort-name="label"
+                            data-sort-name="reference"
                             data-show-search-clear-button="true"
                             data-buttons="table_buttons"
                             data-show-align="left"
@@ -61,7 +61,7 @@
                             <tr role="row">
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Experimental Category</th>
-                                <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference</th>
+                                <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter"  data-field="reference">Reference</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score Status</th>
                                 <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Points (default points)</th>

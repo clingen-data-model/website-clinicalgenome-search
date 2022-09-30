@@ -48,7 +48,7 @@
   </tr>
   @endif
 -->
-  <tr style="font-size:14px">
+  <!--<tr style="font-size:14px">
     <td style="width:10%;  border-top-width:6px" nowrap class="text-left">Replication over time:</td>
     <td style="width:40%;  border-top-width:6px">
       {{ $record->sop7_replication_over_time }}
@@ -58,7 +58,7 @@
       {{ $record->sop7_valid_contradictory_evidence }}
     </td>
   </tr>
-  <!--<tr style="font-size:14px">
+  <tr style="font-size:14px">
     <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid" nowrap class="text-left">Expert Panel:</td>
     <td style="vertical-align:top; border-bottom-width:6px; border-bottom-color:rgb(221, 221, 221); border-bottom-style:solid">
       {{ $record->sop7_affiliation_name }}
@@ -77,9 +77,50 @@
     </td>
   </tr>-->
 
+  @if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES")
+    <tr style="font-size:14px">
+        <td style="vertical-align:top;  border-top-width:6px" nowrap class="text-left">Modify Calculated Classification:</td>
+        <td colspan="3" style="border-top-width:6px">
+                <div class='col-sm-12'>
+                    @if (($record->score_data->summary->CuratorModifyCalculation ?? null) == "YES")
+                    <strong>YES</strong>
+                    @else
+                    NO
+                    @endif
+                </div>
+        </td>
+    </tr>
+    @if ($record->score_data->summary->CuratorClassification ?? null)
+    <tr style="font-size:14px">
+        <td style="vertical-align:top;  border-top-width:6px" nowrap class="text-left">Modified Classification:</td>
+        <td colspan="3" style="border-top-width:6px">
+                <div class='col-sm-8'>
+                    From <strong>{{ $record->score_data->summary->CalculatedClassification ?? 'N/A' }}</strong> to
+                    <strong>{{ $record->score_data->summary->CuratorClassification ?? null }}</strong>
+                </div>
+                <div class='col-sm-4'>
+                    {{-- {{ displayDate($record->score_data->summary->CuratorClassificationDate ?? null ) }} --}}
+                </div>
+        </td>
+    </tr>
+    @endif
+    @if ($record->score_data->summary->CuratorClassificationNotes ?? null)
+    <tr style="font-size:14px">
+        <td style="vertical-align:top;  border-top-width:6px" nowrap class="text-left">Reason(s) for Change:</td>
+        <td colspan="3" style="border-top-width:6px">
+                <div class='col-sm-12'>
+@markdown
+{{ $record->score_data->summary->CuratorClassificationNotes ?? null }}
+@endmarkdown
+                </div>
+        </td>
+    </tr>
+    @endif
+@endif
+
   <tr style="font-size:14px">
-    <td style="vertical-align:top" nowrap class="text-left">Evidence Summary:</td>
-    <td colspan="3" style="">
+    <td style="vertical-align:top;  border-top-width:6px" nowrap class="text-left">Evidence Summary:</td>
+    <td colspan="3" style="border-top-width:6px">
 @markdown
 {{ $record->sop7_final_classification_notes ?? null }}
 @endmarkdown

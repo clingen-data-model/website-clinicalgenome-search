@@ -95,6 +95,7 @@
             </div>
         </div>
         <div class="col-md-1">
+            &nbsp;
         </div>
         <div class="col-md-5">
             <div class="row">
@@ -106,7 +107,25 @@
                             <div class="text-muted small">({{ ucwords($contributor->role) ?? null }})</div>
                         @endforeach
                 </dd>
+                @else
+                &nbsp;
                 @endif
+            </div>
+        </div>
+        <div class="col-md-6 mt-2">
+            <div class="row">
+                <dt class="col-sm-4">Replication over time:
+                <dd class="col-sm-8">
+                    {{ $record->sop7_replication_over_time ?? '' }}
+                </dd>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <dt class="col-sm-5">Contradictory Evidence:
+                <dd class="col-sm-7">
+                    {{ $record->sop7_valid_contradictory_evidence }}
+                </dd>
             </div>
         </div>
         @if ($gcilink !== null)
@@ -133,8 +152,8 @@
           <li role="presentation" class="" style="">
             <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-dna mr-1"></i>Genetic Evidence</span>
-                @if ($ge_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $ge_count ?? 0 }}</span>
+                @if ($ge_count !== null || $cc_count !== null)
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ ($ge_count ?? 0) + ($cc_count ?? 0) }}</span>
                 @endif
             </a>
           </li>
@@ -201,24 +220,27 @@
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
                                         <div class="content-space content-border">
-                                            @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") === 0)
+                                            @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9"))
                                                 @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.rich-sop8-1')
                                             @elseif(strpos($record->specified_by->label,"SOP8"))
                                                 @include('gene-validity.partial.report-heading')
-                                                @include('gene-validity.partial.sop7')
+                                                @include('gene-validity.partial.rich-sop7')
                                             @elseif(strpos($record->specified_by->label,"SOP7"))
                                                 @include('gene-validity.partial.report-heading')
-                                                @include('gene-validity.partial.sop7')
+                                                @include('gene-validity.partial.rich-sop7')
                                             @elseif (strpos($record->specified_by->label,"SOP6"))
                                                 @include('gene-validity.partial.report-heading')
-                                                @include('gene-validity.partial.sop6')
+                                                @include('gene-validity.partial.rich-sop6')
+                                            @elseif (strpos($record->specified_by->label,"SOP5") && (isset($record->json->sopVersion) && $record->json->sopVersion != "5") )
+                                                @include('gene-validity.partial.report-heading')
+                                                @include('gene-validity.partial.rich-sop7')
                                             @elseif (strpos($record->specified_by->label,"SOP5") && $record->origin == true)
                                                 @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.sop5-legacy')
                                             @elseif (strpos($record->specified_by->label,"SOP5"))
                                                 @include('gene-validity.partial.report-heading')
-                                                @include('gene-validity.partial.sop5')
+                                                @include('gene-validity.partial.rich-sop5')
                                             @elseif (strpos($record->specified_by->label,"SOP4"))
                                                 @include('gene-validity.partial.sop4-legacy')
                                             @else
@@ -244,7 +266,7 @@
                                 @if ($clfs)
                                 <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
                                     @if ($cls_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cls_count ?? 0 }}</span>
+                                        <!--<span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cls_count ?? 0 }}</span>-->
                                     @endif
                                 </a></li>
                                 @else
@@ -254,7 +276,7 @@
                                 @if ($clfswopb)
                                 <li class="ml-2"><a href="#tab2-3" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Family Segregation w/o a Scored Proband
                                     @if ($clfs_count !== null)
-                                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $clfs_count ?? 0 }}</span>
+                                    <!--<span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $clfs_count ?? 0 }}</span>-->
                                 @endif
                                 </a></li>
                                 @else
@@ -556,6 +578,9 @@
                 @elseif (strpos($record->specified_by->label,"SOP6"))
                     @include('gene-validity.partial.report-heading')
                     @include('gene-validity.partial.sop6')
+                @elseif (strpos($record->specified_by->label,"SOP5") && (isset($record->json->sopVersion) && $record->json->sopVersion != "5") )
+                    @include('gene-validity.partial.report-heading')
+                    @include('gene-validity.partial.sop7')
                 @elseif (strpos($record->specified_by->label,"SOP5") && $record->origin == true)
                     @include('gene-validity.partial.report-heading')
                     @include('gene-validity.partial.sop5-legacy')

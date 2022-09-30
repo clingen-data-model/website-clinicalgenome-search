@@ -247,12 +247,13 @@ class ValidityController extends Controller
             $genev->each(function ($item) use (&$temp, &$segregation, &$casecontrol, &$caselevel, &$propoints, &$pmids, &$clfs, &$clfswopb) {
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
                 {
+                    //dd($item->evidence);
                     foreach ($item->evidence as $e)
                     {
-                        if ($e->proband === null)
-                            $clfswopb = true;
-                        else
+                        if ($e->proband !== null && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
                             $clfs = true;
+                        else if ($e->proband === null || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
+                            $clfswopb = true;
                     }
 
                     $segregation[] = $item;
@@ -325,7 +326,7 @@ class ValidityController extends Controller
 
 
         }
-//dd($temp);
+
         $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
@@ -339,9 +340,11 @@ class ValidityController extends Controller
             {
                 if ($evidence->meets_inclusion_criteria == true)
                 {
-                    if ($evidence->proband !== null)
+                    if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null))
+                    {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
-                    else
+                    }
+                    else if ($evidence->proband === null || $evidence->proband->label === null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
                     {
                         $clfs_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                     }
@@ -354,7 +357,7 @@ class ValidityController extends Controller
 
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;
-//dd($record);
+
         if ($gdm_uuid === null)
         {
             $gg_uuid = substr($id, 5);
@@ -367,9 +370,21 @@ class ValidityController extends Controller
         $gcilink = ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
 
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
-     //dd($extrecord->nonscorable);
+
+        switch ($record->specified_by->label)
+        {
+            case "ClinGen Gene Validity Evaluation Criteria SOP9":
+            case "ClinGen Gene Validity Evaluation Criteria SOP8":
+                $showfunctionaldata = true;
+                break;
+            default:
+                $showfunctionaldata = false;
+                break;
+        }
+
+     dd($extrecord);
         return view('gene-validity.show',
-                compact('gcilink', 'showzygosity', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
+                compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);
     }
 

@@ -27,7 +27,7 @@
                     data-search-align="left"
                     data-trim-on-search="true"
                     data-sort-order="asc"
-                    data-sort-name="label"
+                    data-sort-name="reference"
                     data-show-search-clear-button="true"
                     data-buttons="table_buttons"
                     data-show-align="left"
@@ -59,7 +59,7 @@
                 <thead>
                     <tr>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Family (Proband) Label</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference (PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference (PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family MOI</th>
@@ -73,7 +73,7 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-                        @if ($evidence->proband === null)
+                        @if ($evidence->proband === null || $evidence->proband->label == null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
                         @continue
                         @endif
                     <tr>

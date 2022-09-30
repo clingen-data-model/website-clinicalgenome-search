@@ -1770,7 +1770,7 @@ class Graphql
 					  ...segregationFields
 					}
 					  }
-					  genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083") {
+					  genetic_evidence: evidence(transitive: true, class: "SEPIO:0004083", hide_nested_variant_evidence: true) {
 					...basicFields
 					... on Statement {
                         score_status {
@@ -1783,6 +1783,17 @@ class Graphql
 							...basicFields
                             ... on Statement {
                                 ...statementFields
+                                nested_variant: evidence {
+                                    __typename
+                                    curie
+                                    type {
+                                      curie
+                                      label
+                                    }
+                                    ... on VariantEvidence {
+                                      ...variantFields
+                                    }
+                                  }
                               }
 							... on ProbandEvidence {
 							  ...probandFields
@@ -2253,7 +2264,7 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-
+//dd($response);
 		if (empty($response))
 			return $response;
 

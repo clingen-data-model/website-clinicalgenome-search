@@ -1,8 +1,11 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_with_proband">
     <!-- Default panel contents -->
     <div class="panel-heading bg-evidence1" role="tab" id="genev_case_level_variants"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Variant Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Proband Counted Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
         Case Level Variants
+        @if ($ge_count > 12)
+        <span class="pull-right">Total Maximum Points:  12</span>
+        @endif
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_with_proband" href="#tableone" aria-expanded="true" aria-controls="tableone">
                 <i class="fas fa-compress-arrows-alt"></i>
@@ -37,7 +40,7 @@
                     data-show-multi-sort="true"
                     data-show-export="true"
                     data-sort-order="asc"
-                    data-sort-name="label"
+                    data-sort-name="reference"
                     data-export-types="['json', 'xml', 'csv', 'txt', 'sql', 'xlsx', 'pdf']"
                     data-minimum-count-columns="2"
                     data-pagination="true"
@@ -61,7 +64,7 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Proband<br>Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" style="max-width: 100px;">Variant</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="ageSorter">Proband<br>Age</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Ethnicity</th>
@@ -71,7 +74,7 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo<br>(paternity/<br>maternity<br>confirmed)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-visible="false">Proband<br>Points<br>(default<br>points)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                     </tr>
@@ -117,29 +120,35 @@
                             {{ $evidence->proband->label ?? $evidence->label }}
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            @if (isset($evidence->type[0]->curie))
+                            {{--
+                                @if (isset($evidence->type[0]->curie))
                             {{ App\Validity::evidenceTypeString($evidence->type[0]->curie ?? '') }}
                             @else
+                            --}}
                             {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}
-                            @endif
+                          {{--  @endif --}}
                         </td>
                         <td class="vertical-align-center" role="cell">
                             <div class="variant-info">
                                 @if(!isset($evidence->variant->label) && isset($evidence->variants) && is_array($evidence->variants))
-                                    {{ $evidence->variants[0]->label ?? '' }}
-                                    @if (isset($evidence->variants[0]->canonical_reference[0]->curie))
-                                    <div class="mt-3">
-                                    <a  target="_cgar" href="{{ App\Validity::alleleUrlString($evidence->variants[0]->canonical_reference[0]->curie) }}" >
+                                @foreach($evidence->variants as $v)
+                                    <div class="mt-2">
+                                    {{ $v->label ?? '' }}
+                                    </div>
+                                    @if (isset($v->canonical_reference[0]->curie) && $v->canonical_reference[0]->curie != "http://reg.genome.network/allele/")
+                                    <div class="mt-1">
+                                    <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->canonical_reference[0]->curie) }}" >
                                         <i>ClinGen Allele Registry:</i><br>
-                                        {{ basename($evidence->variants[0]->canonical_reference[0]->curie) }}
+                                        {{ basename($v->canonical_reference[0]->curie) }}
                                         <i class="glyphicon glyphicon-new-window"></i>
                                     </a>
                                     </div>
                                     @endif
+                                    @endforeach
                                 @else
                                     {{ $evidence->variant->label ?? '' }}
                                     @if (isset($evidence->variant->canonical_reference[0]->curie))
-                                    <div class="mt-3">
+                                    <div class="mt-1">
                                         <a target="_cgar"  href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
                                             <i>Clingen Allele Registry:</i><br>
                                             {{ basename($evidence->variant->canonical_reference[0]->curie) }}
@@ -206,7 +215,9 @@
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
+                            @if ($showfunctionaldata)
                             {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             @if (isset($evidence->allele_origin))
@@ -250,6 +261,9 @@
     </div>
     </div>
     <div class="panel-footer text-right bg-evidence1">
-        <b>Total Variant Points:  {{ $ge_count ?? 'N/A' }}</b>
+        <b>Total Proband Counted Points:  {{ $ge_count ?? 'N/A' }}</b>
+        @if ($ge_count > 12)
+        <div >Total Maximum Points:  12</div>
+        @endif
     </div>
 </div>

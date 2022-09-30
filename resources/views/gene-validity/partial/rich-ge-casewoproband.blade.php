@@ -26,7 +26,7 @@
                     data-id-table="advancedTable"
                     data-search-align="left"
                     data-sort-order="asc"
-                    data-sort-name="label"
+                    data-sort-name="reference"
                     data-trim-on-search="true"
                     data-show-search-clear-button="true"
                     data-buttons="table_buttons"
@@ -59,7 +59,7 @@
                 <thead>
                     <tr role="row">
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter">Reference<br>(PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family<br>Phenotypes</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family<br>MOI</th>
@@ -73,7 +73,7 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-                        @if ($evidence->proband !== null)
+                        @if ($evidence->proband !== null && $evidence->proband->label !== null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
                         @continue
                         @endif
                     <tr>
@@ -94,7 +94,7 @@
                             {{ $evidence->family->ethnicity->label ?? '' }}
                         </td>
                         <td class="vertical-align-center text-left" role="cell">
-                            @if($evidence->conditions !== null)
+                            @if(!empty($evidence->conditions))
                             <strong>HPO terms(s)</strong>
                             <ul>
                                 @foreach($evidence->conditions as $condition)
