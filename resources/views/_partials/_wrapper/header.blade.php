@@ -170,9 +170,9 @@
               <li class='nav-item border-bottom-1 pb-1'>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups'><span class=' d-inline-block text-truncate'><b>All Working Groups</b></span></a>
               </li>
-              <li class='nav-item '>
+              <!-- <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/about-working-groups/'><span class=' d-inline-block text-truncate'> About ClinGen Working Groups</span></a>
-              </li>
+              </li> -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/actionability/'><span class=' d-inline-block text-truncate'> Actionability</span></a>
               </li>

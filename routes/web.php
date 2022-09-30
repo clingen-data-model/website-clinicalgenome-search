@@ -227,7 +227,7 @@ Route::group(['prefix' => 'kb/downloads'], function () {
  */
 Route::group(['prefix' => 'kb/reports'], function () {
 
-	Route::get('/stats', 'ReportController@statistics')->name('stats-index');
+	Route::get('/stats/{sort?}', 'ReportController@statistics')->name('stats-index');
 	Route::get('/curation-activity-summary-report', 'ReportController@genesReportDownload')->name('curation-activity-summary-cvs');
 
 	//Route::get('/{id?}', 'ActionabilityController@show')->name('actionability-show');

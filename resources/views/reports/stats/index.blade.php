@@ -333,13 +333,18 @@
         </div>
 
         <div class="row  mt-4">
-          <h4 class="col-sm-12">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS]) }} ClinGen Gene Curation Expert Panels</h4>
+          <h4 class="col-sm-12">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS]) }} ClinGen Gene Curation Expert Panels
+            <div class="btn-group float-right" role="group" aria-label="...">
+                <button type="button" class="btn btn-{{ $sort == 'count' ? 'default' : 'primary' }} action-vsort-label">Sort by Name</button>
+                <button type="button" class="btn btn-{{ $sort == 'count' ? 'primary' : 'default' }} action-vsort-count">Sort by Count</button>
+            </div>
+        </h4>
 
           @php
             $i=1;
           @endphp
 
-          @foreach (collect($metrics->values[App\Metric::KEY_EXPERT_PANELS])->sortBy('label')->toArray() as $key => $panel)
+          @foreach ($gceps as $key => $panel)
 
           {{-- @if(++$i <= 9) --}}
           @php
@@ -1279,7 +1284,12 @@
         </div>
 
         <div class="row  mt-4">
-          <h4 class="col-sm-12 mb-0">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} Approved ClinGen Variant Curation Expert Panels</h4>
+          <h4 class="col-sm-12 mb-0">{{ count($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY]) }} Approved ClinGen Variant Curation Expert Panels
+            <div class="btn-group float-right" role="group" aria-label="...">
+                <button type="button" class="btn btn-{{ $sort == 'count' ? 'default' : 'primary' }} action-psort-label">Sort by Name</button>
+                <button type="button" class="btn btn-{{ $sort == 'count' ? 'primary' : 'default' }} action-psort-count">Sort by Count</button>
+            </div>
+        </h4>
           <div class="col-sm-12"><small><i>(For a complete list of VCEPs at different stages of the approval process, click <a  target="report" href="https://clinicalgenome.org/affiliation"><u>here</u>)</a></i></small></div>
 
 
@@ -1287,7 +1297,7 @@
             $i=1;
           @endphp
 
-          @foreach (collect($metrics->values[App\Metric::KEY_EXPERT_PANELS_PATHOGENICITY])->sortBy('label')->toArray() as $key => $panel)
+          @foreach ($vceps as $key => $panel)
           @php
             $i++;
           @endphp
@@ -1414,6 +1424,23 @@ function SvgTooltipLink(link) {
   $(document).ready(function(){
 
       $('[data-toggle="tooltip"]').tooltip();
+
+      $('.action-vsort-label').click(function() {
+           window.location.replace('/kb/reports/stats/label#gene-disease-validity');
+      });
+
+      $('.action-vsort-count').click(function() {
+           window.location.replace('/kb/reports/stats/count#gene-disease-validity');
+      });
+
+      $('.action-psort-label').click(function() {
+           window.location.replace('/kb/reports/stats/label#variant-pathogenicity');
+      });
+
+      $('.action-psort-count').click(function() {
+           window.location.replace('/kb/reports/stats/count#variant-pathogenicity');
+      });
+
   });
 
 </script>

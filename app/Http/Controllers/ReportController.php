@@ -45,7 +45,7 @@ class ReportController extends Controller
 		return DosageResource::collection($c);*/
 	}
 
-	public function statistics()
+	public function statistics($sort = 'label')
 	{
 		// set display context for view
 		$display_tabs = collect([
@@ -55,7 +55,18 @@ class ReportController extends Controller
 
 		$metrics = Metric::latest('id')->first();
 
-		return view('reports.stats.index', compact('display_tabs', 'metrics'))
+        if ($sort == 'count')
+            $gceps = collect($metrics->values[Metric::KEY_EXPERT_PANELS])->sortByDesc($sort)->toArray();
+        else
+            $gceps = collect($metrics->values[Metric::KEY_EXPERT_PANELS])->sortBy('label')->toArray();
+
+        if ($sort == 'count')
+            $vceps = collect($metrics->values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY])->sortByDesc($sort)->toArray();
+        else
+            $vceps = collect($metrics->values[Metric::KEY_EXPERT_PANELS_PATHOGENICITY])->sortBy('label')->toArray();
+
+
+		return view('reports.stats.index', compact('display_tabs', 'metrics', 'sort', 'gceps', 'vceps'))
 						->with('user', $this->user);
 	}
 

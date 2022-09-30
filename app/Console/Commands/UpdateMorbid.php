@@ -51,21 +51,21 @@ class UpdateMorbid extends Command
             echo "\n(E002) Error retreiving Omim key\n";
             exit;
         }
-        
+
         try {
 
             $results = file_get_contents("https://data.omim.org/downloads/" . $key . "/morbidmap.txt");
 
 		} catch (\Exception $e) {
-		
+
 			echo "\n(E001) Error retreiving Omim Morbid data\n";
 			exit;
 		}
-    
+
         Morbid::query()->forceDelete();
 
         $line = strtok($results, "\n");
-        
+
         while ($line !== false)
         {
 
@@ -83,8 +83,23 @@ class UpdateMorbid extends Command
                 {
                     $record = Gene::name($gene)->first();
 
+                    if ($record === null)
+                    {
+                        // search for prev name
+                        $record = Gene::previous($gene)->first();
+
+                        if ($record === null)
+                        {
+                            // search by omim id
+                            $record = Gene::omim($value[2])->first();
+                        }
+                    }
+
                     if ($record !== null)
+                    {
                         $record->update(['morbid' => 1]);
+                        break;
+                    }
 
                 }
                 // check for disputing flag
