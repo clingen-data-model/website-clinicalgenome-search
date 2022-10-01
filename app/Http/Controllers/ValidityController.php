@@ -137,11 +137,11 @@ class ValidityController extends Controller
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
 
-        $extrecord = GeneLib::newValidityDetail([
+        $extrecord =  null; /*GeneLib::newValidityDetail([
             'page' => 0,
             'pagesize' => 20,
             'perm' => $id
-        ]);
+        ]);*/
 
         $exp_count = ($extrecord && $extrecord->experimental_evidence ? number_format(array_sum(array_column($extrecord->experimental_evidence, 'score')), 2) : null);
 
@@ -367,7 +367,7 @@ class ValidityController extends Controller
             $gdm_uuid = $map->gdm_uuid ?? null;
         }
 
-        $gcilink = ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
+        $gcilink = null; // ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
 
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
@@ -382,7 +382,7 @@ class ValidityController extends Controller
                 break;
         }
 
-     dd($extrecord);
+     //dd($extrecord);
         return view('gene-validity.show',
                 compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);

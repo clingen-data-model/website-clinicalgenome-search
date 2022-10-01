@@ -179,7 +179,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">About ClinGen's Website</a></li>
-                  <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/">Learn About New Features</a></li>
+                  <li><a href="https://clinicalgenome.org/docs/?doc-type=website-updates">Learn About New Features</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/how-to-cite/">How To Cite ClinGen</a></li>
                   <li><a href="https://clinicalgenome.org/tools/clingen-website-faq/attribution/">External Data Attribution</a></li>
                   <li><a href="https://clinicalgenome.org/about/contact-clingen/">Contact Us</a></li>
