@@ -21,6 +21,7 @@ use App\Precuration;
 use App\Mim;
 use App\Omim;
 use App\Pmid;
+use App\Nodal;
 
 /**
  *
@@ -137,11 +138,11 @@ class ValidityController extends Controller
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
 
-        $extrecord =  null; /*GeneLib::newValidityDetail([
+        $extrecord =  GeneLib::newValidityDetail([
             'page' => 0,
             'pagesize' => 20,
             'perm' => $id
-        ]);*/
+        ]);
 
         $exp_count = ($extrecord && $extrecord->experimental_evidence ? number_format(array_sum(array_column($extrecord->experimental_evidence, 'score')), 2) : null);
 
@@ -262,8 +263,40 @@ class ValidityController extends Controller
                     $casecontrol[] = $item;
                 else if ($item->type[0]->curie == "SEPIO:0004174") // the separate proband counted points records
                 {
+                    // This thing is a hot mess and totally unusable as is.  Only choice it to completely restructure.
+                    // First, seperate out the two statement records from the proband
+
+                    $statements = [];
+                    $proband = null;
+                    $n = 0;
+
+                    foreach ($item->evidence as $evidence)
+                    {
+                        if ($evidence->__typename == "Statement")
+                        {
+                            $variant = new Nodal([
+                                                    'description' => $evidence->description ?? '',
+                                                    'type' => $evidence->type ?? '',
+                                                    'score_status' => $evidence->score_status->label ?? '',
+                                                    'score' => $evidence->score ?? '',
+                                                    'calculated_score' => $evidence->calculated_score ?? '',
+                                                    'proband_counted_score' => $item->score ?? '',
+                            ]);
+
+                            foreach ($evidence->nested_variant as $nest)
+                            {
+                                if ($nest->__typename == "VariantEvidence")
+                                {
+                                    $variant->variant = $nest;
+                                }
+                            }
+
+                            $variants[] = $variant;
+                        }
+                    }
+
                     // this is stupid.  you have to go hunting for the proper reference
-                    $label = null;
+                    /*$label = null;
                     foreach ($item->evidence as $evidence)
                     {
                         if ($evidence->__typename == "ProbandEvidence")
@@ -277,6 +310,9 @@ class ValidityController extends Controller
                         $propoints[$label] = $item->score;
 
                     return true;
+                    */
+                    $item->altvariants = $variants;
+                    $caselevel[] = $item;
                 }
                 else
                     $caselevel[] = $item;
@@ -367,7 +403,7 @@ class ValidityController extends Controller
             $gdm_uuid = $map->gdm_uuid ?? null;
         }
 
-        $gcilink = null; // ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
+        $gcilink = ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
 
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
@@ -382,7 +418,7 @@ class ValidityController extends Controller
                 break;
         }
 
-     //dd($extrecord);
+     //dd($extrecord->caselevel);
         return view('gene-validity.show',
                 compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);

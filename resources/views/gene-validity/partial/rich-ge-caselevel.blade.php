@@ -74,7 +74,7 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo<br>(paternity/<br>maternity<br>confirmed)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-visible="false">Proband<br>Points<br>(default<br>points)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                     </tr>
@@ -86,6 +86,7 @@
                         $evidence = null;
                         $function = null;
                         $nodenovo = false;
+                        $dual = false;
                         foreach ($record->evidence as $ev)
                         {
                             if ($ev->__typename == "VariantEvidence")
@@ -95,7 +96,8 @@
                             else if ($ev->__typename == 'ProbandEvidence')
                             {
                                 if ($record->type[0]->curie == "SEPIO:0004174")
-                                    continue;
+                                    $dual = true;
+
                                 $evidence = $ev;
 
                                 // ugly hack to account for different structures for essentially the same evidence model in genegraph
@@ -125,13 +127,41 @@
                             {{ App\Validity::evidenceTypeString($evidence->type[0]->curie ?? '') }}
                             @else
                             --}}
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    {{ App\Validity::evidenceTypeString($v->type[0]->curie ?? '') }}
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
                             {{ App\Validity::evidenceTypeString($record->type[0]->curie ?? '') }}
+                            @endif
                           {{--  @endif --}}
                         </td>
                         <td class="vertical-align-center" role="cell">
                             <div class="variant-info">
+                                @if ($dual)
+                                    @foreach($record->altvariants as $v)
+                                        <div class="mt-2">
+                                            {{ $v->variant->variant->label ?? '' }}
+                                            </div>
+                                            @if (isset($v->variant->variant->canonical_reference[0]->curie) && $v->variant->variant->canonical_reference[0]->curie != "http://reg.genome.network/allele/")
+                                            <div class="mt-1">
+                                            <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->variant->variant->canonical_reference[0]->curie) }}" >
+                                                <i>ClinGen Allele Registry:</i><br>
+                                                {{ basename($v->variant->variant->canonical_reference[0]->curie) }}
+                                                <i class="glyphicon glyphicon-new-window"></i>
+                                            </a>
+                                        </div>
+                                        @endif
+                                        @if (!$loop->last)
+                                        <hr>
+                                        @endif
+                                    @endforeach
+                                @else
                                 @if(!isset($evidence->variant->label) && isset($evidence->variants) && is_array($evidence->variants))
-                                @foreach($evidence->variants as $v)
+                                    @foreach($evidence->variants as $v)
                                     <div class="mt-2">
                                     {{ $v->label ?? '' }}
                                     </div>
@@ -143,6 +173,9 @@
                                         <i class="glyphicon glyphicon-new-window"></i>
                                     </a>
                                     </div>
+                                    @endif
+                                    @if ($dual && !$loop->last)
+                                    <hr>
                                     @endif
                                     @endforeach
                                 @else
@@ -157,10 +190,11 @@
                                     </div>
                                     @endif
                                 @endif
+                                @endif
                             </div>
                             @if ($showzygosity && isset($evidence->zygosity->curie))
                             <div class="variant-info">
-                            <strong>{{ App\Validity::zygosityTypeString($evidence->zygosity->curie) }}</strong>
+                            <strong>{{ App\Validity::zygosityTypeString($evidence->proband->zygosity->curie) }}</strong>
                             </div>
                             @endif
                         </td>
@@ -216,29 +250,77 @@
                         </td>
                         <td class="vertical-align-center" role="cell">
                             @if ($showfunctionaldata)
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
                             {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
                             @endif
-                        </td>
-                        <td class="vertical-align-center" role="cell">
-                            @if (isset($evidence->allele_origin))
-                            @switch($evidence->allele_origin)
-                                @case("http://purl.obolibrary.org/obo/GENO_0000880")
-                                Yes ({{ $evidence->proband->paternity_maternity_confirmed }})
-                                @break
-                                @case("http://purl.obolibrary.org/obo/GENO_0000888")
-                                No
-                                @break
-                                @case("http://purl.obolibrary.org/obo/GENO_0000877")
-                                @default
-                                Unknown
-                            @endswitch
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
-                            {{ $record->score_status->label ?? '' }}
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    @if (isset($v->variant->allele_origin))
+                                    @switch($v->variant->allele_origin)
+                                        @case("http://purl.obolibrary.org/obo/GENO_0000880")
+                                        Yes ({{ $v->variant->proband->paternity_maternity_confirmed ?? '' }})
+                                        @break
+                                        @case("http://purl.obolibrary.org/obo/GENO_0000888")
+                                        No
+                                        @break
+                                        @case("http://purl.obolibrary.org/obo/GENO_0000877")
+                                        @default
+                                        Unknown
+                                    @endswitch
+                                    @endif
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                                @if (isset($evidence->allele_origin))
+                                @switch($evidence->allele_origin)
+                                    @case("http://purl.obolibrary.org/obo/GENO_0000880")
+                                    Yes ({{ $evidence->proband->paternity_maternity_confirmed }})
+                                    @break
+                                     @case("http://purl.obolibrary.org/obo/GENO_0000888")
+                                    No
+                                    @break
+                                    @case("http://purl.obolibrary.org/obo/GENO_0000877")
+                                    @default
+                                    Unknown
+                                @endswitch
+                                @endif
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    {{ $v->score_status ?? '' }}
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                            {{ $record->score_status->label ?? '' }}
+                            @endif
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    <span><strong>{{ $v->score }}</strong> ({{ $v->calculated_score }})</span>
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
                             <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
+                            @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
                             @if (isset($propoints[$evidence->proband->label]))
@@ -250,7 +332,16 @@
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 240px;">
-                            @markdown {{ $record->description }} @endmarkdown
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    @markdown {{ $v->description }} @endmarkdown
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                                @markdown {{ $record->description }} @endmarkdown
+                            @endif
                         </td>
                     </tr>
                     @endforeach

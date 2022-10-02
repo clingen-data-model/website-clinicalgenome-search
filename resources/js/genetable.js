@@ -1148,6 +1148,9 @@ function referenceSorter(one, two) {
 
     var oneloc = one.match(/PMID:\s*(\d+)/);
 
+    if (oneloc === null)
+        return 0;
+
     if (oneloc[1] !== undefined)
         pmidone = oneloc[1];
 
