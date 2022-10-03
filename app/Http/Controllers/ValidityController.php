@@ -244,16 +244,16 @@ class ValidityController extends Controller
 
         if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
-
+//dd($extrecord);
             $genev->each(function ($item) use (&$temp, &$segregation, &$casecontrol, &$caselevel, &$propoints, &$pmids, &$clfs, &$clfswopb) {
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
                 {
                     //dd($item->evidence);
                     foreach ($item->evidence as $e)
                     {
-                        if ($e->proband !== null && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
+                        if ($e->proband !== null) // && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
                             $clfs = true;
-                        else if ($e->proband === null || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
+                        else if ($e->proband === null) // || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
                             $clfswopb = true;
                     }
 
@@ -418,7 +418,7 @@ class ValidityController extends Controller
                 break;
         }
 
-     //dd($extrecord->caselevel);
+     //dd($extrecord->casecontrol);
         return view('gene-validity.show',
                 compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);

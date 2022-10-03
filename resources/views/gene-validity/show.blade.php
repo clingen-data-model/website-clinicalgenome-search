@@ -383,7 +383,11 @@
                                             <br>
                                             {{ $source->source->first_author ?? ''}}, et. al., {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
                                             <br>
+                                            @if (empty($evidence->description))
+                                            <strong>Explanation:  </strong>None
+                                            @else
                                             <strong>Explanation:  </strong>@markdown{{ $evidence->description }}@endmarkdown
+                                            @endif
                                         </p>
                                         <hr>
                                         @endforeach
@@ -661,6 +665,10 @@
     background-color: rgba(255,255,255, .23);
     border-bottom-color: transparent;
 }
+.wrapper1 {width: 100%; border: none 0px RED;
+overflow-x: scroll; overflow-y:hidden;}
+.wrapper1{height: 20px; }
+.div1 {width:1000px; height: 20px; }
 </style>
     <!-- link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet" -->
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
@@ -696,6 +704,8 @@
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
 <script src="/js/bookmark.js"></script>
+<script src="/js/jquery.doubleScroll.js"></script>
+
 
 <script>
 
@@ -763,26 +773,30 @@
             $('[data-toggle="popover"]').popover();
 		})
 
-        $('#geclv').on('post-body.bs.table', function (e, name, args) {
+    $('#geclv').on('post-body.bs.table', function (e, name, args) {
 
-$('[data-toggle="tooltip"]').tooltip();
-$('[data-toggle="popover"]').popover();
-})
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+
+    });
+
     $('#gecls').on('post-body.bs.table', function (e, name, args) {
 
-$('[data-toggle="tooltip"]').tooltip();
-$('[data-toggle="popover"]').popover();
-})
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+    })
+
     $('#geclfs').on('post-body.bs.table', function (e, name, args) {
 
-$('[data-toggle="tooltip"]').tooltip();
-$('[data-toggle="popover"]').popover();
-})
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+    })
+
     $('#gecc').on('post-body.bs.table', function (e, name, args) {
 
-$('[data-toggle="tooltip"]').tooltip();
-$('[data-toggle="popover"]').popover();
-})
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+    })
   }
 
   function toggleChevron(e) {
@@ -817,6 +831,16 @@ $(function() {
   $('#tag_genetic_evidence_case_control').on('hide.bs.collapse show.bs.collapse', toggleChevron);
   $('#tag_experimental_evidence').on('hide.bs.collapse show.bs.collapse', toggleChevron);
 
+  $(".wrapper1").scroll(function(){
+        $("#geclv")
+            .scrollLeft($(".wrapper1").scrollLeft());
+    });
+
+    $("#geclv").scroll(function(){
+        alert("a");
+        $(".wrapper1")
+            .scrollLeft($("#geclv").scrollLeft());
+    });
 });
 
 </script>

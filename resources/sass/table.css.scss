@@ -4,6 +4,11 @@ table.border-none td {
   border-top:none !important;
 }
 
+table.dataTable tbody td {
+    word-break: break-word;
+    vertical-align: top;
+}
+
 td.valign-top {
   vertical-align: top;
 }

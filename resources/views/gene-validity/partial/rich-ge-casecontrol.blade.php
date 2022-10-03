@@ -100,7 +100,8 @@
                                     @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    <span class="text-danger"><strong>####</strong></span>
+                                    {{ $evidence->case_cohort->disease->label ?? '' }}
+                                    <div>({{ $evidence->case_cohort->disease->curie ?? '' }})</div>
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ App\Validity::evidenceTypeString($casecontrol->type[0]->curie ?? '') }}
@@ -124,10 +125,13 @@
                                     {{ $evidence->control_cohort->num_with_variant ?? '' }}/{{ $evidence->control_cohort->all_genotyped_sequenced ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    @if (isset($evidence->statistical_significance_value_type) && $evidence->statistical_significance_value_type !== null)
+                                    @if (isset($evidence->statistical_significance_value_type) && !empty($evidence->statistical_significance_value_type))
                                     <strong>{{ $evidence->statistical_significance_value_type }}:</strong>
+                                    {{ $evidence->statistical_significance_value }}
+                                    @elseif (isset($evidence->statistical_significance_value_type) && empty($evidence->statistical_significance_value_type))
+                                    <strong>{{ $evidence->statistical_significance_value_type }}:</strong>
+                                    0
                                     @endif
-                                    {{ $evidence->statistical_significance_value ?? '' }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
                                     {{ $evidence->p_value ?? '' }}

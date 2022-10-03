@@ -1925,6 +1925,12 @@ class Graphql
 					iri
 					label
 					num_with_variant
+                    disease {
+                        curie
+                        description
+                        iri
+                        label
+                      }
 				  }
 					 control_cohort {
 					   all_genotyped_sequenced

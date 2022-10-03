@@ -19,7 +19,11 @@
             No  evidence for a Family with a proband was found.
         </div>
         @else
-        <div class="table-responsive light-arrows"  style="overflow-x: scroll;">
+        <div class="wrapper1">
+            <div class="div1">
+            </div>
+        </div>
+        <div class="table-responsive double-scroll light-arrows">
             <table id="geclv" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"
@@ -118,7 +122,7 @@
                     @endphp
 
                     <tr>
-                        <td class="vertical-align-center" role="cell" style="min-width: 80px; word-break: normal;">
+                        <td class="vertical-align-center" role="cell" style="min-width: 260px; word-break: break-word;">
                             {{ $evidence->proband->label ?? $evidence->label }}
                         </td>
                         <td class="vertical-align-center" role="cell">
@@ -139,7 +143,7 @@
                             @endif
                           {{--  @endif --}}
                         </td>
-                        <td class="vertical-align-center" role="cell">
+                        <td class="vertical-align-center" role="cell" style="min-width: 180px; word-break: break-all;">
                             <div class="variant-info">
                                 @if ($dual)
                                     @foreach($record->altvariants as $v)
@@ -242,10 +246,10 @@
                                 @foreach($evidence->proband->testing_methods as $key => $value)
                                 <strong>Method {{ $key + 1 }}:</strong><br>{{ $value }}<br>
                                 @endforeach
-                                @if (!empty($evidence->proband->genotyping_method))
-                                <strong>Description of genotyping method:</strong>
-                                {{ $evidence->proband->genotyping_method ?? '' }}
-                                @endif
+                            @endif
+                            @if (!empty($evidence->proband->genotyping_method))
+                            <strong>Description of genotyping method:</strong>
+                            {{ $evidence->proband->genotyping_method ?? '' }}
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">

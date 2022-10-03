@@ -73,7 +73,7 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-                        @if ($evidence->proband === null || $evidence->proband->label == null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
+                        @if ($evidence->proband === null)
                         @continue
                         @endif
                     <tr>

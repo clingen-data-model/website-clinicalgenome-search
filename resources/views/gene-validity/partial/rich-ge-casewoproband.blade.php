@@ -73,7 +73,7 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-                        @if ($evidence->proband !== null && $evidence->proband->label !== null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
+                        @if ($evidence->proband !== null)
                         @continue
                         @endif
                     <tr>
@@ -117,10 +117,10 @@
                             {{ $evidence->phenotype_negative_allele_negative_count }}
                         </td>
                         <td>
-                            @if ($evidence->estimated_lod_score !== null)
+                            @if ($evidence->published_lod_score !== null)
+                            <strong>Published:</strong><br>{{ $evidence->published_lod_score }}
+                            @elseif ($evidence->estimated_lod_score !== null)
                             <strong>Calculated:</strong><br>{{ $evidence->estimated_lod_score }}
-                            @elseif ($evidence->published_lod_score !== null)
-                            <strong>Calculated:</strong><br>{{ $evidence->published_lod_score }}
                             @endif
                         </td>
                         <td>
