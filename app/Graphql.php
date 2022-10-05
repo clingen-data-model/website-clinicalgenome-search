@@ -1790,6 +1790,7 @@ class Graphql
                                       curie
                                       label
                                     }
+                                    description
                                     ... on VariantEvidence {
                                       ...variantFields
                                     }
@@ -1904,6 +1905,17 @@ class Graphql
 					curie
 					label
 				  }
+                  source {
+                    abstract
+                    curie
+                    description
+                    first_author
+                    iri
+                    label
+                    multiple_authors
+                    short_citation
+                    year_published
+                  }
 				}
 				fragment caseControlFields on CaseControlEvidence {
 				  iri

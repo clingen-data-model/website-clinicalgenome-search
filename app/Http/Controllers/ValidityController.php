@@ -289,6 +289,10 @@ class ValidityController extends Controller
                                 {
                                     $variant->variant = $nest;
                                 }
+                                else if ($nest->__typename == "GenericResource")
+                                {
+                                    $variant->function = $nest;
+                                }
                             }
 
                             $variants[] = $variant;
@@ -418,7 +422,7 @@ class ValidityController extends Controller
                 break;
         }
 
-     //dd($extrecord->casecontrol);
+     //dd($extrecord->caselevel);
         return view('gene-validity.show',
                 compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
             ->with('user', $this->user);

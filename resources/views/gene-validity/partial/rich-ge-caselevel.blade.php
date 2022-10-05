@@ -203,12 +203,28 @@
                             @endif
                         </td>
                         <td class="vertical-align-center" role="cell">
+                            @if ($dual)
+                            @foreach($record->altvariants as $v)
+                                @if (empty($v->variant->source))
+                                <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
+                                @else
+                                {!! displayCitation($v->variant->source) !!}
+                                    @if (in_array($v->variant->source->curie, $extrecord->eas))
+                                    <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                                    @endif
+                                @endif
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
                             @if (empty($evidence->source))
                             <span class="text-danger"><strong>ERROR:  Missing evidence->source structure</strong></span>
                             @else
                             {!! displayCitation($evidence->source) !!}
                             @if (in_array($evidence->source->curie, $extrecord->eas))
                             <div><span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span></div>
+                            @endif
                             @endif
                             @endif
                         </td>
@@ -256,7 +272,7 @@
                             @if ($showfunctionaldata)
                             @if ($dual)
                                 @foreach($record->altvariants as $v)
-                                    {{ empty($function) ?  'No' : 'Yes (' . $function->description . ')'}}
+                                    {{ empty($v->function) ?  'No' : 'Yes (' . $v->function->description . ')'}}
                                     @if (!$loop->last)
                                     <hr>
                                     @endif
