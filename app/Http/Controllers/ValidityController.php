@@ -144,7 +144,18 @@ class ValidityController extends Controller
             'perm' => $id
         ]);
 
-        $exp_count = ($extrecord && $extrecord->experimental_evidence ? number_format(array_sum(array_column($extrecord->experimental_evidence, 'score')), 2) : null);
+        $exp_count = null;
+        // do not count the reviews
+        if ($extrecord && $extrecord->experimental_evidence)
+        {
+            $scorable = [];
+
+            foreach($extrecord->experimental_evidence as $e)
+                if (isset($e->score_status->label) && $e->score_status->label == "Score")
+                    $scorable[] = $e;
+
+            $exp_count = number_format(array_sum(array_column($scorable, 'score')), 2);
+        }
 
         // set display context for view
         $display_tabs = collect([
@@ -241,7 +252,6 @@ class ValidityController extends Controller
         // uhg, since all the segregation is in one structure we need to maintain watch flags
         $clfs = false;
         $clfswopb = false;
-
         if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
 //dd($extrecord);
