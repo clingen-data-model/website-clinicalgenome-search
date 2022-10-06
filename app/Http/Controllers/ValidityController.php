@@ -381,7 +381,20 @@ class ValidityController extends Controller
 
         }
 
-        $ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
+        //$ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
+        $ge_count = null;
+        // do not count the reviews
+        if ($extrecord && $extrecord->caselevel)
+        {
+            $scorable = [];
+
+            foreach($extrecord->caselevel as $e)
+                if (isset($e->score_status->label) && $e->score_status->label == "Score")
+                    $scorable[] = $e;
+
+            $ge_count = number_format(array_sum(array_column($scorable, 'score')), 2);
+        }
+
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
 
         // the segregation statements are strangly formatted in that they are an array within an array and the scores are mixed
