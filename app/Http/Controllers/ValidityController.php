@@ -325,8 +325,12 @@ class ValidityController extends Controller
 
                     return true;
                     */
-                    $item->altvariants = $variants;
-                    $caselevel[] = $item;
+
+                    if (isset($variants))
+                    {
+                        $item->altvariants = $variants;
+                        $caselevel[] = $item;
+                    }
                 }
                 else
                     $caselevel[] = $item;
