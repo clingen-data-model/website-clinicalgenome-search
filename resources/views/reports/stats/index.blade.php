@@ -178,7 +178,7 @@
         <p>The ClinGen Gene-Disease Clinical Validity curation process involves evaluating the strength of evidence supporting or refuting a claim that variation in a particular gene causes a particular disease. </p>
         {{-- <h4>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} Total Gene-Disease Validity Curations</h4> --}}
         <div class="row mb-4">
-          <div class="col-sm-8 pt-4">
+          <div class="col-sm-8 pt-4 pr-0">
             <h4 class="mb-0">Classification Statistics</h4>
             <div class="mb-3"><a href="{{ route('validity-index')}}" target="report" class="text-dark">Gene-Disease Clinical Validity has <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_CURATIONS] ?? '' }} curations</strong> encompassing <strong>{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_GENES] ?? '' }} genes</strong>.</a></div>
             <table class="table table-condensed">
@@ -187,7 +187,7 @@
                 <td class="border-0">
                   <a  target="report"  href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive * 1.4 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] ?? '' }}</span>
                   </div>
@@ -199,7 +199,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Strong" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-strong"role="progressbar" aria-valuenow="{{ $metrics->validity_percent_strong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_strong *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-strong"role="progressbar" aria-valuenow="{{ $metrics->validity_percent_strong }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_strong *1.4 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_STRONG] ?? '' }}</span>
                   </div>
@@ -211,7 +211,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Moderate" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-moderate" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_moderate }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_moderate *1.5 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-moderate" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_moderate }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_moderate *1.4 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_MODERATE] ?? '' }}</span>
                   </div>
@@ -223,7 +223,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Limited" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-limited" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_limited }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_limited *1.5 }}%; ">
+                    <div class="progress-bar progress-bar-left-radius-0  chart-bg-limited" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_limited }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_limited *1.4 }}%; ">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_LIMITED] ?? '' }}</span>
                   </div>
@@ -235,7 +235,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=No Known Disease Relationship" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.5 }}%;" >
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-no-known-disease-relationship" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_none }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_none *1.4 }}%;" >
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_NONE] ?? '' }}</span>
                   </div>
@@ -247,7 +247,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Disputed" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.5 }}%; ">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-disputed-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_disputed }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_disputed *1.4 }}%; ">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_DISPUTED] ?? '' }}</span>
                   </div>
@@ -259,7 +259,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: 1%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_refuted *1.4 }}%; ">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_REFUTED] ?? '' }}</span>
                   </div>

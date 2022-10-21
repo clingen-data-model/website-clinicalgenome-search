@@ -146,11 +146,10 @@ class ValidityController extends Controller
 
         $exp_count = null;
         // do not count the reviews
-        if ($extrecord && $extrecord->experimental_evidence)
-        {
+        if ($extrecord && $extrecord->experimental_evidence) {
             $scorable = [];
 
-            foreach($extrecord->experimental_evidence as $e)
+            foreach ($extrecord->experimental_evidence as $e)
                 if (isset($e->score_status->label) && $e->score_status->label == "Score")
                     $scorable[] = $e;
 
@@ -216,10 +215,8 @@ class ValidityController extends Controller
         foreach ($mim_names as $mim)
             $mims[$mim->mim] = $mim->title;
 
-        foreach ($msave as $value)
-        {
-            if (!isset($mims[intval($value)]))
-            {
+        foreach ($msave as $value) {
+            if (!isset($mims[intval($value)])) {
                 $omim = Omim::omimid($value)->first();
 
                 if ($omim !== null)
@@ -254,13 +251,11 @@ class ValidityController extends Controller
         $clfswopb = false;
         if ($extrecord !== null) {
             $genev = collect($extrecord->genetic_evidence);
-//dd($extrecord);
+            //dd($extrecord);
             $genev->each(function ($item) use (&$temp, &$segregation, &$casecontrol, &$caselevel, &$propoints, &$pmids, &$clfs, &$clfswopb) {
-                if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence))
-                {
+                if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence)) {
                     //dd($item->evidence);
-                    foreach ($item->evidence as $e)
-                    {
+                    foreach ($item->evidence as $e) {
                         if ($e->proband !== null) // && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
                             $clfs = true;
                         else if ($e->proband === null) // || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
@@ -268,8 +263,7 @@ class ValidityController extends Controller
                     }
 
                     $segregation[] = $item;
-                }
-                else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
+                } else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
                     $casecontrol[] = $item;
                 else if ($item->type[0]->curie == "SEPIO:0004174") // the separate proband counted points records
                 {
@@ -280,27 +274,21 @@ class ValidityController extends Controller
                     $proband = null;
                     $n = 0;
 
-                    foreach ($item->evidence as $evidence)
-                    {
-                        if ($evidence->__typename == "Statement")
-                        {
+                    foreach ($item->evidence as $evidence) {
+                        if ($evidence->__typename == "Statement") {
                             $variant = new Nodal([
-                                                    'description' => $evidence->description ?? '',
-                                                    'type' => $evidence->type ?? '',
-                                                    'score_status' => $evidence->score_status->label ?? '',
-                                                    'score' => $evidence->score ?? '',
-                                                    'calculated_score' => $evidence->calculated_score ?? '',
-                                                    'proband_counted_score' => $item->score ?? '',
+                                'description' => $evidence->description ?? '',
+                                'type' => $evidence->type ?? '',
+                                'score_status' => $evidence->score_status->label ?? '',
+                                'score' => $evidence->score ?? '',
+                                'calculated_score' => $evidence->calculated_score ?? '',
+                                'proband_counted_score' => $item->score ?? '',
                             ]);
 
-                            foreach ($evidence->nested_variant as $nest)
-                            {
-                                if ($nest->__typename == "VariantEvidence")
-                                {
+                            foreach ($evidence->nested_variant as $nest) {
+                                if ($nest->__typename == "VariantEvidence") {
                                     $variant->variant = $nest;
-                                }
-                                else if ($nest->__typename == "GenericResource")
-                                {
+                                } else if ($nest->__typename == "GenericResource") {
                                     $variant->function = $nest;
                                 }
                             }
@@ -326,13 +314,11 @@ class ValidityController extends Controller
                     return true;
                     */
 
-                    if (isset($variants))
-                    {
+                    if (isset($variants)) {
                         $item->altvariants = $variants;
                         $caselevel[] = $item;
                     }
-                }
-                else
+                } else
                     $caselevel[] = $item;
 
                 if (!empty($item->evidence))
@@ -364,8 +350,7 @@ class ValidityController extends Controller
 
             // build a quick list of the eariest earliest_articles
             $eas = [];
-            if (isset($extrecord->earliest_articles))
-            {
+            if (isset($extrecord->earliest_articles)) {
                 foreach ($extrecord->earliest_articles as $article)
                     $eas[] = $article->curie;
             }
@@ -377,18 +362,15 @@ class ValidityController extends Controller
             $extrecord->eas = $eas;
             ksort($pmids);
             $extrecord->pmids = $pmids;
-
-
         }
 
         //$ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $ge_count = null;
         // do not count the reviews
-        if ($extrecord && $extrecord->caselevel)
-        {
+        if ($extrecord && $extrecord->caselevel) {
             $scorable = [];
 
-            foreach($extrecord->caselevel as $e)
+            foreach ($extrecord->caselevel as $e)
                 if (isset($e->score_status->label) && $e->score_status->label == "Score")
                     $scorable[] = $e;
 
@@ -401,18 +383,12 @@ class ValidityController extends Controller
         $cls_count = 0;
         $clfs_count = 0;
 
-        if ($extrecord && !empty($extrecord->segregation))
-        {
-            foreach ($extrecord->segregation[0]->evidence as $evidence)
-            {
-                if ($evidence->meets_inclusion_criteria == true)
-                {
-                    if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null))
-                    {
+        if ($extrecord && !empty($extrecord->segregation)) {
+            foreach ($extrecord->segregation[0]->evidence as $evidence) {
+                if ($evidence->meets_inclusion_criteria == true) {
+                    if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
-                    }
-                    else if ($evidence->proband === null || $evidence->proband->label === null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null))
-                    {
+                    } else if ($evidence->proband === null || $evidence->proband->label === null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null)) {
                         $clfs_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                     }
                 }
@@ -425,8 +401,7 @@ class ValidityController extends Controller
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;
 
-        if ($gdm_uuid === null)
-        {
+        if ($gdm_uuid === null) {
             $gg_uuid = substr($id, 5);
 
             $map = Gdmmap::gg($gg_uuid)->first();
@@ -438,8 +413,7 @@ class ValidityController extends Controller
 
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
-        switch ($record->specified_by->label)
-        {
+        switch ($record->specified_by->label) {
             case "ClinGen Gene Validity Evaluation Criteria SOP9":
             case "ClinGen Gene Validity Evaluation Criteria SOP8":
                 $showfunctionaldata = true;
@@ -449,9 +423,11 @@ class ValidityController extends Controller
                 break;
         }
 
-     //dd($extrecord->caselevel);
-        return view('gene-validity.show',
-                compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims','clfs', 'clfswopb'))
+        //dd($extrecord->caselevel);
+        return view(
+            'gene-validity.show',
+            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims', 'clfs', 'clfswopb')
+        )
             ->with('user', $this->user);
     }
 
