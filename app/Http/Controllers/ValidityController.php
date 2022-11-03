@@ -375,6 +375,7 @@ class ValidityController extends Controller
                     $scorable[] = $e;
 
             $ge_count = number_format(array_sum(array_column($scorable, 'score')), 2);
+
         }
 
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);

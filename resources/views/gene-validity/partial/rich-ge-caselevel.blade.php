@@ -67,7 +67,7 @@
                     <tr role="row">
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Proband<br>Label</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" style="max-width: 100px;">Variant</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" style="max-width: 260px;">Variant</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference<br>(PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="ageSorter">Proband<br>Age</th>
@@ -143,14 +143,14 @@
                             @endif
                           {{--  @endif --}}
                         </td>
-                        <td class="vertical-align-center" role="cell" style="min-width: 180px; word-break: break-all;">
+                        <td class="vertical-align-center" role="cell" style="min-width: 260px; word-break: break-all;">
                             <div class="variant-info">
                                 @if ($dual)
                                     @foreach($record->altvariants as $v)
                                         <div class="mt-2">
                                             {{ $v->variant->variant->label ?? '' }}
                                             </div>
-                                            @if (isset($v->variant->variant->canonical_reference[0]->curie) && $v->variant->variant->canonical_reference[0]->curie != "http://reg.genome.network/allele/")
+                                            @if (isset($v->variant->variant->canonical_reference[0]->curie) && $v->variant->variant->canonical_reference[0]->curie != "http://reg.genome.network/allele/"  && strpos(basename($v->variant->variant->canonical_reference[0]->curie), 'CA') === 0 )
                                             <div class="mt-1">
                                             <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->variant->variant->canonical_reference[0]->curie) }}" >
                                                 <i>ClinGen Allele Registry:</i><br>
@@ -169,7 +169,7 @@
                                     <div class="mt-2">
                                     {{ $v->label ?? '' }}
                                     </div>
-                                    @if (isset($v->canonical_reference[0]->curie) && $v->canonical_reference[0]->curie != "http://reg.genome.network/allele/")
+                                    @if (isset($v->canonical_reference[0]->curie) && $v->canonical_reference[0]->curie != "http://reg.genome.network/allele/" && strpos(basename($v->canonical_reference[0]->curie), 'CA') === 0)
                                     <div class="mt-1">
                                     <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->canonical_reference[0]->curie) }}" >
                                         <i>ClinGen Allele Registry:</i><br>
@@ -184,7 +184,7 @@
                                     @endforeach
                                 @else
                                     {{ $evidence->variant->label ?? '' }}
-                                    @if (isset($evidence->variant->canonical_reference[0]->curie))
+                                    @if (isset($evidence->variant->canonical_reference[0]->curie) && strpos(basename($evidence->variant->canonical_reference[0]->curie), 'CA') === 0)
                                     <div class="mt-1">
                                         <a target="_cgar"  href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
                                             <i>Clingen Allele Registry:</i><br>
