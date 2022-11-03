@@ -3031,10 +3031,10 @@ class Graphql
 
 			if (isset($panelcounters[$record->attributed_to->curie]))
 			{
-                if ($record->classification->label == "disputed" || $record->classification->label == "disputing")
-                    dd($record);
+                //if ($record->classification->label == "disputed" || $record->classification->label == "disputing")
+                //    dd($record);
 
-				echo $record->classification->label . "\n";
+				//echo $record->classification->label . "\n";
 				$panelcounters[$record->attributed_to->curie]['count']++;
 				$panelcounters[$record->attributed_to->curie]['classtotals'][$record->classification->label]++;
 			}

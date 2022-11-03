@@ -187,7 +187,7 @@
                 <td class="border-0">
                   <a  target="report"  href="{{ route('validity-index') }}?col_search=classification&col_search_val=Definitive" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive * 1.4 }}%;">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-definitive" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_definitive }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_definitive *1.4 }}%;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_DEFINITIVE] ?? '' }}</span>
                   </div>
@@ -259,7 +259,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('validity-index') }}?col_search=classification&col_search_val=Refuted" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_refuted *1.4 }}%; ">
+                    <div class="progress-bar progress-bar-left-radius-0 chart-bg-refuted-evidence" role="progressbar" aria-valuenow="{{ $metrics->validity_percent_refuted }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->validity_percent_refuted *1.4 }}%; "">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_VALIDITY_REFUTED] ?? '' }}</span>
                   </div>
