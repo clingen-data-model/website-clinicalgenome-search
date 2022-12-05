@@ -296,14 +296,23 @@
                                     @if (isset($v->variant->allele_origin))
                                     @switch($v->variant->allele_origin)
                                         @case("http://purl.obolibrary.org/obo/GENO_0000880")
-                                        Yes ({{ $v->variant->proband->paternity_maternity_confirmed ?? '' }})
+                                        Yes
+                                        @if (isset($v->variant->proband->paternity_maternity_confirmed))
+                                        ({{ $v->variant->proband->paternity_maternity_confirmed ?? '' }})
+                                        @endif
                                         @break
                                         @case("http://purl.obolibrary.org/obo/GENO_0000888")
                                         No
+                                        @if (isset($v->variant->proband->paternity_maternity_confirmed))
+                                        ({{ $v->variant->proband->paternity_maternity_confirmed ?? '' }})
+                                        @endif
                                         @break
                                         @case("http://purl.obolibrary.org/obo/GENO_0000877")
                                         @default
                                         Unknown
+                                        @if (isset($v->variant->proband->paternity_maternity_confirmed))
+                                        ({{ $v->variant->proband->paternity_maternity_confirmed ?? '' }})
+                                        @endif
                                     @endswitch
                                     @endif
                                     @if (!$loop->last)
