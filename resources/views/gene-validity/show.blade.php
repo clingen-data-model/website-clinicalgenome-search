@@ -153,7 +153,7 @@
             <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-dna mr-1"></i>Genetic Evidence</span>
                 @if ($ge_count !== null || $cc_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ min(($ge_count ?? 0) + ($cc_count ?? 0), 12.00) }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="Some descriptive content"">{{ min(($ge_count ?? 0) + ($cc_count ?? 0) + ($cls_pt_count ?? 0), 12.00) }}</span>
                 @endif
             </a>
           </li>
@@ -161,7 +161,7 @@
 			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-microscope mr-1"></i>Experimental Evidence</span>
                 @if ($exp_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ min($exp_count ?? 0, 6.00) }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="Some descriptive content"">{{ min($exp_count ?? 0, 6.00) }}</span>
                 @endif
             </a>
 		</li>
@@ -265,8 +265,8 @@
                                 </a></li>
                                 @if ($clfs)
                                 <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
-                                    @if ($cls_count !== null)
-                                        <!--<span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cls_count ?? 0 }}</span>-->
+                                    @if ($cls_pt_count !== null)
+                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $cls_pt_count ?? 0 }}</span>
                                     @endif
                                 </a></li>
                                 @else

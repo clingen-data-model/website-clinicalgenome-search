@@ -2,6 +2,7 @@
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
         <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
         Case Level Segregation
+        <span class="pull-right">Total Points:  {{ $cls_pt_count ?? 0 }}</span>
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_segregation" href="#tabletwo" aria-expanded="true" aria-controls="tabletwo">
                 <i class="fas fa-compress-arrows-alt"></i>
@@ -62,7 +63,9 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference (PMID)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Ethnicity</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Family Phenotypes</th>
+                        @if ($moiflag)
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Family MOI</th>
+                        @endif
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Aff</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true"># Unaff</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">LOD Score</th>
@@ -108,9 +111,11 @@
                             {{ $evidence->phenotype_free_text }}
                             @endif
                         </td>
+                        @if($moiflag)
                         <td>
                             {{ $evidence->family->mode_of_inheritance ?? '' }}
                         </td>
+                        @endif
                         <td>
                             {{ $evidence->phenotype_positive_allele_positive_count ?? ''}}
                         </td>
@@ -141,5 +146,6 @@
     </div>
     <div class="panel-footer text-right bg-evidence2">
         <b>Total LOD Score:  {{ $cls_count ?? 'N/A' }}</b>
+        <div>Total Points:  {{ $cls_pt_count ?? 0 }}</div>
     </div>
 </div>

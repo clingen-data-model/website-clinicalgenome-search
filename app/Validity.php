@@ -391,6 +391,7 @@ class Validity extends Model
 
             $differences = $this->compare($current, $new);
 
+
             if (!empty($differences))      // update
             {
                 //dd($new);

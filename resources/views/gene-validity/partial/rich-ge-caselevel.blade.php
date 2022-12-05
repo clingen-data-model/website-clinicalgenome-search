@@ -347,6 +347,10 @@
                                 {{ number_format($propoints[$evidence->proband->label],2) }}
                             @elseif (isset($propoints[$evidence->label]))
                                 {{ number_format($propoints[$evidence->label],2) }}
+                            @elseif (isset($record->altvariants))
+                                @foreach($record->altvariants as $v)
+                                    {{ $v->calculated_score }}
+                                @endforeach
                             @else
                                 {{ $record->score }}
                             @endif

@@ -320,7 +320,7 @@ class ValidityController extends Controller
                     }
                 } else
                     $caselevel[] = $item;
-
+//dd($item);
                 if (!empty($item->evidence))
                     foreach ($item->evidence as $evidence)
                         if ($evidence->source !== null)
@@ -385,10 +385,13 @@ class ValidityController extends Controller
         $clfs_count = 0;
 
         if ($extrecord && !empty($extrecord->segregation)) {
+            $exomeflag = false;
             foreach ($extrecord->segregation[0]->evidence as $evidence) {
                 if ($evidence->meets_inclusion_criteria == true) {
                     if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
+                        if (($evidence->sequencing_method->curie ?? false) == "SEPIO:0004541" )
+                            $exomeflag = true;
                     } else if ($evidence->proband === null || $evidence->proband->label === null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null)) {
                         $clfs_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                     }
@@ -398,6 +401,14 @@ class ValidityController extends Controller
 
         $cls_count = number_format($cls_count, 2);
         $clfs_count = number_format($clfs_count, 2);
+
+        $cls_pt_count = 0;
+        if ($cls_count >= 2 && $cls_count < 3)
+            $cls_pt_count += ($exomeflag ? 1 : .5);
+        else if ($cls_count >= 3 && $cls_count < 5)
+            $cls_pt_count += ($exomeflag ? 2 : 1);
+        else if ($cls_count >= 5)
+            $cls_pt_count += ($exomeflag ? 3 : 1.5);
 
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;
@@ -424,10 +435,12 @@ class ValidityController extends Controller
                 break;
         }
 
-        //dd($extrecord->caselevel);
+        $moiflag =  ($record->mode_of_inheritance->website_display_label === "Semidominant inheritance");
+
+        //dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
-            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'clfs_count', 'pmids', 'mims', 'clfs', 'clfswopb')
+            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'cls_pt_count', 'clfs_count', 'pmids', 'mims', 'clfs', 'clfswopb')
         )
             ->with('user', $this->user);
     }
