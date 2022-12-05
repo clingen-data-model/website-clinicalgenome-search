@@ -152,13 +152,21 @@
                                             </div>
                                             @if (isset($v->variant->variant->canonical_reference[0]->curie) && $v->variant->variant->canonical_reference[0]->curie != "http://reg.genome.network/allele/"  && strpos(basename($v->variant->variant->canonical_reference[0]->curie), 'CA') === 0 )
                                             <div class="mt-1">
-                                            <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->variant->variant->canonical_reference[0]->curie) }}" >
-                                                <i>ClinGen Allele Registry:</i><br>
-                                                {{ basename($v->variant->variant->canonical_reference[0]->curie) }}
-                                                <i class="glyphicon glyphicon-new-window"></i>
-                                            </a>
-                                        </div>
-                                        @endif
+                                                <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->variant->variant->canonical_reference[0]->curie) }}" >
+                                                    <i>ClinGen Allele Registry:</i><br>
+                                                    {{ basename($v->variant->variant->canonical_reference[0]->curie) }}
+                                                    <i class="glyphicon glyphicon-new-window"></i>
+                                                </a>
+                                            </div>
+                                            @elseif (isset($v->variant->variant->canonical_reference[0]->curie) && $v->variant->variant->canonical_reference[0]->curie != "http://reg.genome.network/allele/"  && strpos($v->variant->variant->canonical_reference[0]->curie, 'CLINVAR:') === 0 )
+                                            <div class="mt-1">
+                                                <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->variant->variant->canonical_reference[0]->curie) }}" >
+                                                    <i>ClinVar:</i><br>
+                                                    {{ basename($v->variant->variant->canonical_reference[0]->curie) }}
+                                                    <i class="glyphicon glyphicon-new-window"></i>
+                                                </a>
+                                            </div>
+                                            @endif
                                         @if (!$loop->last)
                                         <hr>
                                         @endif
@@ -349,7 +357,7 @@
                                 {{ number_format($propoints[$evidence->label],2) }}
                             @elseif (isset($record->altvariants))
                                 @foreach($record->altvariants as $v)
-                                    {{ $v->calculated_score }}
+                                    {{ $v->proband_counted_score }}
                                 @endforeach
                             @else
                                 {{ $record->score }}

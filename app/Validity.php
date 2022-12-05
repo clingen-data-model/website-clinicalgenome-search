@@ -819,7 +819,7 @@ class Validity extends Model
         {
             //return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.variationId=" . basename($x);
 
-            return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.RCV=" . basename($x);
+            return "https://www.ncbi.nlm.nih.gov/clinvar/variation/" . basename($x);
         }
         else
         {
