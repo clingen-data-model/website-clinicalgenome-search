@@ -225,7 +225,7 @@
                             <div class="small">OpenAPI specification and documentation for the ClinGen Evidence Repository JSON-LD REST API</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.docs.stoplight.io"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation"> Documentation</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://brl-bcm.stoplight.io/docs/erepo"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation"> Documentation</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>

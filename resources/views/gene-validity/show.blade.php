@@ -287,6 +287,7 @@
                                         <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
                                     @endif
                                 </a></li>
+                                <li class="pull-right"><img src="/images/beta.png" height="45"></li>
                             </ul>
                     </div>
                     <div class="panel-body p-0">
@@ -344,6 +345,7 @@
                     <div class="panel-heading">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab4-1" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>  Experimental Evidence  <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $exp_count ?? 0 }}</span></a></li>
+                                <li class="pull-right"><img src="/images/beta.png" height="45"></li>
                             </ul>
                     </div>
                     <div class="panel-body p-0">
