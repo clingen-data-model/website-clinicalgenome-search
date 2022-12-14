@@ -137,6 +137,23 @@
             </div>
         </div>
         @endif
+        @if(isset($extrecord))
+        <div class="col-md-12 mt-4">
+            <div class="row">
+                <div class="alert alert-warning" style="box-shadow: 0 0 10px red;" role="alert">
+                    <img src="/images/beta.png" height="45" class="pull-right">
+                    <h4>Gene-Disease Validity Evidence Display Beta Release</h4>
+                    New to this release is the display of evidence data supporting the classification of a gene-disease assertion.  Evidence is categorized
+                    as Genetic Evidence, Experimental Evidence, or Non-Scorable Evidence and viewable by selecting the appropriate tab below.
+                    <p class="mt-2">While this feature has undergone months of internal testing,
+                        because of the volume of data presented in the aforementioned tabs, it is possible some early deployment issues may still be present.
+                        Therefor, it is offered to the larger community as a Beta feature.  During this Beta period, we welcome any feedback from the community, including display related or suspected content accuracy.
+                    To send feedback, simply click on the "Evidence Feedback" button and complete the form.</p>
+                    <div class="text-center mt-2"><button type="button" class="btn btn-success action-beta-form">Evidence Feedback</button></div>
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
 
     <hr />
@@ -264,13 +281,13 @@
                                     @endif
                                 </a></li>
                                 @if ($clfs)
-                                <li class="ml-2"><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
+                                <li class="ml-2 "><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
                                     @if ($cls_pt_count !== null)
                                         <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format($cls_pt_count ?? 0, 2) }}</span>
                                     @endif
                                 </a></li>
                                 @else
-                                <li class="ml-2"><a href="#tab2-2" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Segregation
+                                <li class="ml-2 disabled" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-title="" data-content="No Case Level Segregation evidence was provided."><a href="#tab2-2" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Segregation
                                 </a></li>
                                 @endif
                                 @if ($clfswopb)
@@ -280,13 +297,22 @@
                                 @endif
                                 </a></li>
                                 @else
-                                <li class="ml-2"><a href="#tab2-3" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Family Segregation w/o a Scored Proband</a></li>
+                                <li class="ml-2 disabled" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-title="" data-content="No Case Level Family Segregation evidence was provided."><a href="#tab2-3" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Family Segregation w/o a Scored Proband</a></li>
                                 @endif
-                                <li class="ml-2"><a href="#tab2-4" data-toggle="{{ empty($extrecord->casecontrol) ?  'notab' : 'tab' }}"><i class="fas {{ empty($extrecord->casecontrol) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case-Control
+                                @if (!empty($extrecord->casecontrol))
+                                <li class="ml-2"><a href="#tab2-4" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case-Control
                                     @if ($cc_count !== null)
                                         <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
                                     @endif
                                 </a></li>
+                                @else
+                                <li class="ml-2 disabled" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-title="" data-content="No Case Control evidence was provided."
+                                ><a href="#tab2-4" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case-Control
+                                    @if ($cc_count !== null)
+                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
+                                    @endif
+                                </a></li>
+                                @endif
                                 <li class="pull-right"><img src="/images/beta.png" height="45"></li>
                             </ul>
                     </div>
@@ -626,6 +652,11 @@
 </div>
 @endsection
 
+@section('modals')
+
+@include('modals.beta')
+
+@endsection
 
 @section('script_css')
 <style>
@@ -707,6 +738,8 @@ overflow-x: scroll; overflow-y:hidden;}
 <script src="/js/genetable.js"></script>
 <script src="/js/bookmark.js"></script>
 <script src="/js/jquery.doubleScroll.js"></script>
+<script src="/js/jquery.validate.min.js" ></script>
+<script src="/js/additional-methods.min.js" ></script>
 
 
 <script>
@@ -842,6 +875,79 @@ $(function() {
         alert("a");
         $(".wrapper1")
             .scrollLeft($("#geclv").scrollLeft());
+    });
+
+    $('.action-beta-form').on('click', function(){
+        $('#beta-form')[0].reset();
+        $('#modalBeta').modal('show');
+    });
+
+    $( '#beta-form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token
+                }
+            });
+
+            var url = "/kb/gene-validity/feedback";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+
+                    $('#modalBeta').modal('hide');
+                    swal("Feedback Sent", "", "success");
+
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while submitting the email.  Please try again later.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalBeta').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
     });
 });
 

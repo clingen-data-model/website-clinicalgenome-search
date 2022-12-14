@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_segregation">
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
         Case Level Segregation
         <span class="pull-right">Total Points:  {{ $cls_pt_count ?? 0 }}</span>
         <!--<div class="pull-right">
@@ -9,6 +9,10 @@
             </a>
         </div>-->
     </div>
+    <div class="alert alert-info mx-3 mb-0 mt-3" role="alert"><b>
+        <i class="mr-3">Important!</i>  This is an extremely long table and portions of it may be horizontally scrolled out of view.
+        Use your horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
+    </b></div>
     <div id="tabletwo" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_segregation">
     <div class="panel-body">
         @if (!$clfs)
@@ -145,7 +149,7 @@
     </div>
     </div>
     <div class="panel-footer text-right bg-evidence2">
-        <b>Total LOD Score:  {{ $cls_count ?? 'N/A' }}</b>
+        <b>Total Counted LOD Score:  {{ $cls_count ?? 'N/A' }}</b>
         <div>Total Points:  {{ $cls_pt_count ?? 0 }}</div>
     </div>
 </div>

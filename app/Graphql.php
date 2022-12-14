@@ -2160,6 +2160,8 @@ class Graphql
 		// add each gene to the collection
 		foreach($response->affiliations->agent_list as $record)
 		{
+            //if (strpos($record->label, 'Prenatal') > 0)
+            //    dd($record);
 			$node = new Nodal((array) $record);
 			$total_all_curations = 0;
 			$total_approver_curations = 0;

@@ -116,6 +116,8 @@ Route::group(['prefix' => 'kb/gene-validity'], function () {
 
 		Route::get('/{id?}', 'ValidityController@show')->name('validity-show');
 
+        Route::post('feedback', 'ValidityController@feedback');
+
 });
 
 

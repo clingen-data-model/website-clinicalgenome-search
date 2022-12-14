@@ -360,8 +360,16 @@ class ValidityController extends Controller
             $extrecord->caselevel = $caselevel;
             $extrecord->nonscorable = $nonscorable;
             $extrecord->eas = $eas;
-            ksort($pmids);
-            $extrecord->pmids = $pmids;
+
+            // sort the pmid array by numerical pmid value
+            $sortedpmids = [];
+            foreach($pmids as $key => $value)
+            {
+                $t = substr($key, 5);
+                $sortedpmids[intval($t)] = $value;
+            }
+            ksort($sortedpmids);
+            $extrecord->pmids = $sortedpmids;
         }
 
         //$ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
@@ -457,5 +465,28 @@ class ValidityController extends Controller
         $date = date('Y-m-d');
 
         return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
+    }
+
+
+    /**
+     * Process the Validity Evidence Feedback Form
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function feedback(Request $request)
+    {
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'message' => "Request completed"],
+                                200);
+
+        /*
+
+        return response()->json(['success' => 'false',
+								 'status_code' => 1001,
+							 	 'message' => "Invalid Email Address"],
+                                  501);
+        */
     }
 }
