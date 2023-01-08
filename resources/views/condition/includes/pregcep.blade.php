@@ -30,11 +30,11 @@
                         {{ strip_tags($gcep->summary) }}
                     </p>
                     @if ($gcep->bucket == 2)
-                    <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
+                    <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $disease->label }}</span></p>
                     @elseif ($gcep->bucket == 1)
-                    <p>The {{ $gcep->smart_title }} is in the process of precurating <span class="badge">{{ $record->label }}</span></p>
+                    <p>The {{ $gcep->smart_title }} is in the process of precurating <span class="badge">{{ $disease->label }}</span></p>
                     @elseif ($gcep->bucket == 3)
-                        <p>The {{ $gcep->smart_title }} has indicated an interest in <span class="badge">{{ $record->label }}</span></p>
+                        <p>The {{ $gcep->smart_title }} has indicated an interest in <span class="badge">{{ $disease->label }}</span></p>
                     @endif
                 </div>
             </div>

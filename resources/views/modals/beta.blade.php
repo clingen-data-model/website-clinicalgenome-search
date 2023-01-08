@@ -10,62 +10,86 @@
 				</div>
 				<form class="form-horizontal" id="beta-form" method="" action="">
 					@csrf
-					<input type="hidden" name="ident" value="">
+					<input type="hidden" name="link" value="{{ Request::url() }}">
+                    <input type="hidden" name="gene" value="{{ $record->gene->label ?? '' }}">
 					<div class="modal-body">
 						<div class="row mb-3">
 							<div class="col-md-12">
-                                <div class="mx-5 mb-3">
-									Please complete all field.
+                                <div class="mx-2 mb-3 alert alert-danger" role="alert">
+									<b>Note:  All fields are required and must be completed in full before submitting</b>
 								</div>
-								<div class="form-group">
-									<label for="name" class="col-sm-4 control-label">Full Name <i>(Required)</i></label>
+                                <div class="form-group">
+									<label for="gcep" class="col-sm-8 control-label">I am a member of the GCEP that approved this curation:</label>
+                                    <div class="col-sm-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gcep" value="no" checked>
+                                            <label class="form-check-label" for="exampleRadios1">
+                                              No
+                                            </label>
+                                          </div>
+                                          <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="gcep" value="yes">
+                                            <label class="form-check-label" for="exampleRadios2">
+                                              Yes
+                                            </label>
+                                          </div>
+									</div>
+                                </div>
+                                <div class="form-group">
+									<label for="name" class="col-sm-4 control-label">Full Name:</label>
 									<div class="col-sm-7">
 										<input type="text" class="form-control" name="name" value="" placeholder="Your First and Last Name" required>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="email" class="col-sm-4 control-label">Email <i>(Required)</i></label>
+									<label for="email" class="col-sm-4 control-label">Email:</label>
 									<div class="col-sm-7">
 										<input type="text" class="form-control" name="email" value="" placeholder="Your Email Address" required>
 									</div>
 								</div>
                                 <div class="form-group">
-                                    <label for="company" class="col-sm-4 control-label">Institution <i>(Required)</i></label>
+                                    <label for="company" class="col-sm-4 control-label">Institution:</label>
                                     <div class="col-sm-7">
                                         <input id="startdate" type="text" class="form-control" name="company" value="" placeholder="Your Company or Institution" required>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="position" class="col-sm-4 control-label">Position/Title <i>(Required)</i></label>
+                                    <label for="position" class="col-sm-4 control-label">Position/Title:</label>
                                     <div class="col-sm-7">
                                         <input id="stopdate" type="text" class="form-control" name="position" value="" placeholder="Your Position or Title" required>
                                     </div>
                                 </div>
+                                <hr \>
+                                <div class="ml-5 mb-2 text-primary">Select from the checklist below all categories pertaining to your feedback.  Please include all relevent details in the Feedback field</div>
                                 <div class="form-group">
-									<label for="input_feedbackType" class="col-sm-4 control-label">Type <i>(Required)</i></label>
+                                    <!-- Please describe your feedback in more detail in the “Feedback/Comments” field. If you believe evidence is missing or misrepresented, please describe what you expected to see. -->
+                                    <label for="input_feedbackType" class="col-sm-4 control-label">Categories:</label>
                                     	<div class="col-sm-7">
 											<div>
-											<input id="screen" name="input_feedbackType" type="radio" class="custom-control-input" value="1">
-											<label class="custom-control-label text-normal" for="screen">Screen / Display Issue</label>
+											<input id="screen" name="type_incorrect" type="checkbox" class="custom-control-input" value="Evidence is incorrect">
+											<label class="custom-control-label text-normal" for="screen">I believe some evidence is incorrectly represented</label>
 											</div><div>
-											<input id="incorrect" name="input_feedbackType" type="radio" class="custom-control-input" value="2" checked>
-											<label class="custom-control-label text-normal" for="incorrect">Evidence Data Incorrect</label>
+											<input id="incorrect" name="type_missing" type="checkbox" class="custom-control-input" value="Evidence is missing">
+											<label class="custom-control-label text-normal" for="incorrect">I am aware of other evidence not included in this curation</label>
 											</div><div>
-											<input id="missing" name="input_feedbackType" type="radio" class="custom-control-input" value="3">
-											<label class="custom-control-label text-normal" for="missing">Evidence Data Missing</label>
+											<input id="missing" name="type_classification" type="checkbox" class="custom-control-input" value="Disagree with classification">
+											<label class="custom-control-label text-normal" for="missing">I don’t agree with the final gene-disease validity classification</label>
 											</div><div>
-											<input id="assessment" name="input_feedbackType" type="radio" class="custom-control-input" value="4">
-											<label class="custom-control-label text-normal" for="assessment">Curation Assessment</label>
-											</div>
+											<input id="assessment" name="type_typo" type="checkbox" class="custom-control-input" value="Typo or grammatical error">
+											<label class="custom-control-label text-normal" for="assessment">There is a typographical or grammatical error in this curation</label>
+											</div><div>
+                                            <input id="assessment" name="type_other" type="checkbox" class="custom-control-input" value="Other">
+                                            <label class="custom-control-label text-normal" for="assessment">Other <i>(Please elaborate in your comments below)</i></label>
+                                            </div>
 										</div>
                                 </div>
                                 <div class="form-group">
                                     <input type="hidden" name="page" value="{{ Request::url()  }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="comment" class="col-sm-4 control-label">Feedback / Comments <i>(Requiired)</i></label>
+                                    <label for="comment" class="col-sm-4 control-label">Feedback:</label>
                                     <div class="col-sm-7">
-										<textarea id="selected-regions" name="comment" rows="8" cols="60" required></textarea>
+										<textarea id="selected-regions" name="comment" rows="7" cols="60" required></textarea>
                                     </div>
                                 </div>
 

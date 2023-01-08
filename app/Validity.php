@@ -826,4 +826,15 @@ class Validity extends Model
             return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/by_canonicalid?canonicalid=" . basename($x);
         }
     }
+
+
+    public static function hpsort($array)
+    {
+        uasort ( $array , function ($a, $b) {
+            return strnatcmp($a->label, $b->label);
+            }
+        );
+
+        return $array;
+    }
 }

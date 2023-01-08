@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
+use Illuminate\Support\Facades\Mail;
 
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
@@ -22,6 +23,7 @@ use App\Mim;
 use App\Omim;
 use App\Pmid;
 use App\Nodal;
+use App\Mail\Feedback;
 
 /**
  *
@@ -320,7 +322,7 @@ class ValidityController extends Controller
                     }
                 } else
                     $caselevel[] = $item;
-//dd($item);
+                //dd($item);
                 if (!empty($item->evidence))
                     foreach ($item->evidence as $evidence)
                         if ($evidence->source !== null)
@@ -363,8 +365,7 @@ class ValidityController extends Controller
 
             // sort the pmid array by numerical pmid value
             $sortedpmids = [];
-            foreach($pmids as $key => $value)
-            {
+            foreach ($pmids as $key => $value) {
                 $t = substr($key, 5);
                 $sortedpmids[intval($t)] = $value;
             }
@@ -383,7 +384,6 @@ class ValidityController extends Controller
                     $scorable[] = $e;
 
             $ge_count = number_format(array_sum(array_column($scorable, 'score')), 2);
-
         }
 
         $cc_count = ($extrecord && !empty($extrecord->casecontrol) ? number_format(array_sum(array_column($extrecord->casecontrol, 'score')), 2) : null);
@@ -398,7 +398,7 @@ class ValidityController extends Controller
                 if ($evidence->meets_inclusion_criteria == true) {
                     if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
-                        if (($evidence->sequencing_method->curie ?? false) == "SEPIO:0004541" )
+                        if (($evidence->sequencing_method->curie ?? false) == "SEPIO:0004541")
                             $exomeflag = true;
                     } else if ($evidence->proband === null || $evidence->proband->label === null || ($evidence->estimated_lod_score === null && $evidence->published_lod_score === null)) {
                         $clfs_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
@@ -429,7 +429,7 @@ class ValidityController extends Controller
             $gdm_uuid = $map->gdm_uuid ?? null;
         }
 
-        $gcilink = ($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
+        $gcilink = null; //($gdm_uuid === null ? null : "https://curation.clinicalgenome.org/curation-central/" . $gdm_uuid);
 
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
@@ -476,10 +476,24 @@ class ValidityController extends Controller
      */
     public function feedback(Request $request)
     {
-        return response()->json(['success' => 'true',
-                                'status_code' => 200,
-                                'message' => "Request completed"],
-                                200);
+        $data = $request->all();
+
+        //dd($data);
+
+        /*return response()->json(
+            [
+                'success' => 'true',
+                'status_code' => 200,
+                'message' => "Request completed"
+            ],
+            200
+        ); */
+
+        $user = "pweller1@geisinger.edu";
+
+        // genecuration@clinicalgenome.org
+
+        $mail = Mail::to($user);
 
         /*
 
@@ -488,5 +502,29 @@ class ValidityController extends Controller
 							 	 'message' => "Invalid Email Address"],
                                   501);
         */
+
+
+        $date = Carbon::now()->yesterday()->format('m/d/Y');
+
+        $classifications = [];
+        foreach (['type_incorrect', 'type_missing', 'type_classification', 'type_typo', 'type_other'] as $v)
+            if (isset($data[$v]))
+                $classifications[] = $data[$v];
+
+        $mail->send(new Feedback(['fullname' => $data['name'], 'gcep' => $data['gcep'], 'company' => $data['company'], 'email' => $data['email'],
+                                    'title' => $data['position'], 'type_incorrect' => $data['type_incorrect'] ?? '', 'type_missing' => $data['type_missing'] ?? '',
+                                    'type_classification' => $data['type_classification'] ?? '', 'type_typo' => $data['type_typo'] ?? '', 'type_other' => $data['type_other'] ?? '',
+                                    'comment' => $data['comment'], 'link' => $data['link'], 'gene' => $data['gene'], 'classifications' => $classifications
+
+                                ]));
+
+        return response()->json(
+            [
+                'success' => 'true',
+                'status_code' => 200,
+                'message' => "Request completed"
+            ],
+            200
+        );
     }
 }

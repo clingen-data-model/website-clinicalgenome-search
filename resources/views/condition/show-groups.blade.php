@@ -8,7 +8,7 @@
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1> {!! displayMondoObsolete($record->label) !!}
+						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($disease->label) }}</h1> {!! displayMondoObsolete($disease->label) !!}
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 							<i class="far fa-caret-square-down"></i> View Disease Facts
 						</a>
@@ -60,7 +60,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating <strong><i>{{  $record->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
+            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating <strong><i>{{  $disease->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
                 <div class="row mb-2">
                     <div class="col-md-offset-1 col-md-2 under-review-color text-center p-1 img-rounded">
                         <span class=""><strong>Under review</strong></span>

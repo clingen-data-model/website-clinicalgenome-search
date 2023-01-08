@@ -9,6 +9,8 @@ use Illuminate\Console\Command;
 //use App\Imports\Excel;
 //use App\Imports\ExcelGRT;
 
+use DB;
+
 use App\Gtr;
 use App\Gene;
 use App\Drug;
@@ -45,6 +47,25 @@ class TestTest extends Command
      * @return mixed
      */
     public function handle()
+    {
+        echo "Fixing genes table...\n";
+
+        $results = DB::select( DB::raw("SELECT hgnc_id, COUNT(hgnc_id) FROM genes WHERE deleted_at is null GROUP BY hgnc_id HAVING COUNT(hgnc_id) > 1"));
+
+        foreach ($results as $result)
+        {
+            $record = Gene::hgnc($result->hgnc_id)->orderBy('id', 'desc')->first();
+
+            echo "Fixing $record->name \n";
+
+            $record->delete();
+            // $record->restore();
+        }
+
+    }
+
+
+    public function savegtr()
     {
 
         echo "Testing GRT data ...\n";

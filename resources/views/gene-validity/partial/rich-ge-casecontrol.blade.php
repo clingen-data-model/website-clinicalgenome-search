@@ -8,9 +8,9 @@
             </a>
         </div>-->
     </div>
-    <div class="alert alert-info mx-3 mb-0 mt-3" role="alert"><b>
-        <i class="mr-3">Important!</i>  This is an extremely long table and portions of it may be horizontally scrolled out of view.
-        Use your horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
+    <div class="text-danger ml-3 mb-0 mt-3"><b>
+        Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
+        Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
     </b></div>
     <div id="tablefour" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_control">
         <div class="panel-body">

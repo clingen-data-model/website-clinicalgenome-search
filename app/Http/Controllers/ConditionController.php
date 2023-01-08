@@ -182,21 +182,21 @@ class ConditionController extends Controller
         $mims = [];
         $pmids = [];
 
-		foreach ($record->genetic_conditions as $key => $disease)
+		foreach ($record->genetic_conditions as $key => $ndisease)
 		{
 			// actionability
-			/*foreach ($disease->actionability_assertions as $assertion)
+			/*foreach ($ndisease->actionability_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $this->actionability_sort_order[$assertion->classification->label] ?? 0,
-									'disease' => $disease->disease, 'assertion' => $assertion]);
+									'disease' => $ndisease->disease, 'assertion' => $assertion]);
 				$actionability_collection->push($node);
 			}*/
 
 			// validity
-			foreach ($disease->gene_validity_assertions as $assertion)
+			foreach ($ndisease->gene_validity_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
-									'gene' => $disease->gene, 'assertion' => $assertion]);
+									'gene' => $ndisease->gene, 'assertion' => $assertion]);
 				$validity_collection->push($node);
                 $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
                 if (isset($assertion->las_rationale['pmids']))
@@ -204,10 +204,10 @@ class ConditionController extends Controller
 			}
 
 			// dosage
-			/*foreach ($disease->gene_dosage_assertions as $assertion)
+			/*foreach ($ndisease->gene_dosage_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $assertion->dosage_classification->oridinal ?? 0,
-									'disease' => $disease->disease, 'assertion' => $assertion]);
+									'disease' => $ndisease->disease, 'assertion' => $assertion]);
 				$dosage_collection->push($node);
 			}*/
 		}
@@ -311,9 +311,9 @@ class ConditionController extends Controller
 			'active' => "condition",
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
-//dd($record);
-        //dd($validity_collection);
-		return view('condition.by-activity', compact('display_tabs', 'record', 'validity_collection', 'total_panels',
+
+        //dd($disease);
+		return view('condition.by-activity', compact('display_tabs', 'record', 'disease', 'validity_collection', 'total_panels',
                                                     'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection'));
 	}
 
@@ -544,7 +544,7 @@ class ConditionController extends Controller
                         + ($actionability_collection->isEmpty() ? 0 : 1)
                         +*/ count($pregceps);
 
-		return view('condition.by-gene', compact('display_tabs', 'record', 'user', 'variant_collection',
+		return view('condition.by-gene', compact('display_tabs', 'record', 'disease', 'user', 'variant_collection',
                                                     'pregceps', 'pmids', 'mims', 'mimflag', 'validity_collection',
                                                     'total_panels'));
 	}
@@ -597,7 +597,7 @@ class ConditionController extends Controller
         $validity_collection = collect();
         $variant_collection = collect();
 
-        foreach ($record->genetic_conditions as $key => $disease)
+        foreach ($record->genetic_conditions as $key => $ndisease)
 		{
 			// actionability
 			/*foreach ($disease->actionability_assertions as $assertion)
@@ -608,10 +608,10 @@ class ConditionController extends Controller
 			}*/
 
 			// validity
-			foreach ($disease->gene_validity_assertions as $assertion)
+			foreach ($ndisease->gene_validity_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
-									'gene' => $disease->gene, 'assertion' => $assertion]);
+									'gene' => $ndisease->gene, 'assertion' => $assertion]);
 				$validity_collection->push($node);
 			}
 
@@ -725,6 +725,7 @@ class ConditionController extends Controller
 		return view('condition.show-groups', compact(
 			'display_tabs',
 			'record',
+            'disease',
 			'validity_collection',
 			'variant_collection',
             'variant_panels',
@@ -754,6 +755,7 @@ class ConditionController extends Controller
 				->with('back', url()->previous()
 				->with('user', $this->user));
 
+        $disease = Disease::rosetta($id);
 
 		$record = GeneLib::conditionDetail([
 											'condition' => $id,
@@ -778,7 +780,7 @@ class ConditionController extends Controller
 
 		$user = $this->user;
 
-		return view('condition.show-external-resources', compact('display_tabs', 'record', 'user'));
+		return view('condition.show-external-resources', compact('display_tabs', 'record', 'disease', 'user'));
 	}
 
 

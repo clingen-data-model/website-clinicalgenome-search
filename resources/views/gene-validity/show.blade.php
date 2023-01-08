@@ -142,13 +142,25 @@
             <div class="row">
                 <div class="alert alert-warning" style="box-shadow: 0 0 10px red;" role="alert">
                     <img src="/images/beta.png" height="45" class="pull-right">
-                    <h4>Gene-Disease Validity Evidence Display Beta Release</h4>
-                    New to this release is the display of evidence data supporting the classification of a gene-disease assertion.  Evidence is categorized
-                    as Genetic Evidence, Experimental Evidence, or Non-Scorable Evidence and viewable by selecting the appropriate tab below.
-                    <p class="mt-2">While this feature has undergone months of internal testing,
-                        because of the volume of data presented in the aforementioned tabs, it is possible some early deployment issues may still be present.
-                        Therefor, it is offered to the larger community as a Beta feature.  During this Beta period, we welcome any feedback from the community, including display related or suspected content accuracy.
-                    To send feedback, simply click on the "Evidence Feedback" button and complete the form.</p>
+                    <h4>Gene-Disease Validity Evidence Display (Beta Release)</h4>
+                    New to this release is the more granular display of individual pieces of evidence supporting the gene-disease classification for curations.
+                    Newly available evidence includes Genetic Evidence, Experimental Evidence, and Non-Scorable Evidence. Information is viewable by selecting the appropriate tab below.
+                    The “Summary” tab remains unchanged from previous releases.  For some curations, particularly those completed prior to 2018, evidence detail may not currently be available and only the summary tab will be showm.
+                    <span class="text-primary" data-toggle="collapse" href="#show-beta-more" role="button" aria-expanded="false" aria-controls="show-beta-more">
+                        <i>Read more...</i>
+                    </span>
+                    <div class="collapse" id="show-beta-more">
+                    <p class="mt-2">
+                        This feature has been extensively tested internally. However, due to the volume of data presented, it is possible some early deployment issues may still be present.
+                        Please note, information in free text fields was not originally intended for public display, therefore typographical or grammatical errors may be present.
+                    </p>
+                    <p>
+                        This new, more detailed information is offered to ClinGen users as a Beta feature
+                        We welcome any feedback from the community related to display errors or suspected content inaccuracy.
+                        To send feedback, click on the "Evidence Feedback" button and complete the form.
+                    </p>
+                    </div>
+
                     <div class="text-center mt-2"><button type="button" class="btn btn-success action-beta-form">Evidence Feedback</button></div>
                 </div>
             </div>
@@ -170,7 +182,7 @@
             <a href="#gdvt2" aria-controls="gdvt2" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-dna mr-1"></i>Genetic Evidence</span>
                 @if ($ge_count !== null || $cc_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="The maximum number of genetic evidence points is 12.  Additional points may be documented, but will not be tallied beyond the maximum.">{{ number_format(min(($ge_count ?? 0) + ($cc_count ?? 0) + ($cls_pt_count ?? 0), 12.00), 2) }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="The maximum number of genetic evidence points is 12.  Additional points may be documented, but will not be tallied beyond the maximum.">{{ number_format(min(($ge_count ?? 0) + ($cc_count ?? 0) + ($cls_pt_count ?? 0), 12.00), 2) }} {{ ($ge_count ?? 0) + ($cc_count ?? 0) + ($cls_pt_count ?? 0) > 12 ? '*' : '' }}</span>
                 @endif
             </a>
           </li>
@@ -178,7 +190,7 @@
 			<a href="#gdvt4" aria-controls="gdvt4" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-microscope mr-1"></i>Experimental Evidence</span>
                 @if ($exp_count !== null)
-                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="The maximum number of experimental evidence points is 6.  Additional points may be documented, but will not be tallied beyond the maximum.">{{ number_format(min($exp_count ?? 0, 6.00), 2) }}</span>
+                    <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1" data-container="body" data-toggle="popover" data-placement="top" data-trigger="hover" data-title="Total Capped Points" data-content="The maximum number of experimental evidence points is 6.  Additional points may be documented, but will not be tallied beyond the maximum.">{{ number_format(min($exp_count ?? 0, 6.00), 2) }} {{ ($exp_count ?? 0) > 6 ? '*' : ''  }}</span>
                 @endif
             </a>
 		</li>
@@ -196,6 +208,8 @@
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
             </a>
 		</li>
+        @else
+        <span class="pull-right mt-2 mr-5 text-danger"><b><i>Additional evidence details have not been made available for this particular Gene-Disease assertion </i></b></span>
         @endif
 	</ul>
 

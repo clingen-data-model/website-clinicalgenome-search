@@ -64,7 +64,7 @@ class UpdateActivity extends Command
 
         foreach($results->collection as $gene)
         {
-            //echo "Updating  " . $gene->hgnc_id . "\n";
+            //echo "Updating  " . $gene->symbol . " " . $gene->hgnc_id . "\n";
 
             $flags = ['actionability' => $gene->has_actionability,
                         'validity' => $gene->has_validity,

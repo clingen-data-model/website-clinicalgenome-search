@@ -9,9 +9,9 @@
             </a>
         </div>-->
     </div>
-    <div class="alert alert-info mx-3 mb-0 mt-3" role="alert"><b>
-        <i class="mr-3">Important!</i>  This is an extremely long table and portions of it may be horizontally scrolled out of view.
-        Use your horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
+    <div class="text-danger ml-3 mb-0 mt-3"><b>
+        Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
+        Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
     </b></div>
     <div id="tabletwo" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_segregation">
     <div class="panel-body">
@@ -105,7 +105,7 @@
                             @if(!empty($evidence->conditions))
                             <strong>HPO terms(s)</strong>
                             <ul>
-                                @foreach($evidence->conditions as $condition)
+                                @foreach(App\Validity::hpsort($evidence->conditions) as $condition)
                                 <li>{{ $condition->label }} ({{ $condition->curie }})</li>
                                 @endforeach
                             </ul>

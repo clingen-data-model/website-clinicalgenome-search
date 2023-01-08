@@ -4,7 +4,7 @@
         <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Proband Counted Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
         Case Level Variants
         @if ($ge_count > 12)
-        <span class="pull-right">Total Maximum Points:  12</span>
+        <span class="pull-right">Total Maximum Points:  12.00</span>
         @endif
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_with_proband" href="#tableone" aria-expanded="true" aria-controls="tableone">
@@ -12,9 +12,9 @@
             </a>
         </div>-->
     </div>
-    <div class="alert alert-info mx-3 mb-0 mt-3" role="alert"><b>
-        <i class="mr-3">Important!</i>  This is an extremely long table and portions of it may be horizontally scrolled out of view.
-        Use your horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
+    <div class="text-danger ml-3 mb-0 mt-3"><b>
+        Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
+        Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
     </b></div>
     <div id="tableone" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_variants">
     <div class="panel-body">
@@ -73,6 +73,10 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Variant<br>Type</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" style="max-width: 260px;">Variant</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="referenceSorter" data-field="reference">Reference<br>(PMID)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
+                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Sex</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-sorter="ageSorter">Proband<br>Age</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Ethnicity</th>
@@ -81,10 +85,6 @@
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="false">Proband<br>Methods<br>of<br>Detection</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Functional<br>Data<br>(Explanation)</th>
                         <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">De Novo<br>(paternity/<br>maternity<br>confirmed)</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Points<br>(default<br>points)</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Proband<br>Counted<br>Points</th>
-                        <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                     </tr>
                 </thead>
                 <tbody role="rowgroup">
@@ -189,6 +189,14 @@
                                         <i class="glyphicon glyphicon-new-window"></i>
                                     </a>
                                     </div>
+                                    @elseif (isset($v->canonical_reference[0]->curie) && $v->canonical_reference[0]->curie != "http://reg.genome.network/allele/"  && strpos($v->canonical_reference[0]->curie, 'CLINVAR:') === 0 )
+                                    <div class="mt-1">
+                                        <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->canonical_reference[0]->curie) }}" >
+                                            <i>ClinVar:</i><br>
+                                            {{ basename($v->canonical_reference[0]->curie) }}
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    </div>
                                     @endif
                                     @if ($dual && !$loop->last)
                                     <hr>
@@ -200,6 +208,14 @@
                                     <div class="mt-1">
                                         <a target="_cgar"  href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
                                             <i>Clingen Allele Registry:</i><br>
+                                            {{ basename($evidence->variant->canonical_reference[0]->curie) }}
+                                            <i class="glyphicon glyphicon-new-window"></i>
+                                        </a>
+                                    </div>
+                                    @elseif (isset($evidence->variant->canonical_reference[0]->curie) && strpos($evidence->variant->canonical_reference[0]->curie, 'CLINVAR:') === 0 )
+                                    <div class="mt-1">
+                                        <a  target="_cgar" href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
+                                            <i>ClinVar:</i><br>
                                             {{ basename($evidence->variant->canonical_reference[0]->curie) }}
                                             <i class="glyphicon glyphicon-new-window"></i>
                                         </a>
@@ -240,6 +256,51 @@
                             @endif
                             @endif
                         </td>
+                        <td class="vertical-align-center" role="cell">
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    {{ $v->score_status ?? '' }}
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                            {{ $record->score_status->label ?? '' }}
+                            @endif
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    <span><strong>{{ $v->score }}</strong> ({{ $v->calculated_score }})</span>
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                            <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
+                            @endif
+                        </td>
+                        <td class="vertical-align-center" role="cell">
+                            @if (isset($propoints[$evidence->proband->label]))
+                                {{ number_format($propoints[$evidence->proband->label],2) }}
+                            @elseif (isset($propoints[$evidence->label]))
+                                {{ number_format($propoints[$evidence->label],2) }}
+                            @else
+                                {{ $record->score }}
+                            @endif
+                        </td>
+                        <td class="vertical-align-center" role="cell" style="max-width: 240px;">
+                            @if ($dual)
+                                @foreach($record->altvariants as $v)
+                                    @markdown {{ $v->description }} @endmarkdown
+                                    @if (!$loop->last)
+                                    <hr>
+                                    @endif
+                                @endforeach
+                            @else
+                                @markdown {{ $record->description }} @endmarkdown
+                            @endif
+                        </td>
                         <td class="vertical-align-center" role="cell" style="max-width: 80px;">
                             {{ $evidence->proband->sex->label ?? '' }}
                         </td>
@@ -256,7 +317,7 @@
                             @if (!empty($evidence->proband->phenotypes))
                             <strong>HPO terms(s):</strong>
                             <ul>
-                                @foreach($evidence->proband->phenotypes as $term)
+                                @foreach(App\Validity::hpsort($evidence->proband->phenotypes) as $term)
                                 <li>{{ $term->label }} ({{ $term->curie }})</li>
                                 @endforeach
                             </ul>
@@ -339,51 +400,6 @@
                                 @endif
                             @endif
                         </td>
-                        <td class="vertical-align-center" role="cell">
-                            @if ($dual)
-                                @foreach($record->altvariants as $v)
-                                    {{ $v->score_status ?? '' }}
-                                    @if (!$loop->last)
-                                    <hr>
-                                    @endif
-                                @endforeach
-                            @else
-                            {{ $record->score_status->label ?? '' }}
-                            @endif
-                        </td>
-                        <td class="vertical-align-center" role="cell">
-                            @if ($dual)
-                                @foreach($record->altvariants as $v)
-                                    <span><strong>{{ $v->score }}</strong> ({{ $v->calculated_score }})</span>
-                                    @if (!$loop->last)
-                                    <hr>
-                                    @endif
-                                @endforeach
-                            @else
-                            <span><strong>{{ $record->score }}</strong> ({{ $record->calculated_score }})</span>
-                            @endif
-                        </td>
-                        <td class="vertical-align-center" role="cell">
-                            @if (isset($propoints[$evidence->proband->label]))
-                                {{ number_format($propoints[$evidence->proband->label],2) }}
-                            @elseif (isset($propoints[$evidence->label]))
-                                {{ number_format($propoints[$evidence->label],2) }}
-                            @else
-                                {{ $record->score }}
-                            @endif
-                        </td>
-                        <td class="vertical-align-center" role="cell" style="max-width: 240px;">
-                            @if ($dual)
-                                @foreach($record->altvariants as $v)
-                                    @markdown {{ $v->description }} @endmarkdown
-                                    @if (!$loop->last)
-                                    <hr>
-                                    @endif
-                                @endforeach
-                            @else
-                                @markdown {{ $record->description }} @endmarkdown
-                            @endif
-                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -395,7 +411,7 @@
     <div class="panel-footer text-right bg-evidence1">
         <b>Total Proband Counted Points:  {{ $ge_count ?? 'N/A' }}</b>
         @if ($ge_count > 12)
-        <div >Total Maximum Points:  12</div>
+        <div >Total Maximum Points:  12.00</div>
         @endif
     </div>
 </div>

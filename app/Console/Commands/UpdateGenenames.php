@@ -91,11 +91,11 @@ class UpdateGenenames extends Command
                 unset($doc['mane_plus']);
 
 			// check if entry already exists, if not create
-            $gene = Gene::updateOrCreate(['name' => $doc['symbol']], $doc);
+            $gene = Gene::updateOrCreate(['hgnc_id' => $doc['hgnc_id']], $doc);
 
             $term = Term::updateOrCreate(['name' => $gene->name, 'value' => $gene->hgnc_id],
                                         ['type' => 1, 'status -> 1']);
-
+//dd($doc);
             if ($gene->prev_symbol !== null)
                 foreach ($gene->prev_symbol as $symbol)
                     Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
