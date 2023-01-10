@@ -146,20 +146,20 @@
                     New to this release is the more granular display of individual pieces of evidence supporting the gene-disease classification for curations.
                     Newly available evidence includes Genetic Evidence, Experimental Evidence, and Non-Scorable Evidence. Information is viewable by selecting the appropriate tab below.
                     The “Summary” tab remains unchanged from previous releases.  For some curations, particularly those completed prior to 2018, evidence detail may not currently be available and only the summary tab will be showm.
-                    <span class="text-primary" data-toggle="collapse" href="#show-beta-more" role="button" aria-expanded="false" aria-controls="show-beta-more">
-                        <i>Read more...</i>
-                    </span>
                     <div class="collapse" id="show-beta-more">
-                    <p class="mt-2">
-                        This feature has been extensively tested internally. However, due to the volume of data presented, it is possible some early deployment issues may still be present.
-                        Please note, information in free text fields was not originally intended for public display, therefore typographical or grammatical errors may be present.
-                    </p>
-                    <p>
-                        This new, more detailed information is offered to ClinGen users as a Beta feature
-                        We welcome any feedback from the community related to display errors or suspected content inaccuracy.
-                        To send feedback, click on the "Evidence Feedback" button and complete the form.
-                    </p>
+                        <p class="mt-2">
+                            This feature has been extensively tested internally. However, due to the volume of data presented, it is possible some early deployment issues may still be present.
+                            Please note, information in free text fields was not originally intended for public display, therefore typographical or grammatical errors may be present.
+                        </p>
+                        <p>
+                            This new, more detailed information is offered to ClinGen users as a Beta feature
+                            We welcome any feedback from the community related to display errors or suspected content inaccuracy.
+                            To send feedback, click on the "Evidence Feedback" button and complete the form.
+                        </p>
                     </div>
+                    <span class="text-primary" data-toggle="collapse" href="#show-beta-more" role="button" aria-expanded="false" aria-controls="show-beta-more">
+                        <i class="action-read-more read-more-text ml-2">Read more...</i>
+                    </span>
 
                     <div class="text-center mt-2"><button type="button" class="btn btn-success action-beta-form">Evidence Feedback</button></div>
                 </div>
@@ -879,6 +879,16 @@ $(function() {
   $('#tag_genetic_evidence_case_level_without_proband').on('hide.bs.collapse show.bs.collapse', toggleChevron);
   $('#tag_genetic_evidence_case_control').on('hide.bs.collapse show.bs.collapse', toggleChevron);
   $('#tag_experimental_evidence').on('hide.bs.collapse show.bs.collapse', toggleChevron);
+
+  $('.action-read-more').on('click', function() {
+
+    var text = $(".read-more-text").html();
+     if (text == "Read more...")
+        $(".read-more-text").html("Read less...");
+     else
+        $(".read-more-text").html("Read more...");
+
+  });
 
   $(".wrapper1").scroll(function(){
         $("#geclv")
