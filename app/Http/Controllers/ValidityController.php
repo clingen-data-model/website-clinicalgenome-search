@@ -489,7 +489,7 @@ class ValidityController extends Controller
             200
         ); */
 
-        $user = "pweller1@geisinger.edu";
+        $user = ["pweller1@geisinger.edu", 'eriggs@geisinger.edu', 'countney_thaxton@med.unc.edu' ];
 
         // genecuration@clinicalgenome.org
 

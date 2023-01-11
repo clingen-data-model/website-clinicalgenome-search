@@ -145,14 +145,14 @@
                     <h4>Gene-Disease Validity Evidence Display (Beta Release)</h4>
                     New to this release is the more granular display of individual pieces of evidence supporting the gene-disease classification for curations.
                     Newly available evidence includes Genetic Evidence, Experimental Evidence, and Non-Scorable Evidence. Information is viewable by selecting the appropriate tab below.
-                    The “Summary” tab remains unchanged from previous releases.  For some curations, particularly those completed prior to 2018, evidence detail may not currently be available and only the summary tab will be showm.
+                    The “Summary” tab remains unchanged from previous releases.  For some curations, particularly those completed prior to 2018, evidence detail may not currently be available and only the summary tab will be shown.
                     <div class="collapse" id="show-beta-more">
                         <p class="mt-2">
                             This feature has been extensively tested internally. However, due to the volume of data presented, it is possible some early deployment issues may still be present.
                             Please note, information in free text fields was not originally intended for public display, therefore typographical or grammatical errors may be present.
                         </p>
                         <p>
-                            This new, more detailed information is offered to ClinGen users as a Beta feature
+                            This new, more detailed information is offered to ClinGen users as a Beta feature.
                             We welcome any feedback from the community related to display errors or suspected content inaccuracy.
                             To send feedback, click on the "Evidence Feedback" button and complete the form.
                         </p>
