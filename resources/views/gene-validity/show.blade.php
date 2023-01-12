@@ -763,7 +763,6 @@ overflow-x: scroll; overflow-y:hidden;}
 
 <!-- script src="https://unpkg.com/bootstrap-table@1.19.1/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script -->
 
-
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
 <script src="/js/bookmark.js"></script>

@@ -12,7 +12,7 @@
             </a>
         </div>-->
     </div>
-    <div class="text-danger ml-3 mb-0 mt-3">
+    <div class="text-danger ml-3 mb-0 mt-2">
         Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
         Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
     </div>

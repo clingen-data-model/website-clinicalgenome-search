@@ -16,23 +16,21 @@
 						<div class="row mb-3">
 							<div class="col-md-12">
                                 <div class="mx-2 mb-3 alert alert-danger" role="alert">
-									<b>Note:  All fields are required and must be completed in full before submitting</b>
+									<b>Note:  All fields are required and must be completed in full before submitting.</b>
 								</div>
                                 <div class="form-group">
 									<label for="gcep" class="col-sm-8 control-label">I am a member of the GCEP that approved this curation:</label>
                                     <div class="col-sm-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gcep" value="no" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
-                                              No
-                                            </label>
-                                          </div>
-                                          <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="gcep" value="yes">
-                                            <label class="form-check-label" for="exampleRadios2">
-                                              Yes
-                                            </label>
-                                          </div>
+                                            <div class="radio pull-right mr-5">
+                                                <label>
+                                                  <input type="radio" name="gcep" value="yes"> Yes
+                                                </label>
+                                            </div>
+                                            <div class="radio ml-2">
+                                                <label>
+                                                  <input type="radio" name="gcep" value="no" checked> No
+                                                </label>
+                                            </div>
 									</div>
                                 </div>
                                 <div class="form-group">
@@ -60,7 +58,7 @@
                                     </div>
                                 </div>
                                 <hr \>
-                                <div class="ml-5 mb-2 text-primary">Select from the checklist below all categories pertaining to your feedback.  Please include all relevent details in the Feedback field</div>
+                                <div class="ml-5 mb-2 text-primary">Select from the checklist below all categories pertaining to your feedback.  Please include all relevent details in the Feedback field.</div>
                                 <div class="form-group">
                                     <!-- Please describe your feedback in more detail in the “Feedback/Comments” field. If you believe evidence is missing or misrepresented, please describe what you expected to see. -->
                                     <label for="input_feedbackType" class="col-sm-4 control-label">Categories:</label>
