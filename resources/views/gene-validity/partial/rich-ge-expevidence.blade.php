@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_experimental_evidence">
     <div class="panel-heading bg-evidence5" role="tab" id="expevid"">
-        <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE <span class="pull-right small">Total Points:  <u>{{ $exp_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE <span class="pull-right small">Total Points:  {{ $exp_count ?? 'N/A' }}</span></h4>
         &nbsp;
         @if ($exp_count > 6)
         <span class="pull-right">Total Maximum Points:  6</span>

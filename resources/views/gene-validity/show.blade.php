@@ -245,6 +245,9 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="gdvt1">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>Summary</h4>
+                    </div>
                     <div class="panel-body">
                         <div class="tab-content">
                             <div id="gene_validity_show" class="container">
@@ -287,6 +290,7 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="gdvt2">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="pull-right"><img src="/images/beta.png" height="60"></div>
                     <div class="panel-heading">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab2-1" data-toggle="tab"><i class="fas {{ empty($extrecord->caselevel) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case Level Variants
@@ -327,7 +331,6 @@
                                     @endif
                                 </a></li>
                                 @endif
-                                <li class="pull-right"><img src="/images/beta.png" height="45"></li>
                             </ul>
                     </div>
                     <div class="panel-body p-0">
@@ -382,10 +385,10 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="gdvt4">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="pull-right"><img src="/images/beta.png" height="60"></div>
                     <div class="panel-heading">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab4-1" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>  Experimental Evidence  <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ $exp_count ?? 0 }}</span></a></li>
-                                <li class="pull-right"><img src="/images/beta.png" height="45"></li>
                             </ul>
                     </div>
                     <div class="panel-body p-0">
@@ -407,6 +410,10 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="gdvt6">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="pull-right"><img src="/images/beta.png" height="60"></div>
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>Non-Scorable Evidence</h4>
+                    </div>
                     <div class="panel-body">
                         <div class="tab-content">
                             <div id="gene_nonscrorable" class="container">
@@ -445,6 +452,9 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="gdvt5">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>Lumping & Splitting</h4>
+                    </div>
                     <div class="panel-body">
                         <div class="tab-content">
                             <div id="gene_validity_lumping" class="container">
@@ -588,6 +598,10 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="gdvt7">
                 <div class="panel panel-primary with-nav-tabs">
+                    <div class="pull-right"><img src="/images/beta.png" height="60"></div>
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>References</h4>
+                    </div>
                     <div class="panel-body">
                         <div class="tab-content">
                             <div id="gene_nonscrorable" class="container">

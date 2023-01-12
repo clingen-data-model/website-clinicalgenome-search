@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_segregation">
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score:  <u>{{ $cls_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score:  {{ $cls_count ?? 'N/A' }}</span></h4>
         Case Level Segregation
         <span class="pull-right">Total Points:  {{ $cls_pt_count ?? 0 }}</span>
         <!--<div class="pull-right">

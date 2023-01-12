@@ -478,22 +478,12 @@ class ValidityController extends Controller
     {
         $data = $request->all();
 
-        //dd($data);
+        $recips = env('MAIL_GDV_FEEDBACK', 'pweller1@geisinger.edu');
 
-        /*return response()->json(
-            [
-                'success' => 'true',
-                'status_code' => 200,
-                'message' => "Request completed"
-            ],
-            200
-        ); */
+        if (strpos($recips, ',') > 0)
+            $recips = explode(',', $recips);
 
-        $user = ["pweller1@geisinger.edu", 'eriggs@geisinger.edu', 'countney_thaxton@med.unc.edu' ];
-
-        // genecuration@clinicalgenome.org
-
-        $mail = Mail::to($user);
+        $mail = Mail::to($recips);
 
         /*
 

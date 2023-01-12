@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_without_proband">
     <div class="panel-heading bg-evidence3" role="tab" id="genev_case_level_family"">
-        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score:  <u>{{ $clfs_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score:  {{ $clfs_count ?? 'N/A' }}</span></h4>
         Case Level Family Segregation Information Without Proband Data or Scored Proband
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_without_proband" href="#tablethree" aria-expanded="true" aria-controls="tablethree">

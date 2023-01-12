@@ -1,7 +1,7 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_with_proband">
     <!-- Default panel contents -->
     <div class="panel-heading bg-evidence1" role="tab" id="genev_case_level_variants"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Proband Counted Points:  <u>{{ $ge_count ?? 'N/A' }}</u></span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE <span class="pull-right small">Total Proband Counted Points:  {{ $ge_count ?? 'N/A' }}</span></h4>
         Case Level Variants
         @if ($ge_count > 12)
         <span class="pull-right">Total Maximum Points:  12.00</span>
