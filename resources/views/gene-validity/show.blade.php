@@ -140,8 +140,8 @@
         @if(isset($extrecord))
         <div class="col-md-12 mt-4">
             <div class="row">
+                <img src="/images/beta.png" height="60" class="pull-right">
                 <div class="alert alert-warning" style="box-shadow: 0 0 10px red;" role="alert">
-                    <img src="/images/beta.png" height="45" class="pull-right">
                     <h4>Gene-Disease Validity Evidence Display (Beta Release)</h4>
                     New to this release is the more granular display of individual pieces of evidence supporting the gene-disease classification for curations.
                     Newly available evidence includes Genetic Evidence, Experimental Evidence, and Non-Scorable Evidence. Information is viewable by selecting the appropriate tab below.
