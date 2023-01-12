@@ -12,10 +12,10 @@
             </a>
         </div>-->
     </div>
-    <div class="text-danger ml-3 mb-0 mt-3"><b>
+    <div class="text-danger ml-3 mb-0 mt-3">
         Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
         Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
-    </b></div>
+    </div>
     <div id="tableone" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="genev_case_level_variants">
     <div class="panel-body">
         @if (empty($extrecord->genetic_evidence))
@@ -27,7 +27,7 @@
             <div class="div1">
             </div>
         </div>
-        <div class="table-responsive double-scroll light-arrows">
+        <div class="table-responsive light-arrows">
             <table id="geclv" role="table" class="table table-validity-data table-bordered table-striped table-hover"
                     data-classes="table"
                     data-locale="en-US"

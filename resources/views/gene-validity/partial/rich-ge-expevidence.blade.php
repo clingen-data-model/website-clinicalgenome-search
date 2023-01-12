@@ -11,10 +11,10 @@
             </a>
         </div>-->
     </div>
-    <div class="text-danger ml-3 mb-0 mt-3"><b>
+    <div class="text-danger ml-3 mb-0 mt-3">
         Note:  This is an extremely wide table and portions of it may be horizontally scrolled out of view.
         Use the horizontal scroll controls on your mouse, pad, or touch screen to view all columns.
-    </b></div>
+    </div>
     <div id="tablefive" class="panel-collapse expand collapse in" role="tabpanel" aria-labelledby="expevid">
         <div class="panel-body">
             @if (empty($extrecord->experimental_evidence))

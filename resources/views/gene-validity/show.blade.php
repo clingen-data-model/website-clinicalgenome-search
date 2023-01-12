@@ -726,10 +726,12 @@
     background-color: rgba(255,255,255, .23);
     border-bottom-color: transparent;
 }
+/*
 .wrapper1 {width: 100%; border: none 0px RED;
 overflow-x: scroll; overflow-y:hidden;}
 .wrapper1{height: 20px; }
 .div1 {width:1000px; height: 20px; }
+*/
 </style>
     <!-- link href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css" rel="stylesheet" -->
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
@@ -765,7 +767,6 @@ overflow-x: scroll; overflow-y:hidden;}
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
 <script src="/js/bookmark.js"></script>
-<script src="/js/jquery.doubleScroll.js"></script>
 <script src="/js/jquery.validate.min.js" ></script>
 <script src="/js/additional-methods.min.js" ></script>
 
@@ -904,7 +905,7 @@ $(function() {
 
   });
 
-  $(".wrapper1").scroll(function(){
+ /* $(".wrapper1").scroll(function(){
         $("#geclv")
             .scrollLeft($(".wrapper1").scrollLeft());
     });
@@ -913,7 +914,7 @@ $(function() {
         alert("a");
         $(".wrapper1")
             .scrollLeft($("#geclv").scrollLeft());
-    });
+    }); */
 
     $('.action-beta-form').on('click', function(){
         $('#beta-form')[0].reset();
