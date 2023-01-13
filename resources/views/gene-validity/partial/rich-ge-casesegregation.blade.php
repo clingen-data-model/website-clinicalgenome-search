@@ -1,8 +1,10 @@
 <div class="panel panel-default" id="tag_genetic_evidence_segregation">
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
-        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score:  {{ $cls_count ?? 'N/A' }}</span></h4>
+        <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the cumulative LOD score (from counted cases) across both segregation tabs."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            :  {{ $cls_sum ?? 'N/A' }}</span></h4>
         Case Level Segregation
-        <span class="pull-right">Total Points:  {{ $cls_pt_count ?? 0 }}</span>
+        <span class="pull-right text-secondary">Total Points <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the total amount of segregation points scored, determined based on the aggregated LOD scores across both segregation tabs.  See the gene-disease validity SOP for further information."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            :  {{ $cls_pt_count ?? 0 }}</span>
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_segregation" href="#tabletwo" aria-expanded="true" aria-controls="tabletwo">
                 <i class="fas fa-compress-arrows-alt"></i>
@@ -149,7 +151,9 @@
     </div>
     </div>
     <div class="panel-footer text-right bg-evidence2">
-        <b>Total Counted LOD Score:  {{ $cls_count ?? 'N/A' }}</b>
-        <div>Total Points:  {{ $cls_pt_count ?? 0 }}</div>
+        <b>Total Counted LOD Score <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the cumulative LOD score (from counted cases) across both segregation tabs."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            :  {{ $cls_sum ?? 'N/A' }}</b>
+        <div><b>Total Points <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the total amount of segregation points scored, determined based on the aggregated LOD scores across both segregation tabs.  See the gene-disease validity SOP for further information."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
+            :  {{ $cls_pt_count ?? 0 }}</b></div>
     </div>
 </div>

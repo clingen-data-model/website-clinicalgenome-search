@@ -295,14 +295,16 @@
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#tab2-1" data-toggle="tab"><i class="fas {{ empty($extrecord->caselevel) ?  'fa-times' : 'fa-check-circle' }} mr-2"></i>Case Level Variants
                                     @if ($ge_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($ge_count ?? 0, 12.00), 2) }}</span>
-                                    @endif
+                                        <!--<span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($ge_count ?? 0, 12.00), 2) }}</span>
+                                        -->
+                                     @endif
                                 </a></li>
                                 @if ($clfs)
                                 <li class="ml-2 "><a href="#tab2-2" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case Level Segregation
                                     @if ($cls_pt_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format($cls_pt_count ?? 0, 2) }}</span>
-                                    @endif
+                                        <!-- <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format($cls_pt_count ?? 0, 2) }}</span>
+                                        -->
+                                     @endif
                                 </a></li>
                                 @else
                                 <li class="ml-2 disabled" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-title="" data-content="No Case Level Segregation evidence was provided."><a href="#tab2-2" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case Level Segregation
@@ -320,14 +322,16 @@
                                 @if (!empty($extrecord->casecontrol))
                                 <li class="ml-2"><a href="#tab2-4" data-toggle="tab"><i class="fas fa-check-circle mr-2"></i>Case-Control
                                     @if ($cc_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
-                                    @endif
+                                        <!-- <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
+                                        -->
+                                     @endif
                                 </a></li>
                                 @else
                                 <li class="ml-2 disabled" data-container="body" data-toggle="popover" data-placement="bottom" data-trigger="hover" data-title="" data-content="No Case Control evidence was provided."
                                 ><a href="#tab2-4" data-toggle="notab"><i class="fas fa-times mr-2"></i>Case-Control
                                     @if ($cc_count !== null)
-                                        <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
+                                        <!-- <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ml-1">{{ number_format(min($cc_count ?? 0, 12.00), 2) }}</span>
+                                        -->
                                     @endif
                                 </a></li>
                                 @endif

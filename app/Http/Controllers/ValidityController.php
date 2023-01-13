@@ -23,6 +23,7 @@ use App\Mim;
 use App\Omim;
 use App\Pmid;
 use App\Nodal;
+use App\Blacklist;
 use App\Mail\Feedback;
 
 /**
@@ -140,11 +141,16 @@ class ValidityController extends Controller
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
 
-        $extrecord =  GeneLib::newValidityDetail([
-            'page' => 0,
-            'pagesize' => 20,
-            'perm' => $id
-        ]);
+        $bcheck = Blacklist::gg($id)->first();
+
+        if ($bcheck == null)
+            $extrecord =  GeneLib::newValidityDetail([
+                'page' => 0,
+                'pagesize' => 20,
+                'perm' => $id
+            ]);
+        else
+            $extrecord = null;
 
         $exp_count = null;
         // do not count the reviews
@@ -411,11 +417,12 @@ class ValidityController extends Controller
         $clfs_count = number_format($clfs_count, 2);
 
         $cls_pt_count = 0;
-        if ($cls_count >= 2 && $cls_count < 3)
+        $cls_sum = $cls_count + $clfs_count;
+        if ($cls_sum >= 2 && $cls_sum < 3)
             $cls_pt_count += ($exomeflag ? 1 : .5);
-        else if ($cls_count >= 3 && $cls_count < 5)
+        else if ($cls_sum >= 3 && $cls_sum < 5)
             $cls_pt_count += ($exomeflag ? 2 : 1);
-        else if ($cls_count >= 5)
+        else if ($cls_sum >= 5)
             $cls_pt_count += ($exomeflag ? 3 : 1.5);
 
         // temporary way to allow a link to the corresponding GCI page.
@@ -448,7 +455,7 @@ class ValidityController extends Controller
         //dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
-            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'cls_pt_count', 'clfs_count', 'pmids', 'mims', 'clfs', 'clfswopb')
+            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb')
         )
             ->with('user', $this->user);
     }

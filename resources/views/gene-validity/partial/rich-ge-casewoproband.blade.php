@@ -1,7 +1,8 @@
 <div class="panel panel-default" id="tag_genetic_evidence_case_level_without_proband">
     <div class="panel-heading bg-evidence3" role="tab" id="genev_case_level_family"">
-        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score:  {{ $clfs_count ?? 'N/A' }}</span></h4>
+        <h4 class="mb-0 mt-0">GENETIC EVIDENCE <span class="pull-right small">Total LOD Score <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the cumulative LOD score (from counted cases) across both segregation tabs."><i class="fa fa-info-circle" aria-hidden="true"></i></span> :  {{ $cls_sum ?? 'N/A' }}</span></h4>
         Case Level Family Segregation Information Without Proband Data or Scored Proband
+        <span class="pull-right text-secondary">Total Points <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the total amount of segregation points scored, determined based on the aggregated LOD scores across both segregation tabs.  See the gene-disease validity SOP for further information."><i class="fa fa-info-circle" aria-hidden="true"></i></span> :  {{ $cls_pt_count ?? 0 }}</span>
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_genetic_evidence_case_level_without_proband" href="#tablethree" aria-expanded="true" aria-controls="tablethree">
                 <i class="fas fa-compress-arrows-alt"></i>
@@ -143,6 +144,7 @@
     </div>
     </div>
     <div class="panel-footer text-right bg-evidence3">
-        <b>Total LOD Score:  {{ $clfs_count ?? 'N/A' }}</b>
+        <b>Total LOD Score <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the cumulative LOD score (from counted cases) across both segregation tabs."><i class="fa fa-info-circle" aria-hidden="true"></i></span> :  {{ $cls_sum ?? 'N/A' }}</b>
+        <div><b>Total Points <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the total amount of segregation points scored, determined based on the aggregated LOD scores across both segregation tabs.  See the gene-disease validity SOP for further information."><i class="fa fa-info-circle" aria-hidden="true"></i></span> :  {{ $cls_pt_count ?? 0 }}</b></div>
     </div>
 </div>
