@@ -107,7 +107,7 @@
                                     <div class="bg-white border border-2 border-warning mr-3 p-2 mt-1 mb-3 rounded">
                                         Lumping and Splitting is the process by which ClinGen curation groups determine which disease entity they will use for evaluation.
                                         Groups review current disease and/or phenotype assertions (e.g. OMIM MIM phenotypes) and select the included and excluded phenotypes according to <a href="https://www.clinicalgenome.org/working-groups/lumping-and-splitting/" target="_doc">current guidelines</a>.
-                                        MIM phenotypes represented below are those that were available on the stated evaluation date
+                                        MIM phenotypes represented below are those that were available on the stated evaluation date.
                                     </div>
                                     @if (!empty($validity->assertion->las_included))
                                         <dl class="row mb-2">

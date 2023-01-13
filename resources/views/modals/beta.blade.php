@@ -87,7 +87,7 @@
                                 <div class="form-group">
                                     <label for="comment" class="col-sm-4 control-label">Feedback:</label>
                                     <div class="col-sm-7">
-										<textarea id="selected-regions" name="comment" rows="7" cols="60" required></textarea>
+										<textarea id="selected-regions" name="comment" rows="7" style="width: 100%; max-width: 100%;" required></textarea>
                                     </div>
                                 </div>
 
