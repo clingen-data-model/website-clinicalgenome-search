@@ -141,7 +141,7 @@ class ValidityController extends Controller
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
 
-        $bcheck = Blacklist::gg($id)->first();
+        $bcheck = Blacklist::gg(substr($id, 0, 51))->first();
 
         if ($bcheck == null)
             $extrecord =  GeneLib::newValidityDetail([
@@ -424,6 +424,8 @@ class ValidityController extends Controller
             $cls_pt_count += ($exomeflag ? 2 : 1);
         else if ($cls_sum >= 5)
             $cls_pt_count += ($exomeflag ? 3 : 1.5);
+        $cls_sum = number_format($cls_sum, 2);
+        $cls_pt_count = number_format($cls_pt_count, 2);
 
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;

@@ -60,9 +60,12 @@ class UpdateBlacklist extends Command
 
                 $value = $line;
 
+                // adjust the assertion id to remove the timestamp
+                $assertion = substr($value[10], 0, 51);
+
                 $record = Blacklist::updateOrCreate(['gci_id' => $value[0]], [
                                         'gci_id' => $value[0],
-                                        'gg_id' => $value[9],
+                                        'gg_id' => $assertion,
                                         'gene_symbol' => $value[2],
                                         'disease' => $value[3],
                                         'moi' => $value[4],

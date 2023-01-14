@@ -3,7 +3,7 @@
         <h4 class="mb-0 mt-0">EXPERIMENTAL EVIDENCE <span class="pull-right small">Total Points:  {{ $exp_count ?? 'N/A' }}</span></h4>
         &nbsp;
         @if ($exp_count > 6)
-        <span class="pull-right">Total Maximum Points:  6</span>
+        <span class="pull-right text-secondary">Total Maximum Points:  6.00</span>
         @endif
         <!--<div class="pull-right">
             <a data-toggle="collapse" data-parent="#tag_experimental_evidence" href="#tablefive" aria-expanded="true" aria-controls="tablefive">
@@ -118,7 +118,7 @@
     <div class="panel-footer text-right bg-evidence5">
         <b>Total Points:  {{ $exp_count ?? 'N/A' }}</b>
         @if ($exp_count > 6)
-        <div>Total Maximum Points:  6</div>
+        <div>Total Maximum Points:  6.00</div>
         @endif
     </div>
 </div>

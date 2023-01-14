@@ -1,7 +1,7 @@
 <div class="panel panel-default" id="tag_genetic_evidence_segregation">
     <div class="panel-heading bg-evidence2" role="tab" id="genev_case_level_segregation"">
         <h4 class="mb-0 mt-0">SCORED GENETIC EVIDENCE  <span class="pull-right small">Total Counted LOD Score <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the cumulative LOD score (from counted cases) across both segregation tabs."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
-            :  {{ $cls_sum ?? 'N/A' }}</span></h4>
+            :  {{ $cls_sum ?? 0 }}</span></h4>
         Case Level Segregation
         <span class="pull-right text-secondary">Total Points <span data-toggle="popover" data-placement="top" data-trigger="hover" data-content="This is the total amount of segregation points scored, determined based on the aggregated LOD scores across both segregation tabs.  See the gene-disease validity SOP for further information."><i class="fa fa-info-circle" aria-hidden="true"></i></span>
             :  {{ $cls_pt_count ?? 0 }}</span>
