@@ -132,6 +132,7 @@
 
   function checkclass(text, value, field, data)
 	{
+    console.log(text);
 		if (text == 'animal model only')
         {
             return value == "No Known Disease Relationship*";
@@ -223,7 +224,7 @@
           field: 'classification',
           formatter: asbadgeFormatter,
           cellStyle: cellFormatter,
-          Formatter: false,
+          searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',
           filterCustomSearch: checkclass,
