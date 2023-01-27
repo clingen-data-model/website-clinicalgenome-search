@@ -190,6 +190,10 @@ class Variantpath extends Model
         // compare and update
         foreach ($data->variantInterpretations as $assertion)
         {
+            // white list this assertion, it should not be there
+            if ($assertion->uuid = "786719c8-6c3e-4472-92da-73895454744f")
+                continue;
+
             $current = Variantpath::curie($assertion->{'@id'})->orderBy('version', 'desc')->first();
 
             if ($current === null)          // new assertion
@@ -258,7 +262,13 @@ class Variantpath extends Model
 
             if (!empty($differences))      // update
             {
-                //dd($new);
+/*
+if ($current->vid == "65980")
+{
+    echo "VARIANT ENTRY FOUND\n" ;
+    var_dump($assertion);
+}
+*/
                 $new->save();
 
                 $gene = Gene::hgnc($new->gene_hgnc_id)->first();
