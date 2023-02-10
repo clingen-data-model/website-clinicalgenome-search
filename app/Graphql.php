@@ -1776,6 +1776,8 @@ class Graphql
                         score_status {
                             label
                             curie
+                            description
+                            iri
                         }
 					  score
 					  calculated_score
@@ -1873,7 +1875,6 @@ class Graphql
 				  }
 				  phenotype_free_text
                   genotyping_method
-                  paternity_maternity_confirmed
 				  variants {
 					curie
 					label
@@ -1899,6 +1900,7 @@ class Graphql
 					label
 				  }
                   allele_origin
+                  paternity_maternity_confirmed
 				  variant_type
 				  proband {
                       ...probandFields

@@ -58,6 +58,7 @@
                     </li>
                     @endforeach
                     @endif
+                    {{--
                     @if (!empty($record->loss_pheno_ontology_id))
                     <li>{{ $record->loss_pheno_name }}
                         @switch ($record->loss_pheno_ontology)
@@ -82,6 +83,7 @@
                         @endswitch
                     </li>
                     @endif
+                    --}}
                 </ul>
             </div>
         </div>
