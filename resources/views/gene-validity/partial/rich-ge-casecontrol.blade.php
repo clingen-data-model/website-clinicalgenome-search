@@ -153,7 +153,7 @@
                                     {{ $casecontrol->score }}
                                 </td>
                                 <td class="vertical-align-center" role="cell">
-                                    {{ $casecontrol->score_status->description ?? '' }}
+                                    {{ $casecontrol->evidence[0]->description ?? '' }}
                                 </td>
                         </tr>
                         @endforeach
