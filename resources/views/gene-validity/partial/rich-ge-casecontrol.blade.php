@@ -65,10 +65,8 @@
                             <th colspan="5"></th>
                             <th colspan="2">Power</th>
                             <th></th>
-                            <th colspan="4">Statistics</th>
-                            <th colspan="1"></th>
-                            <th colspan="3"></th>
-                            <th></th>
+                            <th colspan="5">Statistics</th>
+                            <th colspan="3">Scoring</th>
                         </tr>
                         <tr role="row">
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
