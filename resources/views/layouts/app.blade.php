@@ -8,6 +8,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>@isset($display_tabs['title']) {{ $display_tabs['title'] }} @else {{ config('app.name', 'Clinical Genome Resource') }} @endisset </title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
   <!-- Scripts -->
 
