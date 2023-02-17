@@ -827,6 +827,24 @@ class Validity extends Model
         }
     }
 
+    /**
+     * Genegraph changes the timestamp portion of an assertion id on 1/14/2023, which has broken
+     * anyone who saved links to a gene page.  Reported by Gloria 2/17/2023.  Since both versions
+     * are now in the wild, reformat the bad one prior to ghe graphql call.
+     */
+    public static function fixid($id)
+    {
+        if (strpos($id, ':', 5) !== false)
+        {
+            $ts = substr($id, 51);
+            $ts = str_replace(':', '', $ts);
+            $id = substr($id, 0, 51);
+            $id .= $ts . '.000Z';
+        }
+
+        return $id;
+    }
+
 
     public static function hpsort($array)
     {

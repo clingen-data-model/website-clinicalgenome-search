@@ -25,6 +25,7 @@ use App\Pmid;
 use App\Nodal;
 use App\Blacklist;
 use App\Mail\Feedback;
+use App\Validity;
 
 /**
  *
@@ -127,6 +128,9 @@ class ValidityController extends Controller
                 ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
                 ->with('back', url()->previous())
                 ->with('user', $this->user);
+
+        // Genegraph never fixed the timestamp in the assertion ID, and now we have saved links of both in the wild :(
+        $id = Validity::fixid($id);
 
         $record = GeneLib::validityDetail([
             'page' => 0,
