@@ -19,14 +19,14 @@
 									<b>Note:  All fields are required and must be completed in full before submitting.</b>
 								</div>
                                 <div class="form-group">
-									<label for="gcep" class="col-sm-8 control-label">I am a member of the GCEP that approved this curation:</label>
+									<label for="gcep1" class="col-sm-8 control-label">I am a member of the GCEP that approved this curation:</label>
                                     <div class="col-sm-3">
-                                            <div class="radio pull-right mr-5">
+                                            <div class="radio-inline pull-right mr-5">
                                                 <label>
                                                   <input type="radio" name="gcep" value="yes"> Yes
                                                 </label>
                                             </div>
-                                            <div class="radio ml-2">
+                                            <div class="radio-inline ml-2">
                                                 <label>
                                                   <input type="radio" name="gcep" value="no" checked> No
                                                 </label>
