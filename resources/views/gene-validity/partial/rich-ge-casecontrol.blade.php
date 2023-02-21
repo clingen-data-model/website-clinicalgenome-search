@@ -65,9 +65,8 @@
                             <th colspan="5"></th>
                             <th colspan="2">Power</th>
                             <th></th>
-                            <th colspan="4">Statistics</th>
-                            <th colspan="1"></th>
-                            <th></th>
+                            <th colspan="5">Statistics</th>
+                            <th colspan="3">Scoring</th>
                         </tr>
                         <tr role="row">
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true" data-field="label">Label</th>
@@ -83,7 +82,9 @@
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Test<br>Statistic:<br>Value</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">P-value</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Confidence<br>interval</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Score<br>Status</th>
                             <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Points</th>
+                            <th data-cell-style="cellFormatter" data-filter-control="input" data-sortable="true">Explanation</th>
                         </tr>
                     </thead>
                     <tbody role="rowgroup">
@@ -146,7 +147,13 @@
                                     @endif
                                 </td>
                                 <td class="vertical-align-center" role="cell">
+                                    {{ $casecontrol->score_status->label ?? '' }}
+                                </td>
+                                <td class="vertical-align-center" role="cell">
                                     {{ $casecontrol->score }}
+                                </td>
+                                <td class="vertical-align-center" role="cell">
+                                    {{ $casecontrol->evidence[0]->description ?? '' }}
                                 </td>
                         </tr>
                         @endforeach
