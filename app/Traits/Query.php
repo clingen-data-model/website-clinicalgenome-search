@@ -63,8 +63,7 @@ trait Query
 
 			]);
 			$record->save();
-			Log::info("Query Genegraph: From=" . $method . ", start=" . $begin->format('Y-m-d H:i:s.u')
-						. ', end=' . $end->format('Y-m-d H:i:s.u'));*/
+			Log::info("Query Genegraph: From=" . $method . ", start=" . $begin->format('Y-m-d H:i:s.u') . ', end=' . $end->format('Y-m-d H:i:s.u'));
 		
 		} catch (RequestException $exception) {	// guzzle exceptions and error responses from gql
 
