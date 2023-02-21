@@ -50,6 +50,54 @@ class TestController extends Controller
      */
     public function index()
     {
+		$query = 'query {
+			affiliations (limit: null)
+			{
+				count
+				agent_list {
+					iri
+					curie
+					label
+					gene_validity_assertions(role: ANY, limit: null){
+						count
+						curation_list{
+                            curie
+                            contributions {
+                                realizes {
+                                curie
+                                label
+                                }
+                                agent {
+                                curie
+                                label
+                                }
+							}
+                        }
+					}
+				}
+			}
+		}';
+
+	/*	$query = <<<GQL
+query {
+    user(id: $id) {
+        id
+        name
+        email
+    }
+}
+GQL;*/
+$url = env('GRAPHQL_ENDPOINT_URL', 'https://genegraph.prod.clingen.app/graphql');
+
+$response = Http::withHeaders([
+    'Content-Type' => 'application/json',
+])->post($url, [
+    'query' => $query
+]);
+
+dd($response->json());
+
+		$response = GraphQL::query($query)->get();
 
         $id = "CGGCIEX:assertion_3210";
 
