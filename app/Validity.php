@@ -836,9 +836,14 @@ class Validity extends Model
     {
         if (strpos($id, ':', 5) !== false)
         {
+            // if there are two dashes separating out the time stamp, replace with one
+            $id = str_replace('--', '-', $id);
+
+            // now fix the timestamp
             $ts = substr($id, 51);
             $ts = str_replace(':', '', $ts);
             $id = substr($id, 0, 51);
+            
             $id .= $ts . '.000Z';
         }
 
