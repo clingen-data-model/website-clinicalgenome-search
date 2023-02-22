@@ -3,12 +3,12 @@
 namespace App\Traits;
 
 //use Alexaandrov\GraphQL\Facades\Client as Genegraph;
-use BendeckDavid\GraphqlClient\Facades\GraphQL;
+//use BendeckDavid\GraphqlClient\Facades\GraphQL;
 use Illuminate\Support\Facades\Log;
 
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ConnectionException;
+//use GuzzleHttp\Psr7;
+//use GuzzleHttp\Exception\RequestException;
+//use GuzzleHttp\Exception\ConnectionException;
 
 //use EUAutomation\GraphQL\Exceptions\GraphQLMissingData;
 
@@ -37,13 +37,25 @@ trait Query
 
 			$begin = Carbon::now();	
 
-			$response = Http::connectTimeout(180)->withHeaders([
+			$client = new \GuzzleHttp\Client();
+			$headers = [];
+			$variables = [];
+
+			$response = $client->request('POST', $url, [
+				'json' => [
+					'query' => $query,
+					'variables' => $variables
+				],
+				'headers' => $headers
+			]);
+
+			/* $response = Http::connectTimeout(180)->withHeaders([
 				'Content-Type' => 'application/json',
 			])->post($url, [
 				'query' => $query
-			]);
+			]); */
 
-			if (!$response->successful())
+			if ($response->getStatusCode() != 200)
 			{
 				Log::info("Error from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
@@ -63,57 +75,42 @@ trait Query
 
 			]);
 			$record->save();
+
 			Log::info("Query Genegraph: From=" . $method . ", start=" . $begin->format('Y-m-d H:i:s.u') . ', end=' . $end->format('Y-m-d H:i:s.u'));
 		
-		} catch (RequestException $exception) {	// guzzle exceptions and error responses from gql
+		} catch (ConnectException $exception) {	// networking error
 
-			dd("in request exception");
-			Log::info("Guzzle Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
+			Log::info("Guzzle ConnectException from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
-			$response = $exception->getResponse();
-			if (is_null($response))				// likely a connection error
-			{
-				$errors = $exception->getHandlerContext();
-				GeneLib::putError($errors['error']);
-				return null;
-			}
-	
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
+			GeneLib::putError("Cannot connect to Genegraph");
+			
+			return null;
 
-			if (is_array($errors) && isset($errors["errors"]))
-			{
-				// check if there is a message bag
-				$messages = array_column($errors["errors"], 'message');
-				if (is_array($messages))
-					$errors = implode($messages);
-			}
+		} catch (RequestException $exception) {	// 4XX and 5XX errors from genegraph
 
-			GeneLib::putError($errors);
+			Log::info("Guzzle RequestException from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
+
+			GeneLib::putError("Error receiving data from genegraph");
 			
 			return null;
 
 		} catch (Exception $exception) {		// everything else
-	dd($exception);
+	
 			Log::info("Generic Exception from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
 
-			$response = $exception->getResponse();
-			$code = $response->getStatusCode();
-			$reason = $response->getReasonPhrase();
-			$errors = json_decode($exception->getResponse()->getBody()->getContents(), true);
-			
-			GeneLib::putError($errors);
+			GeneLib::putError("Error communicating with genegraph");
 			
 			return null;
 			
 		};
 		
-		$body = $response->body();
+		$responseJson = json_decode($response->getBody()->getContents(), false);
 
-		$data = json_decode($body);
+		//$body = $response->body();
 
-		return $data->data;
+		//$data = json_decode($body);
+
+		return $responseJson->data;
 
 	}
 
