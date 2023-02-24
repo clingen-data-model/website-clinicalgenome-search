@@ -2,17 +2,7 @@
 
 namespace App\Traits;
 
-//use Alexaandrov\GraphQL\Facades\Client as Genegraph;
-//use BendeckDavid\GraphqlClient\Facades\GraphQL;
 use Illuminate\Support\Facades\Log;
-
-//use GuzzleHttp\Psr7;
-//use GuzzleHttp\Exception\RequestException;
-//use GuzzleHttp\Exception\ConnectionException;
-
-//use EUAutomation\GraphQL\Exceptions\GraphQLMissingData;
-
-use Illuminate\Support\Facades\Http;
 
 use Exception;
 
@@ -49,12 +39,6 @@ trait Query
 				'headers' => $headers
 			]);
 
-			/* $response = Http::connectTimeout(180)->withHeaders([
-				'Content-Type' => 'application/json',
-			])->post($url, [
-				'query' => $query
-			]); */
-
 			if ($response->getStatusCode() != 200)
 			{
 				Log::info("Error from Genegraph: " . Carbon::now()->format('Y-m-d H:i:s.u'));
@@ -74,7 +58,9 @@ trait Query
 				'status' => 1
 
 			]);
-			$record->save();
+
+			if (env('APP_DEBUG', false))
+				$record->save();
 
 			Log::info("Query Genegraph: From=" . $method . ", start=" . $begin->format('Y-m-d H:i:s.u') . ', end=' . $end->format('Y-m-d H:i:s.u'));
 		
@@ -105,10 +91,6 @@ trait Query
 		};
 		
 		$responseJson = json_decode($response->getBody()->getContents(), false);
-
-		//$body = $response->body();
-
-		//$data = json_decode($body);
 
 		return $responseJson->data;
 

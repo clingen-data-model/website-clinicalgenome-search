@@ -305,23 +305,6 @@ class ValidityController extends Controller
                         }
                     }
 
-                    // this is stupid.  you have to go hunting for the proper reference
-                    /*$label = null;
-                    foreach ($item->evidence as $evidence)
-                    {
-                        if ($evidence->__typename == "ProbandEvidence")
-                        {
-                            $temp[] = $item;
-                            $label = $evidence->label;
-                        }
-                    }
-
-                    if ($label !== null)
-                        $propoints[$label] = $item->score;
-
-                    return true;
-                    */
-
                     if (isset($variants)) {
                         $item->altvariants = $variants;
                         $caselevel[] = $item;

@@ -140,13 +140,8 @@ class QueryKafka extends Command
                         else
                         {
                             $payload = json_decode($message->payload);
-                            //echo $payload->genes[0]->symbol . "\n";
+                            //echo $message->offset . "\n";
                             //dd($payload);
-                            //if ($payload->genes[0]->symbol == "LDLR")
-                        // {
-                            //   var_dump($payload);
-                            //}
-                        // //dd($payload->genes[0]);
                         }
                         $a = $stream->parser;
                         $a($payload);
