@@ -130,7 +130,7 @@ class ValidityController extends Controller
                 ->with('user', $this->user);
 
         // Genegraph never fixed the timestamp in the assertion ID, and now we have saved links of both in the wild :(
-        $id = Validity::fixid($id);
+        //$id = Validity::fixid($id);
 
         $record = GeneLib::validityDetail([
             'page' => 0,
