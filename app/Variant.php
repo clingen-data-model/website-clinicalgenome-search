@@ -175,9 +175,15 @@ class Variant extends Model
             $tag = ($disease ? $record->gene['label'] : $record->condition['label']);
 
             if (!isset($genelist[$tag]))
+            {
+                 // deal with some bad records coming from the erepo that contain no gene data
+                 if ($disease && !isset($record->gene["NCBI_id"]))
+                    continue;
+
                 $genelist[$tag] = [ 'id' => ($disease ? $record->gene['NCBI_id'] : $record->condition['@id']),
                                         'classifications' => $classifications,
                                         'panels' => []];
+            }
 
             $a =& $genelist[$tag]['classifications'];
             $b =& $genelist[$tag]['panels'];
