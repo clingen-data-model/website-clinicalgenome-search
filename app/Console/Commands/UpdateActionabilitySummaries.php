@@ -105,6 +105,10 @@ class UpdateActionabilitySummaries extends Command
 
         $this->line('Building Adult Summary data rows');
         foreach ($all as $row) {
+
+            if ($row["curationType"] != "Gene-Condition")
+                continue;
+
             $data = new ActionabilitySummary(['uuid' => Str::uuid()]);
             $data->docId                             = $row['# docId'];
             $data->iri                               = $row['topicIri'];
@@ -115,7 +119,7 @@ class UpdateActionabilitySummaries extends Command
             $data->contextIri                        = $row['contextIri'];
             $data->release                           = $row['release'];
             $data->releaseDate                       = $row['releaseDate'];
-            $data->gene                              = $row['gene'];
+            $data->gene                              = $row['geneOrVariant'];
             $data->geneOmim                          = $row['geneOmim'];
             $data->disease                           = $row['disease'];
             $data->omim                              = $row['omim'];
@@ -159,6 +163,10 @@ class UpdateActionabilitySummaries extends Command
 
         $this->line('Building Peds Summary data rows');
         foreach ($all as $row) {
+
+            if ($row["curationType"] != "Gene-Condition")
+                continue;
+
             $data = new ActionabilitySummary(['uuid' => Str::uuid()]);
             $data->docId                             = $row['# docId'];
             $data->iri                               = $row['topicIri'];
@@ -169,7 +177,7 @@ class UpdateActionabilitySummaries extends Command
             $data->contextIri                        = $row['contextIri'];
             $data->release                           = $row['release'];
             $data->releaseDate                       = $row['releaseDate'];
-            $data->gene                              = $row['gene'];
+            $data->gene                              = $row['geneOrVariant'];
             $data->geneOmim                          = $row['geneOmim'];
             $data->disease                           = $row['disease'];
             $data->omim                              = $row['omim'];
@@ -215,6 +223,9 @@ class UpdateActionabilitySummaries extends Command
         $this->line('Building Adult Assertion data rows');
         foreach ($all as $row)
         {
+            if ($row["curationType"] != "Gene-Condition")
+                continue;
+
             $data = new ActionabilityAssertion([
                     'type' => ActionabilityAssertion::TYPE_ADULT,
                     'docid' => $row['# docId'],
@@ -225,7 +236,7 @@ class UpdateActionabilitySummaries extends Command
                     'context' => $row['context'],
                     'contextiri' => $row['contextIri'],
                     'release' => $row['release'],
-                    'gene' => $row['gene'],
+                    'gene' => $row['geneOrVariant'],
                     'gene_omim' => $row['geneOmim'],
                     'disease' => $row['disease'],
                     'omim' => $row['omim'],
@@ -285,6 +296,9 @@ class UpdateActionabilitySummaries extends Command
         $this->line('Building Peds Assertion data rows');
         foreach ($all as $row)
         {
+            if ($row["curationType"] != "Gene-Condition")
+                continue;
+
             $data = new ActionabilityAssertion([
                     'type' => ActionabilityAssertion::TYPE_PEDIATRIC,
                     'docid' => $row['# docId'],
@@ -295,7 +309,7 @@ class UpdateActionabilitySummaries extends Command
                     'context' => $row['context'],
                     'contextiri' => $row['contextIri'],
                     'release' => $row['release'],
-                    'gene' => $row['gene'],
+                    'gene' => $row['geneOrVariant'],
                     'gene_omim' => $row['geneOmim'],
                     'disease' => $row['disease'],
                     'omim' => $row['omim'],
