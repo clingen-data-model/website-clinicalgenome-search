@@ -282,7 +282,7 @@
                   </li>
 
                 <li class='nav-item '>
-                  <a class='nav-link nav-link-header' href='http://search.clinicalgenome.org/docs/guidelines-for-applying-for-variant-or-gene-curation-expert-panel-status'><span class=' d-inline-block text-truncate'> Learn how to start an Expert Panel </span></a>
+                  <a class='nav-link nav-link-header' href='http://www.clinicalgenome.org/docs/guidelines-for-applying-for-variant-or-gene-curation-expert-panel-status'><span class=' d-inline-block text-truncate'> Learn how to start an Expert Panel </span></a>
                 </li>
             </ul>
 
