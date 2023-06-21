@@ -31,6 +31,15 @@
         ga('send', 'pageview');
     </script>
 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-42X6JZ7PGF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-42X6JZ7PGF');
+    </script>
+
 </head>
 
 <body>
