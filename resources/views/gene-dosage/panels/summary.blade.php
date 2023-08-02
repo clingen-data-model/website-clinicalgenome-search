@@ -16,8 +16,9 @@
           <div class="col-sm-3 text-right mt-3">Dosage ID:</div>
           <div class="col-sm-3 border-left-4 border-info bold mt-3">
             {{  $record->key }}
-            <div class="small"><a href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{ $record->genesymbol }}">View legacy report...</a></div>
-          </div>
+            <!--<div class="small"><a href="https://dosage.clinicalgenome.org/clingen_gene.cgi?sym={{ $record->genesymbol }}">View legacy report...</a></div>
+            -->
+            </div>
           <div class="col-sm-4">
             <div id="ideogram"> </div>
           </div>
