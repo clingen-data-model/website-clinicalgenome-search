@@ -43,6 +43,12 @@ class TestController extends Controller
         //$this->middleware('auth');
     }
 
+
+	public function survey()
+    {
+		return view('survey');
+	}
+
     /**
      * Show the application dashboard.
      *

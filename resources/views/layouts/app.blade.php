@@ -52,6 +52,19 @@
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
+    <!-- Release Banner -->
+  <div class="section-hero-gradient-standard">
+    <div class="container">
+      <!--<h3 class="text-warning"><i><b>New features were added January 14, 2023 - Click <a href="https://www.clinicalgenome.org/docs/clingen-website-updates-january-2023" class="text-white" target="_doc"><u>here</u></a> for more information!</b></i></h3>
+-->
+       <h3 class="text-warning"><i><b>Help Us Learn About ClinGen’s Website Users! Please take our brief survey about why you visit ClinGen’s website. The survey will be available until August 25th and should take less than five minutes to complete.  Click <a href="/survey" class="text-white" target="_survey"><u>here</u></a> to participate!</b></i></h3>
+
+    </div>
+  </div>
+  <!-- End Release Banner -->
+
+  <hr class="mt-1 mb-0" />
+
     <main id='section_main' role="main">
       <section id='section_heading' class="pt-0 pb-0 mb-0 section-heading section-heading-groups text-light">
         <div  class="container">
