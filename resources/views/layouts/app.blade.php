@@ -58,7 +58,7 @@
       <!--<h3 class="text-warning"><i><b>New features were added January 14, 2023 - Click <a href="https://www.clinicalgenome.org/docs/clingen-website-updates-january-2023" class="text-white" target="_doc"><u>here</u></a> for more information!</b></i></h3>
 -->
        <h2 class="text-warning"><center><i><b>Help Us Learn About ClinGen’s Website Users!</b></i></center></h2>
-       <h4 class="text-warning"><i><b>Please take our brief survey about why you visit ClinGen’s website. The survey has been extended until September 8th and should only a few minutes to complete.  Please click <a href="https://www.surveymonkey.com/r/VWSN5ZQ" class="text-white" target="_survey"><u>here</u></a> to participate!</b></i></h4>
+       <h4 class="text-warning"><i><b>Please take our brief survey about why you visit ClinGen’s website. The survey has been extended until September 8th and should only take a few minutes to complete.  Click <a href="https://www.surveymonkey.com/r/VWSN5ZQ" class="text-white" target="_survey"><u>here</u></a> to participate!</b></i></h4>
 
     </div>
   </div>
