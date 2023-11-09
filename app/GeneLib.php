@@ -183,6 +183,8 @@ class GeneLib extends Model
           'ClinGen Gene Validity Evaluation Criteria SOP8' => 'SOP8',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOP9' => 'SOP9',
           'ClinGen Gene Validity Evaluation Criteria SOP9' => 'SOP9',
+          'ClinGen Gene-Disease Validity Evaluation Criteria SOP10' => 'SOP10',
+          'ClinGen Gene Validity Evaluation Criteria SOP10' => 'SOP10',
           'ClinGen Gene-Disease Validity Evaluation Criteria SOPX' => 'SOPX',
           'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
