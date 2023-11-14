@@ -194,7 +194,7 @@ class Validity extends Model
      protected static $location_sop = [
         'ClinGen Gene Validity Evaluation Criteria SOP10' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-10',
         'ClinGen Gene Validity Evaluation Criteria SOP9' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-9',
-        'ClinGen Gene Validity Evaluation Criteria SOP8' => 'https://clinicalgenome.org/docs/genetic-evidence-scoring-metric-sop-version-8',
+        'ClinGen Gene Validity Evaluation Criteria SOP8' => 'https://www.clinicalgenome.org/docs/summary-of-updates-to-the-clingen-gene-clinical-validity-curation-sop-version-8',
         'ClinGen Gene Validity Evaluation Criteria SOP7' => 'https://clinicalgenome.org/docs/summary-of-updates-to-the-clingen-gene-clinical-validity-curation-sop-version-7',
         'ClinGen Gene Validity Evaluation Criteria SOP6' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedures-version-6',
         'ClinGen Gene Validity Evaluation Criteria SOP5' => 'https://clinicalgenome.org/docs/gene-disease-validity-sop-version-5',

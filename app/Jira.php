@@ -699,10 +699,15 @@ class Jira extends Model
 
           if (empty($response))
                return $collection;
-//dd($response->issues);
+
           foreach ($response->issues as $issue)
           {
+               // skip over any won't fixes
+               if ($issue->fields->resolution->name == "Won't Fix")
+                    continue;
+
                // map the jira response into a somewhat sane structure
+               // dd($issue->fields->resolution->name);
                $node = new Nodal([
                     'key' => $issue->key,
                     'summary' => $issue->fields->summary,
