@@ -44,7 +44,8 @@ class QueryDecipher extends Command
 
 		try {
 
-			$results = file_get_contents("https://decipher.sanger.ac.uk/files/downloads/HI_Predictions_Version3.bed.gz");
+			// $results = file_get_contents("https://decipher.sanger.ac.uk/files/downloads/HI_Predictions_Version3.bed.gz");
+			$results = file_get_contents("https://www.deciphergenomics.org/files/downloads/HI_Predictions_Version3.bed.gz");
 
 		} catch (\Exception $e) {
 
