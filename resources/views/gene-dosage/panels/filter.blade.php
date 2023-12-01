@@ -55,4 +55,20 @@
                 <span class="ml-2 hgnc text-muted action-show-protein-text">Off</span>
             </div>
         </div>
+        @if ($is_search)
+            <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show only Genes/Regions that have completed review</label>
+            <div class="col-sm-3">
+                <div class="form-inline p-0 m-0 col-sm-12">
+                    <i class="fas fa-toggle-off fa-lg action-show-completed"></i>
+                    <span class="ml-2 hgnc text-muted action-show-completed-text">Off</span>
+                </div>
+            </div>
+            <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show Pseudogenes</label>
+            <div class="col-sm-3">
+                <div class="form-inline p-0 m-0 col-sm-12">
+                    <i class="fas fa-lg fa-toggle-on action-show-pseudogenes"></i>
+                    <span class="ml-2 hgnc text-muted action-show-pseudogenes-text">On</span>
+                </div>
+            </div>
+        @endif
     </div>

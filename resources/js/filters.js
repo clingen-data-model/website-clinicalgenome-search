@@ -1,7 +1,6 @@
 var filterstack = [
 ];
 
-
 /**
  *
  *
@@ -207,7 +206,7 @@ $('.action-show-hiknown').on('click', function() {
 	 * */
 	$('.action-show-protein').on('click', function() {
 
-		if ($(this).hasClass('fa-toggle-off'))
+        if ($(this).hasClass('fa-toggle-off'))
 		{
 			//$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
 			filter_push("protein", "locus", 'protein-coding gene');
@@ -234,6 +233,88 @@ $('.action-show-hiknown').on('click', function() {
 			if ($('.filter-container').html() == '')
 			{
 				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
+		}
+
+		filter_process($table);
+	});
+
+    /**
+	 *
+	 * Listener for displaying only completed genes
+	 *
+	 * */
+	$('.action-show-pseudogenes').on('click', function() {
+
+        if ($(this).hasClass('fa-toggle-on'))
+		{
+			//$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
+            filter_push("pseudogene", "@filter", filterPseudogenes);
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-pseudogenes-text').html('Off');
+			$('.action-af-badge').remove();
+
+			//var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1"> Stuff </span>');
+			//$('.filter-container').append(newbadge);
+
+		}
+		else
+		{
+			//$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
+
+            filter_pop("pseudogene");
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-pseudogenes-text').html('On');
+
+			$('.action-pc-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				//var newbadge = $('<span class="badge action-af-badge">None Of That</span>');
+				//$('.filter-container').append(newbadge);
+			}
+		}
+
+		filter_process($table);
+	});
+
+    /**
+	 *
+	 * Listener for displaying only completed genes
+	 *
+	 * */
+	$('.action-show-completed').on('click', function() {
+
+        if ($(this).hasClass('fa-toggle-off'))
+		{
+			//$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
+			filter_push("complete", "@filter", completedFilter);
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-completed-text').html('On');
+
+			$('.action-af-badge').remove();
+
+			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1"> Stuff </span>');
+			$('.filter-container').append(newbadge);
+
+		}
+		else
+		{
+			//$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
+			filter_pop("complete");
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show-completed-text').html('Off');
+
+			$('.action-pc-badge').remove();
+
+			if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None Of That</span>');
 				$('.filter-container').append(newbadge);
 			}
 		}
@@ -291,6 +372,16 @@ $('.action-show-hiknown').on('click', function() {
 	function monthFilter(rows, filters)
 	{
 		return Date.parse(rows.rawdate) > timestamp;
+    }
+
+    function completedFilter(rows, filter)
+    {
+        return rows.workflow === 'Complete'
+    }
+
+    function filterPseudogenes(rows, filter)
+    {
+        return rows.type == 0 || rows.type == 1;
     }
 
     /**
