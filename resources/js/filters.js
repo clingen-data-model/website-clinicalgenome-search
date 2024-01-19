@@ -1,10 +1,34 @@
 var filterstack = [
 ];
 
+$(function() {
+    createBadges();
+})
+
+function createBadges()
+{
+    $('.filter-container').html('');
+    var dosageFilters = $('.dosage-filter');
+    var enabledFilters = dosageFilters.filter( function (filter) {
+        return $(this).hasClass('fa-toggle-on')
+    });
+
+    if (!enabledFilters.length) {
+        var newbadge = $('<span class="badge action-af-badge">None</span>');
+        $('.filter-container').append(newbadge);
+    } else {
+        enabledFilters.each( function () {
+            var filterObj = $(this);
+            var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">' + filterObj.data('badge') + '</span>');
+            $('.filter-container').append(newbadge);
+        })
+
+    }
+}
 /**
  *
  *
- * Listener for displaying only genes
+ * Listener for displfaying only genes
  *
  * */
 $('.action-show-genes').on('click', function() {
@@ -84,11 +108,6 @@ $('.action-show-hiknown').on('click', function() {
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hiknown-text').html('On');
 
-        $('.action-af-badge').remove();
-
-        var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">Known HI</span>');
-        $('.filter-container').append(newbadge);
-
     }
     else
     {
@@ -97,14 +116,6 @@ $('.action-show-hiknown').on('click', function() {
 
         $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
         $('.action-show-hiknown-text').html('Off');
-
-        $('.action-hi-badge').remove();
-
-        if ($('.filter-container').html() == '')
-        {
-            var newbadge = $('<span class="badge action-af-badge">None</span>');
-            $('.filter-container').append(newbadge);
-        }
 
     }
 
@@ -127,11 +138,6 @@ $('.action-show-hiknown').on('click', function() {
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-tsknown-text').html('On');
 
-        $('.action-af-badge').remove();
-
-        var newbadge = $('<span class="badge action-ts-badge bg-primary mr-1">Known TS</span>');
-        $('.filter-container').append(newbadge);
-
     }
     else
     {
@@ -140,15 +146,6 @@ $('.action-show-hiknown').on('click', function() {
 
         $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
         $('.action-show-tsknown-text').html('Off');
-
-        $('.action-ts-badge').remove();
-
-        if ($('.filter-container').html() == '')
-        {
-            var newbadge = $('<span class="badge action-af-badge">None</span>');
-            $('.filter-container').append(newbadge);
-        }
-
     }
 
     filter_process($table);
@@ -171,11 +168,6 @@ $('.action-show-hiknown').on('click', function() {
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hitsknown-text').html('On');
 
-        $('.action-af-badge').remove();
-
-        var newbadge = $('<span class="badge action-hits-badge bg-primary mr-1">Known HI or TS</span>');
-        $('.filter-container').append(newbadge);
-
     }
     else
     {
@@ -184,14 +176,6 @@ $('.action-show-hiknown').on('click', function() {
 
         $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
         $('.action-show-hitsknown-text').html('Off');
-
-        $('.action-hits-badge').remove();
-
-        if ($('.filter-container').html() == '')
-        {
-            var newbadge = $('<span class="badge action-af-badge">None</span>');
-            $('.filter-container').append(newbadge);
-        }
 
     }
 
@@ -214,11 +198,6 @@ $('.action-show-hiknown').on('click', function() {
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-protein-text').html('On');
 
-			$('.action-af-badge').remove();
-
-			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1">Protein Coding</span>');
-			$('.filter-container').append(newbadge);
-
 		}
 		else
 		{
@@ -228,13 +207,6 @@ $('.action-show-hiknown').on('click', function() {
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-protein-text').html('Off');
 
-			$('.action-pc-badge').remove();
-
-			if ($('.filter-container').html() == '')
-			{
-				var newbadge = $('<span class="badge action-af-badge">None</span>');
-				$('.filter-container').append(newbadge);
-			}
 		}
 
 		filter_process($table);
@@ -254,10 +226,13 @@ $('.action-show-hiknown').on('click', function() {
 
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-pseudogenes-text').html('Off');
-			$('.action-af-badge').remove();
+			$('.action-pseudogenes-badge').remove();
 
-			//var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1"> Stuff </span>');
-			//$('.filter-container').append(newbadge);
+            if ($('.filter-container').html() == '')
+			{
+				var newbadge = $('<span class="badge action-af-badge">None</span>');
+				$('.filter-container').append(newbadge);
+			}
 
 		}
 		else
@@ -269,13 +244,6 @@ $('.action-show-hiknown').on('click', function() {
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-pseudogenes-text').html('On');
 
-			$('.action-pc-badge').remove();
-
-			if ($('.filter-container').html() == '')
-			{
-				//var newbadge = $('<span class="badge action-af-badge">None Of That</span>');
-				//$('.filter-container').append(newbadge);
-			}
 		}
 
 		filter_process($table);
@@ -290,16 +258,10 @@ $('.action-show-hiknown').on('click', function() {
 
         if ($(this).hasClass('fa-toggle-off'))
 		{
-			//$table.bootstrapTable('filterBy', {locus: 'protein-coding gene'});
 			filter_push("complete", "@filter", completedFilter);
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-completed-text').html('On');
-
-			$('.action-af-badge').remove();
-
-			var newbadge = $('<span class="badge action-pc-badge bg-primary mr-1"> Stuff </span>');
-			$('.filter-container').append(newbadge);
 
 		}
 		else
@@ -310,13 +272,8 @@ $('.action-show-hiknown').on('click', function() {
 			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
 			$('.action-show-completed-text').html('Off');
 
-			$('.action-pc-badge').remove();
+			$('.action-completed-badge').remove();
 
-			if ($('.filter-container').html() == '')
-			{
-				var newbadge = $('<span class="badge action-af-badge">None Of That</span>');
-				$('.filter-container').append(newbadge);
-			}
 		}
 
 		filter_process($table);
@@ -339,11 +296,6 @@ $('.action-show-hiknown').on('click', function() {
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-new-text').html('On');
 
-			$('.action-af-badge').remove();
-
-			var newbadge = $('<span class="badge action-new-badge bg-primary mr-1">Score Change 365</span>');
-			$('.filter-container').append(newbadge);
-
 		}
 		else
 		{
@@ -354,12 +306,6 @@ $('.action-show-hiknown').on('click', function() {
 			$('.action-show-new-text').html('Off');
 
 			$('.action-new-badge').remove();
-
-			if ($('.filter-container').html() == '')
-			{
-				var newbadge = $('<span class="badge action-af-badge">None</span>');
-				$('.filter-container').append(newbadge);
-			}
 
 		}
 
@@ -558,7 +504,7 @@ function filter_process(table) {
     monthFilter*/
 
     table.bootstrapTable('filterBy', { }, {'filterAlgorithm': checkFilter});
-
+    createBadges()
 }
 
 function checkFilter(row, filters)

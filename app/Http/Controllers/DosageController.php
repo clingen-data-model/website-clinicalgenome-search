@@ -305,7 +305,12 @@ class DosageController extends Controller
                 }
                 else
                 {
-                    $region .=  $cords->coords[0]->bp->bp->to;
+                    if (count($cords->coords)) {
+                        $region .=  $cords->coords[0]->bp->bp->to;
+                    } else {
+                        $region = 'INVALID';
+                    }
+
                 }
 
 			} catch (ClientException $e) {

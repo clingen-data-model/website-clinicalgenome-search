@@ -16,42 +16,42 @@
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with HI Score 3 (Sufficient Evidence) </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-hiknown"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-hiknown" data-badge="Known HI"></i>
                 <span class="ml-2 hgnc text-muted action-show-hiknown-text">Off</span>
             </div>
         </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with TS Score 3 (Sufficient Evidence) </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-tsknown"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-tsknown" data-badge="Known TS"></i>
                 <span class="ml-2 hgnc text-muted action-show-tsknown-text">Off</span>
             </div>
         </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with TS Score 3 <u>or</u> HI Score 3 </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-hitsknown"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-hitsknown" data-badge="Known HI or TS"></i>
                 <span class="ml-2 hgnc text-muted action-show-hitsknown-text">Off</span>
             </div>
         </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with scores changed in the past year </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-new"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-new" data-badge="Score Change 365"></i>
                 <span class="ml-2 hgnc text-muted action-show-new-text">Off</span>
             </div>
         </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions reviewed in the past 90 days</label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-recent"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-recent" data-badge="Show Recent"></i>
                 <span class="ml-2 hgnc text-muted action-show-recent-text">Off</span>
             </div>
         </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Protein-Coding Genes</label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off fa-lg action-show-protein"></i>
+                <i class="fas fa-toggle-off fa-lg dosage-filter action-show-protein" data-badge="Protein Coding"></i>
                 <span class="ml-2 hgnc text-muted action-show-protein-text">Off</span>
             </div>
         </div>
@@ -59,14 +59,14 @@
             <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show only Genes/Regions that have completed review</label>
             <div class="col-sm-3">
                 <div class="form-inline p-0 m-0 col-sm-12">
-                    <i class="fas fa-toggle-off fa-lg action-show-completed"></i>
+                    <i class="fas fa-toggle-off fa-lg dosage-filter action-show-completed" data-badge="Completed Review"></i>
                     <span class="ml-2 hgnc text-muted action-show-completed-text">Off</span>
                 </div>
             </div>
             <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show Pseudogenes</label>
             <div class="col-sm-3">
                 <div class="form-inline p-0 m-0 col-sm-12">
-                    <i class="fas fa-lg fa-toggle-on action-show-pseudogenes"></i>
+                    <i class="fas fa-lg fa-toggle-on dosage-filter action-show-pseudogenes" data-badge="Show Pseudogenes"></i>
                     <span class="ml-2 hgnc text-muted action-show-pseudogenes-text">On</span>
                 </div>
             </div>

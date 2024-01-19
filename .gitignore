@@ -10,6 +10,7 @@
 /data/hg38/*.gff
 /data/ignore
 /vendor
+/.idea
 .env
 .env.backup
 .phpunit.result.cache
