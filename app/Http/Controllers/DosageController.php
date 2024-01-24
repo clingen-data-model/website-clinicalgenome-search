@@ -92,6 +92,9 @@ class DosageController extends Controller
         else
             $display_list = $settings['size'];
 
+        //Set for search result page
+        $is_search = false;
+
 		return view('gene-dosage.index', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('apiurl', $this->api)
@@ -100,6 +103,7 @@ class DosageController extends Controller
 						->with('col_search', $col_search)
 						->with('user', $this->user)
                         ->with('display_list', $display_list)
+                        ->with('is_search', $is_search)
 						->with('bookmarks', $bookmarks)
                         ->with('currentbookmark', $filter);
     }
@@ -301,7 +305,12 @@ class DosageController extends Controller
                 }
                 else
                 {
-                    $region .=  $cords->coords[0]->bp->bp->to;
+                    if (count($cords->coords)) {
+                        $region .=  $cords->coords[0]->bp->bp->to;
+                    } else {
+                        $region = 'INVALID';
+                    }
+
                 }
 
 			} catch (ClientException $e) {
@@ -329,6 +338,8 @@ class DosageController extends Controller
         else
             $display_list = $settings['size'];
 
+        $is_search = true;
+
 		return view('gene-dosage.region_search', compact('display_tabs'))
 		//				->with('count', $results->count)
 						->with('type', $type)
@@ -340,6 +351,7 @@ class DosageController extends Controller
 						->with('user', $this->user)
 						->with('display_list', $display_list)
                         ->with('bookmarks', $bookmarks)
+                        ->with('is_search', $is_search)
                         ->with('currentbookmark', $filter);
     }
 
@@ -430,6 +442,7 @@ class DosageController extends Controller
 
         // don't apply global settings if local ones present
         $settings = Filter::parseSettings($request->fullUrl());
+        $is_search = true;
 
         if (empty($settings['size']))
             $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
@@ -447,6 +460,7 @@ class DosageController extends Controller
 						->with('user', $this->user)
 						->with('display_list', $display_list)
                         ->with('bookmarks', $bookmarks)
+                        ->with('is_search', $is_search)
                         ->with('currentbookmark', $filter);
 	}
 
