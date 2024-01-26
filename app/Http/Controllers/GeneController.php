@@ -19,6 +19,7 @@ use App\Filter;
 use App\Omim;
 use App\Mim;
 use App\Pmid;
+use App\Genomeconnect;
 
 /**
 *
@@ -375,6 +376,9 @@ class GeneController extends Controller
                         + ($actionability_collection->isEmpty() ? 0 : 1)
                         + */ count($pregceps);
 
+		//get GenomeConnect info
+		$gc = $gene->genomeconnect;
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
@@ -383,7 +387,7 @@ class GeneController extends Controller
 //dd($variant_collection);
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
                         'pmids', 'mimflag', 'mims',
-                         'disease_collection', 'total_panels', 'variant_collection'))
+                         'disease_collection', 'total_panels', 'variant_collection', 'gc'))
 						->with('user', $this->user);;
 	}
 
@@ -674,14 +678,16 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
+		//get GenomeConnect info
+		$gc = $gene->genomeconnect;
+
         //dd($record);
         //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
-                                                'pregceps', 'total_panels', 'mimflag', 'mims',
-            'vceps',
-			'gceps'))
+                                                'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps',
+												'gceps', 'gc'))
 												->with('user', $this->user);
 	}
 

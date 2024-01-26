@@ -842,7 +842,7 @@ class GeneLib extends Model
 
          // regions are still only found in Jira
          $response = Jira::cnvList($args);
-
+dd($response);
          return $response;
     }
 

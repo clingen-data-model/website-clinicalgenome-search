@@ -51,6 +51,12 @@ class User extends Authenticatable implements MustVerifyEmail
     public const STATUS_INITIALIZED = 0;
     public const STATUS_ACTIVE = 1;
 
+    // Roles are a patterned bitfield up to 32K
+    public const ROLE_STANDARD = 1;
+
+    public const ROLE_GENOMECONNECT = 2;
+    public const ROLE_GENOMECONNECT_ADMIN = 4;
+
 
     /*
      * The genes that this user is following
@@ -255,5 +261,14 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->groups()->detach($group->id);
 
         return true;
+    }
+
+
+    /**
+     * True if the user is a genomeconnect admin
+     */
+    public function isGenomeConnectAdmin()
+    {
+        return ($this->role & self::ROLE_GENOMECONNECT_ADMIN);
     }
 }

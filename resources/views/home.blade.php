@@ -15,6 +15,18 @@
     <div id="dashboard-logout" class="row justify-content-center">
 
         <div class="col-md-9 mt-3 pl-0 pr-0 border">
+
+            @if ($user->isGenomeConnectAdmin())
+            <div class="mb-2">
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseGenCon" role="button" aria-expanded="false" aria-controls="collapseGenCon">
+                    <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseGenConIcon"></i></a>
+                <h4 class="m-0 p-2 text-white" style="background:#800080">GenomeConnect</h4>
+            </div>
+
+            @include('dashboard.includes.genomeconnect')
+
+            @endif
+
 			<div class="mb-2">
                 <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseReports" role="button" aria-expanded="false" aria-controls="collapseReports">
                     <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseReportsIcon"></i></a>
@@ -60,6 +72,9 @@
 	@include('modals.settings')
     @include('dashboard.modals.followeps')
 	@include('modals.report')
+    @include('modals.followgencon', ['gene' => ''])
+    @include('modals.unfollowgencon', ['ident' => ''])
+    @include('modals.searchgenomeconnect')
 
 @endsection
 
@@ -156,6 +171,7 @@
     $(function() {
 		var $table = $('#follow-table');
 		var $reporttable = $('#table');
+        var $gencontable = $('#gencon-table');
 
 		window.burl = '{{  url('api/genes/find/%QUERY') }}';
 

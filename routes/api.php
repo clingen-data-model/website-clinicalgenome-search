@@ -82,6 +82,12 @@ Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look')
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
 
+// Geneconnect
+//Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
+//Route::get('/genes/find/{term?}', 'Api\GeneController@find')->name('genes.find');
+Route::post('/gc/follow', 'Api\GenomeConnectController@create')->name('gc.create');
+Route::post('/gc/remove', 'Api\GenomeConnectController@remove')->name('gc.remove');
+
 // region search
 Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');
 
