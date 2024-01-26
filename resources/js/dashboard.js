@@ -1227,7 +1227,7 @@ $(function() {
                 //submits to the form's action URL
                 $.post(url, formData, function(response)
                 {
-                    /*var url = "/api/home/follow/reload";
+                    var url = "/api/home/gc/reload";
     
                     var gene = response.gene;
     
@@ -1235,30 +1235,15 @@ $(function() {
                     $.get(url, function(response)
                     {
                         //console.log(response.data);
-                        $('#follow-table').bootstrapTable('load', response.data);
-                        $('#follow-table').bootstrapTable("resetSearch","");
-    
-                        switch (gene)
-                        {
-                            case '@AllActionability':
-                                $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
-                                break;
-                            case '@AllValidity':
-                                $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
-                                break;
-                            case '@AllDosage':
-                                $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
-                                break;
-                            case '*':
-                                $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
-                        }
+                        $('#gencon-table').bootstrapTable('load', response.data);
+                        $('#gencon-table').bootstrapTable("resetSearch","");
                         
                         $('#modalSearchGenomeConnect').modal('hide');
     
                     }).fail(function(response)
                     {
                         alert("Error reloading table");
-                    }); */
+                    });
     
                 }).fail(function(response)
                 {

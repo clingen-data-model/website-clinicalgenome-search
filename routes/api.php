@@ -87,6 +87,7 @@ Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('co
 //Route::get('/genes/find/{term?}', 'Api\GeneController@find')->name('genes.find');
 Route::post('/gc/follow', 'Api\GenomeConnectController@create')->name('gc.create');
 Route::post('/gc/remove', 'Api\GenomeConnectController@remove')->name('gc.remove');
+Route::get('/home/gc/reload', 'Api\GenomeConnectController@reload')->name('gc.reload');
 
 // region search
 Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');

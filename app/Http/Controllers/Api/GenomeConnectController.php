@@ -7,7 +7,7 @@ use App\Http\Requests\ApiRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-use App\Http\Resources\Follow as FollowResource;
+use App\Http\Resources\Genomeconnect as GenomeconnectResource;
 
 use Auth;
 
@@ -157,7 +157,6 @@ dd("not logged in");  }*/
      */
     public function reload()
     {
-        dd("reload exit)");
         $genes = collect();
 
         if (Auth::guard('api')->check())
@@ -177,59 +176,23 @@ dd("not logged in");  }*/
                                         501);
         }
 
-        foreach ($user->groups as $group)
-        {
-            $type = 1;
+        $gcs = Genomeconnect::with('gene')->get();
+/*
+        <tr >
+        <td scope="row" data-value="{{ $gc->gene->name }}">{{ $gc->gene->name }}</td>
+        <td>
+            {{ $gc->variant_count }}
+        </td>
+        <td>{{ $gc->displayDate($gc->updated_at) }}</td>
+        <td>
+            <span class="action-remove-gc"><i class="fas fa-trash" style="color:red"></i></span>
+        </td>
+        <td>{{ $gc->gene->hgnc_id }}</td>
+        <td>{{ $gc->ident }}</td>
+    </tr>*/
 
-            switch ($group->name)
-            {
-                case '@AllGenes':
-                    $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
-                    break;
-                case '@AllDosage':
-                    $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
-                    break;
-                case '@AllValidity':
-                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => true, 'actionability' => false];
-                    break;
-                case '@AllActionability':
-                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => true];
-                    break;
-                case '@AllVariant':
-                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => true, 'validity' => false, 'actionability' => false];
-                    break;
-                default:
-                    if (substr($group->search_name,0, 1) == '%')
-                        $type = 2;
-                    $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
-                    break;
-
-            }
-
-            $gene = new Gene(['name' => $group->display_name,
-                                'hgnc_id' => $group->search_name,
-                                'activity' => $a,
-                                'type' => $type,
-                                'date_last_curated' => ''
-                            ]);
-
-            $genes->prepend($gene);
-        }
-
-
-        foreach ($user->panels as $panel)
-        {
-            $gene = new Gene(['name' => $panel->smart_title,
-                                'hgnc_id' => '!' . $panel->ident,
-                                'activity' => ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false],
-                                'type' => 4,
-                                'date_last_curated' => ''
-                            ]);
-
-            $genes->prepend($gene);
-        }
-
-        return FollowResource::collection($genes);
+       
+        return GenomeconnectResource::collection($gcs);
         //return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
         //            'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports'));
     }
