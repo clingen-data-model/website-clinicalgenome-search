@@ -43,6 +43,11 @@
 		<li class="" style="">
 			<a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
 		</li>
+		@if ($gc !== null && $gc->variant_count > 0)
+		<li class="" style="">
+			<a href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span>  <i class="glyphicon glyphicon-new-window small ml-2" id="external_clinvar_gene_variants"></i></a>
+		</li>
+		@endif
 	</ul>
 
 @endsection

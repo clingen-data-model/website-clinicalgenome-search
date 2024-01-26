@@ -14,6 +14,7 @@ use App\Title;
 use App\Report;
 use App\Region;
 use App\Panel;
+use App\Genomeconnect;
 
 class HomeController extends Controller
 {
@@ -146,9 +147,11 @@ class HomeController extends Controller
         $gceps = Panel::gcep()->blacklist(['40018', '40019', '40058'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
         $vceps = Panel::vcep()->blacklist(['4acafdd5-80f3-47f0-8522-f4bd04da175f'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
 
+        $gcs = Genomeconnect::with('gene')->get();
+
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
                     'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',
-                    'gceps', 'vceps'));
+                    'gceps', 'vceps', 'gcs'));
     }
 
 

@@ -171,6 +171,17 @@ class Gene extends Model
      }
 
 
+     /**
+     * Access the genomeconnect entry associated with this gene
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function genomeconnect()
+    {
+         return $this->hasOne('App\Genomeconnect');
+    }
+
+
      /*
      * The panels associated with this gene
      */

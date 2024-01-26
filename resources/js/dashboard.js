@@ -2,6 +2,7 @@ $(function() {
 
     var $table = $('#follow-table');
     var $reporttable = $('#table');
+    var $gencontable = $('#gencon-table');
 
     /**
      * Choose a date for report start
@@ -1170,5 +1171,252 @@ $(function() {
             source: followtermGene
         }
     });
+
+
+    /*
+    **  GeneConnect 
+    */
+
+    /**
+     * Show screen to add a new gene
+     */
+    $('.action-gc-gene').on('click', function() {
+
+        $('#gc_search_form')[0].reset();
+        $('#modalSearchGenomeConnect').modal('show');
+
+    });
+
+
+    // gene lookup selector specifically for genomeconnect
+    $('.queryFindGenomeConnect').typeahead(null,
+        {
+            name: 'followtermGene',
+            display: 'label',
+            source: followtermGene,
+            limit: Infinity,
+            highlight: true,
+            hint: false,
+            autoselect:true,
+        }).bind('typeahead:selected',function(evt,item){
+            // here is where we can set the follow and refresh the screen.
+    
+            $('#follow-gencon-field').val(item.hgncid);
+            $('#follow_gencon_form').submit();
+    
+        });
+
+
+        $( '#follow_gencon_form' ).validate( {
+            submitHandler: function(form) {
+                $.ajaxSetup({
+                    cache: true,
+                    contentType: "application/x-www-form-urlencoded",
+                    processData: true,
+                    headers:{
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN' : window.token,
+                        'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                    }
+                });
+    
+                var url = "/api/gc/follow";
+    
+                var formData = $(form).serialize();
+    
+                //submits to the form's action URL
+                $.post(url, formData, function(response)
+                {
+                    var url = "/api/home/gc/reload";
+    
+                    var gene = response.gene;
+    
+                    //submits to the form's action URL
+                    $.get(url, function(response)
+                    {
+                        //console.log(response.data);
+                        $('#gencon-table').bootstrapTable('load', response.data);
+                        $('#gencon-table').bootstrapTable("resetSearch","");
+                        
+                        $('#modalSearchGenomeConnect').modal('hide');
+    
+                    }).fail(function(response)
+                    {
+                        alert("Error reloading table");
+                    });
+    
+                }).fail(function(response)
+                {
+                    swal({
+                        title: "Error",
+                        text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                        icon: "error",
+                    });
+                });
+    
+            },
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 80
+                }
+            },
+            messages: {
+                email:  {
+                    required: "Please enter your email address",
+                    email: "Please enter a valid email address",
+                    maxlength: "Section names must be less than 80 characters"
+                },
+            },
+            errorElement: 'em',
+            errorClass: 'invalid-feedback',
+            errorPlacement: function ( error, element ) {
+                // Add the `help-block` class to the error element
+                error.addClass( "invalid-feedback" );
+    
+                if ( element.prop( "type" ) === "checkbox" ) {
+                    error.insertAfter( element.parent( "label" ) );
+                } else {
+                    error.insertAfter( element );
+                }
+            },
+            highlight: function ( element, errorClass, validClass ) {
+                $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+            }
+        });
+
+
+    $( '#unfollow_gencon_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/gc/remove";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                /*
+                var url = "/api/home/follow/reload";
+
+                var gene = response.gene;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#follow-table').bootstrapTable('load', response.data);
+                    $('#follow-table').bootstrapTable("resetSearch","");
+
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+                    }
+
+                    $('#modalSearchGene').modal('hide');
+                    
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+                */
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while unfollowing the item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalUnFollowGenCon').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    /**
+     * Remove geneconnect gene
+     */
+    $gencontable.on('click', '.action-remove-gc', function(element) {
+        swal({
+            title: "Are you sure?",
+            text: "Removed genes can always be readded later.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((yes) => {
+                if (yes) {
+                    var ident  = $(this).closest('tr').data('uniqueid');
+                    $('#unfollow-gencon-field').val(ident);
+                    $('#unfollow_gencon_form').submit();
+                    var row = $(this).closest('tr').find('td:first-child').html();
+                    $gencontable.bootstrapTable('remove', {
+                        field: 'symbol',
+                        values: row
+                    });
+                    //$(":checkbox[value=" + hgnc.substring(1) + "]").prop("checked", false);
+
+                }
+        });
+    });
+
 
 });

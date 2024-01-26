@@ -171,8 +171,8 @@
                 return row.workflow === 'Complete' && row.type == 1
             }).length
 
-            let genesStatement = `${res.gene_count} total genes, including ${pseudogenesCount} pseudogenes and ${completedGenesCount} completed evaluations.`;
-            let regionsStatement = `${res.region_count} total regions including ${completedRegionsCount} completed evaluations.`;
+            let genesStatement = `${res.gene_count} total genes, including ${pseudogenesCount} pseudogenes and ${completedGenesCount} completed evaluations`;
+            let regionsStatement = `${res.region_count} total regions, including ${completedRegionsCount} completed evaluations`;
 
             $('.genes-statement').html(genesStatement).parent().removeClass('hidden');
             $('.regions-statement').html(regionsStatement).parent().removeClass('hidden');
