@@ -1,18 +1,24 @@
 .gitignore
 /node_modules
-/public/hot
-/public/js/app.js
-/public/js/genetable.js
-/public/storage
 /storage/*.key
 /data/*.dat
 /data/hg19/*.gff3
+/data/hg19/*.gff
 /data/hg38/*.gff
+/data/php-rdkafka
 /data/ignore
+/data/region.idx
+/data/region38.idx
+/data/acmg_sf3.bed
+/data/gcexpress_report.tsv
+/data/MonthlyCurationReport.csv
+/data/Leuko*
+/data/leuko.csv
+/data/newleuko.tsv
 /vendor
-/.idea
 .env
 .env.backup
+.KENV
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -24,6 +30,7 @@ yarn-error.log
 .phpintel/*
 .editorconfig
 **/*\(copy\)
+**/*\(copy\).php
 **/*(another copy)
 **/OLD
 **/*.erb
