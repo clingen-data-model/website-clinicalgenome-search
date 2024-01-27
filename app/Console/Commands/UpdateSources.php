@@ -62,7 +62,7 @@ class UpdateSources extends Command
           $this->call('update:erepo');      // Erepo
           $this->call('update:orpha');      // Orphanet
           $this->call('gencc:query');       // Gencc souce
-          $this->call('update:geneconnect');    // Update geneconnect counts from clinvar
+          $this->call('update:genomeconnect');    // Update geneconnect counts from clinvar
           $this->call('query:oms');         // update afflisliates from website
           $this->call('update:affiliates'); // Update from genegraph and erepo
           $this->call('update:changes');
