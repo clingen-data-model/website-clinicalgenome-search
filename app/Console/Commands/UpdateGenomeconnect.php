@@ -86,11 +86,19 @@ class UpdateGenomeconnect extends Command
           }
         }
       }
+
+      $key = Setting::get('clinvar', false);
+
+      if ($key === false)
+      {
+        echo "ERROR (KEY NOT FOUND)\n";
+        exit;
+      }
         
       // set up search array
       $parms = ['db' => 'clinvar', 
           'term' => '',
-				  'api_key' => '59e073ce6f18becd93e36bd2613dfde47509',
+				  'api_key' => $key,
           'retstart' => 0,
           'retmax' => 1000,
           'datetype' => 'dp',
