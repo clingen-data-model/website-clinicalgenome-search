@@ -28,42 +28,42 @@ use App\Health;
  * */
 class GeneLib extends Model
 {
-	/**
-     * This class is designed to be used statically.  It is a non-persistant model
-     * with no corresponding table in the database
-     */
+     /**
+      * This class is designed to be used statically.  It is a non-persistant model
+      * with no corresponding table in the database
+      */
 
      /**
-     * The attributes that should be validity checked.
-     *
-     * @var array
-     */
+      * The attributes that should be validity checked.
+      *
+      * @var array
+      */
      public static $rules = [];
 
-    /**
-     * The attributes that are mass assignable.  Remember to fill it
-     * in when all the attributes are known.
-     *
-     * @var array
-     */
-	//protected $fillable = ['name', 'address1', 'address2', 'city', 'state',
-	//					   'zip', 'contact', 'phone', 'status' ];
+     /**
+      * The attributes that are mass assignable.  Remember to fill it
+      * in when all the attributes are known.
+      *
+      * @var array
+      */
+     //protected $fillable = ['name', 'address1', 'address2', 'city', 'state',
+     //					   'zip', 'contact', 'phone', 'status' ];
 
-	/**
-     * Non-persistent storage model attributes.
-     *
-     * @var array
-     */
+     /**
+      * Non-persistent storage model attributes.
+      *
+      * @var array
+      */
      protected $appends = [];
 
-	/*
+     /*
      * Dosage Assertion strings for display methods
      *
      * */
 
-    protected static $short_dosage_assertion_strings = [
-         '-5' => 'Not yet evaluated',
-         '-1' => 'Pseudogene',
+     protected static $short_dosage_assertion_strings = [
+          '-5' => 'Not yet evaluated',
+          '-1' => 'Pseudogene',
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
@@ -78,7 +78,7 @@ class GeneLib extends Model
           'MINIMAL_EVIDENCE' => 'Little Evidence for ####',
           'MODERATE_EVIDENCE' => 'Emerging Evidence for ####',
           'NO_EVIDENCE' => 'No Evidence for ####',
-          'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence for ####',
+          'SUFFICIENT_EVIDENCE' => 'Sufficient Evidence for ####',
           'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
      ];
 
@@ -87,7 +87,7 @@ class GeneLib extends Model
           'MINIMAL_EVIDENCE' => 'Little Evidence',
           'MODERATE_EVIDENCE' => 'Emerging Evidence',
           'NO_EVIDENCE' => 'No Evidence',
-          'SUFFICIENT_EVIDENCE' =>'Sufficient Evidence',
+          'SUFFICIENT_EVIDENCE' => 'Sufficient Evidence',
           'DOSAGE_SENSITIVITY_UNLIKELY' => 'Dosage Sensitivity Unlikely'
      ];
 
@@ -109,15 +109,15 @@ class GeneLib extends Model
      ];
 
      protected static $validity_sort_value = [
-               'Definitive' => 20,
-               'Strong' => 19,
-               'Moderate' => 18,
-               'Supportive' => 17,
-               'Limited' => 16,
-               'Animal Model Only' => 15,
-               'Disputed' => 14,
-               'Refuted' => 13,
-               'No Known Disease Relationship' => 12
+          'Definitive' => 20,
+          'Strong' => 19,
+          'Moderate' => 18,
+          'Supportive' => 17,
+          'Limited' => 16,
+          'Animal Model Only' => 15,
+          'Disputed' => 14,
+          'Refuted' => 13,
+          'No Known Disease Relationship' => 12
      ];
 
      protected static $validity_assertion_strings = [
@@ -189,13 +189,13 @@ class GeneLib extends Model
           'ClinGen Gene Validity Evaluation Criteria SOPX' => 'SOPX'
      ];
 
-	protected static $dosage_score_assertion_strings = [
+     protected static $dosage_score_assertion_strings = [
           '-5' => 'Not yet evaluated',
           '-1' => 'Pseudogene',
           '0' => 'No Evidence for ####',
           '1' => 'Little Evidence for ####',
           '2' => 'Emerging Evidence for ####',
-          '3' =>'Sufficient Evidence for ####',
+          '3' => 'Sufficient Evidence for ####',
           '30' => 'Gene Associated with Autosomal Recessive Phenotype',
           '40' => 'Dosage Sensitivity Unlikely'
      ];
@@ -206,7 +206,7 @@ class GeneLib extends Model
           '0' => 'No Evidence',
           '1' => 'Little Evidence',
           '2' => 'Emerging Evidence',
-          '3' =>'Sufficient Evidence',
+          '3' => 'Sufficient Evidence',
           '30' => 'Associated with Autosomal Recessive Phenotype',
           '40' => 'Dosage Sensitivity Unlikely'
      ];
@@ -234,47 +234,47 @@ class GeneLib extends Model
           'No Actionability' => 15,
           'Assertion Pending' => 14,
           'Has Insufficient Evidence for Actionability Based on Early Rule-out' => 13,
-		'N/A - Insufficient evidence: expert review' => 12,
-		'N/A - Insufficient evidence: early rule-out' => 11
+          'N/A - Insufficient evidence: expert review' => 12,
+          'N/A - Insufficient evidence: early rule-out' => 11
      ];
 
 
-	/*----------------------Public Methods----------------------------*/
+     /*----------------------Public Methods----------------------------*/
 
 
-    /**
-     * Get a list of actionability curations
-     *
-     * (Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get a list of actionability curations
+      *
+      * (Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function actionabilityList($args)
      {
-		// check args
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          // check args
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Use graphql for data content
-		$response = Graphql::actionabilityList($args);
+          // Use graphql for data content
+          $response = Graphql::actionabilityList($args);
 
-		return $response;
-	}
+          return $response;
+     }
 
 
-    /**
-     * Get a list of all the curated genes
-     *
-     * (Neo4j, Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get a list of all the curated genes
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function geneList($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Gene data is currently in neo4j
+          // Gene data is currently in neo4j
           //$response = Neo4j::geneList($args);
           /*
           SELECT * FROM `genes` WHERE name like '%AR%' order by (name = 'AR') desc, length(name)
@@ -296,53 +296,49 @@ class GeneLib extends Model
           else
                $response = Mysql::geneList($args);*/
 
-		return $response;
-	}
+          return $response;
+     }
 
 
-	/**
-     * Get details of a particular gene
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get details of a particular gene
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function geneDetail($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Most of the gene and curation data is currently in neo4j...
+          // Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
 
-          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage pseudogene
-		{
+          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)          // dosage pseudogene
+          {
                $gene = self::geneNotCurated($args);
                $issue = Iscamap::issue($args['gene'])->first();
-               if ($issue !== null)
-               {
+               if ($issue !== null) {
                     $gene->label = $issue->symbol;
                     $gene->hgnc_id = $issue->symbol;
                }
 
                return $gene;
-
           }
 
-		//...but actionability is now in genegraph
+          //...but actionability is now in genegraph
           $response = Graphql::geneDetail($args);
 
           // This is a real ugly characteristic of genegraph that requires a really ugly workaround
-          if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
-          {
+          if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.") {
                // gene not found, create a dummy one and see if that worls
                $response = self::geneNotCurated($args);
 
                // add additional information from local db
                $localgene = Gene::where('hgnc_id', $args['gene'])->first();
 
-               if ($localgene !== null)
-               {
+               if ($localgene !== null) {
                     $response->label = $localgene->name;
                     $response->alternative_label = $localgene->description;
                     $response->hgnc_id = $localgene->hgnc_id;
@@ -363,63 +359,63 @@ class GeneLib extends Model
                }
           }
 
-		return $response;
+          return $response;
      }
 
 
      /**
-     * special case where we want to return a structure that triggers
-     * the not curated message
-     *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function geneNotCurated($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * special case where we want to return a structure that triggers
+      * the not curated message
+      *
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function geneNotCurated($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
           $response = new Nodal([
-                              "label" => $args['gene'],
-                              "alternative_label" => '',
-                              "hgnc_id" => null,
-                              "chromosome_band" => "",
-                              "curation_activities" => [],
-                              "last_curated_date" => null,
-                              "dosage_curation" => null,
-                              "genetic_conditions" => [],
-                              "alias_symbols" => "",
-                              "prev_symbols" => "No previous names found",
-                              "hi" => null,
-                              "pli" => null,
-                              "plof" => null,
-                              "locus_type" => "pseudogene",
-                              "locus_group" => "pseudogene",
-                              "ensembl_id" => "",
-                              "entrez_id" => null,
-                              "omim_id" => null,
-                              "ucsc_id" => null,
-                              "uniprot_id" => null,
-                              "function" => "",
-                              "naction" => 0,
-                              "nvalid" => 0,
-                              "ndosage" => 0,
-                              "pharma" => [],
-                              "dosage_curation_map" => []
+               "label" => $args['gene'],
+               "alternative_label" => '',
+               "hgnc_id" => null,
+               "chromosome_band" => "",
+               "curation_activities" => [],
+               "last_curated_date" => null,
+               "dosage_curation" => null,
+               "genetic_conditions" => [],
+               "alias_symbols" => "",
+               "prev_symbols" => "No previous names found",
+               "hi" => null,
+               "pli" => null,
+               "plof" => null,
+               "locus_type" => "pseudogene",
+               "locus_group" => "pseudogene",
+               "ensembl_id" => "",
+               "entrez_id" => null,
+               "omim_id" => null,
+               "ucsc_id" => null,
+               "uniprot_id" => null,
+               "function" => "",
+               "naction" => 0,
+               "nvalid" => 0,
+               "ndosage" => 0,
+               "pharma" => [],
+               "dosage_curation_map" => []
           ]);
 
-         return $response;
-    }
+          return $response;
+     }
 
 
      /**
-     * Get details of a particular gene
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    /*static function geneActivityDetail($args)
+      * Get details of a particular gene
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     /*static function geneActivityDetail($args)
     {
          if (is_null($args) || !is_array($args))
               return collect([]);
@@ -435,91 +431,91 @@ class GeneLib extends Model
 
 
      /**
-     * Get a list of all the curated genes
-     *
-     * (Neo4j, Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+      * Get a list of all the curated genes
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function geneLook($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Gene data is currently in neo4j
-		//$response = Neo4j::geneList($args);
+          // Gene data is currently in neo4j
+          //$response = Neo4j::geneList($args);
 
-		// Gene listing using Graphql
-		//$response = Graphql::geneLook($args);
+          // Gene listing using Graphql
+          //$response = Graphql::geneLook($args);
 
-        // Gene listing using Graphql
-		$response = Mysql::geneLook2($args);
+          // Gene listing using Graphql
+          $response = Mysql::geneLook2($args);
 
-		return $response;
+          return $response;
      }
 
 
      /**
-     * Get a list of all the curated genes
-     *
-     * (Neo4j, Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function geneFind($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * Get a list of all the curated genes
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function geneFind($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-         // Gene data is currently in neo4j
-         //$response = Neo4j::geneList($args);
+          // Gene data is currently in neo4j
+          //$response = Neo4j::geneList($args);
 
-         // Gene listing using Graphql
-         $response = Graphql::geneFind($args);
+          // Gene listing using Graphql
+          $response = Graphql::geneFind($args);
 
-         return $response;
-    }
+          return $response;
+     }
 
 
      /**
-     * Get a list of all genes and regions within the search params
-     *
-     * (Neo4j, GeneGraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function geneRegionList($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * Get a list of all genes and regions within the search params
+      *
+      * (Neo4j, GeneGraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function geneRegionList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-         // Gene data is locally populated from batch exports
-         $response = Gene::searchList($args);
+          // Gene data is locally populated from batch exports
+          $response = Gene::searchList($args);
 
-         return $response;
-    }
+          return $response;
+     }
 
 
-	/**
-     * Get a list of all the affiliates and associated curation counts
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get a list of all the affiliates and associated curation counts
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function affiliateList($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// The affiliate and curation data is currently in neo4j
+          // The affiliate and curation data is currently in neo4j
           //$response = Neo4j::affiliateList($args);
 
           // The affiliate and curation data is currently in graphql
-		$response = Graphql::affiliateList($args);
+          $response = Graphql::affiliateList($args);
 
-		return $response;
-	}
+          return $response;
+     }
 
      /**
       * Get a list of all the genes and diseases by activity
@@ -544,140 +540,163 @@ class GeneLib extends Model
 
 
 
-	/**
-     * Get details of a particular affiliate and associated curations
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get details of a particular affiliate and associated curations
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function affiliateDetail($args)
      {
-		if (is_null($args) || !is_array($args))
-			return null;
+          if (is_null($args) || !is_array($args))
+               return null;
 
-		// The affiliate and curation data is currently in neo4j
+          // The affiliate and curation data is currently in neo4j
           //$response = Neo4j::affiliateDetail($args);
 
           // The affiliate and curation data is currently in neo4j
-		$response = Graphql::affiliateDetail($args);
+          $response = Graphql::affiliateDetail($args);
 
-		return $response;
-	}
-
-
-	/**
-     * Get a list of all gene validity assertions
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function validityList($args)
-     {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
-
-		// Gene data is currently in neo4j
-		// $response = Neo4j::validityList($args);
-
-		// Gene data using Graphql
-		$response = Graphql::validityList($args);
-
-		return $response;
-	}
-
-
-	/**
-     * Get details of a gene validity assertion
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function validityDetail($args)
-     {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
-
-		// The gene validity data is currently in neo4j...
-          //$response = Neo4j::validityDetail($args);
-
-          // The gene validity data is currently in graphql...
-		$response = Graphql::validityDetail($args);
-
-		return $response;
-	}
-
-
-    /**
-     * Get details of a gene validity assertion
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function newValidityDetail($args)
-    {
-       if (is_null($args) || !is_array($args))
-           return collect([]);
-
-       // The gene validity data is currently in neo4j...
-         //$response = Neo4j::validityDetail($args);
-
-         // The gene validity data is currently in graphql...
-       $response = Graphql::newValidityDetail($args);
-
-       return $response;
-   }
+          return $response;
+     }
 
 
      /**
-     * Get a list of all genes and regions within the search params
-     *
-     * (Neo4j, GeneGraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function regionSearchList($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * Get a list of all gene validity assertions
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function validityList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-         // Gene data is locally populated from batch exports
-         $response = Region::searchList($args);
+          // Gene data is currently in neo4j
+          // $response = Neo4j::validityList($args);
 
-         return $response;
-    }
+          // Gene data using Graphql
+          $response = Graphql::validityList($args);
+
+          return $response;
+     }
 
 
-	/**
-     * Get a list of all the genes with dosage sensitivitiy
-     *
-     * (Neo4j, GeneGraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get details of a gene validity assertion
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function validityDetail($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // The gene validity data is currently in neo4j...
+          //$response = Neo4j::validityDetail($args);
+
+          // The gene validity data is currently in graphql...
+          $response = Graphql::validityDetail($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Get details of a gene validity assertion
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function newValidityDetail($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // The gene validity data is currently in neo4j...
+          //$response = Neo4j::validityDetail($args);
+
+          // The gene validity data is currently in graphql...
+          $response = Graphql::newValidityDetail($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Get a list of all genes and regions within the search params
+      *
+      * (Neo4j, GeneGraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function regionSearchList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // Gene data is locally populated from batch exports
+          $response = Region::searchList($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Get a list of all the genes with dosage sensitivitiy
+      *
+      * (Neo4j, GeneGraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function dosageList($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Gene data is currently in neo4j
-		//$response = Neo4j::dosageList($args);
+          // Gene data is currently in neo4j
+          //$response = Neo4j::dosageList($args);
 
-		// Gene data is currently in graphgq
-		$response = Graphql::dosageList($args);
+          // Gene data is currently in graphgq
+          $response = Graphql::dosageList($args);
 
-		return $response;
-	}
+          return $response;
+     }
 
 
-	/**
-     * Get details of a particular gene with dosage sensitivitiy
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+
+     /**
+      * Get a list of all the genes with dosage sensitivitiy
+      *
+      * (Neo4j, GeneGraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function dosageFullList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // Gene data is currently in neo4j
+          //$response = Neo4j::dosageList($args);
+
+          // Gene data is currently in graphgq
+          $response = Graphql::dosageList($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Get details of a particular gene with dosage sensitivitiy
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function dosageDetail($args)
      {
           if (is_null($args) || !is_array($args))
@@ -685,28 +704,24 @@ class GeneLib extends Model
 
           // Most of the gene and curation data is currently in neo4j...
           //$response = Neo4j::geneDetail($args);
-          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)		// dosage psuedogene
-		{
+          if (!isset($args['gene']) || strpos($args['gene'], 'ISCA-') === 0)          // dosage psuedogene
+          {
                $response = self::geneNotCurated($args);
                $expand = true;
-          }
-          else
-          {
+          } else {
                // Much of the data is in graphql....
                $response = Graphql::dosageDetail($args);
                $expand = false;
 
                // This is a real ugly characteristic of genegraph that requires a really ugly workaround
-               if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.")
-               {
+               if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.") {
                     // gene not found, create a dummy one and see if that worls
                     $response = self::geneNotCurated($args);
 
                     // add additional information from local db
                     $localgene = Gene::where('hgnc_id', $args['gene'])->first();
 
-                    if ($localgene !== null)
-                    {
+                    if ($localgene !== null) {
                          $response->label = $localgene->name;
                          $response->alternative_label = $localgene->description;
                          $response->hgnc_id = $localgene->hgnc_id;
@@ -725,7 +740,6 @@ class GeneLib extends Model
                          $response->uniprot_id = $localgene->uniprot_id;
                          $response->function = $localgene->function;
                     }
-
                }
           }
 
@@ -735,20 +749,19 @@ class GeneLib extends Model
           // ... but a lot is still in Jira
           $supplement = Jira::dosageDetail($args, $expand);
 
-          if ($supplement !== null)
-          {
+          if ($supplement !== null) {
                // combine the two
-               foreach(['summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
-               'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
-               'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-               'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name', 'history',
-               'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
-               'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-               'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
-               {
+               foreach ([
+                    'summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
+                    'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
+                    'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
+                    'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name', 'history',
+                    'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
+                    'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
+                    'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status'
+               ] as $field) {
                     // Prefer the NIH wording over the local Jira one.
-                    if ($field == 'genetype' && !empty($response->locus_group))
-                    {
+                    if ($field == 'genetype' && !empty($response->locus_group)) {
                          $response->$field = $response->locus_group;
                          continue;
                     }
@@ -756,8 +769,7 @@ class GeneLib extends Model
                }
 
                // special case for psudogenes
-               if ($supplement->genetype == "pseudo")
-               {
+               if ($supplement->genetype == "pseudo") {
                     //dd($supplement);
                     $response->label = $supplement->label;
                     $response->chromosome_band = $supplement->cytoband;
@@ -772,8 +784,7 @@ class GeneLib extends Model
           // need the titles from Omim
           $omim = null; //Omim::omimid($)->first();
 
-          if ($omim !== null)
-          {
+          if ($omim !== null) {
                $response->omimtitle = $omim->titles;
           }
 
@@ -782,95 +793,91 @@ class GeneLib extends Model
 
 
      /**
-     * Get details of a particular gene with dosage sensitivitiy
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function dosageRegionDetail($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * Get details of a particular gene with dosage sensitivitiy
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function dosageRegionDetail($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
           $response = new Nodal([]);
 
-         // ... but a lot is still in Jira
-         $supplement = Jira::dosageRegionDetail($args);
+          // ... but a lot is still in Jira
+          $supplement = Jira::dosageRegionDetail($args);
 
-         if ($supplement !== null)
-         {
-              // combine the two
-              foreach(['summary', 'genetype', 'label', 'date',
-              'triplo_score', 'haplo_score', 'cytoband', 'key', 'breakpoint',
-              'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-              'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
-              'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'reduced_penetrance',
-              'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-              'grch37', 'grch38', 'chromosome_band', 'allele', 'knownhits', 'links',
-              'resolution', 'issue_type', 'description',
-              'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status' ] as $field)
-              {
-                   if ($field == 'genetype' && !empty($response->locus_group))
-                   {
-                        $response->$field = $response->locus_group;
-                        continue;
-                   }
-                   $response->$field = $supplement->$field;
-              }
-         }
+          if ($supplement !== null) {
+               // combine the two
+               foreach ([
+                    'summary', 'genetype', 'label', 'date',
+                    'triplo_score', 'haplo_score', 'cytoband', 'key', 'breakpoint',
+                    'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
+                    'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
+                    'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'reduced_penetrance',
+                    'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
+                    'grch37', 'grch38', 'chromosome_band', 'allele', 'knownhits', 'links',
+                    'resolution', 'issue_type', 'description',
+                    'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status'
+               ] as $field) {
+                    if ($field == 'genetype' && !empty($response->locus_group)) {
+                         $response->$field = $response->locus_group;
+                         continue;
+                    }
+                    $response->$field = $supplement->$field;
+               }
+          }
 
-         // need the titles from Omim
-         $omim = null; //Omim::omimid($)->first();
+          // need the titles from Omim
+          $omim = null; //Omim::omimid($)->first();
 
-         if ($omim !== null)
-         {
-              $response->omimtitle = $omim->titles;
-         }
+          if ($omim !== null) {
+               $response->omimtitle = $omim->titles;
+          }
 
-         return $response;
-    }
+          return $response;
+     }
 
 
      /**
-     * Get list of recurrent CNVs
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function cnvList($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+      * Get list of recurrent CNVs
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function cnvList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-         // regions are still only found in Jira
-         $response = Jira::cnvList($args);
-dd($response);
-         return $response;
-    }
+          // regions are still only found in Jira
+          $response = Jira::cnvList($args);
+          dd($response);
+          return $response;
+     }
 
 
-    /**
-     * Get list of ACMG59 Genes
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function acmg59List($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+     /**
+      * Get list of ACMG59 Genes
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function acmg59List($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
           // build data structure from the original ini in the database
           $records = Acmg59::all();
 
-         // now pull the updates from jira
-         $local = Jira::acmg59List($args);
-         // combine
-         $c = $local->collection;
-         $records = $records->map( function ($record) use ($c)
-         {
-              //dd($c);
-              $node = $c->where('label', $record->gene)->first();
+          // now pull the updates from jira
+          $local = Jira::acmg59List($args);
+          // combine
+          $c = $local->collection;
+          $records = $records->map(function ($record) use ($c) {
+               //dd($c);
+               $node = $c->where('label', $record->gene)->first();
 
-              if ($node !== null)
-               {
+               if ($node !== null) {
                     $record->geneomim = $node->omim;
                     $record->gain = $node->haplo_score;
                     $record->loss = $node->triplo_score;
@@ -878,30 +885,30 @@ dd($response);
                }
 
                return $record;
-         });
+          });
 
 
-         $local->collection = $records;
+          $local->collection = $records;
 
-         return $local;
-    }
+          return $local;
+     }
 
 
-    /**
-     * Get list dosage regions
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function regionList($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
+     /**
+      * Get list dosage regions
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function regionList($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-         // pull all the regions from jira
-         $local = Jira::regionList($args);
+          // pull all the regions from jira
+          $local = Jira::regionList($args);
 
-         // combine
-         /*$c = $local->collection;
+          // combine
+          /*$c = $local->collection;
          $records = $records->map( function ($record) use ($c)
          {
               //dd($c);
@@ -921,23 +928,23 @@ dd($response);
 
          $local->collection = $records;*/
 
-         return $local;
-    }
+          return $local;
+     }
 
 
-	/**
-     * Get a list of all the drugs
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get a list of all the drugs
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function drugList($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Drug data is currently in neo4j
+          // Drug data is currently in neo4j
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
@@ -946,172 +953,172 @@ dd($response);
           else      // Drug data is now local
                $response = Mysql::drugList($args);
 
-		return $response;
-	}
-
-
-	/**
-     * Get details of a particular drug
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function drugDetail($args)
-     {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
-
-		// Drug details are currently in neo4j
-          //$response = Neo4j::drugDetail($args);
-
-          // Drug details are currently in neo4j
-		$response =Mysql::drugDetail($args);
-
-		return $response;
+          return $response;
      }
 
 
      /**
-     * Get a matched list of drugs
-     *
-     * (Neo4j, Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function drugLook($args)
+      * Get details of a particular drug
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function drugDetail($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Suggester listing using Graphql
-         //$response = Graphql::drugLook($args);
+          // Drug details are currently in neo4j
+          //$response = Neo4j::drugDetail($args);
 
-        // Suggester listing using Mysql
-		$response = Mysql::drugLook2($args);
+          // Drug details are currently in neo4j
+          $response = Mysql::drugDetail($args);
 
-		return $response;
+          return $response;
      }
 
 
-	/**
-     * Get a list of all the conditions
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+     /**
+      * Get a matched list of drugs
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function drugLook($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // Suggester listing using Graphql
+          //$response = Graphql::drugLook($args);
+
+          // Suggester listing using Mysql
+          $response = Mysql::drugLook2($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Get a list of all the conditions
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
      static function conditionList($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Gene data is currently in neo4j
+          // Gene data is currently in neo4j
           //$response = Neo4j::conditionList($args);
 
           // Gene data is currently in genegraph
           if (!empty($args['forcegg']))
                $response = Graphql::conditionList($args);
           else      // Gene data is currently local
-		     $response = Mysql::conditionList($args);
+               $response = Mysql::conditionList($args);
 
-		return $response;
-	}
-
-
-	/**
-     * Get details of a particular condition
-     *
-     * (Neo4j)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function conditionDetail($args)
-     {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
-
-		// Condition data is all in Neo4j
-          //$response = Neo4j::conditionDetail($args);
-
-          $response = Graphql::conditionDetail($args);
-
-		return $response;
+          return $response;
      }
 
 
      /**
-     * Get a matched list of conditions
-     *
-     * (Neo4j, Genegraph)
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-     static function conditionLook($args)
+      * Get details of a particular condition
+      *
+      * (Neo4j)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function conditionDetail($args)
      {
-		if (is_null($args) || !is_array($args))
-			return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-		// Gene data is currently in neo4j
-		//$response = Neo4j::geneList($args);
+          // Condition data is all in Neo4j
+          //$response = Neo4j::conditionDetail($args);
 
-		// Gene listing using Graphql
-		//$response = Graphql::conditionLook($args);
+          $response = Graphql::conditionDetail($args);
 
-        // Gene listing using Mysql
-		$response = Mysql::conditionLook2($args);
-
-		return $response;
+          return $response;
      }
 
 
-	/**
-     * Return a displayable dosage assertion description
-     *
-     * @return string
-     */
-    public static function shortAssertionString($str)
-    {
-         if ($str === null || $str === false || $str === 'unknown')
-              return 'Not Yet Evaluated';
+     /**
+      * Get a matched list of conditions
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function conditionLook($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
+
+          // Gene data is currently in neo4j
+          //$response = Neo4j::geneList($args);
+
+          // Gene listing using Graphql
+          //$response = Graphql::conditionLook($args);
+
+          // Gene listing using Mysql
+          $response = Mysql::conditionLook2($args);
+
+          return $response;
+     }
+
+
+     /**
+      * Return a displayable dosage assertion description
+      *
+      * @return string
+      */
+     public static function shortAssertionString($str)
+     {
+          if ($str === null || $str === false || $str === 'unknown')
+               return 'Not Yet Evaluated';
 
           return $str . ' (' . self::$short_dosage_assertion_strings[$str] . ')';
-    }
+     }
+     
 
-
-	/**
-     * Return a displayable dosage assertion description
-     *
-     * @return string
-     */
+     /**
+      * Return a displayable dosage assertion description
+      *
+      * @return string
+      */
      public static function haploAssertionString($str)
      {
           if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Haploinsufficiency', self::$dosage_score_assertion_strings[$str] ?? '');
+          return str_replace('####', 'Haploinsufficiency', self::$dosage_score_assertion_strings[$str] ?? '');
      }
 
 
-      /**
-     * Return a displayable dosage assertion description
-     *
-     * @return string
-     */
+     /**
+      * Return a displayable dosage assertion description
+      *
+      * @return string
+      */
      public static function triploAssertionString($str)
      {
           if ($str === null || $str === false)
                return '';
 
-		 return str_replace('####', 'Triplosensitivity', self::$dosage_score_assertion_strings[$str] ?? '');
+          return str_replace('####', 'Triplosensitivity', self::$dosage_score_assertion_strings[$str] ?? '');
      }
 
 
      /**
-     * Return a displayable dosage assertion description
-     *
-     * @return string
-     */
+      * Return a displayable dosage assertion description
+      *
+      * @return string
+      */
      public static function dosageAssertionString($str)
      {
           if ($str === null || $str === false)
@@ -1123,16 +1130,16 @@ dd($response);
 
 
      /**
-     * Return a displayable moi assertion description
-     *
-     * @return string
-     */
+      * Return a displayable moi assertion description
+      *
+      * @return string
+      */
      public static function validityMoiString($str)
      {
           if (empty($str))
                return '';
 
-		 return self::$validity_moi_strings[$str] ?? '';
+          return self::$validity_moi_strings[$str] ?? '';
      }
 
      /**
@@ -1152,96 +1159,96 @@ dd($response);
 
 
      /**
-     * Return a displayable validity assertion description
-     *
-     * @return string
-     */
-    public static function actionabilityAssertionString($str)
-    {
-         if (empty($str))
-              return '';
+      * Return a displayable validity assertion description
+      *
+      * @return string
+      */
+     public static function actionabilityAssertionString($str)
+     {
+          if (empty($str))
+               return '';
 
           return self::$actionability_assertion_strings[$str] ?? '';
-    }
-
-
-    /**
-     * Return a displayable actionability report label
-     *
-     * @return string
-     */
-    public static function actionabilityReportString($str)
-    {
-         if (empty($str))
-              return '';
-
-         $x = explode(' - ', $str);
-
-         return $x[0] ?? '';
-    }
+     }
 
 
      /**
-     * Return a displayable validity assertion description
-     *
-     * @return string
-     */
+      * Return a displayable actionability report label
+      *
+      * @return string
+      */
+     public static function actionabilityReportString($str)
+     {
+          if (empty($str))
+               return '';
+
+          $x = explode(' - ', $str);
+
+          return $x[0] ?? '';
+     }
+
+
+     /**
+      * Return a displayable validity assertion description
+      *
+      * @return string
+      */
      public static function validityAssertionString($str)
      {
           if (empty($str))
                return '';
 
-		 return self::$validity_assertion_strings[$str] ?? '';
+          return self::$validity_assertion_strings[$str] ?? '';
      }
 
 
      /**
-     * Return a displayable validity classification description
-     *
-     * @return string
-     */
+      * Return a displayable validity classification description
+      *
+      * @return string
+      */
      public static function validityClassificationString($str)
      {
           if (empty($str))
                return '';
 
-		 return self::$validity_classification_strings[$str] ?? '';
+          return self::$validity_classification_strings[$str] ?? '';
      }
 
 
      /**
-     * Return a displayable validity classification description
-     *
-     * @return string
-     */
-    public static function validitySortOrder($str)
-    {
-         if (empty($str))
-              return 0;
+      * Return a displayable validity classification description
+      *
+      * @return string
+      */
+     public static function validitySortOrder($str)
+     {
+          if (empty($str))
+               return 0;
 
           return self::$validity_sort_value[$str] ?? 0;
-    }
+     }
 
 
      /**
-     * Return a displayable validity criteria description
-     *
-     * @return string
-     */
+      * Return a displayable validity criteria description
+      *
+      * @return string
+      */
      public static function validityCriteriaString($str)
      {
           if (empty($str))
                return '';
 
-		 return self::$validity_criteria_strings[$str] ?? 'ERRR';
+          return self::$validity_criteria_strings[$str] ?? 'ERRR';
      }
 
 
      /**
-     * Return a usable validity assertion identifier
-     *
-     * @return string
-     */
+      * Return a usable validity assertion identifier
+      *
+      * @return string
+      */
      public static function validityAssertionID($str)
      {
           return substr($str, strpos($str, ":assertion_") + 11)  ?? '';
@@ -1249,42 +1256,42 @@ dd($response);
 
 
      /**
-     * Return a displayable validity criteria description
-     *
-     * @return string
-     */
-    public static function conditionLastSynonym($record)
-    {
-         if (empty($record) || empty($record->synonyms))
-              return null;
+      * Return a displayable validity criteria description
+      *
+      * @return string
+      */
+     public static function conditionLastSynonym($record)
+     {
+          if (empty($record) || empty($record->synonyms))
+               return null;
 
           return is_array($record->synonyms) ? $record->synonyms[0] : null;
-    }
+     }
 
 
-	 /*
+     /*
      * Set a GraphLib error for use by controllers or views.
      *
      * @param	string	$mondo
      * @return 	array
      */
-    public static function putError($error = null)
-    {
-		if ($error === null)
-			return session()->put('GeneLibError', false);
+     public static function putError($error = null)
+     {
+          if ($error === null)
+               return session()->put('GeneLibError', false);
 
-		session()->put('GeneLibError', $error);
-	}
+          session()->put('GeneLibError', $error);
+     }
 
 
-	/*
+     /*
      * Get a GraphLib error structure.  TODO:  formatting
      *
      * @param	string	$mondo
      * @return 	array
      */
-    public static function getError()
-    {
-		return session()->get('GeneLibError', false);
-	}
+     public static function getError()
+     {
+          return session()->get('GeneLibError', false);
+     }
 }

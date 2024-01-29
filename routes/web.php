@@ -184,6 +184,8 @@ Route::group(['prefix' => 'kb/gene-dosage'], function () {
 
 	Route::get('/download', 'DosageController@download')->name('dosage-download');
 
+	Route::get('/downloadall', 'DosageController@downloadall')->name('dosagefull-download');
+
 
 	Route::get('/ftp', function () {
 		return redirect(route('download-index'), 301);

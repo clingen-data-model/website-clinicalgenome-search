@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use Auth;
 
 use App\Exports\DosageExport;
+use App\Exports\DosageFullExport;
 use App\GeneLib;
 use App\Gene;
 use App\Filter;
@@ -476,6 +477,20 @@ class DosageController extends Controller
 		$date = date('Y-m-d');
 
 		return Gexcel::download(new DosageExport, 'Clingen-Dosage-Sensitivity-' . $date . '.csv');
+	}
+
+
+    /**
+     * Download the specified file.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function downloadall(Request $request)
+    {
+		$date = date('Y-m-d');
+
+		return Gexcel::download(new DosageFullExport, 'Clingen-Dosage-Sensitivity-' . $date . '.csv');
 	}
 
 
