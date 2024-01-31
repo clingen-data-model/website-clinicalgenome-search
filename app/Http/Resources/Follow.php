@@ -38,7 +38,7 @@ class Follow extends JsonResource
                 'curations' => $actions,
                 'hgnc' => $this->hgnc_id,
                 'ident' => $this->ident,
-                'display_last' => $this->displayDate($this->date_last_curated),
+                'display_last' => $this->date_last_curated,
                 'notify' => '<div class="btn-group">' .
                                 ' <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
                                 '    <span class="selection">' . ($this->hgnc_id == '*' || $this->hgnc_id[0] == '@' || $this->hgnc_id[0] == '%'  || $this->hgnc_id[0] == '!' ? $notification->setting($this->hgnc_id) : $notification->setting($this->name)) . '</span><span class="caret"></span>' .

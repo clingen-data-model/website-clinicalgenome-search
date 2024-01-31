@@ -306,6 +306,22 @@
 		    return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
 	}
 
+    /**
+     * For a symbol or region cell
+     *
+     * @param {*} index
+     * @param {*} row
+     */
+    function ldateFormatter(index, row) {
+
+        if (row.display_last == null || row.display_last == '')
+            return '';
+
+        var d = new Date(row.display_last);
+
+        return d.toLocaleDateString();
+    }
+
 </script>
 
 @endsection

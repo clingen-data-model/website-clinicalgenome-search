@@ -145,6 +145,7 @@ function typeFormatter(index, row) {
         return { classes: 'global_table_cell region' };
 }
 
+
 function nullFormatter(index, row) {
     if (row.type == 0)
         return '<span title="Gene">G</span>';
