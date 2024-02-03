@@ -561,6 +561,7 @@ class Graphql
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
             $node->curation_status = $localgene->curation_status;
+			$node->transcript = $localgene->transcript;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();

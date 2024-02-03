@@ -75,6 +75,10 @@
 						<dt>LOEUF <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></dt>
 						<dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD LOEUF score)</a></dd>
 						@endif
+						@if($record->pli || $record->plof)
+						<dt></dt>
+						<dd><scan class="text-primary"><i>pLI and LOEUF metrics based on</i> {{ $record->transcript}} <i>transcript</i></scan></dd>
+						@endif
 						@if($record->chromosome_band)
 						<dt>Cytoband</dt>
 						<dd>{{ $record->chromosome_band }}</dd>

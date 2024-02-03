@@ -49,6 +49,8 @@ class UpdatePlof extends Command
 			//$results = file_get_contents("https://gnomad-public-us-east-1.s3.amazonaws.com/release/2.1.1/constraint/gnomad.v2.1.1.lof_metrics.by_gene.txt.bgz");
 			$data = file_get_contents(base_path() . "/data/gnomad.v2.1.1.lof_metrics.by_gene.txt","r");
 
+            //https://storage.googleapis.com/gcp-public-data--gnomad/release/4.0/constraint/gnomad.v4.0.constraint_metrics.tsv
+            
 		} catch (\Exception $e) {
 
 			echo "\n(E001) Error retreiving Gnomad LOF data\n";
@@ -70,7 +72,7 @@ class UpdatePlof extends Command
 
 			$parts = explode("\t", $line);
 
-			//echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] .  " ensr= " . $parts[63] . "\n";
+			echo "Gene " . $parts[0] . " PLOF = " . $parts[29] . " Pli=" . $parts[20] .  " ensr= " . $parts[63] . "\n";
 
             // first, try to match the entry by ensemble ID
             $gene = Gene::ensembl($parts[63])->first();

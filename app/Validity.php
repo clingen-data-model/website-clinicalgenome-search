@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\GeneLib;
 use App\Change;
 use App\Gene;
+use App\Slug;
 
 /**
  *
@@ -328,6 +329,13 @@ class Validity extends Model
         // compare and update
         foreach ($assertions->collection as $assertion)
         {
+            // check or update Slug table
+            $s = Slug::firstOrCreate(['target' => $assertion->curie],
+                                    [ 'type' => Slug::TYPE_CURATION,
+                                      'subtype' => Slug::SUBTYPE_VALIDITY,
+                                      'status' => Slug::STATUS_INITIALIZED
+                                    ]);
+
             //dd($assertion->disease->curie);
             $current = Validity::curie($assertion->curie)->orderBy('version', 'desc')->first();
 

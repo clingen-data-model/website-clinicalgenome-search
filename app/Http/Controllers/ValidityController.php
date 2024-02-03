@@ -26,6 +26,7 @@ use App\Nodal;
 use App\Blacklist;
 use App\Mail\Feedback;
 use App\Validity;
+use App\Slug;
 
 /**
  *
@@ -131,6 +132,22 @@ class ValidityController extends Controller
 
         // Genegraph never fixed the timestamp in the assertion ID, and now we have saved links of both in the wild :(
         //$id = Validity::fixid($id);
+
+        // if new Clingen slug, map to real id.
+        if (substr($id, 0, 5) == 'CGID:')
+        {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+            return view('error.message-standard')
+                ->with('title', 'Error retrieving Gene Validity details')
+                ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                ->with('back', url()->previous())
+                ->with('user', $this->user);
+
+            $id = $s->target;
+    
+        }
 
         $record = GeneLib::validityDetail([
             'page' => 0,
