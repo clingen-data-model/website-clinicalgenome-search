@@ -368,7 +368,7 @@ function plofFormatter(index, row) {
     if (row.plof === null)
         return '&hyphen;';
 
-    if (row.plof <= .35)
+    if (row.plof < .6)
         return '<span class="format-pli-high">' + row.plof + '</span>';
     else
         return '<span class="format-pli-low">' + row.plof + '</span>';

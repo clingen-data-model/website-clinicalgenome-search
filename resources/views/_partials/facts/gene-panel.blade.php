@@ -68,12 +68,12 @@
 						<dd>{{ $record->hi }}<a href="https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1001154" class="ml-3">(Read more about the DECIPHER Haploinsufficiency Index)</a></dd>
 						@endif
 						@if(isset($record->pli))
-						<dt>pLI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score"></i></dt>
-						<dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD pLI score)</a></dd>
+						<dt>pLI <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 pLI score"></i></dt>
+						<dd>{{  $record->pli }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD v4.0 pLI score)</a></dd>
 						@endif
 						@if($record->plof)
-						<dt>LOEUF <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function"></i></dt>
-						<dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD LOEUF score)</a></dd>
+						<dt>LOEUF <i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 predicted loss-of-function"></i></dt>
+						<dd>{{  $record->plof }}<a href="http://gnomad.broadinstitute.org/faq#constraint" class="ml-3">(Read more about gnomAD v4.0 LOEUF score)</a></dd>
 						@endif
 						@if($record->pli || $record->plof)
 						<dt></dt>

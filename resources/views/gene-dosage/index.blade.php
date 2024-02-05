@@ -160,7 +160,7 @@
 
 	var hibin=['<= 10%', '<= 25%', '<= 50%', '<= 75%'];
 	var plibin=['< 0.9', '>= 0.9'];
-	var plofbin=['<= 0.2', '<= 0.35', '<= 1'];
+	var plofbin=['< 0.6', '>= 0.6'];
 
 	// HI bin
 	function checkbin(text, value, field, data)
@@ -201,12 +201,10 @@
 	{
 		switch (text)
 		{
-			case '<= 0.2':
-				return value <= .2;
-			case '<= 0.35':
-				return value <= .35;
-			case  '<= 1':
-				return value <= 1;
+			case '< 0.6':
+				return value < .6;
+			case  '>= 0.6':
+				return value >= .6;
 			default:
 				return true;
 		}
@@ -414,7 +412,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score.  Values greater than or equal to 0.9 indicate that a gene appears to be intolerant of loss of function variation."></i></div>pLI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 pLI score.  Values greater than or equal to 0.9 indicate that a gene appears to be intolerant of loss of function variation."></i></div>pLI',
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
@@ -425,7 +423,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function.  Values less than 0.35 indicate that a gene appears to be intolerant of loss of function variation."></i></div>LOEUF',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 predicted loss-of-function.  Values less than 0.6 indicate that a gene appears to be intolerant of loss of function variation."></i></div>LOEUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,
