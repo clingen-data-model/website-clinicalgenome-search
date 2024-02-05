@@ -16,7 +16,7 @@ class UpdateJira extends Command
      *
      * @var string
      */
-    protected $signature = 'update:jira';
+    protected $signature = 'update:jira {report=none}';
 
     /**
      * The console command description.
@@ -58,8 +58,68 @@ class UpdateJira extends Command
 		** GRCh38 Genomic Position:  10532
 		*/
 
-exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
-		$results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
+//exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
+
+		$report = $this->argument('report');
+
+        switch ($report)
+        {
+            case 'pli':
+                self::updatepli();
+                echo "Report Complete\n";
+                return;
+			case 'loeuf':
+				self::updateloeuf();
+				echo "Report Complete\n";
+				return;
+			case 'grch38':
+				self::updategrch38();
+				echo "Report Complete\n";
+				return;
+            case 'none':
+            default:
+                break;
+        }
+
+		echo "Invalid report type\n";
+
+/*
+		$db = DB::connection('jira');
+
+		$genes = Gene::where('locus_group', "protein-coding gene")->get();
+
+		foreach ($genes as $gene)
+		{
+			$symbol = $gene->name;
+
+			echo "Updating " . $symbol . "...\n";
+
+			// find the issue associated with the gene symbol
+			$record = $db->select('select * from customfieldvalue where customfield = ? and stringvalue = ?', [10030, $symbol]);
+
+            // Do NOT add new genes!
+            if (empty($record))
+            {
+                echo "Symbol " . $symbol . "not found\n";
+                continue;
+            }
+
+			$issue = $record[0]->ISSUE ?? null;
+			$entry = $record[0];
+
+			// add or update the HGNC_ID
+			$this->addorupdate($db, $issue, ['12230' => $gene->hgnc_id,
+											 '11635' => $gene->pli,
+											 '12244' => $gene->plof,
+											 '12243' => $gene->hi,
+											 '10532' => 'chr' . $gene->chr . ':' . $gene->start38 . '-' . $gene->stop38]);
+
+		}
+
+		echo "Update Complete\n";
+		*/
+	
+		/* $results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "Gene Type" = protein-coding AND "HGNC ID"  is EMPTY');
 
 		foreach ($results->issues as $issue)
 		{
@@ -91,7 +151,178 @@ exit;  //MAINTENANCE ONLY SCRIPT - DO NOT RUN
 		}
 
 		echo "Update Complete\n";
+		*/
 	}
+
+
+	/**
+     * This function updates the pli field in Jira
+     */
+    public static function updatepli()
+    {
+        $genes = Gene::whereNotNull('pli')->get();
+
+        foreach ($genes as $gene)
+		{
+            $pli = round($gene->pli, 3);
+
+            echo "Searching for $gene->hgnc_id";
+
+            $results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "HGNC ID" ~ "' . $gene->hgnc_id . '"');
+
+            foreach ($results->issues as $issue)
+            {
+			    $key  = $issue->key;
+
+                $record = (object) $issue->fields->customFields;
+
+                // gain phenotype ID is 10201, original gain id is 12631
+                echo "...Processing Symbol " . $record->customfield_10030;
+
+                if (isset($record->customfield_11635) && $record->customfield_11635 == $pli)
+                {
+                    echo "...pli same, skipping\n";
+                    continue;
+                }
+
+                if (!isset($record->customfield_11635) && $pli == 0)
+                {
+                    echo "...pli same, skipping\n";
+                    continue;
+                }
+
+                Jira::updateIssue($key, 'customfield_11635', $pli);
+
+                echo "...changing from " . ($record->customfield_11635 ?? 0) . " to " . $pli . " ...DONE\n";
+
+				//die("cp1");
+
+            }
+
+        }
+        echo "\nPass 1 Complete";
+    }
+
+
+	/**
+     * This function updates the loeuf field in Jira
+     */
+    public static function updateloeuf()
+    {
+        $genes = Gene::whereNotNull('pli')->get();
+
+		$check = true;
+
+        foreach ($genes as $gene)
+		{
+			if ($gene->name == "SPOCK2")
+				$check = false;
+			
+			if ($check)
+				continue;
+
+            $loeuf = round($gene->plof, 2);
+
+            echo "Searching for $gene->hgnc_id";
+
+            $results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "HGNC ID" ~ "' . $gene->hgnc_id . '"');
+
+            foreach ($results->issues as $issue)
+            {
+			    $key  = $issue->key;
+
+                $record = (object) $issue->fields->customFields;
+
+                // gain phenotype ID is 10201, original gain id is 12631
+                echo "...Processing Symbol " . $record->customfield_10030;
+
+                if (isset($record->customfield_12244) && $record->customfield_12244 == $loeuf)
+                {
+                    echo "...loeuf same, skipping\n";
+                    continue;
+                }
+
+                if (!isset($record->customfield_12244) && $loeuf == 0)
+                {
+                    echo "...loeuf same, skipping\n";
+                    continue;
+                }
+
+                Jira::updateIssue($key, 'customfield_12244', strval($loeuf));
+
+                echo "...changing from " . ($record->customfield_12244 ?? 0) . " to " . $loeuf . " ...DONE\n";
+
+				//die("cp1");
+
+            }
+
+        }
+        echo "\nPass 1 Complete";
+    }
+
+
+	/**
+     * This function updates the grch38 field in Jira
+     */
+    public static function updategrch38()
+    {
+        $genes = Gene::whereNotNull('start38')->get();
+
+		$check = true;
+
+        foreach ($genes as $gene)
+		{
+			if ($gene->name == "WNT1")
+				$check = false;
+			
+			if ($check)
+				continue;
+
+			if ($gene->chr == 23)
+				$gene->chr = 'X';
+			else if ($gene->chr == 24)
+				$gene->chr = 'Y';
+
+            $grch38 = 'chr' . $gene->chr . ':' . $gene->start38 . '-' . $gene->stop38;
+
+            echo "Searching for $gene->hgnc_id";
+
+            $results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "HGNC ID" ~ "' . $gene->hgnc_id . '"');
+
+            foreach ($results->issues as $issue)
+            {
+			    $key  = $issue->key;
+
+                $record = (object) $issue->fields->customFields;
+
+                // gain phenotype ID is 10201, original gain id is 12631
+                echo "...Processing Symbol " . $record->customfield_10030;
+
+                if (isset($record->customfield_10532) && strcmp($record->customfield_10532, $grch38) == 0)
+                {
+                    echo "...grch38 same, skipping\n";
+                    continue;
+                }
+
+                if (!isset($record->customfield_10532) && empty($grch38))
+                {
+                    echo "...grch38 same, skipping\n";
+                    continue;
+                }
+
+                Jira::updateIssue($key, 'customfield_10532', $grch38);
+				Jira::updateIssue($key, 'customfield_10537', $gene->seqid38);
+				
+
+                echo "...changing from " . ($record->customfield_10532 ?? 0) . " to " . $grch38 . " ...DONE\n";
+
+				//die("cp1");
+
+            }
+
+        }
+        echo "\nPass 1 Complete";
+    }
 
 
 	public function addorupdate($db, $issue, $values)

@@ -134,19 +134,17 @@ class ValidityController extends Controller
         //$id = Validity::fixid($id);
 
         // if new Clingen slug, map to real id.
-        if (substr($id, 0, 5) == 'CGID:')
-        {
+        if (substr($id, 0, 5) == 'CCID:') {
             $s = Slug::alias($id)->first();
 
             if ($s === null || $s->target === null)
-            return view('error.message-standard')
-                ->with('title', 'Error retrieving Gene Validity details')
-                ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
-                ->with('back', url()->previous())
-                ->with('user', $this->user);
+                return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene Validity details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
 
             $id = $s->target;
-    
         }
 
         $record = GeneLib::validityDetail([
@@ -532,12 +530,13 @@ class ValidityController extends Controller
             if (isset($data[$v]))
                 $classifications[] = $data[$v];
 
-        $mail->send(new Feedback(['fullname' => $data['name'], 'gcep' => $data['gcep'], 'company' => $data['company'], 'email' => $data['email'],
-                                    'title' => $data['position'], 'type_incorrect' => $data['type_incorrect'] ?? '', 'type_missing' => $data['type_missing'] ?? '',
-                                    'type_classification' => $data['type_classification'] ?? '', 'type_typo' => $data['type_typo'] ?? '', 'type_other' => $data['type_other'] ?? '',
-                                    'comment' => $data['comment'], 'link' => $data['link'], 'gene' => $data['gene'], 'classifications' => $classifications
+        $mail->send(new Feedback([
+            'fullname' => $data['name'], 'gcep' => $data['gcep'], 'company' => $data['company'], 'email' => $data['email'],
+            'title' => $data['position'], 'type_incorrect' => $data['type_incorrect'] ?? '', 'type_missing' => $data['type_missing'] ?? '',
+            'type_classification' => $data['type_classification'] ?? '', 'type_typo' => $data['type_typo'] ?? '', 'type_other' => $data['type_other'] ?? '',
+            'comment' => $data['comment'], 'link' => $data['link'], 'gene' => $data['gene'], 'classifications' => $classifications
 
-                                ]));
+        ]));
 
         return response()->json(
             [

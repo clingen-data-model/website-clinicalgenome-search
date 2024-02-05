@@ -3685,7 +3685,7 @@ class Graphql
 						'curated' => 2,
 						'hgncid' => '@AllVariant'
 					],
-					['label' => 'ACMG SF 3.1 Genes',
+					['label' => 'ACMG SF 3.2 Genes',
 						'short' => '@ACMG59',
 						'curated' => 2,
 						'hgncid' => '@ACMG59'

@@ -101,7 +101,7 @@ class Slug extends Model
     public function __construct(array $attributes = array())
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
-        $this->attributes['alias'] = strtoupper('CGID:' . Str::random(8));
+        $this->attributes['alias'] = strtoupper('CCID:' . Str::random(8));
         parent::__construct($attributes);
     }
 

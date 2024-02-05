@@ -85,6 +85,9 @@
 	<link href="/css/gijgo.min.css" rel="stylesheet">
 	<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 
+    <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
+
+
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
 
@@ -166,6 +169,8 @@
 <script src="/js/genetable.js"></script>
 <script src="/js/edit.js"></script>
 
+<script src="/js/bootstrap-datepicker.min.js"></script>
+
 <script>
 
     $(function() {
@@ -182,6 +187,15 @@
         $( ".fixed-table-toolbar" ).show();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
+
+        //ds_pause_date
+        $('#ds_pause_date').datepicker({ 
+            startDate: new Date() 
+        });
+
+        $('#ds_pause_date').datepicker().on('changeDate', function (ev) {
+            alert("b");
+        });
 
         $('#follow-table').on('click', '.action-region-expand', function() {
 

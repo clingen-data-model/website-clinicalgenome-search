@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.3",
+        "air-datepicker": "^3.4.0",
         "bootstrap-sass": "^3.4.1",
         "datatables.net-bs": "^1.10.24",
         "datatables.net-fixedheader-bs": "^3.1.8",
