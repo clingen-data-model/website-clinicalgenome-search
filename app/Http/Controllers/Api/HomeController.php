@@ -160,7 +160,36 @@ class HomeController extends Controller
         $t = $user->notification;
         $t->update(['frequency' => $notification]);
 
-        return response()->json(['success' => 'truue',
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'message' => "Request completed"],
+                                200);
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function pause(Request $request)
+    {
+        $input = $request->only('value');
+
+        // check if user is already participating
+        $user = Auth::guard('api')->user();
+
+        $notification = $user->notification->frequency;
+
+        $notification['global_pause'] = $input['value'] ? "on" : "off";
+
+        $t = $user->notification;
+        $t->update(['frequency' => $notification]);
+
+        return response()->json(['success' => 'true',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);

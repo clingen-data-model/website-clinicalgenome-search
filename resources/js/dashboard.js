@@ -361,6 +361,57 @@ $(function() {
 
 
     /**
+     * Toggle global notifications
+     */
+    $('.action-toggle-pause').on('click', function() {
+
+        var tog;
+
+        if ($(this).hasClass('fa-toggle-off'))
+        {
+            $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+            //$('.action-toggle-notifications-text').html('On');
+            $('.action-pause-notification').addClass('fa-pause');
+            tog = 1;
+        }
+        else
+        {
+            $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+            //$('.action-toggle-notifications-text').html('Off');
+            $('.action-pause-notification').removeClass('fa-pause')
+            tog = 0;
+        }
+
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+               }
+        });
+
+        var url = "/api/home/toggle-pause";
+
+        //submits to the form's action URL
+        $.post(url, { value: tog, _token: "{{ csrf_token() }}" }, function(response)
+        {
+
+        }).fail(function(response)
+        {
+            swal({
+                title: "Error",
+                text: "An error occurred while pausing notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
+        });
+
+    });
+
+
+    /**
      * Show the profile modal
      */
     $('.action-edit-profile').on('click', function() {

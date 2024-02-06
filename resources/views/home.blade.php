@@ -39,7 +39,9 @@
                 <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
 					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
 				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
-					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>
+					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-toggle-notification" style="color:#ffffff"></i></a>
+                <a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Pause All Notifications: On">
+                    <i class="fas {{ $notification->frequency['global_pause'] == "on" ? "fa-pause" : '' }} fa-lg action-pause-notification" style="color:#ffffff"></i></a>
 				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
 

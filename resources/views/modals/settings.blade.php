@@ -48,8 +48,9 @@
 																	<span class="ml-2 hgnc text-muted action-toggle-notifications-text">{{ ucfirst($notification->frequency['global']) }}</span>
 																</div>
 																<div class="form-inline p-0 m-0 col-sm-12 mt-3">
-																	Pause notifications until: 
-																	<input name="ds_pause_date" id="ds_pause_date" class="ml-2" type="text" readonly="" placeholder="Choose date" value="">
+																	<i class="fas fa-toggle-{{ $notification->frequency['global_pause'] }} fa-lg action-toggle-pause"></i>
+																	<span class="ml-2 hgnc text-muted">Pause notifications until: </span>
+																	<input name="pause_date" id="ds_pause_date" class="ml-2 api-update" type="text" placeholder="Choose date" value="{{ $notification->frequency['global_pause_date'] }}">
 																</div>
 															</div>
 														</div>

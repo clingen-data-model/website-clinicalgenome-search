@@ -14,6 +14,7 @@ use DB;
 use App\Gtr;
 use App\Gene;
 use App\Drug;
+use App\Notification;
 
 class TestTest extends Command
 {
@@ -47,6 +48,26 @@ class TestTest extends Command
      * @return mixed
      */
     public function handle()
+    {
+        echo "Updating notifications...\n";
+
+        $records = Notification::all();
+
+        foreach ($records as $record)
+        {
+            $frequency = $record->frequency;
+            $frequency['global_pause'] = 'off';
+            $frequency['global_pause_date'] = null;
+
+           $record->frequency = $frequency;
+
+            $record->save();
+        }
+
+    }
+
+
+    public function genefix()
     {
         echo "Fixing genes table...\n";
 

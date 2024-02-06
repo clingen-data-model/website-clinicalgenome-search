@@ -79,8 +79,23 @@ class UpdateFollow extends Command
             if ($notify === null)
                 continue;
 
+            // check global notifications flag
             if ($notify->frequency['global'] == 'off')
                 continue;
+
+            // check pause until flag
+            if ($notify->frequency['global_pause'] == 'on')
+            {
+                $until = $notify->frequency['global_pause_date'];
+                if (!empty($until))
+                {
+                    $date1 = Carbon::createFromFormat('m/d/Y', $until);
+                    if ($date1->gte(Carbon::now()))
+                    {
+                        continue;
+                    }
+                }
+            }
 
             $lists = $notify->toReport();
 

@@ -173,6 +173,13 @@ class SettingsController extends Controller
                     $notification->save();
                 }
                 break;
+            case 'pause_date':
+                $notification = $user->notification;
+                $frequency = $notification->frequency;
+                $frequency['global_pause_date'] = $input['value'];
+                $notification->frequency = $frequency;
+                $notification->save();
+                break;
 
         }
 

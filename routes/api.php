@@ -97,6 +97,7 @@ Route::post('/home/notify', 'Api\HomeController@notify')->name('home.notify');
 Route::get('/home/rpex/{type}', 'Api\HomeController@report_expand')->name('home.report');
 Route::get('/home/reports/{type}', 'Api\HomeController@reports')->name('home.reports');
 Route::post('/home/toggle', 'Api\HomeController@toggle')->name('home.toggle');
+Route::post('/home/toggle-pause', 'Api\HomeController@pause')->name('home.pause');
 Route::get('/home/follow/reload', 'Api\FollowController@reload')->name('home.reload');
 Route::get('/home/dare/expand/{group}', 'Api\FollowController@dare_expand')->name('home.rexpand');
 Route::get('/home/dape/expand/{group}', 'Api\FollowController@dape_expand')->name('home.pexpand');

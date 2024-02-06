@@ -147,6 +147,8 @@ class Notification extends Model
                               'Groups' => [],
                               'Pause' => [],
                               'global' => "on",
+                              'global_pause' => 'off',
+                              'global_pause_date' => null,
                               'first' => self::FREQUENCY_NONE,
                               'frequency' => self::FREQUENCY_DAILY,
                               'summary' => self::FREQUENCY_MONTHLY
