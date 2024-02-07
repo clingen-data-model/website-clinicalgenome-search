@@ -55,7 +55,7 @@
                 <span class="ml-2 hgnc text-muted action-show-protein-text">Off</span>
             </div>
         </div>
-        @if ($is_search)
+        @if ($is_search ?? false)
             <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show only Genes/Regions that have completed evaluations</label>
             <div class="col-sm-3">
                 <div class="form-inline p-0 m-0 col-sm-12">
