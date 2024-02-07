@@ -35,7 +35,7 @@
 
 			@include('dashboard.includes.reports')
 
-            <div>
+            <div class="mb-2">
                 <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
 					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
 				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
@@ -46,6 +46,14 @@
             </div>
 
             @include('dashboard.includes.follow')
+
+            <div>
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseDiseases" role="button" aria-expanded="false" aria-controls="collapseDiseases">
+                    <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseDiseaseIcon"></i></a>
+				<h4 class="m-0 p-2 text-white" style="background:#E67E22">Followed Diseases</h4>
+            </div>
+
+            @include('dashboard.includes.diseases')
 
         </div>
         <div class="col-md-3 mt-3">
@@ -77,6 +85,8 @@
     @include('modals.followgencon', ['gene' => ''])
     @include('modals.unfollowgencon', ['ident' => ''])
     @include('modals.searchgenomeconnect')
+    @include('modals.genconupload')
+    @include('modals.searchdisease')
 
 @endsection
 
@@ -179,6 +189,7 @@
 		var $table = $('#follow-table');
 		var $reporttable = $('#table');
         var $gencontable = $('#gencon-table');
+        var $diseasetable = $('#disease-table')
 
 		window.burl = '{{  url('api/genes/find/%QUERY') }}';
 

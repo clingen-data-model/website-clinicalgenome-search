@@ -252,4 +252,6 @@ Route::get('/kb/home', 'HomeController@home');
 
 //Route::get('/test', 'TestController@index');
 
+Route::post('/kb/genomeconnect/upload', 'HomeController@gc_upload')->name('gencon-upload');
+
 Auth::routes();

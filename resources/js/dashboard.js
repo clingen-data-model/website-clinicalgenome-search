@@ -3,6 +3,7 @@ $(function() {
     var $table = $('#follow-table');
     var $reporttable = $('#table');
     var $gencontable = $('#gencon-table');
+    var $diseasetable = $('#disease-table');
 
     /**
      * Choose a date for report start
@@ -58,6 +59,17 @@ $(function() {
 
         $('#search_form')[0].reset();
         $('#modalSearchGene').modal('show');
+
+    });
+
+
+    /**
+     * Show screen to follow a new disease
+     */
+    $('.action-new-disease').on('click', function() {
+
+        $('#search_disease_form')[0].reset();
+        $('#modalSearchDisease').modal('show');
 
     });
 
@@ -516,6 +528,38 @@ $(function() {
      */
     $('#collapseReports').on('hidden.bs.collapse', function () {
         $('#collapseReportsIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+    });
+
+
+    /**
+     * Expand the Disease section
+     */
+    $('#collapseDiseases').on('shown.bs.collapse', function () {
+        $('#collapseDiseaseIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+    });
+
+
+    /**
+     * Collapse the Disease sectio
+     */
+    $('#collapseDiseases').on('hidden.bs.collapse', function () {
+        $('#collapseDiseaseIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+    });
+
+
+    /**
+     * Expand the Gencon section
+     */
+    $('#collapseGenCon').on('shown.bs.collapse', function () {
+        $('#collapseGenConIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+    });
+
+
+    /**
+     * Collapse the Gencon sectio
+     */
+    $('#collapseGenCon').on('hidden.bs.collapse', function () {
+        $('#collapseGenConIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
     });
 
 
@@ -1235,6 +1279,17 @@ $(function() {
 
         $('#gc_search_form')[0].reset();
         $('#modalSearchGenomeConnect').modal('show');
+
+    });
+
+
+    /**
+     * Show screen to upload a spreadsheet
+     */
+    $('.action-gc-file').on('click', function() {
+
+        //$('#gc_search_form')[0].reset();
+        $('#modalUploadGenomeConnect').modal('show');
 
     });
 

@@ -127,6 +127,15 @@ class Disease extends Model
         return $this->belongsToMany('App\Panel');
     }
 
+
+    /*
+     * The diseases associated with this user
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
+
     /**
      * Query scope by ident
      *
@@ -341,6 +350,20 @@ class Disease extends Model
         return (isset($this->curation_activities) ?
             ($this->curation_activities['varpath'] ?? false) : false);
     }
+
+
+    /**
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
+     */
+    public function hasActivity($activity)
+    {
+         return (isset($this->curation_activities[$activity]) ?
+              $this->curation_activities[$activity] : false);
+    }
+
 
     /**
      * Query title for mondo id

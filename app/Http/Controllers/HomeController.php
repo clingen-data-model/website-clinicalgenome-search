@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 use Ahsan\Neo4j\Facade\Cypher;
 
 use Auth;
+use Storage;
 use Carbon\Carbon;
 
 use App\Gene;
@@ -50,11 +51,15 @@ class HomeController extends Controller
 
         $genes = collect();
 
+        $diseases = collect();
+
         if (Auth::guard('api')->check())
         {
             $user = Auth::guard('api')->user();
 
             $genes = $user->genes;
+
+            $diseases = $user->diseases;
 
             $notification = $user->notification;
 
@@ -147,11 +152,12 @@ class HomeController extends Controller
         $gceps = Panel::gcep()->blacklist(['40018', '40019', '40058'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
         $vceps = Panel::vcep()->blacklist(['4acafdd5-80f3-47f0-8522-f4bd04da175f'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
 
+
         $gcs = Genomeconnect::with('gene')->get();
 
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
                     'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',
-                    'gceps', 'vceps', 'gcs'));
+                    'gceps', 'vceps', 'gcs', 'diseases'));
     }
 
 
@@ -189,6 +195,25 @@ class HomeController extends Controller
             ->with('user', $this->user);
     }
 
+
+    
+    /**
+    *
+    * Show the ftp downloads page.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function gc_upload(Request $request)
+    {     
+        if(!$request->hasFile('file'))
+            dd("Null file upload");
+
+        $file = $request->file('file');
+
+        $filename = $file->getClientOriginalName();
+
+        Storage::disk('local')->put('genomeconnect/'.$filename, file_get_contents($file));
+    }
 
     /**
      * Show the application dashboard.
