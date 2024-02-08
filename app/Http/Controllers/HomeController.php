@@ -17,6 +17,8 @@ use App\Region;
 use App\Panel;
 use App\Genomeconnect;
 
+use App\Imports\ExcelGC;
+
 class HomeController extends Controller
 {
     private $user = null;
@@ -213,6 +215,49 @@ class HomeController extends Controller
         $filename = $file->getClientOriginalName();
 
         Storage::disk('local')->put('genomeconnect/'.$filename, file_get_contents($file));
+
+        $worksheets = (new ExcelGC)->toArray("/home/pweller/Projects/website-clinicalgenome-search/data/GCTEST.xlsx");
+
+        // process the first worksheet tab
+        foreach ($worksheets[0] as $row)
+        {
+            $symbol = $row[0];
+
+            if (empty($symbol))
+                continue;
+
+            $gene = Gene::name($symbol)->first();
+
+            if ($gene === null) // check previous and alias
+            {
+                $gene = Gene::previous($symbol)->first();
+
+                if ($gene === null)
+                {
+                    $gene = Gene::alias($symbol)->first();
+                }
+            }
+
+            if ($gene === null)
+            {
+                // skip over comments of unknown genes
+                continue;
+            }
+
+            $gc = $gene->genomeconnect;
+
+            if ($gc == null)
+            {
+                $gc = new Genomeconnect( ['status' => Genomeconnect::STATUS_INITIALIZED]);
+                $gene->genomeconnect()->save($gc);
+            }
+            
+            //breturn redirect('/dashboard');
+            return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'message' => "File Processed"],
+                                200);
+        }
     }
 
     /**

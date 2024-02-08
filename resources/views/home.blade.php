@@ -14,7 +14,23 @@
 
     <div id="dashboard-logout" class="row justify-content-center">
 
-        <div class="col-md-9 mt-3 pl-0 pr-0 border">
+        <div class="col-md-9 mt-3 pl-0 pr-0">
+
+            @if ($notification->frequency['global'] == "on")
+                @if($notification->frequency['global_pause'] == "on")
+                    <div class="alert alert-warning action-notification-alert" role="alert">
+                        Global notifications are <b><span class="action-notification-text">PAUSED</span></b>
+                    </div>
+               @else 
+                    <div class="alert alert-info action-notification-alert" role="alert">
+                        Global notifications are <b><span class="action-notification-text">ON</span></b>
+                    </div>
+                @endif
+            @else 
+                <div class="alert alert-danger action-notification-alert" role="alert">
+                    Global notifications are <b><span class="action-notification-text">OFF</span></b>
+                </div>
+            @endif
 
             @if ($user->isGenomeConnectAdmin())
             <div class="mb-2">
@@ -36,13 +52,14 @@
 			@include('dashboard.includes.reports')
 
             <div class="mb-2">
-                <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
-					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
-				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
+					<i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
+				<!-- <a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
 					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-toggle-notification" style="color:#ffffff"></i></a>
                 <a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Pause All Notifications: On">
                     <i class="fas {{ $notification->frequency['global_pause'] == "on" ? "fa-pause" : '' }} fa-lg action-pause-notification" style="color:#ffffff"></i></a>
-				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
+				-->
+                    <h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
 
             @include('dashboard.includes.follow')
@@ -102,6 +119,8 @@
 
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+
+    <link href="/css/dropzone.min.css" rel="stylesheet">
 
     <style>
         .profile-background
@@ -192,6 +211,9 @@
         var $diseasetable = $('#disease-table')
 
 		window.burl = '{{  url('api/genes/find/%QUERY') }}';
+        window.dburl = '{{  url('api/conditions/find/%QUERY') }}';
+        window.token = "{{ csrf_token() }}";
+
 
         // make some mods to the search input field
         var search = $('.fixed-table-toolbar .search input');
@@ -301,6 +323,7 @@
 
 <script src="/js/typeahead.js"></script>
 <script src="/js/dashboard.js"></script>
+<script src="/js/dropzone.min.js"></script>
 
 <script>
 

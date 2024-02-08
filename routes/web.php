@@ -74,6 +74,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
 
+		Route::get('/{id?}/genomeconnect', 'GeneController@show_genomeconnect')->name('gene-genomeconnect');
+
 		//Route::get('/{id?}/external_resources_genes', 'GeneController@external');
 
 		Route::get('/{id?}/external_resources_genes', function ($id) {

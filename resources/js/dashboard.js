@@ -328,18 +328,42 @@ $(function() {
 
         var tog;
 
-        if ($(this).hasClass('fa-toggle-off'))
+        var gnot = $('.action-toggle-pause').hasClass('fa-toggle-on');
+
+
+        if ($(this).hasClass('fa-toggle-off')) // turn global on
         {
             $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-danger').addClass('alert-warning');
+                $('.action-notification-text').html('PAUSED');
+            }
+            else
+            {
+                $('.action-notification-alert').removeClass('alert-danger').addClass('alert-info');
+                $('.action-notification-text').html('ON');
+            }
+
             $('.action-toggle-notifications-text').html('On');
-            $('.action-light-notification').addClass('fa-lightbulb');
+
             tog = 1;
         }
-        else
+        else // turn global off
         {
             $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-warning').addClass('alert-danger');
+                $('.action-notification-text').html('OFF');
+            }
+            else
+            {
+                $('.action-notification-alert').removeClass('alert-info').addClass('alert-danger');
+                $('.action-notification-text').html('OFF');
+            }
+
             $('.action-toggle-notifications-text').html('Off');
-            $('.action-light-notification').removeClass('fa-lightbulb')
             tog = 0;
         }
 
@@ -379,18 +403,26 @@ $(function() {
 
         var tog;
 
-        if ($(this).hasClass('fa-toggle-off'))
+        var gnot = $('.action-toggle-notifications').hasClass('fa-toggle-on');
+
+        if ($(this).hasClass('fa-toggle-off'))  // turning pause on
         {
             $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
-            //$('.action-toggle-notifications-text').html('On');
-            $('.action-pause-notification').addClass('fa-pause');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-info').addClass('alert-warning');
+                $('.action-notification-text').html('PAUSED');
+            }
             tog = 1;
         }
-        else
+        else // turning pause off
         {
             $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
-            //$('.action-toggle-notifications-text').html('Off');
-            $('.action-pause-notification').removeClass('fa-pause')
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-warning').addClass('alert-info');
+                $('.action-notification-text').html('ON');
+            }
             tog = 0;
         }
 
@@ -1225,6 +1257,15 @@ $(function() {
         }
     });
 
+    var followtermDisease = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+        url: window.dburl,
+        wildcard: '%QUERY'
+        }
+    });
+
     $('.queryFindGene').typeahead(null,
     {
         name: 'followtermGene',
@@ -1241,6 +1282,24 @@ $(function() {
         $('#follow_form').submit();
 
     });
+
+
+    $('.queryFindDisease').typeahead(null,
+        {
+            name: 'followtermDisease',
+            display: 'label',
+            source: followtermDisease,
+            limit: Infinity,
+            highlight: true,
+            hint: false,
+            autoselect:true,
+        }).bind('typeahead:selected',function(evt,item){
+            // here is where we can set the follow and refresh the screen.
+    
+            $('#follow-disease-field').val(item.curie);
+            $('#follow_disease_form').submit();
+    
+        });
 
     var myselect = $('#selected-genes');
 
@@ -1286,12 +1345,12 @@ $(function() {
     /**
      * Show screen to upload a spreadsheet
      */
-    $('.action-gc-file').on('click', function() {
+    /*$('.action-gc-file').on('click', function() {
 
         //$('#gc_search_form')[0].reset();
         $('#modalUploadGenomeConnect').modal('show');
 
-    });
+    });*/
 
 
     // gene lookup selector specifically for genomeconnect
@@ -1311,7 +1370,6 @@ $(function() {
             $('#follow_gencon_form').submit();
     
         });
-
 
         $( '#follow_gencon_form' ).validate( {
             submitHandler: function(form) {
@@ -1523,6 +1581,66 @@ $(function() {
                 }
         });
     });
+
+    /*
+	**	Set the dropzone listeners
+	*/
+	var dtarget = null;
+	$(".action-dropzone").each(function(i, el) {
+        
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+            }
+        });
+
+		var dz = new Dropzone(el, {
+			url: "/kb/genomeconnect/upload",
+			uploadMultiple: false,
+			addRemoveLinks : false,
+			createImageThumbnails : false,
+            disablePreviews: true,
+			clickable : ".action-gc-file",
+
+			init : function() {
+				this.on("success", function(file, response) {
+                    // display confirmation
+
+					// reload the table
+                    var url = "/api/home/gc/reload";
+    
+                    var gene = response.gene;
+    
+                    //submits to the form's action URL
+                    $.get(url, function(response)
+                    {
+                        //console.log(response.data);
+                        $('#gencon-table').bootstrapTable('load', response.data);
+                        $('#gencon-table').bootstrapTable("resetSearch","");
+                        
+                        swal("Spreadsheet processed.");
+    
+                    }).fail(function(response)
+                    {
+                        alert("Error reloading table");
+                    });
+
+				});
+
+				this.on("addedfile", function(event) {
+					// dtarget = id;
+				});
+			},
+			sending: function(file, xhr, formData) {
+				formData.append("_token", window.token);
+			}
+		});
+	});
 
 
 });

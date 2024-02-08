@@ -1073,6 +1073,25 @@ class GeneLib extends Model
 
 
      /**
+      * Get a list of all the curated diseases
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+      static function conditionFind($args)
+      {
+           if (is_null($args) || !is_array($args))
+                return collect([]);
+  
+           // Gene listing using Graphql
+           $response = Mysql::conditionFind($args);
+ 
+           return $response;
+      }
+
+
+     /**
       * Return a displayable dosage assertion description
       *
       * @return string

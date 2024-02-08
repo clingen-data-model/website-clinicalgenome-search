@@ -37,11 +37,11 @@
               <span class='hidden-sm hidden-xs'>Curation </span>Summaries
             </a>
           </li>
-          <li class="active" style="">
+          <li class="" style="">
             <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Status and Future Work <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
           </li>
           @if ($gc !== null && $gc->variant_count > 0)
-		<li class="" style="">
+		<li class="active" style="">
 			<a href="{{ route('gene-genomeconnect', $record->hgnc_id) }}" class="">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span></a>
 		</li>
 		@endif
@@ -58,51 +58,28 @@
 @section('content')
 <div class="container">
 	<div class="row justify-content-center">
-		<div class="col-md-12 mt-3">
-            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating <strong><i>{{  $record->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
-                <div class="row mb-2">
-                    <div class="col-md-offset-1 col-md-2 under-review-color text-center p-1 img-rounded">
-                        <span class=""><strong>Under review</strong></span>
-                    </div>
-                    <div class="col-md-9">
-                        The group is actively evaluating the gene.  Once this evaluation is complete, it will appear on the “Curation Summaries” tab.
-                    </div>
-                </div>
-                <div class="row mb-2">
-                    <div class="col-md-offset-1 col-md-2 precuration-color text-center p-1 img-rounded">
-                        <span class=""><strong>Precuration</strong></span>
-                    </div>
-                    <div class="col-md-9">
-                        The group is considering which disease(s) they will evaluate as part of the curation.  This is often the first step in the curation process.
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-offset-1 col-md-2 in-scope-color text-center p-1 img-rounded">
-                        <span class=""><strong>In Scope</strong></span>
-                    </div>
-                    <div class="col-md-9">
-                        The group has indicated that this gene is of potential interest for future evaluation, but active curation has not yet begun.
-                    </div>
-                </div>
-            <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
+        <div class="col-md-4 mt-3 mb-3">
+            <img src="/images/genomeconnect-logo-final.600x600.png" alt="GeneConnect" width="300" height="300">
+        </div>
+		<div class="col-md-8 mt-3 mb-3">
+            <p>
+                GenomeConnect is the ClinGen Patient Registry where individuals can securely share their genetic and health information with health systems such as ClinVar. 
             </p>
-
-            {{-- @foreach($gceps as $gcep)
-                @include('gene.includes.ep')
-            @endforeach
-
-            @include('gene.includes.dswg')
-
-            @include('gene.includes.cawg')
-
-            @foreach($vceps as $vcep)
-                @include('gene.includes.vcep')
-            @endforeach --}}
-
-            @foreach($pregceps as $gcep)
-                @include('gene.includes.pregcep')
-            @endforeach
-
+            <p>
+                GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with others, learn about research opportunities, and receive updates about their genetic test results. 
+                View the <a href="https://clinicalgenome.org/genomeconnect">GenomeConnect Page</a> for more information.
+            </p>
+            <h4>ClinVar Submissions</h4>
+            <div class="alert alert-info" role="alert">
+                <span class="font-weight-bold font-italic">There are {{ $gc->variant_count }} ClinVar submission(s) for the gene {{ $record->symbol }}.
+                    <i class="fas fa-angle-double-right ml-3"></i><a class="ml-1" href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">Click <u>here</u> to view</a></span>
+                </div>
+            <p>
+                GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards aggregate ClinVar classification. GenomeConnect does not independently classify variants but shares variant information as it appears on participant reports and health information from participant survey.
+            </p>
+        </div>
+        <div class="ml-3">
+            Email <b>info@genomeconnect.org</b> with questions about GenomeConnect or specific GenomeConnect ClinVar submissions.
         </div>
     </div>
 </div>

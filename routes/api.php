@@ -81,6 +81,8 @@ Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look')
 // diseases
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
+Route::get('/conditions/find/{term?}', 'Api\ConditionController@find')->name('conditions.find');
+
 
 // Geneconnect
 //Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');

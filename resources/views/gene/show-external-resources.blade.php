@@ -41,6 +41,11 @@
           <li class="" style="">
             <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Status and Future Work </a>
           </li>
+          @if ($gc !== null && $gc->variant_count > 0)
+		<li class="" style="">
+			<a href="{{ route('gene-genomeconnect', $record->hgnc_id) }}" class="">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span></a>
+		</li>
+		@endif
           <li class="active" style="">
             <a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
           </li>
