@@ -184,6 +184,11 @@ function vcepFormatter(index, row) {
 }
 
 
+function diseaseFormatter(index, row) {
+    return '<a href="/kb/conditions/' + row.mondo + '">' + row.disease_name + '</a><div class="text-muted">' + row.mondo + '</div>';
+}
+
+
 function location01Formatter(index, row) {
 
     //if (row.type == 0)
@@ -954,6 +959,12 @@ function acmsymbolFormatter(index, row) {
     var url = "/kb/gene-dosage/";
 
     return '<a href="' + url + row.hgnc_id + '"><b>' + row.gene + '</b></a>';
+}
+
+
+function acmglinkFormatter(index, row) {
+
+    return "<a href='https://ncbi.nlm.nih.gov" + row.clinvar_link + "' target='_clinvar'><b>ClinVar <i class='fas fa-external-link-alt'></i></b></a>";
 }
 
 function acmomimFormatter(index, row) {

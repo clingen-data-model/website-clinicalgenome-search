@@ -195,6 +195,7 @@
                   <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
                   <li role="separator" class="divider"></li>
+                  <li><a class="@if ($display_tabs['active'] == "acmg") font-weight-bold @endif" href="{{ route('acmg-index') }}">ACMG Demo</a></li>
                 <li><a href="{{ route('download-index') }}"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
                 </ul>
               </li>

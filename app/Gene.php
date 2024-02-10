@@ -209,6 +209,15 @@ class Gene extends Model
      }
 
 
+     /*
+     * The ACMG SFs associated with this gene
+     */
+    public function acmgs()
+    {
+       return $this->hasMany('App\Acmg');
+    }
+
+
 	/**
      * Query scope by ident
      *

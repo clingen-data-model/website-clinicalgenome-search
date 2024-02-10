@@ -301,6 +301,25 @@ class GeneLib extends Model
 
 
      /**
+      * Get a list of all the acmg entries
+      *
+      * (Neo4j, Genegraph)
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+      static function acmgList($args)
+      {
+           if (is_null($args) || !is_array($args))
+                return collect([]);
+ 
+          $response = Mysql::acmgList($args);
+ 
+           return $response;
+      }
+ 
+
+
+     /**
       * Get details of a particular gene
       *
       * (Neo4j)

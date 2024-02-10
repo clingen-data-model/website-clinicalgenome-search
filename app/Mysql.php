@@ -141,6 +141,29 @@ class Mysql
 	}
 
 
+    /**
+     * Get gene list of acmg entries
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function acmgList($args, $curated = false, $page = 0, $pagesize = 20000)
+    {
+
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+			
+		$collection = Acmg::with('gene')->with('disease')->get();
+
+		$ngenes = $collection->unique('gene_id')->count();
+		$ndiseases = $collection->unique('disease_id')->count();
+		
+		return (object) ['count' => $collection->count(), 'collection' => $collection,
+						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];
+	}
+
+
+
 	/**
      * Suggester for Drug names
      *

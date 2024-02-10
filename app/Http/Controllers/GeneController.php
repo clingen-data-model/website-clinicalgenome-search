@@ -133,6 +133,57 @@ class GeneController extends Controller
 
 
 	/**
+	* Display a listing of all ACMG SF entries.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function acmg_index(GeneListRequest $request, $page = 1, $size = 25, $search = "")
+	{
+		// process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "acmg",
+            'title' => "ACMG SF",
+            'scrid' => null, //Filter::SCREEN_ALL_GENES,
+			'display' => "ACMG SF Genes"
+		]);
+
+        if (Auth::guard('api')->check())
+            $user = Auth::guard('api')->user();
+
+        // get list of all current bookmarks for the page
+        //$bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_ALL_GENES)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        //$filter = Filter::preferences($request, $this->user, Filter::SCREEN_ALL_GENES);
+
+        //if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+        //    return $filter;
+
+        // don't apply global settings if local ones present
+        //$settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
+
+		return view('gene.acmg', compact('display_tabs'))
+						->with('apiurl', '/api/genes/acmg')
+						->with('pagesize', $size)
+						->with('page', $page)
+						->with('search', $search)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
+						//->with('bookmarks', $bookmarks)
+                        //->with('currentbookmark', $filter);
+	}
+
+
+	/**
 	* Show all of the curated genes
 	*
 	* @return \Illuminate\Http\Response

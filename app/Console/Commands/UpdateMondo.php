@@ -120,6 +120,9 @@ class UpdateMondo extends Command
             if (strpos($term, 'MONDO') !== 0)
                 continue;
 
+            //if ($term == "MONDO:0011076")
+             //   dd($node);
+
             $disease = Disease::curie($term)->first();
 
             if ($disease === null)
@@ -183,6 +186,7 @@ class UpdateMondo extends Command
                         case 'DOID':
                             $disease->do_id = $val[1];
                             break;
+                        case 'OMIMPS':
                         case 'OMIM':
                             $disease->omim = $val[1];
                             break;

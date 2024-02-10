@@ -136,6 +136,15 @@ class Disease extends Model
         return $this->belongsToMany('App\User');
     }
 
+
+    /*
+     * The ACMG SFs associated with this disease
+     */
+    public function acmgs()
+    {
+       return $this->hasMany('App\Acmg');
+    }
+
     /**
      * Query scope by ident
      *
