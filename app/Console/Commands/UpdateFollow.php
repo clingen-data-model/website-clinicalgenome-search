@@ -102,6 +102,7 @@ class UpdateFollow extends Command
             if (empty($lists))
                 continue;
 
+            //build new change report and send email notification
             $title = new Title(['type' => 1, 'title' => 'ClinGen Followed Genes Notification',
                                 'description' => 'This report shows the genes that have published updates during the period shown.'
                                                 . " To view details of a specific gene, click on the gene symbol name.  In rare cases, a change"

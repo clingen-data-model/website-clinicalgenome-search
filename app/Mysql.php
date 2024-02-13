@@ -645,7 +645,8 @@ class Mysql
 		{
 			$array = [['label' => 'All Diseases (*)',
 						'short' => 'All Diseases',
-						'curated' => 2,
+						'curated' => 0,
+                        'alias' => '',
 						'hgnc' => '*'
 						]];
 			return json_encode($array);
@@ -655,23 +656,27 @@ class Mysql
 		{
 			$array = [['label' => 'All Validity',
 						'short' => 'All Validity',
-						'curated' => 2,
-						'hgncid' => '@AllValidity'
+						'curated' => 0,
+                        'alias' => '',
+						'hgnc' => '@AllValidity'
 					],
 					['label' => 'All Dosage',
 						'short' => 'All Dosage',
-						'curated' => 2,
-						'hgncid' => '@AllDosage'
+						'curated' => 0,
+                        'alias' => '',
+						'hgnc' => '@AllDosage'
 					],
 					['label' => 'All Actionability',
 						'short' => 'All Actionability',
-						'curated' => 2,
-						'hgncid' => '@AllActionability'
+						'curated' => 0,
+                        'alias' => '',
+						'hgnc' => '@AllActionability'
 					],
 					['label' => 'All Variant Pathogenicity',
 						'short' => 'All Variant Pathogenicity',
-						'curated' => 2,
-						'hgncid' => '@AllVariant'
+						'curated' => 0,
+                        'alias' => '',
+						'hgnc' => '@AllVariant'
 					]
 				];
 

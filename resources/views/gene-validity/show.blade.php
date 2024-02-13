@@ -86,7 +86,7 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-2">
             <div class="row">
                 <dt class="col-sm-4">Expert Panel:
                 <dd class="col-sm-8">
@@ -94,10 +94,10 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1 mt-2">
             &nbsp;
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 mt-2">
             <div class="row">
                 @if ($record->sop7_contributors ?? null)
                 <dt class="col-sm-3">Contributors:
@@ -120,7 +120,7 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-2">
             <div class="row">
                 <dt class="col-sm-5">Contradictory Evidence:
                 <dd class="col-sm-7">
@@ -128,8 +128,16 @@
                 </dd>
             </div>
         </div>
+        <div class="col-md-6 mt-2">
+            <div class="row">
+                <dt class="col-sm-4 pt-2">ClinGen Curation ID:
+                <dd class="col-sm-8">
+                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-clipboard-text="{{ url('/kb/gene-validity/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy Link</button>
+                </dd>
+            </div>
+        </div>
         @if ($gcilink !== null)
-        <div class="col-md-12 mt-4">
+        <div class="col-md-6 mt-4">
             <div class="row">
                 <dt class="col-sm-4">GCI LINK:
                     <dd class="col-sm-8"><a href="{{ $gcilink }}" target="_gci">{{ $gcilink }}</a>
@@ -775,6 +783,8 @@ overflow-x: scroll; overflow-y:hidden;}
 <script src="/js/jquery.validate.min.js" ></script>
 <script src="/js/additional-methods.min.js" ></script>
 
+<script src="/js/clipboard.min.js" ></script>
+
 
 <script>
 
@@ -920,6 +930,24 @@ $(function() {
         $(".wrapper1")
             .scrollLeft($("#geclv").scrollLeft());
     }); */
+
+    new ClipboardJS('.action-ccid-copy');
+
+    /*$('.action-ccid-copy').on('click', function(){
+        
+        //var t = $('#ccid').val();
+alert("cp1");
+        var t = document.getElementById('ccid');
+console.log(t);
+        t.select();
+        t.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /*document.execCommand('copy');
+
+        //alert("Copy to clipboard not implemented");
+        //navigator.clipboard.writeText(t);
+    });*/
+
 
     $('.action-beta-form').on('click', function(){
         $('#beta-form')[0].reset();

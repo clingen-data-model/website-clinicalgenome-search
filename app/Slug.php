@@ -92,6 +92,21 @@ class Slug extends Model
      ];
 
 
+    public static function boot()
+    {
+      parent::boot();
+
+      /**
+       * Create a numeric slug based on the primary key value
+       */
+      self::created(function($model){
+
+        // reserve the first 4000 entries for possible backfilling
+        $model->update(['alias' => 'CCID:' . str_pad($model-> id + 4000, 6, "0", STR_PAD_LEFT)]);
+
+      });
+    }
+
     /**
      * Automatically assign an ident on instantiation
      *
@@ -101,7 +116,7 @@ class Slug extends Model
     public function __construct(array $attributes = array())
     {
         $this->attributes['ident'] = (string) Uuid::generate(4);
-        $this->attributes['alias'] = strtoupper('CCID:' . Str::random(8));
+        $this->attributes['alias'] = strtoupper('TEMP:' . Str::random(8));
         parent::__construct($attributes);
     }
 
@@ -113,19 +128,31 @@ class Slug extends Model
      * @return Illuminate\Database\Eloquent\Collection
      */
 	public function scopeIdent($query, $ident)
-    {
+  {
 		return $query->where('ident', $ident);
-    }
+  }
 
 
-    /**
-     * Query scope by alias
-     *
-     * @@param	string	$ident
-     * @return Illuminate\Database\Eloquent\Collection
-     */
+  /**
+   * Query scope by alias
+   *
+   * @@param	string	$ident
+   * @return Illuminate\Database\Eloquent\Collection
+   */
 	public function scopeAlias($query, $ident)
-    {
+  {
 		return $query->where('alias', $ident);
-    }
+  }
+
+
+  /**
+   * Query scope by target
+   *
+   * @@param	string	$ident
+   * @return Illuminate\Database\Eloquent\Collection
+   */
+	public function scopeTarget($query, $ident)
+  {
+		return $query->where('target', $ident);
+  }
 }
