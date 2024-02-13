@@ -7,7 +7,7 @@
 
       <table class="mt-3 mb-2">
         <tr>
-          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+          <td class="valign-top"><img src="/images/acmg.png" width="45" height="45"></td>
           <td class="pl-2"><h1 class="h2 p-0 m-0"> ACMG SF Genes and Diseases</h1>
           </td>
         </tr>
@@ -23,6 +23,18 @@
 					</ul>
 				</div>
 			</div>
+		</div>
+
+		<div class="col-md-12 mb-2 border" style="background: #f2f7fc">
+			<p class="p-2">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna 
+			aliqua. Odio eu feugiat pretium nibh ipsum consequat nisl vel pretium. Natoque penatibus et magnis dis parturient. 
+			Id venenatis a condimentum vitae. Pharetra sit amet aliquam id diam maecenas ultricies. Sit amet est placerat in egestas 
+			erat. Nunc congue nisi vitae suscipit tellus. Eget gravida cum sociis natoque penatibus et. At erat pellentesque adipiscing 
+			commodo. Odio eu feugiat pretium nibh ipsum consequat. Ut tristique et egestas quis ipsum. At quis risus sed vulputate odio. 
+			Sed faucibus turpis in eu mi bibendum neque. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Augue 
+			interdum velit euismod in. Odio ut sem nulla pharetra.
+			</p>
 		</div>
 
 		<div class="col-md-12 light-arrows dark-table">
@@ -93,6 +105,28 @@
     	return res
   	}
 
+	  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
+
+function checkactive(text, value, field, data)
+  {
+	  switch (text)
+	  {
+		  case 'actionability':
+			  return value.indexOf('A') != -1;
+		  case 'dosage sensitivity':
+			  return value.indexOf('D') != -1;
+		  case 'gene validity':
+			  return value.indexOf('V') != -1;
+		  case 'variant pathogenicity':
+			  return value.indexOf('R') != -1;
+		  case 'pharmacogenomics':
+			  return value.indexOf('P') != -1;
+		  default:
+			  return true;
+	  }
+
+  }
+
   	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
 		stickyHeader: true,
@@ -109,6 +143,19 @@
 			filterControl: 'input',
 			sortable: true,
 			searchFormatter: false,
+			width: 150
+		},
+		{
+			title: 'Curations',
+			field: 'curation',
+			formatter: badgeFormatter,
+			cellStyle: cellFormatter,
+			filterControl: 'select',
+			sortable: true,
+			searchFormatter: false,
+			filterData: 'var:activelist',
+			filterCustomSearch: checkactive,
+          	width: 200
 		},
 		{
 			title: 'Disease',
@@ -120,7 +167,7 @@
 			cellStyle: cellFormatter
 		},
 		{
-			title: 'ClinVar',
+			title: 'Other Resources',
 			field: 'clinvar_link',
 			sortable: true,
 			filterControl: 'input',

@@ -964,7 +964,14 @@ function acmsymbolFormatter(index, row) {
 
 function acmglinkFormatter(index, row) {
 
-    return "<a href='https://ncbi.nlm.nih.gov" + row.clinvar_link + "' target='_clinvar'><b>ClinVar <i class='fas fa-external-link-alt'></i></b></a>";
+    var html = "<a href='https://ncbi.nlm.nih.gov" + row.clinvar_link + "' target='_clinvar'><b>ClinVar <i class='fas fa-external-link-alt'></i></b></a>";
+
+    if (row.has_variant)
+        html += "<div><a href='" + row.cspec_link + "' target='_cspec'><b>CSpec Registry <i class='fas fa-external-link-alt'></i></b></a></div>";
+    else
+        html += '<div>&nbsp;</div>';
+
+    return html;
 }
 
 function acmomimFormatter(index, row) {
