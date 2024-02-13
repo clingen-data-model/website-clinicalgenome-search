@@ -83,6 +83,10 @@ Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look')
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
 Route::get('/conditions/find/{term?}', 'Api\ConditionController@find')->name('conditions.find');
+Route::post('/conditions/follow', 'Api\FollowController@create_disease')->name('followd.create');
+Route::post('/conditions/unfollow', 'Api\FollowController@remove_disease')->name('followd.remove');
+
+
 
 
 // Geneconnect
@@ -104,6 +108,8 @@ Route::post('/home/toggle-pause', 'Api\HomeController@pause')->name('home.pause'
 Route::get('/home/follow/reload', 'Api\FollowController@reload')->name('home.reload');
 Route::get('/home/dare/expand/{group}', 'Api\FollowController@dare_expand')->name('home.rexpand');
 Route::get('/home/dape/expand/{group}', 'Api\FollowController@dape_expand')->name('home.pexpand');
+Route::get('/home/follow/reload_disease', 'Api\FollowController@reload_disease')->name('home.reload_disease');
+
 
 // filters
 Route::resource('filters', 'Api\FilterController');

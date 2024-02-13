@@ -175,7 +175,7 @@
                 // save the change
                 server_update(gene, original, $(this).text());
 
-                console.log(row);
+                //console.log(row);
             }
             else
             {

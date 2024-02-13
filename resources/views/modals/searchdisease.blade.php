@@ -7,7 +7,7 @@
 				</button>
 				<h3 class="modal-title text-white" id="modalSearchDiseaseTitle">Follow a new disease</h3>
 			</div>
-			<form id="search_disease_form" method="POST" action="{{ route('gene-search') }}">
+			<form id="search_disease_form" method="POST" action="{{ route('condition-search') }}">
 				@csrf
 				<div class="modal-body">
 					<div class="row mb-3">

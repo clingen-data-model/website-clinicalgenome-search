@@ -63,10 +63,10 @@
         </div>
 		<div class="col-md-8 mt-3 mb-3">
             <p>
-                GenomeConnect is the ClinGen Patient Registry where individuals can securely share their genetic and health information with health systems such as ClinVar. 
+                GenomeConnect is the ClinGen Patient Registry where individuals can securely share their genetic and health information with databases such as ClinVar. 
             </p>
             <p>
-                GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with others, learn about research opportunities, and receive updates about their genetic test results. 
+                GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with other participants, learn about research opportunities, and receive updates about their genetic test results. 
                 View the <a href="https://clinicalgenome.org/genomeconnect">GenomeConnect Page</a> for more information.
             </p>
             <h4>ClinVar Submissions</h4>
@@ -75,11 +75,12 @@
                     <i class="fas fa-angle-double-right ml-3"></i><a class="ml-1" href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">Click <u>here</u> to view</a></span>
                 </div>
             <p>
-                GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards aggregate ClinVar classification. GenomeConnect does not independently classify variants but shares variant information as it appears on participant reports and health information from participant survey.
+                GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards the aggregate ClinVar classification. GenomeConnect does not independently classify variants; GenomeConnect shares variant information as it appears on participant reports and health information from participant surveys.
             </p>
         </div>
         <div class="ml-3">
-            Email <b>info@genomeconnect.org</b> with questions about GenomeConnect or specific GenomeConnect ClinVar submissions.
+            Email <b>info@genomeconnect.org</b> with questions about GenomeConnect or specific GenomeConnect ClinVar submissions.  Additional patient-provided information may be available in the registry. GenomeConnect also has the ability to re-contact participants to request more information.
+
         </div>
     </div>
 </div>

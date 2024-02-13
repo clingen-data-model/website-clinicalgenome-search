@@ -50,7 +50,7 @@
                         <th class="col-sm-2" data-field="display_last" data-sortable="true" data-formatter="ldateFormatter">Last Updated</th>
                         <th class="col-sm-2" data-field="notify" data-searchable="false" data-align="center">Notify</th>
                         <th class="col-sm-2" data-field="unfollow" data-searchable="false" data-align="center">Unfollow</th>
-                        <th data-field="mondo" data-visible="false"></th>
+                        <th data-field="curie" data-visible="false"></th>
                         <th data-field="ident" data-visible="false"></th>
                     </tr>
                 </thead>
@@ -86,7 +86,7 @@
                             <span class="action-follow-disease"><i class="fas fa-star" style="color:green"></i></span>
                         </td>
                         <td>{{ $disease->curie }}</td>
-                        <td>{{ $disease->curie }}</td>
+                        <td>{{ $disease->ident }}</td>
                     </tr>
                 @endforeach
                 </tbody>

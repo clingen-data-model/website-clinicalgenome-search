@@ -103,7 +103,9 @@
     @include('modals.unfollowgencon', ['ident' => ''])
     @include('modals.searchgenomeconnect')
     @include('modals.genconupload')
+    @include('modals.followdisease', ['disease' => ''])
     @include('modals.searchdisease')
+    @include('modals.unfollowdisease', ['disease' => ''])
 
 @endsection
 
@@ -280,8 +282,6 @@
 
             $obj.attr('colspan',12);
 
-            console.log(row.hgnc.substring(1));
-
             if (row.hgnc.charAt(0) == '!')
                 $obj.load( "/api/home/dape/expand/" + row.hgnc.substring(1));
             else
@@ -337,7 +337,8 @@
 	function rowAttributes(row, index)
 	{
 	return {
-		'data-hgnc': row.hgnc
+		'data-hgnc': row.hgnc,
+        'data-curie': row.curie
 	}
 	}
 
@@ -349,7 +350,6 @@
             return value;
         else if (row.hgnc.charAt(0) == '!')
         {
-            console.log(row);
             return value;
         }
         else

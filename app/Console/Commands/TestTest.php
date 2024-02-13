@@ -53,11 +53,15 @@ class TestTest extends Command
 
         $records = Notification::all();
 
+        $disease = ['Daily' => [], 'Weekly' => [], 'Monthly' => [],
+                    'Pause' => [], 'Default' => [], 'Groups' => [] ];
+
         foreach ($records as $record)
         {
             $frequency = $record->frequency;
             $frequency['global_pause'] = 'off';
             $frequency['global_pause_date'] = null;
+            $frequency['Disease'] = $disease;
 
            $record->frequency = $frequency;
 

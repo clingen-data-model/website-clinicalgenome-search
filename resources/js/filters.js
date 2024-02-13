@@ -475,7 +475,7 @@ function filter_push(name, column, value) {
 
     filter_pop(name);
     filterstack.push(o);
-    console.log(filterstack);
+    //console.log(filterstack);
 }
 
 

@@ -275,6 +275,38 @@ class Notification extends Model
          return true;
      }
 
+
+     /**
+     * Add one of more diseases to the default list
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function addDefaultDisease($diseases)
+    {
+         if ($diseases instanceof Collection)
+         {
+              foreach ($diseases as $disease)
+                   $this->addDiseaseDefault($disease);
+         }
+         else if ($diseases instanceof \App\Disease)          // just one
+         {
+              $freq = $this->frequency;
+              $disease = $freq['Disease'];
+              array_push($disease['Default'], $diseases->curie);
+              $freq['Disease'] = $disease;
+              $this->frequency = $freq;
+         }
+         else           //string
+         {
+              $freq = $this->frequency;
+              $disease = $freq['Disease'];
+              array_push($disease['Default'], $diseases);
+              $freq['Disease'] = $disease;
+              $this->frequency = $freq;
+         }
+    }
+
      /**
      * Convert the stored constant to hours
      *
@@ -489,6 +521,27 @@ class Notification extends Model
 
 
      /**
+     * Check if name is part of any notification bucket
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function checkGroupDisease($name)
+     {
+          foreach (['Daily', 'Weekly', 'Monthly', 'Pause', 'Default'] as $bucket)
+          {
+               if (!(isset($this->frequency['Disease'][$bucket]) && is_array($this->frequency['Disease'][$bucket])))
+                    continue;
+
+               if (in_array($name, $this->frequency['Disease'][$bucket]))
+                    return $bucket;
+          }
+
+          return false;
+     }
+
+
+     /**
      * Add to the group
      *
      * @@param	string	$gene
@@ -542,6 +595,34 @@ class Notification extends Model
 
          return true;
      }
+
+
+     /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function removeGroupDisease($name, $bucket)
+     {
+         if ($this->frequency === null)
+             return false;
+
+         if (!isset($this->frequency[$bucket]))
+             return false;
+
+         if (!in_array($name, $this->frequency['Disease'][$bucket]))
+             return false;
+
+         $frequency = $this->frequency;
+         if (($key = array_search($name, $frequency['Disease'][$bucket])) !== false)
+              unset($frequency['Disease'][$bucket][$key]);
+         $frequency['Disease'][$bucket] = array_values($frequency['Disease'][$bucket]);
+         $this->frequency = $frequency;
+
+         return true;
+     }
+
 
 
      /**

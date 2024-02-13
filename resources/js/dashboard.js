@@ -889,6 +889,232 @@ $(function() {
     });
 
 
+    $( '#follow_disease_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/conditions/follow";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload_disease";
+
+                var gene = response.gene;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#disease-table').bootstrapTable('load', response.data);
+                    $('#disease-table').bootstrapTable("resetSearch","");
+                    /*
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+                    }
+                    */
+
+                    $('#modalSearchDisease').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    $( '#unfollow_disease_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/conditions/unfollow";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload_disease";
+
+                var disease = response.disease;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#disease-table').bootstrapTable('load', response.data);
+                    $('#disease-table').bootstrapTable("resetSearch","");
+
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+                    }
+
+                    $('#modalSearchDisease').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while unfollowing the item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalUnFollowGene').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    /**
+     * Unfollow a gene
+     */
+    $diseasetable.on('click', '.action-follow-disease', function(element) {
+        swal({
+            title: "Are you sure?",
+            text: "Unfollowed diseases or groups can always be refollowed later.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((yes) => {
+                if (yes) {
+                    var curie  = $(this).closest('tr').data('curie');
+                    $('#unfollow-disease-field').val(curie);
+                    $('#unfollow_disease_form').submit();
+                    var row = $(this).closest('tr').find('td:first-child').html();
+                    $diseasetable.bootstrapTable('remove', {
+                        field: 'symbol',
+                        values: row
+                    });
+                    $(":checkbox[value=" + curie.substring(1) + "]").prop("checked", false);
+
+                }
+        });
+    });
+
+
+
     $( '#search_region_form' ).validate( {
         submitHandler: function(form) {
             $.ajaxSetup({
@@ -1285,21 +1511,35 @@ $(function() {
 
 
     $('.queryFindDisease').typeahead(null,
-        {
-            name: 'followtermDisease',
-            display: 'label',
-            source: followtermDisease,
-            limit: Infinity,
-            highlight: true,
-            hint: false,
-            autoselect:true,
-        }).bind('typeahead:selected',function(evt,item){
-            // here is where we can set the follow and refresh the screen.
-    
-            $('#follow-disease-field').val(item.curie);
-            $('#follow_disease_form').submit();
-    
-        });
+    {
+        name: 'followtermDisease',
+        display: 'label',
+        source: followtermDisease,
+        limit: 20,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+        templates: {
+            //header: '<h3 class="league-name">Header</h3>',
+            //footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
+            empty: [
+                '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+            ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+            suggestion: function (data) {
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+
+            }
+        },
+    }).bind('typeahead:selected',function(evt,item){
+        // here is where we can set the follow and refresh the screen.
+
+        $('#follow-disease-field').val(item.hgnc);
+        $('#follow_disease_form').submit();
+
+    });
 
     var myselect = $('#selected-genes');
 
@@ -1606,7 +1846,7 @@ $(function() {
 			createImageThumbnails : false,
             disablePreviews: true,
 			clickable : ".action-gc-file",
-
+            acceptedFiles : "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 			init : function() {
 				this.on("success", function(file, response) {
                     // display confirmation
@@ -1615,6 +1855,9 @@ $(function() {
                     var url = "/api/home/gc/reload";
     
                     var gene = response.gene;
+
+                    var errors = response.errors;
+                    var newcount = response.newcount;
     
                     //submits to the form's action URL
                     $.get(url, function(response)
@@ -1622,8 +1865,27 @@ $(function() {
                         //console.log(response.data);
                         $('#gencon-table').bootstrapTable('load', response.data);
                         $('#gencon-table').bootstrapTable("resetSearch","");
-                        
-                        swal("Spreadsheet processed.");
+
+                        // Check if any warnings to display
+                        if (errors.length > 0)
+                        {
+
+                            swal({
+                                title: "Spreadsheet Processed w/ Warnings",
+                                text: errors.join(", "),
+                                icon: "warning",
+                                button: "OK"
+                              });
+                        }
+                        else
+                        {
+                            swal({
+                                title: "Spreadsheet Processed",
+                                text: newcount + " new gene(s) were added",
+                                icon: "success",
+                                button: "OK"
+                              });
+                        }
     
                     }).fail(function(response)
                     {

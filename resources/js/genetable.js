@@ -175,7 +175,7 @@ function hgncFormatter(index, row) {
 
 function vcepFormatter(index, row) {
 
-    console.log(index);
+    //console.log(index);
     if (index == null)
         return '';
 

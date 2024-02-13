@@ -11,6 +11,7 @@ use Storage;
 use Carbon\Carbon;
 
 use App\Gene;
+use App\Disease;
 use App\Title;
 use App\Report;
 use App\Region;
@@ -82,6 +83,9 @@ class HomeController extends Controller
                 case '@AllGenes':
                     $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
                     break;
+                case '@AllDiseases':
+                    $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
+                    break;
                 case '@AllDosage':
                     $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
@@ -97,16 +101,29 @@ class HomeController extends Controller
                 default:
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
-
             }
 
-            $gene = new Gene(['name' => $group->display_name,
-                                'hgnc_id' => $group->search_name,
-                                'activity' => $a,
-                                'date_last_curated' => ''
+            if ($group->type == 3)
+            {
+                $disease = new Disease(['label' => $group->display_name,
+                                'curie' => $group->search_name,
+                                'curation_activities' => $a,
+                                'type' => 1,
+                                'last_curated_date' => ''
                             ]);
 
-            $genes->prepend($gene);
+                $diseases->prepend($disease);
+            }
+            else
+            {
+                $gene = new Gene(['name' => $group->display_name,
+                                    'hgnc_id' => $group->search_name,
+                                    'activity' => $a,
+                                    'date_last_curated' => ''
+                                ]);
+
+                $genes->prepend($gene);
+            }
         }
 
         // do a little self repair
@@ -208,7 +225,10 @@ class HomeController extends Controller
     public function gc_upload(Request $request)
     {     
         if(!$request->hasFile('file'))
-            dd("Null file upload");
+            return response()->json(['success' => 'false',
+                    'status_code' => 7201,
+                    'message' => "File coulds not be processed"],
+                    502);
 
         $file = $request->file('file');
 
@@ -218,13 +238,24 @@ class HomeController extends Controller
 
         $worksheets = (new ExcelGC)->toArray("/home/pweller/Projects/website-clinicalgenome-search/data/GCTEST.xlsx");
 
+        $errors = [];
+
+        $newcount = 0;
+
         // process the first worksheet tab
         foreach ($worksheets[0] as $row)
         {
             $symbol = $row[0];
 
             if (empty($symbol))
-                continue;
+                continue;       // skip empty lines
+
+            // try to determine if this is a comment or an intended gene symbol
+            if (strpos($symbol, '#') === 0)
+                continue;       // skip obvious comment
+            $test = preg_split("/[\s,]+/", $symbol);
+            if (count($test) > 1)
+                continue;       // probably a comment
 
             $gene = Gene::name($symbol)->first();
 
@@ -240,24 +271,28 @@ class HomeController extends Controller
 
             if ($gene === null)
             {
-                // skip over comments of unknown genes
+                $errors[] = "Skipping $symbol, unknown gene symbol.";
                 continue;
             }
 
-            $gc = $gene->genomeconnect;
-
-            if ($gc == null)
+            if ($gene->genomeconnect === null)
             {
                 $gc = new Genomeconnect( ['status' => Genomeconnect::STATUS_INITIALIZED]);
                 $gene->genomeconnect()->save($gc);
+
+                $newcount++;
             }
+
+        }
             
-            //breturn redirect('/dashboard');
-            return response()->json(['success' => 'true',
+        //breturn redirect('/dashboard');
+        return response()->json(['success' => 'true',
                                 'status_code' => 200,
+                                'errors' => $errors,
+                                'newcount' => $newcount,
                                 'message' => "File Processed"],
                                 200);
-        }
+
     }
 
     /**
