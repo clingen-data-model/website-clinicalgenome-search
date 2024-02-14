@@ -109,8 +109,6 @@ class UpdateClinvarACMG extends Command
       }
     }
 
-    //dd($records);
-
 
     // Do some post processing
     foreach ($records as &$record) {
@@ -155,18 +153,18 @@ class UpdateClinvarACMG extends Command
     }
 
     // Create/update table entries
-    foreach ($records as $record)
+    foreach ($records as $acmg)
     {
-        $acmg = Acmg::updateOrCreate(['gene_id' => $record['gene_id'], 'disease_id' =>  $record['disease_id']],
+        $acmg = Acmg::updateOrCreate(['gene_id' => $acmg['gene_id'], 'disease_id' =>  $acmg['disease_id']],
                                       ['type' => 1,
-                                      'gene_symbol' => $record['gene_symbol'],
-                                      'gene_mim' => $record['gene_mim'],
-                                      'disease_name' => $record['disease_name'],
-                                      'disease_mims' => $record['disease_mims'],
-                                      'documents' => ['MedGen' => basename($record['medgen'])],
+                                      'gene_symbol' => $acmg['gene_symbol'],
+                                      'gene_mim' => $acmg['gene_mim'],
+                                      'disease_name' => $acmg['disease_name'],
+                                      'disease_mims' => $acmg['disease_mims'],
+                                      'documents' => ['MedGen' => basename($acmg['medgen'])],
                                       'demographics' => null,
                                       'scores' => null,
-                                      'clinvar_link' => $record['clinvar'],
+                                      'clinvar_link' => $acmg['clinvar'],
                                       'is_curated' => false,
                                       'status' => 1
                                     ]);
