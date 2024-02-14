@@ -89,7 +89,6 @@ class UpdateLocations extends Command
                 if ($record !== null)
                     $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
 
-
             }
 
             fclose($handle);
@@ -101,7 +100,7 @@ class UpdateLocations extends Command
         }
 
         // https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/001/405/GCF_000001405.39_GRCh38.p13/GCF_000001405.39_GRCh38.p13_genomic.gff.gz
-        $handle = fopen(base_path() . '/data/hg38/GCF_000001405.39_GRCh38.p13_genomic.gff', "r");
+        $handle = fopen(base_path() . '/data/hg38/GCF_000001405.40_GRCh38.p14_genomic.gff', "r");
         if ($handle)
         {
             while (($line = fgets($handle)) !== false)
