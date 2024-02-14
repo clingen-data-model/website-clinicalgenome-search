@@ -57,6 +57,7 @@ class UpdateErepo extends Command
 
         } catch (\Exception $e) {
 
+          $this->restore();
           echo "\n(E001) Error retreiving erepo data\n";
           exit;
         }
@@ -116,5 +117,34 @@ class UpdateErepo extends Command
 
       echo "DONE\n";
 
+    }
+
+    protected function restore()
+    {
+      // If the variant refresh fails, it leaves gene and disease tags blank.  Try to recover with old data
+      foreach (Variant::all() as $variant)
+      {
+        $gene = Gene::name($variant->gene['label'])->first();
+
+        if ($gene !== null)
+        {
+            $activity = $gene->activity;
+            $activity['varpath'] = true;
+            $gene->activity = $activity;
+            $gene->save();
+        }
+
+        $disease = Disease::curie($variant->condition['@id'])->first();
+
+        if ($disease !== null)
+        {
+            $activity = $disease->curation_activities;
+            if (empty($activity) || !isset($activity['dosage']))
+                $activity = ['dosage' => false, 'validity' => false, 'actionability' => 'false'];
+            $activity['varpath'] = true;
+            $disease->curation_activities = $activity;
+            $disease->save();
+        }
+      }
     }
 }
