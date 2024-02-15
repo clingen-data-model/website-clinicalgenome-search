@@ -7,10 +7,8 @@ $(function() {
 
 function createBadges()
 {
-    alert('creating badgessss')
     $('.filter-container').html('');
     var advancedFilters = $('.advanced-filter');
-    console.log(advancedFilters);
     var enabledFilters = advancedFilters.filter( function (filter) {
         return $(this).hasClass('fa-toggle-on')
     });
@@ -477,7 +475,6 @@ function filter_push(name, column, value) {
 
     filter_pop(name);
     filterstack.push(o);
-    console.log(filterstack);
 }
 
 
