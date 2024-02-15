@@ -105,7 +105,8 @@ class DosageController extends Controller
                         ->with('display_list', $display_list)
                         ->with('is_search', $is_search)
 						->with('bookmarks', $bookmarks)
-                        ->with('currentbookmark', $filter);
+                        ->with('currentbookmark', $filter)
+                        ->with('type', 'GRCh37');
     }
 
 
