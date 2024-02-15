@@ -8,8 +8,8 @@ $(function() {
 function createBadges()
 {
     $('.filter-container').html('');
-    var dosageFilters = $('.dosage-filter');
-    var enabledFilters = dosageFilters.filter( function (filter) {
+    var advancedFilters = $('.advanced-filter');
+    var enabledFilters = advancedFilters.filter( function (filter) {
         return $(this).hasClass('fa-toggle-on')
     });
 
@@ -22,7 +22,6 @@ function createBadges()
             var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">' + filterObj.data('badge') + '</span>');
             $('.filter-container').append(newbadge);
         })
-
     }
 }
 /**
@@ -475,7 +474,6 @@ function filter_push(name, column, value) {
 
     filter_pop(name);
     filterstack.push(o);
-    console.log(filterstack);
 }
 
 
