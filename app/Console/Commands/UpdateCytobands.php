@@ -44,7 +44,7 @@ class UpdateCytoBands extends Command
         
         try {
 
-            $results = file_get_contents("https://hgdownload.cse.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz");
+            $results = file_get_contents("https://hgdownload.soe.ucsc.edu/goldenPath/hg19/database/cytoBand.txt.gz");
 
 		} catch (\Exception $e) {
 		

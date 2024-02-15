@@ -55,11 +55,15 @@
                 <span class="ml-2 hgnc text-muted action-show-protein-text">Off</span>
             </div>
         </div>
-        @if ($is_search)
-            <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show only Genes/Regions that have completed review</label>
+        @if ($is_search ?? false)
+            <label for="gene" class="col-sm-8 ml-5 col-form-label"> Show only Genes/Regions that have completed evaluations</label>
             <div class="col-sm-3">
                 <div class="form-inline p-0 m-0 col-sm-12">
+<<<<<<< HEAD
                     <i class="fas fa-toggle-off fa-lg advanced-filter action-show-completed" data-badge="Completed Review"></i>
+=======
+                    <i class="fas fa-toggle-off fa-lg dosage-filter action-show-completed" data-badge="Completed Evaluations"></i>
+>>>>>>> master
                     <span class="ml-2 hgnc text-muted action-show-completed-text">Off</span>
                 </div>
             </div>

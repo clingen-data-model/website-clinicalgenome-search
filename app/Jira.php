@@ -738,7 +738,7 @@ class Jira extends Model
           $nhaplo = $collection->where('haplo_score', '>', 0)->count();
           $ntriplo = $collection->where('triplo_score', '>', 0)->count();
 
-          return (object) ['count' => $response->total, 'collection' => $collection,
+          return (object) ['count' => $collection->count(), 'collection' => $collection,
                'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
     }
 

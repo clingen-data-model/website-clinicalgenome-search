@@ -174,123 +174,134 @@ class Variantpath extends Model
 	public function assertions()
     {
         // get new variant pathogenicity data
-        try {
+        $results_pieces = [];
+        $skip = 0;
 
-            $results = file_get_contents("http://erepo.genome.network/evrepo/api/interpretations?matchLogic=and&matchMode=keyword&matchLimit=all");
+        while (true)
+        {
 
-        } catch (\Exception $e) {
+            try {
 
-            die ("Failure to retrieve new data");
-            exit;
+                $results = file_get_contents("http://erepo.genome.network/evrepo/api/interpretations?matchLogic=and&matchMode=keyword&matchLimit=1000&matchSkip=" . $skip);
+
+            } catch (\Exception $e) {
+
+                die ("Failure to retrieve new data");
+                exit;
+            }
+
+            $dd = json_decode($results);
+
+            if (empty($dd->variantInterpretations))
+                break;
+
+            $results_pieces[] = $dd;
+
+            $skip += 1000;
+
         }
 
-        $data = json_decode($results);
-        // clear out the status field
-
         // compare and update
-        foreach ($data->variantInterpretations as $assertion)
+        foreach ($results_pieces as $data)
         {
-            // white list this assertion, it should not be there
-            if ($assertion->uuid = "786719c8-6c3e-4472-92da-73895454744f")
-                continue;
-
-            $current = Variantpath::curie($assertion->{'@id'})->orderBy('version', 'desc')->first();
-
-            if ($current === null)          // new assertion
+            foreach ($data->variantInterpretations as $assertion)
             {
-                $current = Variantpath::create([
-                                    'curie' => $assertion->{'@id'},
-                                    'vid' => $assertion->variationId,
-                                    'report_date' => Carbon::parse($assertion->publishedDate)->format('Y-m-d H:i:s.0000'),
-                                    'disease_label' => $assertion->condition->label,
-                                    'disease_mondo' => $assertion->condition->{'@id'},
-                                    'gene_label' => $assertion->gene->label,
-                                    'classification' => null,
-                                    'specified_by' => null,
-                                    'attributed_to' => null,
-                                    'version' => 1,
-                                    'type' => 1,
-                                    'status' => 1
-                                ]);
+                // white list this assertion, it should not be there
+                if ($assertion->uuid = "786719c8-6c3e-4472-92da-73895454744f")
+                    continue;
 
-                $gene = Gene::name($current->gene_label)->first();
+                $current = Variantpath::curie($assertion->{'@id'})->orderBy('version', 'desc')->first();
+
+                if ($current === null)          // new assertion
+                {
+                    $current = Variantpath::create([
+                                        'curie' => $assertion->{'@id'},
+                                        'vid' => $assertion->variationId,
+                                        'report_date' => Carbon::parse($assertion->publishedDate)->format('Y-m-d H:i:s.0000'),
+                                        'disease_label' => $assertion->condition->label,
+                                        'disease_mondo' => $assertion->condition->{'@id'},
+                                        'gene_label' => $assertion->gene->label,
+                                        'classification' => null,
+                                        'specified_by' => null,
+                                        'attributed_to' => null,
+                                        'version' => 1,
+                                        'type' => 1,
+                                        'status' => 1
+                                    ]);
+
+                    $gene = Gene::name($current->gene_label)->first();
+
+                    if ($gene !== null)
+                    {
+                        $current->update(['gene_hgnc_id' => $gene->hgnc_id]);
+
+
+                        $a = Change::create([
+                                        'type' => Change::TYPE_VARIANT,
+                                        'category' => Change::CATEGORY_NONE,
+                                        'element_id' => $gene->id,
+                                        'element_type' => 'App\Gene',
+                                        'old_id' =>null,
+                                        'old_type' => null,
+                                        'new_id' => $current->id,
+                                        'new_type' => 'App\Variantpath',
+                                        'change_date' => $current->report_date,
+                                        'description' => ['New curation activity'],
+                                        'status' => 1
+                            ]);
+                    }
+
+                    continue;
+                }
+
+                $new = new Variantpath([
+                                        'curie' => $assertion->{'@id'},
+                                        'vid' => $assertion->variationId,
+                                        'report_date' => Carbon::parse($assertion->publishedDate)->format('Y-m-d H:i:s.0000'),
+                                        'disease_label' => $assertion->condition->label,
+                                        'disease_mondo' => $assertion->condition->{'@id'},
+                                        'gene_label' => $assertion->gene->label,
+                                        'classification' => null,
+                                        'specified_by' => null,
+                                        'attributed_to' => null,
+                                        'version' => $current->version + 1,
+                                        'type' => 1,
+                                        'status' => 1
+                                    ]);
+
+                $gene = Gene::name($new->gene_label)->first();
 
                 if ($gene !== null)
+                        $new->gene_hgnc_id = $gene->hgnc_id;
+
+                $differences = $this->compare($current, $new);
+
+                if (!empty($differences))      // update
                 {
-                    $current->update(['gene_hgnc_id' => $gene->hgnc_id]);
 
+                    $new->save();
 
-                    $a = Change::create([
+                    $gene = Gene::hgnc($new->gene_hgnc_id)->first();
+
+                    // it seems that there can be published records with no gene information.  Bail out if this is the case
+                    if ($gene === null)
+                        return null;
+
+                    // we'll use the current date for search, since there is no concept of a reissue date in GCI
+                    Change::create([
                                     'type' => Change::TYPE_VARIANT,
                                     'category' => Change::CATEGORY_NONE,
                                     'element_id' => $gene->id,
                                     'element_type' => 'App\Gene',
-                                    'old_id' =>null,
-                                    'old_type' => null,
-                                    'new_id' => $current->id,
+                                    'old_id' =>$current->id,
+                                    'old_type' => 'App\Variantpath',
+                                    'new_id' => $new->id,
                                     'new_type' => 'App\Variantpath',
-                                    'change_date' => $current->report_date,
-                                    'description' => ['New curation activity'],
-                                    'status' => 1
+                                    'change_date' => Carbon::yesterday(),   // $new->report_date,
+                                    'status' => 1,
+                                    'description' => $this->scribe($differences)
                         ]);
-                    }
-
-                continue;
-            }
-
-            $new = new Variantpath([
-                                    'curie' => $assertion->{'@id'},
-                                    'vid' => $assertion->variationId,
-                                    'report_date' => Carbon::parse($assertion->publishedDate)->format('Y-m-d H:i:s.0000'),
-                                    'disease_label' => $assertion->condition->label,
-                                    'disease_mondo' => $assertion->condition->{'@id'},
-                                    'gene_label' => $assertion->gene->label,
-                                    'classification' => null,
-                                    'specified_by' => null,
-                                    'attributed_to' => null,
-                                    'version' => $current->version + 1,
-                                    'type' => 1,
-                                    'status' => 1
-                                ]);
-
-            $gene = Gene::name($new->gene_label)->first();
-
-            if ($gene !== null)
-                    $new->gene_hgnc_id = $gene->hgnc_id;
-
-            $differences = $this->compare($current, $new);
-
-            if (!empty($differences))      // update
-            {
-/*
-if ($current->vid == "65980")
-{
-    echo "VARIANT ENTRY FOUND\n" ;
-    var_dump($assertion);
-}
-*/
-                $new->save();
-
-                $gene = Gene::hgnc($new->gene_hgnc_id)->first();
-
-                // it seems that there can be published records with no gene information.  Bail out if this is the case
-                if ($gene === null)
-                    return null;
-
-                // we'll use the current date for search, since there is no concept of a reissue date in GCI
-                Change::create([
-                                'type' => Change::TYPE_VARIANT,
-                                'category' => Change::CATEGORY_NONE,
-                                'element_id' => $gene->id,
-                                'element_type' => 'App\Gene',
-                                'old_id' =>$current->id,
-                                'old_type' => 'App\Variantpath',
-                                'new_id' => $new->id,
-                                'new_type' => 'App\Variantpath',
-                                'change_date' => Carbon::yesterday(),   // $new->report_date,
-                                'status' => 1,
-                                'description' => $this->scribe($differences)
-                    ]);
+                }
             }
         }
 
