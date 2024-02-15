@@ -566,7 +566,7 @@
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');
 
         $('[data-toggle="popover"]').popover();
-
+		
 		region_listener();
 
 		$('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {

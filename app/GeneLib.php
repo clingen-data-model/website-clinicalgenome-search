@@ -868,11 +868,11 @@ class GeneLib extends Model
           if (is_null($args) || !is_array($args))
                return collect([]);
 
-          // regions are still only found in Jira
-          $response = Jira::cnvList($args);
+         // regions are still only found in Jira
+         $response = Jira::cnvList($args);
 
-          return $response;
-     }
+         return $response;
+    }
 
 
      /**
