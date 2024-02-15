@@ -16,7 +16,7 @@
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only ACMG Secondary Findings Genes (ACMG SF v3.1) </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas advanced-filter fa-toggle-off fa-lg action-show-acmg59" data-badge="Show only ACMG Secondary Findings Genes (ACMG SF v3.1)"></i>
+                <i class="fas advanced-filter fa-toggle-off fa-lg action-show-acmg59" data-badge="ACMG SF v3.1"></i>
                 <span class="ml-2 hgnc text-muted action-show-acmg59-text">Off</span>
             </div>
         </div>
@@ -26,7 +26,7 @@
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only the genes you are following </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas fa-toggle-off advanced-filter fa-lg action-show-follow" data-badge="Show only the genes you are following "></i>
+                <i class="fas fa-toggle-off advanced-filter fa-lg action-show-follow" data-badge="Followed"></i>
                 <span class="ml-2 hgnc text-muted action-show-follow-text">Off</span>
             </div>
         </div>

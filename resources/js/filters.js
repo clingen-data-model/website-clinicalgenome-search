@@ -22,7 +22,6 @@ function createBadges()
             var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">' + filterObj.data('badge') + '</span>');
             $('.filter-container').append(newbadge);
         })
-
     }
 }
 /**
