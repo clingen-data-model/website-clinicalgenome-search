@@ -7,9 +7,11 @@ $(function() {
 
 function createBadges()
 {
+    alert('creating badgessss')
     $('.filter-container').html('');
-    var dosageFilters = $('.dosage-filter');
-    var enabledFilters = dosageFilters.filter( function (filter) {
+    var advancedFilters = $('.advanced-filter');
+    console.log(advancedFilters);
+    var enabledFilters = advancedFilters.filter( function (filter) {
         return $(this).hasClass('fa-toggle-on')
     });
 
