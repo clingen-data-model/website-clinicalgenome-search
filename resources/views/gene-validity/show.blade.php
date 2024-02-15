@@ -132,7 +132,7 @@
             <div class="row">
                 <dt class="col-sm-4 pt-2">ClinGen Curation ID:
                 <dd class="col-sm-8">
-                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-clipboard-text="{{ url('/kb/gene-validity/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy Link</button>
+                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Link copied</h5>" data-trigger="click" data-clipboard-text="{{ url('/kb/gene-validity/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy Link</button>
                 </dd>
             </div>
         </div>
@@ -933,20 +933,15 @@ $(function() {
 
     new ClipboardJS('.action-ccid-copy');
 
-    /*$('.action-ccid-copy').on('click', function(){
+    $('.action-ccid-copy').on('click', function(){
         
-        //var t = $('#ccid').val();
-alert("cp1");
-        var t = document.getElementById('ccid');
-console.log(t);
-        t.select();
-        t.setSelectionRange(0, 99999); /*For mobile devices*/
+        var item = $(this);
 
-        /*document.execCommand('copy');
+        setTimeout(function(){
+                item.tooltip('hide');
+        }, 1200);
 
-        //alert("Copy to clipboard not implemented");
-        //navigator.clipboard.writeText(t);
-    });*/
+    });
 
 
     $('.action-beta-form').on('click', function(){

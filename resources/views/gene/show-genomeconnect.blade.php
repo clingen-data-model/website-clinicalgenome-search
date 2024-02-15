@@ -57,30 +57,46 @@
 
 @section('content')
 <div class="container">
+  <div class="row justify-content-center">
+    <div class="ml-3 mt-3">
+      <h3>GenomeConnect</h3>
+      <p>
+        GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with other participants, learn about research opportunities, and receive updates about their genetic test results.
+      </p>
+        <p>View the <a href="https://clinicalgenome.org/genomeconnect">GenomeConnect Page</a> for more information.</p>
+    </div>
+  </div>
 	<div class="row justify-content-center">
-        <div class="col-md-4 mt-3 mb-3">
-            <img src="/images/genomeconnect-logo-final.600x600.png" alt="GeneConnect" width="300" height="300">
+        <div class="col-md-3 text-center mt-1 pt-4">
+            <img src="/images/genomeconnect-logo-final.600x600.png" alt="GeneConnect" width="240" height="240">
         </div>
-		<div class="col-md-8 mt-3 mb-3">
-            <p>
+		<div class="col-md-9 mb-2">
+            <!--<p>
                 GenomeConnect is the ClinGen Patient Registry where individuals can securely share their genetic and health information with databases such as ClinVar. 
-            </p>
-            <p>
-                GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with other participants, learn about research opportunities, and receive updates about their genetic test results. 
+            </p>-->
+            <!--<p>
+              GenomeConnect partners with individual patients and gene/condition specific registries to share genetic and health data with ClinVar. GenomeConnect participants have the option to connect with other participants, learn about research opportunities, and receive updates about their genetic test results.
                 View the <a href="https://clinicalgenome.org/genomeconnect">GenomeConnect Page</a> for more information.
-            </p>
+            </p>-->
             <h4>ClinVar Submissions</h4>
-            <div class="alert alert-info" role="alert">
-                <span class="font-weight-bold font-italic">There are {{ $gc->variant_count }} ClinVar submission(s) for the gene {{ $record->symbol }}.
+            <p>
+            <div class="alert alert-info mt-3" role="alert">
+                <span class="font-weight-bold font-italic">There are {{ $gc->variant_count }} GenomeConnect ClinVar submission(s) for the gene {{ $record->symbol }}.
                     <i class="fas fa-angle-double-right ml-3"></i><a class="ml-1" href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">Click <u>here</u> to view</a></span>
                 </div>
-            <p>
-                GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards the aggregate ClinVar classification. GenomeConnect does not independently classify variants; GenomeConnect shares variant information as it appears on participant reports and health information from participant surveys.
             </p>
-        </div>
+            <p>
+                GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards the aggregate ClinVar classification. GenomeConnect does not independently classify variants, but shares variant information as it appears on participant reports including the testing laboratory, laboratory classification, and classification date. The submissions also include health information from participant surveys. 
+                These details can be viewed by clicking on the down arrow in the ‘More Information’ column of the ‘Submissions-Germline section’ for the selected ClinVar variant.
+            </p>
+          </div>
+      </div>
+      <div class="row justify-content-center">
         <div class="ml-3">
+          <h4>Questions?</h4>
+          <p>
             Email <b>info@genomeconnect.org</b> with questions about GenomeConnect or specific GenomeConnect ClinVar submissions.  Additional patient-provided information may be available in the registry. GenomeConnect also has the ability to re-contact participants to request more information.
-
+          </p>
         </div>
     </div>
 </div>

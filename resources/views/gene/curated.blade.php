@@ -14,7 +14,7 @@
         </table>
       </div>
 
-      <div class="col-md-9">
+      <div class="col-md-9 pl-0">
         <div class="">
           <div class="text-right p-2">
             <ul class="list-inline pb-0 mb-0 small">

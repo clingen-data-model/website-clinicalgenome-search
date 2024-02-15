@@ -114,6 +114,7 @@ class Curation extends Model
     public const TYPE_DOSAGE_SENSITIVITY = 1;
     public const TYPE_GENE_VALIDITY = 2;
     public const TYPE_VARIANT_PATHOGENICITY = 3;
+    public const TYPE_ACTIONABILITY = 4;
 
     /*
      * Type strings for display methods
@@ -133,6 +134,7 @@ class Curation extends Model
     public const STATUS_INITIALIZED = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_DEPRECATED = 2;
+    public const STATUS_ARCHIVE = 3;
     public const STATUS_DELETED = 9;
     public const STATUS_OPEN = 10;
     public const STATUS_PRIMARY_REVIEW = 11;

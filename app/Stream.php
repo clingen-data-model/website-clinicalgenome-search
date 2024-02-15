@@ -63,7 +63,7 @@ class Stream extends Model
      */
 	protected $fillable = ['ident', 'name', 'description', 'endpoint',
                             'username', 'password', 'topic',
-                            'offset', 'type', 'status'
+                            'offset', 'type', 'status', 'parser',
                          ];
 
 	/**

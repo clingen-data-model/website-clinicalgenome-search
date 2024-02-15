@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use App\GeneLib;
 use App\Change;
 use App\Gene;
+use App\Curation;
 
 
 /**
@@ -432,4 +433,122 @@ class Actionability extends Model
 
         return $annot;
     }
+
+
+    /**
+     * Map a kafka actionability record to a curation
+     *
+     */
+    public static function parser($message)
+    {
+        //dd($message);
+
+        $record = $message;
+
+        // process unpublish requests
+        if ($record->statusPublishFlag == "Unpublish")
+        {
+            dd($record);
+            if (!isset($record->iri))
+                ;//echo "Unpublish request with no iri \n";
+            else
+            {
+                $curation = self::type(self::TYPE_GENE_VALIDITY)->source('gene_validity')
+                                    ->sid($record->iri)->published()->orderBy('id', 'desc')->first();
+
+                if ($curation !== null)
+                    $curation->update(['published' => false]);
+                else
+                   ;// echo "Unpublish request for iri " . $record->iri . " not found \n";
+            }
+
+            return;
+        }
+
+        $curation = Curation::type(Curation::TYPE_ACTIONABILITY)->source('actionability')
+                                    ->sid($record->iri ?? '**NO IRI**')->orderBy('id', 'desc')->first();
+
+        if ($curation === null)
+        {
+            //dd($record);
+            $curation = new Curation([
+                                'type' => Curation::TYPE_ACTIONABILITY,
+                                'type_string' => 'Actionability',
+                                'subtype' => 0,
+                                'subtype_string' => null,
+                                'group_id' => 0,
+                                'sop_version' => $record->jsonMessageVersion,
+                                'source' => 'actionability',
+                                'source_uuid' => $record->iri ?? null,
+                                'assertion_uuid' => $record->report_id ?? null,
+                                'alternate_uuid' => null,
+                                'affiliate_id' => $record->affiliations[0]->id ?? null,
+                                'affiliate_details' => $record->affiliations[0],
+                                'gene_hgnc_id' => $record->genes[0]->curie ?? null,
+                                'gene_details' => $record->genes,
+                                'title' => $record->title,
+                                'summary' => null,
+                                'description' => null,
+                                'comments' => $record->releaseNotes,
+                                'conditions' => $record->preferred_conditions[0]->curie ?? ($record->conditions[0]->curie ?? null),
+                                'condition_details' => $record->conditions,
+                                'evidence' => null,
+                                'evidence_details' => null,
+                                'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus,
+                                             'scoreDetails' => $record->scoreDetails, 'surveyDetails' => $record->surveyDetails],
+                                'score_details' => $record->scores,
+                                'curators' => null,
+                                'published' => ($record->statusFlag == "Released"),
+                                'animal_model_only' => false,
+                                'contributors' => $record->contributors ?? null,
+                                'events' => ['dateISO8601' => $record->dateISO8601, 'statusFlag' => $record->statusFlag,
+                                             'statusPublishFlag' => $record->statusPublishFlag, 'searchDates' => $record->searchDates],
+                                'version' => $record->version ?? 0,
+                                'status' => Curation::STATUS_ACTIVE
+                            ]);
+
+            $curation->save();
+        }
+        else
+        {
+            echo "Updating existing curation " . $curation->id . " \n";
+           // dd($record);
+            $curation->update([
+                                'type' => Curation::TYPE_ACTIONABILITY,
+                                'type_string' => 'Actionability',
+                                'subtype' => 0,
+                                'subtype_string' => null,
+                                'group_id' => 0,
+                                'sop_version' => $record->jsonMessageVersion,
+                                'source' => 'actionability',
+                                'source_uuid' => $record->iri ?? null,
+                                'assertion_uuid' => $record->report_id ?? null,
+                                'alternate_uuid' => null,
+                                'affiliate_id' => $record->affiliations[0]->id ?? null,
+                                'affiliate_details' => $record->affiliations[0],
+                                'gene_hgnc_id' => $record->genes[0]->curie ?? null,
+                                'gene_details' => $record->genes,
+                                'title' => $record->title,
+                                'summary' => null,
+                                'description' => null,
+                                'comments' => $record->releaseNotes,
+                                'conditions' => $record->preferred_conditions[0]->curie ?? ($record->conditions[0]->curie ?? null),
+                                'condition_details' => $record->conditions,
+                                'evidence' => null,
+                                'evidence_details' => null,
+                                'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus,
+                                             'scoreDetails' => $record->scoreDetails, 'surveyDetails' => $record->surveyDetails],
+                                'score_details' => $record->scores,
+                                'curators' => null,
+                                'published' => ($record->statusFlag == "Released"),
+                                'animal_model_only' => false,
+                                'contributors' => $record->contributors ?? null,
+                                'events' => ['dateISO8601' => $record->dateISO8601, 'statusFlag' => $record->statusFlag,
+                                             'statusPublishFlag' => $record->statusPublishFlag, 'searchDates' => $record->searchDates],
+                                'version' => $record->curationVersion ?? 0,
+                                'status' => Curation::STATUS_ACTIVE
+                            ]);
+        }
+    }
+
 }
