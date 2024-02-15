@@ -133,7 +133,7 @@ class QueryKafka extends Command
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                        if ($topic == "dosage")
+                        if ($topic == "dosage" || $topic == "actionability")
                         {
                             $payload = $message;
                         }

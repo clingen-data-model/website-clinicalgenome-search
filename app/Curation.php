@@ -125,6 +125,8 @@ class Curation extends Model
 	 		1 => 'Dosage Sensitivity'
         ];
 
+    public const SUBTYPE_NONE = 0;
+    public const SUBTYPE_ACTIONABILITY = 1;
 
     /*
     * Status constants and strings for display methods
