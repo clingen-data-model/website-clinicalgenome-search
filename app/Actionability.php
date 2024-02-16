@@ -481,7 +481,7 @@ class Actionability extends Model
                 'source_timestamp' => $message->timestamp,
                 'source_offset' => $message->offset,
                 'assertion_uuid' => $record->uuid ?? null,
-                'alternate_uuid' => $record->report_id ?? null,,
+                'alternate_uuid' => $record->report_id ?? null,
                 'panel_id' => Panel::title($record->affiliations[0]->name)->first(),
                 'affiliate_id' => $record->affiliations[0]->id ?? null,
                 'affiliate_details' => $record->affiliations[0],
