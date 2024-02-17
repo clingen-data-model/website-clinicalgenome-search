@@ -11,6 +11,11 @@ use App\Traits\Query;
 use App\Drug;
 use App\Disease;
 use App\Term;
+use App\Gene;
+use App\Validity;
+use App\Sensitivity;
+use App\Actionability;
+use App\Nodal;
 
 use Carbon\Carbon;
 
@@ -153,10 +158,109 @@ class Mysql
 		foreach ($args as $key => $value)
 			$$key = $value;
 			
-		$collection = Acmg::with('gene')->with('disease')->get();
+		//$collection = Acmg::with('gene')->with('disease')->get();
 
-		$ngenes = $collection->unique('gene_id')->count();
-		$ndiseases = $collection->unique('disease_id')->count();
+        // get the list of gene ids relative to SF 3.2
+        $genes = Gene::acmg59()->get()->pluck('hgnc_id')->toArray();
+        $comments = Gene::acmg59()->whereNotNull('notes')->get()->pluck('notes', 'hgnc_id')->toArray();
+
+        // <i class="fas fa-comment-alt"></i>
+        $collection = collect();
+
+        // get all the validity assertions associated with these genes
+        $validity_collection = Validity::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        foreach($validity_collection as $record)
+        {
+                $node = new Nodal([ 'gene_label' => $record->gene_label,
+                                    'gene_hgnc_id' => $record->gene_hgnc_id,
+                                    'disease_label' => $record->disease_label,
+                                    'disease_mondo' => $record->disease_mondo,
+                                    'curation' => 'V',
+                                    'curation_activities' => ['GENE_VALIDITY'],
+                                    'has_comment' => isset($comments[$record->gene_hgnc_id]),
+                                    'comments' => $comments[$record->gene_hgnc_id] ?? null,
+                                    'reportable' => false,
+                                    'type' => 3
+                                ]);
+                $collection->push($node);
+        }
+
+        // for dosage, we need to split the haplo and triplo diseases into separate rows
+        $dosage_collection = Sensitivity::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        foreach($dosage_collection as $record)
+        {
+            if ($record->haplo_disease_mondo != null)
+            {
+                $node = new Nodal([ 'gene_label' => $record->gene_label,
+                                    'gene_hgnc_id' => $record->gene_hgnc_id,
+                                    'disease_label' => $record->haplo_disease_label,
+                                    'disease_mondo' => $record->haplo_disease_mondo,
+                                    'curation' => 'D',
+                                    'curation_activities' => ['GENE_DOSAGE'],
+                                    'has_comment' => isset($comments[$record->gene_hgnc_id]),
+                                    'comments' => $comments[$record->gene_hgnc_id] ?? null,
+                                    'reportable' => false,
+                                    'type' => 3
+                                ]);
+                $collection->push($node);
+            }
+
+            if ($record->triplo_disease_mondo != null)
+            {
+                $node = new Nodal([ 'gene_label' => $record->gene_label,
+                                    'gene_hgnc_id' => $record->gene_hgnc_id,
+                                    'disease_label' => $record->triplo_disease_label,
+                                    'disease_mondo' => $record->triplo_disease_mondo,
+                                    'curation' => 'D',
+                                    'curation_activities' => ['GENE_DOSAGE'],
+                                    'has_comment' => isset($comments[$record->gene_hgnc_id]),
+                                    'comments' => $comments[$record->gene_hgnc_id] ?? null,
+                                    'reportable' => false,
+                                    'type' => 3
+                                
+                                ]);
+                $collection->push($node);
+            }
+        }
+
+        // actionability
+        $actionability_collection = Actionability::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        foreach($actionability_collection as $record)
+        {
+            $node = new Nodal([ 'gene_label' => $record->gene_label,
+                                'gene_hgnc_id' => $record->gene_hgnc_id,
+                                'disease_label' => $record->disease_label,
+                                'disease_mondo' => $record->disease_mondo,
+                                'curation' => 'A',
+                                'curation_activities' => ['ACTIONABILITY'],
+                                'has_comment' => isset($comments[$record->gene_hgnc_id]),
+                                'comments' => $comments[$record->gene_hgnc_id] ?? null,
+                                'reportable' => true,
+                                'type' => 3
+                            ]);
+            $collection->push($node);
+        }
+
+        // Variant Pathogenicity
+        $variant_collection = Variantpath::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        foreach($variant_collection as $record)
+        {
+            $node = new Nodal([ 'gene_label' => $record->gene_label,
+                                'gene_hgnc_id' => $record->gene_hgnc_id,
+                                'disease_label' => $record->disease_label,
+                                'disease_mondo' => $record->disease_mondo,
+                                'curation' => 'R',
+                                'curation_activities' => ['VAR_PATH'],
+                                'has_comment' => isset($comments[$record->gene_hgnc_id]),
+                                'comments' => $comments[$record->gene_hgnc_id] ?? null,
+                                'reportable' => false,
+                                'type' => 3
+                            ]);
+            $collection->push($node);
+        }
+
+		$ngenes = $collection->unique('gene_hgnc_id')->count();
+		$ndiseases = $collection->unique('disease_mondo')->count();
 		
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];

@@ -117,10 +117,14 @@
 
           <ul class="nav-tabs-search nav nav-tabs ml-0 mt-1 ">
 
-            <li class="nav-item @if ($display_tabs['active'] == "gene-curations") active @endif ">
-              <a class="nav-link" href="{{ route('gene-curations') }}">
-                All Curated Genes
+            <li class="nav-item dropdown @if ($display_tabs['active'] == "gene-curations") active @endif ">
+              <a class="nav-link dropdown-toggle" href="{{ route('gene-curations') }}" aria-haspopup="true" aria-expanded="false">
+                Curated Genes
               </a>
+              <ul class="dropdown-menu">
+                <li><a class="" href="{{ route('gene-curations') }}">All Curated Genes</a></li>
+                <li><a class=""" href="{{ route('acmg-index') }}">ACMG SF v3.2 Curations</a></li>
+              </ul>
             </li>
 
             <li class="nav-item dropdown @if ($display_tabs['active'] == "validity") active @endif ">
@@ -195,7 +199,6 @@
                   <li><a class="@if ($display_tabs['active'] == "disease") font-weight-bold @endif" href="{{ route('condition-index') }}">All Disease</a></li>
                   <li><a class="@if ($display_tabs['active'] == "drug") font-weight-bold @endif" href="{{ route('drug-index') }}">All Drugs & Medications</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a class="@if ($display_tabs['active'] == "acmg") font-weight-bold @endif" href="{{ route('acmg-index') }}">ACMG Demo</a></li>
                 <li><a href="{{ route('download-index') }}"><i class="fas fa-download"></i> File Downloads &amp; APIs</a></li>
                 </ul>
               </li>

@@ -562,6 +562,8 @@ class Graphql
 			$node->mane_plus = $localgene->mane_plus;
             $node->curation_status = $localgene->curation_status;
 			$node->transcript = $localgene->transcript;
+			$node->is_acmg = (boolean) $localgene->acmg59;
+			$node->notes = $localgene->notes;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();

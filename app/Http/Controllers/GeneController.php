@@ -732,13 +732,15 @@ class GeneController extends Controller
 		//get GenomeConnect info
 		$gc = $gene->genomeconnect;
 
+		$show_clingen_comment = !empty($gene->notes);
+
         //dd($record);
         //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps',
-												'gceps', 'gc'))
+												'gceps', 'gc', 'show_clingen_comment'))
 												->with('user', $this->user);
 	}
 
@@ -973,6 +975,8 @@ class GeneController extends Controller
 		//get GenomeConnect info
 		$gc = $gene->genomeconnect;
 
+		$show_clingen_comment = !empty($gene->notes);
+
 		return view('gene.show-groups', compact(
 			'display_tabs',
 			'record',
@@ -987,7 +991,7 @@ class GeneController extends Controller
 			'gceps',
 			'vceps',
             'pregceps',
-            'total_panels', 'gc'
+            'total_panels', 'gc', 'show_clingen_comment'
 		))
 			->with('user', $this->user);
 	}

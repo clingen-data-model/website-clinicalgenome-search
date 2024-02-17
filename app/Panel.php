@@ -185,6 +185,18 @@ class Panel extends Model
 
 
     /**
+     * Query scope by group title
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeTitle($query, $name)
+    {
+        return $query->where('title', $name);
+    }
+
+
+    /**
      * Query scope by wither group id or alternate
      *
      * @@param	string	$ident

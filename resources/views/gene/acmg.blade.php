@@ -38,7 +38,7 @@
 		</div>
 
 		<div class="col-md-12 light-arrows dark-table">
-				@include('_partials.genetable')
+				@include('_partials.genetable', ['expand' => true, 'no_expand_click' => true])
 
 		</div>
 	</div>
@@ -105,7 +105,7 @@
     	return res
   	}
 
-	  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
+	  var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity'];
 
 function checkactive(text, value, field, data)
   {
@@ -119,8 +119,6 @@ function checkactive(text, value, field, data)
 			  return value.indexOf('V') != -1;
 		  case 'variant pathogenicity':
 			  return value.indexOf('R') != -1;
-		  case 'pharmacogenomics':
-			  return value.indexOf('P') != -1;
 		  default:
 			  return true;
 	  }
@@ -143,19 +141,29 @@ function checkactive(text, value, field, data)
 			filterControl: 'input',
 			sortable: true,
 			searchFormatter: false,
-			width: 150
+			width: 120
 		},
 		{
-			title: 'Curations',
+			title: '',
+			field: 'has_comment',
+			formatter:  notesFormatter,
+			cellStyle: cellFormatter,
+			filterControl: 'input',
+			sortable: false,
+			searchFormatter: false,
+			width: 40
+		},
+		{
+			title: 'Curations Activity',
 			field: 'curation',
-			formatter: badgeFormatter,
+			formatter: singleBadgeFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'select',
 			sortable: true,
 			searchFormatter: false,
 			filterData: 'var:activelist',
 			filterCustomSearch: checkactive,
-          	width: 200
+          	width: 220
 		},
 		{
 			title: 'Disease',
@@ -165,6 +173,16 @@ function checkactive(text, value, field, data)
 			formatter: diseaseFormatter,
 			searchFormatter: false,
 			cellStyle: cellFormatter
+		},
+		{
+			title: 'Reportable',
+			field: 'reportable',
+			sortable: true,
+			filterControl: 'input',
+			formatter: reportableFormatter,
+			searchFormatter: false,
+			cellStyle: cellFormatter,
+			width: 120,
 		},
 		{
 			title: 'Other Resources',
@@ -215,6 +233,50 @@ function checkactive(text, value, field, data)
 
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+
+		$table.on('click-row.bs.table', function (e, row, $obj, field) {
+			
+			if (field != 'has_comment')
+				return false;
+
+			$table.bootstrapTable('expandRow', $obj.index())
+			
+		})
+
+		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+			$obj.attr('colspan',12);
+
+			var t = $obj.closest('tr');
+
+			var stripe = t.prev().hasClass('bt-even-row');
+
+			t.addClass('dosage-row-bottom');
+
+			if (stripe)
+				t.addClass('bt-even-row');
+			else
+				t.addClass('bt-odd-row');
+
+			t.prev().addClass('dosage-row-top');
+
+			$obj.html(row.comments);
+
+			$obj.on("click", function() {
+				$table.bootstrapTable('collapseRow', index)
+			})
+
+			return false;
+		})
+
+
+		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+				$obj.closest('tr').prev().removeClass('dosage-row-top');
+
+				return false;
+		});
 
 	}
 

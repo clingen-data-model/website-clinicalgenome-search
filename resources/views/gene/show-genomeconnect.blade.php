@@ -87,7 +87,7 @@
             </p>
             <p>
                 GenomeConnect submits participant genetic and health information to ClinVar as “Phenotyping Only” submissions. These submissions provide additional case-level details and do not count towards the aggregate ClinVar classification. GenomeConnect does not independently classify variants, but shares variant information as it appears on participant reports including the testing laboratory, laboratory classification, and classification date. The submissions also include health information from participant surveys. 
-                These details can be viewed by clicking on the down arrow in the ‘More Information’ column of the ‘Submissions-Germline section’ for the selected ClinVar variant.
+                These details can be viewed by clicking on the down arrow in the ‘More Information’ column of the ‘Submissions-Germline section’ for the selected ClinVar variant.  Note that GenomeConnect submissions can typically be found near the bottom of the Submissions-Germline list.
             </p>
           </div>
       </div>

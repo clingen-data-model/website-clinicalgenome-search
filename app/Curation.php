@@ -86,7 +86,9 @@ class Curation extends Model
                 'score_details' => 'array',
                 'scores' => 'array',
                 'curators' => 'array',
-                'events' => 'array'
+                'events' => 'array',
+                'assertions' => 'array',
+                'url' => 'array'
 
 	];
 
@@ -100,7 +102,9 @@ class Curation extends Model
                             'affiliate_id', 'affiliate_details', 'gene_hgnc_id', 'gene_details', 'title',
                             'summary', 'description', 'comments', 'conditions', 'condition_details',
                             'evidence', 'evidence_details', 'scores', 'score_details', 'curators',
-                            'published', 'animal_model_only', 'events', 'version', 'status'
+                            'published', 'animal_model_only', 'events', 'version', 'status',
+                            'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
+                            'url', 'assertions'
                          ];
 
 	/**
@@ -235,6 +239,18 @@ class Curation extends Model
     }
 
 
+    /**
+     * Query scope by alternate ID
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAid($query, $id)
+    {
+		return $query->where('alternate_uuid', $id);
+    }
+
+
      /**
      * Query scope by subtype
      *
@@ -256,6 +272,18 @@ class Curation extends Model
 	public function scopePublished($query)
     {
 		return $query->where('published', true);
+    }
+
+
+    /**
+     * Query scope by record status
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeStatus($query, $type)
+    {
+		return $query->where('status', $type);
     }
 
 

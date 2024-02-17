@@ -1,1 +1,623 @@
-!function(e){var t={};function a(r){if(t[r])return t[r].exports;var n=t[r]={i:r,l:!1,exports:{}};return e[r].call(n.exports,n,n.exports,a),n.l=!0,n.exports}a.m=e,a.c=t,a.d=function(e,t,r){a.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},a.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},a.t=function(e,t){if(1&t&&(e=a(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(a.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var n in e)a.d(r,n,function(t){return e[t]}.bind(null,n));return r},a.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return a.d(t,"a",t),t},a.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},a.p="/",a(a.s=47)}({47:function(e,t,a){e.exports=a(48)},48:function(e,t){var a=$("#table"),r="",n="",o=window.location.search;$((function(){function e(e,t){var a=window.location.search,r=new URLSearchParams(a);r.set(e,t);var n=r.toString();window.history.replaceState("","ClinGen Curated Genes",window.location.origin+window.location.pathname+"?"+n)}window.update_addr=function(){var e=new URLSearchParams(o),t=e.get("search");if(""==e.get("col_search")||""!=e.get("col_search")&&""!=t){var r=$('#dosage-search-form input[name="_token"]').val(),n=$('#dosage-search-form input[name="type"]').val(),i=$('#dosage-search-form input[name="region"]').val();a.bootstrapTable("resetSearch",t),$('#dosage-search-form input[name="_token"]').val(r),$('#dosage-search-form input[name="type"]').val(n),$('#dosage-search-form input[name="region"]').val(i)}var c=e.get("sort"),s=e.get("order");$("th[data-field='"+c+"'] .sortable").click(),"desc"==s&&$("th[data-field='"+c+"'] .sortable").click();var l=e.get("page");a.bootstrapTable("selectPage",parseInt(l))},$("#modalBookmark").on("click",".bookmark-select-preference",(function(){n=$(this).attr("data-uuid"),r=$(this).attr("data-name"),$("#bookmark-selected-preference").val(r)})),$("#preferences-menu").on("login",(function(){uuid=0,$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});var e="/api/filters/"+uuid;$.ajax({type:"PUT",url:e,data:{_method:"put",_token:window.token,ident:uuid,screen:window.scrid}}).done((function(e){$("#preferences-menu").empty(),Object.entries(e.list).forEach((function(e){var t=e[1];1==t.default?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+t.ident+'" data-name="'+t.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  '+t.name+"</a></li>"):$("#preferences-menu").append('<li ><a href="#" data-uuid="'+t.ident+'" data-name="'+t.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  '+t.name+"</a></li>")}))}))})),$(".bookmark-modal-select").on("click",(function(){var e=$(this).attr("data-action");if(null!=e)switch(e){case"remove":return void $("#button-selected-action").html("Delete");case"select":return void $("#button-selected-action").html("Select");case"default":return void $("#button-selected-action").html("Make Default");case"update":return void $("#button-selected-action").html("Update")}else swal({title:"Error",text:"Please select an action first.",icon:"error"})})),$(".bookmark-action-go").on("click",(function(){switch($("#button-selected-action").html()){case"Delete":return void $(".action-remove-bookmark").trigger("go");case"Select":return void $(".action-restore-bookmark").trigger("go");case"Make Default":return void $(".action-default-bookmark").trigger("go");case"Update":return void $(".action-update-bookmark").trigger("go");default:swal({title:"Error",text:"Please select an action first.",icon:"error"})}})),$(".action-remove-bookmark").on("go",(function(){if(""!=n){$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});var e="/api/filters/"+n;$.ajax({type:"DELETE",url:e,data:{_method:"delete",_token:window.token,ident:n}}).done((function(e){var t=$("#modal-current-bookmark").html();r==t&&$("#modal-current-bookmark").html(""),n="",$("#preferences-menu").empty(),Object.entries(e.list).forEach((function(t){var a=t[1];1==a.default?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  '+a.name+"</a></li>"):a.ident==e.new?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-check"></i>  '+a.name+"</a></li>"):$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  '+a.name+"</a></li>")})),$("#bookmark-selected-preference").val(""),$("#button-selected-action").html("Action"),$("#modal-bookmark-status").html('Preference "'+r+'" removed.'),r=""})).fail((function(e){swal({title:"Error",text:"An error occurred while deleting the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",icon:"error"})}))}else swal({title:"Error",text:"Please select a preference first.",icon:"error"})})),$(".action-default-bookmark").on("go",(function(){if(""!=n){$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});var e="/api/filters/"+n;$.ajax({type:"PUT",url:e,data:{_method:"put",_token:window.token,ident:n,name:r,screen:window.scrid,default:1}}).done((function(e){var t=$("#modal-current-bookmark").html();n="",$("#preferences-menu").empty(),Object.entries(e.list).forEach((function(e){var a=e[1];1==a.default?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  '+a.name+"</a></li>"):a.name==t?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-check"></i>  '+a.name+"</a></li>"):$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  '+a.name+"</a></li>")})),$("#bookmark-selected-preference").val(""),$("#button-selected-action").html("Action"),$("#modal-bookmark-status").html('Preference "'+r+'" is now the default.'),r=""})).fail((function(e){swal({title:"Error",text:"An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",icon:"error"})}))}else swal({title:"Error",text:"Please select a preference first.",icon:"error"})})),$(".action-save-bookmark").on("click",(function(){var e=$("#modal-new-bookmark").val();if(""!=(e=e.trim())){$("#preferences-menu li").each((function(t){$(this).find("a").attr("data-name")!=e||swal({title:"Error",text:"Duplicate name, please choose a unique name.",icon:"error"})}));var t=window.location.href;$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});$.ajax({type:"PUT",url:"/api/filters/0",data:{_method:"put",_token:window.token,ident:0,name:e,screen:window.scrid,settings:t}}).done((function(t){$("#modal-current-bookmark").html(e),$("#preferences-menu").empty(),Object.entries(t.list).forEach((function(e){var a=e[1];1==a.default?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  '+a.name+"</a></li>"):a.ident==t.new?$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-check"></i>  '+a.name+"</a></li>"):$("#preferences-menu").append('<li ><a href="#" data-uuid="'+a.ident+'" data-name="'+a.name+'" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  '+a.name+"</a></li>")})),$("#modal-new-bookmark").val(""),$("#modal-bookmark-status").html('Preference "'+e+'" is now the current selected preference.')})).fail((function(e){swal({title:"Error",text:"An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",icon:"error"})}))}else swal({title:"Error",text:"Please enter a name",icon:"error"})})),$(".action-update-bookmark").on("go",(function(){if(""!=n){var e=window.location.href;$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});var t="/api/filters/"+n;$.ajax({type:"PUT",url:t,data:{_method:"put",_token:window.token,ident:n,name:r,screen:window.scrid,settings:e}}).done((function(e){n="",$("#bookmark-selected-preference").val(""),$("#button-selected-action").html("Action"),$("#modal-bookmark-status").html('Preference "'+r+'" has been updated.'),r=""})).fail((function(e){swal({title:"Error",text:"An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",icon:"error"})}))}else swal({title:"Error",text:"Please select a preference first.",icon:"error"})})),$(".action-restore-bookmark").on("go",(function(){if(""!=n){$.ajaxSetup({cache:!0,contentType:"application/x-www-form-urlencoded",processData:!0,headers:{"X-Requested-With":"XMLHttpRequest","X-CSRF-TOKEN":window.token,Authorization:"Bearer "+Cookies.get("clingen_dash_token")}});var e="/api/filters/"+n;$.ajax({type:"GET",url:e,data:{_method:"get",_token:window.token,ident:n}}).done((function(e){n="",r="";var t=window.location.origin+window.location.pathname+"?";for(var a in e.data.settings)t=t+a+"="+e.data.settings[a]+"&";window.location.href=t})).fail((function(e){swal({title:"Error",text:"An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",icon:"error"})}))}else swal({title:"Error",text:"Please select a preference first.",icon:"error"})})),a.on("page-change.bs.table",(function(t,a,r){e("page",a),e("size",r)})),a.on("sort.bs.table",(function(t,a,r){e("sort",a),e("order",r)})),a.on("search.bs.table",(function(t,a){e("search",a)}))}))}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "/";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./resources/js/bookmark.js":
+/*!**********************************!*\
+  !*** ./resources/js/bookmark.js ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+**
+**		Globals
+**
+*/
+var $table = $('#table');
+var selected_name = "";
+var selected_uuid = "";
+var originalurl = window.location.search;
+$(function () {
+  /**
+   * Update table with  parameters
+   */
+  window.update_addr = function () {
+    var current = originalurl;
+    var parms = new URLSearchParams(current); // set page size
+    //var size = parms.get('size');
+    // set Search
+
+    var search = parms.get('search');
+
+    if (parms.get('col_search') == "" || parms.get('col_search') != "" && search != "") {
+      // because of where the dosage search is located, inputs collide
+      var tok = $('#dosage-search-form input[name="_token"]').val();
+      var typ = $('#dosage-search-form input[name="type"]').val();
+      var teg = $('#dosage-search-form input[name="region"]').val();
+      $table.bootstrapTable('resetSearch', search);
+      $('#dosage-search-form input[name="_token"]').val(tok);
+      $('#dosage-search-form input[name="type"]').val(typ);
+      $('#dosage-search-form input[name="region"]').val(teg);
+    } // set column sort and order
+
+
+    var sort = parms.get('sort');
+    var order = parms.get('order'); // once for asc
+
+    $("th[data-field='" + sort + "'] .sortable").click(); // again for desc
+
+    if (order == "desc") $("th[data-field='" + sort + "'] .sortable").click(); // set page-list
+    //var target = $('.page-list').find('a:contains("25")');
+    //var target = $('.page-list').find('button').first();
+    // set page
+
+    var page = parms.get('page');
+    $table.bootstrapTable('selectPage', parseInt(page));
+  };
+  /**
+   * Update individual query parameter
+   *
+   * @param {*} field
+   * @param {*} value
+   */
+
+
+  function set_addr(field, value) {
+    var current = window.location.search;
+    var parms = new URLSearchParams(current);
+    parms.set(field, value);
+    var newurl = parms.toString();
+    window.history.replaceState('', 'ClinGen Curated Genes', window.location.origin + window.location.pathname + '?' + newurl);
+  }
+  /*
+  **  Track the selected preference
+  */
+
+
+  $('#modalBookmark').on('click', '.bookmark-select-preference', function () {
+    selected_uuid = $(this).attr('data-uuid');
+    selected_name = $(this).attr('data-name');
+    $('#bookmark-selected-preference').val(selected_name);
+  });
+  /*
+  **  Trigger a menu reload on login
+  */
+
+  $('#preferences-menu').on('login', function () {
+    uuid = 0;
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {
+        _method: 'put',
+        _token: window.token,
+        ident: uuid,
+        screen: window.scrid
+      }
+    }).done(function (response) {
+      $('#preferences-menu').empty();
+      Object.entries(response.list).forEach(function (item) {
+        var element = item[1];
+
+        if (element["default"] == 1) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  ' + element.name + '</a></li>');
+        } else {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  ' + element.name + '</a></li>');
+        }
+      });
+    });
+  });
+  /*
+  **  Choose an action
+  */
+
+  $('.bookmark-modal-select').on('click', function () {
+    var action = $(this).attr('data-action');
+
+    if (action == null) {
+      swal({
+        title: "Error",
+        text: "Please select an action first.",
+        icon: "error"
+      });
+      return;
+    }
+
+    switch (action) {
+      case 'remove':
+        $('#button-selected-action').html('Delete'); //$('.action-remove-bookmark').trigger('go');
+
+        return;
+
+      case 'select':
+        $('#button-selected-action').html('Select');
+        return;
+
+      case 'default':
+        $('#button-selected-action').html('Make Default');
+        return;
+
+      case 'update':
+        $('#button-selected-action').html('Update');
+        return;
+    }
+  });
+  /*
+  **  Perform Action
+  */
+
+  $('.bookmark-action-go').on('click', function () {
+    var action = $('#button-selected-action').html();
+
+    switch (action) {
+      case 'Delete':
+        $('.action-remove-bookmark').trigger('go');
+        return;
+
+      case 'Select':
+        $('.action-restore-bookmark').trigger('go');
+        return;
+
+      case 'Make Default':
+        $('.action-default-bookmark').trigger('go');
+        return;
+
+      case 'Update':
+        $('.action-update-bookmark').trigger('go');
+        return;
+
+      default:
+        swal({
+          title: "Error",
+          text: "Please select an action first.",
+          icon: "error"
+        });
+    }
+  });
+  /*
+  **  Remove a boookmark
+  */
+
+  $('.action-remove-bookmark').on('go', function () {
+    if (selected_uuid == "") {
+      swal({
+        title: "Error",
+        text: "Please select a preference first.",
+        icon: "error"
+      });
+      return;
+    }
+
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + selected_uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "DELETE",
+      url: url,
+      data: {
+        _method: 'delete',
+        _token: window.token,
+        ident: selected_uuid
+      }
+    }).done(function (response) {
+      var current = $('#modal-current-bookmark').html();
+      if (selected_name == current) $('#modal-current-bookmark').html('');
+      selected_uuid = "";
+      $('#preferences-menu').empty();
+      Object.entries(response.list).forEach(function (item) {
+        var element = item[1];
+
+        if (element["default"] == 1) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  ' + element.name + '</a></li>');
+        } else if (element.ident == response["new"]) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-check"></i>  ' + element.name + '</a></li>');
+        } else {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  ' + element.name + '</a></li>');
+        }
+      });
+      $('#bookmark-selected-preference').val('');
+      $('#button-selected-action').html('Action');
+      $('#modal-bookmark-status').html('Preference "' + selected_name + '" removed.');
+      selected_name = "";
+    }).fail(function (response) {
+      swal({
+        title: "Error",
+        text: "An error occurred while deleting the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+        icon: "error"
+      });
+    });
+  });
+  /*
+  **  Set bookmark as page default
+  */
+
+  $('.action-default-bookmark').on('go', function () {
+    if (selected_uuid == "") {
+      swal({
+        title: "Error",
+        text: "Please select a preference first.",
+        icon: "error"
+      });
+      return;
+    }
+
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + selected_uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {
+        _method: 'put',
+        _token: window.token,
+        ident: selected_uuid,
+        name: selected_name,
+        screen: window.scrid,
+        "default": 1
+      }
+    }).done(function (response) {
+      var current = $('#modal-current-bookmark').html();
+      selected_uuid = "";
+      $('#preferences-menu').empty();
+      Object.entries(response.list).forEach(function (item) {
+        var element = item[1];
+
+        if (element["default"] == 1) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  ' + element.name + '</a></li>');
+        } else if (element.name == current) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-check"></i>  ' + element.name + '</a></li>');
+        } else {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  ' + element.name + '</a></li>');
+        }
+      });
+      $('#bookmark-selected-preference').val('');
+      $('#button-selected-action').html('Action');
+      $('#modal-bookmark-status').html('Preference "' + selected_name + '" is now the default.');
+      selected_name = "";
+    }).fail(function (response) {
+      swal({
+        title: "Error",
+        text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+        icon: "error"
+      });
+    });
+  });
+  /*
+  **  Save a new bookmark
+  */
+
+  $('.action-save-bookmark').on('click', function () {
+    var uuid = 0;
+    var name = $('#modal-new-bookmark').val();
+    name = name.trim();
+
+    if (name == "") {
+      swal({
+        title: "Error",
+        text: "Please enter a name",
+        icon: "error"
+      });
+      return;
+    } // check if name already used
+
+
+    $('#preferences-menu li').each(function (i) {
+      var t = $(this).find('a').attr('data-name');
+
+      if (t == name) {
+        swal({
+          title: "Error",
+          text: "Duplicate name, please choose a unique name.",
+          icon: "error"
+        });
+        return;
+      }
+    });
+    var settings = window.location.href;
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {
+        _method: 'put',
+        _token: window.token,
+        ident: uuid,
+        name: name,
+        screen: window.scrid,
+        settings: settings
+      }
+    }).done(function (response) {
+      // make this the current bookmark
+      $('#modal-current-bookmark').html(name);
+      $('#preferences-menu').empty();
+      Object.entries(response.list).forEach(function (item) {
+        var element = item[1];
+
+        if (element["default"] == 1) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk"></i>  ' + element.name + '</a></li>');
+        } else if (element.ident == response["new"]) {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-check"></i>  ' + element.name + '</a></li>');
+        } else {
+          $("#preferences-menu").append('<li ><a href="#" data-uuid="' + element.ident + '" data-name="' + element.name + '" class="bookmark-select-preference"><i class="fas fa-asterisk fa-blank"></i>  ' + element.name + '</a></li>');
+        }
+      });
+      $('#modal-new-bookmark').val('');
+      $('#modal-bookmark-status').html('Preference "' + name + '" is now the current selected preference.');
+    }).fail(function (response) {
+      swal({
+        title: "Error",
+        text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+        icon: "error"
+      });
+    });
+  });
+  /*
+  **  Update an existing bookmark
+  */
+
+  $('.action-update-bookmark').on('go', function () {
+    if (selected_uuid == "") {
+      swal({
+        title: "Error",
+        text: "Please select a preference first.",
+        icon: "error"
+      });
+      return;
+    }
+
+    var settings = window.location.href;
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + selected_uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "PUT",
+      url: url,
+      data: {
+        _method: 'put',
+        _token: window.token,
+        ident: selected_uuid,
+        name: selected_name,
+        screen: window.scrid,
+        settings: settings
+      }
+    }).done(function (response) {
+      selected_uuid = "";
+      $('#bookmark-selected-preference').val('');
+      $('#button-selected-action').html('Action');
+      $('#modal-bookmark-status').html('Preference "' + selected_name + '" has been updated.');
+      selected_name = "";
+    }).fail(function (response) {
+      swal({
+        title: "Error",
+        text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+        icon: "error"
+      });
+    });
+  });
+  /*
+  **  Retrieve and apply a bookmark
+  */
+
+  $('.action-restore-bookmark').on('go', function () {
+    if (selected_uuid == "") {
+      swal({
+        title: "Error",
+        text: "Please select a preference first.",
+        icon: "error"
+      });
+      return;
+    }
+
+    $.ajaxSetup({
+      cache: true,
+      contentType: "application/x-www-form-urlencoded",
+      processData: true,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-TOKEN': window.token,
+        'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+      }
+    });
+    var url = "/api/filters/" + selected_uuid; //submits to the form's action URL
+
+    $.ajax({
+      type: "GET",
+      url: url,
+      data: {
+        _method: 'get',
+        _token: window.token,
+        ident: selected_uuid
+      }
+    }).done(function (response) {
+      selected_uuid = "";
+      selected_name = "";
+      var url = window.location.origin + window.location.pathname + '?';
+
+      for (var property in response.data.settings) {
+        url = url + property + '=' + response.data.settings[property] + '&';
+      }
+
+      window.location.href = url;
+    }).fail(function (response) {
+      swal({
+        title: "Error",
+        text: "An error occurred while updating the bookmark.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+        icon: "error"
+      });
+    });
+  });
+  /**
+   * Event handler when the user changes the page size or page number
+   */
+
+  $table.on('page-change.bs.table', function (e, pagenum, pagesize) {
+    set_addr("page", pagenum);
+    set_addr("size", pagesize);
+  });
+  /**
+   * Event handler when user selects new column or changes sort order
+   */
+
+  $table.on('sort.bs.table', function (e, name, order) {
+    set_addr("sort", name);
+    set_addr("order", order);
+  });
+  /**
+   * Even handler any time the search field is changed
+   */
+
+  $table.on('search.bs.table', function (e, text) {
+    set_addr("search", text);
+  });
+});
+
+/***/ }),
+
+/***/ 5:
+/*!****************************************!*\
+  !*** multi ./resources/js/bookmark.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /home/pweller/Projects/website-clinicalgenome-search/resources/js/bookmark.js */"./resources/js/bookmark.js");
+
+
+/***/ })
+
+/******/ });

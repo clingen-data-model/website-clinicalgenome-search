@@ -441,48 +441,41 @@ class Actionability extends Model
      */
     public static function parser($message)
     {
-        $timestamp = $message->timestamp;
 
-        $record = $message->payload;
+        $record = json_decode($message->payload);
 
-        // process unpublish requests
-        if ($record->statusPublishFlag != "Published")
+        // what other are there?
+        switch ($record->statusFlag)
         {
-            dd($record);
-            if (!isset($record->iri))
-                ;//echo "Unpublish request with no iri \n";
-            else
-            {
-                $curation = self::type(self::TYPE_GENE_VALIDITY)->source('gene_validity')
-                                    ->sid($record->iri)->published()->orderBy('id', 'desc')->first();
-
-                if ($curation !== null)
-                    $curation->update(['published' => false]);
-                else
-                   ;// echo "Unpublish request for iri " . $record->iri . " not found \n";
-            }
-
-            return;
+            case 'Released - Under Revision':
+            case 'Retracted':
+            case 'In Preparation':
+                return;
+            case 'Released':
+                break;
+            default:
+                dd($record);
         }
+        
+        // because each message can have multiple curations, we'll eventuall want to break them up.
 
         // parse into standard structure
-
         $data = [
                 'type' => Curation::TYPE_ACTIONABILITY,
                 'type_string' => 'Actionability',
                 'subtype' => Curation::SUBTYPE_ACTIONABILITY,
                 'subtype_string' => $record->curationType ?? null,
                 'group_id' => 0,
-                'sop_version' => null,
-                'message_version' =>  $record->jsonMessageVersion ?? null,
+                'sop_version' => basename($record->iri),
                 'curation_version' => $record->curationVersion,
                 'source' => 'actionability',
                 'source_uuid' => $message->key,
                 'source_timestamp' => $message->timestamp,
                 'source_offset' => $message->offset,
+                'message_version' =>  $record->jsonMessageVersion ?? null,
                 'assertion_uuid' => $record->uuid ?? null,
-                'alternate_uuid' => $record->report_id ?? null,
-                'panel_id' => Panel::title($record->affiliations[0]->name)->first(),
+                'alternate_uuid' => $record->iri ?? null,
+                'panel_id' => Panel::title($record->affiliations[0]->name)->first()->id ?? 0,
                 'affiliate_id' => $record->affiliations[0]->id ?? null,
                 'affiliate_details' => $record->affiliations[0],
                 'gene_hgnc_id' => $record->genes[0]->curie ?? null,
@@ -495,16 +488,15 @@ class Actionability extends Model
                 'condition_details' => $record->conditions,
                 'evidence' => null,
                 'evidence_details' => null,
-                'assertions' => $record->assertions,
+                'assertions' => $record->assertions ?? null,
                 'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus
                             ],
                 'score_details' => $record->scores,
-                'curators' => null,
+                'curators' => $record->contributors ?? null,
                 'published' => ($record->statusFlag == "Released"),
                 'animal_model_only' => false,
-                'contributors' => $record->contributors ?? null,
                 'events' => ['dateISO8601' => $record->dateISO8601,
-                             'eventTime' => $record->eventTime,
+                             'eventTime' => $record->eventTime ?? null,
                              'statusFlag' => $record->statusFlag,
                              'statusPublishFlag' => $record->statusPublishFlag,
                              'searchDates' => $record->searchDates],
@@ -518,20 +510,15 @@ class Actionability extends Model
         
 
         $curation = Curation::type(Curation::TYPE_ACTIONABILITY)->source('actionability')
-                                    ->sid($record->iri ?? '**NO IRI**')->orderBy('id', 'desc')->first();
+                                    ->status(Curation::STATUS_ACTIVE)
+                                    ->aid($record->iri ?? '**NO IRI**')->orderBy('id', 'desc')->first();
 
-        if ($curation === null)
-        {
-            //dd($record);
-            $curation = new Curation($data);
-            $curation->save();
-        }
-        else
-        {
-            echo "Updating existing curation " . $curation->id . " \n";
-           // dd($record);
-            $curation->update($data);
-        }
+        if ($curation !== null)
+            $curation->update(['status' => Curation::STATUS_ARCHIVE]);
+
+        $curation = new Curation($data);
+        $curation->save();
+
     }
 
 }

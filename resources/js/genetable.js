@@ -136,6 +136,7 @@ function symbolFormatter(index, row) {
         return '<span onclick="event.stopPropagation();" ><a href="/kb/gene-dosage/region/' + row.hgnc_id + '"><b>' + row.symbol + '</b></a></span>';
 }
 
+
 function typeFormatter(index, row) {
     if (row.type == 0)
         return { classes: 'global_table_cell gene' };
@@ -175,7 +176,6 @@ function hgncFormatter(index, row) {
 
 function vcepFormatter(index, row) {
 
-    //console.log(index);
     if (index == null)
         return '';
 
@@ -185,7 +185,15 @@ function vcepFormatter(index, row) {
 
 
 function diseaseFormatter(index, row) {
-    return '<a href="/kb/conditions/' + row.mondo + '">' + row.disease_name + '</a><div class="text-muted">' + row.mondo + '</div>';
+    return '<span onclick="event.stopPropagation();"><a href="/kb/conditions/' + row.mondo + '">' + row.disease_name + '</a><div class="text-muted">' + row.mondo + '</div></span>';
+}
+
+
+function reportableFormatter(index, row) {
+    if (row.reportable)
+        return '<span onclick="event.stopPropagation();"><i class="fas fa-check"></i></span>';
+    else
+        return''
 }
 
 
@@ -305,6 +313,15 @@ function regionFormatter(index, row) {
     var url = "/kb/gene-dosage/region/";
 
     return '<span onclick="event.stopPropagation();" ><a href="' + url + row.key + '"><b>' + row.name + '</b></a></span>';
+}
+
+
+function notesFormatter(index, row) {
+    
+    if (!row.has_comment)
+        return '';
+        
+    return '<span data-toggle="tooltip" data-placement="top" title="This gene has ClinGen Comments.  Click to view."><i class="fas fa-comment-alt text-center"></i></span>';
 }
 
 /*
@@ -532,6 +549,30 @@ function badgeFormatter(index, row) {
         html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
     else
         html += '<img class="" src="/images/Pharmacogenomics-off.png" title="Pharmacogenomics" style="width:30px">';
+
+    return html;
+}
+
+
+function singleBadgeFormatter(index, row) {
+    var html = '';
+
+    switch (row.curation)
+    {
+        case "V":
+            html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">Gene-Disease Validity';
+            break;
+        case 'D':
+            html += '<img class="" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">Dosage Sensitivity';
+            break;
+        case 'A':
+            html += '<img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">Actionability';
+            break;
+        case 'R':
+            html += '<img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">Variant Pathogenicity';
+            break;
+
+    }
 
     return html;
 }
@@ -964,12 +1005,12 @@ function acmsymbolFormatter(index, row) {
 
 function acmglinkFormatter(index, row) {
 
-    var html = "<a href='https://ncbi.nlm.nih.gov" + row.clinvar_link + "' target='_clinvar'><b>ClinVar <i class='fas fa-external-link-alt'></i></b></a>";
+    var html = "<span onclick='event.stopPropagation();'><a href='https://ncbi.nlm.nih.gov" + row.clinvar_link + "' target='_clinvar'><b>ClinVar <i class='fas fa-external-link-alt'></i></b></a><span>";
 
     if (row.has_variant)
-        html += "<div><a href='" + row.cspec_link + "' target='_cspec'><b>CSpec Registry <i class='fas fa-external-link-alt'></i></b></a></div>";
+        html += "<div onclick='event.stopPropagation();'><a href='" + row.cspec_link + "' target='_cspec'><b>CSpec Registry <i class='fas fa-external-link-alt'></i></b></a></div>";
     else
-        html += '<div>&nbsp;</div>';
+        html += '<div onclick="event.stopPropagation();">&nbsp;</div>';
 
     return html;
 }

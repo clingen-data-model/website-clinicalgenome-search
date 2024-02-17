@@ -30,7 +30,11 @@
     @if (isset($expand))
     data-detail-view="true"
     data-detail-view-icon="false"
+    @if (isset($no_expand_click))
+    data-detail-view-by-click="false"
+    @else 
     data-detail-view-by-click="true"
+    @endif
     @endif
     {{-- data-detail-formatter="detailFormatter" --}}
     data-minimum-count-columns="2"

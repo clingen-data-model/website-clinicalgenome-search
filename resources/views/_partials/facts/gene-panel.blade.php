@@ -3,7 +3,7 @@
 			<div class="col-sm-12  mt-0 pt-0 small">
 					<h4 class="border-bottom-1">Gene Facts <span class=" ml-2" style="font-size:11px"><i class="fas fa-question-circle"></i> <a href='https://clinicalgenome.org/tools/clingen-website-faq/attribution/' class="_blank">External Data Attribution</a></span></h4>
 
-					<dl class="dl-horizontal">
+					<dl class="dl-horizontal mb-1">
 						<dt>HGNC Symbol</dt>
 						<dd>{{ $record->symbol }} ({{ $record->hgnc_id }})
 							<a target='external' href="{{env('CG_URL_GENENAMES_GENE')}}{{ $record->hgnc_id }}" class="badge-info badge pointer ml-2">HGNC <i class="fas fa-external-link-alt"></i></a>
@@ -79,6 +79,8 @@
 						<dt></dt>
 						<dd><scan class="text-primary"><i>pLI and LOEUF metrics based on</i> {{ $record->transcript}} <i>transcript</i></scan></dd>
 						@endif
+						<dt>ACMG SF v3.2 Gene?</dt>
+						<dd>{{ $record->is_acmg ? "Yes" : "No" }}</dd>
 						@if($record->chromosome_band)
 						<dt>Cytoband</dt>
 						<dd>{{ $record->chromosome_band }}</dd>
