@@ -702,6 +702,10 @@ class Jira extends Model
 
           foreach ($response->issues as $issue)
           {
+               //  The filter is now allowing unresolved through.
+               if (!isset($issue->fields->resolution->name))
+                    continue;
+
                // skip over any won't fixes
                if ($issue->fields->resolution->name == "Won't Fix")
                     continue;

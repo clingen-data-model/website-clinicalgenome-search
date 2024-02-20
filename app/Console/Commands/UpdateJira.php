@@ -76,6 +76,10 @@ class UpdateJira extends Command
 				self::updategrch38();
 				echo "Report Complete\n";
 				return;
+            case 'grch37':
+                self::updategrch37();
+                echo "Report Complete\n";
+                return;
             case 'none':
             default:
                 break;
@@ -315,6 +319,70 @@ class UpdateJira extends Command
 				
 
                 echo "...changing from " . ($record->customfield_10532 ?? 0) . " to " . $grch38 . " ...DONE\n";
+
+				//die("cp1");
+
+            }
+
+        }
+        echo "\nPass 1 Complete";
+    }
+
+
+    /**
+     * This function updates the grch37 field in Jira
+     */
+    public static function updategrch37()
+    {
+        $genes = Gene::whereNotNull('start37')->get();
+
+		$check = true;
+
+        foreach ($genes as $gene)
+		{
+			if ($gene->name == "PNLIP")
+			    $check = false;
+			
+			if ($check)
+				continue;
+
+			if ($gene->chr == 23)
+				$gene->chr = 'X';
+			else if ($gene->chr == 24)
+				$gene->chr = 'Y';
+
+            $grch37 = 'chr' . $gene->chr . ':' . $gene->start37 . '-' . $gene->stop37;
+
+            echo "Searching for $gene->hgnc_id";
+
+            $results = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND "HGNC ID" ~ "' . $gene->hgnc_id . '"');
+
+            foreach ($results->issues as $issue)
+            {
+			    $key  = $issue->key;
+
+                $record = (object) $issue->fields->customFields;
+
+                // gain phenotype ID is 10201, original gain id is 12631
+                echo "...Processing Symbol " . $record->customfield_10030;
+
+                if (isset($record->customfield_10160) && strcmp($record->customfield_10160, $grch37) == 0)
+                {
+                    echo "...grch37 same, skipping\n";
+                    continue;
+                }
+
+                if (!isset($record->customfield_10160) && empty($grch37))
+                {
+                    echo "...grch37 same, skipping\n";
+                    continue;
+                }
+
+                Jira::updateIssue($key, 'customfield_10160', $grch37);
+				Jira::updateIssue($key, 'customfield_10158', $gene->seqid37);
+				
+
+                echo "...changing from " . ($record->customfield_10160 ?? 0) . " to " . $grch37 . " ...DONE\n";
 
 				//die("cp1");
 

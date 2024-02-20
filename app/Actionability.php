@@ -17,6 +17,7 @@ use Carbon\Carbon;
 use App\GeneLib;
 use App\Change;
 use App\Gene;
+use App\Disease;
 use App\Curation;
 use App\Panel;
 
@@ -448,76 +449,149 @@ class Actionability extends Model
         switch ($record->statusFlag)
         {
             case 'Released - Under Revision':
+                $status = Curation::STATUS_ACTIVE_REVIEW;
+                break;
             case 'Retracted':
+                $status = Curation::STATUS_RETRACTED;
+                break;
             case 'In Preparation':
-                return;
+                $status = Curation::STATUS_PRELIMINARY;
+                break;
             case 'Released':
+                $status = Curation::STATUS_ACTIVE;
                 break;
             default:
                 dd($record);
         }
         
-        // because each message can have multiple curations, we'll eventuall want to break them up.
+        // because each message can have multiple curations, we need to break them up.
+        foreach($record->genes as $gene)
+        {
+            // lookup local gene
+            $mygene = Gene::hgnc($gene->curie)->first();
 
-        // parse into standard structure
-        $data = [
-                'type' => Curation::TYPE_ACTIONABILITY,
-                'type_string' => 'Actionability',
-                'subtype' => Curation::SUBTYPE_ACTIONABILITY,
-                'subtype_string' => $record->curationType ?? null,
-                'group_id' => 0,
-                'sop_version' => basename($record->iri),
-                'curation_version' => $record->curationVersion,
-                'source' => 'actionability',
-                'source_uuid' => $message->key,
-                'source_timestamp' => $message->timestamp,
-                'source_offset' => $message->offset,
-                'message_version' =>  $record->jsonMessageVersion ?? null,
-                'assertion_uuid' => $record->uuid ?? null,
-                'alternate_uuid' => $record->iri ?? null,
-                'panel_id' => Panel::title($record->affiliations[0]->name)->first()->id ?? 0,
-                'affiliate_id' => $record->affiliations[0]->id ?? null,
-                'affiliate_details' => $record->affiliations[0],
-                'gene_hgnc_id' => $record->genes[0]->curie ?? null,
-                'gene_details' => $record->genes,
-                'title' => $record->title,
-                'summary' => null,
-                'description' => null,
-                'comments' => $record->releaseNotes,
-                'conditions' => $record->preferred_conditions[0]->curie ?? ($record->conditions[0]->curie ?? null),
-                'condition_details' => $record->conditions,
-                'evidence' => null,
-                'evidence_details' => null,
-                'assertions' => $record->assertions ?? null,
-                'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus
-                            ],
-                'score_details' => $record->scores,
-                'curators' => $record->contributors ?? null,
-                'published' => ($record->statusFlag == "Released"),
-                'animal_model_only' => false,
-                'events' => ['dateISO8601' => $record->dateISO8601,
-                             'eventTime' => $record->eventTime ?? null,
-                             'statusFlag' => $record->statusFlag,
-                             'statusPublishFlag' => $record->statusPublishFlag,
-                             'searchDates' => $record->searchDates],
-                'url' => ['evidence' => $record->iri,
-                          'scoreDetails' => $record->scoreDetails,
-                          'surveyDetails' => $record->surveyDetails],
-                'version' => $record->version ?? 0,
-                'status' => Curation::STATUS_ACTIVE
-            ];
-        
-        
+            if ($mygene === null)
+                dd($gene);
 
-        $curation = Curation::type(Curation::TYPE_ACTIONABILITY)->source('actionability')
-                                    ->status(Curation::STATUS_ACTIVE)
-                                    ->aid($record->iri ?? '**NO IRI**')->orderBy('id', 'desc')->first();
+            // find all the conditions associated with this gene
+            foreach($record->conditions as $condition)
+            {
+                // extract everything specific to gene and conditions
+                if ($gene->curie == $condition->gene)
+                {
+                    // lookup local disease
+                    $disease = Disease::curie($condition->curie)->first();
 
-        if ($curation !== null)
-            $curation->update(['status' => Curation::STATUS_ARCHIVE]);
+                    if ($disease === null)
+                    {
+                        // the most likely reason is a different ontology, so call rosetta
+                        dd($record);
+                        $disease = Disease::rosetta($condition->curie);
 
-        $curation = new Curation($data);
-        $curation->save();
+                        if ($disease === null)
+                        {
+                            // there is nothing more we can do, just log it and move on
+                            echo "Bad disease $condition->curie \n";
+                            continue;
+                        }
+                    }
+
+                    // older records may not have assertions, so fake it.
+                    if (!isset($record->assertions))
+                    {
+                        $record->assertions = json_decode(json_encode([
+                                [
+                                    "iri" => "http://purl.obolibrary.org/obo/" . $condition->curie,
+                                    "uri" => str_replace(':', '', $condition->curie),
+                                    "gene" => $gene->curie,
+                                    "curie" => $condition->curie,
+                                    "ontology" => "MONDO",
+                                    "assertion" => "Assertion Pending"
+                                ]
+                            ]). FALSE);
+                    }
+
+                    foreach($record->assertions as $assertion)
+                    {
+                        if ($gene->curie == $assertion->gene && $condition->curie == $assertion->curie)
+                        {
+                            // is there a current version of this curation?
+                            $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
+                                                ->source('actionability')
+                                                ->aid($record->iri)
+                                                ->where('gene_id', $mygene->id)
+                                                ->where('disease_id', $disease->id)
+                                                ->orderBy('id', 'desc')->first();
+
+                            // parse into standard structure
+                            $data = [
+                                'type' => Curation::TYPE_ACTIONABILITY,
+                                'type_string' => 'Actionability',
+                                'subtype' => Curation::SUBTYPE_ACTIONABILITY,
+                                'subtype_string' => $record->curationType ?? null,
+                                'group_id' => 0,
+                                'sop_version' => null,
+                                'curation_version' => $record->curationVersion,
+                                'source' => 'actionability',
+                                'source_uuid' => $message->key,
+                                'source_timestamp' => $message->timestamp,
+                                'source_offset' => $message->offset,
+                                'message_version' =>  $record->jsonMessageVersion ?? null,
+                                'assertion_uuid' => $record->uuid ?? null,
+                                'alternate_uuid' => $record->iri ?? null,
+                                'panel_id' => Panel::title($record->affiliations[0]->name)->first()->id ?? 0,
+                                'affiliate_id' => $record->affiliations[0]->id ?? null,
+                                'affiliate_details' => $record->affiliations[0],
+                                'gene_id' => $mygene->id,
+                                'gene_hgnc_id' => $gene->curie ?? null,
+                                'gene_details' => $gene,
+                                'variant_iri' => null,
+                                'Variant_details' => $record->variants ?? null,
+                                'document' => basename($record->iri),
+                                'title' => $record->title,
+                                'summary' => null,
+                                'description' => null,
+                                'comments' => $record->releaseNotes,
+                                'disease_id' => $disease->id,
+                                'conditions' => $record->preferred_conditions[0]->curie ?? ($condition->curie ?? null),
+                                'condition_details' => $condition,
+                                'evidence' => null,
+                                'evidence_details' => null,
+                                'assertions' => $assertion ?? null,
+                                'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus
+                                            ],
+                                'score_details' => $record->scores,
+                                'curators' => $record->curators ?? ($record->contributors ?? null),
+                                'published' => ($record->statusFlag == "Released"),
+                                'animal_model_only' => false,
+                                'events' => ['dateISO8601' => $record->dateISO8601,
+                                            'eventTime' => $record->eventTime ?? null,
+                                            'statusFlag' => $record->statusFlag,
+                                            'statusPublishFlag' => $record->statusPublishFlag,
+                                            'searchDates' => $record->searchDates],
+                                'url' => ['evidence' => $record->iri,
+                                        'scoreDetails' => $record->scoreDetails,
+                                        'surveyDetails' => $record->surveyDetails],
+                                'version' => 1,
+                                'status' => $status
+                            ];
+
+                            $new = new Curation($data);
+                            
+                            // retire the old curation and adjust the version on the new
+                            if ($curation !== null)
+                            {
+                                $curation->update(['status' => Curation::STATUS_ARCHIVE]);
+                                $new->version = $curation->version + 1;
+                            }
+
+                            $new->save();
+
+                        }
+                    }
+                }
+            }
+        }
 
     }
 

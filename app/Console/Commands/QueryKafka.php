@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Stream;
 use App\Pmid;
 use App\Curation;
+use App\Packet;
 
 class QueryKafka extends Command
 {
@@ -133,6 +134,15 @@ class QueryKafka extends Command
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
+                        $m = new Packet(['topic' => $stream->topic,
+                                         'type' => Packet::TYPE_KAFKA,
+                                         'uuid' => $message->key,
+                                         'offset' => $message->offset,
+                                         'timestamp' => $message->timestamp,
+                                         'payload' => $message->payload,
+                                         'status' => Packet::STATUS_ACTIVE
+                                        ]);
+                        $m->save();
                         if ($topic == "dosage" || $topic == "actionability")
                         {
                             $payload = $message;

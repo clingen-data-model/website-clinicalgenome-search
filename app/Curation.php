@@ -78,6 +78,7 @@ class Curation extends Model
      */
 	protected $casts = [
                 'gene_details' => 'array',
+                'variant_details' => 'array',
                 'affiliate_details' => 'array',
                 'condition_details' => 'array',
                 'conditions' => 'array',
@@ -104,7 +105,8 @@ class Curation extends Model
                             'evidence', 'evidence_details', 'scores', 'score_details', 'curators',
                             'published', 'animal_model_only', 'events', 'version', 'status',
                             'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
-                            'url', 'assertions'
+                            'url', 'assertions', 'document', 'variant_iri', 'variant_details', 
+                            'gene_id', 'disease_id'
                          ];
 
 	/**
@@ -141,6 +143,9 @@ class Curation extends Model
     public const STATUS_ACTIVE = 1;
     public const STATUS_DEPRECATED = 2;
     public const STATUS_ARCHIVE = 3;
+    public const STATUS_RETRACTED = 4;
+    public const STATUS_PRELIMINARY = 5;
+    public const STATUS_ACTIVE_REVIEW = 6;
     public const STATUS_DELETED = 9;
     public const STATUS_OPEN = 10;
     public const STATUS_PRIMARY_REVIEW = 11;
