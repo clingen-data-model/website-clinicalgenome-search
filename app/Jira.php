@@ -702,6 +702,10 @@ class Jira extends Model
 
           foreach ($response->issues as $issue)
           {
+               // Looks like fiter changed allow non-resolved issues, so filter them out here
+               if (!isset($issue->fields->resolution->name))
+                    continue;
+
                // skip over any won't fixes
                if ($issue->fields->resolution->name == "Won't Fix")
                     continue;
@@ -717,8 +721,8 @@ class Jira extends Model
                     'jira_report_date' => $issue->fields->resolutiondate ?? ''
                ]);
 
-               // for 30 and 40, Jira also sends text
-               if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+          // for 30 and 40, Jira also sends text
+          if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
                $node->triplo_score = 30;
           else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
                $node->triplo_score = 40;
