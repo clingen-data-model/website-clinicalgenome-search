@@ -295,7 +295,7 @@ class GeneController extends Controller
 		if (Auth::guard('api')->check())
 		{
 			$user = Auth::guard('api')->user();
-			//dd($user);
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		}
 		else
@@ -376,8 +376,8 @@ class GeneController extends Controller
                                //     'author' => $pmid->sortfirstauthor,
                                 //    'published' =>  $pmid->pubdate,
                                     'abstract' => $pmid->abstract];
-//dd($disease_collection);
-		//dd($disease_collection->where('disease', $disease->disease->label)->first()->validity);
+
+
 
         if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
@@ -435,7 +435,7 @@ class GeneController extends Controller
 			'active' => "gene",
 			'title' => $record->label . " curation results"
 		]);
-//dd($variant_collection);
+
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
                         'pmids', 'mimflag', 'mims',
                          'disease_collection', 'total_panels', 'variant_collection', 'gc'))
@@ -509,7 +509,7 @@ class GeneController extends Controller
 		if (Auth::guard('api')->check())
 		{
 			$user = Auth::guard('api')->user();
-			//dd($user);
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		}
 		else
@@ -540,7 +540,6 @@ class GeneController extends Controller
         $mims = [];
         $pmids = [];
         $key = 0;
-
 
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -628,7 +627,7 @@ class GeneController extends Controller
 				$dosage_collection->push($node);
 			}
 		}
-       // dd($actionability_collection);
+
         // get the mim names
         $mim_names = MIM::whereIn('mim', $mims)->get();
 
@@ -660,8 +659,6 @@ class GeneController extends Controller
                                 //    'published' =>  $pmid->pubdate,
                                     'abstract' => $pmid->abstract];
 
-        //dd($pmids);
-
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
 
@@ -673,10 +670,10 @@ class GeneController extends Controller
 
         $validity_eps = count($validity_panels);
 		$actionability_collection = $actionability_collection->sortByDesc('order');
-//dd($validity_collection);
+
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
-//dd($variant_collection);
+
         // collect all the unique panels
         $variant_panels = [];
         $variant_collection->each(function ($item) use (&$variant_panels){
@@ -722,7 +719,6 @@ class GeneController extends Controller
                         + ($actionability_collection->isEmpty() ? 0 : 1)
                         + */ count($pregceps);
 
-		//dd($record->curation_status);
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "gene",
@@ -734,8 +730,6 @@ class GeneController extends Controller
 
 		$show_clingen_comment = !empty($gene->notes);
 
-        //dd($record);
-        //dd($variant_collection);
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
@@ -798,7 +792,7 @@ class GeneController extends Controller
 
 		if (Auth::guard('api')->check()) {
 			$user = Auth::guard('api')->user();
-			//dd($user);
+		
 			$follow = $user->genes->contains('hgnc_id', $id);
 		} else {
 
@@ -862,7 +856,6 @@ class GeneController extends Controller
 
 				$actionability_collection->push($node);
 			}
-			//dd($actionability_collection);
 
 			// validity
 			foreach ($disease->gene_validity_assertions as $assertion) {
@@ -909,7 +902,7 @@ class GeneController extends Controller
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = collect();
-//dd($record);
+
 		if ($record->curation_status !== null)
 		{
 			foreach ($record->curation_status as $precuration)
@@ -934,7 +927,7 @@ class GeneController extends Controller
                     default:
                         continue 2;
 				}
-//dd($precuration);
+
 				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 				//	continue;
 
@@ -949,7 +942,7 @@ class GeneController extends Controller
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
-//dd($bucket);
+
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);
@@ -1049,7 +1042,7 @@ class GeneController extends Controller
 
 		if (Auth::guard('api')->check()) {
 			$user = Auth::guard('api')->user();
-			//dd($user);
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		} else {
 
@@ -1113,7 +1106,6 @@ class GeneController extends Controller
 
 				$actionability_collection->push($node);
 			}
-			//dd($actionability_collection);
 
 			// validity
 			foreach ($disease->gene_validity_assertions as $assertion) {
@@ -1160,7 +1152,7 @@ class GeneController extends Controller
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = collect();
-//dd($record);
+
 		if ($record->curation_status !== null)
 		{
 			foreach ($record->curation_status as $precuration)
@@ -1185,7 +1177,7 @@ class GeneController extends Controller
                     default:
                         continue 2;
 				}
-//dd($precuration);
+
 				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 				//	continue;
 
@@ -1200,7 +1192,7 @@ class GeneController extends Controller
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
-//dd($bucket);
+
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);

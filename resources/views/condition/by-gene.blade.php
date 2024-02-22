@@ -8,7 +8,7 @@
         <tr>
           <td class="valign-top"><img src="/images/disease.png" width="40" height="40"></td>
           <td class="pl-2">
-						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($disease->label) }}</h1> {!! displayMondoObsolete($disease->label) !!}
+						<h1 class="h2 p-0 m-0">{{ displayMondoLabel($record->label) }}</h1>
 						<a class="btn btn-facts btn-outline-primary " role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 							<i class="far fa-caret-square-down"></i> View Disease Facts
 						</a>

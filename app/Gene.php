@@ -218,6 +218,14 @@ class Gene extends Model
     }
 
 
+    /*
+     * The curations associated with this gene
+     */
+    public function curations()
+    {
+       return $this->hasMany('App\Curation');
+    }
+
 	/**
      * Query scope by ident
      *

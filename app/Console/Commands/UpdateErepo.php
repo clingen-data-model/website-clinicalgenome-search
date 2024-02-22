@@ -80,6 +80,9 @@ class UpdateErepo extends Command
 
         foreach($dd->variantInterpretations as $variant)
         {
+          // check against the local disease database to see if the MONDO is obsolete
+          $disease = Disease::curie($variant->condition->{'@id'})->first();
+
           //echo $variant->{'@id'} . " " . $variant->guidelines[0]["outcome"]["label"] . "\n";
           Variant::create(['iri' => $variant->{'@id'}, 'variant_id' => $variant->variationId,
                       'caid' => $variant->caid,
@@ -88,7 +91,9 @@ class UpdateErepo extends Command
                       'evidence_links' => $variant->evidenceLinks,
                       'gene' => $variant->gene,
                       'guidelines' => $variant->guidelines,
-                      'hgvs' => $variant->hgvs]);
+                      'hgvs' => $variant->hgvs,
+                      'type' => ($disease !== null && in_array($disease->status, [9, 10]) ? Variant::TYPE_OBSOLETE : Variant::TYPE_NONE)
+                    ]);
 
           // update the main gene table
           $gene = Gene::name($variant->gene->label)->first();
@@ -100,8 +105,6 @@ class UpdateErepo extends Command
               $gene->activity = $activity;
               $gene->save();
           }
-
-          $disease = Disease::curie($variant->condition->{'@id'})->first();
 
           if ($disease !== null)
           {

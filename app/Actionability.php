@@ -440,7 +440,7 @@ class Actionability extends Model
      * Map a kafka actionability record to a curation
      *
      */
-    public static function parser($message)
+    public static function parser($message, $packet = null)
     {
 
         $record = json_decode($message->payload);
@@ -464,6 +464,9 @@ class Actionability extends Model
                 dd($record);
         }
         
+        if (basename($record->iri) == 'AC011')
+            dd($record);
+
         // because each message can have multiple curations, we need to break them up.
         foreach($record->genes as $gene)
         {
@@ -485,27 +488,29 @@ class Actionability extends Model
                     if ($disease === null)
                     {
                         // the most likely reason is a different ontology, so call rosetta
-                        dd($record);
-                        $disease = Disease::rosetta($condition->curie);
+                        //$disease = Disease::rosetta($condition->curie);
 
                         if ($disease === null)
                         {
-                            // there is nothing more we can do, just log it and move on
+                            // Some older records will have a malformed mondo id.  They'll eventually get 
+                            // replaced, but becuase we depend on a disease structure later on, lets just
+                            // create an empty one.
                             echo "Bad disease $condition->curie \n";
-                            continue;
+                            $disease = new Disease();
                         }
                     }
 
                     // older records may not have assertions, so fake it.
                     if (!isset($record->assertions))
                     {
+
                         $record->assertions = json_decode(json_encode([
                                 [
                                     "iri" => "http://purl.obolibrary.org/obo/" . $condition->curie,
                                     "uri" => str_replace(':', '', $condition->curie),
                                     "gene" => $gene->curie,
                                     "curie" => $condition->curie,
-                                    "ontology" => "MONDO",
+                                    "ontology" => "",
                                     "assertion" => "Assertion Pending"
                                 ]
                             ]). FALSE);
@@ -516,12 +521,24 @@ class Actionability extends Model
                         if ($gene->curie == $assertion->gene && $condition->curie == $assertion->curie)
                         {
                             // is there a current version of this curation?
-                            $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
-                                                ->source('actionability')
-                                                ->aid($record->iri)
-                                                ->where('gene_id', $mygene->id)
-                                                ->where('disease_id', $disease->id)
-                                                ->orderBy('id', 'desc')->first();
+                            if ($disease->id !== null)
+                            {
+                                $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
+                                                    ->source('actionability')
+                                                    ->aid($record->iri)
+                                                    ->where('gene_id', $mygene->id)
+                                                    ->where('disease_id', $disease->id)
+                                                    ->orderBy('id', 'desc')->first();
+                            }
+                            else
+                            {
+                                $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
+                                                    ->source('actionability')
+                                                    ->aid($record->iri)
+                                                    ->where('gene_id', $mygene->id)
+                                                    ->whereJsonContains('conditions', $condition->curie)
+                                                    ->orderBy('id', 'desc')->first();
+                            }
 
                             // parse into standard structure
                             $data = [
@@ -536,6 +553,7 @@ class Actionability extends Model
                                 'source_uuid' => $message->key,
                                 'source_timestamp' => $message->timestamp,
                                 'source_offset' => $message->offset,
+                                'packet_id' => $packet->id ?? null,
                                 'message_version' =>  $record->jsonMessageVersion ?? null,
                                 'assertion_uuid' => $record->uuid ?? null,
                                 'alternate_uuid' => $record->iri ?? null,
@@ -553,7 +571,7 @@ class Actionability extends Model
                                 'description' => null,
                                 'comments' => $record->releaseNotes,
                                 'disease_id' => $disease->id,
-                                'conditions' => $record->preferred_conditions[0]->curie ?? ($condition->curie ?? null),
+                                'conditions' => [($condition->curie ?? null)],
                                 'condition_details' => $condition,
                                 'evidence' => null,
                                 'evidence_details' => null,

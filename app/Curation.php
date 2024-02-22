@@ -196,6 +196,33 @@ class Curation extends Model
     }
 
 
+    /*
+     * The gene associated with this curation
+     */
+    public function gene()
+    {
+       return $this->belongsTo('App\Gene');
+    }
+
+
+    /*
+     * The disease associated with this curation
+     */
+    public function disease()
+    {
+       return $this->belongsTo('App\Disease');
+    }
+
+
+    /*
+     * The kafka message packet associated with this curation
+     */
+    public function packet()
+    {
+       return $this->belongsTo('App\Packet');
+    }
+
+
 	/**
      * Query scope by ident
      *

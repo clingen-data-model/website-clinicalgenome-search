@@ -168,7 +168,7 @@ class Mysql
         $collection = collect();
 
         // get all the validity assertions associated with these genes
-        $validity_collection = Validity::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        $validity_collection = Validity::whereIn('gene_hgnc_id', $genes)->groupBy(['gene_hgnc_id', 'disease_mondo'])->get();
         foreach($validity_collection as $record)
         {
                 $node = new Nodal([ 'gene_label' => $record->gene_label,
@@ -186,7 +186,7 @@ class Mysql
         }
 
         // for dosage, we need to split the haplo and triplo diseases into separate rows
-        $dosage_collection = Sensitivity::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        $dosage_collection = Sensitivity::whereIn('gene_hgnc_id', $genes)->get();
         foreach($dosage_collection as $record)
         {
             if ($record->haplo_disease_mondo != null)
@@ -224,7 +224,7 @@ class Mysql
         }
 
         // actionability
-        $actionability_collection = Actionability::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        $actionability_collection = Actionability::whereIn('gene_hgnc_id', $genes)->groupBy(['gene_hgnc_id', 'disease_mondo'])->get();
         foreach($actionability_collection as $record)
         {
             $node = new Nodal([ 'gene_label' => $record->gene_label,
@@ -242,7 +242,7 @@ class Mysql
         }
 
         // Variant Pathogenicity
-        $variant_collection = Variantpath::whereIn('gene_hgnc_id', $genes)->groupBy('gene_hgnc_id')->get();
+        $variant_collection = Variantpath::whereIn('gene_hgnc_id', $genes)->groupBy(['gene_hgnc_id', 'disease_mondo'])->get();
         foreach($variant_collection as $record)
         {
             $node = new Nodal([ 'gene_label' => $record->gene_label,

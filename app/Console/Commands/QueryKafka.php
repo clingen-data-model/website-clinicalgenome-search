@@ -145,22 +145,22 @@ class QueryKafka extends Command
                         $m->save();
                         if ($topic == "dosage" || $topic == "actionability")
                         {
-                            $payload = $message;
+                            $a = $stream->parser;
+                            $a($message, $m);
+                            $stream->update(['offset' => $message->offset + 1]);
                         }
                         else
                         {
+                            // there is strong reasons to pass the entire message to the parser,
+                            // as we do with actionability and dosage above.  All new parsers should
+                            // be that way.  But for now, leave the existings parsers as is and 
+                            // we'll come back later to fix them.
                             $payload = json_decode($message->payload);
-                            //echo $payload->genes[0]->symbol . "\n";
-                            //dd($payload);
-                            //if ($payload->genes[0]->symbol == "LDLR")
-                        // {
-                            //   var_dump($payload);
-                            //}
-                        // //dd($payload->genes[0]);
+                            $a = $stream->parser;
+                            $a($payload);
+                            $stream->update(['offset' => $message->offset + 1]);
+                            
                         }
-                        $a = $stream->parser;
-                        $a($payload);
-                        $stream->update(['offset' => $message->offset + 1]);
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                     echo "No more messages; will wait for more\n";

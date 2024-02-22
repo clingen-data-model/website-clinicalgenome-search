@@ -43,7 +43,7 @@ class UpdateOrphanet extends Command
 
         echo "Updating Orphanet Disease Library from Orphanet ...";
 
-        //$data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
+        // https://www.orphadata.com/data/json/en_product1.json.tar.gz
 
         $data = file_get_contents(base_path() . '/data/en_product1.json');
 

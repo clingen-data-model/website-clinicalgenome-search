@@ -78,6 +78,7 @@ class Variant extends Model
      protected $appends = ['display_date', 'list_date', 'display_status'];
 
      public const TYPE_NONE = 0;
+     public const TYPE_OBSOLETE = 1;
 
      /*
      * Type strings for display methods
@@ -168,8 +169,6 @@ class Variant extends Model
 
         $genelist = [];
 
-       // dd($records[0]->guidelines);
-
         foreach ($records as $record)
         {
             $tag = ($disease ? $record->gene['label'] : $record->condition['label']);
@@ -179,10 +178,11 @@ class Variant extends Model
                  // deal with some bad records coming from the erepo that contain no gene data
                  if ($disease && !isset($record->gene["NCBI_id"]))
                     continue;
-
+                
                 $genelist[$tag] = [ 'id' => ($disease ? $record->gene['NCBI_id'] : $record->condition['@id']),
-                                        'classifications' => $classifications,
-                                        'panels' => []];
+                                    'obsolete' => ($record->type == self::TYPE_OBSOLETE),
+                                    'classifications' => $classifications,
+                                    'panels' => []];
             }
 
             $a =& $genelist[$tag]['classifications'];

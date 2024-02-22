@@ -340,7 +340,7 @@ class UpdateJira extends Command
 
         foreach ($genes as $gene)
 		{
-			if ($gene->name == "PNLIP")
+			if ($gene->name == "TRAJ9")
 			    $check = false;
 			
 			if ($check)

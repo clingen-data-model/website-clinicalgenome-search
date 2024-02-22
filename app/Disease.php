@@ -145,6 +145,16 @@ class Disease extends Model
        return $this->hasMany('App\Acmg');
     }
 
+
+    /*
+     * The curations associated with this disease
+     */
+    public function curations()
+    {
+       return $this->hasMany('App\Curation');
+    }
+
+
     /**
      * Query scope by ident
      *
