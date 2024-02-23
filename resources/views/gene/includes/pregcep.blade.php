@@ -1,14 +1,14 @@
 <div class="card cardeffect mb-3">
     <div class="card-header bg-white pt-0">
-        @if ($gcep->bucket == 2)
+        @if ($gcep->bucket == 3)
         <div class="under-review-color img-rounded p-2 float-right">
             <b>Under Review</b>
         </div>
-        @elseif ($gcep->bucket == 1)
+        @elseif ($gcep->bucket == 2)
         <div class="precuration-color img-rounded p-2 float-right">
             <b>Precuration</b>
         </div>
-        @elseif ($gcep->bucket == 3)
+        @elseif ($gcep->bucket == 1)
         <div class="in-scope-color img-rounded p-2 float-right">
             <b>In Scope</b>
         </div>
@@ -29,11 +29,11 @@
                     <p>
                         {{ strip_tags($gcep->summary) }}
                     </p>
-                    @if ($gcep->bucket == 2)
+                    @if ($gcep->bucket == 3)
                     <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
-                    @elseif ($gcep->bucket == 1)
+                    @elseif ($gcep->bucket == 2)
                     <p>The {{ $gcep->smart_title }} is in the process of precurating <span class="badge">{{ $record->label }}</span></p>
-                    @elseif ($gcep->bucket == 3)
+                    @elseif ($gcep->bucket == 1)
                         <p>The {{ $gcep->smart_title }} has indicated an interest in <span class="badge">{{ $record->label }}</span></p>
                     @endif
                 </div>

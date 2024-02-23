@@ -464,8 +464,8 @@ class Actionability extends Model
                 dd($record);
         }
         
-        if (basename($record->iri) == 'AC011')
-            dd($record);
+        //if (basename($record->iri) == 'AC011')
+        //    dd($record);
 
         // because each message can have multiple curations, we need to break them up.
         foreach($record->genes as $gene)

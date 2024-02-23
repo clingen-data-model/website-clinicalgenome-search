@@ -113,8 +113,8 @@ class UpdateActionabilityStats extends Command
         $total_genes_pairs                   = count($report);
         //$total_genes_pairs_unique            = array_values(array_unique($report));
         $total_genes_pairs_unique            = array_unique($report);
-        sort($total_genes_pairs_unique);
-        dd($total_genes_pairs_unique);
+        //sort($total_genes_pairs_unique);
+        //dd($total_genes_pairs_unique);
         $total_genes_pairs_unique            = count($total_genes_pairs_unique);
         $total_genes_pairs_unique_adult      = array_values(array_unique($reportAdult));
         //dd($reportAdult);

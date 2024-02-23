@@ -106,7 +106,7 @@ class Curation extends Model
                             'published', 'animal_model_only', 'events', 'version', 'status',
                             'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
                             'url', 'assertions', 'document', 'variant_iri', 'variant_details', 
-                            'gene_id', 'disease_id'
+                            'gene_id', 'disease_id', 'packet_id'
                          ];
 
 	/**

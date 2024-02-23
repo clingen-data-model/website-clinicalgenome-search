@@ -53,6 +53,7 @@ class Packet extends Model
      * @var array
      */
 	protected $casts = [
+    'payload' => 'object'
 	];
 
     /**
@@ -61,7 +62,7 @@ class Packet extends Model
      * @var array
      */
 	protected $fillable = ['ident', 'topic', 'timestamp', 'uuid',
-                            'offset', 'type', 'status', 'payload',
+                            'offset', 'type', 'status', 'payload'
                          ];
 
 	/**
