@@ -862,17 +862,17 @@ class GeneController extends Controller
                 switch ($precuration['status'])
 				{
 					case 'Uploaded':
-                        $bucket = 3;
+                        $bucket = 1;
                         break;
                     case "Precuration":
                     case "Disease Entity Assigned":
                     case "Disease entity assigned":
                     case "Precuration Complete":
-                        $bucket = 1;
+                        $bucket = 2;
                         break;
                     case "Curation Provisional":
                     case "Curation Approved":
-                        $bucket = 2;
+                        $bucket = 3;
                         break;
                     case "Retired Assignment":
                     case "Published":
@@ -895,6 +895,22 @@ class GeneController extends Controller
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
 //dd($bucket);
+				// make sure only the top one remains
+				$current = $pregceps->where('affiliate_id', $panel->affiliate_id)->first();
+
+				if ($current !== null)
+				{
+					if ($current->bucket < $bucket)
+					{
+						$pregceps = $pregceps->filter(function ($item) use ($current) {
+
+							$item->affiliate_id !== $current->affiliate_id;
+						});
+					}
+					else
+						continue;
+				}
+
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);
@@ -904,7 +920,7 @@ class GeneController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
-		$pregceps = $pregceps->unique();
+		$pregceps = $pregceps->sortByDesc('bucket')->unique();
 
 		// set display context for view
 		$display_tabs = collect([
