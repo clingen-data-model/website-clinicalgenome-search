@@ -425,6 +425,117 @@ class Dosage extends Model
 
 
     /**
+     * The dosage topic queue is missing records, so preload from
+     * genegraph as of offset 
+     *
+     */
+    public static function preload()
+    {
+        $records = GeneLib::dosageList([
+                                            'page' => 0,
+                                            'pagesize' => "null",
+                                            'sort' => 'GENE_LABEL',
+                                            'search' => null,
+                                            'direction' => 'ASC',
+                                            'properties' => true,
+                                            'report' => true,
+                                            'curated' => false
+                                        ]);
+
+        foreach ($records->collection as $record)
+        {
+
+            $gene = Gene::hgnc($record->hgnc_id)->first();
+
+            $haplo_disease = (empty($record->dosage_curation->haploinsufficiency_assertion->disease->curie) ? null :
+                                    Disease::curie($record->dosage_curation->haploinsufficiency_assertion->disease->curie)->first());
+            $triplo_disease = (empty($record->dosage_curation->triplosensitivity_assertion->disease->curie) ? null :
+                                    Disease::curie($record->dosage_curation->triplosensitivity_assertion->disease->curie)->first());
+
+            // Currently, there is no dosage working group panel defined
+            //$panel = Panel::allids(0)->first();
+
+            // we need to break out the ISCA number and the timestamp
+            preg_match('/CGDOSAGE:(ISCA-[0-9]+)-([0-9\-T\:Z]+)/', $record->dosage_curation->curie, $matches);
+            $isca = $matches[1];
+            $timestamp = $matches[2];
+
+            // tecnically, genegraph should not send us any older records, but it doesn't hurt to make sure
+            $old_curations = Curation::dosage()->where('document', $isca)
+                                        ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                        ->get();
+
+            // we add seperate haplo and triplo curation, because in the future they will be separate
+            foreach(['triplosensitivity_assertion', 'haploinsufficiency_assertion'] as $assertion)
+            {
+                if ($record->dosage_curation->$assertion == null)
+                    continue;
+                
+                $data = [
+                    'type' => Curation::TYPE_DOSAGE_SENSITIVITY,
+                    'type_string' => 'Dosage Sensitivity',
+                    'subtype' => Curation::SUBTYPE_DOSAGE_GGP,
+                    'subtype_string' => 'Genegraph preload',
+                    'group_id' => 0,
+                    'sop_version' => "1.0",
+                    'curation_version' => null,
+                    'source' => 'genegraph',
+                    'source_uuid' => $record->dosage_curation->curie,
+                    'source_timestamp' => 0,
+                    'source_offset' => 0,
+                    'packet_id' => null,
+                    'message_version' => null,
+                    'assertion_uuid' => $record->dosage_curation->curie,
+                    'alternate_uuid' => $isca,
+                    'panel_id' => null,
+                    'affiliate_id' => null,
+                    'affiliate_details' => ['name' => 'Dosage Sensitivity Curation WG'],
+                    'gene_id' => $gene->id,
+                    'gene_hgnc_id' => $record->hgnc_id,
+                    'gene_details' => ['label' => $record->label, 'hgnc_id' => $record->hgnc_id],
+                    'variant_iri' => null,
+                    'variant_details' => null,
+                    'document' => $isca,
+                    'context' => $assertion,
+                    'title' => null,
+                    'summary' => null,
+                    'description' => null,
+                    'comments' => null,
+                    'disease_id' => ($assertion == 'haploinsufficiency_assertion' ?  $haplo_disease->id ?? null : $triplo_disease->id ?? null),
+                    'conditions' => (isset($record->dosage_curation->$assertion->disease->curie) ? [$record->dosage_curation->$assertion->disease->curie] : []),
+                    'condition_details' => [$assertion => $record->dosage_curation->$assertion->disease ?? null],
+                    'evidence' => null,
+                    'evidence_details' => null,
+                    'assertions' => [$assertion => $record->dosage_curation->$assertion ?? null],
+                    'scores' => ['classification' => $record->dosage_curation->$assertion->dosage_classification->ordinal ?? null],
+                    'score_details' => [],
+                    'curators' => null,
+                    'published' => true,
+                    'animal_model_only' => false,
+                    'events' => ['report_date' => $record->dosage_curation->$assertion->dosage->report_date ?? null],
+                    'url' => [],
+                    'version' => 1,
+                    'status' => Curation::STATUS_ACTIVE
+                ];
+
+                $curation = new Curation($data);
+
+                //dd($curation);
+
+                //update version number
+
+                $curation->save();
+
+                $old_curations->each(function ($item) {
+                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+                });
+            }
+
+        }
+    }
+
+
+    /**
      * Map a dosage record to a curation
      *
      */

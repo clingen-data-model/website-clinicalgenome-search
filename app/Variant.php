@@ -204,4 +204,143 @@ class Variant extends Model
         return $genelist;
     }
 
+
+    /**
+     * Map a variant pathogenicity record to a curation
+     *
+     */
+    public static function parser($message, $packet)
+    {
+        $record = json_decode($message->payload);
+
+        //dd($record);
+
+        // process unpublish requests
+        if ($record->statusPublishFlag == "Unpublish")
+        {
+            if (!isset($record->id))
+                die("Cannot unplublish id");//echo "Unpublish request with no iri \n";
+            else
+            {
+                $old_curations = Curation::variant()->where('document', basename($record->interpretation->id))
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
+                $old_curations->each(function ($item) {
+                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+                });
+               
+            }
+
+            return;
+        }
+
+        if($record->statusPublishFlag != "Publish")
+            dd($record);
+
+            // save old ones to later archive
+        $old_curations = Curation::variant()->where('document', basename($record->interpretation->id))
+                                            ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                            ->get();
+
+        // it seems that some records are published without a condition...
+        if (isset($record->interpretation->condition))
+            $disease = Disease::curie($record->interpretation->condition[0]->disease[0]->id)->first();
+        else
+            $disease = null;
+
+        $panel = Panel::allids(basename($record->interpretation->contribution[0]->agent->id))->first();
+
+        // there is no nice way to extract the approval and publish dates.  We have to parse contributions
+        foreach($record->interpretation->contribution as $contributor)
+        {
+            if ($contributor->contributionRole->label = "publisher")
+                $approval_date = $contributor->contributionDate;
+
+            if ($contributor->contributionRole->label = "approver")
+                $publish_date = $contributor->contributionDate;
+        }
+
+        // the gene reference is deep within the evidence.  Find it
+        foreach($record->interpretation->evidenceLine as $evidence)
+        {
+            foreach($evidence->evidenceItem as $item)
+            {
+                if (isset($item->variant->relatedContextualAllele))
+                {
+                    foreach($item->variant->relatedContextualAllele as $allele)
+                    {
+                        if (isset($allele->relatedGene))
+                            $gene_info = $allele->relatedGene;
+                    }
+                }
+            }
+        }
+
+        if (isset($gene_info->id))
+            $gene = Gene::entrez(substr($gene_info->id, 9))->first();
+        else
+            $gene = Gene::name($gene_info->label)->first();
+
+
+        // finally, we can build the model
+        $data = [
+            'type' => Curation::TYPE_VARIANT_PATHOGENICITY,
+            'type_string' => 'Variant Pathogenicity',
+            'subtype' => Curation::SUBTYPE_VARIANT_PATHOGENICITY,
+            'subtype_string' => 'Variant Pathogenicity',
+            'group_id' => 0,
+            'sop_version' => $record->interpretation->assertionMethod->label,
+            'curation_version' => null,
+            'source' => 'variant_interpretation',
+            'source_uuid' => $message->key,
+            'source_timestamp' => $message->timestamp,
+            'source_offset' => $message->offset,
+            'packet_id' => $packet->id,
+            'message_version' => null,
+            'assertion_uuid' => basename($record->interpretation->id),
+            'alternate_uuid' => null,
+            'panel_id' => $panel->id ?? null,
+            'affiliate_id' => basename($record->interpretation->contribution[0]->agent->id),
+            'affiliate_details' => $record->interpretation->contribution[0]->agent,
+            'gene_id' => $gene->id,
+            'gene_hgnc_id' => $gene->hgnc_id,
+            'gene_details' => $gene_info,
+            'variant_iri' => $record->interpretation->variant,
+            'variant_details' => null,
+            'document' => basename($record->interpretation->id),
+            'context' => null,
+            'title' => null,
+            'summary' => null,
+            'description' => $record->interpretation->description,
+            'comments' => null,
+            'disease_id' => $disease->id ?? null,
+            'conditions' => (isset($record->interpretation->condition) ? [$record->interpretation->condition[0]->disease[0]->id] : []),
+            'condition_details' => [$record->interpretation->condition ?? null],
+            'evidence' => null,
+            'evidence_details' => $record->interpretation->evidenceLine,
+            'assertions' => null,
+            'scores' => ['classification' => $record->interpretation->statementOutcome->label ?? null],
+            'score_details' => $record->interpretation->statementOutcome,
+            'curators' => null,
+            'published' => ($record->statusPublishFlag == "Publish"),
+            'animal_model_only' => false,
+            'events' => ['approval_date' => $approval_date ?? null,
+                         'publish_date' => $publish_date ?? null
+                        ],
+            'url' => [],
+            'version' => 1,
+            'status' => Curation::STATUS_ACTIVE
+        ];
+
+        $curation = new Curation($data);
+
+        // adjust the version number
+        
+        $curation->save();
+        
+        $old_curations->each(function ($item) {
+            $item->update(['status' => Curation::STATUS_ARCHIVE]);
+        });
+    }
 }

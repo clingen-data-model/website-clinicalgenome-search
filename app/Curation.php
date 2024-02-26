@@ -106,7 +106,7 @@ class Curation extends Model
                             'published', 'animal_model_only', 'events', 'version', 'status',
                             'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
                             'url', 'assertions', 'document', 'variant_iri', 'variant_details', 
-                            'gene_id', 'disease_id', 'packet_id'
+                            'gene_id', 'disease_id', 'packet_id', 'context'
                          ];
 
 	/**
@@ -133,6 +133,12 @@ class Curation extends Model
 
     public const SUBTYPE_NONE = 0;
     public const SUBTYPE_ACTIONABILITY = 1;
+    public const SUBTYPE_VALIDITY_GCI = 2;
+    public const SUBTYPE_VALIDITY_GCE = 3;
+    public const SUBTYPE_VALIDITY_GGP = 4;
+    public const SUBTYPE_DOSAGE_DCI = 10;
+    public const SUBTYPE_DOSAGE_GGP = 11;
+    public const SUBTYPE_VARIANT_PATHOGENICITY = 20;
 
     /*
     * Status constants and strings for display methods
@@ -244,6 +250,66 @@ class Curation extends Model
 	public function scopeType($query, $type)
     {
 		return $query->where('type', $type);
+    }
+
+
+    /**
+     * Query scope by type = dosage
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDosage($query)
+    {
+		return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY);
+    }
+
+
+    /**
+     * Query scope by type = actionability
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeActionability($query)
+    {
+		return $query->where('type', self::TYPE_ACTIONABILITY);
+    }
+
+
+    /**
+     * Query scope by type = validity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeValidity($query)
+    {
+		return $query->where('type', self::TYPE_GENE_VALIDITY);
+    }
+
+
+    /**
+     * Query scope by type = variant pathogenicity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeVariant($query)
+    {
+		return $query->where('type', self::TYPE_VARIANT_PATHOGENICITY);
+    }
+
+
+    /**
+     * Query scope by type = validity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeActive($query)
+    {
+		return $query->whereIn('status', [self::STATUS_ACTIVE, self::STATUS_ACTIVE_REVIEW]);
     }
 
 

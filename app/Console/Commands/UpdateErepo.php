@@ -77,7 +77,6 @@ class UpdateErepo extends Command
 
       foreach ($results_pieces as $dd)
       {
-
         foreach($dd->variantInterpretations as $variant)
         {
           // check against the local disease database to see if the MONDO is obsolete

@@ -54,7 +54,10 @@ Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look')
 Route::get('/genes/find/{term?}', 'Api\GeneController@find')->name('genes.find');
 Route::post('/genes/follow', 'Api\FollowController@create')->name('follows.create');
 Route::post('/genes/unfollow', 'Api\FollowController@remove')->name('follows.remove');
+
+// acmg
 Route::get('genes/acmg', 'Api\GeneController@acmg_index');
+Route::get('genes/acmg/expand/{id}', 'Api\GeneController@acmg_expand');
 
 // curated genes
 Route::resource('curations', 'Api\CurationController')->only(['index']);

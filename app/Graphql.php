@@ -1439,6 +1439,8 @@ class Graphql
                             curie
 							label
 						}
+						iri
+						description
                         '
 						. 'report_id
                         animal_model'

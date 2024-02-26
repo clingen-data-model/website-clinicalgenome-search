@@ -23,6 +23,7 @@ use App\Validity;
 use App\Nodal;
 use App\Gdmmap;
 use App\Precuration;
+use App\Curation;
 
 class RunReport extends Command
 {
@@ -79,6 +80,11 @@ class RunReport extends Command
             case 'taylor':
                 echo "Creating Leuko Report\n";
                 $this->report9();
+                echo "Update Complete\n";
+                break;
+            case 'actionability':
+                echo "Creating Actionability Report\n";
+                $this->actionability();
                 echo "Update Complete\n";
                 break;
             case 'test':
@@ -762,9 +768,21 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
         }
     }
 
+
+    public function actionability()
+    {
+        $curations = Curation::whereIn('status', [1, 6])->where('type', 4)->orderBy('document')->orderBy('context')->with('gene')->get();
+
+        foreach ($curations as $curation)
+        {
+            echo "$curation->document --- $curation->context --- " . $curation->gene->name . " --- " . $curation->conditions[0] . " \n";
+        }
+    }
+
+
     public function report10()
     {
-        $genes = Gene::whereNotNull('curation_status')->get();
+        $genes = Gene::whereIn('curation_status')->get();
 
         foreach ($genes as $gene)
         {

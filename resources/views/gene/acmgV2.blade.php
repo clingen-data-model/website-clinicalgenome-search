@@ -55,7 +55,6 @@
 
 
 @section('script_css')
-	<link href="https://cdn.jsdelivr.net/npm/jquery-treegrid@0.3.0/css/jquery.treegrid.css" rel="stylesheet">
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
@@ -78,7 +77,6 @@
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
 <script src="/js/bootstrap-table-sticky-header.min.js"></script>
-
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -127,41 +125,8 @@ function checkactive(text, value, field, data)
 
   }
 
-  function AddReadMore() {
-			//This limit you can set after how much characters you want to show Read More.
-			var carLmt = 300;
-			// Text to show when text is collapsed
-			var readMoreTxt = "<span class='ml-1'><i> ( ...Read More )</i></span>";
-			// Text to show when text is expanded
-			var readLessTxt = "<span class='ml-1'><i> ( ..Read Less )</i></span>";
-
-
-			//Traverse all selectors with this class and manipulate HTML part to show Read More
-			$(".add-read-more").each(function () {
-				if ($(this).find(".first-section").length)
-					return;
-
-				var allstr = $(this).text();
-				if (allstr.length > carLmt) {
-					var firstSet = allstr.substring(0, carLmt);
-					var secdHalf = allstr.substring(carLmt, allstr.length);
-					var strtoadd = firstSet + "<span class='second-section'>" + secdHalf + "</span><span class='read-more'  title='Click to Show More'>" + readMoreTxt + "</span><span class='read-less' title='Click to Show Less'>" + readLessTxt + "</span>";
-					$(this).html(strtoadd);
-				}
-			});
-
-			//Read More and Read Less Click Event binding
-			$(document).on("click", ".read-more,.read-less", function () {
-				$(this).closest(".add-read-more").toggleClass("show-less-content show-more-content");
-			});
-		}
-
   	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
-		//treeShowField: 'symbol',
-		//idField: 'id',
-		//parentIdField: 'pid',
-		//treeEnable: true,
 		stickyHeader: true,
 		stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
     	stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
@@ -176,12 +141,22 @@ function checkactive(text, value, field, data)
 			filterControl: 'input',
 			sortable: true,
 			searchFormatter: false,
-			width: 140
+			width: 120
 		},
-		/*{
-			title: 'ClinGen Curation Activity',
+		{
+			title: '',
+			field: 'has_comment',
+			formatter:  notesFormatter,
+			cellStyle: cellFormatter,
+			filterControl: 'input',
+			sortable: false,
+			searchFormatter: false,
+			width: 40
+		},
+		{
+			title: 'Curations Activity',
 			field: 'curation',
-			formatter: badgeFormatter,
+			formatter: singleBadgeFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'select',
 			sortable: true,
@@ -189,27 +164,26 @@ function checkactive(text, value, field, data)
 			filterData: 'var:activelist',
 			filterCustomSearch: checkactive,
           	width: 220
-		},*/
-		{
-			title: 'ClinGen Curated Diseases',
-			field: 'curation',
-			sortable: true,
-			filterControl: 'input',
-			formatter: diseaseCountFormatter,
-			searchFormatter: false,
-			cellStyle: cellFormatter,
-			width: 300
 		},
 		{
-			title: 'ClinGen Comments',
-			field: 'comments',
+			title: 'Disease',
+			field: 'disease_name',
 			sortable: true,
 			filterControl: 'input',
-			formatter: readMoreFormatter,
+			formatter: diseaseFormatter,
 			searchFormatter: false,
 			cellStyle: cellFormatter
-		}
-		/*
+		},
+		{
+			title: 'Reportable',
+			field: 'reportable',
+			sortable: true,
+			filterControl: 'input',
+			formatter: reportableFormatter,
+			searchFormatter: false,
+			cellStyle: cellFormatter,
+			width: 120,
+		},
 		{
 			title: 'Other Resources',
 			field: 'clinvar_link',
@@ -258,38 +232,15 @@ function checkactive(text, value, field, data)
 		$table.on('post-body.bs.table', function (e, name, args) {
 
 			$('[data-toggle="tooltip"]').tooltip();
-
-			AddReadMore();
-
-			/*var columns = $table.bootstrapTable('getOptions').columns
-
-        	if (columns && columns[0][1].visible) {
-          		$table.treegrid({
-            		treeColumn: 0,
-					initialState: "collapsed",
-            		onChange: function() {
-              			$table.bootstrapTable('resetView')
-            	}
-          		})
-        	}*/
 		})
 
 
 		$table.on('click-row.bs.table', function (e, row, $obj, field) {
 			
-			if (field == 'curation')
-			{
-				// change the icon
-				var far = $obj.find('.action-acmg-expand');
-				if (far.hasClass('fa-caret-square-up'))
-				{
-					$table.bootstrapTable('collapseRow', $obj.index())
-				}
-				else
-				{
-					$table.bootstrapTable('expandRow', $obj.index())
-				}
-			}
+			if (field != 'has_comment')
+				return false;
+
+			$table.bootstrapTable('expandRow', $obj.index())
 			
 		})
 
@@ -301,26 +252,20 @@ function checkactive(text, value, field, data)
 
 			var stripe = t.prev().hasClass('bt-even-row');
 
-			t.addClass('dosage-row-bottom').addClass('dosage-row-left').addClass('dosage-row-right');
+			t.addClass('dosage-row-bottom');
 
 			if (stripe)
 				t.addClass('bt-even-row');
 			else
 				t.addClass('bt-odd-row');
 
-			t.prev().addClass('dosage-row-top').addClass('dosage-row-left').addClass('dosage-row-right');
+			t.prev().addClass('dosage-row-top');
 
-			$obj.load( "/api/genes/acmg/expand/" + row.hgnc_id );
+			$obj.html(row.comments);
 
 			$obj.on("click", function() {
 				$table.bootstrapTable('collapseRow', index)
 			})
-
-			// change the icon
-			var far = t.prev().find('.action-acmg-expand');
-			far.removeClass('fa-caret-square-down').addClass('fa-caret-square-up');
-
-			$('[data-toggle="tooltip"]').tooltip();
 
 			return false;
 		})
@@ -328,10 +273,8 @@ function checkactive(text, value, field, data)
 
 		$table.on('collapse-row.bs.table', function (e, index, row, $obj) {
 
-				$obj.closest('tr').prev().removeClass('dosage-row-top').removeClass('dosage-row-left').removeClass('dosage-row-right');
-				
-				var far = $obj.closest('tr').prev().find('.action-acmg-expand');
-				far.addClass('fa-caret-square-down').removeClass('fa-caret-square-up');
+				$obj.closest('tr').prev().removeClass('dosage-row-top');
+
 				return false;
 		});
 
@@ -356,10 +299,6 @@ function checkactive(text, value, field, data)
 
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
-
-		/*$('.action-acmg-expand').on('click', function({
-
-		}));*/
 
   })
 

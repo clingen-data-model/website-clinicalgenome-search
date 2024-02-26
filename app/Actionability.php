@@ -445,6 +445,12 @@ class Actionability extends Model
 
         $record = json_decode($message->payload);
 
+        // there are no incremental updates in actionability, so
+        // every document received can archive all previous ones
+        $old_curations = Curation::actionability()->where('alternate_uuid', $record->iri)
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
         // what other are there?
         switch ($record->statusFlag)
         {
@@ -464,9 +470,6 @@ class Actionability extends Model
                 dd($record);
         }
         
-        //if (basename($record->iri) == 'AC011')
-        //    dd($record);
-
         // because each message can have multiple curations, we need to break them up.
         foreach($record->genes as $gene)
         {
@@ -482,22 +485,16 @@ class Actionability extends Model
                 // extract everything specific to gene and conditions
                 if ($gene->curie == $condition->gene)
                 {
-                    // lookup local disease
-                    $disease = Disease::curie($condition->curie)->first();
+                    // lookup local disease.  The curie may be MONDO or OMIM
+                    $disease = Disease::rosetta($condition->curie);
 
                     if ($disease === null)
                     {
-                        // the most likely reason is a different ontology, so call rosetta
-                        //$disease = Disease::rosetta($condition->curie);
-
-                        if ($disease === null)
-                        {
-                            // Some older records will have a malformed mondo id.  They'll eventually get 
-                            // replaced, but becuase we depend on a disease structure later on, lets just
-                            // create an empty one.
-                            echo "Bad disease $condition->curie \n";
-                            $disease = new Disease();
-                        }
+                        // Some older records will have a malformed mondo id.  They'll eventually get 
+                        // replaced, but becuase we depend on a disease structure later on, lets just
+                        // create an empty one.
+                        echo "Bad disease $condition->curie \n";
+                        $disease = new Disease();
                     }
 
                     // older records may not have assertions, so fake it.
@@ -520,7 +517,7 @@ class Actionability extends Model
                     {
                         if ($gene->curie == $assertion->gene && $condition->curie == $assertion->curie)
                         {
-                            // is there a current version of this curation?
+                            // Find the exact old curation to maintain our own internal version sequencing
                             if ($disease->id !== null)
                             {
                                 $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
@@ -564,8 +561,9 @@ class Actionability extends Model
                                 'gene_hgnc_id' => $gene->curie ?? null,
                                 'gene_details' => $gene,
                                 'variant_iri' => null,
-                                'Variant_details' => $record->variants ?? null,
+                                'variant_details' => $record->variants ?? null,
                                 'document' => basename($record->iri),
+                                'context' => (strpos($record->scoreDetails, 'Adult') > 0 ? 'Adult' : 'Pediatric'),
                                 'title' => $record->title,
                                 'summary' => null,
                                 'description' => null,
@@ -599,7 +597,6 @@ class Actionability extends Model
                             // retire the old curation and adjust the version on the new
                             if ($curation !== null)
                             {
-                                $curation->update(['status' => Curation::STATUS_ARCHIVE]);
                                 $new->version = $curation->version + 1;
                             }
 
@@ -610,6 +607,10 @@ class Actionability extends Model
                 }
             }
         }
+
+        $old_curations->each(function ($item) {
+            $item->update(['status' => Curation::STATUS_ARCHIVE]);
+        });
 
     }
 

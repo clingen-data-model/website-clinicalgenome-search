@@ -15,6 +15,7 @@ use App\GeneLib;
 use App\Change;
 use App\Gene;
 use App\Slug;
+use App\Curation;
 
 /**
  *
@@ -557,12 +558,243 @@ class Validity extends Model
 
 
     /**
+     * The validity topic queue is missing records, so preload from
+     * genegraph as of offset 2225
+     *
+     */
+    public static function preload()
+    {
+        $records = GeneLib::validityList([
+                                            'page' => 0,
+                                            'pagesize' => "null",
+                                            'sort' => 'GENE_LABEL',
+                                            'search' => null,
+                                            'direction' => 'ASC',
+                                            'properties' => true,
+                                            'curated' => false
+                                        ]);
+
+        foreach ($records->collection as $record)
+        {
+
+            $gene = Gene::hgnc($record->gene->hgnc_id)->first();
+            $disease = Disease::curie($record->disease->curie)->first();
+
+            // strip off the genegraph prefix and look up the EP
+            $pid = str_replace("CGAGENT:", '', $record->attributed_to->curie);
+            $panel = Panel::allids($pid)->first();
+
+            //now we strip the timestamp off the curie and check if its a GCEX load
+            if (strpos($record->curie, 'CGGCIEX') === 0)
+            {
+                $curie_root = substr($record->curie, 8);
+                $subtype = Curation::SUBTYPE_VALIDITY_GCE;
+            }
+            else
+            {
+                $curie_root = substr($record->curie, 15, 36);
+                $subtype = Curation::SUBTYPE_VALIDITY_GGP;
+
+            }
+
+            // 'report_date' => Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'),
+
+            // tecnically, genegraph should not send us any older records, but it doesn't hurt to make sure
+            $old_curations = Curation::validity()->where('document', $curie_root)
+                                        ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                        ->get();
+
+            // finally we can build the new curation
+            $data = [
+                'type' => Curation::TYPE_GENE_VALIDITY,
+                'type_string' => 'Gene-Disease Validity',
+                'subtype' => $subtype,
+                'subtype_string' => 'Genegraph preload',
+                'group_id' => 0,
+                'sop_version' => $record->specified_by->label ?? null,
+                'curation_version' => null,
+                'source' => 'genegraph',
+                'source_uuid' => $record->curie,
+                'source_timestamp' => 0,
+                'source_offset' => 0,
+                'packet_id' => null,
+                'message_version' =>  $record->legacy->jsonMessageVersion ?? null,
+                'assertion_uuid' => $record->iri,
+                'alternate_uuid' => $record->report_id ?? null,
+                'panel_id' => $panel->id,
+                'affiliate_id' => $panel->affiliate_id,
+                'affiliate_details' => $record->attributed_to,
+                'gene_id' => $gene->id,
+                'gene_hgnc_id' => $record->gene->hgnc_id,
+                'gene_details' => $record->gene,
+                'variant_iri' => null,
+                'variant_details' => null,
+                'document' => $curie_root,
+                'context' => null,
+                'title' => null,
+                'summary' => $record->description,
+                'description' => null,
+                'comments' => null,
+                'disease_id' => $disease->id,
+                'conditions' => [$record->disease->curie],
+                'condition_details' => $record->disease,
+                'evidence' => null,
+                'evidence_details' => $record->legacy_json,
+                'assertions' => $record->classification->label,
+                'scores' => ['classification' => $record->classification->label,
+                             'moi' => $record->mode_of_inheritance->label,
+                             'moi_hp' => $record->mode_of_inheritance->curie,
+                            ],
+                'score_details' => $record->classification,
+                'curators' => $record->contributors ?? null,
+                'published' => true,
+                'animal_model_only' => $record->animal_model_only,
+                'events' => ['report_date' => $record->report_date],
+                'url' => [],
+                'version' => 1,
+                'status' => Curation::STATUS_ACTIVE
+            ];
+
+            $curation = new Curation($data);
+
+            //dd($curation);
+
+            //update version number
+
+            $curation->save();
+
+            $old_curations->each(function ($item) {
+                $item->update(['status' => Curation::STATUS_ARCHIVE]);
+            });
+
+
+        }
+
+    }
+
+
+    /**
+     * Parse a ,essaage from the gene_disease_validity topic stream
+     *
+     */
+    public static function parser($message, $packet = null)
+    {
+      
+        $record = json_decode($message->payload);
+
+       /* if ($record->sopVersion != "8" && $record->sopVersion != "6" && $record->sopVersion != "7")
+            dd($record);*/
+
+        // process unpublish requests
+        if ($record->statusPublishFlag == "Unpublish")
+        {
+            if (!isset($record->iri))
+                die("Cannot unplublish iri");//echo "Unpublish request with no iri \n";
+            else
+            {
+                $old_curations = Curation::validity()->where('document', $record->iri)
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
+                $old_curations->each(function ($item) {
+                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+                });
+               
+            }
+
+            return;
+        }
+
+        if ($record->statusPublishFlag != "Publish")
+            dd($record);
+
+        // save old ones to later archive
+        $old_curations = Curation::validity()->where('document', $record->iri)
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
+        $gene = Gene::hgnc($record->genes[0]->curie)->first();
+        $disease = Disease::curie($record->conditions[0]->curie)->first();
+        $panel = Panel::allids($record->affiliation->gcep_id)->first();
+
+        // if no animal flag, make the calculation
+        // finally we can build the new curation
+        $data = [
+            'type' => Curation::TYPE_GENE_VALIDITY,
+            'type_string' => 'Gene-Disease Validity',
+            'subtype' => Curation::SUBTYPE_VALIDITY_GCI,
+            'subtype_string' => 'Gene-Disease Validity',
+            'group_id' => 0,
+            'sop_version' => $record->sopVersion,
+            'curation_version' => $record->curationVersion,
+            'source' => 'gene-validity',
+            'source_uuid' => $message->key,
+            'source_timestamp' => $message->timestamp,
+            'source_offset' => $message->offset,
+            'packet_id' => $packet->id ?? null,
+            'message_version' =>  $record->jsonMessageVersion ?? null,
+            'assertion_uuid' => $record->iri,
+            'alternate_uuid' => $record->report_id ?? null,
+            'panel_id' => $panel->id,
+            'affiliate_id' => $panel->affiliate_id,
+            'affiliate_details' => $record->affiliation,
+            'gene_id' => $gene->id,
+            'gene_hgnc_id' => $record->genes[0]->curie,
+            'gene_details' => $record->genes,
+            'variant_iri' => null,
+            'variant_details' => null,
+            'document' => $record->iri,
+            'context' => $record->selectedSOPVersion ?? null,
+            'title' => $record->title,
+            'summary' => $record->scoreJson->summary->FinalClassificationNotes,
+            'description' => null,
+            'comments' => null,
+            'disease_id' => $disease->id,
+            'conditions' => [$record->conditions[0]->curie],
+            'condition_details' => $record->conditions,
+            'evidence' => $record->scoreJson->EarliestArticles ?? null,
+            'evidence_details' => [ 'genetic_evidence' => $record->scoreJson->GeneticEvidence,
+                                    'ExperimentalEvidence' => $record->scoreJson->ExperimentalEvidence,
+                                    'valid_contradictory_evidence' => $record->scoreJson->ValidContradictoryEvidence
+                                  ],
+            'assertions' => null,
+            'scores' => ['classification' => $record->scoreJson->summary,
+                         'moi' => $record->scoreJson->ModeOfInheritance,
+                         'moi_hp' => $record->scoreJson->ModeOfInheritance,
+                         'replication_over_time' => $record->scoreJson->ReplicationOverTime
+                        ],
+            'score_details' => $record->scoreJson->summary,
+            'curators' => $record->scoreJson->summary->contributors ?? null,
+            'published' => ($record->statusPublishFlag == "Publish"),
+            'animal_model_only' => (isset($record->scoreJson->summary->AnimalModelOnly) ? $record->scoreJson->summary->AnimalModelOnly == "YES" : false),
+            'events' => ['report_date' => null,
+                         'statusFlag' => $record->statusFlag,
+                         'statusPublishFlag' => $record->statusPublishFlag
+                        ],
+            'url' => [],
+            'version' => 1,
+            'status' => Curation::STATUS_ACTIVE
+        ];
+
+        $curation = new Curation($data);
+//dd($curation);
+        // adjust the version number
+
+        $curation->save();
+
+        $old_curations->each(function ($item) {
+            $item->update(['status' => Curation::STATUS_ARCHIVE]);
+        });
+    }
+
+
+    /**
      * Map a gdv record to a model
      *
      */
-    public static function parser($data)
+    public static function parser2($data)
     {
-        dd($data);
+        return;
 
         $record = $data->data;
 

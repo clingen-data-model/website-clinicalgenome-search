@@ -64,6 +64,18 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
     //border-right: 1px solid blue;
 }
 
+.dosage-row-left {
+    border-left: 2px solid blue;
+    //border-left: 1px solid blue;
+    //border-right: 1px solid blue;
+}
+
+.dosage-row-right {
+    border-right: 2px solid blue;
+    //border-left: 1px solid blue;
+    //border-right: 1px solid blue;
+}
+
 .bt-even-row {
     background-color: #f9f9f9;
 }
@@ -80,3 +92,227 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
     background-color: #f5f5f5;
     //border: 2px solid black;
 }
+
+.table-score {
+  display: inline-block;
+    margin: 0 0;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    color: white;
+    font-size: 18;
+    font-weight: 700;
+}
+
+
+.cg-table-definitive, .cg-table-Definitive {
+    background-color: #276749 !important;
+    fill: #276749 !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-strong, .cg-table-Strong {
+    background-color: #38a169 !important;
+    fill: #38a169 !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-moderate, .cg-table-Moderate {
+    background-color: #68d391 !important;
+    fill: #68d391 !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-limited, .cg-table-Limited {
+    background-color: #fc8181 !important;
+    fill: #fc8181 !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-disputed, .cg-table-Disputed {
+    background-color: #e53e3e !important;
+    fill: #e53e3e !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-refuted, .cg-table-Refuted {
+    background-color: #9b2c2c !important;
+    fill: #9b2c2c !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+.cg-table-unknown, .cg-table-Unknown {
+    background-color: #a0aec0 !important;
+    fill: #a0aec0 !important;
+    width: -moz-fit-content !important;
+    width: fit-content !important;
+    vertical-align: top !important;
+    padding: 0px 8px;
+    text-transform: capitalize;
+    font-weight: 300;
+    margin-left: 8px;
+}
+
+.badge.cg-definitive, .badge.cg-Definitive {
+    background-color: #276749 !important;
+    vertical-align: top !important;
+    //margin-left: 8px;
+}
+.badge.cg-strong, .badge.cg-Strong {
+    background-color: #38a169 !important;
+    vertical-align: top !important;
+   // margin-left: 8px;
+}
+.badge.cg-moderate, .badge.cg-Moderate {
+    background-color: #68d391 !important;
+    vertical-align: top !important;
+    //margin-left: 8px;
+}
+.badge.cg-limited, .badge.cg-Limited {
+    background-color: #fc8181 !important;
+    vertical-align: top !important;
+    //margin-left: 8px;
+}
+.badge.cg-disputed, .badge.cg-Disputed {
+    background-color: #e53e3e !important;
+    vertical-align: top !important;
+    //margin-left: 8px;
+}
+.badge.cg-refuted, .badge.cg-Refuted {
+    background-color: #9b2c2c !important;
+    vertical-align: top !important;
+    text-transform: capitalize;
+   // margin-left: 8px;
+}
+.badge.cg-unknown, .badge.cg-Unknown {
+    background-color: #a0aec0 !important;
+    vertical-align: top !important;
+    text-transform: capitalize;
+    //margin-left: 8px;
+}
+
+.badge.cg-haplo-3 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: 1 !important;
+    //margin-left: 8px;
+}
+.badge.cg-haplo-2 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: .8 !important;
+    //margin-left: 8px;
+}
+.badge.cg-haplo-1 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: .6 !important;
+    //margin-left: 8px;
+}
+.badge.cg-haplo-0 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: .5 !important;
+    //margin-left: 8px;
+}
+.badge.cg-haplo-30 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: .4 !important;
+    //margin-left: 8px;
+}
+.badge.cg-haplo-40 {
+    background-color: #990000 !important;
+    vertical-align: top !important;
+    opacity: .3 !important;
+    //margin-left: 8px;
+}
+
+.badge.cg-triplo-3 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: 1 !important;
+    //margin-left: 8px;
+}
+.badge.cg-triplo-2 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: .8 !important;
+    //margin-left: 8px;
+}
+.badge.cg-triplo-1 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: .6 !important;
+    //margin-left: 8px;
+}
+.badge.cg-triplo-0 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: .5 !important;
+    //margin-left: 8px;
+}
+.badge.cg-triplo-30 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: .4 !important;
+    //margin-left: 8px;
+}
+.badge.cg-triplo-40 {
+    background-color: #003366 !important;
+    vertical-align: top !important;
+    opacity: .3 !important;
+    //margin-left: 8px;
+}
+
+//read more/less for lots of text in small columns
+.add-read-more.show-less-content .second-section,
+.add-read-more.show-less-content .read-less {
+   display: none;
+}
+
+.add-read-more.show-more-content .read-more {
+   display: none;
+}
+
+.add-read-more .read-more,
+.add-read-more .read-less {
+   font-weight: bold;
+   margin-left: 2px;
+   color: blue;
+   cursor: pointer;
+}
+
+
+

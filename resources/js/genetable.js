@@ -10,8 +10,7 @@
  * @param {} index
  * @param {*} row
  */
-function detailFormatter(index, row)
-{
+function detailFormatter(index, row) {
     var html = [];
 
     /*$.each(row, function (key, value) {
@@ -28,19 +27,18 @@ function detailFormatter(index, row)
  * @param {} index
  * @param {*} row
  */
-function reportDetailFormatter(index, row, element)
-{
+function reportDetailFormatter(index, row, element) {
     var html;
 
     $.ajaxSetup({
         cache: true,
         contentType: "application/x-www-form-urlencoded",
         processData: true,
-        headers:{
+        headers: {
             'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-TOKEN' : window.token,
-            'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
-           }
+            'X-CSRF-TOKEN': window.token,
+            'Authorization': 'Bearer ' + Cookies.get('clingen_dash_token')
+        }
     });
 
     $.ajax({
@@ -48,7 +46,7 @@ function reportDetailFormatter(index, row, element)
         type: 'get',
         dataType: 'html',
         async: false,
-        success: function(data) {
+        success: function (data) {
             html = data;
         }
     });
@@ -80,9 +78,9 @@ function table_buttons() {
                 event: function () {
                     if (window.auth !== 1)
                         swal({
-                         title: "Page Preferences",
-                         text: "You must be logged in to manage page preferences."
-                         });
+                            title: "Page Preferences",
+                            text: "You must be logged in to manage page preferences."
+                        });
                     else
                         $('#modalBookmark').modal('toggle');
                 },
@@ -91,8 +89,7 @@ function table_buttons() {
                 }
             }
         }
-    else if (typeof bookmarksonly !== 'undefined' && bookmarksonly)
-    {
+    else if (typeof bookmarksonly !== 'undefined' && bookmarksonly) {
         return {
             btnUsersAdd: {
                 text: 'Page Preferences',
@@ -100,11 +97,10 @@ function table_buttons() {
                 event: function () {
                     if (window.auth !== 1)
                         swal({
-                        title: "Page Preferences",
-                        text: "You must be logged in to manage page preferemces."
+                            title: "Page Preferences",
+                            text: "You must be logged in to manage page preferemces."
                         });
-                    else
-                    {
+                    else {
                         $('#modal-bookmark-status').html('&nbsp;');
                         $('#modal-new-bookmark').val('');
                         $('#bookmark-selected-preference').val('');
@@ -151,7 +147,7 @@ function nullFormatter(index, row) {
     if (row.type == 0)
         return '<span title="Gene">G</span>';
     else if (row.type == 3)
-    return '<span title="Gene">P</span>';
+        return '<span title="Gene">P</span>';
     else
         return '<span title="Region">R</span>';
 }
@@ -179,7 +175,7 @@ function vcepFormatter(index, row) {
     if (index == null)
         return '';
 
-    return  '<a target="external" href="https://clinicalgenome.org/affiliation/' + index + '" class="badge-info badge pointer ml-2">VCEP <i class="fas fa-external-link-alt"></i></a>';
+    return '<a target="external" href="https://clinicalgenome.org/affiliation/' + index + '" class="badge-info badge pointer ml-2">VCEP <i class="fas fa-external-link-alt"></i></a>';
 
 }
 
@@ -193,7 +189,7 @@ function reportableFormatter(index, row) {
     if (row.reportable)
         return '<span onclick="event.stopPropagation();"><i class="fas fa-check"></i></span>';
     else
-        return''
+        return ''
 }
 
 
@@ -228,7 +224,7 @@ function location01Formatter(index, row) {
         + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
         + '<span aria-label=" to " class="sr-only">-</span>'
         + '<span class="end">' + name.substring(pos + 1) + '</span>'
-    + '</div>';
+        + '</div>';
 
     return html;
 }
@@ -265,7 +261,7 @@ function locationFormatter(index, row) {
         + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
         + '<span aria-label=" to " class="sr-only">-</span>'
         + '<span class="end">' + name.substring(pos + 1) + '</span>'
-    + '</div>';
+        + '</div>';
 
     return html;
 }
@@ -302,7 +298,7 @@ function location38Formatter(index, row) {
         + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
         + '<span aria-label=" to " class="sr-only">-</span>'
         + '<span class="end">' + name.substring(pos + 1) + '</span>'
-    + '</div>';
+        + '</div>';
 
     return html;
 }
@@ -317,10 +313,10 @@ function regionFormatter(index, row) {
 
 
 function notesFormatter(index, row) {
-    
+
     if (!row.has_comment)
         return '';
-        
+
     return '<span data-toggle="tooltip" data-placement="top" title="This gene has ClinGen Comments.  Click to view."><i class="fas fa-comment-alt text-center"></i></span>';
 }
 
@@ -469,7 +465,7 @@ function reportFormatter(index, row) {
 
 function iscaFormatter(index, row) {
 
-    if (row.type == 0 || row.type ==3)
+    if (row.type == 0 || row.type == 3)
         return '<a href="'
             + '/kb/gene-dosage/' + row.hgnc_id
             + '">' + row.isca + '</a>';
@@ -553,12 +549,42 @@ function badgeFormatter(index, row) {
     return html;
 }
 
+function readMoreFormatter(index, row) {
+    return '<span class="add-read-more show-less-content">' + row.comments + '</span>';
+}
+
+function diseaseCountFormatter(index, row) {
+    var html = '';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">';
+    else
+        html += '<img class="" src="/images/clinicalValidity-off.png" title="Gene-Disease Validity" style="width:30px">';
+
+    if (row.has_dosage)
+        html += '<img class="ml-2" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">';
+    else
+        html += '<img class="ml-2" src="/images/dosageSensitivity-off.png" title="Dosage Sensitivity" style="width:30px">';
+
+    if (row.has_actionability)
+        html += '<img class="ml-2" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">';
+    else
+        html += '<img class="ml-2" src="/images/clinicalActionability-off.png" title="Clinical Actionability" style="width:30px">';
+
+    if (row.has_variant)
+        html += '<img class="ml-2" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">';
+    else
+        html += '<img class="ml-2" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
+
+    html += '<h6 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated <i class="far fa-caret-square-down ml-1 action-acmg-expand"></i></h6>';
+
+    return html;
+}
+
 
 function singleBadgeFormatter(index, row) {
     var html = '';
 
-    switch (row.curation)
-    {
+    switch (row.curation) {
         case "V":
             html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">Gene-Disease Validity';
             break;
@@ -580,10 +606,10 @@ function singleBadgeFormatter(index, row) {
 function ardiseaseFormatter(index, row) {
     var html = '';
 
-    index.forEach(function (item, idx, index){
+    index.forEach(function (item, idx, index) {
         html += '<div><a href="/kb/conditions/' + item.curie + '">' + item.label + '</a></div><div class="text-muted small">' + item.curie + '<br><br></div>';
-        if (idx < index.length - 1 )
-         html += '<hr>'
+        if (idx < index.length - 1)
+            html += '<hr>'
     });
 
     return html;
@@ -592,24 +618,22 @@ function ardiseaseFormatter(index, row) {
 function adultFormatter(index, row) {
     var html = '';
 
-    index.forEach(function (item, idx, index){
-        if (item == null)
-        {
+    index.forEach(function (item, idx, index) {
+        if (item == null) {
             html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
-                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
-            if (idx < index.length - 1 )
-                        html += '<hr>'
+                + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1)
+                html += '<hr>'
         }
-        else
-        {
+        else {
             html += '<div><a class="btn btn-default btn-block text-left btn-classification" href="' + item.source
-                     + '">' + item.classification;
+                + '">' + item.classification;
             if (item.classification.length < 30)
                 html += '<br><br>';
             html += '<div class="text-muted small">' + item.report_date
-                    + '</div></a></div>';
-            if (idx < index.length - 1 )
-                        html += '<hr>'
+                + '</div></a></div>';
+            if (idx < index.length - 1)
+                html += '<hr>'
         }
 
     });
@@ -620,23 +644,22 @@ function adultFormatter(index, row) {
 function pedFormatter(index, row) {
     var html = '';
 
-    index.forEach(function (item, idx, index){
-        if (item == null)
-        {
+    index.forEach(function (item, idx, index) {
+        if (item == null) {
             html += '<div><a class="btn btn-default btn-block text-left btn-classification-blank" href="#">'
-                    + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
-            if (idx < index.length - 1 )
-                        html += '<hr>'
+                + '&nbsp;<br><br><div class="text-muted small">&nbsp;</div></a></div>';
+            if (idx < index.length - 1)
+                html += '<hr>'
         }
         else {
             html += '<div><a class="btn btn-default btn-block text-left  btn-classification" href="' + item.source
-                     + '">' + item.classification;
+                + '">' + item.classification;
             if (item.classification.length < 30)
                 html += '<br><br>';
             html += '<div class="text-muted small">' + item.report_date
-                    + '</div></a></div>';
-            if (idx < index.length - 1 )
-                        html += '<hr>'
+                + '</div></a></div>';
+            if (idx < index.length - 1)
+                html += '<hr>'
         }
     });
 
@@ -664,8 +687,8 @@ function asbadgeFormatter(index, row) {
 
     if (row.animal_model_only)
         return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
-        + '' + txt + '<div class="badge badge-warning">'
-        + 'Animal Model Only</div></a>';
+            + '' + txt + '<div class="badge badge-warning">'
+            + 'Animal Model Only</div></a>';
 
     return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
         + '' + txt + '</a>';
@@ -737,17 +760,17 @@ function cbadgeFormatter(index, row) {
 
 function drsymbolFormatter(index, row) {
     return '<a href="/kb/drugs/' + row.curie + '">RXNORM:' + row.curie
-            + '</a>';
+        + '</a>';
 }
 
 function drugFormatter(index, row) {
     return '<a href="/kb/drugs/' + row.curie + '">' + row.label
-    + '</a>';
+        + '</a>';
 }
 
 function drPortalFormatter(index, row) {
     return '<a target="external" href="https://bioportal.bioontology.org/ontologies/RXNORM?p=classes&conceptid='
-    + row.curie + '" class="badge-info badge pointer ml-2">BioPortal <i class="fas fa-external-link-alt"></i></a>';
+        + row.curie + '" class="badge-info badge pointer ml-2">BioPortal <i class="fas fa-external-link-alt"></i></a>';
 
 }
 
@@ -783,9 +806,11 @@ function drbadgeFormatter(index, row) {
     return html;
 }
 
-var terms = { "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
-             "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
-            'Undetermined': 'Undetermined MOI' };
+var terms = {
+    "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
+    "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
+    'Undetermined': 'Undetermined MOI'
+};
 
 function moiFormatter(index, row) {
     return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';
@@ -798,7 +823,7 @@ function hasvalidityFormatter(index, row) {
 
 
     return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+        + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
 
@@ -808,7 +833,7 @@ function hasPharmaFormatter(index, row) {
         return '';
 
     return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
+        + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
 
@@ -826,7 +851,7 @@ function hasactionabilityFormatter(index, row) {
         return '';
 
     return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
+        + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
 
@@ -837,8 +862,8 @@ function hasdosageFormatter(index, row) {
 
 
     return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/genes/'
-            + row.hgnc_id
-            + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
+        + row.hgnc_id
+        + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
 
     /*if (row.has_dosage_haplo) {
         // return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/gene-dosage/'
@@ -933,7 +958,7 @@ function cnvlocationFormatter(index, row) {
         + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
         + '<span aria-label=" to " class="sr-only">-</span>'
         + '<span class="end">' + name.substring(pos + 1) + '</span>'
-    + '</div>';
+        + '</div>';
 
     return html;
 }
@@ -1105,8 +1130,7 @@ function dsreportFormatter(index, row) {
     var bclass = (row.workflow == "Awaiting Review" ? "default" : "success");
     var title = '';
 
-    if (row.type == 3)
-    {
+    if (row.type == 3) {
         bclass = 'unreviewable';
         row.workflow = "Not Reviewable";
         title = "This gene will not be reviewed because it is a pseudogene";
@@ -1116,11 +1140,11 @@ function dsreportFormatter(index, row) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
         if (row.hgnc_id == null)
-          return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
-            + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
+            return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
+                + '/kb/gene-dosage/' + row.isca + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
         else
             return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
-             + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
+                + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.workflow + '</a></span>';
     }
     else {
         return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-' + bclass + ' btn-block" title="' + title + '" href="'
@@ -1132,8 +1156,7 @@ function dsreportFormatter(index, row) {
 
 function dssymbolFormatter(index, row) {
 
-    if (row.type == 0 || row.type == 3)
-    {
+    if (row.type == 0 || row.type == 3) {
         if (row.hgnc_id == null)
             return '<span onclick="event.stopPropagation();" ><a href="/kb/genes/' + row.isca + '"><b>' + row.symbol + '</b></a></span>';
         else
@@ -1235,8 +1258,7 @@ function ageSorter(one, two) {
 
     var oneloc = one.match(/(\d+)\s*(Years|Months|Weeks|Days)/);
 
-    if (oneloc !== null && oneloc[1] !== undefined)
-    {
+    if (oneloc !== null && oneloc[1] !== undefined) {
         ageone = parseInt(oneloc[1]);
 
         if (oneloc[2] == "Years")
@@ -1250,8 +1272,7 @@ function ageSorter(one, two) {
 
     var twoloc = two.match(/(\d+)\s*(Years|Months|Weeks|Days)/);
 
-    if (twoloc !== null && twoloc[1] !== undefined)
-    {
+    if (twoloc !== null && twoloc[1] !== undefined) {
         agetwo = parseInt(twoloc[1]);
 
         if (twoloc[2] == "Years")
