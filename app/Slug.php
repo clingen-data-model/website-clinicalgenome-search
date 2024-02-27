@@ -69,6 +69,7 @@ class Slug extends Model
     public const TYPE_CURATION = 1;
 
     public const SUBTYPE_VALIDITY = 1;
+    public const SUBTYPE_DOSAGE = 2;
 
     /*
      * Type strings for display methods

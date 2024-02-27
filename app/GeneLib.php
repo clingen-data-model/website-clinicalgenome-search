@@ -73,6 +73,15 @@ class GeneLib extends Model
           'Not yet evaluated' => 'Not yet evaluated'
      ];
 
+     protected static $word_dosage_assertion_strings = [
+          '0' => 'No Evidence',
+          '1' => 'Little',
+          '2' => 'Emerging',
+          '3' => 'Sufficient',
+          '30' => 'AR',
+          '40' => 'Unlikely'
+     ];
+
      protected static $dosage_assertion_strings = [
           'ASSOCIATED_WITH_AUTOSOMAL_RECESSIVE_PHENOTYPE' => 'Gene Associated with Autosomal Recessive Phenotype',
           'MINIMAL_EVIDENCE' => 'Little Evidence for ####',
@@ -1122,6 +1131,20 @@ class GeneLib extends Model
 
           return $str . ' (' . self::$short_dosage_assertion_strings[$str] . ')';
      }
+
+
+     /**
+      * Return a displayable dosage assertion description
+      *
+      * @return string
+      */
+      public static function wordAssertionString($str)
+      {
+           if ($str === null || $str === false || $str === 'unknown')
+                return 'Unknown';
+ 
+           return self::$word_dosage_assertion_strings[$str];
+      }
      
 
      /**

@@ -75,6 +75,10 @@ class UpdateErepo extends Command
 
       Variant::query()->forceDelete();
 
+      // clear all the variant activity flags in genes and diseases
+      Disease::query()->update(['curation_activities->varpath' => false]);
+      Gene::query()->update(['activity->varpath' => false]);
+
       foreach ($results_pieces as $dd)
       {
         foreach($dd->variantInterpretations as $variant)
@@ -83,16 +87,18 @@ class UpdateErepo extends Command
           $disease = Disease::curie($variant->condition->{'@id'})->first();
 
           //echo $variant->{'@id'} . " " . $variant->guidelines[0]["outcome"]["label"] . "\n";
-          Variant::create(['iri' => $variant->{'@id'}, 'variant_id' => $variant->variationId,
-                      'caid' => $variant->caid,
-                      'condition' => $variant->condition,
-                      'published_date' => $variant->publishedDate ?? null,
-                      'evidence_links' => $variant->evidenceLinks,
-                      'gene' => $variant->gene,
-                      'guidelines' => $variant->guidelines,
-                      'hgvs' => $variant->hgvs,
-                      'type' => ($disease !== null && in_array($disease->status, [9, 10]) ? Variant::TYPE_OBSOLETE : Variant::TYPE_NONE)
-                    ]);
+          Variant::create(['iri' => $variant->{'@id'},
+                          'variant_id' => $variant->variationId,
+                          'caid' => $variant->caid,
+                          'condition' => $variant->condition,
+                          'published_date' => $variant->publishedDate ?? null,
+                          'evidence_links' => $variant->evidenceLinks,
+                          'gene' => $variant->gene,
+                          'guidelines' => $variant->guidelines,
+                          'hgvs' => $variant->hgvs,
+                          'erepo_uuid' => $variant->uuid,
+                          'type' => ($disease !== null && in_array($disease->status, [9, 10]) ? Variant::TYPE_OBSOLETE : Variant::TYPE_NONE)
+                        ]);
 
           // update the main gene table
           $gene = Gene::name($variant->gene->label)->first();
@@ -119,6 +125,10 @@ class UpdateErepo extends Command
 
       echo "DONE\n";
 
+      echo "Updating variant curations...";
+      $model = new Variant();
+      $model->preload();
+      echo "DONE\n";
     }
 
     protected function restore()

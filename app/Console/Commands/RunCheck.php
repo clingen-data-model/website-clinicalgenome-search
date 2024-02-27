@@ -11,6 +11,7 @@ use App\GeneLib;
 use App\Health;
 use App\Validity;
 use App\Actionability;
+use App\Dosage;
 use App\Sensitivity;
 use App\Variantpath;
 
@@ -119,19 +120,20 @@ class RunCheck extends Command
         echo "Checking for Validity changes...";
         // update validy table
         $model = new Validity();
-        $model->assertions();
+        $model->preload();
         echo "DONE\n";
 
         echo "Checking for actionability changes...";
         // update  actionability
-        $model = new Actionability();
-        $model->assertions();
+        //$model = new Actionability();
+        //$model->preload();
+        $this->call('query:kafka', ['topic' =>  'actionability']);
         echo "DONE\n";
 
         echo "Checking for dosage changes...";
         // update  actionability
-        $model = new Sensitivity();
-        $model->assertions();
+        $model = new Dosage();
+        $model->preload();
         echo "DONE\n";
 
         //echo "Checking for variant changes...";

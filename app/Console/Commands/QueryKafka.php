@@ -131,6 +131,12 @@ class QueryKafka extends Command
             $message = $consumer->consume(120*1000);
             //echo $message->err . "\n";
 
+            if ($message === null)
+            {
+                echo "Nothing here, bye\n";
+                exit;
+            }
+
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
@@ -143,7 +149,7 @@ class QueryKafka extends Command
                                          'status' => Packet::STATUS_ACTIVE
                                         ]);
                         $m->save();
-                        if ($topic == "dosage" || $topic == "actionability" || $topic = 'gene-validity')
+                        if ($topic == "dosage" || $topic == "actionability" || $topic = 'gene-validity' || $topic == 'variant_interpretation')
                         {
                             $a = $stream->parser;
                             $a($message, $m);

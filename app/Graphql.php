@@ -1530,6 +1530,42 @@ class Graphql
                 $nodal->animal_model_only = $record->animal_model;
             }
 
+			if ($include_lump_split ?? false)
+			{
+				// create additional entries for lumping and splitting
+				$nodal->las_included = [];
+				$nodal->las_excluded = [];
+				$nodal->las_rationale = [];
+				$nodal->las_curation = '';
+				$nodal->las_date = null;
+
+				if ($nodal->report_id !== null)
+				{
+					$map = Precuration::gdmid($nodal->report_id)->first();
+					if ($map !== null)
+					{
+						$nodal->las_included = $map->omim_phenotypes['included'] ?? [];
+						$nodal->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+						$nodal->las_rationale =$map->rationale;
+						$nodal->las_curation = $map->curation_type['description'] ?? '';
+
+						// the dates aren't always populated in the gene tracker, so we may need to restrict them.
+						$prec_date = $map->disease_date;
+						if ($prec_date !== null)
+						{
+							$dd = Carbon::parse($prec_date);
+							$rd = Carbon::parse($nodal->report_date);
+							$nodal->las_date = ($dd->gt($rd) ? $nodal->report_date : $prec_date);
+						}
+						else
+						{
+							$nodal->las_date = $nodal->report_date;
+						}
+					}
+
+				}
+			}
+
 			$collection->push($nodal);
 		}
 

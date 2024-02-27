@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
+use App\Exports\ValidityExportLS;
 
 use Auth;
 use Carbon\Carbon;
@@ -497,6 +498,20 @@ class ValidityController extends Controller
         $date = date('Y-m-d');
 
         return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download_ls(Request $request)
+    {
+        $date = date('Y-m-d');
+
+        return Gexcel::download(new ValidityExportLS, 'Clingen-Gene-Disease-Summary-LS-' . $date . '.csv');
     }
 
 

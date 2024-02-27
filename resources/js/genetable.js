@@ -133,6 +133,22 @@ function symbolFormatter(index, row) {
 }
 
 
+/**
+ * Format a symbol including hgnc
+ *
+ * @param {*} index
+ * @param {*} row
+ */
+function symbolHgncFormatter(index, row) {
+
+    var html =  '<span onclick="event.stopPropagation();" ><a href="/kb/genes/'
+                + row.hgnc_id + '"><b>' + row.symbol + '</b></a></span>'
+                + '<div class="text-muted small">' + row.hgnc_id + '</div>';
+
+    return html;
+}
+
+
 function typeFormatter(index, row) {
     if (row.type == 0)
         return { classes: 'global_table_cell gene' };
@@ -550,7 +566,10 @@ function badgeFormatter(index, row) {
 }
 
 function readMoreFormatter(index, row) {
-    return '<span class="add-read-more show-less-content">' + row.comments + '</span>';
+    if (row.comments)
+        return '<span class="add-read-more show-less-content">' + row.comments + '</span>';
+    else
+        return '<span class="text-muted text-center font-italic mt-4 ml-5">There are no comments at this time.</span>';
 }
 
 function diseaseCountFormatter(index, row) {
@@ -575,7 +594,7 @@ function diseaseCountFormatter(index, row) {
     else
         html += '<img class="ml-2" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
 
-    html += '<h6 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated <i class="far fa-caret-square-down ml-1 action-acmg-expand"></i></h6>';
+    html += '<h6 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated <i class="far fa-caret-square-down fa-lg ml-1 action-acmg-expand"></i></h6>';
 
     return html;
 }

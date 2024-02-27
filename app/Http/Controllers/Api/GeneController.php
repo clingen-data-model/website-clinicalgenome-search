@@ -85,8 +85,9 @@ class GeneController extends Controller
     {
         // ...otherwise assume gene
         $gene = Gene::with('curations')->hgnc($id)->first();
-
-        $dids = $gene->curations->unique('disease_id')->pluck('disease_id')->toArray();
+        
+        $dids = $gene->curations->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                ->unique('disease_id')->pluck('disease_id')->toArray();
 
         $diseases = Disease::whereIn('id', $dids)->get();
 
@@ -128,6 +129,8 @@ class GeneController extends Controller
                 // temp hack to deal with line length
                 if ($validity_score == "No Known Disease Relationship")
                     $validity_score = "No Known";
+
+                $validity_link = "/kb/gene-validity/" . $validity->source_uuid;
             }
             else
             {
@@ -141,8 +144,8 @@ class GeneController extends Controller
 
             if (isset($dosage->assertions['haploinsufficiency_assertion']))
             {
-                $haplo_score = $dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal'];
-                $haplo_tooltip = GeneLib::shortAssertionString($haplo_score) . " for Haploinsufficiency";
+                $haplo_score = GeneLib::wordAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']);
+                $haplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']) . " for Haploinsufficiency";
             }
             else
             {
@@ -153,31 +156,98 @@ class GeneController extends Controller
 
             if (isset($dosage->assertions['triplosensitivity_assertion']))
             {
-                $triplo_score = $dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal'];
-                $triplo_tooltip = GeneLib::shortAssertionString($triplo_score) . " for Triplosensitivity";
+                $triplo_score = GeneLib::wordAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']);
+                $triplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']) . " for Triplosensitivity";
             }
             else
             {
                 $triplo_score = null;
                 $triplo_tooltip = "";
             }
+
+            $dosage_link = ($dosage === null ? '#' : "/kb/gene-dosage/" . $dosage->gene_hgnc_id);
             
             // actionability
-            $actionability_link = ($disease->has_actionability ? "https://actionability.clinicalgenome.org/ac/" : null);
+            $adult = $gene->curations->where('type', Curation::TYPE_ACTIONABILITY)
+                                        ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                        ->where('context', 'Adult')
+                                        ->where('disease_id', $disease->id)->first();
+
+            $ped = $gene->curations->where('type', Curation::TYPE_ACTIONABILITY)
+                                        ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                        ->where('context', 'Pediatric')
+                                        ->where('disease_id', $disease->id)->first();
+
+            $adult_score = ($adult === null ? null : $adult->assertions['assertion']);
+            if ($adult_score !== null)
+            {
+                $adult_score = strtok($adult_score, " "); // extract first word
+                if ($adult_score == "Assertion")
+                    $adult_score = "Pending";
+            }
+            $actionability_adult_link = ($adult === null ? null :  "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document);
+            
+            $ped_score = ($ped === null ? null : $ped->assertions['assertion']);
+            if ($ped_score !== null)
+            {
+                $ped_score = strtok($ped_score, " "); // extract first word
+                if ($ped_score == "Assertion")
+                    $ped_score = "Pending";
+            }
+            $actionability_ped_link = ($ped === null ? null :  "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document);
 
 
             // variant
-            $variant_link = ($disease->has_variant ? "https://erepo.clinicalgenome.org/evrepo/ui/summary/classifications?columns=gene&values="
-                             . $gene->name . "&matchTypes=exact&pgSize=25" : null);
-
+            $variant = $gene->curations->where('type', Curation::TYPE_VARIANT_PATHOGENICITY)
+                                    ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                    ->where('disease_id', $disease->id)->first();
+                    
+            $variant_link = ($variant !== null ? "https://erepo.clinicalgenome.org/evrepo/ui/summary/classifications?columns=gene,mondoId&values="
+                             . $gene->name . "," . $disease->curie
+                             . "&matchTypes=exact,exact&pgSize=25&pg=1&matchMode=and" : null);
 
             $scores[$disease->id] = ['validity_score' => $validity_score ?? null, 'validity_moi' => $validity_moi ?? null,
-                                     'validity_tooltip' => $validity_tooltip ?? null,
+                                     'validity_tooltip' => $validity_tooltip ?? null, 'validity_link' => $validity_link ?? '#',
                                      'variant_link' => $variant_link,
                                      'dosage_haplo_score' => $haplo_score ?? null, 'dosage_triplo_score' => $triplo_score ?? null,
                                      'dosage_haplo_tooltip' => $haplo_tooltip, 'dosage_triplo_tooltip' => $triplo_tooltip,
-                                     'actionability_link' => $actionability_link
+                                     'dosage_link' => $dosage_link,
+                                     'actionability_adult_score' => $adult_score, 'actionability_pediatric_score' => $ped_score,
+                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
                                     ];
+        }
+
+        // Check if there are gene level dosage classifications
+        $dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                        ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                        ->whereNull('disease_id');
+        
+        if ($dosages->isNotEmpty())
+        {
+            $haplo_gene_score = $haplo_gene_tooltip = $triplo_gene_score = $triplo_gene_tooltip = null;
+
+            foreach($dosages as $dosage)
+            {
+                if (isset($dosage->assertions['haploinsufficiency_assertion']))
+                {
+                    $haplo_gene_score = $dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal'];
+                    $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
+                    $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
+                }
+                
+
+                if (isset($dosage->assertions['triplosensitivity_assertion']))
+                {
+                    $triplo_gene_score = $dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal'];
+                    $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
+                    $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
+                }
+            }
+
+            $scores[0] = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
+                        'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
+                        ];
+            
         }
 
                 /*foreach($diseases as $disease)

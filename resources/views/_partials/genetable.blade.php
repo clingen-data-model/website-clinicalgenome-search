@@ -32,6 +32,7 @@
     data-detail-view-icon="false"
     @if (isset($no_expand_click))
     data-detail-view-by-click="false"
+    data-unique-id="id"
     @else 
     data-detail-view-by-click="true"
     @endif

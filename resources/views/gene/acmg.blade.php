@@ -27,13 +27,16 @@
 
 		<div class="col-md-12 mb-2 border" style="background: #f2f7fc">
 			<p class="p-2">
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna 
+				The American College of Medical Genetics and Genomics has published recommendations for reporting secondary findings
+				in clinical exome and genome sequencing.  The most recent recommendation is 
+				<a href="https://pubmed.ncbi.nlm.nih.gov/37347242/">ACMG SF v3.2</a>.
+			</p>
+			<p class="p-2">
+			ClinGen has Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna 
 			aliqua. Odio eu feugiat pretium nibh ipsum consequat nisl vel pretium. Natoque penatibus et magnis dis parturient. 
 			Id venenatis a condimentum vitae. Pharetra sit amet aliquam id diam maecenas ultricies. Sit amet est placerat in egestas 
 			erat. Nunc congue nisi vitae suscipit tellus. Eget gravida cum sociis natoque penatibus et. At erat pellentesque adipiscing 
-			commodo. Odio eu feugiat pretium nibh ipsum consequat. Ut tristique et egestas quis ipsum. At quis risus sed vulputate odio. 
-			Sed faucibus turpis in eu mi bibendum neque. Duis tristique sollicitudin nibh sit amet commodo nulla facilisi. Augue 
-			interdum velit euismod in. Odio ut sem nulla pharetra.
+			commodo. Odio eu feugiat pretium nibh ipsum consequat.
 			</p>
 		</div>
 
@@ -158,20 +161,17 @@ function checkactive(text, value, field, data)
 
   	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
-		//treeShowField: 'symbol',
-		//idField: 'id',
-		//parentIdField: 'pid',
-		//treeEnable: true,
 		stickyHeader: true,
 		stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
     	stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
 		locale: 'en-US',
 		sortName: 'symbol',
+		sortOrder: 'asc',
 		columns: [
 		{
 			title: 'Gene Symbol',
 			field: 'symbol',
-			formatter: symbolFormatter,
+			formatter: symbolHgncFormatter,
 			cellStyle: cellFormatter,
 			filterControl: 'input',
 			sortable: true,
@@ -283,11 +283,11 @@ function checkactive(text, value, field, data)
 				var far = $obj.find('.action-acmg-expand');
 				if (far.hasClass('fa-caret-square-up'))
 				{
-					$table.bootstrapTable('collapseRow', $obj.index())
+					$table.bootstrapTable('collapseRowByUniqueId', row.id)
 				}
 				else
 				{
-					$table.bootstrapTable('expandRow', $obj.index())
+					$table.bootstrapTable('expandRowByUniqueId', row.id)
 				}
 			}
 			
@@ -312,9 +312,9 @@ function checkactive(text, value, field, data)
 
 			$obj.load( "/api/genes/acmg/expand/" + row.hgnc_id );
 
-			$obj.on("click", function() {
+			/*$obj.on("click", function() {
 				$table.bootstrapTable('collapseRow', index)
-			})
+			})*/
 
 			// change the icon
 			var far = t.prev().find('.action-acmg-expand');

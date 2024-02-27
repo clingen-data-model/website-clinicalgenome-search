@@ -88,7 +88,8 @@ class Gene extends Model
                             'ensembl_gene_id', 'entrez_id', 'ucsc_id', 'uniprot_id', 'function',
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
                             'notes', 'activity', 'curation_status', 'date_last_curated', 'status', 'disease',
-                            'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59' ];
+                            'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59',
+                            'activity->varpath' ];
 
 	/**
      * Non-persistent storage model attributes.

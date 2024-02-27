@@ -17,6 +17,7 @@ use App\Report;
 use App\Region;
 use App\Panel;
 use App\Genomeconnect;
+use App\Slug;
 
 use App\Imports\ExcelGC;
 
@@ -37,6 +38,52 @@ class HomeController extends Controller
             return $next($request);
         });
     }
+
+
+    /**
+     * Shortcut function for processing the CCID
+     * 
+     */
+    public function ccid($id)
+	{
+		if (substr($id, 0, 5) == 'CCID:') {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+                return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene Validity details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+            $id = $s->target;
+
+            // determing the path
+            if ($s->type == Slug::TYPE_CURATION)
+            {
+                switch ($s->subtype)
+                {
+                    case Slug::SUBTYPE_VALIDITY:
+                        $path = "validity-show";
+                        break;
+                    case Slug::SUBTYPE_DOSAGE:
+                        $path = 'dosage-show';
+                        break;
+                    default:
+                        return redirect()->route('gene-curations');
+                        
+                }
+            }
+            else
+            {
+
+            }
+
+            return redirect()->route($path, ['id' => $id]);
+        }
+
+		return redirect()->route('gene-curations');
+	}
 
 
     /**

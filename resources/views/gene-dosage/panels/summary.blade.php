@@ -23,6 +23,15 @@
             <div id="ideogram"> </div>
           </div>
         </div>
+        @if (!empty($slug->alias))
+        <div class="row pt-3">
+          <div class="col-sm-3 text-right mt-3">ClinGen Curation ID:</div>
+          <div class="col-sm-7 border-left-4 border-info bold mt-3">
+            {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Copied!</h5>" data-trigger="click" data-clipboard-text="{{ url('/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy URL to Clipboard</button>
+            <span data-toggle="tooltip" data-placement="top" title="The ClinGen Curation ID is an abbreviated link that you can use in documente.  Click on the button to the left to copy the link into your clipboard."><i class="fas fa-question-circle fa-lg ml-1"></i></span>
+            </div>
+        </div>
+        @endif
         <div class="row pb-2 pt-3">
           <div class="col-sm-3 text-right">Curation Status:</div>
           <div class="col-sm-9 border-left-4 border-info bold">

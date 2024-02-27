@@ -15,6 +15,7 @@ use App\Exports\DosageFullExport;
 use App\GeneLib;
 use App\Gene;
 use App\Filter;
+use App\Slug;
 use App\Jira;
 
 /**
@@ -119,6 +120,20 @@ class DosageController extends Controller
      */
     public function show(Request $request, $id = '')
     {
+        // if new Clingen slug, map to real id.
+        if (substr($id, 0, 5) == 'CCID:') {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+                return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene Validity details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+            $id = $s->target;
+        }
+        
         if (stripos('HGNC:', $id) !== 0)
         {
             $gene = Gene::name($id)->first();
@@ -181,6 +196,8 @@ class DosageController extends Controller
 		$record->GRCh38_sv_start = $record->formatPosition($record->grch38, 'svfrom');
 		$record->GRCh38_sv_stop = $record->formatPosition($record->grch38, 'svto');
 
+        $slug = Slug::target($id)->first();
+
 		// set display context for view
 		$display_tabs = collect([
 			'active' => "dosage",
@@ -189,7 +206,7 @@ class DosageController extends Controller
 
 		$user = $this->user;
 
-		return view('gene-dosage.show', compact('display_tabs', 'record', 'user'));
+		return view('gene-dosage.show', compact('display_tabs', 'record', 'user', 'slug'));
 	}
 
 

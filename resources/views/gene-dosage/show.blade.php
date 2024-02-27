@@ -105,6 +105,9 @@ $('[data-toggle="popover"]').popover({
 
 <link href="/css/footnote.css" rel="stylesheet" type="text/css" />
 
+<script src="/js/clipboard.min.js" ></script>
+
+
 <script type="text/javascript">
 $(document).ready(function() {
 
@@ -117,6 +120,18 @@ $(document).ready(function() {
   $("#gain_sc").click(function(){
       $("#tabs").ncbitabs("option", "active", 2);
   });
+
+  new ClipboardJS('.action-ccid-copy');
+
+    $('.action-ccid-copy').on('click', function(){
+        
+        var item = $(this);
+
+        setTimeout(function(){
+                item.tooltip('hide');
+        }, 1200);
+
+    });
 
   jQuery("#last_footnote").load("footnote.html", function() {
       jQuery.ui.jig.scan(this, {

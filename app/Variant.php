@@ -66,7 +66,7 @@ class Variant extends Model
      *
      * @var array
      */
-	protected $fillable = ['iri', 'variant_id', 'caid', 'condition', 'evidence_links',
+	protected $fillable = ['iri', 'variant_id', 'caid', 'condition', 'evidence_links', 'erepo_uuid',
 					        'published_date', 'gene', 'guidelines', 'hgvs', 'type', 'status'
                          ];
 
@@ -206,11 +206,116 @@ class Variant extends Model
 
 
     /**
+     * The variant_interpretations topic queue has died, so preload from
+     * erepo as of offset 2225
+     *
+     */
+    public static function preload()
+    {
+        //We already pull the erepo into the variant table.  
+
+        $records = self::all();
+
+        foreach ($records as $record)
+        {
+            //skip over duplicates
+            $check = Curation::variant()->active()->where('source_uuid',$record->erepo_uuid)->exists();
+            if ($check)
+                continue;
+
+            // it seems that some records are published without a condition...
+            if (isset($record->condition))
+                $disease = Disease::curie($record->condition['@id'])->first();
+            else
+                $disease = null;
+
+            // the erepo buries the panel id in the agents label.  cut it out
+            $panel_id = $record->guidelines[0]['agents'][0]['label'];
+            $panel_id = substr($panel_id, 3);
+            $panel_id = strtok($panel_id, ' ');
+            $panel = Panel::allids($panel_id)->first();
+
+            if (isset($record->gene['NCBI_id']))
+                $gene = Gene::entrez($record->gene['NCBI_id'])->first();
+            else
+                $gene = Gene::name($record->gene['label'])->first();
+
+            // there are entries where label is N/A and there is no entrez field
+            if ($gene === null)
+                continue;
+
+            // finally, we can build the model
+            $data = [
+                'type' => Curation::TYPE_VARIANT_PATHOGENICITY,
+                'type_string' => 'Variant Pathogenicity',
+                'subtype' => Curation::SUBTYPE_VARIANT_PATHOGENICITY_ERP,
+                'subtype_string' => 'Erepo preload',
+                'group_id' => 0,
+                'sop_version' => null,
+                'curation_version' => $record->guidelines[0]['version'] ?? null,
+                'source' => 'erepo',
+                'source_uuid' => $record->erepo_uuid,
+                'source_timestamp' => 0,
+                'source_offset' => 0,
+                'packet_id' => null,
+                'message_version' => null,
+                'assertion_uuid' => $record->iri,
+                'alternate_uuid' => $record->caid,
+                'panel_id' => $panel->id ?? null,
+                'affiliate_id' => $panel_id,
+                'affiliate_details' => $record->guidelines[0]['agents'][0]['affiliation'],
+                'gene_id' => $gene->id,
+                'gene_hgnc_id' => $gene->hgnc_id,
+                'gene_details' => $record->gene,
+                'variant_iri' => $record->variant_id,
+                'variant_details' => $record->hgvs,
+                'document' => $record->variant_id,
+                'context' => null,
+                'title' => null,
+                'summary' => null,
+                'description' => null,
+                'comments' => null,
+                'disease_id' => $disease->id ?? null,
+                'conditions' => (isset($record->condition['@id']) ? [$record->condition['@id']] : []),
+                'condition_details' => [$record->condition ?? null],
+                'evidence' => $record->evidence_links,
+                'evidence_details' => $record->guidelines[0]['agents'][0]['evidenceCodes'],
+                'assertions' => $record->guidelines[0]['outcome']['label'],
+                'scores' => ['classification' => $record->guidelines[0]['outcome']['label'] ?? null],
+                'score_details' => $record->guidelines,
+                'curators' => null,
+                'published' => true,
+                'animal_model_only' => false,
+                'events' => ['publish_date' => $record->published_date
+                            ],
+                'url' => ['cspecId' => $record->guidelines[0]->cspecId ?? null],
+                'version' => 1,
+                'status' => Curation::STATUS_ACTIVE
+            ];
+
+            $curation = new Curation($data);
+
+            // adjust the version number
+            
+            $curation->save();
+            
+            //$old_curations->each(function ($item) {
+            //    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+            //});
+
+           
+        }
+
+    }
+
+
+    /**
      * Map a variant pathogenicity record to a curation
      *
      */
     public static function parser($message, $packet)
     {
+        dd($message);
         $record = json_decode($message->payload);
 
         //dd($record);

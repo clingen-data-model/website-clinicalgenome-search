@@ -164,9 +164,11 @@ class Mysql
         // get the list of gene relative to SF 3.2
         $genes = Gene::with('curations')->acmg59()->get();
 
-        $parents = [];
+        $diseases = [];
 
-        $disease_index = 1;
+        //$parents = [];
+
+        //$disease_index = 1;
 
         // build parent gene nodes
         foreach ($genes as $gene)
@@ -185,7 +187,9 @@ class Mysql
                                 'gene_hgnc_id' => $gene->hgnc_id,
                                 'disease_label' => null,
                                 'disease_mondo' => null,
-                                'disease_count' => $gene->curations->whereNotNull('disease_id')->unique('disease_id')->count(),
+                                'disease_count' => $gene->curations->whereNotNull('disease_id')
+                                                                   ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
+                                                                   ->unique('disease_id')->count(),
                                 'curation' => ($gene->hasActivity('dosage') ? 'D' : '') . 
                                                 ($gene->hasActivity('actionability') ? 'A' : '') . 
                                                 ($gene->hasActivity('validity') ? 'V' : '') . 
@@ -200,7 +204,7 @@ class Mysql
                                 ]);
                 $collection->push($node);
 
-                //$dids = $gene->curations->unique('disease_id')->pluck('disease_id')->toArray();
+                $diseases = array_merge($diseases, $gene->curations->unique('disease_id')->pluck('disease_id')->toArray());
 
                 //$diseases = Disease::whereIn('id', $dids)->get();
 
@@ -264,7 +268,8 @@ class Mysql
         }*/
 
 		$ngenes = $collection->unique('gene_hgnc_id')->count();
-		$ndiseases = $collection->unique('disease_mondo')->count();
+		//$ndiseases = $collection->unique('disease_mondo')->count();
+        $ndiseases = count(array_unique($diseases));
 		
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];

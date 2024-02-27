@@ -443,6 +443,13 @@ class Actionability extends Model
     public static function parser($message, $packet = null)
     {
 
+        $bad_mondos = [ 'MONDO:015515' => 'MONDO:0015515',
+                       'MONDO: 0016473' => 'MONDO:0016473',
+                       'MONDO:000456' => 'MONDO:0000456',
+                       'MONDO:00017279' => 'MONDO:0017279',
+                       'MONDO:10743' => 'MONDO:0010743'
+                     ];
+
         $record = json_decode($message->payload);
 
         // there are no incremental updates in actionability, so
@@ -479,12 +486,34 @@ class Actionability extends Model
             if ($mygene === null)
                 dd($gene);
 
+            // create a list of all preferred conditions associated with this gene
+            $preferred = [];
+
+            foreach($record->preferred_conditions as $condition)
+                if ($gene->curie == $condition->gene)
+                    $preferred[] = $condition->curie;
+
+            $preferred = array_unique($preferred);
+            $preferred_done = [];
+
             // find all the conditions associated with this gene
             foreach($record->conditions as $condition)
             {
                 // extract everything specific to gene and conditions
                 if ($gene->curie == $condition->gene)
                 {
+                    // there are some malformed disease ids.  Repair them
+                    if (isset($bad_mondos[$condition->curie]))
+                    {
+                        echo "Changed malformed $condition->curie to ";
+                        $condition->curie = $bad_mondos[$condition->curie];
+                        echo "$condition->curie \n";
+                    }
+
+                    // the preferred condition will frequently be repeated.  Only do it once.
+                    if (in_array($condition->curie, $preferred_done))
+                        continue;
+
                     // lookup local disease.  The curie may be MONDO or OMIM
                     $disease = Disease::rosetta($condition->curie);
 
@@ -604,6 +633,10 @@ class Actionability extends Model
 
                         }
                     }
+
+                    // if this was a preferred condition, mark it as done
+                    if (in_array($condition->curie, $preferred))
+                        $preferred_done[] = $condition->curie;
                 }
             }
         }

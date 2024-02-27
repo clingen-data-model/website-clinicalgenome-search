@@ -139,6 +139,7 @@ class Curation extends Model
     public const SUBTYPE_DOSAGE_DCI = 10;
     public const SUBTYPE_DOSAGE_GGP = 11;
     public const SUBTYPE_VARIANT_PATHOGENICITY = 20;
+    public const SUBTYPE_VARIANT_PATHOGENICITY_ERP = 21;
 
     /*
     * Status constants and strings for display methods

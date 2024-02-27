@@ -63,7 +63,7 @@ class Disease extends Model
     protected $fillable = [
         'curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
         'do_id', 'orpha_id', 'gard_id', 'umls_id', 'synonym', 'omim_label', 'orpha_label',
-        'omim', 'description', 'type', 'status',
+        'omim', 'description', 'type', 'status', 'curation_activities->varpath'
     ];
 
     /**

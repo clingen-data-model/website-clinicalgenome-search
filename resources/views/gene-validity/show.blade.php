@@ -120,10 +120,13 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6 mt-2">
+        <div class="col-md-1 mt-2">
+            &nbsp;
+        </div>
+        <div class="col-md-5 mt-2">
             <div class="row">
-                <dt class="col-sm-5">Contradictory Evidence:
-                <dd class="col-sm-7">
+                <dt class="col-sm-6">Contradictory Evidence:
+                <dd class="col-sm-4">
                     {{ $record->sop7_valid_contradictory_evidence }}
                 </dd>
             </div>
@@ -132,7 +135,8 @@
             <div class="row">
                 <dt class="col-sm-4 pt-2">ClinGen Curation ID:
                 <dd class="col-sm-8">
-                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Link copied</h5>" data-trigger="click" data-clipboard-text="{{ url('/kb/gene-validity/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy Link</button>
+                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Copied!</h5>" data-trigger="click" data-clipboard-text="{{ url('/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy URL to Clipboard</button>
+                    <span data-toggle="tooltip" data-placement="top" title="The ClinGen Curation ID is an abbreviated link that you can use in documente.  Click on the button to the left to copy the link into your clipboard."><i class="fas fa-question-circle fa-lg ml-1"></i></span>
                 </dd>
             </div>
         </div>

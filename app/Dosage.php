@@ -9,6 +9,7 @@ use App\Traits\Display;
 
 use Uuid;
 use App\Curation;
+use App\Slug;
 
 /**
  *
@@ -444,6 +445,10 @@ class Dosage extends Model
 
         foreach ($records->collection as $record)
         {
+            //skip over duplicates
+            $check = Curation::dosage()->active()->where('source_uuid',$record->dosage_curation->curie)->exists();
+            if ($check)
+                continue;
 
             $gene = Gene::hgnc($record->hgnc_id)->first();
 
@@ -520,16 +525,21 @@ class Dosage extends Model
 
                 $curation = new Curation($data);
 
-                //dd($curation);
-
                 //update version number
 
                 $curation->save();
-
-                $old_curations->each(function ($item) {
-                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
-                });
             }
+
+            // create or update the CCID
+            $s = Slug::firstOrCreate(['target' => $record->hgnc_id],
+                                    [ 'type' => Slug::TYPE_CURATION,
+                                      'subtype' => Slug::SUBTYPE_DOSAGE,
+                                      'status' => Slug::STATUS_INITIALIZED
+                                    ]);
+
+            $old_curations->each(function ($item) {
+                $item->update(['status' => Curation::STATUS_ARCHIVE]);
+            });
 
         }
     }

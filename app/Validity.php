@@ -331,11 +331,11 @@ class Validity extends Model
         foreach ($assertions->collection as $assertion)
         {
             // check or update Slug table
-            $s = Slug::firstOrCreate(['target' => $assertion->curie],
+            /* $s = Slug::firstOrCreate(['target' => $assertion->curie],
                                     [ 'type' => Slug::TYPE_CURATION,
                                       'subtype' => Slug::SUBTYPE_VALIDITY,
                                       'status' => Slug::STATUS_INITIALIZED
-                                    ]);
+                                    ]); */
 
             //dd($assertion->disease->curie);
             $current = Validity::curie($assertion->curie)->orderBy('version', 'desc')->first();
@@ -576,6 +576,10 @@ class Validity extends Model
 
         foreach ($records->collection as $record)
         {
+            //skip over duplicates
+            $check = Curation::validity()->active()->where('source_uuid',$record->curie)->exists();
+            if ($check)
+                continue;
 
             $gene = Gene::hgnc($record->gene->hgnc_id)->first();
             $disease = Disease::curie($record->disease->curie)->first();
@@ -657,12 +661,18 @@ class Validity extends Model
 
             $curation = new Curation($data);
 
-            //dd($curation);
-
             //update version number
 
             $curation->save();
 
+            // create or update the CCID
+            $s = Slug::firstOrCreate(['target' => $record->curie],
+                                    [ 'type' => Slug::TYPE_CURATION,
+                                      'subtype' => Slug::SUBTYPE_VALIDITY,
+                                      'status' => Slug::STATUS_INITIALIZED
+                                    ]);
+
+            // archive aany old versions
             $old_curations->each(function ($item) {
                 $item->update(['status' => Curation::STATUS_ARCHIVE]);
             });

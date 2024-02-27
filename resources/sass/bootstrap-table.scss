@@ -51,6 +51,12 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
   min-width: 300px;
 }
 
+.equal {
+  display: flex;
+  display: -webkit-flex;
+  flex-wrap: wrap;
+}
+
 .dosage-row-bottom {
     border-bottom: 2px solid blue;
     //border-left: 1px solid blue;
@@ -184,7 +190,7 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
     margin-left: 8px;
 }
 
-.badge.cg-definitive, .badge.cg-Definitive {
+.badge.cg-definitive, .badge.cg-Definitive, .badge.cg-Sufficient  {
     background-color: #276749 !important;
     vertical-align: top !important;
     //margin-left: 8px;
@@ -194,29 +200,36 @@ background-image: url("/images/sort-dn-20-v2.png") !important;
     vertical-align: top !important;
    // margin-left: 8px;
 }
-.badge.cg-moderate, .badge.cg-Moderate {
+.badge.cg-moderate, .badge.cg-Moderate, .badge.cg-Emerging {
     background-color: #68d391 !important;
     vertical-align: top !important;
     //margin-left: 8px;
 }
-.badge.cg-limited, .badge.cg-Limited {
+.badge.cg-limited, .badge.cg-Limited, .badge.cg-Little {
     background-color: #fc8181 !important;
     vertical-align: top !important;
     //margin-left: 8px;
 }
-.badge.cg-disputed, .badge.cg-Disputed {
+.badge.cg-disputed, .badge.cg-Disputed, .badge.cg-Unlikely {
     background-color: #e53e3e !important;
     vertical-align: top !important;
     //margin-left: 8px;
 }
-.badge.cg-refuted, .badge.cg-Refuted {
+.badge.cg-refuted, .badge.cg-Refuted  {
     background-color: #9b2c2c !important;
     vertical-align: top !important;
     text-transform: capitalize;
    // margin-left: 8px;
 }
-.badge.cg-unknown, .badge.cg-Unknown {
+.badge.cg-unknown, .badge.cg-Unknown, .badge.cg-No{
     background-color: #a0aec0 !important;
+    vertical-align: top !important;
+    text-transform: capitalize;
+    //margin-left: 8px;
+}
+
+.badge.cg-ar, .badge.cg-AR {
+    background-color: #63b3ed !important;
     vertical-align: top !important;
     text-transform: capitalize;
     //margin-left: 8px;

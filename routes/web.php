@@ -13,11 +13,15 @@
 
 Route::view('/message', 'error.message-standard');
 
+Route::get('/{id}', 'HomeController@ccid')->where(['id' => 'CCID:[0-9]+'])->name('test-ccid');
+
 Route::get('/', function () {
 
 	return redirect()->route('gene-curations');
 
 });
+
+Route::get('/CCID:{id}', 'TestController@ccid')->where(['id' => 'CCID:[0-9]+'])->name('test-ccid');
 
 Route::get('/kb/curations', function () {
 
@@ -113,6 +117,8 @@ Route::group(['prefix' => 'kb/gene-validity'], function () {
 		Route::get('/', 'ValidityController@index')->name('validity-index');
 
 		Route::get('/download', 'ValidityController@download')->name('validity-download');
+
+		Route::get('/download/ls', 'ValidityController@download_ls')->name('validity-ls-download');
 
 		Route::get('/page/{page}', 'ValidityController@index');
 
@@ -254,7 +260,7 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 // Redirect and/or legacy routes
 Route::get('/kb/home', 'HomeController@home');
 
-//Route::get('/test', 'TestController@index');
+Route::get('/test', 'TestController@index');
 
 Route::post('/kb/genomeconnect/upload', 'HomeController@gc_upload')->name('gencon-upload');
 
