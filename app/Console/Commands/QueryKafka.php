@@ -149,7 +149,7 @@ class QueryKafka extends Command
                                          'status' => Packet::STATUS_ACTIVE
                                         ]);
                         $m->save();
-                        if ($topic == "dosage" || $topic == "actionability" || $topic = 'gene-validity' || $topic == 'variant_interpretation')
+                        if ($topic == "dosage" || $topic == "actionability" || $topic == 'gene-validity' || $topic == 'variant_interpretation')
                         {
                             $a = $stream->parser;
                             $a($message, $m);
