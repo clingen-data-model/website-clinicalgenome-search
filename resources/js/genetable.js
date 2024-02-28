@@ -569,7 +569,7 @@ function readMoreFormatter(index, row) {
     if (row.comments)
         return '<span class="add-read-more show-less-content">' + row.comments + '</span>';
     else
-        return '<span class="text-muted text-center font-italic mt-4 ml-5">There are no comments at this time.</span>';
+        return '<span class="text-muted text-center font-italic mt-4 ml-5">There are no guidance notes at this time.</span>';
 }
 
 function diseaseCountFormatter(index, row) {

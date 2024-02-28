@@ -56,10 +56,10 @@
                     </tr>
                     <tr>
                         <td><strong>Gene-Disease Validity Curations w/ Lumping & Splitting </strong>
-                            <div class="small">This file provides a summary of the Gene-Disease Validity curations completed by ClinGen's GCEPs. This file is built in real-time and includes the assodiated Lumping & Spitting details.</div>
+                            <div class="small">This file provides a summary of the Gene-Disease Validity curations completed by ClinGen's GCEPs. This file is built in real-time and includes the associated Lumping & Spitting details.</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-ls-download') }}"  class="btn btn-default watchdownloadclick" title="Gene-Disease Validity Curations"><i class="fas fa-download"></i> CSV</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-ls-download') }}"  class="btn btn-default watchdownloadclick" title="Gene-Disease Validity Curations w/ Lumping & Splitting"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>

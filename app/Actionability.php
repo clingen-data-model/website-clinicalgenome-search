@@ -601,7 +601,7 @@ class Actionability extends Model
                                 'conditions' => [($condition->curie ?? null)],
                                 'condition_details' => $condition,
                                 'evidence' => null,
-                                'evidence_details' => null,
+                                'evidence_details' => $record->preferred_conditions,
                                 'assertions' => $assertion ?? null,
                                 'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus
                                             ],

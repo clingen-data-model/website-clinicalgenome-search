@@ -26,14 +26,17 @@
 	<div class="col-md-2 text-center text-bold pb-2 pt-2">Reportable as SF</div>
 </div>
 @foreach ($diseases as $disease)
+ @if (!isset($scores[$disease->id]))
+	@continue
+ @endif
 	<div class="row border-bottom equal">
 		<!-- disease -->
 		<div class="col-md-5 border-right pt-2 pb-2"><span onclick="event.stopPropagation();"><a href="/kb/conditions/{{ $disease->curie }}" class="text-primary">{{ $disease->label }}</a></span><div class="small text-muted">{{ $disease->curie }}</div></div>
 		<!-- moi -->
 		<div class="col-md-1 border-right pt-2 pb-2 text-center">
 			<div class="mt-1 pt-2">{{ $scores[$disease->id]['validity_moi'] }}
-				@if (!empty($scores[$disease->id]['validity_tooltip']))
-				<span class="cursor-pointer ml-1 mt-4" data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['validity_tooltip'] }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
+				@if (!empty($scores[$disease->id]['validity_moi']))
+				<span class="cursor-pointer ml-1 mt-4" data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['validity_moi'] }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
 				@else
 				<span class="ml-1 mt-4">&nbsp;</span>
 				@endif
@@ -42,9 +45,9 @@
 		<!-- Validity -->
 		<div class="col-md-1 border-right p-2 text-center">
 			@if ($scores[$disease->id]['validity_score'] !== null)
-			<a href="{{ $scores[$disease->id]['validity_link'] }}" target="_gt"><span class="small text-white badge cg-{{ $scores[$disease->id]['validity_score'] }} mt-2 w-100">{{ $scores[$disease->id]['validity_score'] }}</span></a>
+			<span class="small badge cg-{{ $scores[$disease->id]['validity_score'] }} mt-2 w-100" data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['validity_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['validity_link'] }}" target="_gt">{{ $scores[$disease->id]['validity_score'] }}</a></span>
 			@else 
-			<span class="small text-white pt-2 pb-2 mt-2">&nbsp;</span>
+			<span class="small mt-2">&nbsp;</span>
 			@endif
 		</div>
 		<!-- Dosage -->
@@ -75,10 +78,11 @@
 			@endif
 		</div>
 		<!-- variant -->
-		<div class="col-md-1 border-right pt-2 pb-2 text-center">
+		<div class="col-md-1 border-right pt-1 pb-1 text-center">
 			@if($scores[$disease->id]['variant_link'] !== null)
-			<span class="small"><a href="{{ $scores[$disease->id]['variant_link'] }}" target="_erepo"><i class="fas fa-external-link-alt"></i></a></span>
-			<div class="small text-muted">Report</div>
+			<span class=""><a href="{{ $scores[$disease->id]['variant_link'] }}" target="_erepo">ERepo <i class="fas fa-external-link-alt"></i></a></span>
+			<!-- <div class="small text-muted">Report</div> -->
+			<span class=" mt-2"><a href="https://cspec.genome.network/cspec/ui/svi/?search={{ $gene->name }}%20{{ $disease->curie }}" target="_erepo">CSpec <i class="fas fa-external-link-alt"></i></a></span>
 			@else 
 			<span class="small">&nbsp;</span>
 			<div class="small text-muted">&nbsp;</div>
@@ -98,7 +102,7 @@
 <div class="row mt-3 mb-1">
 	<div class="col-md-12">
 		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: </span>
-		Dosage Sensitivity also has a gene level score of 
+		Dosage Sensitivity also has a non-disease specific score for this gene of 
 		<span class="font-weight-bold">
 		@if ($scores[0]['dosage_haplo_gene_score'] !== null)
 			<span class="small ml-1 mr-1 badge cg-{{ $scores[0]['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_haplo_gene_tooltip'] }}</a></span>

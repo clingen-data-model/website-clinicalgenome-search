@@ -40,7 +40,7 @@
 			</p>
 		</div>
 
-		<div class="col-md-12 light-arrows dark-table">
+		<div class="col-md-12 light-arrows dark-table pl-0 pr-0">
 				@include('_partials.genetable', ['expand' => true, 'no_expand_click' => true])
 
 		</div>
@@ -134,9 +134,9 @@ function checkactive(text, value, field, data)
 			//This limit you can set after how much characters you want to show Read More.
 			var carLmt = 280;
 			// Text to show when text is collapsed
-			var readMoreTxt = "<span class='ml-1'><i> ( ...Read More )</i></span>";
+			var readMoreTxt = "<span class='ml-1 text-info'><i>  ...continue reading </i> <i class='fas fa-chevron-down'></i></span>";
 			// Text to show when text is expanded
-			var readLessTxt = "<span class='ml-1'><i> ( ..Read Less )</i></span>";
+			var readLessTxt = "<span class='ml-1 text-info'><i>  ...show less </i> <i class='fas fa-chevron-up'></i></span>";
 
 
 			//Traverse all selectors with this class and manipulate HTML part to show Read More
@@ -201,7 +201,7 @@ function checkactive(text, value, field, data)
 			width: 300
 		},
 		{
-			title: 'ClinGen Comments',
+			title: 'ClinGen Variant Classification Guidance',
 			field: 'comments',
 			sortable: true,
 			filterControl: 'input',
@@ -310,17 +310,16 @@ function checkactive(text, value, field, data)
 
 			t.prev().addClass('dosage-row-top').addClass('dosage-row-left').addClass('dosage-row-right');
 
-			$obj.load( "/api/genes/acmg/expand/" + row.hgnc_id );
-
-			/*$obj.on("click", function() {
-				$table.bootstrapTable('collapseRow', index)
-			})*/
+			$obj.load( "/api/genes/acmg/expand/" + row.hgnc_id , function() {
+				$(this).find('[data-toggle="tooltip"]').tooltip();
+			});
 
 			// change the icon
 			var far = t.prev().find('.action-acmg-expand');
 			far.removeClass('fa-caret-square-down').addClass('fa-caret-square-up');
 
 			$('[data-toggle="tooltip"]').tooltip();
+			
 
 			return false;
 		})

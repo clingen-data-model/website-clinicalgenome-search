@@ -432,12 +432,14 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
+		$show_clingen_comment = !empty($gene->notes);
+
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
-                        'pmids', 'mimflag', 'mims',
+                        'pmids', 'mimflag', 'mims', 'show_clingen_comment',
                          'disease_collection', 'total_panels', 'variant_collection', 'gc'))
 						->with('user', $this->user);;
 	}
@@ -721,7 +723,7 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
@@ -974,7 +976,7 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
@@ -1224,7 +1226,7 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
@@ -1235,6 +1237,8 @@ class GeneController extends Controller
 
 		//get GenomeConnect info
 		$gc = $gene->genomeconnect;
+
+		$show_clingen_comment = !empty($gene->notes);
 
 		return view('gene.show-genomeconnect', compact(
 			'display_tabs',
@@ -1250,7 +1254,7 @@ class GeneController extends Controller
 			'gceps',
 			'vceps',
             'pregceps',
-            'total_panels', 'gc'
+            'total_panels', 'gc', 'show_clingen_comment'
 		))
 			->with('user', $this->user);
 	}
@@ -1291,14 +1295,16 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " external resources"
 		]);
 
 		//get GenomeConnect info
 		$gc = $gene->genomeconnect;
 
-		return view('gene.show-external-resources', compact('display_tabs', 'record', 'gc'))
+		$show_clingen_comment = !empty($gene->notes);
+
+		return view('gene.show-external-resources', compact('display_tabs', 'record', 'gc', 'show_clingen_comment'))
 						->with('user', $this->user);
 	}
 

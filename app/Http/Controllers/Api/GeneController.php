@@ -63,6 +63,7 @@ class GeneController extends Controller
 										'sort' => $sort ?? 'GENE_LABEL',
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => $input['search'] ?? null,
+                                        'filter' => 'preferred_only',
                                         'curated' => false ]);
 
         if ($results === null)
@@ -83,11 +84,22 @@ class GeneController extends Controller
      */
     public function acmg_expand(ApiRequest $request, $id = null)
     {
+        $filter = true;     // set to true to filter out non-preferred disease terms;
+
         // ...otherwise assume gene
         $gene = Gene::with('curations')->hgnc($id)->first();
         
-        $dids = $gene->curations->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
-                                ->unique('disease_id')->pluck('disease_id')->toArray();
+        $curations = $gene->curations->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
+
+        if ($filter == 'preferred_only')
+        {
+            $curations = $curations->filter(function ($item) {
+                return (($item->type != Curation::TYPE_ACTIONABILITY) ||
+                        ($item->type == Curation::TYPE_ACTIONABILITY && $item->conditions[0] == $item->evidence_details[0]['curie']));
+            });
+        }
+
+        $dids = $curations->unique('disease_id')->pluck('disease_id')->toArray();
 
         $diseases = Disease::whereIn('id', $dids)->get();
 
@@ -106,13 +118,13 @@ class GeneController extends Controller
                 if ($validity->subtype == Curation::SUBTYPE_VALIDITY_GGP)
                 {
                     $validity_score = GeneLib::validityClassificationString($validity->score_details['label']);
-                    $validity_tooltip = GeneLib::validityMoiString($validity->scores['moi']);
+                    $validity_tooltip = $validity_score;
                     $validity_moi = GeneLib::validityMoiAbvrString($validity->scores['moi']);
                 }
                 else if ($validity->subtype == Curation::SUBTYPE_VALIDITY_GCE)
                 {
                     $validity_score = GeneLib::validityClassificationString($validity->score_details['label']);
-                    $validity_tooltip = GeneLib::validityMoiString($validity->scores['moi']);
+                    $validity_tooltip = $validity_score;
                     $validity_moi = GeneLib::validityMoiAbvrString($validity->scores['moi']);
                 }
                 else    // topic stream
@@ -122,7 +134,7 @@ class GeneController extends Controller
 
                     // remove the HP term
                     $validity_moi = substr($validity_moi, 0, strpos($validity_moi, ' (HP:0'));
-                    $validity_tooltip = $validity_moi;
+                    $validity_tooltip = $validity_score;
                     $validity_moi = GeneLib::validityMoiAbvrString($validity_moi);
                 }
              
@@ -178,23 +190,29 @@ class GeneController extends Controller
                                         ->where('context', 'Pediatric')
                                         ->where('disease_id', $disease->id)->first();
 
-            $adult_score = ($adult === null ? null : $adult->assertions['assertion']);
-            if ($adult_score !== null)
+            $adult_score = $actionability_adult_link = null;
+
+            if ($adult !== null)
             {
+                $adult_score = $adult->assertions['assertion'];
                 $adult_score = strtok($adult_score, " "); // extract first word
                 if ($adult_score == "Assertion")
                     $adult_score = "Pending";
+                $actionability_adult_link = "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document;
+
             }
-            $actionability_adult_link = ($adult === null ? null :  "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document);
+
+            $ped_score = $actionability_ped_link = null;
             
-            $ped_score = ($ped === null ? null : $ped->assertions['assertion']);
-            if ($ped_score !== null)
+            if ($ped !== null)
             {
+                $ped_score = $ped->assertions['assertion'];
                 $ped_score = strtok($ped_score, " "); // extract first word
                 if ($ped_score == "Assertion")
                     $ped_score = "Pending";
+                $actionability_ped_link = "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document;
+
             }
-            $actionability_ped_link = ($ped === null ? null :  "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document);
 
 
             // variant
@@ -216,7 +234,7 @@ class GeneController extends Controller
                                      'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
                                     ];
         }
-
+        
         // Check if there are gene level dosage classifications
         $dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])

@@ -182,14 +182,23 @@ class Mysql
                 $activity[] = 'VAR_PATH';
             if ($gene->activity['actionability'])
                 $activity[] = 'ACTIONABILITY';
+
+            $curations = $gene->curations->whereNotNull('disease_id')
+                        ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
+
+            if ($filter == 'preferred_only')
+            {
+                $curations = $curations->filter(function ($item) {
+                    return (($item->type != Curation::TYPE_ACTIONABILITY) ||
+                            ($item->type == Curation::TYPE_ACTIONABILITY && $item->conditions[0] == $item->evidence_details[0]['curie']));
+                });
+            }
            
             $node = new Nodal([ 'gene_label' => $gene->name,
                                 'gene_hgnc_id' => $gene->hgnc_id,
                                 'disease_label' => null,
                                 'disease_mondo' => null,
-                                'disease_count' => $gene->curations->whereNotNull('disease_id')
-                                                                   ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
-                                                                   ->unique('disease_id')->count(),
+                                'disease_count' => $curations->unique('disease_id')->count(),
                                 'curation' => ($gene->hasActivity('dosage') ? 'D' : '') . 
                                                 ($gene->hasActivity('actionability') ? 'A' : '') . 
                                                 ($gene->hasActivity('validity') ? 'V' : '') . 
@@ -202,73 +211,15 @@ class Mysql
                                 'pid' => 0,
                                 'type' => 3
                                 ]);
-                $collection->push($node);
 
-                $diseases = array_merge($diseases, $gene->curations->unique('disease_id')->pluck('disease_id')->toArray());
+            $collection->push($node);
 
-                //$diseases = Disease::whereIn('id', $dids)->get();
+            $diseases = array_merge($diseases, $curations->unique('disease_id')->pluck('disease_id')->toArray());
 
-                /*foreach($diseases as $disease)
-                {
-                    $activity = [];
-                    if ($disease->curation_activities['dosage'])
-                        $activity[] = 'GENE_DOSAGE';
-                    if ($disease->curation_activities['validity'])
-                        $activity[] = 'GENE_VALIDITY';
-                    if ($disease->curation_activities['varpath'] ?? false)
-                        $activity[] = 'VAR_PATH';
-                    if ($disease->curation_activities['actionability'])
-                        $activity[] = 'ACTIONABILITY';
-
-                    $node = new Nodal([ 'gene_label' => $disease->label,
-                                    'gene_hgnc_id' => $disease->curie,
-                                    'disease_label' => $disease->label,
-                                    'disease_mondo' => $disease->curie,
-                                    'disease_count' => 1,
-                                    'curation' => ($disease->hasActivity('dosage') ? 'D' : '') . 
-                                                    ($disease->hasActivity('actionability') ? 'A' : '') . 
-                                                    ($disease->hasActivity('validity') ? 'V' : '') . 
-                                                    ($disease->hasActivity('varpath') ? 'R' : ''),
-                                    'curation_activities' => $activity,
-                                    'has_comment' => false,
-                                    'comments' =>  $disease->notes ?? '',
-                                    'reportable' => false,
-                                    'id' => 100000 + $disease_index,
-                                    'pid' => $gene->id,
-                                    'type' => 3
-                                    ]);
-                    $collection->push($node);
-
-                    $disease_index++;
-                }*/
-
-                //$parents[$gene->hgnc_id] = $gene->id;
         }
 
-        //$hgnc_ids =  $genes->pluck('hgnc_id')->toArray();
-
-        // get all the validity assertions associated with these genes
-        /*$validity_collection = Validity::whereIn('gene_hgnc_id', ['HGNC:130'])->groupBy('gene_hgnc_id')->get();
-        foreach($validity_collection as $record)
-        {
-            $node = new Nodal([ 'gene_label' => $record->gene_label,
-                                'gene_hgnc_id' => $record->gene_hgnc_id,
-                                'disease_label' => $record->disease_label,
-                                'disease_mondo' => $record->disease_mondo,
-                                'curation' => 'V',
-                                'curation_activities' => ['GENE_VALIDITY'],
-                                'has_comment' => false,
-                                'comments' => null,
-                                'reportable' => false,
-                                'id' => 100000 + $record->id,
-                                'pid' => $parents[$record->gene_hgnc_id],
-                                'type' => 3
-                                ]);
-                $collection->push($node);
-        }*/
 
 		$ngenes = $collection->unique('gene_hgnc_id')->count();
-		//$ndiseases = $collection->unique('disease_mondo')->count();
         $ndiseases = count(array_unique($diseases));
 		
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
