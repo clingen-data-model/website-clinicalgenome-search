@@ -40,34 +40,34 @@
 			</div>
 		</div>
 		<!-- Validity -->
-		<div class="col-md-1 border-right pt-2 pb-2 text-center">
+		<div class="col-md-1 border-right p-2 text-center">
 			@if ($scores[$disease->id]['validity_score'] !== null)
-			<a href="{{ $scores[$disease->id]['validity_link'] }}" target="_gt"><span class="small text-white badge cg-{{ $scores[$disease->id]['validity_score'] }} pt-2 pb-2 mt-2">{{ $scores[$disease->id]['validity_score'] }}</span></a>
+			<a href="{{ $scores[$disease->id]['validity_link'] }}" target="_gt"><span class="small text-white badge cg-{{ $scores[$disease->id]['validity_score'] }} mt-2 w-100">{{ $scores[$disease->id]['validity_score'] }}</span></a>
 			@else 
 			<span class="small text-white pt-2 pb-2 mt-2">&nbsp;</span>
 			@endif
 		</div>
 		<!-- Dosage -->
-		<div class="col-md-1 pt-2 pb-2 text-center">
+		<div class="col-md-1 pt-2 pr-2 pl-2 text-center">
 			@if($scores[$disease->id]['dosage_haplo_score'] !== null)
-				<span class="small badge cg-{{ $scores[$disease->id]['dosage_haplo_score'] }} " data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['dosage_haplo_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['dosage_link'] }}" target="_gt">{{ $scores[$disease->id]['dosage_haplo_score'] }}</a></span>
+				<span class="small badge cg-{{ $scores[$disease->id]['dosage_haplo_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['dosage_haplo_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['dosage_link'] }}" target="_gt">{{ $scores[$disease->id]['dosage_haplo_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
 			@if($scores[$disease->id]['dosage_triplo_score'] !== null)
-				<span class="small badge cg-{{ $scores[$disease->id]['dosage_triplo_score'] }} "  data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['dosage_triplo_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['dosage_link'] }}" target="_gt">{{ $scores[$disease->id]['dosage_triplo_score'] }}</a></span>
+				<span class="small badge cg-{{ $scores[$disease->id]['dosage_triplo_score'] }} w-100"  data-toggle="tooltip" data-placement="top" title="{{ $scores[$disease->id]['dosage_triplo_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['dosage_link'] }}" target="_gt">{{ $scores[$disease->id]['dosage_triplo_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
 		</div>
 		<!-- Actionability -->
-		<div class="col-md-1 border-right  border-left pt-2 text-center">
+		<div class="col-md-1 border-right  border-left pt-2 pr-2 pl-2 text-center">
 			@if($disease->has_actionability)
 			@if ($scores[$disease->id]['actionability_adult_score'] !== null)
-			<span class="small badge cg-{{ $scores[$disease->id]['actionability_adult_score'] }}" data-toggle="tooltip" data-placement="top" title="Adult Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_adult_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_adult_score'] }}</a></span>
+			<span class="small badge cg-{{ $scores[$disease->id]['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Adult Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_adult_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_adult_score'] }}</a></span>
 			@endif
 			@if ($scores[$disease->id]['actionability_pediatric_score'] !== null)
-			<span class="small badge cg-{{ $scores[$disease->id]['actionability_pediatric_score'] }}" data-toggle="tooltip" data-placement="top" title="Pediatric Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_pediatric_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_pediatric_score'] }}</a></span>
+			<span class="small badge cg-{{ $scores[$disease->id]['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Pediatric Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_pediatric_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_pediatric_score'] }}</a></span>
 			@endif
 			@else 
 			<span class="small">&nbsp;</span>
@@ -101,7 +101,7 @@
 		Dosage Sensitivity also has a gene level score of 
 		<span class="font-weight-bold">
 		@if ($scores[0]['dosage_haplo_gene_score'] !== null)
-			<span class="small badge cg-{{ $scores[0]['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_haplo_gene_tooltip'] }}</a></span>
+			<span class="small ml-1 mr-1 badge cg-{{ $scores[0]['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_haplo_gene_tooltip'] }}</a></span>
 		@endif
 		</span>
 		@if ($scores[0]['dosage_triplo_gene_score'] !== null)
@@ -109,7 +109,7 @@
 				and
 			@endif
 			<span class="font-weight-bold">
-				<span class="small badge cg-{{ $scores[0]['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_triplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_triplo_gene_tooltip'] }}</a></span>
+				<span class="small ml-1 badge cg-{{ $scores[0]['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_triplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_triplo_gene_tooltip'] }}</a></span>
 			</span>
 		@endif
 	</div>

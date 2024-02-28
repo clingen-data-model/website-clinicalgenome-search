@@ -145,8 +145,8 @@ class GeneController extends Controller
 
 		// set display context for view
         $display_tabs = collect([
-            'active' => "acmg",
-            'title' => "ACMG SF",
+            'active' => "gene-curations",
+            'title' => "ACMG SF Genes",
             'scrid' => null, //Filter::SCREEN_ALL_GENES,
 			'display' => "ACMG SF Genes"
 		]);
