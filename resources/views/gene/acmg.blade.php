@@ -132,7 +132,7 @@ function checkactive(text, value, field, data)
 
   function AddReadMore() {
 			//This limit you can set after how much characters you want to show Read More.
-			var carLmt = 300;
+			var carLmt = 280;
 			// Text to show when text is collapsed
 			var readMoreTxt = "<span class='ml-1'><i> ( ...Read More )</i></span>";
 			// Text to show when text is expanded
@@ -295,7 +295,7 @@ function checkactive(text, value, field, data)
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
-			$obj.attr('colspan',12);
+			$obj.attr('colspan',3);
 
 			var t = $obj.closest('tr');
 

@@ -3,7 +3,7 @@
 		<b>Last Curated Date:  </b>{{ $gene->displayDate($gene->date_last_curated) }}
 	</div>
 	<div class="col-md-9 text-right">
-		<span class="text-info font-italic">
+		<span class="text-dark">
 			Click on the disease name, or one of the activity classifications, to view more detailed information about the curation.
 		</span>
 	</div>
@@ -28,7 +28,7 @@
 @foreach ($diseases as $disease)
 	<div class="row border-bottom equal">
 		<!-- disease -->
-		<div class="col-md-5 border-right pt-2 pb-2"><span class="small" onclick="event.stopPropagation();"><a href="/kb/conditions/{{ $disease->curie }}">{{ $disease->label }}</a></span><div class="small text-muted">{{ $disease->curie }}</div></div>
+		<div class="col-md-5 border-right pt-2 pb-2"><span onclick="event.stopPropagation();"><a href="/kb/conditions/{{ $disease->curie }}" class="text-primary">{{ $disease->label }}</a></span><div class="small text-muted">{{ $disease->curie }}</div></div>
 		<!-- moi -->
 		<div class="col-md-1 border-right pt-2 pb-2 text-center">
 			<div class="mt-1 pt-2">{{ $scores[$disease->id]['validity_moi'] }}
@@ -95,13 +95,13 @@
 	</div>
 @endforeach
 @if (isset($scores[0]))
-<div class="row mt-2">
+<div class="row mt-3 mb-1">
 	<div class="col-md-12">
 		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: </span>
 		Dosage Sensitivity also has a gene level score of 
 		<span class="font-weight-bold">
 		@if ($scores[0]['dosage_haplo_gene_score'] !== null)
-			<span class="small badge cg-{{ $scores[0]['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_haplo_gene_tooltip'] }}">{{ $scores[0]['dosage_haplo_gene_tooltip'] }}</span>
+			<span class="small badge cg-{{ $scores[0]['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_haplo_gene_tooltip'] }}</a></span>
 		@endif
 		</span>
 		@if ($scores[0]['dosage_triplo_gene_score'] !== null)
@@ -109,7 +109,7 @@
 				and
 			@endif
 			<span class="font-weight-bold">
-				<span class="small badge cg-{{ $scores[0]['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_triplo_gene_tooltip'] }}">{{ $scores[0]['dosage_triplo_gene_tooltip'] }}</span>
+				<span class="small badge cg-{{ $scores[0]['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $scores[0]['dosage_triplo_gene_tooltip'] }}"><a class="text-white" href="{{ $scores[0]['dosage_link'] }}" target="_gt">{{ $scores[0]['dosage_triplo_gene_tooltip'] }}</a></span>
 			</span>
 		@endif
 	</div>

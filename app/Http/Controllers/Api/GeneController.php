@@ -246,6 +246,7 @@ class GeneController extends Controller
 
             $scores[0] = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
                         'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
+                        'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
                         ];
             
         }
