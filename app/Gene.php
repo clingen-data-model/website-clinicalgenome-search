@@ -797,8 +797,8 @@ class Gene extends Model
                     $regions = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
-                                             ->where('start37', '<=', (int) $start)
-                                             ->where('stop37', '>=', (int) $stop);
+                                             ->where('start37', '<=', (int) $stop)
+                                             ->where('stop37', '>=', (int) $start);
                                    })->orWhere(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 1);
                                         if ((int) $chr == 23) 
@@ -820,8 +820,8 @@ class Gene extends Model
                     $regions = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
-                                             ->where('start38', '>=', (int) $start)
-                                             ->where('stop38', '<=', (int) $stop);
+                                             ->where('start38', '>=', (int) $stop)
+                                             ->where('stop38', '<=', (int) $start);
                                    })->orWhere(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 1);
                                         if ((int)$chr == 23) 
