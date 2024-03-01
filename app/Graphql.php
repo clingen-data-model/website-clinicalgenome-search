@@ -564,6 +564,8 @@ class Graphql
 			$node->transcript = $localgene->transcript;
 			$node->is_acmg = (boolean) $localgene->acmg59;
 			$node->notes = $localgene->notes;
+			$node->is_par = $localgene->is_par;
+			$node->par_coordinates = $localgene->par_coordinates;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();

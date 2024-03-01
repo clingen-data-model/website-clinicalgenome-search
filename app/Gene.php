@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Display;
 
 use Uuid;
+use Str;
 
 /**
  *
@@ -74,7 +75,8 @@ class Gene extends Model
                'mane_plus' => 'array',
                'genegraph' => 'array',
                'disease' => 'array',
-               'curation_status' => 'array'
+               'curation_status' => 'array',
+               'par_coordinates' => 'array'
      ];
 
      /**
@@ -89,7 +91,10 @@ class Gene extends Model
                             'chr', 'start37', 'stop37', 'stop38', 'start38', 'history', 'type',
                             'notes', 'activity', 'curation_status', 'date_last_curated', 'status', 'disease',
                             'seqid37', 'seqid38', 'mane_select', 'mane_plus', 'genegraph', 'acmg59',
-                            'activity->varpath' ];
+                            'activity->varpath', 'is_par', 'par_coordinates',
+                            'par_coordinates->grch37->x', 'par_coordinates->grch37->y',
+                            'par_coordinates->grch38->x', 'par_coordinates->grch38->y'
+                          ];
 
 	/**
      * Non-persistent storage model attributes.
@@ -643,6 +648,38 @@ class Gene extends Model
 
 
      /**
+     * General location formatter
+     *
+     * @@param
+     * @return
+     */
+     public function format_location($coord, $attr = false)
+     {
+          if (empty($coord))
+               return null;
+
+          if ($attr)
+               return $coord[$attr] ?? null;
+               
+          switch ($coord['chr'])
+          {
+               case '23':
+                    $chr = 'X';
+                    break;
+               case '24':
+                    $chr = 'Y';
+                    break;
+               default:
+                    $chr = $coord['chr'];
+          }
+
+          return 'chr' . $chr . ':' . $coord['start'] . '-' . $coord['stop'];
+     }
+
+
+
+
+     /**
      * Search for all contained or overlapped genes and regions
      *
      * @@param	string	$ident
@@ -683,12 +720,14 @@ class Gene extends Model
           $start = str_replace(',', '', empty($location[1]) ? '0' : $location[1]);  // strip out commas
           $stop = str_replace(',', '', empty($location[2]) ? '9999999999' : $location[2]);
 
+          // change x and y to numerics
           if ($chr == 'X')
                $chr = 23;
 
           if ($chr == 'Y')
                $chr = 24;
 
+          // make sure the start and stop make sense
           if ($start == '' || $stop == '')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
@@ -701,19 +740,119 @@ class Gene extends Model
                return (object) ['count' => $collection->count(), 'collection' => $collection,
                          'gene_count' => $gene_count, 'region_count' => $region_count];
 
-            if (isset($option) && $option == 1)  // only return contained
-            {
-            if ($type == 'GRCh37')
-                $regions = self::where('chr', (int) $chr)
-                            ->where('start37', '>=', (int) $start)
-                            ->where('stop37', '<=', (int) $stop)->get();
-            else if ($type == 'GRCh38')
-                $regions = self::where('chr', (int) $chr)
-                            ->where('start38', '>=', (int) $start)
-                            ->where('stop38', '<=', (int) $stop)->get();
-            }
-            else
-            {
+          // 
+          if (isset($option) && $option == 1)  // only return contained
+          {
+               if ($type == 'GRCh37')
+               {
+                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 0)
+                                             ->where('chr', (int) $chr)
+                                             ->where('start37', '>=', (int) $start)
+                                             ->where('stop37', '<=', (int) $stop);
+                                   })->orWhere(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 1);
+                                        if ((int)$chr == 23) 
+                                        {
+                                             $query->where('par_coordinates->grch37->x->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch37->x->start', '>=', (int) $start)
+                                                  ->where('par_coordinates->grch37->x->stop', '<=', (int) $stop);
+                                        }
+                                        else
+                                        {
+                                             $query->where('par_coordinates->grch37->y->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch37->y->start', '>=', (int) $start)
+                                                  ->where('par_coordinates->grch37->y->stop', '<=', (int) $stop);
+                                        }
+                                   })->get();
+               }                
+               else      // GRCh38
+               {
+                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 0)
+                                             ->where('chr', (int) $chr)
+                                             ->where('start38', '>=', (int) $start)
+                                             ->where('stop38', '<=', (int) $stop);
+                                   })->orWhere(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 1);
+                                        if ((int)$chr == 23) 
+                                        {
+                                             $query->where('par_coordinates->grch38->x->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch38->x->start', '>=', (int) $start)
+                                                   ->where('par_coordinates->grch38->x->stop', '<=', (int) $stop);
+                                        }
+                                        else
+                                        {
+                                             $query->where('par_coordinates->grch38->y->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch38->y->start', '>=', (int) $start)
+                                                   ->where('par_coordinates->grch38->y->stop', '<=', (int) $stop);
+                                        }
+                                   })->get();
+               }
+          }
+          else
+          {
+               if ($type == 'GRCh37')
+               {
+                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 0)
+                                             ->where('chr', (int) $chr)
+                                             ->where('start37', '<=', (int) $start)
+                                             ->where('stop37', '>=', (int) $stop);
+                                   })->orWhere(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 1);
+                                        if ((int) $chr == 23) 
+                                        {
+                                             $query->where('par_coordinates->grch37->x->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch37->x->start', '<=', (int) $stop)
+                                                  ->where('par_coordinates->grch37->x->stop', '>=', (int) $start);
+                                        }
+                                        else
+                                        {
+                                             $query->where('par_coordinates->grch37->y->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch37->y->start', '<=', (int) $stop)
+                                                  ->where('par_coordinates->grch37->y->stop', '>=', (int) $start);
+                                        }
+                                   })->get();
+               }                
+               else      // GRCh38
+               {
+                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 0)
+                                             ->where('chr', (int) $chr)
+                                             ->where('start38', '>=', (int) $start)
+                                             ->where('stop38', '<=', (int) $stop);
+                                   })->orWhere(function ($query) use ($chr, $start, $stop){
+                                        $query->where('is_par', 1);
+                                        if ((int)$chr == 23) 
+                                        {
+                                             $query->where('par_coordinates->grch38->x->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch38->x->start', '<=', (int) $stop)
+                                                   ->where('par_coordinates->grch38->x->stop', '>=', (int) $start);
+                                        }
+                                        else
+                                        {
+                                             $query->where('par_coordinates->grch38->y->chr', (int) $chr)
+                                                  ->where('par_coordinates->grch38->y->start', '<=', (int) $stop)
+                                                   ->where('par_coordinates->grch38->y->stop', '>=', (int) $start);
+                                        }
+                                   })->get();
+               }
+          }
+
+          /*if (isset($option) && $option == 1)  // only return contained
+          {
+               if ($type == 'GRCh37')
+                    $regions = self::where('chr', (int) $chr)
+                              ->where('start37', '>=', (int) $start)
+                              ->where('stop37', '<=', (int) $stop)->get();
+               else if ($type == 'GRCh38')
+                    $regions = self::where('chr', (int) $chr)
+                              ->where('start38', '>=', (int) $start)
+                              ->where('stop38', '<=', (int) $stop)->get();
+          }
+          else
+          {
                 if ($type == 'GRCh37')
                     $regions = self::where('chr', (int) $chr)
                             ->where('start37', '<=', (int) $stop)
@@ -722,7 +861,8 @@ class Gene extends Model
                     $regions = self::where('chr', (int) $chr)
                             ->where('start38', '<=', (int) $stop)
                             ->where('stop38', '>=', (int) $start)->get();
-            }
+          }*/
+          
 
           foreach ($regions as $region)
           {
@@ -731,13 +871,31 @@ class Gene extends Model
 
                if ($type == 'GRCh37')
                {
-                    $region->start = $region->start37;
-                    $region->stop = $region->stop37;
+                    if ($region->is_par)
+                    {
+                         $c = ($chr == 23 ? 'x' : 'y');
+                         $region->start = $region->par_coordinates['grch37'][$c]['start'];
+                         $region->stop = $region->par_coordinates['grch37'][$c]['stop'];
+                    }
+                    else
+                    {
+                         $region->start = $region->start37;
+                         $region->stop = $region->stop37;
+                    }
                }
                else if ($type == 'GRCh38')
                {
-                    $region->start = $region->start38;
-                    $region->stop = $region->stop38;
+                    if ($region->is_par)
+                    {
+                         $c = ($chr == 23 ? 'x' : 'y');
+                         $region->start = $region->par_coordinates['grch38'][$c]['start'];
+                         $region->stop = $region->par_coordinates['grch38'][$c]['stop'];
+                    }
+                    else
+                    {
+                         $region->start = $region->start38;
+                         $region->stop = $region->stop38;
+                    }
                }
 
                $region->relationship = ($region->start >= (int) $start && $region->stop <= (int) $stop ? 'Contained' : 'Overlap');

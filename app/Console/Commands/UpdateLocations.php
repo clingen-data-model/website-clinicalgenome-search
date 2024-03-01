@@ -87,7 +87,35 @@ class UpdateLocations extends Command
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
-                    $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
+                {
+                    if ($record->is_par)
+                    {
+                        // we update the par coords no matter what, but for backward compatibility we populate the legacy cords with X
+                        if ($chr == 23)
+                            $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
+
+                        if ($record->par_coordinates === null)
+                        {
+                            $parcs = ['grch37' => ['x' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null],
+                                                   'y' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null]],
+                                      'grch38' => ['x' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null],
+                                                   'y' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null]]];
+
+                            $record->update(['par_coordinates' => $parcs]);
+                        }
+
+                        if ($chr  == 23)
+                            $record->update(['par_coordinates->grch37->x' => 
+                                                ['build' => 'GRCh37', 'chr' => $chr, 'start' => $start, 'stop' => $stop, 'seqid' => $parts[0]]]);
+                        else
+                            $record->update(['par_coordinates->grch37->y' => 
+                                                ['build' => 'GRCh37', 'chr' => $chr, 'start' => $start, 'stop' => $stop, 'seqid' => $parts[0]]]);
+                    }
+                    else 
+                    {
+                        $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
+                    }
+                }
 
             }
 
@@ -144,9 +172,35 @@ class UpdateLocations extends Command
                 $record = Gene::hgnc($hgncid)->first();
 
                 if ($record !== null)
-                    $record->update(['start38' => $start, 'stop38' => $stop, 'seqid38' => $parts[0]]);
+                {
+                    if ($record->is_par)
+                    {
+                        if ($chr == 23)
+                            $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
 
+                        if ($record->par_coordinates === null)
+                        {
+                            $parcs = ['grch37' => ['x' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null],
+                                                   'y' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null]],
+                                      'grch38' => ['x' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null],
+                                                   'y' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null]]];
 
+                            $record->update(['par_coordinates' => $parcs]);
+                        }
+
+                        if ($chr  == 23)
+                            $record->update(['par_coordinates->grch38->x' => 
+                                                ['build' => 'GRCh38', 'chr' => $chr, 'start' => $start, 'stop' => $stop, 'seqid' => $parts[0]]]);
+                        else
+                            $record->update(['par_coordinates->grch38->y' => 
+                                                ['build' => 'GRCh38', 'chr' => $chr, 'start' => $start, 'stop' => $stop, 'seqid' => $parts[0]]]);
+
+                    }
+                    else 
+                    {
+                        $record->update(['chr' => $chr, 'start38' => $start, 'stop38' => $stop, 'seqid38' => $parts[0]]);
+                    }
+                }
             }
 
             fclose($handle);

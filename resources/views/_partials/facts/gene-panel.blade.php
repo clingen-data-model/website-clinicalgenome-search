@@ -88,13 +88,51 @@
 						<dt>Genomic Coordinates</dt>
 						<dd>
 						<table>
+							@if ($record->is_par)
+								<tr>
+									<td class='pr-2'><u>GRCh37/hg19:</u></td>
+									<td class='pr-3'>{{ $record->format_location($record->par_coordinates['grch37']['x']) }}</td>
+									<td>
+										<a href="{{ $record->formatNcbi($record->format_location($record->par_coordinates['grch37']['x']), $record->format_location($record->par_coordinates['grch37']['x'], 'seqid')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+										<a href="{{ $record->formatEnsembl($record->format_location($record->par_coordinates['grch37']['x'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+										<a href="{{ $record->formatUcsc19($record->format_location($record->par_coordinates['grch37']['x'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+									</td>
+								</tr>
+								<tr>
+									<td class='pr-2'>&nbsp;</td>
+									<td class='pr-3'>{{ $record->format_location($record->par_coordinates['grch37']['y']) }}</td>
+									<td>
+										<a href="{{ $record->formatNcbi($record->format_location($record->par_coordinates['grch37']['y']), $record->format_location($record->par_coordinates['grch37']['y'], 'seqid')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+										<a href="{{ $record->formatEnsembl($record->format_location($record->par_coordinates['grch37']['y'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+										<a href="{{ $record->formatUcsc19($record->format_location($record->par_coordinates['grch37']['y'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+									</td>
+								</tr>
+								<tr>
+									<td class="pr-2"><u>GRCh38/hg38:</u></td>
+									<td class='pr-3'>{{ $record->format_location($record->par_coordinates['grch38']['x']) }}</td>
+									<td>
+										<a href="{{ $record->formatNcbi($record->format_location($record->par_coordinates['grch38']['x']), $record->format_location($record->par_coordinates['grch38']['x'], 'seqid')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+										<a href="{{ $record->formatEnsembl($record->format_location($record->par_coordinates['grch38']['x'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+										<a href="{{ $record->formatUcsc19($record->format_location($record->par_coordinates['grch38']['x'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+									</td>
+								</tr>
+								<tr>
+									<td class='pr-2'>&nbsp;</td>
+									<td class='pr-3'>{{ $record->format_location($record->par_coordinates['grch38']['y']) }}</td>
+									<td>
+										<a href="{{ $record->formatNcbi($record->format_location($record->par_coordinates['grch38']['y']), $record->format_location($record->par_coordinates['grch38']['y'], 'seqid')) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+										<a href="{{ $record->formatEnsembl($record->format_location($record->par_coordinates['grch38']['y'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+										<a href="{{ $record->formatUcsc19($record->format_location($record->par_coordinates['grch38']['y'])) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+									</td>
+								</tr>
+							@else
 							<tr>
 								<td class='pr-2'><u>GRCh37/hg19:</u></td>
 								<td class='pr-3'>{{ $record->grch37 }}</td>
 								<td>
-								<a href="{{ $record->formatNcbi($record->grch37, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
-								<a href="{{ $record->formatEnsembl($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
-								<a href="{{ $record->formatUcsc19($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
+									<a href="{{ $record->formatNcbi($record->grch37, $record->GRCh37_seqid) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   NCBI</a>
+									<a href="{{ $record->formatEnsembl($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   Ensembl</a>
+									<a href="{{ $record->formatUcsc19($record->grch37) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
 								</td>
 							</tr>
 							<tr>
@@ -106,6 +144,7 @@
 								<a href="{{ $record->formatUcsc38($record->grch38) }}" class="badge-info badge pointer"><i class="fas fa-external-link-alt"></i>   UCSC</a>
 								</td>
 							</tr>
+							@endif
 						</table>
 						</dd>
 						@if (!empty($record->mane_select))
