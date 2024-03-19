@@ -16,6 +16,7 @@
 /data/leuko.csv
 /data/newleuko.tsv
 /vendor
+/.idea/*
 .env
 .env.backup
 .KENV

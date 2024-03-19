@@ -55,7 +55,9 @@ class QueryOms extends Command
                     ]
                 ];
 
-                $results = file_get_contents('https://clinicalgenome.org/data-pull/' . $target . '/',
+                $url = sprintf('%s/data-pull/%s/', config('processwire.url'), $target);
+
+                $results = file_get_contents($url,
                                 false, stream_context_create($stream_opts));
 
             } catch (\Exception $e) {
@@ -98,8 +100,8 @@ class QueryOms extends Command
                 if(!empty($entry['title_abbreviated']))
                     $entry['title_abbreviated'] = str_replace('&#039;', "'", $entry['title_abbreviated']);
 
-
-                Panel::updateOrCreate(
+                dd($entry['member']);
+                $panel = Panel::updateOrCreate(
                     ['affiliate_id' => $entry['affiliation_id']],
                     [
                         'alternate_id' => $alternate_id,
