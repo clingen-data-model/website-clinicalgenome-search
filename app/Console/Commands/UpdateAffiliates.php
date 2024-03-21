@@ -46,7 +46,7 @@ class UpdateAffiliates extends Command
 
         echo "Updating affiliation data from local file ...";
 
-        $file = "/home/pweller/Projects/website-clinicalgenome-search/data/Affiliations.xlsx";
+        $file = base_path() . "/data/Affiliations.xlsx";
 
         $worksheets = (new Excel)->toArray($file);
 
