@@ -62,7 +62,7 @@
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')

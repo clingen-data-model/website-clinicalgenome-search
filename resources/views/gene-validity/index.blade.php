@@ -60,7 +60,6 @@
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
   <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
@@ -290,7 +289,6 @@
     })
 
     $table.on('post-body.bs.table', function (e, name, args) {
-
 			$('[data-toggle="tooltip"]').tooltip();
 		})
 
@@ -344,7 +342,7 @@ $(function() {
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
 
-    $('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
+  $('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
 
         var hidden = $table.bootstrapTable('getHiddenColumns');
 
@@ -352,7 +350,7 @@ $(function() {
             $('.action-hidden-columns').removeClass('hidden');
         else
             $('.action-hidden-columns').addClass('hidden');
-    });
+  });
 
 });
 

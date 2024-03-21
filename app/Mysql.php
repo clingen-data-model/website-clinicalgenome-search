@@ -521,13 +521,13 @@ class Mysql
 			$$key = $value;
 
 
-        $records = Curation::validity()->active()->with('panel')->get();
 		$search = null;
 
 		// initialize the collection
 		$collection = collect();
 
-		$records = Curation::validity()->active()->get();
+        $records = Curation::validity()->active()->with('panel')->get();
+
 
 		if ($records->isEmpty())
 			return $response;
