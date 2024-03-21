@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<!--
 <div class="container">
 	<div class="row justify-content-center">
       <div class="col-md-8 curated-genes-table">
@@ -34,16 +35,77 @@
         <!--<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
          <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
      </button>-->
-     <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
+     <!--<span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
 
     </div>
 
       <div class="col-md-12 light-arrows dark-table">
 
-			@include('_partials.genetable')
+			{{-- @include('_partials.genetable') --}}
 
 		</div>
 	</div>
+</div>-->
+
+<div class="container">
+  <div class="row justify-content-center mt-3" style="margin-left: -100px; margin-right: -100px">  <!--style="box-shadow: 0 0 30px black;""> -->
+      <div class="col-md-6">
+          <div class="row">
+              <div class="col-md-12">
+                  <table class="mt-3 mb-2">
+                      <tr>
+                          <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+                          @if ($search == "")
+                          <td class="pl-2"><h1 class="h2 p-0 m-0">  All Genes</h1>
+                          @else
+                          <td class="pl-2"><h1 class="h2 p-0 m-0">  Genes containing "{{ $search }}"</span></h1>
+                          @endif
+                          </td>
+                      </tr>
+                  </table>
+              </div>
+          </div>
+      </div>
+      <div class="col-md-6">
+          <div class="text-right p-2">
+              <ul class="list-inline pb-0 mb-0 small">
+                  <li class="text-stats line-tight text-center"><span class="countCurated text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Curated<br />Genes</li>
+                  <li class="text-stats line-tight text-center pl-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Genes</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-center mt-0 medium-font-size" style="margin-left: -100px; margin-right: -100px">
+      <div class="col-md-12 grayblur mr-2 pt-2 pb-2">
+          <div class="row">
+              <div class="col-md-2">
+                  <span class="font-weight-bold">Display:</span>
+                  <div>
+                      <input class="action-show-genes" type="checkbox" name="gen" checked />
+                      <label class="mb-0 font-weight-normal" for="gen">Curated Only</label>
+                  </div>
+              </div>
+              <div class="col-md-2">
+                  <span class="font-weight-bold">&nbsp;</span>
+                  <div>
+                      <input class="action-show-contain" type="checkbox" name="con" checked />
+                      <label class="mb-0 font-weight-normal" for="con">Protein-coding only</label>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
+      <div class="col-md-12 mt-2">
+          <!--<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
+              <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"></span>
+          </button> -->
+          <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
+      </div>
+      <div class="col-md-12 light-arrows dark-table">
+          @include('_partials.genetable', ['expand' => true])
+      </div>
+  </div>
 </div>
 
 @endsection
@@ -164,20 +226,50 @@
         {
           title: 'Gene Symbol',
           field: 'symbol',
-          formatter: geneFormatter,
+          formatter: symbol2Formatter,
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
         {
+					title: 'Cytoband',
+					field: 'location',
+					//formatter: locationFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					searchFormatter: false,
+					sortable: true
+				},
+        {
+					title: 'GRCh37',
+					field: 'grch37',
+					formatter: locationFormatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					sorter: locationSorter,
+					searchFormatter: false,
+					sortable: true
+				},
+				{
+					title: 'GRCh38',
+					field: 'grch38',
+					formatter: location38Formatter,
+					cellStyle: cellFormatter,
+					filterControl: 'input',
+					sorter: locationSorter,
+					searchFormatter: false,
+					visible: false,
+					sortable: true
+				},
+        /*{
           title: 'HGNC ID',
           field: 'hgnc_id',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
           sortable: true
-        },
+        },*/
         {
           title: 'Gene Name',
           field: 'name',
@@ -187,26 +279,28 @@
           sortable: true
         },
         {
-          title: 'Gene Type',
-          field: 'locus_type',
+          title: 'Locus Group',
+          field: 'locus_group',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
           sortable: true
         },
         {
-          title: 'Curations',
+          title: 'Curation Activity',
           field: 'curation',
           //align: 'center',
           cellStyle: cellFormatter,
           filterControl: 'select',
-			filterData: 'var:activelist',
-			filterCustomSearch: checkactive,
+			    filterData: 'var:activelist',
+			    filterCustomSearch: checkactive,
           searchFormatter: false,
+          sorter: dateSorter,
           sortable: true,
-          width: 170,
-          formatter: badgeFormatter
-        },
+          formatter: badge2Formatter,
+          width: 200
+        }
+        /*
         {
           field: 'date',
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Date of last curation against gene, if known."></i></div> Last Eval.',
@@ -216,7 +310,7 @@
           searchFormatter: false,
           sortName: 'rawdate',
           sortable: true
-        }
+        }*/
       ]
     })
 

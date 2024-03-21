@@ -24,6 +24,7 @@ use App\Nodal;
 use App\Gdmmap;
 use App\Precuration;
 use App\Curation;
+use App\Acmg;
 
 class RunReport extends Command
 {
@@ -85,6 +86,11 @@ class RunReport extends Command
             case 'actionability':
                 echo "Creating Actionability Report\n";
                 $this->actionability();
+                echo "Update Complete\n";
+                break;
+            case 'sf':
+                echo "Creating ACMG SF Report\n";
+                $this->sf();
                 echo "Update Complete\n";
                 break;
             case 'test':
@@ -791,6 +797,44 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
                 echo $prec['status'] . "\n";
             }
         }
+    }
+
+
+    public function sf()
+    {
+
+        $curations = Acmg::with('disease')->get();
+
+        $header = [
+                        "Gene Symbol",
+                        "Gene MIM",
+                        "Disease Name",
+                        "Disease MIM",
+                        "Disease MONDO"
+                    ];
+
+        $handle = fopen(base_path() . '/data/acmgsf.tsv', "w");
+        fwrite($handle, implode("\t", $header) . PHP_EOL);
+
+        $records = [];
+
+        foreach($curations as $curation)
+        {
+
+            $list = [   $curation->gene_symbol,
+                        $curation->gene_mim,
+                        $curation->disease->label,
+                        implode(', ', $curation->disease_mims),
+                        $curation->disease->curie,
+                    ];
+
+            fwrite($handle, implode("\t", $list) . PHP_EOL);
+
+        }
+
+        fclose($handle);
+
+        echo "DONE\n";
     }
 
 }

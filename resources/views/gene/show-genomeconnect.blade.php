@@ -91,7 +91,7 @@
             </p>-->
             <h4>ClinVar Submissions</h4>
             <p>
-            <div class="alert alert-info mt-3" role="alert">
+            <div class="alert alert-light blueblur mt-3" role="alert">
                 <span class="font-weight-bold font-italic">There are {{ $gc->variant_count }} GenomeConnect ClinVar submission(s) for the gene {{ $record->symbol }}.
                     <i class="fas fa-angle-double-right ml-3"></i><a class="ml-1" href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">Click <u>here</u> to view</a></span>
                 </div>

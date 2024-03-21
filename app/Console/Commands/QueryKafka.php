@@ -108,11 +108,11 @@ class QueryKafka extends Command
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        $availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
+        /*$availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
         echo "Available Topics: \n";
         foreach ($availableTopics as $idx => $avlTopic) {
             echo $idx.': '.$avlTopic->getTopic()."\n";
-        }
+        }*/
 
         //$a = $consumer->getCommittedOffsets([new \RdKafka\TopicPartition('gene_dosage', 0)], 60*1000);
         //$low = $high = 0;
@@ -126,9 +126,9 @@ class QueryKafka extends Command
         //echo "Waiting for partition assignment... (make take some time when\n";
         //echo "quickly re-joining the group after leaving it.)\n";
 
-        echo "Reading...\n";
+        //echo "Reading...\n";
         while (true) {
-            $message = $consumer->consume(120*1000);
+            $message = $consumer->consume(45*1000);
             //echo $message->err . "\n";
 
             if ($message === null)
@@ -151,6 +151,8 @@ class QueryKafka extends Command
                         $m->save();
                         if ($topic == "dosage" || $topic == "actionability" || $topic == 'gene-validity' || $topic == 'variant_interpretation')
                         {
+                            $payload = json_decode($message->payload);
+                           // dd($payload);
                             $a = $stream->parser;
                             $a($message, $m);
                             $stream->update(['offset' => $message->offset + 1]);

@@ -47,6 +47,8 @@ Route::get('/reports/{id}', 'Api\SettingsController@edit');
 
 // affiliates
 Route::resource('affiliates', 'Api\AffiliateController')->only(['index', 'show']);
+Route::get('/affiliates/expand/{id}', 'Api\AffiliateController@expand')->name('affiliates.expand');
+
 
 // genes
 Route::resource('genes', 'Api\GeneController')->only(['index']);
@@ -73,6 +75,8 @@ Route::get('/dosage/expand/{id}', 'Api\DosageController@expand')->name('dosage.e
 
 // gene validity
 Route::resource('validity', 'Api\ValidityController')->only(['index']);
+Route::get('/validity/expand/{id}', 'Api\ValidityController@expand')->name('validity.expand');
+
 
 // clinical actionability
 Route::resource('actionability', 'Api\ActionabilityController')->only(['index']);
@@ -81,15 +85,12 @@ Route::resource('actionability', 'Api\ActionabilityController')->only(['index'])
 Route::resource('drugs', 'Api\DrugController')->only(['index']);
 Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look');
 
-
 // diseases
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
 Route::get('/conditions/find/{term?}', 'Api\ConditionController@find')->name('conditions.find');
 Route::post('/conditions/follow', 'Api\FollowController@create_disease')->name('followd.create');
 Route::post('/conditions/unfollow', 'Api\FollowController@remove_disease')->name('followd.remove');
-
-
 
 
 // Geneconnect
@@ -101,6 +102,8 @@ Route::get('/home/gc/reload', 'Api\GenomeConnectController@reload')->name('gc.re
 
 // region search
 Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');
+Route::get('/search/expand/{id}', 'Api\SearchController@expand')->name('search.expand');
+
 
 // dashboard
 Route::post('/home/notify', 'Api\HomeController@notify')->name('home.notify');

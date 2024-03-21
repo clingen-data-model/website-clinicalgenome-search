@@ -162,7 +162,7 @@
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency Score"></i></div>HI Score',
 			field: 'haplo_assertion',
 			filterControl: 'select',
-			formatter: cnvhaploFormatter,
+			formatter: haplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
 			sortable: true
@@ -171,14 +171,14 @@
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Triplosensitivity Score"></i></div>TS Score',
 			field: 'cnvtriplo_assertion',
 			filterControl: 'select',
-			formatter: cnvtriploFormatter,
+			formatter: triplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
 			sortable: true
         },
 		{
 			field: 'date',
-      title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+     		title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
 			sortable: true,
 			filterControl: 'input',
 			cellStyle: cellFormatter,

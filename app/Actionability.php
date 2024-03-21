@@ -325,7 +325,7 @@ class Actionability extends Model
 
                 if (!empty($differences))      // update
                 {
-                    //dd($new);
+
                     $new->save();
 
                     $genename = Gene::hgnc($new->gene_hgnc_id)->first();

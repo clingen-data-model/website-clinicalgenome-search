@@ -9,6 +9,11 @@ use App\Traits\Display;
 use Uuid;
 use Str;
 
+use Carbon\Carbon;
+
+use App\Region;
+use App\Curation;
+
 /**
  *
  * @category   Model
@@ -687,6 +692,33 @@ class Gene extends Model
      */
      public static function searchList($args, $page = 0, $pagesize = 20)
      {
+          /*
+               $users = User::with(['posts' => function ($query) {
+               $query->select(['id', 'title']);
+               }])->get();
+
+               $comments = News::find(123)->with(['comments' => function ($query) {
+               $query->where('trashed', '<>', 1);
+               }]);
+
+               $authors = Author::with('books')
+               ->whereHas('books', function (Builder $query) {
+               $query->where('title', 'like', 'PHP%');
+               })
+               ->get();
+
+               Finally, doing this query over all places and repeating the same conditions, is cumbersome, so we will use a local scope in Author model
+               public function scopeWithWhereHas($query, $relation, $constraint){
+               return $query->whereHas($relation, $constraint)
+               ->with([$relation => $constraint]);
+               }
+               Now, our code is much cleaner by calling it this way:
+               Author::withWhereHas('books', fn($query) =>
+               $query->where('title', 'like', 'PHP%')
+               )->get();
+
+
+          */
           // break out the args
           foreach ($args as $key => $value)
                $$key = $value;
@@ -695,6 +727,8 @@ class Gene extends Model
           $collection = collect();
           $gene_count = 0;
           $region_count = 0;
+          $curated_gene_count = 0;
+          $curated_region_count = 0;
 
           // check the required input
           if (!isset($type) || !isset($region))
@@ -745,7 +779,7 @@ class Gene extends Model
           {
                if ($type == 'GRCh37')
                {
-                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                    $genes = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
                                              ->where('start37', '>=', (int) $start)
@@ -764,11 +798,15 @@ class Gene extends Model
                                                   ->where('par_coordinates->grch37->y->start', '>=', (int) $start)
                                                   ->where('par_coordinates->grch37->y->stop', '<=', (int) $stop);
                                         }
-                                   })->get();
+                                   })->with(['curations' => function ($query) {
+                                        $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                             ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                       Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                   }])->get(); 
                }                
                else      // GRCh38
                {
-                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                    $genes = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
                                              ->where('start38', '>=', (int) $start)
@@ -787,14 +825,18 @@ class Gene extends Model
                                                   ->where('par_coordinates->grch38->y->start', '>=', (int) $start)
                                                    ->where('par_coordinates->grch38->y->stop', '<=', (int) $stop);
                                         }
-                                   })->get();
+                                   })->with(['curations' => function ($query) {
+                                        $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                             ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                       Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                   }])->get();
                }
           }
           else
           {
                if ($type == 'GRCh37')
                {
-                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                    $genes = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
                                              ->where('start37', '<=', (int) $stop)
@@ -813,11 +855,15 @@ class Gene extends Model
                                                   ->where('par_coordinates->grch37->y->start', '<=', (int) $stop)
                                                   ->where('par_coordinates->grch37->y->stop', '>=', (int) $start);
                                         }
-                                   })->get();
+                                   })->with(['curations' => function ($query) {
+                                             $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                                  ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                            Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                   }])->get();
                }                
                else      // GRCh38
                {
-                    $regions = self::where(function ($query) use ($chr, $start, $stop){
+                    $genes = self::where(function ($query) use ($chr, $start, $stop){
                                         $query->where('is_par', 0)
                                              ->where('chr', (int) $chr)
                                              ->where('start38', '>=', (int) $stop)
@@ -836,75 +882,220 @@ class Gene extends Model
                                                   ->where('par_coordinates->grch38->y->start', '<=', (int) $stop)
                                                    ->where('par_coordinates->grch38->y->stop', '>=', (int) $start);
                                         }
-                                   })->get();
+                                   })->with(['curations' => function ($query) {
+                                        $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                             ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                       Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                   }])->get();
                }
           }
 
-          /*if (isset($option) && $option == 1)  // only return contained
+          //  also search the regions
+          if (isset($option) && $option == 1)  // only return contained
           {
                if ($type == 'GRCh37')
-                    $regions = self::where('chr', (int) $chr)
-                              ->where('start37', '>=', (int) $start)
-                              ->where('stop37', '<=', (int) $stop)->get();
-               else if ($type == 'GRCh38')
-                    $regions = self::where('chr', (int) $chr)
-                              ->where('start38', '>=', (int) $start)
-                              ->where('stop38', '<=', (int) $stop)->get();
+               {
+                    $regions = Region::where('coordinates->grch37->chr', (int) $chr)
+                                                                 ->where('coordinates->grch37->start', '>=', (int) $start)
+                                                                 ->where('coordinates->grch37->stop', '<=', (int) $stop)
+                                                                 ->with(['curations' => function ($query) {
+                                                                      $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY_REGION)
+                                                                           ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                                                Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                                                 }])->get();
+               }
+               else
+               {
+                    $regions = Region::where('coordinates->grch38->chr', (int) $chr)
+                                                                 ->where('coordinates->grch38->start', '>=', (int) $start)
+                                                                 ->where('coordinates->grch38->stop', '<=', (int) $stop)
+                                                                 ->with(['curations' => function ($query) {
+                                                                      $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY_REGION)
+                                                                      ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                                           Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                                                 }])->get();
+               }
           }
           else
           {
-                if ($type == 'GRCh37')
-                    $regions = self::where('chr', (int) $chr)
-                            ->where('start37', '<=', (int) $stop)
-                            ->where('stop37', '>=', (int) $start)->get();
-                else if ($type == 'GRCh38')
-                    $regions = self::where('chr', (int) $chr)
-                            ->where('start38', '<=', (int) $stop)
-                            ->where('stop38', '>=', (int) $start)->get();
-          }*/
-          
+               if ($type == 'GRCh37')
+               {
+                    $regions = Region::where('coordinates->grch37->chr', (int) $chr)
+                                                                 ->where('coordinates->grch37->start', '<=', (int) $stop)
+                                                                 ->where('coordinates->grch37->stop', '>=', (int) $start)
+                                                                 ->with(['curations' => function ($query) {
+                                                                      $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY_REGION)
+                                                                      ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                                           Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                                                 }])->get();
+               }
+               else
+               {
+                    $regions = Region::where('coordinates->grch38->chr', (int) $chr)
+                                                                 ->where('coordinates->grch38->start', '<=', (int) $stop)
+                                                                 ->where('coordinates->grch38->stop', '>=', (int) $start)
+                                                                 ->with(['curations' => function ($query) {
+                                                                      $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY_REGION)
+                                                                      ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_GROUP_REVIEW,
+                                                                           Curation::STATUS_PRIMARY_REVIEW, Curation::STATUS_SECONDARY_REVIEW]); 
+                                                                 }])->get();
+               }
+          }
 
-          foreach ($regions as $region)
+          foreach ($genes as $gene)
           {
-               $region->type = $type;
+               $haplo = $gene->curations->where('context', 'haploinsufficiency_assertion')->pluck('assertions')->first();
+
+               $triplo = $gene->curations->where('context', 'triplosensitivity_assertion')->pluck('assertions')->first();
+
+               $node = new Nodal(['chr' => $chr]);
+
+               $node->build = $type;
+               $node->label = $gene->name;
+               $node->type = 0;
+               $node->locus_type = $gene->locus_type;
+               $node->symbol_id = $gene->hgnc_id;
+               $node->location = $gene->location;
+               $node->is_par = $gene->is_par;
+               $node->hi = $gene->hi;
+               $node->plof = $gene->plof;
+               $node->pli = $gene->pli;
+               $node->haplo = $gene->curations->where('status', Curation::STATUS_ACTIVE)->where('context', 'haploinsufficiency_assertion')->pluck('assertions.haploinsufficiency_assertion.dosage_classification.ordinal')->first();
+               $node->triplo = $gene->curations->where('status', Curation::STATUS_ACTIVE)->where('context', 'triplosensitivity_assertion')->pluck('assertions.triplosensitivity_assertion.dosage_classification.ordinal')->first();
+               $node->is_par = $gene->is_par;
+               $node->omim = $gene->display_omim;
+               $node->morbid = $gene->morbid;
+               $node->curation_status = $gene->curation_status;
+               $node->activity = $gene->activity;
+               $node->nicedate = $gene->displayDate($gene->date_last_curated);
+               $node->date_last_curated = $gene->date_last_curated;
+               $node->status = (empty($gene->date_last_curated) ? 0 : 1);
+               $node->precuration = $gene->curations->where('status', '!=', Curation::STATUS_ACTIVE)->pluck('status')->first();
+
                $gene_count++;
+
+               if ($gene->date_last_curated !== null)
+                    $curated_gene_count++;
 
                if ($type == 'GRCh37')
                {
-                    if ($region->is_par)
+                    if ($gene->is_par)
                     {
                          $c = ($chr == 23 ? 'x' : 'y');
-                         $region->start = $region->par_coordinates['grch37'][$c]['start'];
-                         $region->stop = $region->par_coordinates['grch37'][$c]['stop'];
+                         $node->start = $gene->par_coordinates['grch37'][$c]['start'];
+                         $node->stop = $gene->par_coordinates['grch37'][$c]['stop'];
+                         $node->seqid = $gene->par_coordinates['grch37'][$c]['seqid'];
                     }
                     else
                     {
-                         $region->start = $region->start37;
-                         $region->stop = $region->stop37;
+                         $node->start = $gene->start37;
+                         $node->stop = $gene->stop37;
+                         $node->seqid = $gene->seqid37;
                     }
                }
                else if ($type == 'GRCh38')
                {
-                    if ($region->is_par)
+                    if ($gene->is_par)
                     {
                          $c = ($chr == 23 ? 'x' : 'y');
-                         $region->start = $region->par_coordinates['grch38'][$c]['start'];
-                         $region->stop = $region->par_coordinates['grch38'][$c]['stop'];
+                         $node->start = $gene->par_coordinates['grch38'][$c]['start'];
+                         $node->stop = $gene->par_coordinates['grch38'][$c]['stop'];
+                         $node->seqid = $gene->par_coordinates['grch38'][$c]['seqid'];
                     }
                     else
                     {
-                         $region->start = $region->start38;
-                         $region->stop = $region->stop38;
+                         $node->start = $gene->start38;
+                         $node->stop = $gene->stop38;
+                         $node->seqid = $gene->seqid38;
                     }
                }
 
-               $region->relationship = ($region->start >= (int) $start && $region->stop <= (int) $stop ? 'Contained' : 'Overlap');
+               $node->relationship = ($node->start >= (int) $start && $node->stop <= (int) $stop ? 'Contained' : 'Overlap');
 
-               $collection->push($region);
+               $collection->push($node);
+          }
+
+          // temp definitions until new props are added
+          $activity = [
+               'dosage' => true,
+               'validity' => false,
+               'pharma' => false,
+               'actionability' => false,
+               'varpath' => false
+             ];
+       
+             $noactivity = [
+               'dosage' => false,
+               'validity' => false,
+               'pharma' => false,
+               'actionability' => false,
+               'varpath' => false
+             ];
+
+          foreach ($regions as $region)
+          {
+               if ($region->status == Region::STATUS_CLOSED && $region->events['resolution'] == "Complete")
+               {
+                    $c = Carbon::parse($region->events['resolved']);
+                    $displaydate = $c->format("m/d/Y");
+               }
+               else
+                    $displaydate = null;
+
+               $node = new Nodal(['chr' => $chr]);
+               $node->build = $type;
+               $node->label = $region->name;
+               $node->type = 1;
+               $node->symbol_id = $region->iri;
+               $node->location = $region->cytoband;
+               $node->locus_type = "region";
+               $node->is_par = false;
+               $node->hi = null;
+               $node->plof = null;
+               $node->pli = $region->metadata['pli'];
+               $node->haplo = ($region->status == Region::STATUS_CLOSED ? $region->scores['haploinsufficiency'] ?? null : null);
+               $node->triplo = ($region->status == Region::STATUS_CLOSED ? $region->scores['triplosensitivity'] ?? null : null);
+               $node->is_par = false;
+               $node->omim = $region->metadata['omim'];
+               $node->morbid = null;
+               $node->curation_status = $region->curation_status;
+               //$node->activity = $region->activity;
+               $node->activity = ($region->status == Region::STATUS_CLOSED && $region->events['resolution'] == "Complete" ? $activity : $noactivity );
+               $node->date_last_curated = ($region->status == Region::STATUS_CLOSED && $region->events['resolution'] == "Complete" ?
+                                                  $region->events['resolved'] : null);
+               $node->precuration = $region->curations->where('status', '!=', Curation::STATUS_ACTIVE)->pluck('status')->first();
+               //$node->date_last_curated = $region->date_last_curated;
+               $node->nicedate = $displaydate;
+               $node->status = (empty($region->date_last_curated) ? 0 : 1);
+
+               $region_count++;
+
+               if ($region->date_last_curated !== null)
+                    $curated_region_count++;
+
+               if ($type == 'GRCh37')
+               {
+                    $node->start = $region->coordinates['grch37']['start'];
+                    $node->stop = $region->coordinates['grch37']['stop'];
+                    $node->seqid = $region->coordinates['grch37']['seqid'];
+               }
+               else if ($type == 'GRCh38')
+               {
+                    
+                    $node->start = $region->coordinates['grch38']['start'];
+                    $node->stop = $region->coordinates['grch38']['stop'];
+                    $node->seqid = $region->coordinates['grch38']['seqid'];
+               }
+
+               $node->relationship = ($node->start >= (int) $start && $node->stop <= (int) $stop ? 'Contained' : 'Overlap');
+//if($region->iri == 'ISCA-46744')
+ //    dd($region);
+               $collection->push($node);
           }
 
           return (object) ['count' => $collection->count(), 'collection' => $collection,
-                      'gene_count' => $gene_count, 'region_count' => $region_count];
+                      'gene_count' => $gene_count, 'region_count' => $region_count,
+                      'curated_gene_count' => $curated_gene_count, 'curated_region_count' => $curated_region_count];
     }
 
 

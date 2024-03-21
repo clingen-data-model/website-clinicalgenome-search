@@ -8,8 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Display;
 
 use Uuid;
+use Carbon\Carbon;
+
 use App\Curation;
 use App\Slug;
+use App\Jira;
 
 /**
  *
@@ -439,16 +442,24 @@ class Dosage extends Model
                                             'search' => null,
                                             'direction' => 'ASC',
                                             'properties' => true,
+                                            'forcegg' => true,
                                             'report' => true,
                                             'curated' => false
                                         ]);
+
+        // flag all the current curations in case any have been removed
+        Curation::dosage()->active()->update(['group_id' => 1]);
 
         foreach ($records->collection as $record)
         {
             //skip over duplicates
             $check = Curation::dosage()->active()->where('source_uuid',$record->dosage_curation->curie)->exists();
             if ($check)
+            {
+                // unset the remove flag
+                Curation::dosage()->active()->where('source_uuid',$record->dosage_curation->curie)->update(['group_id' => 0]);
                 continue;
+            }
 
             $gene = Gene::hgnc($record->hgnc_id)->first();
 
@@ -457,8 +468,8 @@ class Dosage extends Model
             $triplo_disease = (empty($record->dosage_curation->triplosensitivity_assertion->disease->curie) ? null :
                                     Disease::curie($record->dosage_curation->triplosensitivity_assertion->disease->curie)->first());
 
-            // Currently, there is no dosage working group panel defined
-            //$panel = Panel::allids(0)->first();
+            // Currently, there is no dosage working group panel id defined
+            $panel = Panel::title('Dosage Sensitivity Curation')->first();
 
             // we need to break out the ISCA number and the timestamp
             preg_match('/CGDOSAGE:(ISCA-[0-9]+)-([0-9\-T\:Z]+)/', $record->dosage_curation->curie, $matches);
@@ -486,13 +497,13 @@ class Dosage extends Model
                     'curation_version' => null,
                     'source' => 'genegraph',
                     'source_uuid' => $record->dosage_curation->curie,
-                    'source_timestamp' => 0,
+                    'source_timestamp' => $timestamp,
                     'source_offset' => 0,
                     'packet_id' => null,
                     'message_version' => null,
                     'assertion_uuid' => $record->dosage_curation->curie,
                     'alternate_uuid' => $isca,
-                    'panel_id' => null,
+                    'panel_id' => $panel->id ?? null,
                     'affiliate_id' => null,
                     'affiliate_details' => ['name' => 'Dosage Sensitivity Curation WG'],
                     'gene_id' => $gene->id,
@@ -517,17 +528,18 @@ class Dosage extends Model
                     'curators' => null,
                     'published' => true,
                     'animal_model_only' => false,
-                    'events' => ['report_date' => $record->dosage_curation->$assertion->dosage->report_date ?? null],
+                    'events' => ['report_date' => $record->dosage_curation->$assertion->report_date ?? null],
                     'url' => [],
                     'version' => 1,
                     'status' => Curation::STATUS_ACTIVE
                 ];
 
                 $curation = new Curation($data);
-
+                
                 //update version number
 
                 $curation->save();
+
             }
 
             // create or update the CCID
@@ -536,12 +548,401 @@ class Dosage extends Model
                                       'subtype' => Slug::SUBTYPE_DOSAGE,
                                       'status' => Slug::STATUS_INITIALIZED
                                     ]);
-
+            
+            // archive any replace items
             $old_curations->each(function ($item) {
                 $item->update(['status' => Curation::STATUS_ARCHIVE]);
             });
 
         }
+
+        // archive any unpublished items
+        Curation::dosage()->where('group_id', 1)->update(['status' => Curation::STATUS_UNPUBLISH]);
+    }
+
+
+    /**
+     * The dosage topic queue is missing records, so preload from
+     * genegraph as of offset 
+     *
+     */
+    public static function precuration()
+    {
+    
+        $start = 0;
+
+        do {
+  
+            $records = Jira::getIssues('project = ISCA AND type = "ISCA Gene Curation" AND (status = "Under Group Review" OR status = "Under Primary Review" OR status = "Under Secondary Review")', $start);
+
+            foreach ($records->issues as $issue)
+            {
+
+                 $record = (object) $issue->fields->customFields;
+
+                 // map the status to a model value
+                 switch ($issue->fields->status->name)
+                 {
+                   case 'Under Primary Review':
+                     $status = Curation::STATUS_PRIMARY_REVIEW;
+                     break;
+                   case 'Under Secondary Review':
+                     $status = Curation::STATUS_SECONDARY_REVIEW;
+                     break;
+                   case 'Under Group Review':
+                     $status = Curation::STATUS_GROUP_REVIEW;
+                     break;
+                   default:
+                     dd($issue->fields->status->name);
+                 }
+
+                // only store the minimal amount of precuration information
+                $gene = Gene::hgnc($record->customfield_12230)->first();
+
+                $panel = Panel::title('Dosage Sensitivity Curation')->first();
+
+
+                // tecnically, genegraph should not send us any older records, but it doesn't hurt to make sure
+                $old_curations = Curation::dosage()->where('document', $issue->key)
+                                            ->whereNotIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ARCHIVE])
+                                            ->get();
+
+                // we add seperate haplo and triplo curation, because in the future they will be separate
+                foreach(['triplosensitivity_assertion', 'haploinsufficiency_assertion'] as $assertion)
+                {
+                    
+                    $data = [
+                        'type' => Curation::TYPE_DOSAGE_SENSITIVITY,
+                        'type_string' => 'Dosage Sensitivity',
+                        'subtype' => Curation::SUBTYPE_DOSAGE_GENE_PRECURATION,
+                        'group_id' => 0,
+                        'sop_version' => 1,
+                        'source' => 'DCI JIRA',
+                        'source_uuid' => $issue->key,
+                        'alternate_uuid' => $issue->key,
+                        'panel_id' => $panel->id,
+                        'affiliate_id' => null,
+                        'affiliate_details' => ["id" => "", "name" => "Dosage Sensitivity Curation"],
+                        'gene_id' => $gene->id,
+                        'gene_hgnc_id' => $record->customfield_12230,
+                        'gene_details' => [],
+                        'document' => $issue->key,
+                        'context' => $assertion,
+                        'title' => $issue->fields->issuetype->name,
+                        'summary' => $issue->fields->summary,
+                        'description' => null,
+                        'curators' => null,
+                        'published' => false,
+                        'animal_model_only' => false,
+                        'contributors' => [],
+                        'events' => [
+                            'created' => $issue->fields->created,
+                            'updated' => $issue->fields->updated ?? null,
+                            'resolved' => $issue->fields->resolutiondate ?? null
+                        ],
+                        'version' => 0,
+                        'status' => $status
+                    ];
+
+                    $curation = new Curation($data);
+                    $curation->save();
+                }
+
+
+                $old_curations->each(function ($item) {
+                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+                });
+            }
+
+            $start += $records->maxResults;
+
+        } while ($start < $records->total);
+
+    }
+
+
+    /**
+     * Parse the source for new or updated curations
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function parser()
+    {
+      // get the datetime of the last update
+      $last = Stream::name('dosage-gene-jira')->first();
+      $now = Carbon::now()->timestamp;
+
+      $start = 0;
+
+      $activity = [
+        'dosage' => true,
+        'validity' => false,
+        'pharma' => false,
+        'actionability' => false,
+        'varpath' => false
+      ];
+
+      $noactivity = [
+        'dosage' => false,
+        'validity' => false,
+        'pharma' => false,
+        'actionability' => false,
+        'varpath' => false
+      ];
+
+      echo "Checking for updates since " . Carbon::createFromTimestamp($last->offset)->setTimezone('America/New_York')->format('Y-m-d H:i') . " \n";
+
+      do {
+
+        // get all the regions from jira
+        $records = Jira::getIssues('project = ISCA AND issuetype = "ISCA Gene Curation" AND updated > "' 
+                            . Carbon::createFromTimestamp($last->offset)->setTimezone('America/New_York')->format('Y-m-d H:i') . '"', $start);
+
+        foreach ($records->issues as $issue)
+        {
+
+          $record = (object) $issue->fields->customFields;
+
+          // duplicate
+          if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == 'Duplicate')
+            continue;
+
+          // won't fix
+          if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Won't Fix")
+            continue;
+
+          // won't do
+          if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Won't Do")
+            continue;
+
+          // not a bug
+          if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Not a Bug")
+            continue;
+
+
+          switch ($issue->fields->status->name)
+          {
+            case 'Open':
+              $curation_status = Curation::STATUS_OPEN;
+              break;
+            case 'Under Primary Review':
+              $curation_status = Curation::STATUS_PRIMARY_REVIEW;
+              break;
+            case 'Under Secondary Review':
+              $curation_status = Curation::STATUS_SECONDARY_REVIEW;
+              break;
+            case 'Under Group Review':
+              $curation_status = Curation::STATUS_GROUP_REVIEW;
+              break;
+            case 'Closed':
+              $curation_status = ($issue->fields->resolution->name == "Complete" ? Curation::STATUS_ACTIVE : Curation::STATUS_CLOSED);
+              break;
+            case 'Reopened':
+              $curation_status = Curation::STATUS_REOPENED;
+              break;
+            default:
+              dd($issue->fields->status->name);
+          }
+
+  
+          // break out coordinates
+          $coordinates = ['grch37' => self::location_split($record->customfield_10160 ?? null, $record->customfield_10158 ?? ''),
+                          'grch38' => self::location_split($record->customfield_10532 ?? null, $record->customfield_10157 ?? '')
+                        ];
+
+          // build the most recent score history for fast reference
+          $haplo_history = null;
+          $triplo_history = null;
+
+          $check = Jira::getHistory($issue->key);
+
+          if ($check->isNotEmpty())
+          {
+            foreach ($check as $item)
+            {
+              if ($item->what == 'Triplosensitivity Score')
+                  $triplo_history = $item->what . ' changed from ' . $item->from
+                                                . ' to ' . $item->to . ' on ' . $item->when;
+              else if ($item->what == 'Haploinsufficiency Score')
+                  $haplo_history = $item->what . ' changed from ' . $item->from
+                                                . ' to ' . $item->to . ' on ' . $item->when;
+            }
+          }
+
+          $gene = Gene::hgnc($record->cumstomfield_12230)->first();
+
+          if ($gene === null)
+            die($record);
+
+          // if status has changed to closed, publish a curation
+          if ($status == self::STATUS_CLOSED)
+          {
+            // if there is a score change, update the gene record
+           // if ($haplo_history !== null || $triplo_history !== null)
+            //    $gene->update()
+
+            // are there existing curations?
+            $old_curations = Curation::where('document', $issue->key)
+                             ->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                            ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                            ->get();
+
+            $haplo_disease = (empty($record->customfield_10200) ? null :
+                                    Disease::curie($record->customfield_10200)->first());
+            $triplo_disease = (empty($record->customfied_10201) ? null :
+                                    Disease::curie($record->customfield_10201)->first());
+
+            // look up the dosage panel
+            $panel = Panel::title('Dosage Sensitivity Curation')->first();
+
+            // we split the haplo and triplo curations out 
+            foreach(['triplosensitivity_assertion', 'haploinsufficiency_assertion'] as $assertion)
+            {
+              // some of the classifications are strings, which we want to nomalize to its numeric only value
+              $field = ($assertion == "haploinsufficiency_assertion" ? 'customfield_10165' : 'customfield_10166');
+              $score = $record->$field->value ?? null;
+              switch ($score)
+              {
+                case '40: Dosage sensitivity unlikely':
+                  $score = 40;
+                  break;
+                case '30: Gene associated with autosomal recessive phenotype':
+                  $score = 30;
+                  break;
+              }
+
+              // finally we can build the new curation
+              $data = [
+                'type' => Curation::TYPE_DOSAGE_SENSITIVITY,
+                'type_string' => 'Dosage Sensitivity',
+                'subtype' => Curation::SUBTYPE_DOSAGE_DCI,
+                'subtype_string' => 'DCI JIRA QUERY',
+                'group_id' => 0,
+                'sop_version' => "1.0",
+                'curation_version' => null,
+                'source' => 'dci',
+                'source_uuid' => $issue->key,
+                'source_timestamp' => 0,
+                'source_offset' => 0,
+                'packet_id' => null,
+                'message_version' =>  null,
+                'assertion_uuid' => $issue->key,
+                'alternate_uuid' => null,
+                'panel_id' => $panel->id,
+                'affiliate_id' => $panel->affiliate_id,
+                'affiliate_details' => ['name' => 'Dosage Sensitivity Curation WG'],
+                'gene_id' => $gene->id,
+                'gene_hgnc_id' => $record->customfield_12230,
+                'gene_details' => ['symbol' => $record->customfield_10030, 'hgnc_id' => $record->customfield_12230],
+                'variant_iri' => null,
+                'variant_details' => null,
+                'region_id' => null,
+                'region_details' => null,
+                'document' => $issue->key,
+                'context' => $assertion,
+                'title' =>  null,
+                'summary' => $issue->fields->summary,
+                'description' => $issue->fields->description,
+                'comments' => null,
+                'disease_id' => ($assertion == 'haploinsufficiency_assertion' ?  $haplo_disease->id ?? null : $triplo_disease->id ?? null),
+                'conditions' => ($assertion == 'haploinsufficiency_assertion' ?  
+                                              (isset($record->customfield_10200) ? [$record->customfield_10200] : []) :
+                                              (isset($record->customfield_10201) ? [$record->customfield_10201] : [] )),
+                'condition_details' => ($assertion == 'haploinsufficiency_assertion' ? 
+                                              ['disease_id' => $record->customfield_10200 ?? null, 'disease_phenotype_name' => $record->customfield_11830 ?? null,
+                                               'phenotype_comments' =>  $record->customfield_10199 ?? null] :
+                                              ['disease_id' => $record->customfield_10201 ?? null, 'disease_phenotype_name' => $record->customfield_11831 ?? null,
+                                               'phenotype_comments' =>  $record->customfield_10198 ?? null]),
+                'evidence' => ($assertion == 'haploinsufficiency_assertion' ? 
+                                              ['pmid1' => $record->customfield_10183 ?? null, 'pmid2' => $record->customfield_10185 ?? null, 'pmid3' => $record->customfield_10187 ?? null,
+                                               'pmid4' => $record->customfield_12231 ?? null, 'pmid5' => $record->customfield_12232 ?? null, 'pmid6' => $record->customfield_12233 ?? null] :
+                                              ['pmid1' => $record->customfield_10189 ?? null, 'pmid2' => $record->customfield_10191 ?? null, 'pmid3' => $record->customfield_10193 ?? null,
+                                               'pmid4' => $record->customfield_12234 ?? null, 'pmid5' => $record->customfield_12235 ?? null, 'pmid6' => $record->customfield_12236 ?? null]),
+                'evidence_details' => ($assertion == 'haploinsufficiency_assertion' ? 
+                                              ['Loss1' => ['evidence_id' => $record->customfield_10183 ?? null, 'evidence_type' => $record->customfield_12331 ?? null,
+                                                           'description' => $record->customfield_10184 ?? null],
+                                               'Loss2' => ['evidence_id' => $record->customfield_10185 ?? null, 'evidence_type' => $record->customfield_12332 ?? null,
+                                                           'description' => $record->customfield_10186 ?? null],
+                                               'Loss3' => ['evidence_id' => $record->customfield_10187 ?? null, 'evidence_type' => $record->customfield_12333 ?? null,
+                                                           'description' => $record->customfield_10188 ?? null],
+                                               'Loss4' => ['evidence_id' => $record->customfield_12231 ?? null, 'evidence_type' => $record->customfield_12334 ?? null,
+                                                           'description' => $record->customfield_12237 ?? null],
+                                               'Loss5' => ['evidence_id' => $record->customfield_12232 ?? null, 'evidence_type' => $record->customfield_12335 ?? null,
+                                                           'description' => $record->customfield_12238 ?? null],
+                                               'Loss6' => ['evidence_id' => $record->customfield_12233 ?? null, 'evidence_type' => $record->customfield_12336 ?? null,
+                                                           'description' => $record->customfield_12239 ?? null],
+                                                'associated_w_reduced_penetrance' => $record->customfield_12245 ?? null,
+                                                'reduced_penetrance_comment' => $record->customfield_12246 ?? null,
+                                                'loss_specificity' => $record->customfield_12247 ?? null,
+                                                'should_be_targeted' => $record->customfield_10152 ?? null,
+                                                'targeting_decision_based_on' => $record->customfield_10169 ?? null,
+                                                'targeting_decision_comment' => $record->customfield_10196 ?? null,
+                                                "cgd_inheritance" => $record->customfield_11331 ?? null,
+                                                "cgd_condition" => $record->customfield_11330 ?? null,
+                                                "cgd_references" => $record->customfield_11332 ?? null
+                                                           ] : 
+                                              ['Gain1' => ['evidence_id' => $record->customfield_10189 ?? null, 'evidence_type' => $record->customfield_12337 ?? null,
+                                                           'description' => $record->customfield_10190 ?? null],
+                                               'Gain2' => ['evidence_id' => $record->customfield_10191 ?? null, 'evidence_type' => $record->customfield_12338 ?? null,
+                                                           'description' => $record->customfield_10192 ?? null],
+                                               'Gain3' => ['evidence_id' => $record->customfield_10193 ?? null, 'evidence_type' => $record->customfield_12339 ?? null,
+                                                           'description' => $record->customfield_10194 ?? null],
+                                               'Gain4' => ['evidence_id' => $record->customfield_12234 ?? null, 'evidence_type' => $record->customfield_12340 ?? null,
+                                                           'description' => $record->customfield_12240 ?? null],
+                                               'Gain5' => ['evidence_id' => $record->customfield_12235 ?? null, 'evidence_type' => $record->customfield_12341 ?? null,
+                                                           'description' => $record->customfield_12241 ?? null],
+                                               'Gain6' => ['evidence_id' => $record->customfield_12236 ?? null, 'evidence_type' => $record->customfield_12342 ?? null,
+                                                           'description' => $record->customfield_12242 ?? null],
+                                                'associated_w_reduced_penetrance' => $record->customfield_12245 ?? null,
+                                                'reduced_penetrance_comment' => $record->customfield_12246 ?? null,
+                                                'loss_specificity' => $record->customfield_12247 ?? null,
+                                                'should_be_targeted' => $record->customfield_10152 ?? null,
+                                                'targeting_decision_based_on' => $record->customfield_10169 ?? null,
+                                                'targeting_decision_comment' => $record->customfield_10196 ?? null,
+                                                "cgd_inheritance" => $record->customfield_11331 ?? null,
+                                                "cgd_condition" => $record->customfield_11330 ?? null,
+                                                "cgd_references" => $record->customfield_11332 ?? null
+                                                        ]),
+                'assertions' => ($assertion == 'haploinsufficiency_assertion' ?  $record->customfield_10165 ?? null : $record->customfield_10166 ?? null),
+                'scores' => ['haploinsufficiency' => $record->customfield_10165 ?? null, 'triplosensitivity' => $record->customfield_10166 ?? null],
+                'score_details' => [$issue->fields->labels],
+                'curators' => $record->contributors ?? null,
+                'published' => true,
+                'animal_model_only' => false,
+                'events' => ['created' => $issue->fields->created,
+                              'updated' => $issue->fields->updated,
+                              'resolved' => $issue->fields->resolutiondate,
+                              'resolution' => $issue->fields->resolution->name ?? null,
+                              'haplo_score_change' => $haplo_history,
+                              'triplo_score_change' => $triplo_history
+                ],
+                'url' => ['website_display' => "http://search.clinicalgenome.org/kb/gene-dosage/" . $record->customfield_12230],
+                'version' => 1,
+                'status' => $curation_status
+              ];
+
+              $curation = new Curation($data);
+              $curation->save();
+
+            }
+
+            // archive the old ones
+            $old_curations->each(function ($item) {
+                $item->update(['status' => Curation::STATUS_ARCHIVE]);
+            });
+
+          }
+
+        }
+
+        $start += $records->maxResults;
+
+      } while ($start < $records->total);
+
+    // update the last checked timestamp
+    $last->update(['offset' => $now]);
+
     }
 
 
@@ -549,10 +950,10 @@ class Dosage extends Model
      * Map a dosage record to a curation
      *
      */
-    public static function parser($message)
+    public static function parser2($message)
     {
         $data = json_decode($message->payload);
-
+dd($data);
         $fields = $data->fields;
 
         // is this a gene or region

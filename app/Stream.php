@@ -75,6 +75,7 @@ class Stream extends Model
 
     public const TYPE_NONE = 0;
     public const TYPE_KAFKA = 1;
+    public const TYPE_JIRA = 2;
 
     /*
      * Type strings for display methods

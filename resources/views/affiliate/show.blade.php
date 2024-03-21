@@ -2,13 +2,13 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 
     <div class="col-md-9">
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/clinicalValidity-on.png" width="40" height="40"></td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0"><span class="affiliate-id">Loading...</span> Expert Panel</h1>
+          <td class="pl-2"><h1 class="h2 p-0 m-0"><span class="affiliate-id">Loading...</span></h1>
           </td>
         </tr>
       </table>
@@ -19,8 +19,9 @@
 				<div class="text-right p-2">
 					<ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Curations</li>
-            <li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('affiliate-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Listing</a></li>
+            <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px"><i class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Unique<br />Genes</li>
 
+            <li class="text-stats line-tight text-center pl-3 pr-3"><a href="{{ route('affiliate-index') }}"><i class="glyphicon glyphicon-circle-arrow-left text-18px text-muted"></i><br />Return to<br />Listing</a></li>
           </ul>
 				</div>
 			</div>
@@ -105,6 +106,7 @@
   function responseHandler(res) {
 
     $('.countCurations').html(res.total);
+    $('.countGenes').html(res.ngenes);
     $('.affiliate-id').html(res.id);
 
     return res
@@ -148,22 +150,22 @@
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       stickyHeader: true,
-    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
-            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
+      stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+      stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
       sortName:  "symbol",
 			sortOrder: "asc",
       columns: [
-
-        {
+      {
           title: 'Gene',
           field: 'symbol',
-          formatter: geneFormatter,
+          formatter: symbol2Formatter,
           cellStyle: cellFormatter,
-          filterControl: 'input',
           searchFormatter: false,
+          filterControl: 'input',
           sortable: true
-        },{
+        },
+        {
           title: 'HGNC',
           field: 'hgnc_id',
           formatter: ashgncFormatter,
@@ -176,10 +178,10 @@
         {
           title: 'Disease',
           field: 'disease',
-          formatter: asdiseaseFormatter,
+          formatter: diseaseFormatter,
           cellStyle: cellFormatter,
-          filterControl: 'input',
           searchFormatter: false,
+          filterControl: 'input',
           sortable: true
         },
         {
@@ -187,19 +189,20 @@
           field: 'mondo',
           formatter: asmondoFormatter,
           cellStyle: cellFormatter,
-          filterControl: 'input',
           searchFormatter: false,
+          filterControl: 'input',
           sortable: true,
           visible: false
         },
         {
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Mode Of Inheritance"></i></div> MOI',
           field: 'moi',
-          cellStyle: cellFormatter,
-          formatter: moiFormatter,
-          filterControl: 'input',
+          sortable: true,
+          filterControl: 'select',
           searchFormatter: false,
-          sortable: true
+          //align: 'center',
+          formatter: moiFormatter,
+          cellStyle: cellFormatter,
         },
         {
           title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Gene Curation Standard Operating Procedure"></i></div> SOP',
@@ -227,7 +230,6 @@
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:choices',
-          filterCustomSearch: checkclass,
           sortable: true,
           sortName: 'order'
         },

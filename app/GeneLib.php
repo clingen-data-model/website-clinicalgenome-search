@@ -4,12 +4,11 @@ namespace App;
 
 use Jenssegers\Model\Model;
 
-use App\Neo4j;
 use App\Graphql;
 use App\Jira;
 use App\Region;
 use App\Mysql;
-use App\Health;
+//use App\Health;
 
 
 /**
@@ -293,12 +292,14 @@ class GeneLib extends Model
           if (!empty($args['forcegg']))
                return Graphql::geneList($args);
 
-          $health = Health::where('service', 'GeneSearch')->first();
+          //$health = Health::where('service', 'GeneSearch')->first();
 
-          if (empty($health->genegraph) || empty($args['curated']))
+          //if (empty($health->genegraph) || empty($args['curated']))
+          
+          //if (!empty($args['curated']))
                $response = Mysql::geneList($args);
-          else
-               $response = Graphql::geneList($args);
+          //else
+             //  $response = Graphql::geneList($args);
 
           /*if ($args['curated'] || !empty($args['forcegg']))
                $response = Graphql::geneList($args);
@@ -312,14 +313,13 @@ class GeneLib extends Model
      /**
       * Get a list of all the acmg entries
       *
-      * (Neo4j, Genegraph)
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
       static function acmgList($args)
       {
-           if (is_null($args) || !is_array($args))
-                return collect([]);
+          if (is_null($args) || !is_array($args))
+               return collect([]);
  
           $response = Mysql::acmgList($args);
  
@@ -437,31 +437,8 @@ class GeneLib extends Model
 
 
      /**
-      * Get details of a particular gene
+      * Typeahead search for gene matches
       *
-      * (Neo4j)
-      *
-      * @return Illuminate\Database\Eloquent\Collection
-      */
-     /*static function geneActivityDetail($args)
-    {
-         if (is_null($args) || !is_array($args))
-              return collect([]);
-
-         // Most of the gene and curation data is currently in neo4j...
-         //$response = Neo4j::geneDetail($args);
-
-         //...but actionability is now in genegraph
-         $response = Graphql::geneActivityDetail($args);
-
-         return $response;
-    }*/
-
-
-     /**
-      * Get a list of all the curated genes
-      *
-      * (Neo4j, Genegraph)
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
@@ -470,13 +447,6 @@ class GeneLib extends Model
           if (is_null($args) || !is_array($args))
                return collect([]);
 
-          // Gene data is currently in neo4j
-          //$response = Neo4j::geneList($args);
-
-          // Gene listing using Graphql
-          //$response = Graphql::geneLook($args);
-
-          // Gene listing using Graphql
           $response = Mysql::geneLook2($args);
 
           return $response;
@@ -486,7 +456,6 @@ class GeneLib extends Model
      /**
       * Get a list of all the curated genes
       *
-      * (Neo4j, Genegraph)
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
@@ -495,11 +464,7 @@ class GeneLib extends Model
           if (is_null($args) || !is_array($args))
                return collect([]);
 
-          // Gene data is currently in neo4j
-          //$response = Neo4j::geneList($args);
-
-          // Gene listing using Graphql
-          $response = Graphql::geneFind($args);
+          $response = Mysql::geneFind($args);
 
           return $response;
      }
@@ -508,7 +473,6 @@ class GeneLib extends Model
      /**
       * Get a list of all genes and regions within the search params
       *
-      * (Neo4j, GeneGraph)
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
@@ -540,7 +504,9 @@ class GeneLib extends Model
           //$response = Neo4j::affiliateList($args);
 
           // The affiliate and curation data is currently in graphql
-          $response = Graphql::affiliateList($args);
+         // $response = Graphql::affiliateList($args);
+
+          $response = Mysql::affiliateList($args);
 
           return $response;
      }
@@ -584,7 +550,9 @@ class GeneLib extends Model
           //$response = Neo4j::affiliateDetail($args);
 
           // The affiliate and curation data is currently in neo4j
-          $response = Graphql::affiliateDetail($args);
+          //$response = Graphql::affiliateDetail($args);
+
+          $response = Mysql::affiliateDetail($args);
 
           return $response;
      }
@@ -606,7 +574,10 @@ class GeneLib extends Model
           // $response = Neo4j::validityList($args);
 
           // Gene data using Graphql
-          $response = Graphql::validityList($args);
+          if (!empty($args['forcegg']))
+               return Graphql::validityList($args);
+
+          $response = Mysql::validityList($args);
 
           return $response;
      }
@@ -659,7 +630,6 @@ class GeneLib extends Model
      /**
       * Get a list of all genes and regions within the search params
       *
-      * (Neo4j, GeneGraph)
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
@@ -691,7 +661,10 @@ class GeneLib extends Model
           //$response = Neo4j::dosageList($args);
 
           // Gene data is currently in graphgq
-          $response = Graphql::dosageList($args);
+          if (!empty($args['forcegg']))
+               $response = Graphql::dosageList($args);
+          else
+               $response = Mysql::dosageList($args);
 
           return $response;
      }
@@ -878,10 +851,29 @@ class GeneLib extends Model
                return collect([]);
 
          // regions are still only found in Jira
-         $response = Jira::cnvList($args);
+         //$response = Jira::cnvList($args);
+
+         $response = Mysql::cnvList($args);
 
          return $response;
     }
+
+
+    /**
+      * Get all current prepublish curations
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+      static function dosagePrecuration($args)
+      {
+           if (is_null($args) || !is_array($args))
+                return collect([]);
+ 
+          // regions are still only found in Jira
+          $response = Jira::precuration($args);
+ 
+          return $response;
+     }
 
 
      /**
@@ -933,8 +925,10 @@ class GeneLib extends Model
                return collect([]);
 
           // pull all the regions from jira
-          $local = Jira::regionList($args);
+          //$local = Jira::regionList($args);
 
+          $local = Mysql::regionList($args);
+//dd($local->collection->first());
           // combine
           /*$c = $local->collection;
          $records = $records->map( function ($record) use ($c)
@@ -976,9 +970,9 @@ class GeneLib extends Model
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
-          if (!empty($args['forcegg']))
-               $response = Graphql::drugList($args);
-          else      // Drug data is now local
+         // if (!empty($args['forcegg']))
+          //     $response = Graphql::drugList($args);
+          //else      // Drug data is now local
                $response = Mysql::drugList($args);
 
           return $response;

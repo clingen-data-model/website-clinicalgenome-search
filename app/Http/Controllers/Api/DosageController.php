@@ -11,7 +11,7 @@ use App\Http\Resources\Search as SearchResource;
 
 use App\GeneLib;
 use App\Gene;
-use App\Omim;
+use App\Curation;
 use App\Dosage;
 
 class DosageController extends Controller
@@ -171,13 +171,14 @@ class DosageController extends Controller
                                                     'dosage' => true
                                                     ]);*/
 
-            $region = Dosage::issue($id)->first();
+            //$region = Dosage::issue($id)->first();
+            $region = Curation::dosage_region()->active()->sid($id)->get();
 
-            if ($region === null)
-                return;
+            $haplo_assertion = $region->where('context', 'haploinsufficiency_assertion')->first();
+            $triplo_assertion = $region->where('context', 'triplosensitivity_assertion')->first();
 
             // Jira has a lot of disease mapping options.  Deal with them.
-            if (empty($region->loss_pheno_name))   // Use name if especified
+           /* if (empty($region->loss_pheno_name))   // Use name if especified
             {
                 if (isset($region->loss_pheno_omim[0]))
                 {
@@ -194,11 +195,12 @@ class DosageController extends Controller
                     $region->gain_pheno_name = $region->gain_pheno_omim[0]['titles'];
                     $region->gain_omim = $region->gain_pheno_omim[0]['id'];
                 }
-            }
+            }*/
 
 
             return view('gene-dosage.region_expand')
-                    ->with('region', $region);
+                    ->with('triplo', $triplo_assertion)
+                    ->with('haplo', $haplo_assertion);
         }
 
         

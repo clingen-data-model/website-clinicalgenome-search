@@ -1441,6 +1441,16 @@ class Graphql
                             curie
 							label
 						}
+						contributions {
+							realizes {
+							  curie
+							  label
+							}
+							agent {
+							  curie
+							  label
+							}
+						}
 						iri
 						description
                         '
@@ -3633,6 +3643,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
+	/**     Retired, no longer used
     static function geneLook($args, $page = 0, $pagesize = 20)
     {
 		// break out the args
@@ -3658,16 +3669,6 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-		// add each gene to the collection
-		/*foreach($response->suggest as $record)
-		{
-			$node = new Nodal((array) $record);
-			$node->label = $record->highlighted . '  (' . $record->alternative_curie . ')';
-			$node->href = route('gene-show', $record->alternative_curie);
-
-			$collection->push($node);
-		}*/
-
 		$array = [];
 		foreach($response->suggest as $record)
 		{
@@ -3680,6 +3681,7 @@ class Graphql
 		//return (object) ['count' => count($collection), 'collection' => $collection];
 		return json_encode($array);
 	}
+	*/
 
 
 	/**
@@ -3687,6 +3689,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
+	/** Retired, no longer used
     static function geneFind($args, $page = 0, $pagesize = 20)
     {
 		// break out the args
@@ -3768,6 +3771,7 @@ class Graphql
 
 		return json_encode($array);
 	}
+	*/
 
 
 	/**

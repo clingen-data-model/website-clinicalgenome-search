@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 		<div class="col-md-5">
 			<table class="mt-3 mb-2">
 				<tr>
@@ -34,24 +34,6 @@
 						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i
 									class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions
 						</li>
-						{{-- <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-download') }}">Summary Data (CSV)</a></li>
-						<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
-					</ul>
-					</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3">
-						<div class="btn-group p-0 m-0" style="display: block"><a
-								class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false"><i
-									class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />ACMG<br />CNV
-							</a>
-							<ul class="dropdown-menu dropdown-menu-left">
-								<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
-								<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
-							</ul>
-					</li> --}}
 					</ul>
 				</div>
 			</div>
@@ -152,7 +134,6 @@
 		$('.countCurations').html(res.ncurations);
 		$('.countGenes').html(res.ngenes);
 		$('.countRegions').html(res.nregions);
-		//$('.countTriplo').html(res.ntriplo);
 		return res
 	}
 
@@ -178,13 +159,6 @@
 			default:
 				return true;
 		}
-
-		/*
-		if (text == '<= 10')
-			return value <= 10;
-		else
-			return value > 10;
-		*/
 	}
 
 
@@ -208,12 +182,6 @@
 			default:
 				return true;
 		}
-
-		//console.log(value);
-		/*if (text == '> .35')
-			return value > .35;
-		else
-			return value <= .35;*/
 	}
 
 	var tripChoices=[
@@ -224,7 +192,7 @@
                 '30 (Autosomal Recessive)',
                 '40 (Dosage Sensitivity Unlikely)',
                 'Not Yet Evaluated',
-  ];
+  		];
 	var hapChoices=[
                 '0 (No Evidence)',
                 '1 (Little Evidence)',
@@ -233,7 +201,7 @@
                 '30 (Autosomal Recessive)',
                 '40 (Dosage Sensitivity Unlikely)',
                 'Not Yet Evaluated',
-  ];
+  		];
 
 
 	function inittable() {
@@ -248,29 +216,32 @@
 	  		rowStyle:  function(row, index) {
 				if (index % 2 === 0) {
      				return {
-						classes: 'bt-even-row bt-hover-row'
+						classes: 'bt-even-row2 bt-hover-row'
 					}
 				}
 				else {
      				return {
-						classes: 'bt-odd-row bt-hover-row'
+						classes: 'bt-odd-row2 bt-hover-row'
 					}
 				}
      		},
 			columns: [
 				{
-					title: '',
+					title: 'Locus',
 					field: 'type',
-					formatter: nullFormatter,
-					cellStyle: typeFormatter,
+					formatter: relationFormatter,
+					cellStyle: cellFormatter,
+					//formatter: nullFormatter,
+					//cellStyle: typeFormatter,
 					//filterControl: 'input',
-					searchFormatter: false
-					//sortable: true
+					width: 80,
+					searchFormatter: false,
+					sortable: true,
 				},
 				{
-					title: 'Gene/Region',
+					title: 'Gene Symbol /<div>Region Name</div>',
 					field: 'symbol',
-					formatter: symbolFormatter,
+					formatter: symbol2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					width: 190,
@@ -321,7 +292,7 @@
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency score"></i></div>HI Score',
 					field: 'haplo_assertion',
-					formatter: haploFormatter,
+					formatter: haplo2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
@@ -352,7 +323,7 @@
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Triplosensitivity score"></i></div>TS Score',
 					field: 'triplo_assertion',
-					formatter: triploFormatter,
+					formatter: triplo2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
@@ -381,7 +352,7 @@
 					visible: false
 				},
 				{
-					title: 'OMIM',
+					title: 'OMIM<hr class="mt-1 mb-1 bg-white mr-4">Morbid',
 					field: 'omim',
 					formatter: omimFormatter,
 					cellStyle: cellFormatter,
@@ -390,7 +361,7 @@
 					searchFormatter: false,
 					sortable: true
 				},
-				{
+				/*{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="OMIM morbid map"></i></div>Morbid',
 					field: 'morbid',
 					formatter: morbidFormatter,
@@ -399,7 +370,7 @@
 					filterData: 'var:choices',
 					searchFormatter: false,
 					sortable: true
-				},
+				},*/
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index.  Values less than 10% predict that a gene is more likely to exhibit haploinsufficiency."></i></div>%HI',
 					field: 'hi',
@@ -435,8 +406,7 @@
 				},
 				{
 					field: 'date',
-					//title: 'Last Eval.',
-          			title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          			title: 'Last<div>Evaluated Date</div>',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
@@ -560,7 +530,7 @@
 
 		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
         $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
-		$(".fixed-table-toolbar .search .input-group:first").after(html);
+		//$(".fixed-table-toolbar .search .input-group:first").after(html);
 
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');

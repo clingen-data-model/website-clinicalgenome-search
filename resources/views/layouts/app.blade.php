@@ -81,7 +81,7 @@
            <input type="hidden" class="buildtype" name="type" value="">
 	         <span class="input-group-addon" id=""><i class="fas fa-search"></i></span>
 	         <div class="input-group-btn">
-	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene</span></button>
+	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene Symbol  </span></button>
 	           <ul class="dropdown-menu dropdown-menu-left">
 	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
 	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
@@ -109,8 +109,8 @@
            <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region, or full cytoband (Examples: chr7:75158048-76063176, chr7, chr7:70008000, 12q24.31)">
            </span>
 	         <span class="input-group-btn">
-	                 <button class="btn btn-default btn-search-submit" type="submit"> Search</button>
-	               </span>
+	                 <button class="btn btn-default btn-search-submit" type="submit">Search</button>
+	          </span>
          </div><!-- /input-group -->
           </form>
           @hasSection ('heading')
@@ -367,7 +367,7 @@
         $( ".inputQueryDrug .queryDrug" ).hide();
         $( ".inputQueryRegion" ).hide();
         $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Gene");
+        $( ".typeQueryLabel").text("Gene Symbol  ");
       });
       $( ".typeQueryDisease" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
@@ -379,7 +379,7 @@
         $( ".inputQueryDrug .queryDrug" ).hide();
         $( ".inputQueryRegion" ).hide();
         $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Disease");
+        $( ".typeQueryLabel").text("Disease Name  ");
       });
       $( ".typeQueryDrug" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
@@ -391,7 +391,7 @@
         $( ".inputQueryDrug .queryDrug" ).show();
         $( ".inputQueryRegion" ).hide();
         $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Drug");
+        $( ".typeQueryLabel").text("Drug Name  ");
       });
       $( ".typeQueryRegionGRCh37" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('region-search') }}");
@@ -403,7 +403,7 @@
         $( ".inputQueryDrug .queryDrug" ).hide();
         $( ".inputQueryRegion" ).show();
         $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh37 Region");
+        $( ".typeQueryLabel").text("GRCh37 Region  ");
         $( ".buildtype").val("GRCh37");
       });
       $( ".typeQueryRegionGRCh38" ).click(function() {
@@ -416,7 +416,7 @@
         $( ".inputQueryDrug .queryDrug" ).hide();
         $( ".inputQueryRegion" ).show();
         $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh38 Region");
+        $( ".typeQueryLabel").text("GRCh38 Region  ");
         $( ".buildtype").val("GRCh38");
       });
 

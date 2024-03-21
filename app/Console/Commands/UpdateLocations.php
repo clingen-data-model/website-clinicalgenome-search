@@ -176,8 +176,7 @@ class UpdateLocations extends Command
                     if ($record->is_par)
                     {
                         if ($chr == 23)
-                            $record->update(['chr' => $chr, 'start37' => $start, 'stop37' => $stop, 'seqid37' => $parts[0]]);
-
+                            $record->update(['chr' => $chr, 'start38' => $start, 'stop38' => $stop, 'seqid38' => $parts[0]]);
                         if ($record->par_coordinates === null)
                         {
                             $parcs = ['grch37' => ['x' => ['build' => null, 'chr' => null, 'start' => null, 'stop' => null, 'seqid' => null],

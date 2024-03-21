@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 
 
 	  <div class="col-md-7">
@@ -33,10 +33,10 @@
      </button>-->
      <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
 
- </div>
+    </div>
 
     <div class="col-md-12 light-arrows dark-table">
-			@include('_partials.genetable', ['customload' => true])
+			@include('_partials.genetable', ['customload' => true, 'expand' => true])
 		</div>
 	</div>
 </div>
@@ -61,7 +61,7 @@
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
 	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
-    <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
+  <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -161,7 +161,7 @@
         {
           title: 'Gene',
           field: 'symbol',
-          formatter: geneFormatter,
+          formatter: symbol2Formatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
@@ -180,7 +180,7 @@
         {
           title: 'Disease',
           field: 'disease',
-          formatter: asdiseaseFormatter,
+          formatter: diseaseFormatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
@@ -207,8 +207,9 @@
           cellStyle: cellFormatter,
         },
         {
-            title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
           field: 'ep',
+          formatter: affiliate2Formatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'select',
@@ -292,6 +293,36 @@
 
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+    $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.attr('colspan',12);
+
+      var t = $obj.closest('tr');
+
+      //var stripe = t.prev().hasClass('bt-even-row');
+
+      t.addClass('dosage-row-bottom');
+
+      //if (stripe)
+      //  t.addClass('bt-even-row');
+      //else
+      //  t.addClass('bt-odd-row');
+
+      t.prev().addClass('dosage-row-top');
+
+      $obj.load( "/api/validity/expand/" + row.perm_id );
+
+      return false;
+    })
+
+
+    $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.closest('tr').prev().removeClass('dosage-row-top');
+
+      return false;
+    });
   }
 
 $(function() {

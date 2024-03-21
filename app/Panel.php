@@ -148,6 +148,24 @@ class Panel extends Model
     }
 
 
+    /*
+     * The curations associated with this group as a primary
+     */
+    public function primary_curations()
+    {
+       return $this->hasMany('App\Curation');
+    }
+
+
+    /*
+     * The curations associated with this group
+     */
+    public function curations()
+    {
+       return $this->belongsToMany('App\Curation');
+    }
+
+
 	/**
      * Query scope by ident
      *

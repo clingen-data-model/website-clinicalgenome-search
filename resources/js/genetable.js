@@ -158,6 +158,19 @@ function typeFormatter(index, row) {
         return { classes: 'global_table_cell region' };
 }
 
+/**
+ * For a symbol or region cell
+ *
+ * @param {*} index
+ * @param {*} row
+ */
+function zeroFormatter(index, row) {
+
+    if (row.total_secondary_curations == 0)
+        return "-";
+
+    return row.total_secondary_curations;
+}
 
 function nullFormatter(index, row) {
     if (row.type == 0)
@@ -197,7 +210,7 @@ function vcepFormatter(index, row) {
 
 
 function diseaseFormatter(index, row) {
-    return '<span onclick="event.stopPropagation();"><a href="/kb/conditions/' + row.mondo + '">' + row.disease_name + '</a><div class="text-muted">' + row.mondo + '</div></span>';
+    return '<span onclick="event.stopPropagation();"><a href="/kb/conditions/' + row.mondo + '">' + row.disease_name + '</a><div class="text-muted small">' + row.mondo + '</div></span>';
 }
 
 
@@ -218,6 +231,43 @@ function location01Formatter(index, row) {
         return '';
 
     var name = row.location.trim();
+
+    // strip off chr
+    if (name.toLowerCase().indexOf("chr") === 0)
+        name = name.substring(3);
+
+    var chr = name.indexOf(':');
+    var pos = name.indexOf('-');
+
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+        + name.substring(0, chr)
+        + '</td><td class="text-10px line-height-normal">'
+        + name.substring(chr + 1, pos)
+        + '</td></tr><tr><td class="text-10px line-height-normal">'
+        + name.substring(pos + 1)
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+        + '</div>';
+
+    return html;
+}
+
+
+function location02Formatter(index, row) {
+
+    //if (row.type == 0)
+    //   return row.location;
+
+    if (row.coordinates == null)
+        return '';
+
+    var name = row.coordinates.trim();
 
     // strip off chr
     if (name.toLowerCase().indexOf("chr") === 0)
@@ -427,6 +477,66 @@ function haploFormatter(index, row) {
 
 }
 
+function haplo2Formatter(index, row) {
+    if (row.haplo_assertion === null || row.haplo_assertion === false)
+        return '';
+
+    if (row.haplo_assertion == 'Not yet evaluated' || row.haplo_assertion == "-5")
+        return '';
+
+    var display = '';
+    var tooltip = '';
+
+    switch (row.haplo_assertion)
+    {
+        case 0:
+        case "0":
+            display = "No<div>Evidence</div>";
+            tooltip = "0 (No Evidence)";
+            break;
+        case 1:
+        case "1":
+            display = "Little<div>Evidence</div>";
+            tooltip = "1 (Little Evidence)";
+            break;
+        case 2:
+        case "2":
+            display = "Emerging<div>Evidence</div>";
+            tooltip = "2 (Emerging Evidence)";
+            break;
+        case 3:
+        case "3":
+            display = "Sufficient<div>Evidence</div>";
+            tooltip = "3 (Sufficient Evidence)";
+            break;
+        case 30:
+        case "30":
+        case '30: Autosomal Recessive':
+            display = "Autosomal<div>Recessive</div>";
+            tooltip = "30 (Autosomal Recessive)";
+            break;
+        case 40:
+        case "40":
+        case '40: Dosage sensitivity unlikely':
+            display = "Sensitivity<div>Unlikely</div>";
+            tooltip = "40 (Dosage sensitivity unlikely)";
+            break;
+        default:
+            console.log(row);
+    }
+
+    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + row.haplo_assertion + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip+ '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
+
+    if (row.haplo_history === null)
+        return html;
+
+    // tack on the change score icon
+    html += '<span class="pointer text-danger mt-2" data-toggle="tooltip" data-placement="top" title="'
+                + row.haplo_history + '"><i class="fas fa-star ml-2 fa-lg"></i></span>';
+    
+    return html;
+}
+
 
 function triploFormatter(index, row) {
     if (row.triplo_assertion === false)
@@ -445,11 +555,81 @@ function triploFormatter(index, row) {
 
 }
 
-function omimFormatter(index, row) {
-    if (row.omimlink)
-        return '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a></span>';
-    else
+
+function triplo2Formatter(index, row) {
+    if (row.triplo_assertion === null || row.triplo_assertion === false)
         return '';
+
+    if (row.triplo_assertion == 'Not yet evaluated' || row.triplo_assertion == "-5")
+        return '';
+
+    var display = '';
+    var tooltip='';
+
+    switch (row.triplo_assertion)
+    {
+        case 0:
+        case "0":
+            display = "No<div>Evidence</div>";
+            tooltip = "0 (No Evidence)";
+            break;
+        case 1:
+        case "1":
+            display = "Little<div>Evidence</div>";
+            tooltip = "1 (Little Evidence)";
+            break;
+        case 2:
+        case "2":
+            display = "Emerging<div>Evidence</div>";
+            tooltip = "2 (Emerging Evidence)";
+            break;
+        case 3:
+        case "3":
+            display = "Sufficient<div>Evidence</div>";
+            tooltip = "3 (Sufficient Evidence)";
+            break;
+        case 30:
+        case "30":
+        case '30: Autosomal Recessive':
+            display = "Autosomal<div>Recessive</div>";
+            tooltip = "30 (Autosomal Recessive)";
+            break;
+        case 40:
+        case "40":
+        case '40: Dosage sensitivity unlikely':
+            display = "Sensitivity<div>Unlikely</div>";
+            tooltip = "40 (Dosage sensitivity unlikely)'";
+            break;
+        default:
+            console.log(row);
+    }
+
+    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + row.triplo_assertion + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip + '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
+    
+    if (row.triplo_history === null)
+        return html;
+
+    // tack on the change score icon
+    html += '<span class="pointer text-danger mt-2" data-toggle="tooltip" data-placement="top" title="'
+                + row.triplo_history + '"><i class="fas fa-star ml-2 fa-lg"></i></span>';
+    
+    return html;
+}
+
+function omimFormatter(index, row) {
+    var html = '';
+
+    if (row.omimlink)
+        html = '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">OMIM</span></a></span>';
+    else
+        html = '<span>&nbsp;</span>';
+
+    //html = '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-success"><i class="fas fa-check"></i></span></a></span>';
+
+    if (row.morbid == "Yes")
+        html += '<hr class="mt-1 mb-1 mr-4"><div onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">Morbid</div></a></span>';
+
+        return html;;
 }
 
 
@@ -468,13 +648,13 @@ function reportFormatter(index, row) {
     if (row.type == 0 || row.type == 3) {
         /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
             + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';*/
-        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="'
-            + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="'
+            + '/kb/gene-dosage/' + row.hgnc_id + '"><i class="fas fa-file mr-2"></i>   ' + row.date + '</a></span>';
     }
     else {
-        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="'
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="'
             + '/kb/gene-dosage/region/' + row.hgnc_id
-            + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
+            + '"><i class="fas fa-file mr-2"></i>   ' + row.date + '</a></span>';
     }
 }
 
@@ -531,7 +711,26 @@ function headerStyle(column) {
 
 
 function affiliateFormatter(index, row) {
-    var html = '<a href="/kb/affiliate/' + row.agent + '">' + row.label + '</a>';
+    //var html = '<a href="/kb/affiliate/' + row.agent + '">' + row.label + '</a>';
+    //return html;
+
+    var html = '<a onclick="event.stopPropagation();" href="https://clinicalgenome.org/affiliation/' + row.agent + '" target="_gcep">' + row.label + '</a>' 
+                    + '<div class="text-muted small">ClinGen Affliate ID: ' + row.agent + '</div>';
+    return html;
+}
+
+
+function afflinkFormatter(index, row) {
+
+    var html = '<a onclick="event.stopPropagation();" class="btn btn-small btn-default rounded-0" href="/kb/affiliate/' + row.agent + '">View Curations <i class="fas fa-external-link-square-alt ml-1"></i></a>';
+
+    return html;
+}
+
+function affiliate2Formatter(index, row) {
+
+    var html = '<span onclick="event.stopPropagation();" ><a href="https://clinicalgenome.org/affiliation/' + row.affiliate_id + '" target="_gcep">' + row.ep + '</a></span>';
+
     return html;
 }
 
@@ -561,6 +760,29 @@ function badgeFormatter(index, row) {
         html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
     else
         html += '<img class="" src="/images/Pharmacogenomics-off.png" title="Pharmacogenomics" style="width:30px">';
+
+    return html;
+}
+
+function badge2Formatter(index, row) {
+    var html = '';
+    if (row.has_validity)
+        html += '<img class="" src="/images/clinicalValidity-on.png" title="Gene-Disease Validity" style="width:30px">';
+
+    if (row.has_dosage)
+        html += '<img class="" src="/images/dosageSensitivity-on.png" title="Dosage Sensitivity" style="width:30px">';
+
+    if (row.has_actionability)
+        html += '<img class="" src="/images/clinicalActionability-on.png" title="Clinical Actionability" style="width:30px">';
+
+    if (row.has_variant)
+        html += '<img class="" src="/images/variantPathogenicity-on.png" title="Variant Pathogenicity" style="width:30px">';
+
+    if (row.has_pharma)
+        html += '<img class="" src="/images/Pharmacogenomics-on.png" title="Pharmacogenomics" style="width:30px">';
+
+    if (row.date_last_curated)
+        html += '<div class="text-muted small">Last Curated: ' + row.date_last_curated + '</div>';
 
     return html;
 }
@@ -709,13 +931,16 @@ function asbadgeFormatter(index, row) {
             + '' + txt + '<div class="badge badge-warning">'
             + 'Animal Model Only</div></a>';
 
-    return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
+    //return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
+    //    + '' + txt + '</a>';
+
+    return '<a class="btn btn-block text-white cg-table-' + txt + '" href="/kb/gene-validity/' + row.perm_id + '">'
         + '' + txt + '</a>';
 }
 
 function datebadgeFormatter(index, row) {
 
-    return '<a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-validity/' + row.perm_id + '"><i class="glyphicon glyphicon-file"></i> '
+    return '<a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="/kb/gene-validity/' + row.perm_id + '"><i class="far fa-file mr-2"></i> '
         + '' + row.released + '</a>';
 
 }
@@ -828,11 +1053,11 @@ function drbadgeFormatter(index, row) {
 var terms = {
     "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
     "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
-    'Undetermined': 'Undetermined MOI'
+    'UD': 'Undetermined Mode of Inheritance'
 };
 
 function moiFormatter(index, row) {
-    return '<span class="pointer" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '" ">' + row.moi + '</span>';
+    return '<span class="pointer btn btn-default btn-sm rounded-0" data-toggle="tooltip" data-placement="top" title="' + terms[row.moi] + '">' + row.moi + '</span>';
 }
 
 function hasvalidityFormatter(index, row) {
@@ -841,7 +1066,7 @@ function hasvalidityFormatter(index, row) {
         return '';
 
 
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
+    return '<a onclick="event.stopPropagation();" class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
         + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
@@ -861,7 +1086,7 @@ function hasVariantFormatter(index, row) {
     if (row.has_variant == null)
         return '';
 
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&gene=' + row.symbol + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Approved VCEP</span></a>';
+    return '<a onclick="event.stopPropagation();" class="btn btn-success btn-sm pb-0 pt-0" href="https://erepo.clinicalgenome.org/evrepo/ui/classifications?matchMode=exact&gene=' + row.symbol + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Approved VCEP</span></a>';
 }
 
 function hasactionabilityFormatter(index, row) {
@@ -869,7 +1094,7 @@ function hasactionabilityFormatter(index, row) {
     if (row.has_actionability == null)
         return '';
 
-    return '<a class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
+    return '<a onclick="event.stopPropagation();" class="btn btn-success btn-sm pb-0 pt-0" href="/kb/genes/' + row.hgnc_id
         + '"><i class="glyphicon glyphicon-file"></i>  <span class="hidden-sm hidden-xs">Curated</span></a>';
 }
 
@@ -880,7 +1105,7 @@ function hasdosageFormatter(index, row) {
         return '';
 
 
-    return '<a class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/genes/'
+    return '<a onclick="event.stopPropagation();" class="btn btn-success  btn-wrap btn-sm pb-0 pt-0" href="/kb/genes/'
         + row.hgnc_id
         + '"><i class="glyphicon glyphicon-file"></i> <span class="hidden-sm hidden-xs">Curated</span></a>';
 
@@ -1029,14 +1254,14 @@ function cnvtriploFormatter(index, row) {
 }
 
 function cnvreportFormatter(index, row) {
-    /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
-            + report + row.symbol + '"><i class="fas fa-file"></i>  View Details</a>'; */
+    
     if (row.rawdate === "")
-        return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
+        return '<span onclick="event.stopPropagation();" ><a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="/kb/gene-dosage/region/'
             + row.key + '"><i class="fas fa-file"></i>  Under Review</a></span>';
 
-    return '<span onclick="event.stopPropagation();" ><a class="btn btn-xs btn-success btn-block btn-report" href="/kb/gene-dosage/region/'
+    return '<span onclick="event.stopPropagation();" ><a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="/kb/gene-dosage/region/'
         + row.key + '"><i class="fas fa-file"></i>   ' + row.date + '</a></span>';
+
 }
 
 function acmsymbolFormatter(index, row) {
@@ -1141,6 +1366,35 @@ function acmreportFormatter(index, row) {
         + report + row.symbol + '"><i class="fas fa-file"></i>   ' + row.date + '</a>';
 }
 
+function precurationFormatter(index, row) {
+    
+    if (row.locus_type == 'pseudogene')
+        return '<div class="text-center text-muted font-weight-bold reduced-line-height border-warning border-1 mr-1 pt-1 pb-1">' + "Pseudogenes not reviewable by Dosage Sensitivity" + '</div>';
+
+    if (row.status == 1)
+    {
+        var html = badge2Formatter(index, row);
+
+        if (row.precuration !== null)
+        {
+            html += '<div class="text-danger font-weight-bold small">Under Dosage Re-evaluation</div>';
+        }
+
+        return html;
+
+    }
+
+    switch (row.precuration)
+    {
+        case 11:
+        case 12:
+        case 14:
+        case 30:
+            return '<div class="text-center text-success font-weight-bold border-success border-1 mr-1 pt-1 pb-1">' + "Under Dosage Review" + '</div>';
+    }
+
+    return '';
+}
 
 function dsreportFormatter(index, row) {
     /*return '<a class="btn btn-block btn btn-default btn-xs" href="'
@@ -1186,26 +1440,73 @@ function dssymbolFormatter(index, row) {
 }
 
 
+function symbol2Formatter(index, row) {
+
+    if (typeof row.type == 'undefined' || row.type == 0)
+            return '<span onclick="event.stopPropagation();" ><a href="/kb/genes/' + row.symbol_id + '"><b>' + row.symbol + '</b></a></span>'
+                     + '<div class="text-muted small">' + row.symbol_id + '</div>';
+    
+    if (row.type == 1)
+        return '<span onclick="event.stopPropagation();" ><a href="/kb/gene-dosage/region/' + row.symbol_id + '"><b>' + row.symbol + '</b></a></span>';
+
+    return "bad";
+}
+
+
 function relationFormatter(index, row) {
     var html = '';
 
     if (row.type == 0)
-        html += '<div class="global_table_cell font-weight-bold gene" title="Gene">G</div>';
+    {
+        if (row.locus_type == "pseudogene")
+            html += '<div class="text-left text-warning font-weight-bold mb-1" title="Pseudogene">Pseudogene</div>';
+        else
+            html += '<div class="text-left text-info font-weight-bold mb-1" title="Gene">Gene</div>';
+    }
     else if (row.type == 1)
-        html += '<div class="global_table_cell font-weight-bold region" title="Region">R</div>';
+        html += '<div class="text-left text-danger font-weight-bold mb-1" title="Region">Region</div>';
     else
-        html += '<div class="global_table_cell font-weight-bold psuedogene" title="Pseudogene">P</div>';
+        return html;
+
 
     if (row.relationship === null)
         return html;
 
     var c = row.relationship.substring(0, 1);
 
-    html += '<div class="global_table_cell font-weight-bold carryover mt-1 mb-1" title="' + row.relationship + '">' + c + '</div>';
+    html += '<hr class="mt-0 mb-0"><div class="text-left text-muted font-weight-bold mt-1" title="' + row.relationship + '">' + row.relationship + '</div>';
 
     return html;
 
 }
+
+function relationSorter(one, two, row1, row2) {
+
+    if (row1.type == row2.type)
+        if (row1.locus_type == row2.locus_type)
+            return (row1.relation < row2.relation ? -1 : 1);
+        else
+            return (row1.locus_type < row2.locus_type ? -1 : 1);
+    else
+        return (row1.type < row2.type ? -1 : 1);
+
+    return 0;
+}
+
+
+function dateSorter(one, two, row1, row2) 
+{
+    var row1rawdate = (row1.rawdate === null ? "9999" : row1.rawdate);
+    var row2rawdate = (row2.rawdate === null ? "9999" : row2.rawdate);
+
+    if (row1rawdate < row2rawdate)
+            return -1;
+        else if (row1rawdate > row2rawdate)
+            return 1;
+        else
+            return 0;
+}
+
 
 function locationSorter(one, two) {
     var oneloc = one.match(/\d+|X|Y/g);

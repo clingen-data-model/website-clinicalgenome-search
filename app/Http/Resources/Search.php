@@ -28,7 +28,6 @@ class Search extends JsonResource
             'hhr' => 0,
             'triplo_history' => null,
             'thr' => 0,
-            'omim' => isset($this->omim) ? 'Yes' : 'No',
             'omimlink' => $this->omim ?? null,
             'relationship' => $this->relationship,
             'pli' => is_null($this->pli) ? null : round($this->pli, 2),

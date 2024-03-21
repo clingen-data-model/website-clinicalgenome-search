@@ -17,15 +17,27 @@ class Genesearch extends JsonResource
     public function toArray($request)
     {
         return [
-            'symbol' => $this->name,
-            'type' => 0,
-            'hgnc_id' => $this->hgnc_id,
+            'symbol' => $this->label,
+            'type' => $this->type,
+            'build' => $this->build,
+            'symbol_id' => $this->symbol_id,
+            'locus_type' => $this->locus_type ?? null,
             'location' => $this->location,
+            'coordinates' => 'chr' . $this->chr . ':' . $this->start . '-' . $this->stop,
             'chr' => $this->chr,
             'start' => $this->start,
             'stop' => $this->stop,
+            'seqid' => $this->seqid,
             'relationship' => $this->relationship,
-            //'type' => $this->type,
+            'is_par' => $this->is_par,
+            'hi' => is_null($this->hi) ? null : round($this->hi, 2),
+            'plof' => is_null($this->plof) ? null : round($this->plof, 2),
+            'pli' => is_null($this->pli) ? null : round($this->pli, 2),
+            'haplo_assertion' => $this->haplo,
+            'triplo_assertion' => $this->triplo,
+            'omim' => isset($this->omim) ? 'Yes': 'No',
+            'omimlink' => $this->omim ?? null,
+            'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
             'curation' => (($this->activity['dosage'] ?? false) ? 'D' : '') . (($this->activity['actionability'] ?? false) ? 'A' : '')
                              . (($this->activity['validity'] ?? false) ? 'V' : '')
                             . (($this->activity['varpath'] ?? false) ? 'R' : '') . (($this->activity['pharma'] ?? false) ? 'P' : ''),
@@ -34,9 +46,11 @@ class Genesearch extends JsonResource
             'has_dosage' => $this->activity['dosage'] ?? false,
             'has_pharma' => $this->activity['pharma'] ?? false,
             'has_variant' => $this->activity['varpath'] ?? false,
-            'date_last_curated' => $this->displayDate($this->date_last_curated),
+            'date_last_curated' => $this->nicedate,
             'rawdate' => $this->date_last_curated,
-            'status' => 1
+            'has_curations' => !empty($this->date_last_curated) ?? false,
+            'status' => $this->status,
+            'precuration' => $this->precuration
         ];
     }
 }

@@ -22,6 +22,10 @@
    //padding: 21px 12px 19px !important;
 }
 
+.medium-font-size {
+	font-size: .9rem !important;
+}
+
 .dark-table .bootstrap-table .input-btn-region-prefix .btn {
   border-radius:  1rem 0 0 1rem !important;
 }
@@ -328,6 +332,24 @@ footer p {
     border-radius: 2em;
 //    text-align: center;
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.blueblur {
+    border-color: #ccc;
+    border-color: rgba(82, 168, 236, .8);
+    outline: 0;
+    outline: thin dotted\9;
+    -webkit-box-shadow: 0 0 8px rgba(82,168,236,.6);
+    box-shadow: 0 0 8px rgba(82,168,236,.6);
+}
+
+.grayblur {
+    border-color: #ccc;
+    border-color: rgba(128, 128, 128, .8);
+    outline: 0;
+    outline: thin dotted\9;
+    -webkit-box-shadow: 0 0 8px rgba(128,128,128,.6);
+    box-shadow: 0 0 8px rgba(128,128,128,.6);
 }
 
 .fa-blank

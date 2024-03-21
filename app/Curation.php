@@ -106,7 +106,7 @@ class Curation extends Model
                             'published', 'animal_model_only', 'events', 'version', 'status',
                             'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
                             'url', 'assertions', 'document', 'variant_iri', 'variant_details', 
-                            'gene_id', 'disease_id', 'packet_id', 'context'
+                            'gene_id', 'disease_id', 'packet_id', 'context', 'region_id', 'region_details'
                          ];
 
 	/**
@@ -121,6 +121,7 @@ class Curation extends Model
     public const TYPE_GENE_VALIDITY = 2;
     public const TYPE_VARIANT_PATHOGENICITY = 3;
     public const TYPE_ACTIONABILITY = 4;
+    public const TYPE_DOSAGE_SENSITIVITY_REGION = 5;
 
     /*
      * Type strings for display methods
@@ -138,8 +139,11 @@ class Curation extends Model
     public const SUBTYPE_VALIDITY_GGP = 4;
     public const SUBTYPE_DOSAGE_DCI = 10;
     public const SUBTYPE_DOSAGE_GGP = 11;
+    public const SUBTYPE_DOSAGE_REGION_DCI = 12;
+    public const SUBTYPE_DOSAGE_GENE_PRECURATION = 13;
     public const SUBTYPE_VARIANT_PATHOGENICITY = 20;
     public const SUBTYPE_VARIANT_PATHOGENICITY_ERP = 21;
+
 
     /*
     * Status constants and strings for display methods
@@ -160,6 +164,7 @@ class Curation extends Model
     public const STATUS_GROUP_REVIEW = 14;
     public const STATUS_CLOSED = 20;
     public const STATUS_REOPENED = 30;
+    public const STATUS_UNPUBLISH = 31;
 
 
     /*
@@ -213,6 +218,15 @@ class Curation extends Model
 
 
     /*
+     * The region associated with this curation
+     */
+    public function region()
+    {
+       return $this->belongsTo('App\Region');
+    }
+
+
+    /*
      * The disease associated with this curation
      */
     public function disease()
@@ -228,6 +242,26 @@ class Curation extends Model
     {
        return $this->belongsTo('App\Packet');
     }
+
+
+    /*
+     * The primary expert panel associated with this curation
+     */
+    public function panel()
+    {
+       return $this->belongsTo('App\Panel');
+    }
+
+
+    /*
+     * All the expert panels associated with this curation
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
+
+
 
 
 	/**
@@ -260,10 +294,22 @@ class Curation extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeDosage($query)
+	  public function scopeDosage($query)
     {
-		return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY);
+		 return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY);
     }
+
+
+    /**
+     * Query scope by type = dosage
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDosage_region($query)
+  {
+  return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY_REGION);
+  }
 
 
     /**

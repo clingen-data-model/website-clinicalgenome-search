@@ -12,7 +12,7 @@ use App\Health;
 use App\Validity;
 use App\Actionability;
 use App\Dosage;
-use App\Sensitivity;
+use App\Region;
 use App\Variantpath;
 
 class RunCheck extends Command
@@ -48,7 +48,10 @@ class RunCheck extends Command
      */
     public function handle()
     {
-        echo "Checking Genegraph\n";
+        echo "RUNNING CHECK\n";
+        echo "   BEGIN: " . `date`;
+
+        echo "      Genegraph Updates...";
 
         // first check and update genes table
 
@@ -71,28 +74,31 @@ class RunCheck extends Command
         $query_string = serialize($results->collection);
         $hash = md5($query_string);
 
-        $health = Health::where('service', 'GeneSearch')->first();
-
-        if ($health->genegraph != $hash)
-        {
+        //$health = Health::where('service', 'GeneSearch')->first();
+        echo "Retrieved $results->count \n";
+        //if ($health->genegraph != $hash)
+        //{
             //update gene table
-            echo "UPDATING GENES TABLE \n";
+            echo "Updating Genes table \n";
             foreach ($results->collection as $record)
             {
-                echo "updating " . $record->label ." " . $record->hgnc_id . "\n";
+                //echo "updating " . $record->label ." " . $record->hgnc_id . "\n";
                 $gene = Gene::hgnc($record->hgnc_id)->first();
 
                 if ($gene !== null)
                 {
                     $gene->date_last_curated = $record->last_curated_date;
-                    if ($record->curation_activity !== null)
+
+                    // new genes may need to prime the activity 
+                    if ($gene->activity == null)
+                        $gene->activity = ['pharma' => false, 'varpath' => false, 'dosage' => false, 'actionability' => false, 'validity' => false];
+
+                    if ($record->curation_activities !== null)
                     {
                         $activity = $gene->activity;
-                        if ($activity === null)
-                            $activity = [];
-                        $activity['dosage'] = in_array('GENE_DOSAGE',$record->curation_activity);
-                        $activity['actionability'] = in_array('ACTIONABILITY',$record->curation_activity);
-                        $activity['validiity'] = in_array('GENE_VALIDITY',$record->curation_activity);
+                        $activity['dosage'] = in_array('GENE_DOSAGE',$record->curation_activities);
+                        $activity['actionability'] = in_array('ACTIONABILITY',$record->curation_activities);
+                        $activity['validity'] = in_array('GENE_VALIDITY',$record->curation_activities);
                         $gene->activity = $activity;
                     }
                     $gene->haplo = $record->dosage_curation->haploinsufficiency_assertion->dosage_classification->ordinal ?? null;
@@ -109,38 +115,61 @@ class RunCheck extends Command
                     $gene->disease = $disease;
                     $gene->save();
                 }
+                else
+                {
+                    echo "NOT FOUND: " . $record->label ." " . $record->hgnc_id . "\n";
+                }
             }
 
             $stat = Health::where('service', 'GeneSearch')->update(['genegraph' => $hash]);
 
-        }
+        //}
 
-        echo "Genegraph OK ($hash)\n";
+        echo "DONE\n";
 
-        echo "Checking for Validity changes...";
+       // echo "Genegraph OK ($hash)\n";
+
+        echo "      Validity Updates...";
         // update validy table
         $model = new Validity();
         $model->preload();
         echo "DONE\n";
 
-        echo "Checking for actionability changes...";
+        echo "      Actionability Updates...";
         // update  actionability
-        //$model = new Actionability();
+        $model = new Actionability();
         //$model->preload();
         $this->call('query:kafka', ['topic' =>  'actionability']);
         echo "DONE\n";
 
-        echo "Checking for dosage changes...";
-        // update  actionability
+        echo "      Dosage Gene Updates...";
+        // update  dosage sensitivity
         $model = new Dosage();
-        $model->preload();
+        //$model->preload();
+        $model->parser();
+        echo "DONE\n";
+
+        echo "      Dosage Region Updates...";
+        // update  dosage sensitivity
+        $model = new Region();
+        //$model->preload();
+        $model->parser();
         echo "DONE\n";
 
         //echo "Checking for variant changes...";
         // update  variant
         //$model = new Variantpath();
         //$model->assertions();
-        //echo "DONE\n";
+        //echo "DONE\n";*/
 
+        echo "   END: " . `date`;
+        echo "CHECK COMPLETE\n";
+    }
+
+
+    protected function init()
+    {
+        // purge regions from curations
+        // Region::preload();
     }
 }

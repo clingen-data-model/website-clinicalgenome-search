@@ -571,15 +571,23 @@ class Validity extends Model
                                             'search' => null,
                                             'direction' => 'ASC',
                                             'properties' => true,
+                                            'forcegg' => true,
                                             'curated' => false
                                         ]);
+
+        // flag all the current curations in case any have been removed
+        Curation::validity()->active()->update(['group_id' => 1]);
 
         foreach ($records->collection as $record)
         {
             //skip over duplicates
             $check = Curation::validity()->active()->where('source_uuid',$record->curie)->exists();
             if ($check)
+            {
+                // unset the remove flag
+                Curation::validity()->active()->where('source_uuid',$record->curie)->update(['group_id' => 0]);
                 continue;
+            }
 
             $gene = Gene::hgnc($record->gene->hgnc_id)->first();
             $disease = Disease::curie($record->disease->curie)->first();
@@ -607,6 +615,38 @@ class Validity extends Model
             $old_curations = Curation::validity()->where('document', $curie_root)
                                         ->where('status', '!=', Curation::STATUS_ARCHIVE)
                                         ->get();
+
+            // gg's animal_model is only accurate on newer curations.  They still need to be calcurated for older ones
+            if (!isset($record->animal_model) || $record->animal_model === null)
+            {
+                // we can find what we need from the legacy_json pack
+                if (!empty($record->legacy_json))
+                {
+                    $score = json_decode($record->legacy_json);
+                    $animal_model_only = $score->scoreJson->summary->AnimalModelOnly ?? false;
+
+                    if ($animal_model_only === false && isset($score->scoreJson))
+                        $animal_model_only = (
+                                ($score->scoreJson->summary->FinalClassification == "No Known Disease Relationship") &&
+                                (isset($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints)) &&
+                                ($score->scoreJson->ExperimentalEvidence->Models->NonHumanModelOrganism->TotalPoints > 0) &&
+                                ($score->scoreJson->ValidContradictoryEvidence->Value == "NO")
+                            );
+                    else
+                        $animal_model_only = ($animal_model_only == "YES");
+                }
+                else
+                {
+                    // check legacy list of animal mode only assertions
+                    $amo = self::animal()->get(['curie']);
+
+                    $animal_model_only = $amo->contains('curie', $record->curie);
+                }
+            }
+            else
+            {
+                $animal_model_only = $record->animal_model;
+            }
 
             // finally we can build the new curation
             $data = [
@@ -650,9 +690,9 @@ class Validity extends Model
                              'moi_hp' => $record->mode_of_inheritance->curie,
                             ],
                 'score_details' => $record->classification,
-                'curators' => $record->contributors ?? null,
+                'curators' => $record->contributions ?? [],
                 'published' => true,
-                'animal_model_only' => $record->animal_model_only,
+                'animal_model_only' => $animal_model_only,
                 'events' => ['report_date' => $record->report_date],
                 'url' => [],
                 'version' => 1,
@@ -660,8 +700,6 @@ class Validity extends Model
             ];
 
             $curation = new Curation($data);
-
-            //update version number
 
             $curation->save();
 
@@ -672,13 +710,45 @@ class Validity extends Model
                                       'status' => Slug::STATUS_INITIALIZED
                                     ]);
 
+            // update the panel pivot table
+            foreach($data['curators'] as $contribution)
+            {
+                if ($contribution->realizes->label == 'approver role')                      // primary
+                {
+                    $pid = $panel->id;
+                    $level = 1;
+                }
+                else if ($contribution->realizes->label == 'secondary contributor role')    // secondary
+                {
+                    // strip off the genegraph prefix and look up the EP
+                    $pid = str_replace("CGAGENT:", '', $contribution->agent->curie);
+                    $secondary_panel = Panel::allids($pid)->first();
+                    if ($secondary_panel === null)
+                    {
+                        echo "EP $pid not found \n";
+                        continue;
+                    }
+                    $pid = $secondary_panel->id;
+                    $level = 2;
+                }
+                else{
+        
+                }
+
+                $curation->panels()->attach($pid, ['level' => $level]);
+
+            }
+
             // archive aany old versions
             $old_curations->each(function ($item) {
+                $item->panels()->detach();
                 $item->update(['status' => Curation::STATUS_ARCHIVE]);
             });
 
-
         }
+
+        // archive any unpublished items
+        Curation::validity()->where('group_id', 1)->update(['status' => Curation::STATUS_UNPUBLISH]);
 
     }
 

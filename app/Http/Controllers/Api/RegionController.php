@@ -36,7 +36,9 @@ class RegionController extends Controller
                 'totalNotFiltered' => $results->count,
                 'rows'=> GenesearchResource::collection($results->collection),
                 'gene_count' => $results->gene_count,
-                'region_count' => $results->region_count
+                'curated_gene_count' => $results->curated_gene_count,
+                'region_count' => $results->region_count,
+                'curated_region_count' => $results->curated_region_count
                 ];
     }
 }

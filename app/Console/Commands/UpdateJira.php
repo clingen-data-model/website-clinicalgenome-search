@@ -272,12 +272,10 @@ class UpdateJira extends Command
     {
         $genes = Gene::whereNotNull('start38')->get();
 
-		$check = true;
+		$check = false;
 
         foreach ($genes as $gene)
 		{
-			if ($gene->name == "WNT1")
-				$check = false;
 			
 			if ($check)
 				continue;
@@ -336,12 +334,10 @@ class UpdateJira extends Command
     {
         $genes = Gene::whereNotNull('start37')->get();
 
-		$check = true;
+		$check = false;
 
         foreach ($genes as $gene)
 		{
-			if ($gene->name == "TRAJ9")
-			    $check = false;
 			
 			if ($check)
 				continue;

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * I dont think this is used anymore.  We've been loading from rxnorm for some time.  Going
+ * to start commenting it out.
+ */
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;

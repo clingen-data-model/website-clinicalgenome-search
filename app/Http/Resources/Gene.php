@@ -17,7 +17,11 @@ class Gene extends JsonResource
         return [
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
+            'symbol_id' => $this->hgnc_id,
             'name' => $this->name,
+            'location' => $this->location,
+            'grch37' => $this->grch37,
+            'grch38' => $this->grch38,
             'curation' => ($this->has_dosage ? 'D' : '') . ($this->has_actionability ? 'A' : '') . ($this->has_validity ? 'V' : '')
                             . ($this->has_variant ? 'R' : '') . ($this->has_pharma ? 'P' : ''),
             'has_actionability' => $this->has_actionability,
@@ -25,8 +29,9 @@ class Gene extends JsonResource
             'has_dosage' => $this->has_dosage,
             'has_pharma' => $this->has_pharma ?? false,
             'has_variant' => $this->has_variant ?? false,
-            'locus_type' => $this->locus_type,
+            'locus_group' => $this->locus_group,
             'date' => $this->displayDate($this->last_curated_date),
+            'date_last_curated' => $this->displayDate($this->last_curated_date),
             'rawdate' => $this->last_curated_date
         ];
     }

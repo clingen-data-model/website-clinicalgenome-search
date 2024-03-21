@@ -36,7 +36,7 @@
         <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
       </div>
       <div class="col-md-12 dark-table">
-        @include('_partials.genetable', ['customload' => true])
+        @include('_partials.genetable', ['customload' => true, 'expand' => true])
       </div>
     </div>
   </div>
@@ -77,7 +77,6 @@
 <script src="/js/bootstrap-table-locale-all.min.js"></script>
 <script src="/js/bootstrap-table-export.min.js"></script>
 
-
 <script src="/js/sweetalert.min.js"></script>
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
@@ -102,24 +101,6 @@
   window.scrid = {{ $display_tabs['scrid'] }};
   window.token = "{{ csrf_token() }}";
 
-  /*var params = {}
-
-  function queryParams(_params) {
-    params = _params
-    return _params
-  }
-
-  function loadtable(params) {
-
-    var url = "{{ $apiurl }}";
-
-    // compare the params to the factory setting.
-    var p = params.data;
-
-    $.get(url + '?' + $.param(params.data)).then(function (res) {
-        params.success(res)
-    })
-}*/
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
@@ -166,7 +147,7 @@
         {
           title: 'Gene',
           field: 'symbol',
-          formatter: geneFormatter,
+          formatter: symbol2Formatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'input',
@@ -243,7 +224,7 @@
 
       swal({
             title: "Load Error",
-            text: "The system could not retrieve data from GeneGraph",
+            text: "The system could not retrieve data at this time",
             icon: "error"
       });
     })
@@ -285,16 +266,48 @@
 		})
 
 
+    $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.attr('colspan',12);
+
+      var t = $obj.closest('tr');
+
+      var stripe = t.prev().hasClass('bt-even-row');
+
+      t.addClass('dosage-row-bottom').addClass('dosage-row-left').addClass('dosage-row-right');
+
+      if (stripe)
+          t.addClass('bt-even-row');
+      else
+          t.addClass('bt-odd-row');
+
+      t.prev().addClass('dosage-row-top').addClass('dosage-row-left').addClass('dosage-row-right');
+
+      $obj.load( "/api/search/expand/" + row.symbol_id , function() {
+          $(this).find('[data-toggle="tooltip"]').tooltip();
+      });
+
+      // change the icon
+      var far = t.prev().find('.action-acmg-expand');
+      far.removeClass('fa-caret-square-down').addClass('fa-caret-square-up');
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+
+      return false;
+    })
+
     $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
 
-      $obj.closest('tr').prev().css('border-top', '1px solid #ddd');
+      $obj.closest('tr').prev().removeClass(['dosage-row-top', 'dosage-row-left', 'dosage-row-right']);
 
       return false;
     });
 
 
     $table.on('column-search.bs.table', function (e, index, row, $obj) {
-      e.preventDefault();
+
+      return false;
     });
 
   }

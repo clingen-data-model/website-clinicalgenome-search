@@ -169,13 +169,17 @@ class UpdateCpic extends Command
         {
             $gene = Gene::hgnc($record->hgnc_id)->first();
 
-            if ($gene !== null)
-            {
-                $activity = $gene->activity;
-                $activity['pharma'] = true;
-                $gene->activity = $activity;
-                $gene->save();
-            }
+            if ($gene === null)
+                continue;
+
+            if ($gene->activity == null)
+                        $gene->activity = ['pharma' => false, 'varpath' => false, 'dosage' => false, 'actionability' => false, 'validity' => false];
+
+            $activity = $gene->activity;
+            $activity['pharma'] = true;
+            $gene->activity = $activity;
+            
+            $gene->save();
         }
 
         echo "DONE\n";

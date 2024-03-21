@@ -15,6 +15,7 @@ use App\Gene;
 use App\Validity;
 use App\Sensitivity;
 use App\Actionability;
+use App\Precuration;
 use App\Nodal;
 
 use Carbon\Carbon;
@@ -85,7 +86,8 @@ class Mysql
 			// initialize the collection
 			if (empty($search))
 			{
-				$collection = Gene::all(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+				$collection = Gene::all(['name as symbol', 'location', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 
+                                         'activity as curation_activities', 'locus_group', 'chr', 'start37', 'stop37', 'start38', 'start38']);
 			}
 			else
 			{
@@ -346,6 +348,435 @@ class Mysql
 						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];
 	}
 
+
+    /**
+     * Get listing of all affiliates
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function affiliateList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+        $total_curations = 0;
+        $total_panels = 0;
+
+        $panels = Panel::has('curations')->with('curations')->get();
+
+        foreach($panels as $panel)
+        {
+            $data = [
+                'agent' => $panel->affiliate_id,
+                'label' => $panel->title,
+                'curie' => $panel->affiliate_id,
+                'affiliate_id' => $panel->affiliate_id,
+                'total_all_curations' => $panel->curations->count(),
+			    'total_secondary_curations' => $panel->curations()->wherePivot('level', 2)->count(),
+                'total_approver_curations' => $panel->curations()->wherePivot('level', 1)->count(),
+                'count' => $panel->curations->count()
+            ];
+
+            if ($data['total_approver_curations'] > 0)
+            {
+                $node = new Nodal($data);
+                $collection->push($node);
+                $total_curations += $node->total_all_curations;
+                $total_panels++;
+            }
+            
+        }
+
+		$collection = $collection->sortBy('label');
+
+		return (object) ['count' => $total_panels, 'collection' => $collection,
+						'ncurations' => $total_curations];
+	}
+
+
+    /**
+     * Get details for an affiliate
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function affiliateDetail($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// the affiliate ID is expected to be numeric, handle gracefully if not
+		if (!ctype_digit($affiliate))
+			$affiliate = "0";
+
+        $panel = Panel::affiliate($affiliate)->first();
+        
+        if ($panel == null)
+            die($affiliate);
+
+		// initialize the collection
+		$collection = collect();
+
+		$records = $panel->curations()->get();
+
+		if ($records->isEmpty())
+			return $response;
+
+		// add each gene to the collection
+		foreach($records as $record)
+		{
+            //dd($record);
+			if ($record->gene_id === null || $record->disease_id === null)
+				continue;
+
+            // blacklist bad assertions
+            /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                   continue;*/
+
+            $nodal = new Nodal([
+                        'label' => $record->gene_details['label'],
+                        'hgnc_id' => $record->gene_hgnc_id,
+                        'ep' => $panel->title ?? ($record->affiliate_details['label'] ?? ''),
+                        'affiliate_id' => $panel->affiliate_id ?? null,
+                        'disease' => $record->condition_details['label'],
+                        'mondo' => $record->condition_details['curie'],
+                        'moi' => $record->scores['moi_hp'],
+                        'sop' => $record->sop_version,
+                        'contributor_type' => ($panel->id == $record->panel_id ? "Primary" : "Secondary"),
+                        'classification' => $record->scores['classification'],
+                        'perm_id' => $record->source_uuid,
+                        'animal_model_only' => $record->animal_model_only,
+                        'report_id' => $record->document ?? null,
+                        'released' => $record->events['report_date'],
+                        'date' => $record->events['report_date']
+            ]);
+
+            $id = substr($record->source_uuid, 15, 36);
+
+            // gg's build the lumping and splitting properties
+			if ($include_lump_split ?? false)
+			{
+				// create additional entries for lumping and splitting
+				$nodal->las_included = [];
+				$nodal->las_excluded = [];
+				$nodal->las_rationale = [];
+				$nodal->las_curation = '';
+				$nodal->las_date = null;
+
+				if ($nodal->report_id !== null)
+				{
+					$map = Precuration::gdmid($nodal->report_id)->first();
+					if ($map !== null)
+					{
+						$nodal->las_included = $map->omim_phenotypes['included'] ?? [];
+						$nodal->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+						$nodal->las_rationale =$map->rationale;
+						$nodal->las_curation = $map->curation_type['description'] ?? '';
+
+						// the dates aren't always populated in the gene tracker, so we may need to restrict them.
+						$prec_date = $map->disease_date;
+						if ($prec_date !== null)
+						{
+							$dd = Carbon::parse($prec_date);
+							$rd = Carbon::parse($nodal->date);
+							$nodal->las_date = ($dd->gt($rd) ? $nodal->date : $prec_date);
+						}
+						else
+						{
+							$nodal->las_date = $nodal->date;
+						}
+					}
+
+				}
+			}
+
+			$collection->push($nodal);
+		}
+
+		$ngenes = $collection->unique('symbol')->count();
+		$npanels = $collection->unique('ep')->count();
+
+		return (object) ['count' => $collection->count(),
+						'collection' => $collection,
+                        'label' => $panel->title,
+						'ngenes' => $ngenes,
+						'npanels' => $npanels
+						];
+	}
+
+
+    /**
+     * Get listing of all genes with validity assertions.
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function validityList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+
+        $records = Curation::validity()->active()->with('panel')->get();
+		$search = null;
+
+		// initialize the collection
+		$collection = collect();
+
+		$records = Curation::validity()->active()->get();
+
+		if ($records->isEmpty())
+			return $response;
+
+		// add each gene to the collection
+		foreach($records as $record)
+		{
+			if ($record->gene_id === null || $record->disease_id === null)
+				continue;	// TODO:  Log as gg error
+
+            // blacklist bad assertions
+            /*if ($record->curie == "CGGV:assertion_815e0f84-b530-4fd2-81a9-02e02bf352ee-2020-12-18T170000.000Z")
+                   continue;*/
+
+            $nodal = new Nodal([
+                        'label' => $record->gene_details['label'],
+                        'hgnc_id' => $record->gene_hgnc_id,
+                        'ep' => $record->panel->title ?? ($record->affiliate_details['label'] ?? ''),
+                        'affiliate_id' => $record->panel->affiliate_id ?? null,
+                        'disease' => $record->condition_details['label'],
+                        'mondo' => $record->condition_details['curie'],
+                        'moi' => $record->scores['moi_hp'],
+                        'sop' => $record->sop_version,
+                        'classification' => $record->scores['classification'],
+                        'perm_id' => $record->source_uuid,
+                        'animal_model_only' => $record->animal_model_only,
+                        'report_id' => $record->document ?? null,
+                        'released' => $record->events['report_date'],
+                        'date' => $record->events['report_date']
+            ]);
+
+            $id = substr($record->source_uuid, 15, 36);
+
+            // gg's build the lumping and splitting properties
+			if ($include_lump_split ?? false)
+			{
+				// create additional entries for lumping and splitting
+				$nodal->las_included = [];
+				$nodal->las_excluded = [];
+				$nodal->las_rationale = [];
+				$nodal->las_curation = '';
+				$nodal->las_date = null;
+
+				if ($nodal->report_id !== null)
+				{
+					$map = Precuration::gdmid($nodal->report_id)->first();
+					if ($map !== null)
+					{
+						$nodal->las_included = $map->omim_phenotypes['included'] ?? [];
+						$nodal->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+						$nodal->las_rationale =$map->rationale;
+						$nodal->las_curation = $map->curation_type['description'] ?? '';
+
+						// the dates aren't always populated in the gene tracker, so we may need to restrict them.
+						$prec_date = $map->disease_date;
+						if ($prec_date !== null)
+						{
+							$dd = Carbon::parse($prec_date);
+							$rd = Carbon::parse($nodal->date);
+							$nodal->las_date = ($dd->gt($rd) ? $nodal->date : $prec_date);
+						}
+						else
+						{
+							$nodal->las_date = $nodal->date;
+						}
+					}
+
+				}
+			}
+
+			$collection->push($nodal);
+		}
+
+		$ngenes = $collection->unique('symbol')->count();
+		$npanels = $collection->unique('ep')->count();
+
+		return (object) ['count' => $collection->count(),
+						'collection' => $collection,
+						'ngenes' => $ngenes,
+						'npanels' => $npanels
+						];
+	}
+
+
+    /**
+     * Get listing of all genes with dosage sensitivity.
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function dosageList($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+		$search = null;
+		$hapcounters = 0;
+		$tripcounters = 0;
+
+        // DSCWG wants their listings grouped by gene, so thats what we'll do here
+        $records = Gene::where('activity->dosage', true)->with(['curations' => function ($query) {
+                                            $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
+                                                    ->whereIn('status', [Curation::STATUS_ACTIVE]); 
+                    }])->get();
+
+		// add each gene to the collection
+		foreach($records as $gene)
+		{
+            // isolate the haplo and triplo assertions
+            $haplo = $gene->curations->where('context', 'haploinsufficiency_assertion')->first();
+            $triplo = $gene->curations->where('context', 'triplosensitivity_assertion')->first();
+
+			$node = new Nodal([
+                'type' => 0,
+                'label' => $gene->name,
+                'hgnc_id' => $gene->hgnc_id,
+                'locus' => $gene->locus_group,
+                'chromosome_band' => $gene->location,
+                'grch37' => $gene->grch37 ?? null,
+                'grch38' => $gene->grch38 ?? null,
+                'pli' => $gene->pli,
+                'hi' => $gene->hi,
+                'haplo_assertion' => $haplo->scores['classification'] ?? null,
+                'triplo_assertion' => $triplo->scores['classification'] ?? null,
+                'omimlink' => $gene->display_omim,
+                'morbid' => $gene->morbid,
+                'plof' => $gene->plof,
+                'dosage_report_date' => $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null),
+                'resolved_date' => $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null),
+                'haplo_disease' => $haplo->condition_details['haploinsufficiency_assertion']['label'] ?? null,
+                'haplo_disease_id' => $haplo->conditions[0] ?? null,
+                'triplo_disease' => $triplo->condition_details['triplosensitivity_assertion']['label'] ?? null,
+                'triplo_disease_id' => $triplo->conditions[0] ?? null,
+                'haplo_mondo' => $haplo->conditions[0] ?? null,
+                'triplo_mondo' => $triplo->conditions[0] ?? null
+            ]);
+          
+            // do some processing on the history prop
+            if ($gene->history !== null)
+            {
+                //dd($gene->history);
+                foreach ($gene->history as $item)
+                {
+                    //dd($item["what"]);
+                    if ($item['what'] == 'Triplosensitivity Score')
+                        $node->triplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                . ' to ' . $item['to'] . ' on ' . $item['when'];
+                    else if ($item['what'] == 'Haploinsufficiency Score')
+                        $node->haplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                . ' to ' . $item['to'] . ' on ' . $item['when'];
+                }
+            }
+           
+            if ($node->haplo_assertion !== null)
+				$tripcounters++;
+
+            if ($node->triplo_assertion !== null)
+				$hapcounters++;
+
+			$collection->push($node);
+		}
+
+		return (object) ['count' => $collection->count(), 'collection' => $collection,
+						'ngenes' => $records->count(), 'nregions' => 0,
+						'ncurations' => $tripcounters + $hapcounters];
+	}
+
+
+    /**
+     * Get a list of regions
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function regionList($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+
+          $collection = Region::active()->get();
+
+          $nhaplo = $collection->where('haplo', '!=', 'unknown')->count();
+          $ntriplo = $collection->where('triplo', '!=', 'unknown')->count();
+
+          return (object) ['count' => $collection->count(), 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo, 'ncurations' => $nhaplo + $ntriplo];
+    }
+
+
+     /**
+     * Get a list of recurrent CNVs
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function cnvList($args, $page = 0, $pagesize = 20)
+    {
+         // break out the args
+         foreach ($args as $key => $value)
+              $$key = $value;
+
+          $collection = collect();
+
+          $regions = Region::active()->whereJsonContains('tags', 'Recurrent')->get();
+
+          if (empty($regions))
+               return $collection;
+
+          foreach ($regions as $region)
+          {
+               // skip over any won't fixes
+               //if ($issue->fields->resolution->name == "Won't Fix")
+                //    continue;
+
+               $node = new Nodal([
+                    'key' => $region->issue,
+                    'summary' => $region->name,
+                    'grch37' => $region->grch37,
+                    'triplo_score' => $region->scores['triplosensitivity'] ?? 'null',
+                    'haplo_score' => $region->scores['haploinsufficiency'] ?? 'null',
+                    'jira_report_date' => $region->events['resolved'] ?? ''
+               ]);
+
+               // for 30 and 40, Jira also sends text
+                if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo_score = 30;
+                else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
+                    $node->triplo_score = 40;
+                else if ($node->triplo_score == "Not yet evaluated")
+                    $node->triplo_score = -5;
+
+                if ($node->haplo_score == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo_score = 30;
+                else if ($node->haplo_score == "40: Dosage sensitivity unlikely")
+                    $node->haplo_score = 40;
+                else if ($node->haplo_score == "Not yet evaluated")
+                    $node->haplo_score = -5;
+
+               $collection->push($node);
+          }
+
+          $nhaplo = $collection->where('haplo_score', '>', 0)->count();
+          $ntriplo = $collection->where('triplo_score', '>', 0)->count();
+
+          return (object) ['count' => $collection->count(), 'collection' => $collection,
+               'nhaplo' => $nhaplo, 'ntriplo' => $ntriplo];
+    }
 
 
 	/**
@@ -1262,6 +1693,91 @@ class Mysql
                             'curated' => !empty($record->curated)];
             }
         }
+		return json_encode($array);
+	}
+
+
+    /**
+     * Suggester for Gene names used by the dashboard
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneFind($args, $page = 0, $pagesize = 20)
+    {
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		if ($search == '*')
+		{
+			$array = [['label' => 'All Genes (*)',
+						'short' => 'All Genes',
+						'curated' => 2,
+						'hgncid' => '*'
+						]];
+			return json_encode($array);
+		}
+
+		if (strpos('@', $search) === 0)
+		{
+			$array = [['label' => 'All Validity',
+						'short' => 'All Validity',
+						'curated' => 2,
+						'hgncid' => '@AllValidity'
+					],
+					['label' => 'All Dosage',
+						'short' => 'All Dosage',
+						'curated' => 2,
+						'hgncid' => '@AllDosage'
+					],
+					['label' => 'All Actionability',
+						'short' => 'All Actionability',
+						'curated' => 2,
+						'hgncid' => '@AllActionability'
+					],
+					['label' => 'All Variant Pathogenicity',
+						'short' => 'All Variant Pathogenicity',
+						'curated' => 2,
+						'hgncid' => '@AllVariant'
+					],
+					['label' => 'ACMG SF 3.2 Genes',
+						'short' => '@ACMG59',
+						'curated' => 2,
+						'hgncid' => '@ACMG59'
+					]
+				];
+
+			return json_encode($array);
+		}
+
+        if (stripos($search, 'HGNC:') === 0)
+            $records = Gene::query()->where('hgnc_id', 'like', $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(hgnc_id)')->get();
+        else
+            $records = Gene::query()->where('name', 'like', '%' . $search . '%')
+                            ->orWhere('alias_symbol', 'like', '%' . $search . '%')
+                            ->orWhere('prev_symbol', 'like', '%' . $search . '%')
+                            ->take(10)->orderByRaw('CHAR_LENGTH(name)')->get();
+
+
+		$array = [];
+		foreach($records as $record)
+		{
+			/*$ctag = (empty($record->curations) ? '' : '        CURATED');
+			$array[] = ['label' => $record->text . '  (' . $record->alternative_curie . ')'
+							. $ctag,
+						'url' => route('gene-show', $record->hgnc_id)];*/
+            $ctag = (empty($record->activity) ? '' : ' CURATED');
+            $array[] = ['label' => $record->name . '  (' . $record->hgnc_id . ')'
+                            . $ctag,
+                        //'url' => route('gene-show', $record->hgnc_id),
+                        'short' => $record->name,
+						'curated' => !empty($record->activity),
+						'hgncid' => $record->hgnc_id
+                    
+                    ];
+		}
+		
 		return json_encode($array);
 	}
 }

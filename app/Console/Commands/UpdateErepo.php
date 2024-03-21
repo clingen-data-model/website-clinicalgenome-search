@@ -105,10 +105,13 @@ class UpdateErepo extends Command
 
           if ($gene !== null)
           {
-              $activity = $gene->activity;
-              $activity['varpath'] = true;
-              $gene->activity = $activity;
-              $gene->save();
+            if ($gene->activity == null)
+                        $gene->activity = ['pharma' => false, 'varpath' => false, 'dosage' => false, 'actionability' => false, 'validity' => false];
+
+            $activity = $gene->activity;
+            $activity['varpath'] = true;
+            $gene->activity = $activity;
+            $gene->save();
           }
 
           if ($disease !== null)
