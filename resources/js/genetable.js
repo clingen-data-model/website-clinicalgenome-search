@@ -302,7 +302,8 @@ function locationFormatter(index, row) {
     //   return row.location;
 
     if (row.grch37 == null)
-        return '';
+        return '<div class="text-warning text-center" data-toggle="tooltip" data-placement="top" title="This gene has no GRCh37 genomic coordinates."><i class="fas fa-exclamation-triangle"></i></div>';
+
 
     var name = row.grch37.trim();
 
@@ -339,7 +340,7 @@ function location38Formatter(index, row) {
     //   return row.location;
 
     if (row.grch38 == null)
-        return '';
+        return '<div class="text-warning text-center" data-toggle="tooltip" data-placement="top" title="This gene has no GRCh38 genomic coordinates."><i class="fas fa-exclamation-triangle"></i></div>';
 
     var name = row.grch38.trim();
 
@@ -486,6 +487,7 @@ function haplo2Formatter(index, row) {
 
     var display = '';
     var tooltip = '';
+    var badge = row.haplo_assertion;
 
     switch (row.haplo_assertion)
     {
@@ -514,18 +516,20 @@ function haplo2Formatter(index, row) {
         case '30: Autosomal Recessive':
             display = "Autosomal<div>Recessive</div>";
             tooltip = "30 (Autosomal Recessive)";
+            badge = 30;
             break;
         case 40:
         case "40":
         case '40: Dosage sensitivity unlikely':
             display = "Sensitivity<div>Unlikely</div>";
             tooltip = "40 (Dosage sensitivity unlikely)";
+            badge = 40;
             break;
         default:
             console.log(row);
     }
 
-    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + row.haplo_assertion + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip+ '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
+    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + badge + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip+ '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
 
     if (row.haplo_history === null)
         return html;
@@ -565,6 +569,7 @@ function triplo2Formatter(index, row) {
 
     var display = '';
     var tooltip='';
+    var badge = row.triplo_assertion;
 
     switch (row.triplo_assertion)
     {
@@ -593,18 +598,20 @@ function triplo2Formatter(index, row) {
         case '30: Autosomal Recessive':
             display = "Autosomal<div>Recessive</div>";
             tooltip = "30 (Autosomal Recessive)";
+            badge = 0;
             break;
         case 40:
         case "40":
         case '40: Dosage sensitivity unlikely':
             display = "Sensitivity<div>Unlikely</div>";
-            tooltip = "40 (Dosage sensitivity unlikely)'";
+            tooltip = "40 (Dosage sensitivity unlikely)";
+            badge = 40;
             break;
         default:
             console.log(row);
     }
 
-    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + row.triplo_assertion + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip + '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
+    var html = '<span onclick="event.stopPropagation();" class="small badge cg-' + badge + ' p-2" data-toggle="tooltip" data-placement="top" title="' + tooltip + '"><a class="text-white" href="/kb/gene-dosage/' + (row.type == 0 ? '' : 'region/') + row.symbol_id + '" target="_gt">' + display + '</a></span>';
     
     if (row.triplo_history === null)
         return html;
@@ -1177,6 +1184,39 @@ function region_listener() {
 function cnvlocationFormatter(index, row) {
 
     var name = row.location.trim();
+
+    if (name == null)
+        return '';
+
+    // strip off chr
+    if (name.toLowerCase().indexOf("chr") === 0)
+        name = name.substring(3);
+
+    var chr = name.indexOf(':');
+    var pos = name.indexOf('-');
+
+    /*var html = '<table><tr><td class="pr-1 text-22px text-right line-height-normal" rowspan="2">'
+        + name.substring(0, chr)
+        + '</td><td class="text-10px line-height-normal">'
+        + name.substring(chr + 1, pos)
+        + '</td></tr><tr><td class="text-10px  line-height-normal">'
+        + name.substring(pos + 1)
+        + '</td></tr></table>';*/
+
+    var html = '<div class="position">'
+        + '<span aria-label="Chromosome" class="chr">' + name.substring(0, chr) + '</span>'
+        + '<span aria-label=" at " class="sr-only">:</span>'
+        + '<span class="start">' + name.substring(chr + 1, pos) + '</span>'
+        + '<span aria-label=" to " class="sr-only">-</span>'
+        + '<span class="end">' + name.substring(pos + 1) + '</span>'
+        + '</div>';
+
+    return html;
+}
+
+function cnvlocation38Formatter(index, row) {
+
+    var name = row.location38.trim();
 
     if (name == null)
         return '';

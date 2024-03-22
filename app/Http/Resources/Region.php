@@ -20,6 +20,7 @@ class Region extends JsonResource
             'key' => $this->key,
             'name' => $this->summary,
             'location' => $this->grch37,
+            'location38' => $this->grch38,
             'haplo_assertion' => $this->haplo_score,
             'triplo_assertion' => $this->triplo_score,
             'haplo_history' => null,

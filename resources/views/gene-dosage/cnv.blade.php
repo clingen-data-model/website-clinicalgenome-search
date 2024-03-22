@@ -148,7 +148,7 @@
 			sortable: true
 		},
 		{
-			title: 'Location on GRCh37',
+			title: 'GRCh37',
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
@@ -156,7 +156,16 @@
 			cellStyle: cellFormatter,
 			sorter: locationSorter,
 			searchFormatter: false
-			//visible: false
+        },
+		{
+			title: 'GRCh38',
+			field: 'location38',
+			sortable: true,
+			filterControl: 'input',
+			formatter: cnvlocation38Formatter,
+			cellStyle: cellFormatter,
+			sorter: locationSorter,
+			searchFormatter: false
         },
         {
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency Score"></i></div>HI Score',

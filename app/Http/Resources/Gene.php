@@ -14,6 +14,7 @@ class Gene extends JsonResource
      */
     public function toArray($request)
     {
+    
         return [
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,

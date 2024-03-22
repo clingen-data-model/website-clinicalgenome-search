@@ -92,6 +92,8 @@ class UpdateGenenames extends Command
 
             $doc['is_par'] = (strpos($doc['location'], ' and ') > 0);
 
+            $doc['status'] = 1;
+
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['hgnc_id' => $doc['hgnc_id']], $doc);
 
@@ -107,6 +109,11 @@ class UpdateGenenames extends Command
                                         ['alias' => $gene->name, 'type' => 3, 'status -> 1']);
 
         }
+
+        // remove any withdrawn genes
+        Gene::where('status', 0)->delete();
+        Gene::where('status', 1)->update(['status' => 0]);
+
 
         echo "DONE\n";
 

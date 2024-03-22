@@ -64,6 +64,9 @@ class UpdateActivity extends Command
 
         foreach($results->collection as $gene)
         {
+            if ($gene->label == 'A12M1')
+                dd($gene);
+
             $record = Gene::hgnc($gene->hgnc_id)->first();
 
             if ($record === null)

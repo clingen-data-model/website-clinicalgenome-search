@@ -106,6 +106,8 @@
         </div>
         <div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
             <div class="col-md-12 mt-2">
+                <input class="action-get-type" type="hidden" name="type" value="{{ $type ?? '' }}">
+                <input class="action-get-region" type="hidden" name="region" value="{{ $region ?? '' }}">
                 <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
                     <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"></span>
                 </button>
@@ -306,7 +308,7 @@
                 },
                 columns: [
                     {
-                        title: 'Locus<hr class="mt-1 mb-1 bg-white mr-4">Overlap',
+                        title: 'Type<hr class="mt-1 mb-1 bg-white mr-4">Overlap',
                         field: 'relationship',
                         formatter: relationFormatter,
                         //cellStyle: typeFormatter,

@@ -98,7 +98,6 @@ class QueryOms extends Command
                 if(!empty($entry['title_abbreviated']))
                     $entry['title_abbreviated'] = str_replace('&#039;', "'", $entry['title_abbreviated']);
 
-
                 Panel::updateOrCreate(
                     ['affiliate_id' => $entry['affiliation_id']],
                     [

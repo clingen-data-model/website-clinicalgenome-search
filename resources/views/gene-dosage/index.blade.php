@@ -223,7 +223,7 @@
      		},
 			columns: [
 				{
-					title: 'Locus',
+					title: 'Type',
 					field: 'type',
 					formatter: relationFormatter,
 					cellStyle: cellFormatter,

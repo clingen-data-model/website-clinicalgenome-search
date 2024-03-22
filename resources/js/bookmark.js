@@ -71,6 +71,15 @@ $(function() {
         var parms = new URLSearchParams(current);
 
         parms.set(field, value);
+
+        //mostly used by the search results page to preserve terms across reloads
+        var a = $('.action-get-type').val();
+        if (a !== undefined && a != "")
+            parms.set('type', a);
+        var b = $('.action-get-region').val();
+        if (b !== undefined && b != "")
+            parms.set('region', b);
+
         var newurl = parms.toString();
 
         window.history.replaceState('', 'ClinGen Curated Genes',

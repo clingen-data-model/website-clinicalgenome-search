@@ -87,7 +87,7 @@ class Mysql
 			if (empty($search))
 			{
 				$collection = Gene::all(['name as symbol', 'location', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 
-                                         'activity as curation_activities', 'locus_group', 'chr', 'start37', 'stop37', 'start38', 'start38']);
+                                         'activity as curation_activities', 'locus_group', 'chr', 'start37', 'stop37', 'start38', 'stop38']);
 			}
 			else
 			{
@@ -748,6 +748,7 @@ class Mysql
                     'key' => $region->issue,
                     'summary' => $region->name,
                     'grch37' => $region->grch37,
+                    'grch38' => $region->grch38,
                     'triplo_score' => $region->scores['triplosensitivity'] ?? 'null',
                     'haplo_score' => $region->scores['haploinsufficiency'] ?? 'null',
                     'jira_report_date' => $region->events['resolved'] ?? ''

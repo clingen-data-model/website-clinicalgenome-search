@@ -259,7 +259,6 @@
 					filterControl: 'input',
 					sorter: locationSorter,
 					searchFormatter: false,
-					visible: false,
 					sortable: true
 				},
         /*{
