@@ -49,6 +49,24 @@ class TestTest extends Command
      */
     public function handle()
     {
+        $duplicates = DB::table("curation_panel")
+            ->select(["curation_id", "panel_id", DB::raw("COUNT(*) as `count`")])
+            ->groupBy("curation_id", "panel_id")
+            ->havingRaw("COUNT(*) > 1")
+            ->get()
+            ->each(
+                fn($dupe) => DB::table("curation_panel")
+                ->where("curation_id", $dupe->curation_id)
+                ->where("panel_id", $dupe->panel_id)
+                ->limit(1)
+                ->delete()
+            );
+
+    }
+
+
+    public function notificationfix()
+    {
         echo "Updating notifications...\n";
 
         $records = Notification::all();
@@ -67,7 +85,6 @@ class TestTest extends Command
 
             $record->save();
         }
-
     }
 
 

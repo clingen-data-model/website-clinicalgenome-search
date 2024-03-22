@@ -86,6 +86,22 @@ function createBadges()
     filter_process($table);
 });*/
 
+/**
+ *  Clear all the applied dosage filters
+ * 
+ */
+$('.action-show-dosage').on('click', function(e) {
+
+    if ($(this).prop('checked')) 
+        return;
+
+    filter_pop("haplo");
+    filter_pop("triplo");
+    filter_pop("hits");
+    filter_pop("protein");
+    filter_pop("recent");
+});
+
 function legacy_gene_switch(obj)
 {
     var viz = [];
@@ -290,7 +306,7 @@ $('.action-show-hiknown').on('click', function() {
     if ($(this).hasClass('fa-toggle-off'))
     {
         //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
-        filter_push("haplo", "haplo_assertion", '3 (Sufficient Evidence)');
+        filter_push("haplo", "haplo_assertion", 3);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hiknown-text').html('On');
@@ -320,7 +336,7 @@ $('.action-show-hiknown').on('click', function() {
     if ($(this).hasClass('fa-toggle-off'))
     {
         //$table.bootstrapTable('filterBy', {triplo_assertion: '3 (Sufficient Evidence)'});
-        filter_push("triplo", "triplo_assertion", '3 (Sufficient Evidence)');
+        filter_push("triplo", "triplo_assertion", 3);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-tsknown-text').html('On');
@@ -350,7 +366,7 @@ $('.action-show-hiknown').on('click', function() {
     {
         //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
         filter_push("hits", ["haplo_assertion", "triplo_assertion"],
-                    ['3 (Sufficient Evidence)', '3 (Sufficient Evidence)']);
+                    [3, 3]);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hitsknown-text').html('On');

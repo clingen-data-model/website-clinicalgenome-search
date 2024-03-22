@@ -692,33 +692,6 @@ class Gene extends Model
      */
      public static function searchList($args, $page = 0, $pagesize = 20)
      {
-          /*
-               $users = User::with(['posts' => function ($query) {
-               $query->select(['id', 'title']);
-               }])->get();
-
-               $comments = News::find(123)->with(['comments' => function ($query) {
-               $query->where('trashed', '<>', 1);
-               }]);
-
-               $authors = Author::with('books')
-               ->whereHas('books', function (Builder $query) {
-               $query->where('title', 'like', 'PHP%');
-               })
-               ->get();
-
-               Finally, doing this query over all places and repeating the same conditions, is cumbersome, so we will use a local scope in Author model
-               public function scopeWithWhereHas($query, $relation, $constraint){
-               return $query->whereHas($relation, $constraint)
-               ->with([$relation => $constraint]);
-               }
-               Now, our code is much cleaner by calling it this way:
-               Author::withWhereHas('books', fn($query) =>
-               $query->where('title', 'like', 'PHP%')
-               )->get();
-
-
-          */
           // break out the args
           foreach ($args as $key => $value)
                $$key = $value;
@@ -954,6 +927,7 @@ class Gene extends Model
                $node->label = $gene->name;
                $node->type = 0;
                $node->locus_type = $gene->locus_type;
+               $node->locus = $gene->locus_group;
                $node->symbol_id = $gene->hgnc_id;
                $node->location = $gene->location;
                $node->is_par = $gene->is_par;
@@ -973,6 +947,21 @@ class Gene extends Model
                $node->precuration = $gene->curations->where('status', '!=', Curation::STATUS_ACTIVE)->pluck('status')->first();
 
                $gene_count++;
+
+               if ($gene->history !== null)
+               {
+                    //dd($gene->history);
+                    foreach ($gene->history as $item)
+                    {
+                         //dd($item["what"]);
+                         if ($item['what'] == 'Triplosensitivity Score')
+                         $node->triplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                  . ' to ' . $item['to'] . ' on ' . $item['when'];
+                         else if ($item['what'] == 'Haploinsufficiency Score')
+                         $node->haplo_history = $item['what'] . ' changed from ' . $item['from']
+                                                  . ' to ' . $item['to'] . ' on ' . $item['when'];
+                    }
+               }
 
                if ($gene->date_last_curated !== null)
                     $curated_gene_count++;
@@ -1049,12 +1038,15 @@ class Gene extends Model
                $node->symbol_id = $region->iri;
                $node->location = $region->cytoband;
                $node->locus_type = "region";
+               $node->locus = "region";
                $node->is_par = false;
                $node->hi = null;
                $node->plof = null;
                $node->pli = $region->metadata['pli'];
                $node->haplo = ($region->status == Region::STATUS_CLOSED ? $region->scores['haploinsufficiency'] ?? null : null);
                $node->triplo = ($region->status == Region::STATUS_CLOSED ? $region->scores['triplosensitivity'] ?? null : null);
+               $node->haplo_history = null;
+               $node->triplo_history = null;
                $node->is_par = false;
                $node->omim = $region->metadata['omim'];
                $node->morbid = null;
