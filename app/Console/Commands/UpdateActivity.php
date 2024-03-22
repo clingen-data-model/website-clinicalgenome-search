@@ -77,7 +77,7 @@ class UpdateActivity extends Command
 
             // deal with any new genes that might not have an activity object yest
             if ($record->activity !== null)
-                $record->update(['activity' => $flags, 'date_last_curated' => $gene->last_curated_date,
+                $record->update(['date_last_curated' => $gene->last_curated_date,
                                 'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
 
             $activity = $record->activity;

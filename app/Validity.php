@@ -318,6 +318,7 @@ class Validity extends Model
                                             'sort' => 'GENE_LABEL',
                                             'search' => null,
                                             'direction' => 'ASC',
+                                            'forcegg' => true,
                                             'properties' => true,
                                             'curated' => false
                                         ]);
@@ -342,6 +343,8 @@ class Validity extends Model
 
             if ($current === null)          // new assertion
             {
+                if (!isset($assertion->disease->label))
+                    dd($assertion);
                 $current = Validity::create([
                                     'curie' => $assertion->curie,
                                     'report_date' => Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'),

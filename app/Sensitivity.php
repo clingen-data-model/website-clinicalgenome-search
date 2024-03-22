@@ -183,6 +183,7 @@ class Sensitivity extends Model
                                             'sort' => 'GENE_LABEL',
                                             'search' => null,
                                             'direction' => 'ASC',
+                                            'forcegg' => true,
                                             'report' => true,
                                             'curated' => false
                                         ]);

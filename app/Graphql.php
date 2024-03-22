@@ -1473,7 +1473,7 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-        // get legacy list of animal mode only assertions
+			// get legacy list of animal mode only assertions
         $amo = Validity::animal()->get(['curie']);
 
 		// add each gene to the collection

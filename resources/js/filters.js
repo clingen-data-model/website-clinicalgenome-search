@@ -96,10 +96,31 @@ $('.action-show-dosage').on('click', function(e) {
         return;
 
     filter_pop("haplo");
+    $('.action-show-hiknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-hiknown-text').html('Off');
+
     filter_pop("triplo");
+    $('.action-show-tsknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-tsknown-text').html('Off');
+
     filter_pop("hits");
+    $('.action-show-hitsknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-hitsknown-text').html('Off');
+
     filter_pop("protein");
+    $('.action-show-protein').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-protein-text').html('Off');
+
     filter_pop("recent");
+    $('.action-show-recent').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-recent-text').html('Off');
+
+    filter_pop("history");
+    $('.action-show-new').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-recent-new').html('Off');
+
+    createBadges()
+
 });
 
 function legacy_gene_switch(obj)
