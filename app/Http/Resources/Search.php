@@ -33,6 +33,7 @@ class Search extends JsonResource
             'pli' => is_null($this->pli) ? null : round($this->pli, 2),
             'hi' => is_null($this->hi) ? null : round($this->hi, 2),
             'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
+            'omimcombo' => (isset($this->omimlink) && !empty($this->morbid) ? 3 : (isset($this->omimlink) ? 1 : (!empty($this->morbid) ? 2 : 0))),
             'plof' => is_null($this->plof) ? null : round($this->plof, 2),
             'type' => $this->type,
             'workflow' => $this->workflow,

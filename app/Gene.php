@@ -1001,6 +1001,12 @@ class Gene extends Model
 
                $node->relationship = ($node->start >= (int) $start && $node->stop <= (int) $stop ? 'Contained' : 'Overlap');
 
+               // temp fix for the NYE issue
+               if ($node->haplo === null)
+                    $node->haplo = -5;
+               if ($node->triplo === null)
+                    $node->triplo = -5;
+
                $collection->push($node);
           }
 
@@ -1082,6 +1088,22 @@ class Gene extends Model
                $node->relationship = ($node->start >= (int) $start && $node->stop <= (int) $stop ? 'Contained' : 'Overlap');
 //if($region->iri == 'ISCA-46744')
  //    dd($region);
+               // for 30 and 40, Jira also sends text
+               if ($node->triplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->triplo = 30;
+               else if ($node->triplo == "40: Dosage sensitivity unlikely")
+                    $node->triplo_score = 40;
+               else if ($node->triplo == "Not yet evaluated")
+                    $node->triplo_score = -5;
+
+               if ($node->haplo == "30: Gene associated with autosomal recessive phenotype")
+                    $node->haplo = 30;
+               else if ($node->haplo == "40: Dosage sensitivity unlikely")
+                    $node->haplo = 40;
+               else if ($node->haplo == "Not yet evaluated")
+                    $node->haplo= -5;
+
+
                $collection->push($node);
           }
 

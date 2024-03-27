@@ -129,7 +129,8 @@
                 'SOP6',
                 'SOP7',
                 'SOP8',
-                'SOP9'
+                'SOP9',
+                'SOP10'
   ];
 
   function checkclass(text, value, field, data)
@@ -161,7 +162,7 @@
           field: 'symbol',
           formatter: symbol2Formatter,
           cellStyle: cellFormatter,
-          searchFormatter: false,
+          searchFormatter: true,
           filterControl: 'input',
           sortable: true
         },
@@ -177,10 +178,10 @@
         },
         {
           title: 'Disease',
-          field: 'disease',
+          field: 'disease_name',
           formatter: diseaseFormatter,
           cellStyle: cellFormatter,
-          searchFormatter: false,
+          searchFormatter: true,
           filterControl: 'input',
           sortable: true
         },
@@ -209,6 +210,7 @@
           field: 'sop',
           cellStyle: cellFormatter,
           searchFormatter: false,
+          sorter: sopSorter,
           filterControl: 'select',
           filterData: 'var:sopChoices',
           sortable: true

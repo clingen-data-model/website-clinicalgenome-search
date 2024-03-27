@@ -123,7 +123,7 @@
             formatter: affiliateFormatter,
             cellStyle: cellFormatter,
             filterControl: 'input',
-            searchFormatter: false,
+            searchFormatter: true,
 			      sortable: true
         },
         {
@@ -160,7 +160,7 @@
           formatter:  afflinkFormatter,
           filterControl: 'input',
           searchFormatter: false,
-          sortable: true
+          sortable: false
         }
       ]
     })

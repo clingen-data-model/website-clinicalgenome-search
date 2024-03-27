@@ -181,7 +181,7 @@
 	}
 
 	var tripChoices=[
-                '0 (No Evidence)',
+                'No Evidence',
                 '1 (Little Evidence)',
                 '2 (Emerging Evidence)',
                 '3 (Sufficient Evidence)',
@@ -189,16 +189,32 @@
                 '40 (Dosage Sensitivity Unlikely)',
                 'Not Yet Evaluated',
   		];
-	var hapChoices=[
-                '0 (No Evidence)',
-                '1 (Little Evidence)',
-                '2 (Emerging Evidence)',
-                '3 (Sufficient Evidence)',
-                '30 (Autosomal Recessive)',
-                '40 (Dosage Sensitivity Unlikely)',
-                'Not Yet Evaluated',
-  		];
+	/*var hapChoices=[
+                'No Evidence' => 0,
+                'Little Evidence' => 1,
+                'Emerging Evidence' => 2,
+                'Sufficient Evidence' => 3,
+                'Autosomal Recessive' => 30,
+                'Dosage Sensitivity Unlikely' => 40,
+                'Not Yet Evaluated' => -1,
+  		];*/
 
+	var hapChoices= {
+		'0': 'No Evidence',
+		'1': 'Little Evidence',
+		'2': 'Emerging Evidence',
+		'3': 'Sufficient Evidence',
+		'30': 'Autosomal Recessive',
+		'40': 'Dosage Sensitivity Unlikely',
+		'-5': 'Not Yet Evaluated',
+	};
+
+
+	var omimcomboChoices= {
+		1: 'OMIM Only',
+		2: 'Morbid Only',
+		3: 'Both OMIM and Morbid'
+	};
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
@@ -294,6 +310,9 @@
 					searchFormatter: false,
           			filterData: 'var:hapChoices',
           			filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
+					sortSelectOptione: false,
+					filterOrderBy: 'server',
+					filterStrictSearch: true,
 					sortable: true
 				},
 				{
@@ -323,8 +342,9 @@
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          			filterData: 'var:tripChoices',
+          			filterData: 'var:hapChoices',
           			filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
+					filterStrictSearch: true,
 					sortable: true
 				},
 				{
@@ -349,11 +369,11 @@
 				},
 				{
 					title: 'OMIM<hr class="mt-1 mb-1 bg-white mr-4">Morbid',
-					field: 'omim',
-					formatter: omimFormatter,
+					field: 'omimcombo',
+					formatter: omimcomboFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
-					filterData: 'var:choices',
+					filterData: 'var:omimcomboChoices',
 					searchFormatter: false,
 					sortable: true
 				},

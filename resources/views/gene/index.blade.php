@@ -165,7 +165,6 @@
     var currentsearch = "{{ $search }}";
 
     function queryParams(params) {
-        console.log(params)
         params.search = currentsearch;  // "{{ $search }}"
         return params
     }
@@ -229,7 +228,7 @@
           formatter: symbol2Formatter,
           cellStyle: cellFormatter,
           filterControl: 'input',
-          searchFormatter: false,
+          searchFormatter: true,
           sortable: true
         },
         {

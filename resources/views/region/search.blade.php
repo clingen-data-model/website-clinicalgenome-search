@@ -220,6 +220,22 @@
         var plibin=['< 0.9', '>= 0.9'];
         var plofbin=['<= 0.2', '<= 0.35', '<= 1'];
 
+        var omimcomboChoices= {
+            1: 'OMIM Only',
+            2: 'Morbid Only',
+            3: 'Both OMIM and Morbid'
+        };
+
+        var hapChoices= {
+            '0': 'No Evidence',
+            '1': 'Little Evidence',
+            '2': 'Emerging Evidence',
+            '3': 'Sufficient Evidence',
+            '30': 'Autosomal Recessive',
+            '40': 'Dosage Sensitivity Unlikely',
+            '-5': 'Not Yet Evaluated',
+        };
+
         // HI bin
         function checkbin(text, value, field, data)
         {
@@ -268,6 +284,7 @@
 
     function checkactive(text, value, field, data)
     {
+        console.log(text);
         switch (text)
         {
             case 'actionability':
@@ -325,7 +342,7 @@
                         cellStyle: cellFormatter,
                         filterControl: 'input',
                         width: 240,
-                        searchFormatter: false,
+                        searchFormatter: true,
                         sortable: true
                     },
                     {
@@ -366,6 +383,8 @@
                         //align: 'center',
                         filterControl: 'select',
                         searchFormatter: false,
+                        filterData: 'var:hapChoices',
+                        filterStrictSearch: true,
                         sortable: true,
                         visible: false
                     },
@@ -377,16 +396,18 @@
                         //align: 'center',
                         filterControl: 'select',
                         searchFormatter: false,
+                        filterData: 'var:hapChoices',
+                        filterStrictSearch: true,
                         sortable: true,
                         visible: false
                     },
                     {
                         title: 'OMIM<hr class="mt-1 mb-1 bg-white mr-4">Morbid',
-                        field: 'omim',
-                        formatter: omimFormatter,
+                        field: 'omimcombo',
+                        formatter: omimcomboFormatter,
                         cellStyle: cellFormatter,
                         filterControl: 'select',
-                        filterData: 'var:choices',
+                        filterData: 'var:omimcomboChoices',
                         searchFormatter: false,
                         sortable: true,
                     },

@@ -131,12 +131,15 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6 mt-2">
+        <div class="col-md-12 mt-2">
             <div class="row">
-                <dt class="col-sm-4 pt-2">ClinGen Curation ID:
+                <dt class="col-sm-2 pt-2">ClinGen Curation ID:
                 <dd class="col-sm-8">
-                    {{ $slug->alias ?? '' }} <button type="button" class="btn action-ccid-copy ml-2" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Copied!</h5>" data-trigger="click" data-clipboard-text="{{ url('/') . '/' . ($slug->alias ?? '') }}"><i class="far fa-copy"></i> Copy URL to Clipboard</button>
-                    <span data-toggle="tooltip" data-placement="top" title="The ClinGen Curation ID is an abbreviated link that you can use in documente.  Click on the button to the left to copy the link into your clipboard."><i class="fas fa-question-circle fa-lg ml-1"></i></span>
+                    {{ $slug->alias ?? '' }} <span data-toggle="tooltip" data-placement="top" title="The ClinGen Curation ID is an abbreviated link that you can use in documente.  Click on the button to the left to copy the link into your clipboard."><i class="fas fa-question-circle ml-1"></i></span>
+
+                    <button type="button" class="btn action-ccid-copy ml-4" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Copied!</h5>" data-trigger="click" data-clipboard-text="{{ url('/') . '/' . ($slug->alias ?? '') }}">
+                        <i class="far fa-copy"></i> Copy <u>{{ url('/') . '/' . ($slug->alias ?? '') }}</u> to clipboard
+                    </button>
                 </dd>
             </div>
         </div>

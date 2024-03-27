@@ -690,6 +690,12 @@ class Mysql
             if ($node->triplo_assertion !== null)
 				$hapcounters++;
 
+            // temp fix for the NYE issue
+            if ($node->haplo_assertion === null)
+                $node->haplo_assertion = -5;
+            if ($node->triplo_assertion === null)
+                $node->triplo_assertion = -5;
+
 			$collection->push($node);
 		}
 

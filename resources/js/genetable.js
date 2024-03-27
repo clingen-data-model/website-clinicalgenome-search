@@ -598,7 +598,7 @@ function triplo2Formatter(index, row) {
         case '30: Autosomal Recessive':
             display = "Autosomal<div>Recessive</div>";
             tooltip = "30 (Autosomal Recessive)";
-            badge = 0;
+            badge = 30;
             break;
         case 40:
         case "40":
@@ -622,6 +622,30 @@ function triplo2Formatter(index, row) {
     
     return html;
 }
+
+
+function omimcomboFormatter(index, row) {
+    var html = '';
+
+    switch (row.omimcombo)
+    {
+        case 0:
+            return html;
+        case 1:
+            return '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">OMIM</span></a></span>'
+                    + '<hr class="mt-1 mb-1 mr-4"><div>&nbsp;</div>';
+        case 2:
+            return '<span>&nbsp;</span>'
+                    + '<hr class="mt-1 mb-1 mr-4"><div onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">Morbid</div></a></span>';
+        case 3:
+            return '<span onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">OMIM</span></a></span>'
+                    + '<hr class="mt-1 mb-1 mr-4"><div onclick="event.stopPropagation();" ><a href="https://omim.org/entry/' + row.omimlink + '" > <span class="text-dark">Morbid</div></a></span>';
+    }
+
+    return html;
+}
+
+    
 
 function omimFormatter(index, row) {
     var html = '';
@@ -929,9 +953,18 @@ function asmondoFormatter(index, row) {
 
 function asbadgeFormatter(index, row) {
     var txt = row.classification;
+    var color = row.classification;
 
     if (row.classification == "No Known Disease Relationship*")
+    {
         txt = "No Known Disease Relationship";
+        color = 'unknown';
+    }
+
+    if (row.classification == "No Known Disease Relationship")
+    {
+        color = 'unknown';
+    }
 
     if (row.animal_model_only)
         return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
@@ -941,7 +974,7 @@ function asbadgeFormatter(index, row) {
     //return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
     //    + '' + txt + '</a>';
 
-    return '<a class="btn btn-block text-white cg-table-' + txt + '" href="/kb/gene-validity/' + row.perm_id + '">'
+    return '<a class="btn btn-block text-white cg-table-' + color + '" href="/kb/gene-validity/' + row.perm_id + '">'
         + '' + txt + '</a>';
 }
 
@@ -1520,6 +1553,24 @@ function relationFormatter(index, row) {
 
 }
 
+
+function sopSorter(one, two, row1, row2) {
+
+    // break out thenumeric string.
+    var sopone = one.substr(3);
+    var soptwo = two.substr(3);
+
+    var diff = parseInt(sopone) - parseInt(soptwo);
+
+    if (diff > 0)
+        return 1;
+
+    if (diff < 0)
+        return -1;
+
+    return 0;
+}
+
 function relationSorter(one, two, row1, row2) {
 
     if (row1.type == row2.type)
@@ -1549,6 +1600,13 @@ function dateSorter(one, two, row1, row2)
 
 
 function locationSorter(one, two) {
+
+    // there are some special genes with no defined coordinates
+    if (one == null)
+        return -1
+    else if (two == null)
+        return 1
+
     var oneloc = one.match(/\d+|X|Y/g);
     var twoloc = two.match(/\d+|X|Y/g);
 

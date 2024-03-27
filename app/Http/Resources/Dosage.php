@@ -37,6 +37,7 @@ class Dosage extends JsonResource
                 'omim' => isset($this->omimlink) ? 'Yes' : 'No',
                 'omimlink' => $this->omimlink ?? null,
                 'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
+                'omimcombo' => (isset($this->omimlink) && !empty($this->morbid) ? 3 : (isset($this->omimlink) ? 1 : (!empty($this->morbid) ? 2 : 0))),
                 'haplo_history' => $this->haplo_history ?? null,
                 'hhr' => empty($this->haplo_history) ? 0 : 1,
                 'triplo_history' => $this->triplo_history ?? null,
@@ -56,6 +57,14 @@ class Dosage extends JsonResource
         }
         else
         {
+            // temp fix for NYE
+            $haplo_score = $this->scores['haploinsufficiency'] ?? null;
+            if ($haplo_score == 'Not yet evaluated')
+                $haplo_score = -5;
+            $triplo_score = $this->scores['triplosensitivity'] ?? null;
+            if ($triplo_score == 'Not yet evaluated')
+                $triplo_score = -5;
+
             $a = [
                 'type' => 1,
                 'symbol' => $this->name,
@@ -68,11 +77,12 @@ class Dosage extends JsonResource
                 'grch38' => $this->grch38 ?? null,
                 'pli' => is_null($this->pli) ? null : round($this->pli, 2),
                 'hi' => is_null($this->hi) ? null : round($this->hi, 2),
-                'haplo_assertion' => $this->scores['haploinsufficiency'] ?? null,
-                'triplo_assertion' => $this->scores['triplosensitivity'] ?? null,
+                'haplo_assertion' => $haplo_score,
+                'triplo_assertion' => $triplo_score,
                 'omim' => !empty($this->metadata['omim']) ? 'Yes' : 'No',
                 'omimlink' => $this->metadata['omim'] ?? null,
                 'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
+                'omimcombo' => (isset($this->omimlink) && !empty($this->morbid) ? 3 : (isset($this->omimlink) ? 1 : (!empty($this->morbid) ? 2 : 0))),
                 'haplo_history' => $this->events['haplo_score_change'] ?? null,
                 'hhr' => empty($this->events['haplo_score_change']) ? 0 : 1,
                 'triplo_history' => $this->events['triplo_score_change'] ?? null,

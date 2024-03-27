@@ -105,6 +105,16 @@
 		}
 	}
 
+	var hapChoices= {
+		'0': 'No Evidence',
+		'1': 'Little Evidence',
+		'2': 'Emerging Evidence',
+		'3': 'Sufficient Evidence',
+		'30': 'Autosomal Recessive',
+		'40': 'Dosage Sensitivity Unlikely',
+		'-5': 'Not Yet Evaluated',
+	};
+
 
 	function responseHandler(res) {
 		//$('#gene-count').html(res.total);
@@ -174,15 +184,19 @@
 			formatter: haplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
+			filterData: 'var:hapChoices',
+			filterStrictSearch: true,
 			sortable: true
         },
 		{
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Triplosensitivity Score"></i></div>TS Score',
-			field: 'cnvtriplo_assertion',
+			field: 'triplo_assertion',
 			filterControl: 'select',
 			formatter: triplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
+			filterData: 'var:hapChoices',
+			filterStrictSearch: true,
 			sortable: true
         },
 		{

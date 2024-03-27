@@ -43,6 +43,7 @@ class Genesearch extends JsonResource
             'omim' => isset($this->omim) ? 'Yes': 'No',
             'omimlink' => $this->omim ?? null,
             'morbid' => !empty($this->morbid) ? 'Yes' : 'No',
+            'omimcombo' => (isset($this->omim) && !empty($this->morbid) ? 3 : (isset($this->omim) ? 1 : (!empty($this->morbid) ? 2 : 0))),
             'curation' => (($this->activity['dosage'] ?? false) ? 'D' : '') . (($this->activity['actionability'] ?? false) ? 'A' : '')
                              . (($this->activity['validity'] ?? false) ? 'V' : '')
                             . (($this->activity['varpath'] ?? false) ? 'R' : '') . (($this->activity['pharma'] ?? false) ? 'P' : ''),
