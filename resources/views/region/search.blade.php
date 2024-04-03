@@ -61,18 +61,7 @@
             </div>
             <div class="col-md-7 grayblur mr-2 pt-2 pb-2">
                 <div class="row">
-                    <div class="col-md-3 pl-4">
-                        <span class="font-weight-bold">Include:</span>
-                        <div>
-                            <input type="checkbox" name="dos" class="action-show-dosage" />
-                            <label class="mb-0 font-weight-normal" for="dos">Dosage Scores</label>
-                        </div>
-                        <div>
-                            <input type="checkbox" name="val" />
-                            <label class="mb-0 font-weight-normal" for="val">Validity Scores</label>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <span class="font-weight-bold">Display:</span>
                         <div>
                             <input class="action-show-genes" type="checkbox" name="gen" checked />
@@ -83,18 +72,32 @@
                             <label class="mb-0 font-weight-normal" for="reg">Regions</label>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <span class="font-weight-bold">&nbsp;</span>
                         <div>
                             <input class="action-show-contain" type="checkbox" name="con" checked />
-                            <label class="mb-0 font-weight-normal" for="con">Contain</label>
+                            <label class="mb-0 font-weight-normal" for="con">Contained</label>
                         </div>
                         <div>
                             <input class="action-show-overlap" type="checkbox" name="ovr" checked />
                             <label class="mb-0 font-weight-normal" for="ovr">Overlap</label>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <span class="font-weight-bold">&nbsp;</span>
+                        <div>
+                            <input type="checkbox" name="dos" class="action-show-dosage" />
+                            <label class="mb-0 font-weight-normal" for="dos">Dosage Scores</label>
+                        </div>
+                        <div>
+                            <!--
+                            <input type="checkbox" name="val" />
+                            <label class="mb-0 font-weight-normal" for="val">Validity Scores</label>
+                            -->
+                            <span class="font-weight-bold">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <span class="font-weight-bold">&nbsp;</span>
                         <div>
                             <input class="action-show-psuedo" type="checkbox" name="psu" checked />
@@ -113,7 +116,7 @@
                 </button>
                 <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
             </div>
-            <div class="col-md-12 light-arrows dark-table">
+            <div class="col-md-12 light-arrows dark-table dark-detail">
                 @include('_partials.genetable', ['expand' => true])
             </div>
         </div>
@@ -282,26 +285,30 @@
 
         var activelist=['Actionability', 'Dosage Sensitivity', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
 
-    function checkactive(text, value, field, data)
-    {
-        console.log(text);
-        switch (text)
-        {
-            case 'actionability':
-                return value.indexOf('A') != -1;
-            case 'dosage sensitivity':
-                return value.indexOf('D') != -1;
-            case 'gene validity':
-                return value.indexOf('V') != -1;
-            case 'variant pathogenicity':
-                return value.indexOf('R') != -1;
-            case 'pharmacogenomics':
-                return value.indexOf('P') != -1;
-            default:
-                return true;
-        }
+        var preactivelist=['Actionability', 'Dosage Sensitivity', 'Dosage Precuration', 'Gene Validity', 'Variant Pathogenicity', 'Pharmacogenomics'];
 
-    }
+        function checkactive(text, value, field, data)
+        {
+            //console.log(value);
+            switch (text)
+            {
+                case 'actionability':
+                    return value.indexOf('A') != -1;
+                case 'dosage sensitivity':
+                    return value.indexOf('D') != -1;
+                case 'gene validity':
+                    return value.indexOf('V') != -1;
+                case 'variant pathogenicity':
+                    return value.indexOf('R') != -1;
+                case 'pharmacogenomics':
+                    return value.indexOf('P') != -1;
+                case 'dosage precuration':
+                    return value.indexOf('d') != -1;
+                default:
+                    return true;
+            }
+
+        }
 
         function inittable() {
             $table.bootstrapTable('destroy').bootstrapTable({
@@ -465,7 +472,7 @@
                         sortable: true,
                         visible: false
                     },
-                    {
+                    { 
                         field: 'curation',
                         title: 'Curation Activity',
                         formatter: badge2Formatter,
@@ -482,10 +489,13 @@
                         field: 'precuration',
                         title: 'Curation Activity',
                         formatter: precurationFormatter,
-                        cellStyle: cellFormatter,
-                        filterControl: 'select',
+                        //cellStyle: cellFormatter,
+                        //filterControl: 'select',
                         //filterData: 'var:activelist',
                         //filterCustomSearch: checkactive,
+                        filterControl: 'select',
+                        filterData: 'var:preactivelist',
+                        filterCustomSearch: checkactive,
                         sorter: dateSorter,
                         width: 190,
                         searchFormatter: false,

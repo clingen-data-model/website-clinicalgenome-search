@@ -1448,7 +1448,7 @@ function precurationFormatter(index, row) {
     {
         var html = badge2Formatter(index, row);
 
-        if (row.precuration !== null)
+        if (row.precuration_type !== null)
         {
             html += '<div class="text-danger font-weight-bold small">Under Dosage Re-evaluation</div>';
         }
@@ -1457,7 +1457,7 @@ function precurationFormatter(index, row) {
 
     }
 
-    switch (row.precuration)
+    switch (row.precuration_type)
     {
         case 11:
         case 12:

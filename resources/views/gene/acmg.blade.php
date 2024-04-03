@@ -40,7 +40,7 @@
 			</p>
 		</div>
 
-		<div class="col-md-12 light-arrows dark-table pl-0 pr-0">
+		<div class="col-md-12 light-arrows dark-table pl-0 pr-0 dark-detail">
 				@include('_partials.genetable', ['expand' => true, 'no_expand_click' => true])
 
 		</div>

@@ -43,6 +43,11 @@ td.valign-bottom {
 .dark-table .fixed-table-body thead {
   background-color: #eeeeee;
 }
+
+.dark-detail .detail {
+  background-color: #6c757d !important;
+}
+
 .fixed-table-pagination .pagination-detail, .fixed-table-pagination .pagination {
   padding-left: .7rem !important;
   padding-right: .2rem !important;

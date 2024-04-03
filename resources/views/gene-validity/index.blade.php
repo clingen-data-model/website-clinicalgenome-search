@@ -35,7 +35,7 @@
 
     </div>
 
-    <div class="col-md-12 light-arrows dark-table">
+    <div class="col-md-12 light-arrows dark-table dark-detail">
 			@include('_partials.genetable', ['customload' => true, 'expand' => true])
 		</div>
 	</div>
@@ -149,9 +149,9 @@
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
-        stickyHeader: true,
-    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
-            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
+      stickyHeader: true,
+      stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+      stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
       sortName:  "symbol",
 			sortOrder: "asc",

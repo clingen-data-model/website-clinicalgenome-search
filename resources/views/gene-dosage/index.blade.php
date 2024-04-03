@@ -40,6 +40,15 @@
 		</div>
 
 		<div class="col-md-12">
+			<div class="alert alert-info blueblur" role="alert">
+				<b>Notice:</b>
+				The standalone region search field specific to Dosage Sensitivity has been fully integrated with the main search bar above.  
+				To use, simply select Region (GRCh37) or Region (GRCh38), enter the genomic coordinates as before, then click on the 'Search' button.
+				Once your results display, you can view additional information relative to Dosage Sensitivity by clicking on the 'Dosage Scores' display option.
+			  </div>
+		</div>
+
+		<div class="col-md-12">
        		<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
 				<span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"><span class="badge action-af-badge">None</span></span>
 			</button>
@@ -47,7 +56,7 @@
 
 		</div>
 
-		<div class="col-md-12 light-arrows dark-table">
+		<div class="col-md-12 light-arrows dark-table dark-detail">
 
 			@include('_partials.genetable', ['expand' => true])
 

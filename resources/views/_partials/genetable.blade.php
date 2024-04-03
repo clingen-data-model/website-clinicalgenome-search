@@ -29,12 +29,13 @@
     {{-- data-click-to-select="true" --}}
     @if (isset($expand))
     data-detail-view="true"
-    data-detail-view-icon="true"
     @if (isset($no_expand_click))
     data-detail-view-by-click="false"
+    data-detail-view-icon="false"
     data-unique-id="id"
     @else 
     data-detail-view-by-click="true"
+    data-detail-view-icon="true"
     @endif
     @endif
     {{-- data-detail-formatter="detailFormatter" --}}

@@ -75,6 +75,7 @@
           </div>
       </div>
   </div>
+  <!--
   <div class="row justify-content-center mt-0 medium-font-size" style="margin-left: -100px; margin-right: -100px">
       <div class="col-md-12 grayblur mr-2 pt-2 pb-2">
           <div class="row">
@@ -95,6 +96,7 @@
           </div>
       </div>
   </div>
+-->
   <div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
       <div class="col-md-12 mt-2">
           <!--<button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">

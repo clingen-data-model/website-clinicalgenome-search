@@ -1683,14 +1683,12 @@ class Mysql
         }
         else
         {
-            Log::info(Carbon::now());
             $records = Term::where('name', 'like', '%' . $search . '%')
                         ->whereIn('type', [1, 2, 3])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
                         ->orderBy('weight', 'desc')
                         ->take(10)->get();
-            Log::info(Carbon::now());
             foreach($records as $record)
             {
                 switch ($record->type)

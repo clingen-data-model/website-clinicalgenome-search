@@ -56,7 +56,10 @@ class Genesearch extends JsonResource
             'rawdate' => $this->date_last_curated,
             'has_curations' => !empty($this->date_last_curated) ?? false,
             'status' => $this->status,
-            'precuration' => $this->precuration
+            'precuration_type' => $this->precuration,
+            'precuration' => (($this->activity['dosage'] ?? false) ? 'D' : '') . (($this->activity['actionability'] ?? false) ? 'A' : '')
+            . (($this->activity['validity'] ?? false) ? 'V' : '')
+           . (($this->activity['varpath'] ?? false) ? 'R' : '') . (($this->activity['pharma'] ?? false) ? 'P' : '') . (empty($this->precuration) ? '' : 'd')
         ];
     }
 }
