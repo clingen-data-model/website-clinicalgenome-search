@@ -18,6 +18,7 @@ class Region extends JsonResource
     {
         return [
             'key' => $this->key,
+            'symbol_id' => $this->key,
             'name' => $this->summary,
             'location' => $this->grch37,
             'location38' => $this->grch38,

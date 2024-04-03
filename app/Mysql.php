@@ -1580,6 +1580,18 @@ class Mysql
 
             switch(strtoupper($parts[0]))
             {
+                case 'CCID':
+                    $records = Slug::query()->where('alias', 'like', $search . '%')
+                                    ->take(10)->orderByRaw('CHAR_LENGTH(alias)')->get();
+                    foreach($records as $record)
+                    {
+                        $array[] = ['label' => $record->alias,
+                                    'alias' => ($record->subtype == 1 ? 'Gene-Disease Validity' : 'Dosage Sensitivity'),
+                                    'hgnc' => $record->target,
+                                    'url' => route('validity-show', $search),
+                                    'curated' => true];
+                    }
+                    break;
                 case 'MIM':
                 case 'OMIM':
                     /*$records = Gene::query()->where('omim_id', 'like', '%' . $id . '%')->with('gene')->
@@ -1671,12 +1683,14 @@ class Mysql
         }
         else
         {
+            Log::info(Carbon::now());
             $records = Term::where('name', 'like', '%' . $search . '%')
                         ->whereIn('type', [1, 2, 3])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
                         ->orderBy('weight', 'desc')
                         ->take(10)->get();
+            Log::info(Carbon::now());
             foreach($records as $record)
             {
                 switch ($record->type)

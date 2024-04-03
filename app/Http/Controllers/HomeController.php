@@ -51,8 +51,8 @@ class HomeController extends Controller
 
             if ($s === null || $s->target === null)
                 return view('error.message-standard')
-                    ->with('title', 'Error retrieving Gene Validity details')
-                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('title', 'Unlnown ClinGen Curation ID')
+                    ->with('message', 'Please use the correct CCID and try again.')
                     ->with('back', url()->previous())
                     ->with('user', $this->user);
 

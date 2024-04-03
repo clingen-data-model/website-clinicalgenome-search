@@ -475,7 +475,10 @@ class ValidityController extends Controller
 
         $moiflag =  ($record->mode_of_inheritance->website_display_label === "Semidominant inheritance");
 
-        $slug = Slug::target($id)->first();
+        $t = (strpos($record->curie, 'CGGV:assertion_') === 0 ? substr($id, 0, 51)
+                        : $record->curie);
+
+        $slug = Slug::target($t)->first();
 
         //dd($extrecord->genetic_evidence);
         return view(

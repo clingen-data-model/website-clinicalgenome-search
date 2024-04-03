@@ -29,6 +29,10 @@
 		Overview:
 	</div>
 	<div class="col-md-10 border-left">
+		@if (empty($panel->summary))
+		<div class="text-center"><i>No summary information available for this panel</i></div>
+		@else
 		{!! $panel->summary !!}
+		@endif
 	</div>
 </div>

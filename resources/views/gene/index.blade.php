@@ -103,7 +103,7 @@
           <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
       </div>
       <div class="col-md-12 light-arrows dark-table">
-          @include('_partials.genetable', ['expand' => true])
+          @include('_partials.genetable')
       </div>
   </div>
 </div>

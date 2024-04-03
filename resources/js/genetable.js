@@ -967,20 +967,20 @@ function asbadgeFormatter(index, row) {
     }
 
     if (row.animal_model_only)
-        return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
+        return '<a class="btn btn-default btn-block btn-classification" onclick="event.stopPropagation();" href="/kb/gene-validity/' + row.perm_id + '">'
             + '' + txt + '<div class="badge badge-warning">'
             + 'Animal Model Only</div></a>';
 
     //return '<a class="btn btn-default btn-block btn-classification" href="/kb/gene-validity/' + row.perm_id + '">'
     //    + '' + txt + '</a>';
 
-    return '<a class="btn btn-block text-white cg-table-' + color + '" href="/kb/gene-validity/' + row.perm_id + '">'
+    return '<a onclick="event.stopPropagation();" class="btn btn-block text-white cg-table-' + color + '" href="/kb/gene-validity/' + row.perm_id + '">'
         + '' + txt + '</a>';
 }
 
 function datebadgeFormatter(index, row) {
 
-    return '<a class="btn btn-sm btn-outline-dark btn-block rounded-0" href="/kb/gene-validity/' + row.perm_id + '"><i class="far fa-file mr-2"></i> '
+    return '<a onclick="event.stopPropagation();" class="btn btn-sm btn-outline-dark btn-block rounded-0" href="/kb/gene-validity/' + row.perm_id + '"><i class="far fa-file mr-2"></i> '
         + '' + row.released + '</a>';
 
 }

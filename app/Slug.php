@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Uuid;
 use Str;
 
+use App\GeneLib;
+
 /**
  *
  * @category   Model
@@ -155,5 +157,39 @@ class Slug extends Model
 	public function scopeTarget($query, $ident)
   {
 		return $query->where('target', $ident);
+  }
+
+
+  /**
+   * Preload validity and dosage curations
+   *
+   * @@param	string	$ident
+   * @return Illuminate\Database\Eloquent\Collection
+   */
+	public static function preload()
+  {
+    // valisity first
+      $records = GeneLib::validityList([
+                    'page' => 0,
+                    'pagesize' => "null",
+                    'sort' => 'GENE_LABEL',
+                    'search' => null,
+                    'direction' => 'ASC',
+                    'properties' => true,
+                    'forcegg' => true,
+                    'curated' => false
+                ]);
+    foreach ($records->collection as $record)
+    {
+      $curie = (strpos($record->curie, 'CGGV:assertion_') === 0 ? substr($record->curie, 0, 51) : $record->curie);
+
+      // create or update the CCID
+      Slug::firstOrCreate(['target' => $curie],
+                              [ 'type' => Slug::TYPE_CURATION,
+                                'subtype' => Slug::SUBTYPE_VALIDITY,
+                                'status' => Slug::STATUS_INITIALIZED
+                              ]);
+
+    }
   }
 }

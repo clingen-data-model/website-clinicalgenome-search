@@ -706,8 +706,12 @@ class Validity extends Model
 
             $curation->save();
 
+            // strip off the timestamp
+            $curie = (strpos($record->curie, 'CGGV:assertion_') === 0 ? substr($record->curie, 0, 51)
+                        : $record->curie);
+
             // create or update the CCID
-            $s = Slug::firstOrCreate(['target' => $record->curie],
+            $s = Slug::firstOrCreate(['target' => $curie],
                                     [ 'type' => Slug::TYPE_CURATION,
                                       'subtype' => Slug::SUBTYPE_VALIDITY,
                                       'status' => Slug::STATUS_INITIALIZED
