@@ -36,8 +36,8 @@
     </div>
 
 
-    <div class="col-md-12 light-arrows">
-      @include('_partials.genetable')
+    <div class="col-md-12 light-arrows dark-detail">
+      @include('_partials.genetable', ['expand' => true])
     </div>
 
 	</div>
@@ -293,7 +293,37 @@
 			$('[data-toggle="tooltip"]').tooltip();
 	})
 
-}
+  $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+    $obj.attr('colspan',12);
+
+    var t = $obj.closest('tr');
+
+    //var stripe = t.prev().hasClass('bt-even-row');
+
+    t.addClass('dosage-row-bottom');
+
+    //if (stripe)
+    //  t.addClass('bt-even-row');
+    //else
+    //  t.addClass('bt-odd-row');
+
+    t.prev().addClass('dosage-row-top');
+
+    $obj.load( "/api/validity/expand/" + row.perm_id );
+
+    return false;
+  })
+
+
+  $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+    $obj.closest('tr').prev().removeClass('dosage-row-top');
+
+    return false;
+    });
+
+  }
 
 $(function() {
 

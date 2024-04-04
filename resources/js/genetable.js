@@ -1450,7 +1450,7 @@ function precurationFormatter(index, row) {
 
         if (row.precuration_type !== null)
         {
-            html += '<div class="text-danger font-weight-bold small">Under Dosage Re-evaluation</div>';
+            html += '<div class="text-danger font-weight-bold small">Under Dosage Review</div>';
         }
 
         return html;
