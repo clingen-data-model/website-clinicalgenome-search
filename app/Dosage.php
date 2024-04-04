@@ -755,7 +755,7 @@ class Dosage extends Model
           $haplo_history = null;
           $triplo_history = null;
 
-          $check = Jira::getHistory($issue->key);
+          $check = Jira::getHistory($issue);
 
           if ($check->isNotEmpty())
           {
@@ -770,13 +770,13 @@ class Dosage extends Model
             }
           }
 
-          $gene = Gene::hgnc($record->cumstomfield_12230)->first();
+          $gene = Gene::hgnc($record->customfield_12230)->first();
 
           if ($gene === null)
             die($record);
 
           // if status has changed to closed, publish a curation
-          if ($status == self::STATUS_CLOSED)
+          if ($curation_status == Curation::STATUS_ACTIVE)
           {
             // if there is a score change, update the gene record
            // if ($haplo_history !== null || $triplo_history !== null)
@@ -1265,5 +1265,38 @@ dd($data);
 
         //dd($curation);
 
+    }
+
+
+    /**
+     * Split a jira coordinate field out to its individual components
+     * 
+     */
+    protected static function location_split($location, $sequence = '')
+    {
+
+      if (empty($location))
+        return ['chr' => '', 'start' => '', 'stop' => '', 'seqid' => $sequence];
+
+      // break out the location and clean it up
+      $location = preg_split('/[:-]/', trim($location), 3);
+
+      $chr = strtoupper($location[0]);
+
+      if (strpos($chr, 'CHR') === 0 )   // strip out the chr
+        $chr = substr($chr, 3);
+
+      //strip out the commas
+      $start = str_replace(',', '', $location[1] ?? '');
+      $stop = str_replace(',', '', $location[2] ?? '');
+
+      // change x and y to numerics
+      if ($chr == 'X')
+          $chr = 23;
+
+      if ($chr == 'Y')
+          $chr = 24;
+
+      return ['chr' => $chr, 'start' => $start, 'stop' => $stop, 'seqid' => $sequence];
     }
 }

@@ -1262,7 +1262,7 @@ class Jira extends Model
                               $created = new Carbon($history->created);
                               if (Carbon::now()->diffInWeeks($created) <= 52)
                               {
-                                   //dd($issue);
+                                   //dd($item);
                                    if ($issue->fields->issuetype->name == "ISCA Gene Curation")
                                         $title = $issue->fields->customfield_10030;
                                    else if ($issue->fields->issuetype->name == "ISCA Region Curation")

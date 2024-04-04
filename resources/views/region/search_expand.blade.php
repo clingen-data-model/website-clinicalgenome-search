@@ -69,13 +69,13 @@
 		<!-- Actionability -->
 		<div class="col-md-1 border-right  border-left pt-1 pb-1 pr-2 pl-2 text-center">
 			@if ($scores[$disease->id]['actionability_adult_score'] !== null)
-			<span class="small badge cg-{{ $scores[$disease->id]['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Adult Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_adult_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_adult_score'] }}</a></span>
+			<span class="small badge cg-{{ $scores[$disease->id]['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Adult Actionability Assertion of {{ $scores[$disease->id]['actionability_adult_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['actionability_adult_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_adult_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
 			<hr class="mt-1 mb-1">
 			@if ($scores[$disease->id]['actionability_pediatric_score'] !== null)
-			<span class="small badge cg-{{ $scores[$disease->id]['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Pediatric Actionability Assertion"><a class="text-white" href="{{ $scores[$disease->id]['actionability_pediatric_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_pediatric_score'] }}</a></span>
+			<span class="small badge cg-{{ $scores[$disease->id]['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Pediatric Actionability Assertion of {{ $scores[$disease->id]['actionability_ped_tooltip'] }}"><a class="text-white" href="{{ $scores[$disease->id]['actionability_pediatric_link'] }}" target="_akb">{{ $scores[$disease->id]['actionability_pediatric_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
@@ -92,8 +92,10 @@
 			@endif
 		</div>
 		<!-- pharma -->
-		<div class="col-md-1 border-right pt-1 pb-1 text-center">
-			<span class="mt-4 text-secondary"><b>N/A</b></span>
+		<div class="col-md-1 border-right pt-1 pb-1 text-center bg-secondary">
+			<div class="mt-3" data-toggle="tooltip" data-placement="top" title="Pharmacogenomics does not curate to a disease">
+				<span class="text-secondary">&nbsp;</span>
+			</div>
 		</div>
 	</div>
 @endforeach

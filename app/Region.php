@@ -1066,6 +1066,7 @@ class Region extends Model
 
     }
 
+    
     /**
      * Split a jira coordinate field out to its individual components
      * 
