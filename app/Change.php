@@ -341,6 +341,45 @@ class Change extends Model
 
 
     /**
+     * Query scope by filters
+     *
+     * @@param	json	$filters
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDiseaseFilters($query, $filters)
+    {
+        if (isset($filters['first']) && $filters['first'] == "on")
+        {
+
+            if (isset($filters['disease_label']))
+            {
+                $diseases = $filters['disease_label'];
+
+                $query = $query->whereHas('new', function($subquery) use($diseases){
+                    return $subquery->whereIn('gene_label', $diseases);
+                })->groupBy('element_id');
+
+                return $query;
+            }
+        }
+
+
+        if (isset($filters['disease_label']))
+        {
+            $diseases = $filters['disease_label'];
+
+            $query = $query->whereHas('new', function($subquery) use($diseases){
+                return $subquery->whereIn('disease_label', $diseases);
+            });
+
+        }
+
+		return $query;
+    }
+
+
+
+    /**
      * Retrieve, compare, and load a fresh dataset
      *
      * @@param	string	$ident

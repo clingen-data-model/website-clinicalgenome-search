@@ -411,6 +411,75 @@ class Notification extends Model
 
 
      /**
+     * Transform the stored disease frequency strucure
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function toDiseaseReport()
+     {
+          $reports = [];
+
+          $frequency = $this->frequency;
+
+          // Daily report or First Curation
+          if ($frequency['first'] || !empty($frequency['Disease']['Daily']) || ($frequency['frequency'] == self::FREQUENCY_DAILY && !empty($frequency['Disease']['Default'])))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Daily']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Daily']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_DAILY && isset($frequency['Disease']['Default']))
+                    $diseases = array_merge($genes, $frequency['Default']);
+
+               array_walk($diseases, array($this, 'walk'));
+
+               $reports[] = ['start_date' => Carbon::yesterday(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
+          }
+
+          // Weekly Report
+          if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (!empty($frequency['Disease']['Weekly']) || ($frequency['frequency'] == self::FREQUENCY_WEEKLY && !empty($frequency['Disease']['Default']))))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Weekly']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Weekly']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_WEEKLY && isset($frequency['Disease']['Default']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Default']);
+
+               array_walk($diseases, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
+          }
+
+          // Monthly Report
+          if (Carbon::now()->format('d') == '01' && (!empty($frequency['Disease']['Monthly']) || ($frequency['frequency'] == self::FREQUENCY_MONTHLY && !empty($frequency['Disease']['Default']))))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Monthly']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Monthly']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_MONTHLY && isset($frequency['Disease']['Default']))
+                    $genes = array_merge($diseases, $frequency['Disease']['Default']);
+
+               array_walk($genes, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
+          }
+
+          return $reports;
+     }
+
+
+     /**
      * Transform the stored frequency strucure
      *
      * @@param	string	$ident

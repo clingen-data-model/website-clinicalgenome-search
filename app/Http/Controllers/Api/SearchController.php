@@ -110,35 +110,34 @@ class SearchController extends Controller
             }
 
             // dosage
-            $dosage = $gene->curations->where('type', $dosage_type)
+            $dosages = $gene->curations->where('type', $dosage_type)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
-                                        ->where('disease_id', $disease->id)->first();
+                                        ->where('disease_id', $disease->id);
 
-            if (isset($dosage->assertions['haploinsufficiency_assertion']))
-            {
-                $haplo_score = GeneLib::wordAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']);
-                $haplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']) . " for Haploinsufficiency";
-            }
-            else
-            {
-                $haplo_score = null;
-                $haplo_tooltip = "";
+            $haplo_score = null;
+            $haplo_tooltip = "";
+            $triplo_score = null;
+            $triplo_tooltip = "";
+            $dosage_link = '#';
 
-            }
-
-            if (isset($dosage->assertions['triplosensitivity_assertion']))
+            foreach ($dosages as $dosage)
             {
-                $triplo_score = GeneLib::wordAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']);
-                $triplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']) . " for Triplosensitivity";
-            }
-            else
-            {
-                $triplo_score = null;
-                $triplo_tooltip = "";
-            }
+                if (isset($dosage->assertions['haploinsufficiency_assertion']))
+                {
+                    $haplo_score = GeneLib::wordAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']);
+                    $haplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']) . " for Haploinsufficiency";
+                }
 
-            $dosage_link = ($dosage === null ? '#' : "/kb/gene-dosage/" . $dosage->gene_hgnc_id);
+                if (isset($dosage->assertions['triplosensitivity_assertion']))
+                {
+                    $triplo_score = GeneLib::wordAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']);
+                    $triplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']) . " for Triplosensitivity";
+                }
+                
+                $dosage_link = "/kb/gene-dosage/" . $dosage->gene_hgnc_id;
+            }
             
+
             // actionability
             $adult = $gene->curations->where('type', Curation::TYPE_ACTIONABILITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])

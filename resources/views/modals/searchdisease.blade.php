@@ -18,7 +18,7 @@
 									<label for="search" class="col-sm-2 control-label">Disease</label>
 									<div class="col-sm-10">
 										<input type="text" class="form-control queryFindDisease" name="search[]" size="50" value="" placeholder="Begin typing a disease name">
-										<span class="text-muted"><small><i>(Enter * to select all diseases or @ to select a group)</i></small></span>
+										<!--<span class="text-muted"><small><i>(Enter * to select all diseases or @ to select a group)</i></small></span> -->
 									</div>
 								</div>
 							</div>

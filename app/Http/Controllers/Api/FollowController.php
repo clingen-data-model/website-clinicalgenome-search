@@ -562,10 +562,6 @@ dd("not logged in");  }*/
     {
         $input = $request->only(['disease']);
 
-        /*if(auth('api')->check()){
-dd("loggedit");  } else {
-dd("not logged in");  }*/
-
         if (Auth::guard('api')->user())
         {
             $user = Auth::guard('api')->user();
@@ -592,7 +588,7 @@ dd("not logged in");  }*/
 
         $notification = $user->notification;
 
-        if ($input['disease'] == '*')
+       /* if ($input['disease'] == '*')
         {
             $name = $input['disease'];
             $group = Group::search($name)->where('type', 3)->first();
@@ -624,7 +620,7 @@ dd("not logged in");  }*/
                 $notification->removeGroupDisease($group->name, $bucket);
         }
         else
-        {
+        { */
 
             $disease = Disease::curie($input['disease'])->first();
 
@@ -637,12 +633,13 @@ dd("not logged in");  }*/
 
             $user->diseases()->detach($disease->id);
 
-            $name = $disease->label;
-        }
+            $name = $disease->curie;
+        //}
 
         // remove from the notification list
         $notify = $user->notification;
         $frequency = $notify->frequency;
+        
 
         foreach (["Daily", "Weekly", "Monthly", "Pause", "Default"] as $list)
         {
@@ -762,7 +759,7 @@ dd("not logged in");  }*/
         $notification = $user->notification;
 
         // handle group expressions
-        if ($input['disease'] == "*")
+       /* if ($input['disease'] == "*")
         {
             $name = $input['disease'];
             $group = Group::search($name)->where('type', 3)->first();
@@ -817,8 +814,8 @@ dd("not logged in");  }*/
             $notification->save();
         }
         */
-        else
-        {
+       /* else
+        { */
 
             $disease = Disease::curie($input['disease'])->first();
 
@@ -830,7 +827,7 @@ dd("not logged in");  }*/
 
             $user->diseases()->sync([$disease->id], false);
 
-            $name = $disease->label;
+            $name = $disease->curie;
 
 
 
@@ -839,7 +836,7 @@ dd("not logged in");  }*/
             $notify->addDefaultDisease($name);
             $notify->save();
 
-        }
+        //}
 
         return response()->json(['success' => 'true',
                                  'status_code' => 200,

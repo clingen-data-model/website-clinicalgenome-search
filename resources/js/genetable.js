@@ -536,7 +536,7 @@ function haplo2Formatter(index, row) {
 
     // tack on the change score icon
     html += '<span class="pointer text-danger mt-2" data-toggle="tooltip" data-placement="top" title="'
-                + row.haplo_history + '"><i class="fas fa-star ml-2 fa-lg"></i></span>';
+                + row.haplo_history + '"><i class="far fa-clock ml-2 fa-lg"></i></span>';
     
     return html;
 }
@@ -618,7 +618,7 @@ function triplo2Formatter(index, row) {
 
     // tack on the change score icon
     html += '<span class="pointer text-danger mt-2" data-toggle="tooltip" data-placement="top" title="'
-                + row.triplo_history + '"><i class="fas fa-star ml-2 fa-lg"></i></span>';
+                + row.triplo_history + '"><i class="far fa-clock ml-2 fa-lg"></i></span>';
     
     return html;
 }
@@ -1561,6 +1561,54 @@ function sopSorter(one, two, row1, row2) {
     var soptwo = two.substr(3);
 
     var diff = parseInt(sopone) - parseInt(soptwo);
+
+    if (diff > 0)
+        return 1;
+
+    if (diff < 0)
+        return -1;
+
+    return 0;
+}
+
+
+function dosageSorter(one, two, row1, row2) {
+
+    if (one === false || one === null || one == -5)
+        return -1
+
+    if (two === false || two === null || two == -5)
+        return 1
+
+    switch (one)
+    {
+        case 30:
+        case '30: Gene associated with autosomal recessive phenotype':
+            one = 1;
+            break;
+        case 40:
+        case '40: Dosage sensitivity unlikely':
+            one = 0;
+            break;
+        default:
+            one = parseInt(one) + 2;
+    }
+
+    switch (two)
+    {
+        case 30:
+        case '30: Gene associated with autosomal recessive phenotype':
+            two = 1;
+            break;
+        case 40:
+        case '40: Dosage sensitivity unlikely':
+            two = 0;
+            break;
+        default:
+            two = parseInt(two) + 2;
+    }
+    
+    var diff = one - two;
 
     if (diff > 0)
         return 1;

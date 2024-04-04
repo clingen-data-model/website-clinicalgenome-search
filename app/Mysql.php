@@ -1263,7 +1263,7 @@ class Mysql
 
 		$collection = collect();
 
-		if ($search == '*')
+		/*if ($search == '*')
 		{
 			$array = [['label' => 'All Diseases (*)',
 						'short' => 'All Diseases',
@@ -1303,7 +1303,7 @@ class Mysql
 				];
 
 			return json_encode($array);
-		}
+		}*/
 
         $array = [];
 

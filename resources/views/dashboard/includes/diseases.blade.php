@@ -71,7 +71,7 @@
                                 <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <span class="selection">{{ $notification->setting($disease->curie) }}</span><span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
+                                <ul class="dropdown-menu action-disease-frequency">
                                     <li><a data-value="Daily">Daily</a></li>
                                     <li><a data-value="Weekly">Weekly</a></li>
                                     <li><a data-value="Monthly">Monthly</a></li>

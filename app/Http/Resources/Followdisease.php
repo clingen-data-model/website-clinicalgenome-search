@@ -32,13 +32,14 @@ class Followdisease extends JsonResource
                 '_symbol_data' => ['value' => $this->label],
                 'curations' => $actions,
                 'hgnc' => $this->curie,
+                'curie' => $this->curie,
                 'ident' => $this->ident,
                 'display_last' => $this->last_curated_date,
                 'notify' => '<div class="btn-group">' .
                                 ' <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' .
                                 '    <span class="selection">' . ($this->curie == '*' || $this->curie[0] == '@' || $this->curie[0] == '%'  || $this->curie[0] == '!' ? $notification->setting($this->curie) : $notification->setting($this->label)) . '</span><span class="caret"></span>' .
                                 '</button>' .
-                                '<ul class="dropdown-menu">' .
+                                '<ul class="dropdown-menu action-disease-frequency">' .
                                     '<li><a data-value="Daily">Daily</a></li>' .
                                     '<li><a data-value="Weekly">Weekly</a></li>' .
                                     '<li><a data-value="Monthly">Monthly</a></li>' .

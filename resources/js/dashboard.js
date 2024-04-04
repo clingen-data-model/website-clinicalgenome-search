@@ -635,11 +635,17 @@ $(function() {
             var original = btngrp.find('.selection').text();
             btngrp.find('.selection').text($(this).text());
 
-            //var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
-            var gene = btngrp.closest('tr').attr('data-hgnc');
-
-            // save the change
-            server_update(gene, original, $(this).text());
+            // is this a gene or a disease block
+            if ($(this).parents("ul").hasClass('action-disease-frequency'))
+            {
+                var disease = btngrp.closest('tr').attr('data-curie');
+                server_update_disease(disease, original, $(this).text());
+            }
+            else
+            {
+                var gene = btngrp.closest('tr').attr('data-hgnc');
+                server_update(gene, original, $(this).text());
+            }
 
         }
         else
@@ -679,7 +685,41 @@ $(function() {
         var url = "/api/home/notify";
 
         //submits to the form's action URL
-        $.post(url, { gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
+        $.post(url, { type: 'gene', gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
+        {
+            //alert("OK");
+        }).fail(function(response)
+        {
+            swal({
+                title: "Error",
+                text: "An error occurred while changing notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
+        });
+    }
+
+
+    /**
+     *
+     * Send otification changes to the server
+     */
+    function server_update_disease(gene, oldtype, newtype)
+    {
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+               }
+        });
+
+        var url = "/api/home/notify";
+
+        //submits to the form's action URL
+        $.post(url, { type: 'disease', gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
         {
             //alert("OK");
         }).fail(function(response)
@@ -1088,7 +1128,7 @@ $(function() {
 
     /**
      * Unfollow a gene
-     */
+     */ 
     $diseasetable.on('click', '.action-follow-disease', function(element) {
         swal({
             title: "Are you sure?",

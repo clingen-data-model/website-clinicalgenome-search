@@ -17,7 +17,7 @@
 						<dt>Ontological Reference</dt>
 						<dd>{{  $record->getMondoString($record->iri, true) }} {!! displayMondoObsolete($record->symbol) !!}</dd>
                         <dt>Description</dt>
-						<dd> {{ $disease->description }}</dd>
+						<dd> {{ $disease->description }}  <i>(Source: <a href="{{env('URL_MONARCH')}}{{ $record->iri }}">MONDO</a>)</i></dd>
                         <dt>Synonyms</dt>
 						<dd>
                             @if (count($disease->synonyms))

@@ -16,7 +16,7 @@
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only ACMG Secondary Findings Genes (ACMG SF v3.2) </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
-                <i class="fas advanced-filter fa-toggle-off fa-lg action-show-acmg59" data-badge="ACMG SF v3.1"></i>
+                <i class="fas advanced-filter fa-toggle-off fa-lg action-show-acmg59" data-badge="ACMG SF v3.2"></i>
                 <span class="ml-2 hgnc text-muted action-show-acmg59-text">Off</span>
             </div>
         </div>
