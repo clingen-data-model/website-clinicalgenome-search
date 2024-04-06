@@ -230,7 +230,7 @@
 
         //ds_pause_date
         $('#ds_pause_date').datepicker({ 
-            startDate: new Date() 
+            startDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
         });
 
         $('#ds_pause_date').datepicker().on('changeDate', function (ev) {

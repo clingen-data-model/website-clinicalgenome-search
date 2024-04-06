@@ -125,6 +125,7 @@ class RegionController extends Controller
 
             } catch (ClientException $e) {
                 $region = 'INVALID';
+                $type = 'UNKNOWN';
             }
         }
 

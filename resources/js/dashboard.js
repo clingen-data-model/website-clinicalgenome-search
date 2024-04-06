@@ -339,7 +339,23 @@ $(function() {
                 $('.action-notification-alert').removeClass('alert-danger').addClass('alert-warning');
                 $('.action-notification-text').html('PAUSED');
                 var pd = $('#ds_pause_date').val();
-                $('.action-until-text').html(' until '  + pd);
+                if (pd == '' || pd === null)
+                {
+                    $('.action-until-text').html(' until DATE NOT SET');
+                }
+                else{
+                    let date1 = new Date(pd).getTime();
+                    let date2 = new Date();
+                    if (date1 >= date2)
+                    {
+                        $('.action-until-text').html(' until '  + pd);
+                    }
+                    else
+                    {
+                        $('.action-notification-text').html('ON');
+                        $('.action-until-text').html(' (PAUSE is still set with an expired date)');
+                    }
+                }
             }
             else
             {
@@ -432,7 +448,7 @@ $(function() {
                     else
                     {
                         $('.action-notification-text').html('ON');
-                        $('.action-until-text').html(' (PAUSE is still set with an expired date');
+                        $('.action-until-text').html(' (PAUSE is still set with an expired date)');
                     }
                 }
             }
