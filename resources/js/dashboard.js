@@ -338,11 +338,14 @@ $(function() {
             if (gnot){
                 $('.action-notification-alert').removeClass('alert-danger').addClass('alert-warning');
                 $('.action-notification-text').html('PAUSED');
+                var pd = $('#ds_pause_date').val();
+                $('.action-until-text').html(' until '  + pd);
             }
             else
             {
                 $('.action-notification-alert').removeClass('alert-danger').addClass('alert-info');
                 $('.action-notification-text').html('ON');
+                $('.action-until-text').html('');
             }
 
             $('.action-toggle-notifications-text').html('On');
@@ -356,11 +359,13 @@ $(function() {
             if (gnot){
                 $('.action-notification-alert').removeClass('alert-warning').addClass('alert-danger');
                 $('.action-notification-text').html('OFF');
+                $('.action-until-text').html('');
             }
             else
             {
                 $('.action-notification-alert').removeClass('alert-info').addClass('alert-danger');
                 $('.action-notification-text').html('OFF');
+                $('.action-until-text').html('');
             }
 
             $('.action-toggle-notifications-text').html('Off');
@@ -412,6 +417,24 @@ $(function() {
             if (gnot){
                 $('.action-notification-alert').removeClass('alert-info').addClass('alert-warning');
                 $('.action-notification-text').html('PAUSED');
+                var pd = $('#ds_pause_date').val();
+                if (pd == '' || pd === null)
+                {
+                    $('.action-until-text').html(' until DATE NOT SET');
+                }
+                else {
+                    let date1 = new Date(pd).getTime();
+                    let date2 = new Date();
+                    if (date1 >= date2)
+                    {
+                        $('.action-until-text').html(' until '  + pd);
+                    }
+                    else
+                    {
+                        $('.action-notification-text').html('ON');
+                        $('.action-until-text').html(' (PAUSE is still set with an expired date');
+                    }
+                }
             }
             tog = 1;
         }
@@ -422,6 +445,7 @@ $(function() {
             if (gnot){
                 $('.action-notification-alert').removeClass('alert-warning').addClass('alert-info');
                 $('.action-notification-text').html('ON');
+                $('.action-until-text').html('');
             }
             tog = 0;
         }

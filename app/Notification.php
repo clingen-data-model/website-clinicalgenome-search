@@ -205,6 +205,20 @@ class Notification extends Model
       }
 
 
+      /**
+      * Get all the followed genes
+      */
+      public function getGlobalPauseDateAttribute()
+      {
+          $until = $this->frequency['global_pause_date'] ?? false;
+
+          if ($until === false)
+               return "DATE NOT SET";
+
+          return $until;
+      }
+
+
      /**
      * Assert if the value is selected or not
      *
@@ -719,6 +733,32 @@ class Notification extends Model
 
          return true;
      }*/
+
+
+     /**
+     * Determine if the user is paused and within the vacation period
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function onVacation()
+     {
+          if ($this->frequency['global_pause'] == 'on')
+          {
+                $until = $this->frequency['global_pause_date'];
+                if (!empty($until))
+                {
+                    $date1 = Carbon::createFromFormat('m/d/Y', $until);
+                    if ($date1->gte(Carbon::now()))
+                    {
+                        return true;
+                    }
+                }
+          }
+
+          return false;
+
+     }
 
 
      public function walk(&$item, $key)

@@ -17,17 +17,21 @@
         <div class="col-md-9 mt-3 pl-0 pr-0">
             @if ($notification->frequency['global'] == "on")
                 @if($notification->frequency['global_pause'] == "on")
-                    <div class="alert alert-warning action-notification-alert action-edit-settings" role="alert">
-                        Global notifications are <b><span class="action-notification-text">PAUSED</span></b>
+                     <div class="alert alert-warning action-notification-alert action-edit-settings" role="alert">
+                    @if ($notification->onVacation())
+                        Global notifications are <b><span class="action-notification-text">PAUSED</span></b> <span class="action-until-text">until {{ $notification->global_pause_date }}</span>
+                    @else 
+                        Global notifications are <b><span class="action-notification-text">ON</span></b> <span class="action-until-text">(PAUSE is still set with an expired date)</span>
+                    @endif
                     </div>
-            @else 
+                @else 
                     <div class="alert alert-info action-notification-alert action-edit-settings" role="alert">
-                        Global notifications are <b><span class="action-notification-text">ON</span></b>
+                        Global notifications are <b><span class="action-notification-text">ON</span></b> <span class="action-until-text"></span>
                     </div>
                 @endif
             @else 
                 <div class="alert alert-danger action-notification-alert action-edit-settings" role="alert">
-                    Global notifications are <b><span class="action-notification-text">OFF</span></b>
+                    Global notifications are <b><span class="action-notification-text">OFF</span></b> <span class="action-until-text"></span>
                 </div>
             @endif
 
@@ -230,7 +234,7 @@
         });
 
         $('#ds_pause_date').datepicker().on('changeDate', function (ev) {
-            alert("b");
+            
         });
 
         $('#follow-table').on('click', '.action-region-expand', function() {
