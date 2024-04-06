@@ -58,8 +58,8 @@
     <div class="section-hero-gradient-standard">
       <div class="container">
         <h4 class="text-warning"><b>
-        <u>Notice:</u> Various parts of the clinicalgenome.org website will be ungoing maintenance and updates today.
-        If you are having difficulty loading content, do a browser 'Shift-Refresh' to clear old cache entries.
+        <u>Notice:</u> Various parts of the clinicalgenome.org website will be undergoing maintenance and updates today.
+        If you are having difficulty loading content, do a browser 'Shift-Reload' to clear old cache entries.
       </b></h4>
       </div>
     </div>
