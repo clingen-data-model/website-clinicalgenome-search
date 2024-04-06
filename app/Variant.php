@@ -223,6 +223,9 @@ class Variant extends Model
             if ($check)
                 continue;
 
+            echo "Updating " . $record->erepo_uuid .  "\n";
+
+
             // it seems that some records are published without a condition...
             if (isset($record->condition))
                 $disease = Disease::curie($record->condition['@id'])->first();

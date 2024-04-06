@@ -592,6 +592,8 @@ class Validity extends Model
                 continue;
             }
 
+            echo "Updating " . $record->curie .  "\n";
+
             $gene = Gene::hgnc($record->gene->hgnc_id)->first();
             $disease = Disease::curie($record->disease->curie)->first();
 

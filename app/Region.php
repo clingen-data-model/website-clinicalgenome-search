@@ -523,6 +523,8 @@ class Region extends Model
               dd($issue->fields->status->name);
           }
 
+          echo "Updating " . $issue->key .  "\n";
+
           // we groom the status a bit
           /*if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Complete")
               $status = self::STATUS_CLOSED;      // 'Complete';
@@ -842,7 +844,8 @@ class Region extends Model
               dd($issue->fields->status->name);
           }
 
-  
+          echo "Updating " . $issue->key .  "\n";
+          
           // break out coordinates
           $coordinates = ['grch37' => self::location_split($record->customfield_10160 ?? null, $record->customfield_10158 ?? ''),
                           'grch38' => self::location_split($record->customfield_10532 ?? null, $record->customfield_10157 ?? '')

@@ -101,7 +101,7 @@
                         <span class="font-weight-bold">&nbsp;</span>
                         <div>
                             <input class="action-show-psuedo" type="checkbox" name="psu" checked />
-                            <label class="mb-0 font-weight-normal" for="psu">Psuedogenes</label>
+                            <label class="mb-0 font-weight-normal" for="psu">Pseudogenes</label>
                         </div>
                     </div>
                 </div>

@@ -461,6 +461,8 @@ class Dosage extends Model
                 continue;
             }
 
+            echo "Updating " . $record->dosage_curation->curie .  "\n";
+
             $gene = Gene::hgnc($record->hgnc_id)->first();
 
             $haplo_disease = (empty($record->dosage_curation->haploinsufficiency_assertion->disease->curie) ? null :
@@ -720,6 +722,8 @@ class Dosage extends Model
           if ($issue->fields->status->name == "Closed" && $issue->fields->resolution->name == "Not a Bug")
             continue;
 
+
+            echo "Updating " . $issue->key .  "\n";
 
           switch ($issue->fields->status->name)
           {
