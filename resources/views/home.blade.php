@@ -15,19 +15,18 @@
     <div id="dashboard-logout" class="row justify-content-center">
 
         <div class="col-md-9 mt-3 pl-0 pr-0">
-
             @if ($notification->frequency['global'] == "on")
                 @if($notification->frequency['global_pause'] == "on")
-                    <div class="alert alert-warning action-notification-alert" role="alert">
+                    <div class="alert alert-warning action-notification-alert action-edit-settings" role="alert">
                         Global notifications are <b><span class="action-notification-text">PAUSED</span></b>
                     </div>
-               @else 
-                    <div class="alert alert-info action-notification-alert" role="alert">
+            @else 
+                    <div class="alert alert-info action-notification-alert action-edit-settings" role="alert">
                         Global notifications are <b><span class="action-notification-text">ON</span></b>
                     </div>
                 @endif
             @else 
-                <div class="alert alert-danger action-notification-alert" role="alert">
+                <div class="alert alert-danger action-notification-alert action-edit-settings" role="alert">
                     Global notifications are <b><span class="action-notification-text">OFF</span></b>
                 </div>
             @endif

@@ -49,7 +49,7 @@ class TestTest extends Command
      */
     public function handle()
     {
-        $duplicates = DB::table("curation_panel")
+        /*$duplicates = DB::table("curation_panel")
             ->select(["curation_id", "panel_id", DB::raw("COUNT(*) as `count`")])
             ->groupBy("curation_id", "panel_id")
             ->havingRaw("COUNT(*) > 1")
@@ -60,7 +60,9 @@ class TestTest extends Command
                 ->where("panel_id", $dupe->panel_id)
                 ->limit(1)
                 ->delete()
-            );
+            );*/
+
+            $this->notificationfix();
 
     }
 
