@@ -283,7 +283,9 @@ class HomeController extends Controller
 
         Storage::disk('local')->put('genomeconnect/'.$filename, file_get_contents($file));
 
-        $worksheets = (new ExcelGC)->toArray("/home/pweller/Projects/website-clinicalgenome-search/data/GCTEST.xlsx");
+        $sfile = storage_path('app') . '/genomeconnect/' . $filename;
+
+        $worksheets = (new ExcelGC)->toArray($sfile);
 
         $errors = [];
 
