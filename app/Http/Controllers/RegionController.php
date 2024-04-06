@@ -73,6 +73,9 @@ class RegionController extends Controller
             'title' => "Gene Curations"
         ]);
 
+        if (!isset($region))
+            $region = '';
+
         // save the original string for display
         $original = $region;
 

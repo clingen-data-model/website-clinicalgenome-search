@@ -54,6 +54,16 @@
     @if (env('BETA_SITE', false))
     @include('_partials._wrapper.demo-banner')
     @endif 
+
+    <div class="section-hero-gradient-standard">
+      <div class="container">
+        <h4 class="text-warning"><b>
+        <u>Notice:</u> Various parts of the clinicalgenome.org website will be ungoing maintenance and updates today.
+        If you are having difficulty loading content, do a browser 'Shift-Refresh' to clear old cache entries.
+      </b></h4>
+      </div>
+    </div>
+
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
