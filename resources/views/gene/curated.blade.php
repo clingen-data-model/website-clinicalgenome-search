@@ -101,12 +101,13 @@
   window.scrid = {{ $display_tabs['scrid'] }};
   window.token = "{{ csrf_token() }}";
 
-
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+       xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
+
+  console.log(Cookies.get('clingen_dash_token'));
 
   function responseHandler(res) {
     $('.countGenes').html(res.total);

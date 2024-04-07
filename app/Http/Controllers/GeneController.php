@@ -218,7 +218,7 @@ class GeneController extends Controller
 			$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
-
+	
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
