@@ -138,7 +138,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="" href="{{ route('gene-curations') }}">All Curated Genes</a></li>
-                <!-- <li><a class=""" href="{{ route('acmg-index') }}">ACMG SF v3.2 Curations</a></li> -->
+                <li><a class=""" href="{{ route('acmg-index') }}">ACMG SF v3.2 Curations</a></li>
               </ul>
             </li>
 
