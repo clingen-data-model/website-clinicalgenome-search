@@ -103,11 +103,10 @@
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-       xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+      if (Cookies.get('clingen_dash_token') != undefined)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
-
-  console.log(Cookies.get('clingen_dash_token'));
 
   function responseHandler(res) {
     $('.countGenes').html(res.total);
