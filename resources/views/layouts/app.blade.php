@@ -55,6 +55,7 @@
     @include('_partials._wrapper.demo-banner')
     @endif 
 
+    <!--
     <div class="section-hero-gradient-standard">
       <div class="container">
         <h4 class="text-warning"><b>
@@ -63,6 +64,7 @@
       </b></h4>
       </div>
     </div>
+  -->
 
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
