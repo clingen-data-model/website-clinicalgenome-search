@@ -18,16 +18,16 @@ class Filegds extends JsonResource
     public function toArray($request)
     {
         return [
-            'gene_symbol' => $this->gene->label,
-            'hgnc_id' => $this->gene->hgnc_id,
-            'disease_label' => $this->disease->label,
-            'disease_id' => $this->disease->curie,
-            'moi' => $this->displayMoi($this->mode_of_inheritance->curie),
-            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label),
-            'classification' => Genelib::ValidityClassificationString($this->classification->label),
-            'online_report' => route('validity-show', ['id' => $this->curie]),
-            'classification_date' => $this->report_date,
-            'gcep' => $this->attributed_to->label ?? ''
+            'gene_symbol' => $this->label,
+            'hgnc_id' => $this->hgnc_id,
+            'disease_label' => $this->disease,
+            'disease_id' => $this->mondo,
+            'moi' => $this->displayMoi($this->moi),
+            'sop' => Genelib::ValidityCriteriaString($this->sop),
+            'classification' => Genelib::ValidityClassificationString($this->classification),
+            'online_report' => route('validity-show', ['id' => $this->perm_id]),
+            'classification_date' => $this->released,
+            'gcep' => $this->ep ?? ''
         ];
     }
 }

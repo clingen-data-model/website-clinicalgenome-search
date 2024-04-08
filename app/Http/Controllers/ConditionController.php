@@ -384,7 +384,7 @@ class ConditionController extends Controller
         $mims = [];
         $pmids = [];
 
-        foreach ($record->genetic_conditions as $key => $disease)
+        foreach ($record->genetic_conditions as $key => $ndisease)
 		{
 			// actionability
 			/*foreach ($disease->actionability_assertions as $assertion)
@@ -395,10 +395,10 @@ class ConditionController extends Controller
 			}*/
 
 			// validity
-			foreach ($disease->gene_validity_assertions as $assertion)
+			foreach ($ndisease->gene_validity_assertions as $assertion)
 			{
 				$node = new Nodal([	'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
-									'gene' => $disease->gene, 'assertion' => $assertion]);
+									'gene' => $ndisease->gene, 'assertion' => $assertion]);
 				$validity_collection->push($node);
                 $mims = array_merge($mims, $assertion->las_included, $assertion->las_excluded);
                 if (isset($assertion->las_rationale['pmids']))
@@ -531,7 +531,7 @@ class ConditionController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
-     //   dd($record);
+        //dd($disease);
 
 		// set display context for view
 		$display_tabs = collect([

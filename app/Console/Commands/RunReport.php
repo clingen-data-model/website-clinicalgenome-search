@@ -25,6 +25,7 @@ use App\Gdmmap;
 use App\Precuration;
 use App\Curation;
 use App\Acmg;
+use App\Metric;
 
 class RunReport extends Command
 {
@@ -98,6 +99,11 @@ class RunReport extends Command
                 $this->report10();
                 echo "Update Complete\n";
                 break;
+            case 'panels':
+                echo "Running Panel Report\n";
+                $this->report12();
+                break;
+                
             default:
                 echo "Nothing to do, exiting\n";
                 break;
@@ -797,6 +803,58 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
                 echo $prec['status'] . "\n";
             }
         }
+    }
+
+
+    public function report12()
+    {
+        $start = Metric::where('created_at', 'like', '2021-01-01%')->first();
+        $stop = Metric::where('created_at', 'like', '2024-01-01%')->first();
+
+        $results = [];
+
+        foreach ($start->values['expert_panels'] as $key => $panel)
+        {
+            $pid = str_replace('CGAGENT:', '', $key);
+            $results[$pid] = ['label' => $panel['label'], 'begin_count' => $panel['count'], 'end_count' => null];
+        }
+
+        foreach ($stop->values['expert_panels'] as $key => $panel)
+        {
+            $pid = str_replace('CGAGENT:', '', $key);
+
+            if (isset($results[$pid]))
+            {
+                $a = $results[$pid];
+                $a['end_count'] = $panel['count'];
+                $results[$pid] = $a;
+            }
+            else{
+                $results[$pid] = ['label' => $panel['label'], 'begin_count' => 0, 'end_count' => $panel['count']];
+            }
+
+        }
+
+        // vceps
+        foreach ($stop->values['pathogenicity_expert_panels'] as $key => $panel)
+        {
+                $results[$panel['pid']] = ['label' => $panel['label'], 'begin_count' => 0, 'end_count' => $panel['count']];
+        }
+
+
+        $ohandle = fopen(base_path() . '/data/panelreport.tsv', "w");
+
+        $header = "Affiliate ID\tAffiliate Name\tBegin Count\tEnd Count\n";
+
+        fwrite($ohandle, $header);
+
+        foreach($results as $key => $value)
+        {
+            fwrite($ohandle, $key . "\t" . $value['label']. "\t" . $value['begin_count'] . "\t" . $value['end_count'] . PHP_EOL);
+        }
+
+        fclose($ohandle);
+        
     }
 
 
