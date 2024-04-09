@@ -706,12 +706,14 @@ class Gene extends Model
           // check the required input
           if (!isset($type) || !isset($region))
                return (object) ['count' => $collection->count(), 'collection' => $collection,
-                         'gene_count' => $gene_count, 'region_count' => $region_count];
+                         'gene_count' => $gene_count, 'region_count' => $region_count,
+                         'curated_gene_count' => $curated_gene_count, 'curated_region_count' => $curated_region_count];
 
           // only recognize 37 and 38 at this time
           if ($type != 'GRCh37' && $type != 'GRCh38')
                return (object) ['count' => $collection->count(), 'collection' => $collection,
-                         'gene_count' => $gene_count, 'region_count' => $region_count];
+                         'gene_count' => $gene_count, 'region_count' => $region_count,
+                         'curated_gene_count' => $curated_gene_count, 'curated_region_count' => $curated_region_count];
 
           // break out the location and clean it up
           $location = preg_split('/[:-]/', trim($region), 3);

@@ -695,7 +695,7 @@ class GeneController extends Controller
 				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 					continue;
 
-				if (empty($precuration['group_id']))
+			if (empty($precuration['group_id']))
 					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
 				else
 					$panel = Panel::allids($precuration['group_id'])->first();

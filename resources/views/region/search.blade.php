@@ -9,7 +9,12 @@
                         <table class="mt-3 mb-2">
                             <tr>
                                 <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+                                @if (empty($type))
+                                <td class="pl-2"><h1 class="h2 p-0 m-0"> Invalid Build</h1><div class="text-danger small"><b>Only GRCh37 or GRCh38 are recognized at this time</b></div>
+
+                                @else 
                                 <td class="pl-2"><h1 class="h2 p-0 m-0">  {{  $type }} Location Search Results</h1>
+                                @endif
                                 </td>
                             </tr>
                         </table>
@@ -36,7 +41,7 @@
                     <div class="col-md-9">
                         <span>
                                     {{ $region }}
-                            @if ($region == 'INVALID')
+                            @if ($region == 'Invalid Region')
                                 &nbsp;(Original: {{ $original }})
                             @endif
                     </span>

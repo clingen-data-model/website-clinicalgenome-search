@@ -51,18 +51,6 @@ class RegionController extends Controller
      */
     public function index(Request $request, $page = 1, $size = 50)
     {
-        // set display context for view
-        /*$display_tabs = collect([
-            'active' => "more",
-            'title' => "ClinGen Regions"
-		]);
-
-        $input = $request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']);
-
-		$user = $this->user;
-
-        return view('region.index', compact('display_tabs', 'user'));*/
-
         // process request args
 		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
             $$key = $value;
@@ -73,11 +61,35 @@ class RegionController extends Controller
             'title' => "Gene Curations"
         ]);
 
+        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+
         if (!isset($region))
             $region = '';
 
         // save the original string for display
         $original = $region;
+
+        if (empty($region) || empty($type))
+            return view('region.search', compact('display_tabs'))
+                        ->with('type', $type ?? '')
+                        ->with('original', $original)
+                        ->with('region', $region)
+                        ->with('apiurl', '/api/region/search/' . ($type ?? 'Unknown') . '/' . $region ?? ('Invalid Region'))
+                        ->with('pagesize', $size)
+                        ->with('page', $page)
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
+
+        if (!($type == 'GRCh37' || $type == 'GRCh38'))
+            return view('region.search', compact('display_tabs'))
+                        ->with('type', '')
+                        ->with('original', $original)
+                        ->with('region', $region)
+                        ->with('apiurl', '/api/region/search/' . ($type ?? 'Unknown') . '/' . $region ?? ('Invalid Region'))
+                        ->with('pagesize', $size)
+                        ->with('page', $page)
+                        ->with('user', $this->user)
+                        ->with('display_list', $display_list);
 
         // if the region is a cytoband, convert to chromosomal location
         if (strtoupper(substr($region, 0, 3)) != 'CHR')
@@ -101,7 +113,7 @@ class RegionController extends Controller
                     $region = 'chr' . $cords->coords[0]->bp->chrom . ':'
                                 . $cords->coords[0]->bp->bp->from . '-';
                 else
-                    $region = 'INVALID';
+                    $region = 'Invalid Region';
 
                 if (isset($regions[1]))
                 {
@@ -116,24 +128,28 @@ class RegionController extends Controller
                     if (isset($seccords->coords[0]->bp))
                         $region .=  $seccords->coords[0]->bp->bp->to;
                     else
-                        $region = 'INVALID';
+                        $region = 'Invalid Region';
                 }
                 else
                 {
-                    $region .=  $cords->coords[0]->bp->bp->to;
+                    if (isset($cords->coords[0]))
+                        $region .=  $cords->coords[0]->bp->bp->to;
+                    else
+                        $region = "Invalid Region";
                 }
 
             } catch (ClientException $e) {
-                $region = 'INVALID';
-                $type = 'UNKNOWN';
+                $region = 'Invalid Region';
+                $type = 'Invalid Build or Region';
+            } catch (Exception $e) {
+                $region = 'Invalid Region';
+                $type = 'Invalid Build or Region';
             }
         }
 
-        $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
-
         return view('region.search', compact('display_tabs'))
         //				->with('count', $results->count)
-                        ->with('type', $type)
+                        ->with('type', $type ?? '')
                         ->with('original', $original)
                         ->with('region', $region)
                         ->with('apiurl', '/api/region/search/' . $type . '/' . $region)
@@ -189,7 +205,7 @@ class RegionController extends Controller
 					$region = 'chr' . $cords->coords[0]->bp->chrom . ':'
 								. $cords->coords[0]->bp->bp->from . '-';
 				else
-					$region = 'INVALID';
+					$region = 'Invalid Region';
 
                 if (isset($regions[1]))
                 {
@@ -204,23 +220,29 @@ class RegionController extends Controller
                     if (isset($seccords->coords[0]->bp))
                         $region .=  $seccords->coords[0]->bp->bp->to;
                     else
-                        $region = 'INVALID';
+                        $region = 'Invalid Region';
                 }
                 else
                 {
-                    $region .=  $cords->coords[0]->bp->bp->to;
+                   if (isset($cords->coords[0]))
+                        $region .=  $cords->coords[0]->bp->bp->to;
+                    else
+                        $region = 'Invalid Region';
                 }
 
 			} catch (ClientException $e) {
-				$region = 'INVALID';
-			}
+				$region = 'Invalid Regiom';
+			} catch (Exception $e) {
+                $region = 'Invalid Region';
+                $type = 'Unknown';
+            }
         }
 
         $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
 
 		return view('region.search', compact('display_tabs'))
 		//				->with('count', $results->count)
-						->with('type', $type)
+						->with('type', $type ?? 'Unknown')
 						->with('original', $original)
 						->with('region', $region)
 						->with('apiurl', '/api/region/search/' . $type . '/' . $region)
