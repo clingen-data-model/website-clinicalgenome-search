@@ -45,6 +45,7 @@
 				The standalone region search field specific to Dosage Sensitivity has been fully integrated with the main search bar above.  
 				To use, simply select Region (GRCh37) or Region (GRCh38), enter the genomic coordinates as before, then click on the 'Search' button.
 				Once your results display, you can view additional information relative to Dosage Sensitivity by clicking on the 'Dosage Scores' display option.
+				For more information, refer to the <a href="https://www.clinicalgenome.org/site/assets/files/9582/r1_10_release_notes.pdf" target="_notes"><u>release notes.</u></a>
 			  </div>
 		</div>
 

@@ -99,7 +99,7 @@ class Mysql
                     ->orderByRaw('CHAR_LENGTH(name)')
                     //->offset($page * $pagesize)
                     //->take($pagesize)
-                    ->get(['name as symbol', 'description as name', 'hgnc_id', 'chr', 'start37', 'stop37', 'start38', 'stop38', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type', 'locus_group']);
+                    ->get(['name as symbol', 'description as name', 'hgnc_id', 'location', 'chr', 'start37', 'stop37', 'start38', 'stop38', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type', 'locus_group']);
 
 				// manipulate the return order per Erin
 				/*if ($search !== null && $search != "")
