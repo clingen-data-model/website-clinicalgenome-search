@@ -99,7 +99,7 @@ class Mysql
                     ->orderByRaw('CHAR_LENGTH(name)')
                     //->offset($page * $pagesize)
                     //->take($pagesize)
-                    ->get(['name as symbol', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type']);
+                    ->get(['name as symbol', 'description as name', 'hgnc_id', 'chr', 'start37', 'stop37', 'start38', 'stop38', 'date_last_curated as last_curated_date', 'activity as curation_activities', 'locus_type', 'locus_group']);
 
 				// manipulate the return order per Erin
 				/*if ($search !== null && $search != "")
@@ -141,6 +141,7 @@ class Mysql
 			$npharma = 0;
 			$nvariant = 0;
 		}
+
         //dd($collection->skip($page)->take($pagesize));
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'naction' => $naction, 'nvalid' => $nvalid, 'ndosage' => $ndosage,
