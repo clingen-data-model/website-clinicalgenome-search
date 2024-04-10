@@ -741,7 +741,7 @@ class Validity extends Model
                     $level = 2;
                 }
                 else{
-        
+                    continue;
                 }
 
                 $curation->panels()->attach($pid, ['level' => $level]);

@@ -113,6 +113,9 @@ class AffiliateController extends Controller
         if (!ctype_digit($id))
             $id = 0;
 
+        if ($id < 20000 && $id >= 10000)
+            $id += 30000;
+
         // get list of all current bookmarks for the page
         $bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_VALIDITY_EP_CURATIONS)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
 
