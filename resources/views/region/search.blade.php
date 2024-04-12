@@ -116,6 +116,7 @@
             <div class="col-md-12 mt-2">
                 <input class="action-get-type" type="hidden" name="type" value="{{ $type ?? '' }}">
                 <input class="action-get-region" type="hidden" name="region" value="{{ $region ?? '' }}">
+                <input class="action-get-options" type="hidden" name="options" value="{{ $options ?? '' }}">
                 <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
                     <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"></span>
                 </button>
@@ -181,6 +182,7 @@
         var showadvanced = true;
         var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
         window.token = "{{ csrf_token() }}";
+        var options = "{{ $options !== null ? 1 : 0 }}";
 
         window.ajaxOptions = {
             beforeSend: function (xhr) {
@@ -691,6 +693,11 @@
                 }
                 //}
             });
+
+            if (options == "1")
+            {
+                $('.action-show-dosage').click();
+            }
 
         });
 

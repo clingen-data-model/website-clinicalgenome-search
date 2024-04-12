@@ -52,7 +52,7 @@ class RegionController extends Controller
     public function index(Request $request, $page = 1, $size = 50)
     {
         // process request args
-		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type', 'options']) as $key => $value)
             $$key = $value;
 
         // set display context for view
@@ -77,6 +77,7 @@ class RegionController extends Controller
                         ->with('apiurl', '/api/region/search/' . ($type ?? 'Unknown') . '/' . $region ?? ('Invalid Region'))
                         ->with('pagesize', $size)
                         ->with('page', $page)
+                        ->with('options', $options ?? null)
                         ->with('user', $this->user)
                         ->with('display_list', $display_list);
 
@@ -88,6 +89,7 @@ class RegionController extends Controller
                         ->with('apiurl', '/api/region/search/' . ($type ?? 'Unknown') . '/' . $region ?? ('Invalid Region'))
                         ->with('pagesize', $size)
                         ->with('page', $page)
+                        ->with('options', $options ?? null)
                         ->with('user', $this->user)
                         ->with('display_list', $display_list);
 
@@ -155,6 +157,7 @@ class RegionController extends Controller
                         ->with('apiurl', '/api/region/search/' . $type . '/' . $region)
                         ->with('pagesize', $size)
                         ->with('page', $page)
+                        ->with('options', $options ?? null)
                         ->with('user', $this->user)
                         ->with('display_list', $display_list);
     }
@@ -168,7 +171,7 @@ class RegionController extends Controller
     public function search(Request $request, $type = '', $region = '', $page = 1, $size = 100)
     {
         // process request args
-		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type']) as $key => $value)
+		foreach ($request->only(['page', 'size', 'sort', 'search', 'direction', 'region', 'type', 'options']) as $key => $value)
 			$$key = $value;
 
 		// set display context for view
@@ -248,6 +251,7 @@ class RegionController extends Controller
 						->with('apiurl', '/api/region/search/' . $type . '/' . $region)
 						->with('pagesize', $size)
 						->with('page', $page)
+                        ->with('options', $options ?? null)
                         ->with('user', $this->user)
                         ->with('display_list', $display_list);
     }
