@@ -654,19 +654,35 @@ class Mysql
                 'grch38' => $gene->grch38 ?? null,
                 'pli' => $gene->pli,
                 'hi' => $gene->hi,
-                'haplo_assertion' => $haplo->scores['classification'] ?? null,
-                'triplo_assertion' => $triplo->scores['classification'] ?? null,
+                'haplo_assertion' => $haplo->scores['classification'] ?? ($haplo->scores['haploinsufficiency']['value'] ?? null ),
+                'triplo_assertion' => $triplo->scores['classification'] ?? ($haplo->scores['triplosensitivity']['value'] ?? null ),
                 'omimlink' => $gene->display_omim,
                 'morbid' => $gene->morbid,
                 'plof' => $gene->plof,
-                'dosage_report_date' => $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null),
-                'resolved_date' => $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null),
-                'haplo_disease' => $haplo->condition_details['haploinsufficiency_assertion']['label'] ?? null,
-                'haplo_disease_id' => $haplo->conditions[0] ?? null,
-                'triplo_disease' => $triplo->condition_details['triplosensitivity_assertion']['label'] ?? null,
-                'triplo_disease_id' => $triplo->conditions[0] ?? null,
-                'haplo_mondo' => $haplo->conditions[0] ?? null,
-                'triplo_mondo' => $triplo->conditions[0] ?? null
+                'dosage_report_date' => (isset($haplo) ?? $haplo->source == "genegraph" ? 
+                        $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null) :
+                        $haplo->events['resolved'] ?? ($triplo->events['resolved'] ?? null)),
+                'resolved_date' => (isset($haplo) && $haplo->source == "genegraph" ? 
+                        $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null) :
+                        $haplo->events['resolved'] ?? ($triplo->events['resolved'] ?? null)),
+                'haplo_disease' => (isset($haplo) && $haplo->source == "genegraph" ?
+                        $haplo->condition_details['haploinsufficiency_assertion']['label'] ?? null :
+                        $haplo->condition_details['disease_phenotype_name'] ?? null),
+                'haplo_disease_id' => (isset($haplo) && $haplo->source == "genegraph" ?
+                        $haplo->conditions[0] ?? null :
+                        $haplo->condition_details['disease_id'] ?? null),
+                'triplo_disease' => (isset($triplo) && $triplo->source == "genegraph" ?
+                        $triplo->condition_details['triplosensitivity_assertion']['label'] ?? null :
+                        $triplo->condition_details['disease_phenotype_name'] ?? null),
+                'triplo_disease_id' => (isset($triplo) && $triplo->source == "genegraph" ?
+                        $triplo->conditions[0] ?? null :
+                        $triplo->condition_details['disease_id'] ?? null),
+                'haplo_mondo' => (isset($haplo) && $haplo->source == "genegraph" ?
+                        $haplo->conditions[0] ?? null :
+                        $haplo->condition_details['disease_id'] ?? null),
+                'triplo_mondo' => (isset($triplo) && $triplo->source == "genegraph" ?
+                        $triplo->conditions[0] ?? null :
+                        $triplo->condition_details['disease_id'] ?? null),
             ]);
           
             // do some processing on the history prop
