@@ -91,7 +91,7 @@
 		<!-- reportable -->
 		<div class="col-md-2 pt-2 pb-2 text-center">
 			@if ($gene->name == "BRCA1")
-			@if ($disease->curie == "MONDO:0054748")
+			@if ($disease->curie == "MONDO:0011450")
 			<span class="text-success"><i class="fas fa-check fa-lg mt-3"></i></span>
 			@else 
 			<span class="text-success mt-3">&nbsp;</span>
