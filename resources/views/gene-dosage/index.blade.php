@@ -40,12 +40,18 @@
 		</div>
 
 		<div class="col-md-12">
-			<div class="alert alert-info blueblur" role="alert">
-				<b>Notice:</b>
-				The standalone region search field specific to Dosage Sensitivity has been fully integrated with the main search bar above.  
-				To use, simply select Region (GRCh37) or Region (GRCh38), enter the genomic coordinates as before, then click on the 'Search' button.
-				Once your results display, you can view additional information relative to Dosage Sensitivity by clicking on the 'Dosage Scores' display option.
-			  </div>
+			<div class="alert alert-warning redblur" role="alert">
+				<p>
+					<span class="text-danger"><b>NOTICE:</b></span>
+					The standalone region search field specific to Dosage Sensitivity has been fully integrated with the <u>main search bar above</u> <i class="fas fa-arrow-up"></i>.  
+					To use, first select Region (GRCh37) or Region (GRCh38) from the pull-down menu, enter the genomic coordinates as before, then click on the 'Search' button.
+					Once your results display, you can view additional information relative to Dosage Sensitivity by clicking on the 'Dosage Scores' display option.
+					For more information, refer to the <a href="https://www.clinicalgenome.org/site/assets/files/9582/r1_10_release_notes.pdf" target="_notes"><u>release notes.</u></a>
+				</p>
+				<p>
+					Note that the search box below <i class="fas fa-arrow-down"></i> only searches for text within the displayed table; do not use this to search for all genes within a range of genomic coordinates.
+				</p>
+				</div>
 		</div>
 
 		<div class="col-md-12">
@@ -124,7 +130,8 @@
 
 	window.ajaxOptions = {
 		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+			if (Cookies.get('clingen_dash_token') != undefined)
+				xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
 		}
 	}
 

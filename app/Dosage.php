@@ -723,7 +723,7 @@ class Dosage extends Model
             continue;
 
 
-            echo "Updating " . $issue->key .  "\n";
+          echo "Updating " . $issue->key .  "\n";
 
           switch ($issue->fields->status->name)
           {
@@ -832,7 +832,7 @@ class Dosage extends Model
                 'packet_id' => null,
                 'message_version' =>  null,
                 'assertion_uuid' => $issue->key,
-                'alternate_uuid' => null,
+                'alternate_uuid' => $issue->key,
                 'panel_id' => $panel->id,
                 'affiliate_id' => $panel->affiliate_id,
                 'affiliate_details' => ['name' => 'Dosage Sensitivity Curation WG'],
@@ -909,7 +909,8 @@ class Dosage extends Model
                                                 "cgd_references" => $record->customfield_11332 ?? null
                                                         ]),
                 'assertions' => ($assertion == 'haploinsufficiency_assertion' ?  $record->customfield_10165 ?? null : $record->customfield_10166 ?? null),
-                'scores' => ['haploinsufficiency' => $record->customfield_10165 ?? null, 'triplosensitivity' => $record->customfield_10166 ?? null],
+                //'scores' => ['haploinsufficiency' => $record->customfield_10165 ?? null, 'triplosensitivity' => $record->customfield_10166 ?? null],
+                'scores' => [$assertion => $score],
                 'score_details' => [$issue->fields->labels],
                 'curators' => $record->contributors ?? null,
                 'published' => true,
@@ -917,6 +918,7 @@ class Dosage extends Model
                 'events' => ['created' => $issue->fields->created,
                               'updated' => $issue->fields->updated,
                               'resolved' => $issue->fields->resolutiondate,
+                              'report_date' => $issue->fields->resolutiondate,
                               'resolution' => $issue->fields->resolution->name ?? null,
                               'haplo_score_change' => $haplo_history,
                               'triplo_score_change' => $triplo_history

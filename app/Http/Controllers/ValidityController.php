@@ -479,7 +479,7 @@ class ValidityController extends Controller
                         : $record->curie);
 
         $slug = Slug::target($t)->first();
-
+        
         //dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',

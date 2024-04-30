@@ -9,7 +9,12 @@
                         <table class="mt-3 mb-2">
                             <tr>
                                 <td class="valign-top"><img src="/images/adept-icon-circle-gene.png" width="40" height="40"></td>
+                                @if (empty($type))
+                                <td class="pl-2"><h1 class="h2 p-0 m-0"> Invalid Build</h1><div class="text-danger small"><b>Only GRCh37 or GRCh38 are recognized at this time</b></div>
+
+                                @else 
                                 <td class="pl-2"><h1 class="h2 p-0 m-0">  {{  $type }} Location Search Results</h1>
+                                @endif
                                 </td>
                             </tr>
                         </table>
@@ -36,7 +41,7 @@
                     <div class="col-md-9">
                         <span>
                                     {{ $region }}
-                            @if ($region == 'INVALID')
+                            @if ($region == 'Invalid Region')
                                 &nbsp;(Original: {{ $original }})
                             @endif
                     </span>
@@ -111,6 +116,7 @@
             <div class="col-md-12 mt-2">
                 <input class="action-get-type" type="hidden" name="type" value="{{ $type ?? '' }}">
                 <input class="action-get-region" type="hidden" name="region" value="{{ $region ?? '' }}">
+                <input class="action-get-options" type="hidden" name="options" value="{{ $options ?? '' }}">
                 <button type="button" class="btn-link p-0 m-0" data-toggle="modal" data-target="#modalFilter">
                     <span class="text-muted font-weight-bold mr-1"><small><i class="glyphicon glyphicon-tasks" style="top: 2px"></i> Advanced Filters:  </small></span><span class="filter-container"></span>
                 </button>
@@ -176,10 +182,12 @@
         var showadvanced = true;
         var report = "{{ env('CG_URL_CURATIONS_DOSAGE') }}";
         window.token = "{{ csrf_token() }}";
+        var options = "{{ $options !== null ? 1 : 0 }}";
 
         window.ajaxOptions = {
             beforeSend: function (xhr) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+                if (Cookies.get('clingen_dash_token') != undefined)
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
             }
         }
 
@@ -685,6 +693,11 @@
                 }
                 //}
             });
+
+            if (options == "1")
+            {
+                $('.action-show-dosage').click();
+            }
 
         });
 

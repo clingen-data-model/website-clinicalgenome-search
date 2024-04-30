@@ -343,6 +343,15 @@ footer p {
     box-shadow: 0 0 8px rgba(82,168,236,.6);
 }
 
+.redblur {
+    border-color: #f08080;
+    border-color: rgba(240, 128, 126, .8);
+    outline: 0;
+    outline: thin dotted\9;
+    -webkit-box-shadow: 0 0 8px rgba(82,168,236,.6);
+    box-shadow: 0 0 8px rgba(240,128,128,.6);
+}
+
 .grayblur {
     border-color: #ccc;
     border-color: rgba(128, 128, 128, .8);

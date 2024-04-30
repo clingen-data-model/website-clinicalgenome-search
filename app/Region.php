@@ -855,7 +855,7 @@ class Region extends Model
           $haplo_history = null;
           $triplo_history = null;
 
-          $check = Jira::getHistory($issue->key);
+          $check = Jira::getHistory($issue);
 
           if ($check->isNotEmpty())
           {
