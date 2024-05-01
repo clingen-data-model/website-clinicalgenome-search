@@ -928,7 +928,7 @@ class Region extends Model
           if ($status == self::STATUS_CLOSED)
           {
             // are there existing curations?
-            $old_curations = Curation::where('document', $region->iri)
+            $old_curations = Curation::where('source_uuid', $region->iri)
                              ->where('type', Curation::TYPE_DOSAGE_SENSITIVITY_REGION)
                             ->where('status', '!=', Curation::STATUS_ARCHIVE)
                             ->get();
@@ -985,7 +985,7 @@ class Region extends Model
                 'region_id' => $region->id,
                 'region_details' => null,
                 // NEED SUPPORT FOR REGIONS!
-                'document' => null,
+                'document' => $region->iri,
                 'context' => $assertion,
                 'title' => $region->name,
                 'summary' => null,
