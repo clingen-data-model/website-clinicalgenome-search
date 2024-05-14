@@ -13,7 +13,9 @@ use App\Validity;
 use App\Actionability;
 use App\Dosage;
 use App\Region;
-use App\Variantpath;
+
+use Setting;
+use Mail;
 
 class RunCheck extends Command
 {
@@ -23,6 +25,8 @@ class RunCheck extends Command
      * @var string
      */
     protected $signature = 'run:check';
+
+    protected $lockfile = "/tmp/check.lock";
 
     /**
      * The console command description.
@@ -50,6 +54,29 @@ class RunCheck extends Command
     {
         echo "RUNNING CHECK\n";
         echo "   BEGIN: " . `date`;
+        
+        // set the run flag to block overlaps
+        if (file_exists($this->lockfile))
+        {
+            $data["email"] = "pweller1@geisinger.edu";
+            $data["title"] = "ClinGen Run Error";
+            $data["body"] = "The ClinGen Run Check script is blocking on an unfinished job.";
+    
+    
+            Mail::send('mail.errors', $data, function($message)use($data) {
+                $message->to($data["email"], $data["email"])
+                        ->subject($data["title"]);
+    
+            });
+
+            
+            echo "   ERROR:  RUN FLAG DETECTED \n";
+            echo "   END: " . `date`;
+            echo "CHECK COMPLETE\n";
+            exit;
+        }
+
+        @file_put_contents($this->lockfile, getmypid());
 
         echo "      Genegraph Updates...";
 
@@ -161,6 +188,8 @@ class RunCheck extends Command
         //$model = new Variantpath();
         //$model->assertions();
         //echo "DONE\n";*/
+
+        @unlink($this->lockfile);
 
         echo "   END: " . `date`;
         echo "CHECK COMPLETE\n";
