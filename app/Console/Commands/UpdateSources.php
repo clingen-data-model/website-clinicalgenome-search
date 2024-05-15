@@ -49,7 +49,7 @@ class UpdateSources extends Command
           $this->call('update:Genenames');  // HGNC
           $this->call('update:activity');   // Genegraph
           $this->call('update:cpic');       // CPIC and PharmGKB
-          $this->call('update:cytobands');  // UCSC (goldenpath hg19)
+          //$this->call('update:cytobands');  // UCSC (goldenpath hg19)
          // $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
          // $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
           //$this->call('update:dosages');    // DCI (Jira)
