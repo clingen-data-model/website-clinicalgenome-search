@@ -639,7 +639,7 @@ class Mysql
 
 		// add each gene to the collection
 		foreach($records as $gene)
-		{
+        {
             // isolate the haplo and triplo assertions
             $haplo = $gene->curations->where('context', 'haploinsufficiency_assertion')->first();
             $triplo = $gene->curations->where('context', 'triplosensitivity_assertion')->first();
@@ -654,8 +654,8 @@ class Mysql
                 'grch38' => $gene->grch38 ?? null,
                 'pli' => $gene->pli,
                 'hi' => $gene->hi,
-                'haplo_assertion' => $haplo->scores['classification'] ?? ($haplo->scores['haploinsufficiency']['value'] ?? null ),
-                'triplo_assertion' => $triplo->scores['classification'] ?? ($haplo->scores['triplosensitivity']['value'] ?? null ),
+                'haplo_assertion' => $haplo->scores['classification'] ?? ($haplo->scores['haploinsufficiency']['value'] ?? ($haplo->scores['haploinsufficiency_assertion'] ?? null ) ),
+                'triplo_assertion' => $triplo->scores['classification'] ?? ($triplo->scores['triplosensitivity']['value'] ?? ($triplo->scores['triplosensitivity_assertion'] ?? null ) ),
                 'omimlink' => $gene->display_omim,
                 'morbid' => $gene->morbid,
                 'plof' => $gene->plof,

@@ -924,9 +924,21 @@ class Gene extends Model
 
           foreach ($genes as $gene)
           {
-               $haplo = $gene->curations->where('context', 'haploinsufficiency_assertion')->pluck('assertions')->first();
+               $haplo = $gene->curations->where('context', 'haploinsufficiency_assertion')->first();
+               if ($haplo === null)
+                    $haplo_score = null;
+               else if ($haplo->subtype == Curation::SUBTYPE_DOSAGE_GGP)
+                    $haplo_score = $haplo->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal'] ?? null;
+               else
+                    $haplo_score = $haplo->assertions['value'] ?? null;
 
-               $triplo = $gene->curations->where('context', 'triplosensitivity_assertion')->pluck('assertions')->first();
+               $triplo = $gene->curations->where('context', 'triplosensitivity_assertion')->first();
+               if ($triplo === null)
+                    $triplo_score = null;
+               else if ($triplo->subtype == Curation::SUBTYPE_DOSAGE_GGP)
+                    $triplo_score = $triplo->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal'] ?? null;
+               else
+                    $triplo_score = $triplo->assertions['value'] ?? null;
 
                $node = new Nodal(['chr' => $chr]);
 
@@ -941,8 +953,8 @@ class Gene extends Model
                $node->hi = $gene->hi;
                $node->plof = $gene->plof;
                $node->pli = $gene->pli;
-               $node->haplo = $gene->curations->where('status', Curation::STATUS_ACTIVE)->where('context', 'haploinsufficiency_assertion')->pluck('assertions.haploinsufficiency_assertion.dosage_classification.ordinal')->first();
-               $node->triplo = $gene->curations->where('status', Curation::STATUS_ACTIVE)->where('context', 'triplosensitivity_assertion')->pluck('assertions.triplosensitivity_assertion.dosage_classification.ordinal')->first();
+               $node->haplo = $haplo_score;
+               $node->triplo = $triplo_score;
                $node->is_par = $gene->is_par;
                $node->omim = $gene->display_omim;
                $node->morbid = $gene->morbid;
