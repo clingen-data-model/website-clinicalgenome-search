@@ -59,11 +59,11 @@
     @include('_partials._wrapper.header',['navActive' => "summary"])
 
     <!-- Release Banner -->
-    <div class="section-hero-gradient-standard">
+    <!--<div class="section-hero-gradient-standard">
       <div class="container">
         <h3 class="text-warning"><i><b>New features were added April 8, 2024 - Click <a href="https://www.clinicalgenome.org/site/assets/files/9582/r1_10_release_notes.pdf" class="text-white" target="_notes"><u>here</u></a> for more information!</b></i></h3>
       </div>
-    </div>
+    </div>-->
   <!-- End Release Banner -->
 
   <hr class="mt-1 mb-0" />
