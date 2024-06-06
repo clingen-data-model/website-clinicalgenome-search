@@ -1969,8 +1969,11 @@ class Graphql
                     label
                     multiple_authors
                     short_citation
-                    year_published
-                  }
+                    year_published' . 
+					/*is_about {
+						iri
+					}*/
+                  '}
 				}
 				fragment caseControlFields on CaseControlEvidence {
 				  iri
