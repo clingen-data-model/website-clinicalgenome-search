@@ -659,7 +659,8 @@
                                         <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Version</th>
                                         <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Dates</th>
                                         <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Reason for Update</th>
-                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Notes</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Changes</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Additional Notes</th>
                                     </tr>
                                     @foreach ($activities as $activity)
                                         @if ($activity->status == 1)
@@ -681,6 +682,12 @@
                                             @foreach($activity->version['reasons'] as $reason)
                                             <div><strong>{{ $reason }}:</strong><br>
                                             <span class="text-muted">{{ $activity->display_reason($reason) }}</span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->changes as $change)
+                                            <div><strong>{{ $change['change_code'] }}:</strong><br>
+                                            <span class="text-muted">From {{ $change['from'] }} to {{ $change['to'] }} </span></div>
                                             @endforeach
                                         </td>
                                         <td class="p-4"><span class="text-muted">{{ $activity->notes['public'] ?? '' }}</span></td>

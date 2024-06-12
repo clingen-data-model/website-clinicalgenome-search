@@ -27,6 +27,7 @@ class CreateActivitiesTable extends Migration
             $table->json('affiliation')->nullable();
             $table->json('workflow')->nullable();
             $table->json('version')->nullable();
+            $table->json('changes')->nullable();
             $table->json('notes')->nullable();
             $table->json('urls')->nullable();
             $table->tinyInteger('status')->default(0);

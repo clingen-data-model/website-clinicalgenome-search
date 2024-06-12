@@ -12,6 +12,7 @@ use Str;
 use App\Traits\Display;
 
 use Carbon\Carbon;
+use ReturnTypeWillChange;
 
 /**
  *
@@ -42,6 +43,7 @@ class Activity extends Model
         'references' => 'array',
         'affiliation' => 'array',
         'version' => 'array',
+        'changes' => 'array',
         'notes' => 'array',
         'urls' => 'array',
     ];
@@ -54,7 +56,7 @@ class Activity extends Model
     protected $fillable = [
         'ident', 'type', 'subtype', 'source', 'source_uuid', 'alternate_uuid',
         'workflow', 'activity', 'activity_string', 'references', 'affiliation',
-        'version', 'notes', 'urls', 'status'
+        'version', 'changes', 'notes', 'urls', 'status'
     ];
 
     /**
@@ -142,8 +144,115 @@ class Activity extends Model
     }
 
 
+    public static function parse($message, $packet = null)
+    {
+        $record = json_decode($message->payload);
+
+        if ($record->event_subtype == "TEST")
+            return;
+
+        switch ($record->type)
+        {
+            case 'PUBLISH':
+                $type = self::TYPE_PUBLISH;
+                break;
+            case 'UNPUBLISH':
+                $type = self::TYPE_UNPUBLISH;
+                break;
+            case 'RETRACT':
+                $type = self::TYPE_RETRACT;
+                break;
+            default:
+                $type = self::TYPE_NONE;
+        }
+
+        switch ($record->subtype)
+        {
+            case 'CURATION':
+                $subtype = self::SUBTYPE_CURATION;
+                break;
+            default:
+                $subtype = self::SUBTYPE_NONE;
+        }
+
+
+        switch ($record->activity)
+        {
+            case 'VALIDITY':
+                $activity = self::ACTIVITY_VALIDITY;
+                break;
+            case 'ACTIONABILITY':
+                $activity = self::ACTIVITY_ACTIONABILITY;
+                break;
+            case 'DOSAGE':
+                $activity = self::ACTIVITY_DOSAGE;
+                break;
+            case 'VARIANT':
+                $activity = self::ACTIVITY_VARIANT;
+                break;
+            default:
+                $activity = self::ACTIVITY_NONE;
+        }
+
+        $iri = $record->references['alternate_uuid'] ?? null;
+
+        if ($iri === null)
+            return;
+        
+        // save old ones to later archive
+        $old_curations = self::validity()->where('alternate_uuid', $iri)
+                                ->where('status', '!=', Activity::STATUS_ARCHIVE)
+                                ->get();
+
+        $record = new Activity([
+            'type' => $type,
+            'subtype' => $subtype,
+            'workflow' => $record->workflow,
+            'source' => $record->source,
+            'activity' => $activity,
+            'activity_string' => $record->activity,
+            'source_uuid' => $record->references['source_uuid'] ?? null,
+            'alternate_uuid' => $record->references['alternate_uuid'] ?? null,
+            'references' => $record->references,
+            'affiliation' => $record->affiliation,
+            'version' => $record->version,
+            'notes' => $record->notes,
+            'urls' => $record->urls,
+            'status' => self::STATUS_ACTIVE
+        ]);
+        $record->save();
+ 
+        // archive the older curations
+        $old_curations->each(function ($item) {
+             $item->update(['status' => Activity::STATUS_ARCHIVE]);
+        });
+     }
+ 
+
     public static function initialize()
     {
+        /*$stream = Stream::where('name', 'gene-precuration')->first();
+
+        if ($stream === null)
+            return;
+
+        
+        $new = new Stream([
+            'type' => 1,
+            'name' => 'all-curation-events',
+            'description' => 'All Curation Events Kafka Stream',
+            'endpoint' => $stream->endpoint,
+            'username' => $stream->username,
+            'password' => $stream->password,
+            'topic' => 'all-curation-events',
+            'offset' => 0,
+            'parser' => 'App\Activity::parser',
+            'status' => 1
+        ]);
+
+        $new->save();*/
+
+        
         $record = new Activity([
             'type' => self::TYPE_PUBLISH,
             'subtype' => self::SUBTYPE_CURATION,
@@ -173,6 +282,13 @@ class Activity extends Model
                 'reasons' => ['RECURATION_NEW_EVIDENCE'],
                 'description' => 'New evidence published in PMID 123456 providing justification for reassessing this gene disease',
                 'additional_properties' => []
+            ],
+            'changes' => [ [
+                'change_code' => 'CLASSIFICATION_CHANGE',
+                'attribute' =>  'classification',
+                'from' => 'Supportive',
+                'to' => 'Definitive'
+            ]
             ],
             'notes' => [
                 'public' => 'Despite the additional evidence, the classification remained the same',
@@ -215,6 +331,14 @@ class Activity extends Model
                 'description' => 'New evidence published in PMID 123456 providing justification for reassessing this gene disease',
                 'additional_properties' => []
             ],
+            'changes' => [
+                [
+                'change_code' => 'SOP_CHANGE',
+                'attribute' =>  'sop',
+                'from' => 'SOP7',
+                'to' => 'SOP10'
+                ]
+            ],
             'notes' => [
                 'public' => 'Recuration due to periodic requirement.  The classification remains unchanged.',
                 'private' => ''
@@ -255,6 +379,14 @@ class Activity extends Model
                 'reasons' => ['RECURATION_FRAMEWORK'],
                 'description' => 'New evidence published in PMID 123456 providing justification for reassessing this gene disease',
                 'additional_properties' => []
+            ],
+            'changes' => [
+                [
+                'change_code' => 'EXPERT_PANEL_CHANGE',
+                'attribute' =>  'affiliate',
+                'from' => '',
+                'to' => 'Retina'
+                ]
             ],
             'notes' => [
                 'public' => 'Recurated to SOP8.  Classification is unchanged',
@@ -297,6 +429,8 @@ class Activity extends Model
                 'description' => '',
                 'additional_properties' => []
             ],
+            'changes' => [
+            ],
             'notes' => [
                 'public' => '',
                 'private' => ''
@@ -307,5 +441,6 @@ class Activity extends Model
             'status' => self::STATUS_ARCHIVE
         ]);
         $record->save();
+        
     }
 }

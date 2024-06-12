@@ -453,6 +453,10 @@ class Actionability extends Model
 
         $record = json_decode($message->payload);
 
+        // if this is a new variant-condition record, call the variant parser
+        if ($record->curationType == 'Variant-Condition')
+            return self::variant_parser($message, $packet);
+
         // there are no incremental updates in actionability, so
         // every document received can archive all previous ones
         $old_curations = Curation::actionability()->where('alternate_uuid', $record->iri)
@@ -591,6 +595,197 @@ class Actionability extends Model
                                 'gene_hgnc_id' => $gene->curie ?? null,
                                 'gene_details' => $gene,
                                 'variant_iri' => null,
+                                'variant_details' => $record->variants ?? null,
+                                'document' => basename($record->iri),
+                                'context' => (strpos($record->scoreDetails, 'Adult') > 0 ? 'Adult' : 'Pediatric'),
+                                'title' => $record->title,
+                                'summary' => null,
+                                'description' => null,
+                                'comments' => $record->releaseNotes,
+                                'disease_id' => $disease->id,
+                                'conditions' => [($condition->curie ?? null)],
+                                'condition_details' => $condition,
+                                'evidence' => null,
+                                'evidence_details' => $record->preferred_conditions,
+                                'assertions' => $assertion ?? null,
+                                'scores' => ['earlyRuleOutStatus' => $record->earlyRuleOutStatus
+                                            ],
+                                'score_details' => $record->scores,
+                                'curators' => $record->curators ?? ($record->contributors ?? null),
+                                'published' => ($record->statusFlag == "Released"),
+                                'animal_model_only' => false,
+                                'events' => ['dateISO8601' => $record->dateISO8601,
+                                            'eventTime' => $record->eventTime ?? null,
+                                            'statusFlag' => $record->statusFlag,
+                                            'statusPublishFlag' => $record->statusPublishFlag,
+                                            'searchDates' => $record->searchDates],
+                                'url' => ['evidence' => $record->iri,
+                                        'scoreDetails' => $record->scoreDetails,
+                                        'surveyDetails' => $record->surveyDetails],
+                                'version' => 1,
+                                'status' => $status
+                            ];
+
+                            $new = new Curation($data);
+                            
+                            // retire the old curation and adjust the version on the new
+                            if ($curation !== null)
+                            {
+                                $new->version = $curation->version + 1;
+                            }
+
+                            $new->save();
+
+                        }
+                    }
+
+                    // if this was a preferred condition, mark it as done
+                    if (in_array($condition->curie, $preferred))
+                        $preferred_done[] = $condition->curie;
+                }
+            }
+        }
+
+        $old_curations->each(function ($item) {
+            $item->update(['status' => Curation::STATUS_ARCHIVE]);
+        });
+
+    }
+
+
+    /**
+     * Map a kafka Variant-Condition actionability record to a curation
+     *
+     */
+    public static function variant_parser($message, $packet = null)
+    {
+
+        $record = json_decode($message->payload);
+
+        // there are no incremental updates in actionability, so
+        // every document received can archive all previous ones
+        $old_curations = Curation::actionability()->where('alternate_uuid', $record->iri)
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
+        // what other are there?
+        switch ($record->statusFlag)
+        {
+            case 'Released - Under Revision':
+                $status = Curation::STATUS_ACTIVE_REVIEW;
+                break;
+            case 'Retracted':
+                $status = Curation::STATUS_RETRACTED;
+                break;
+            case 'In Preparation':
+                $status = Curation::STATUS_PRELIMINARY;
+                break;
+            case 'Released':
+                $status = Curation::STATUS_ACTIVE;
+                break;
+            default:
+                dd($record);
+        }
+        
+        // because each message can have multiple curations, we need to break them up.
+        foreach($record->variants as $variant)
+        {
+            // create a list of all preferred conditions associated with this gene
+            $preferred = [];
+
+            foreach($record->preferred_conditions as $condition)
+                if ($variant->id == $condition->id)
+                    $preferred[] = $condition->curie;
+
+            $preferred = array_unique($preferred);
+            $preferred_done = [];
+
+            // find all the conditions associated with this gene
+            foreach($record->conditions as $condition)
+            {
+                // extract everything specific to gene and conditions
+                if ($variant->id == $condition->id)
+                {
+                    // the preferred condition will frequently be repeated.  Only do it once.
+                    if (in_array($condition->curie, $preferred_done))
+                        continue;
+
+                    // lookup local disease.  The curie may be MONDO or OMIM
+                    $disease = Disease::rosetta($condition->curie);
+
+                    if ($disease === null)
+                    {
+                        // Some older records will have a malformed mondo id.  They'll eventually get 
+                        // replaced, but becuase we depend on a disease structure later on, lets just
+                        // create an empty one.
+                        echo "Bad disease $condition->curie \n";
+                        $disease = new Disease();
+                    }
+
+                    // older records may not have assertions, so fake it.
+                    /*if (!isset($record->assertions))
+                    {
+
+                        $record->assertions = json_decode(json_encode([
+                                [
+                                    "iri" => "http://purl.obolibrary.org/obo/" . $condition->curie,
+                                    "uri" => str_replace(':', '', $condition->curie),
+                                    "gene" => $gene->curie,
+                                    "curie" => $condition->curie,
+                                    "ontology" => "",
+                                    "assertion" => "Assertion Pending"
+                                ]
+                            ]). FALSE);
+                    }*/
+
+                    foreach($record->assertions as $assertion)
+                    {
+                        if ($variant->id == $assertion->id && $condition->curie == $assertion->curie)
+                        {
+                            // Find the exact old curation to maintain our own internal version sequencing
+                            if ($disease->id !== null)
+                            {
+                                $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
+                                                    ->source('actionability')
+                                                    ->aid($record->iri)
+                                                    ->where('variant_iri', $variant->id)
+                                                    ->where('disease_id', $disease->id)
+                                                    ->orderBy('id', 'desc')->first();
+                            }
+                            else
+                            {
+                                $curation = Curation::type(Curation::TYPE_ACTIONABILITY)
+                                                    ->source('actionability')
+                                                    ->aid($record->iri)
+                                                    ->where('variant_iri', $variant->id)
+                                                    ->whereJsonContains('conditions', $condition->curie)
+                                                    ->orderBy('id', 'desc')->first();
+                            }
+
+                            // parse into standard structure
+                            $data = [
+                                'type' => Curation::TYPE_ACTIONABILITY,
+                                'type_string' => 'Actionability',
+                                'subtype' => Curation::SUBTYPE_ACTIONABILITY,
+                                'subtype_string' => $record->curationType ?? null,
+                                'group_id' => 0,
+                                'sop_version' => null,
+                                'curation_version' => $record->curationVersion,
+                                'source' => 'actionability',
+                                'source_uuid' => $message->key,
+                                'source_timestamp' => $message->timestamp,
+                                'source_offset' => $message->offset,
+                                'packet_id' => $packet->id ?? null,
+                                'message_version' =>  $record->jsonMessageVersion ?? null,
+                                'assertion_uuid' => $record->uuid ?? null,
+                                'alternate_uuid' => $record->iri ?? null,
+                                'panel_id' => Panel::title($record->affiliations[0]->name)->first()->id ?? 0,
+                                'affiliate_id' => $record->affiliations[0]->id ?? null,
+                                'affiliate_details' => $record->affiliations[0],
+                                'gene_id' => null,
+                                'gene_hgnc_id' => null,
+                                'gene_details' => null,
+                                'variant_iri' => $variant->id,
                                 'variant_details' => $record->variants ?? null,
                                 'document' => basename($record->iri),
                                 'context' => (strpos($record->scoreDetails, 'Adult') > 0 ? 'Adult' : 'Pediatric'),
