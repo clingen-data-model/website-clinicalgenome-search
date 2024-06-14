@@ -224,7 +224,8 @@ class GeneController extends Controller
                              . $gene->name . "," . $disease->curie
                              . "&matchTypes=exact,exact&pgSize=25&pg=1&matchMode=and" : null);
 
-            $scores[$disease->id] = ['validity_score' => $validity_score ?? null, 'validity_moi' => $validity_moi ?? null,
+            $scores[$disease->id] = ['disease' => $disease->label, 'mondo' => $disease->curie, 'has_actionability' => $disease->has_actionability,
+                                     'validity_score' => $validity_score ?? null, 'validity_moi' => $validity_moi ?? null, 'validity_order' => self::validity_order($validity_score ?? null),
                                      'validity_tooltip' => $validity_tooltip ?? null, 'validity_link' => $validity_link ?? '#',
                                      'variant_link' => $variant_link,
                                      'dosage_haplo_score' => $haplo_score ?? null, 'dosage_triplo_score' => $triplo_score ?? null,
@@ -262,13 +263,21 @@ class GeneController extends Controller
                 }
             }
 
-            $scores[0] = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
+            $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
                         'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
                         'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
                         ];
             
         }
 
+        usort($scores, function($a, $b){
+            if ($a['validity_order'] == $b['validity_order'])
+                return strcasecmp($a['disease'], $b['disease']);
+
+            return ($a['validity_order'] > $b['validity_order'] ? -1 : 1);
+        });
+
+        //dd($scores);
                 /*foreach($diseases as $disease)
                 {
                     $activity = [];
@@ -306,8 +315,37 @@ class GeneController extends Controller
         return view('gene.acmg_expand')
                     ->with('gene', $gene)
                     ->with('scores', $scores)
+                    ->with('gene_scores', $gene_scores ?? null)
                     ->with('diseases', $diseases);
     }
+
+
+public static function validity_order($classification)
+{
+    switch ($classification)
+    {
+        case 'Definitive':
+            return 8;
+        case 'Strong':
+            return 7;
+        case 'Moderate':
+            return 6;
+        case 'Limited':
+            return 5;
+        case 'Disputed':
+            return 4;
+        case 'Refuted':
+            return 3;
+        case 'Animal Model Only':
+            return 2;
+        case 'No Known':
+            return 1;
+        default:
+            return 0;
+    }
+
+    return 0;
+}
 
 
     /**
