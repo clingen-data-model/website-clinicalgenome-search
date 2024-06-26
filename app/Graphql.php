@@ -1702,9 +1702,11 @@ class Graphql
 			$perm = "CGGCIEX:assertion_" . $perm;
 
         //resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56"
+		//resource(iri: "CGGV:f7637a83-ffe3-4d80-986c-e12f209dc4ce") {
+			//resource(iri: "' . $perm . '") {
 
 		$query = '{
-				resource(iri: "' . $perm . '") {
+			resource(iri: "' . $perm . '") {
 					...basicFields
 					... on ProbandEvidence {
 					  ...probandFields

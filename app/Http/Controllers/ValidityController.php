@@ -148,7 +148,7 @@ class ValidityController extends Controller
             $id = $s->target;
         }
 
-        $record = GeneLib::validityDetail([
+       $record = GeneLib::validityDetail([
             'page' => 0,
             'pagesize' => 20,
             'perm' => $id
