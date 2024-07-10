@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -42,5 +44,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+        Builder::macro('whereLike', function ($attributes, string $searchTerms) {
+            $this->where(function($query) use ($attributes, $searchTerms) {
+                foreach(Arr::wrap($attributes) as $attribute) {
+                    $query->orWhere(function($query) use ($attribute, $searchTerms) {
+                        foreach(explode(' ', $searchTerms) as $searchTerm) {
+                            $query->where($attribute, 'LIKE', "%{$searchTerm}%");
+                        }
+                    });
+                }
+            });
+            return $this;
+        });
+
+        Builder::macro('toRawSql', function() {
+            dd(vsprintf(str_replace(
+                ['?'], ['\'%s \''], $this->toSql()), $this->getBindings()
+            ));
+        });
     }
 }

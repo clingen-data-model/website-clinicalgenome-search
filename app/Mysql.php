@@ -86,7 +86,7 @@ class Mysql
 			// initialize the collection
 			if (empty($search))
 			{
-				$collection = Gene::all(['name as symbol', 'location', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date', 
+				$collection = Gene::all(['name as symbol', 'location', 'description as name', 'hgnc_id', 'date_last_curated as last_curated_date',
                                          'activity as curation_activities', 'locus_group', 'chr', 'start37', 'stop37', 'start38', 'stop38']);
 			}
 			else
@@ -160,7 +160,7 @@ class Mysql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
-			
+
 		//$collection = Acmg::with('gene')->with('disease')->groupBy('gene_symbol')->get();
         $collection = collect();
 
@@ -196,15 +196,15 @@ class Mysql
                             ($item->type == Curation::TYPE_ACTIONABILITY && $item->conditions[0] == $item->evidence_details[0]['curie']));
                 });
             }
-           
+
             $node = new Nodal([ 'gene_label' => $gene->name,
                                 'gene_hgnc_id' => $gene->hgnc_id,
                                 'disease_label' => null,
                                 'disease_mondo' => null,
                                 'disease_count' => $curations->unique('disease_id')->count(),
-                                'curation' => ($gene->hasActivity('dosage') ? 'D' : '') . 
-                                                ($gene->hasActivity('actionability') ? 'A' : '') . 
-                                                ($gene->hasActivity('validity') ? 'V' : '') . 
+                                'curation' => ($gene->hasActivity('dosage') ? 'D' : '') .
+                                                ($gene->hasActivity('actionability') ? 'A' : '') .
+                                                ($gene->hasActivity('validity') ? 'V' : '') .
                                                 ($gene->hasActivity('varpath') ? 'R' : ''),
                                 'curation_activities' => $activity,
                                 'has_comment' => !empty($gene->notes),
@@ -224,7 +224,7 @@ class Mysql
 
 		$ngenes = $collection->unique('gene_hgnc_id')->count();
         $ndiseases = count(array_unique($diseases));
-		
+
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];
 	}
@@ -240,7 +240,7 @@ class Mysql
 		// break out the args
 		foreach ($args as $key => $value)
 			$$key = $value;
-			
+
 		//$collection = Acmg::with('gene')->with('disease')->get();
 
         // get the list of gene ids relative to SF 3.2
@@ -300,7 +300,7 @@ class Mysql
                                     'comments' => $comments[$record->gene_hgnc_id] ?? null,
                                     'reportable' => false,
                                     'type' => 3
-                                
+
                                 ]);
                 $collection->push($node);
             }
@@ -344,7 +344,7 @@ class Mysql
 
 		$ngenes = $collection->unique('gene_hgnc_id')->count();
 		$ndiseases = $collection->unique('disease_mondo')->count();
-		
+
 		return (object) ['count' => $collection->count(), 'collection' => $collection,
 						'ngenes' => $ngenes, 'ndiseases' => $ndiseases];
 	}
@@ -389,7 +389,7 @@ class Mysql
                 $total_curations += $node->total_all_curations;
                 $total_panels++;
             }
-            
+
         }
 
 		$collection = $collection->sortBy('label');
@@ -415,7 +415,7 @@ class Mysql
 			$affiliate = "0";
 
         $panel = Panel::affiliate($affiliate)->first();
-        
+
         if ($panel == null)
             die($affiliate);
 
@@ -634,7 +634,7 @@ class Mysql
         // DSCWG wants their listings grouped by gene, so thats what we'll do here
         $records = Gene::where('activity->dosage', true)->with(['curations' => function ($query) {
                                             $query->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
-                                                    ->whereIn('status', [Curation::STATUS_ACTIVE]); 
+                                                    ->whereIn('status', [Curation::STATUS_ACTIVE]);
                     }])->get();
 
 		// add each gene to the collection
@@ -659,10 +659,10 @@ class Mysql
                 'omimlink' => $gene->display_omim,
                 'morbid' => $gene->morbid,
                 'plof' => $gene->plof,
-                'dosage_report_date' => (isset($haplo) ?? $haplo->source == "genegraph" ? 
+                'dosage_report_date' => (isset($haplo) ?? $haplo->source == "genegraph" ?
                         $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null) :
                         $haplo->events['resolved'] ?? ($triplo->events['resolved'] ?? null)),
-                'resolved_date' => (isset($haplo) && $haplo->source == "genegraph" ? 
+                'resolved_date' => (isset($haplo) && $haplo->source == "genegraph" ?
                         $haplo->events['report_date'] ?? ($triplo->events['report_date'] ?? null) :
                         $haplo->events['resolved'] ?? ($triplo->events['resolved'] ?? null)),
                 'haplo_disease' => (isset($haplo) && $haplo->source == "genegraph" ?
@@ -684,7 +684,7 @@ class Mysql
                         $triplo->conditions[0] ?? null :
                         $triplo->condition_details['disease_id'] ?? null),
             ]);
-          
+
             // do some processing on the history prop
             if ($gene->history !== null)
             {
@@ -700,7 +700,7 @@ class Mysql
                                                 . ' to ' . $item['to'] . ' on ' . $item['when'];
                 }
             }
-           
+
             if ($node->haplo_assertion !== null)
 				$tripcounters++;
 
@@ -1700,7 +1700,7 @@ class Mysql
         }
         else
         {
-            $records = Term::where('name', 'like', '%' . $search . '%')
+            $records = Term::whereLike(['name', 'alias'], $search)
                         ->whereIn('type', [1, 2, 3])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
@@ -1810,10 +1810,10 @@ class Mysql
                         'short' => $record->name,
 						'curated' => !empty($record->activity),
 						'hgncid' => $record->hgnc_id
-                    
+
                     ];
 		}
-		
+
 		return json_encode($array);
 	}
 }
