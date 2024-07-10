@@ -55,19 +55,37 @@ class RunCheck extends Command
         echo "RUNNING CHECK\n";
         echo "   BEGIN: " . `date`;
         
-        // set the run flag to block overlaps
+        // check the run flag to block overlaps
         if (file_exists($this->lockfile))
         {
+            $ftime = filemtime($this->lockfile);
+
+            // if the run flag is old, then its probably a genegraph hang.  Terminate the old
+            // process and remove the lockfile for the next run
+            if (Carbon::now()->diffInMinutes(Carbon::createFromTimestamp($ftime)) > 30)
+            {
+                $fpid = file_get_contents($this->lockfile);
+                posix_kill($fpid, 15);
+                if (!posix_kill($fpid, 0))
+                {
+                    @unlink($this->lockfile);
+                    echo "   TERM:  KILLING PROCESS AND REMOVING LOCKFILE \n";
+                    echo "   END: " . `date`;
+                    echo "CHECK COMPLETE\n";
+                }
+                exit;
+            }
+
             $data["email"] = "pweller1@geisinger.edu";
             $data["title"] = "ClinGen Run Error";
             $data["body"] = "The ClinGen Run Check script is blocking on an unfinished job.";
     
     
-            Mail::send('mail.errors', $data, function($message)use($data) {
+            /*Mail::send('mail.errors', $data, function($message)use($data) {
                 $message->to($data["email"], $data["email"])
                         ->subject($data["title"]);
     
-            });
+            });*/
 
             
             echo "   ERROR:  RUN FLAG DETECTED \n";
@@ -78,7 +96,7 @@ class RunCheck extends Command
 
         @file_put_contents($this->lockfile, getmypid());
 
-        echo "      Genegraph Updates...";
+        echo "      Genegraph Updates (" . `date` . ")...";
 
         // first check and update genes table
 
@@ -89,6 +107,8 @@ class RunCheck extends Command
                                         'search' => null,
                                         'forcegg' => true,
                                         'curated' => true ]);
+
+        echo "Response (" . `date` . ")...";
 
         //TODO:  this will likely hang on a refresh, need to time out
         if ($results === null || $results->count < 1500)
@@ -154,14 +174,6 @@ class RunCheck extends Command
 
         echo "DONE\n";
 
-       // echo "Genegraph OK ($hash)\n";
-
-        echo "      Validity Updates...";
-        // update validy table
-        $model = new Validity();
-        $model->preload();
-        echo "DONE\n";
-
         echo "      Actionability Updates...";
         // update  actionability
         $model = new Actionability();
@@ -188,6 +200,12 @@ class RunCheck extends Command
         //$model = new Variantpath();
         //$model->assertions();
         //echo "DONE\n";*/
+
+        echo "      Validity Updates...";
+        // update validy table
+        $model = new Validity();
+        $model->preload();
+        echo "DONE\n";
 
         @unlink($this->lockfile);
 
