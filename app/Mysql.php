@@ -1758,9 +1758,9 @@ class Mysql
         foreach ($records as $record) {
             $array[] = ['label' => $record->description,
                 'alias' => '',
-                'hgnc' => $record->value,
-                'url' => route('gene-show', $record->value),
-                'curated' => !empty($record->curated)];
+                'hgnc' => $record->name,
+                'url' => route('gene-show', $record->hgnc_id),
+                'curated' => !empty($record->activity)];
         }
 
 
