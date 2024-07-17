@@ -53,7 +53,7 @@
     {{-- <div style=" background-color:#000; padding:3px; color:gold; font-weight:bold; text-align:center; font-size:10px;">CLINGEN DEMO WEBSITE</div> --}}
     @if (env('BETA_SITE', false))
     @include('_partials._wrapper.demo-banner')
-    @endif 
+    @endif
 
     @include('_partials._wrapper.header-micro',['navActive' => "summary"])
     @include('_partials._wrapper.header',['navActive' => "summary"])
@@ -80,6 +80,7 @@
 	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene Symbol  </span></button>
 	           <ul class="dropdown-menu dropdown-menu-left">
 	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
+                   <li><a class="typeQueryGeneName pointer">Gene Name</a></li>
 	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
 	             <li><a class="typeQueryDrug pointer">Drug Name</a></li>
 	             <li><a class="typeQueryRegionGRCh37 pointer">Region (GRCh37)</a></li>
@@ -93,7 +94,10 @@
 	           </ul>
            </div><!-- /btn-group -->
            <span class="inputQueryGene">
-            <input type="text" class="form-control queryGene " aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:15766)">
+            <input type="text" class="form-control queryGene" aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:15766)">
+           </span>
+                <span class="inputQueryGeneName" style="display: none">
+            <input type="text" class="form-control queryGeneName" aria-label="..." value="" name="search[]" placeholder="Enter a gene name" >
            </span>
            <span class="inputQueryDisease" style="display: none">
             <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys Dietz, MONDO:0018954)" >
@@ -353,6 +357,8 @@
     </script>
     <script src="/js/typeahead.js"></script>
     <script>
+
+
       $( ".typeQueryGene" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
         $( ".inputQueryGene" ).show();
@@ -360,15 +366,35 @@
         $( ".inputQueryDisease" ).hide();
         $( ".inputQueryDisease .queryDisease" ).hide();
         $( ".inputQueryDrug" ).hide();
+          $( ".inputQueryGeneName" ).hide();
+          $( ".inputQueryGene .queryGeneName" ).hide();
         $( ".inputQueryDrug .queryDrug" ).hide();
         $( ".inputQueryRegion" ).hide();
         $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Gene Symbol  ");
+        $( ".typeQueryLabel").text("Gene Symbol ");
       });
+
+      $( ".typeQueryGeneName" ).click(function() {
+          $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+          $( ".inputQueryGeneName" ).show();
+          $( ".inputQueryGene .queryGeneName" ).show();
+          $( ".inputQueryGene" ).hide();
+          $( ".inputQueryGene .queryGene" ).hide();
+          $( ".inputQueryDisease" ).hide();
+          $( ".inputQueryDisease .queryDisease" ).hide();
+          $( ".inputQueryDrug" ).hide();
+          $( ".inputQueryDrug .queryDrug" ).hide();
+          $( ".inputQueryRegion" ).hide();
+          $( ".inputQueryRegion .queryRegion" ).hide();
+          $( ".typeQueryLabel").text("Gene Name ");
+      });
+
       $( ".typeQueryDisease" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
         $( ".inputQueryGene" ).hide();
         $( ".inputQueryGene .queryGene" ).hide();
+          $( ".inputQueryGeneName" ).hide();
+          $( ".inputQueryGene .queryGeneName" ).hide();
         $( ".inputQueryDisease" ).show();
         $( ".inputQueryDisease .queryDisease" ).show();
         $( ".inputQueryDrug" ).hide();
@@ -377,6 +403,7 @@
         $( ".inputQueryRegion .queryRegion" ).hide();
         $( ".typeQueryLabel").text("Disease Name  ");
       });
+
       $( ".typeQueryDrug" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
         $( ".inputQueryGene" ).hide();
@@ -388,7 +415,10 @@
         $( ".inputQueryRegion" ).hide();
         $( ".inputQueryRegion .queryRegion" ).hide();
         $( ".typeQueryLabel").text("Drug Name  ");
+          $( ".inputQueryGeneName" ).hide();
+          $( ".inputQueryGene .queryGeneName" ).hide();
       });
+
       $( ".typeQueryRegionGRCh37" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('region-search') }}");
         $( ".inputQueryGene" ).hide();
@@ -401,6 +431,8 @@
         $( ".inputQueryRegion .queryRegion" ).show();
         $( ".typeQueryLabel").text("GRCh37 Region  ");
         $( ".buildtype").val("GRCh37");
+          $( ".inputQueryGeneName" ).hide();
+          $( ".inputQueryGene .queryGeneName" ).hide();
       });
       $( ".typeQueryRegionGRCh38" ).click(function() {
         $("#navSearchBar").attr("action", "{{ route('region-search') }}");
@@ -414,6 +446,8 @@
         $( ".inputQueryRegion .queryRegion" ).show();
         $( ".typeQueryLabel").text("GRCh38 Region  ");
         $( ".buildtype").val("GRCh38");
+          $( ".inputQueryGeneName" ).hide();
+          $( ".inputQueryGene .queryGeneName" ).hide();
       });
 
 
@@ -433,6 +467,15 @@
           url: '{{  url('api/genes/look/%QUERY') }}',
           wildcard: '%QUERY'
         }
+      });
+
+      var termGeneName = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: '{{  url('api/genes/lookByName/%QUERY') }}',
+              wildcard: '%QUERY'
+          }
       });
 
       var termGene = new Bloodhound({
@@ -488,6 +531,34 @@
         autoselect:true,
       }).bind('typeahead:selected',function(evt,item){
         window.location = item.url;
+      });
+
+      $('.queryGeneName').typeahead(null,
+          {
+              name: 'termGeneName',
+              display: 'label',
+              source: termGeneName,
+              templates: {
+                  //header: '<h3 class="league-name">Header</h3>',
+                  //footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
+                  empty: [
+                      '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+                  ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+                  suggestion: function (data) {
+                      return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+
+                  }
+              },
+              limit: 20,
+              minLength: 3,
+              highlight: true,
+              hint: false,
+              autoselect:true,
+          }).bind('typeahead:selected',function(evt,item){
+          window.location = item.url;
       });
 
       $('.queryGene').typeahead(null,
