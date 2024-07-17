@@ -295,7 +295,7 @@ class GeneLib extends Model
           //$health = Health::where('service', 'GeneSearch')->first();
 
           //if (empty($health->genegraph) || empty($args['curated']))
-          
+
           //if (!empty($args['curated']))
                $response = Mysql::geneList($args);
           //else
@@ -320,12 +320,12 @@ class GeneLib extends Model
       {
           if (is_null($args) || !is_array($args))
                return collect([]);
- 
+
           $response = Mysql::acmgList($args);
- 
+
            return $response;
       }
- 
+
 
 
      /**
@@ -451,6 +451,22 @@ class GeneLib extends Model
 
           return $response;
      }
+
+    /**
+     * Typeahead search for gene matches
+     *
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    static function geneLookByName($args)
+    {
+        if (is_null($args) || !is_array($args))
+            return collect([]);
+
+        $response = Mysql::geneLookByName($args);
+
+        return $response;
+    }
 
 
      /**
@@ -868,10 +884,10 @@ class GeneLib extends Model
       {
            if (is_null($args) || !is_array($args))
                 return collect([]);
- 
+
           // regions are still only found in Jira
           $response = Jira::precuration($args);
- 
+
           return $response;
      }
 
@@ -1105,10 +1121,10 @@ class GeneLib extends Model
       {
            if (is_null($args) || !is_array($args))
                 return collect([]);
-  
+
            // Gene listing using Graphql
            $response = Mysql::conditionFind($args);
- 
+
            return $response;
       }
 
@@ -1136,10 +1152,10 @@ class GeneLib extends Model
       {
            if ($str === null || $str === false || $str === 'unknown')
                 return 'Unknown';
- 
+
            return self::$word_dosage_assertion_strings[$str];
       }
-     
+
 
      /**
       * Return a displayable dosage assertion description
