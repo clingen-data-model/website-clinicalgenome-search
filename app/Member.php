@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Concerns\HttpClient;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,6 +28,14 @@ class Member extends Model
     use HasFactory;
     use SoftDeletes;
     use Display;
+    use HttpClient;
+
+    const LEADER = 'leader';
+    const PAST_MEMBER = 'past_member';
+    const MEMBER = 'member';
+    const CURATOR = 'curator';
+    const COMMITTEE = 'committee';
+    const COORDINATOR = 'coordinator';
 
     /**
      * The attributes that should be validity checked.
@@ -70,7 +79,7 @@ class Member extends Model
 	protected $fillable = ['ident', 'type',' gpm_id', 'first_name', 'last_name',
                             'email', 'phone', 'institution', 'credentials', 'biography',
                             'profile_photo', 'orchid_id', 'hypothesis_id', 'address',
-                            'timezone', 'status'];
+                            'timezone', 'status', 'display_name', 'processwire_id', 'gpm_id'];
 
 	/**
      * Non-persistent storage model attributes.
@@ -115,5 +124,129 @@ class Member extends Model
         parent::__construct($attributes);
     }
 
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    public function processwireData()
+    {
+        $inst = $this->institution ? json_decode($this->institution, true) : [];
+        return [
+            'user_name_full' => $this->display_name,
+            'user_name_first' => $this->first_name,
+            'user_name_last' => $this->last_name,
+            'user_title' => '',
+            'user_url' => '',
+            'relate_institutions' => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
+            'email' => $this->email,
+            'user_photo' => $this->profile_photo,
+            'user_bio' => $this->biography,
+            'user_professional_attributes' => $this->credentials,
+            'gpm_id' => $this->gpm_id,
+            'prev_email' => $this->prev_email
+            //''
+        ];
+    }
+
+    public function getDisplayNameAttribute($value) {
+        if ($value) return $value;
+        return sprintf('%s %s %s', $this->first_name, $this->last_name, $this->credentials);
+    }
+
+    public function parser($data)
+    {
+        if ($eventType = data_get($data, 'event_type')) {
+            if ($eventType === 'deleted') {
+                if ($gpm_id = data_get($data,'data.person.id')) {
+                    $member = self::where('gpm_id', $gpm_id)->first();
+                    //what if didn't happen
+                    //$member->removeFromProcessWire();
+                    //self::where('gpm_id', data_get('data.person.id'))->delete();
+                    //return true;
+                }
+
+            } else {
+                // it's either created or updated
+                $credentialsArray = [];
+                self::createFromGpm($data);
+                return true;
+            }
+        }
+    }
+
+
+    public static function createFromGpm($data)
+    {
+        if ($person = data_get($data, 'data.person')) {
+            $member = self::firstOrNew([
+                'gpm_id' => $person['id']
+            ]);
+
+            $credentialsArray = [];
+
+            if ($credentialsData = data_get($person, 'credentials')) {
+                $credentialsArray = array_map(function ($cred) {
+                    return $cred['name'];
+                }, $credentialsData);
+            }
+
+            $email = data_get($person, 'email');
+
+            if ($member->email && ($member->email !== $email)) {
+                $member->prev_email = $member->email;
+            }
+
+            $credentials = implode(' ', $credentialsArray);
+
+            $member->first_name = data_get($person, 'first_name');
+            $member->last_name = data_get($person, 'last_name');
+            $member->institution = json_encode(data_get($person, 'institution', []));
+            $member->credentials = $credentials;
+            $member->profile_photo = data_get($person, 'profile_photo');
+            $member->address = json_encode(data_get($person, 'address'));
+            $member->biography = data_get($person, 'biography', ' ');
+            $member->email = $email;
+            $member->phone = data_get($person, 'phone');
+
+            $member->timezone = data_get($person, 'timezone');
+
+            $member->save();
+
+            return $member;
+
+        }
+
+        throw new \Exception('You need to provide a person');
+    }
+
+    private function processWireUrl()
+    {
+        return sprintf('%s/api/users/', config('processwire.url'));
+    }
+
+    public function removeFromProcessWire()
+    {
+        $data = [
+            'type' => 'deleted',
+            'email' => $this->email
+        ];
+
+        $response = $this->HttpRequest()->post($this->processWireUrl(), $data);
+
+        if ($response->successful()) {
+            return json_decode($response->body(), true);
+        }
+
+        return false;
+    }
+
+    public function pushToProcessWire($action = null)
+    {
+        $data = $this->processwireData();
+        $data['action'] = $action;
+        $response = $this->HttpRequest()->post($this->processWireUrl(), $data);
+        return $response->body();
+    }
 
 }
