@@ -53,6 +53,7 @@ Route::group(['prefix' => '/dashboard'], function () {
 
 Route::get('/reports/view/{id}', 'HomeController@view')->name('dashboard-show-report');
 Route::get('/members', 'MembersController@index')->name('members.index');
+Route::post('/members/sync', 'MembersController@sync')->name('members.sync');
 
 /*
  * Gene display routes

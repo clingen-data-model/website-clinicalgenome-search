@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 class MembersController extends Controller
 {
@@ -41,6 +42,18 @@ class MembersController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    /**
+     * Sync all items that does not have a processwire_id
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sync(Request $request)
+    {
+        //
+        Artisan::call('process:gpmuser');
     }
 
     /**
