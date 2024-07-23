@@ -15,10 +15,35 @@
                 <div class="col-md-3"> {{ $member->first_name }}</div>
                 <div class="col-md-3"> {{ $member->last_name }} </div>
                 <div class="col-md-3"> {{ $member->email }} </div>
-                <div class="col-md-2"> Button Here </div>
             </div>
         @endforeach
+
+        <div class="mt-2">
+            <button class="primary sync-processwire"> Sync with Processwire </button>
+        </div>
+
     </div>
 </div>
+
+<script>
+
+    $(function () {
+        $('.sync-processwire').on('click', function(event) {
+            if (confirm('Are you sure you want to sync? This process will take a while')) {
+                let obj = $(this);
+                obj.text('Syncing ... ')
+                $.post("members/sync",
+                    {
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    function(data, status) {
+                        obj.text(' Sync with Processwire ');
+                        alert('Completed');
+                    });
+            }
+        })
+    })
+
+</script>
 
 @endsection
