@@ -9,12 +9,13 @@
             <p> We need to update the correct email address of these members in Processwire</p>
         </div>
 
-        @foreach($members as $member)
+        @foreach($members as $index => $member)
             <div class="row">
+                <div class="col-md-1"> {{ $index + 1 }}</div>
                 <div class="col-md-3"> {{ $member->first_name }}</div>
                 <div class="col-md-3"> {{ $member->last_name }} </div>
                 <div class="col-md-3"> {{ $member->email }} </div>
-                <div class="col-md-3"> Button Here </div>
+                <div class="col-md-2"> Button Here </div>
             </div>
         @endforeach
     </div>
