@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 		<div class="col-md-5">
 			<table class="mt-3 mb-2">
 				<tr>
@@ -34,27 +34,24 @@
 						<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countRegions text-18px"><i
 									class="glyphicon glyphicon-refresh text-18px text-muted"></i></span><br />Total<br />Regions
 						</li>
-						{{-- <li class="text-stats line-tight text-center pl-3 pr-3"><div class="btn-group p-0 m-0" style="display: block"><a class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-download text-18px"></i><br />Download<br />Options
-					</a>
-						<ul class="dropdown-menu dropdown-menu-left">
-							<li><a href="{{ route('dosage-download') }}">Summary Data (CSV)</a></li>
-						<li><a href="{{ route('dosage-ftp') }}">Additional Data (FTP)</a></li>
-					</ul>
-					</li>
-					<li class="text-stats line-tight text-center pl-3 pr-3">
-						<div class="btn-group p-0 m-0" style="display: block"><a
-								class="dropdown-toggle pointer text-dark" data-toggle="dropdown" aria-haspopup="true"
-								aria-expanded="false"><i
-									class="glyphicon glyphicon-list-alt text-18px text-muted"></i><br />ACMG<br />CNV
-							</a>
-							<ul class="dropdown-menu dropdown-menu-left">
-								<li><a href="{{ route('dosage-acmg59') }}">ACMG 59 Genes</a></li>
-								<li><a href="{{ route('dosage-cnv') }}">Recurrent CNVs</a></li>
-							</ul>
-					</li> --}}
 					</ul>
 				</div>
 			</div>
+		</div>
+
+		<div class="col-md-12">
+			<div class="alert alert-warning redblur" role="alert">
+				<p>
+					<span class="text-danger"><b>NOTICE:</b></span>
+					The standalone region search field specific to Dosage Sensitivity has been fully integrated with the <u>main search bar above</u> <i class="fas fa-arrow-up"></i>.  
+					To use, first select Region (GRCh37) or Region (GRCh38) from the pull-down menu, enter the genomic coordinates as before, then click on the 'Search' button.
+					Once your results display, you can view additional information relative to Dosage Sensitivity by clicking on the 'Dosage Scores' display option.
+					For more information, refer to the <a href="https://www.clinicalgenome.org/site/assets/files/9582/r1_10_release_notes.pdf" target="_notes"><u>release notes.</u></a>
+				</p>
+				<p>
+					Note that the search box below <i class="fas fa-arrow-down"></i> only searches for text within the displayed table; do not use this to search for all genes within a range of genomic coordinates.
+				</p>
+				</div>
 		</div>
 
 		<div class="col-md-12">
@@ -65,7 +62,7 @@
 
 		</div>
 
-		<div class="col-md-12 light-arrows dark-table">
+		<div class="col-md-12 light-arrows dark-table dark-detail">
 
 			@include('_partials.genetable', ['expand' => true])
 
@@ -94,9 +91,6 @@
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
-	<link href="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/multiple-select@1.5.2/dist/themes/bootstrap.min.css" rel="stylesheet">
     <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
@@ -115,7 +109,6 @@
 
 <script src="/js/bootstrap-table-filter-control.js"></script>
 <script src="/js/bootstrap-table-sticky-header.min.js"></script>
-<script src="https://unpkg.com/multiple-select@1.5.2/dist/multiple-select.min.js"></script>
 
 <!-- load up all the local formatters and stylers -->
 <script src="/js/genetable.js"></script>
@@ -137,7 +130,8 @@
 
 	window.ajaxOptions = {
 		beforeSend: function (xhr) {
-			xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+			if (Cookies.get('clingen_dash_token') != undefined)
+				xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
 		}
 	}
 
@@ -152,7 +146,6 @@
 		$('.countCurations').html(res.ncurations);
 		$('.countGenes').html(res.ngenes);
 		$('.countRegions').html(res.nregions);
-		//$('.countTriplo').html(res.ntriplo);
 		return res
 	}
 
@@ -160,7 +153,7 @@
 
 	var hibin=['<= 10%', '<= 25%', '<= 50%', '<= 75%'];
 	var plibin=['< 0.9', '>= 0.9'];
-	var plofbin=['<= 0.2', '<= 0.35', '<= 1'];
+	var plofbin=['< 0.6', '>= 0.6'];
 
 	// HI bin
 	function checkbin(text, value, field, data)
@@ -178,13 +171,6 @@
 			default:
 				return true;
 		}
-
-		/*
-		if (text == '<= 10')
-			return value <= 10;
-		else
-			return value > 10;
-		*/
 	}
 
 
@@ -201,42 +187,50 @@
 	{
 		switch (text)
 		{
-			case '<= 0.2':
-				return value <= .2;
-			case '<= 0.35':
-				return value <= .35;
-			case  '<= 1':
-				return value <= 1;
+			case '< 0.6':
+				return value < .6;
+			case  '>= 0.6':
+				return value >= .6;
 			default:
 				return true;
 		}
-
-		//console.log(value);
-		/*if (text == '> .35')
-			return value > .35;
-		else
-			return value <= .35;*/
 	}
 
 	var tripChoices=[
-                '0 (No Evidence)',
+                'No Evidence',
                 '1 (Little Evidence)',
                 '2 (Emerging Evidence)',
                 '3 (Sufficient Evidence)',
                 '30 (Autosomal Recessive)',
                 '40 (Dosage Sensitivity Unlikely)',
                 'Not Yet Evaluated',
-  ];
-	var hapChoices=[
-                '0 (No Evidence)',
-                '1 (Little Evidence)',
-                '2 (Emerging Evidence)',
-                '3 (Sufficient Evidence)',
-                '30 (Autosomal Recessive)',
-                '40 (Dosage Sensitivity Unlikely)',
-                'Not Yet Evaluated',
-  ];
+  		];
+	/*var hapChoices=[
+                'No Evidence' => 0,
+                'Little Evidence' => 1,
+                'Emerging Evidence' => 2,
+                'Sufficient Evidence' => 3,
+                'Autosomal Recessive' => 30,
+                'Dosage Sensitivity Unlikely' => 40,
+                'Not Yet Evaluated' => -1,
+  		];*/
 
+	var hapChoices= {
+		'0': 'No Evidence',
+		'1': 'Little Evidence',
+		'2': 'Emerging Evidence',
+		'3': 'Sufficient Evidence',
+		'30': 'Autosomal Recessive',
+		'40': 'Dosage Sensitivity Unlikely',
+		'-5': 'Not Yet Evaluated',
+	};
+
+
+	var omimcomboChoices= {
+		1: 'OMIM Only',
+		2: 'Morbid Only',
+		3: 'Both OMIM and Morbid'
+	};
 
 	function inittable() {
 		$table.bootstrapTable('destroy').bootstrapTable({
@@ -250,29 +244,32 @@
 	  		rowStyle:  function(row, index) {
 				if (index % 2 === 0) {
      				return {
-						classes: 'bt-even-row bt-hover-row'
+						classes: 'bt-even-row2 bt-hover-row'
 					}
 				}
 				else {
      				return {
-						classes: 'bt-odd-row bt-hover-row'
+						classes: 'bt-odd-row2 bt-hover-row'
 					}
 				}
      		},
 			columns: [
 				{
-					title: '',
+					title: 'Type',
 					field: 'type',
-					formatter: nullFormatter,
-					cellStyle: typeFormatter,
+					formatter: relationFormatter,
+					cellStyle: cellFormatter,
+					//formatter: nullFormatter,
+					//cellStyle: typeFormatter,
 					//filterControl: 'input',
-					searchFormatter: false
-					//sortable: true
+					width: 80,
+					searchFormatter: false,
+					sortable: true,
 				},
 				{
-					title: 'Gene/Region',
+					title: 'Gene Symbol /<div>Region Name</div>',
 					field: 'symbol',
-					formatter: symbolFormatter,
+					formatter: symbol2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
 					width: 190,
@@ -323,12 +320,16 @@
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency score"></i></div>HI Score',
 					field: 'haplo_assertion',
-					formatter: haploFormatter,
+					formatter: haplo2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
+					sorter: 'dosageSorter',
           			filterData: 'var:hapChoices',
           			filterDefault: "{{ $col_search['col_search'] === "haplo" ? $col_search['col_search_val'] : "" }}",
+					sortSelectOptione: false,
+					filterOrderBy: 'server',
+					filterStrictSearch: true,
 					sortable: true
 				},
 				{
@@ -354,12 +355,14 @@
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Triplosensitivity score"></i></div>TS Score',
 					field: 'triplo_assertion',
-					formatter: triploFormatter,
+					formatter: triplo2Formatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
 					searchFormatter: false,
-          			filterData: 'var:tripChoices',
+					sorter: 'dosageSorter',
+          			filterData: 'var:hapChoices',
           			filterDefault: "{{ $col_search['col_search'] === "triplo" ? $col_search['col_search_val'] : "" }}",
+					filterStrictSearch: true,
 					sortable: true
 				},
 				{
@@ -383,16 +386,16 @@
 					visible: false
 				},
 				{
-					title: 'OMIM',
-					field: 'omim',
-					formatter: omimFormatter,
+					title: 'OMIM<hr class="mt-1 mb-1 bg-white mr-4">Morbid',
+					field: 'omimcombo',
+					formatter: omimcomboFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'select',
-					filterData: 'var:choices',
+					filterData: 'var:omimcomboChoices',
 					searchFormatter: false,
 					sortable: true
 				},
-				{
+				/*{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="OMIM morbid map"></i></div>Morbid',
 					field: 'morbid',
 					formatter: morbidFormatter,
@@ -401,7 +404,7 @@
 					filterData: 'var:choices',
 					searchFormatter: false,
 					sortable: true
-				},
+				},*/
 				{
 					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="DECIPHER Haploinsufficiency index.  Values less than 10% predict that a gene is more likely to exhibit haploinsufficiency."></i></div>%HI',
 					field: 'hi',
@@ -414,7 +417,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD pLI score.  Values greater than or equal to 0.9 indicate that a gene appears to be intolerant of loss of function variation."></i></div>pLI',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 pLI score.  Values greater than or equal to 0.9 indicate that a gene appears to be intolerant of loss of function variation."></i></div>pLI',
 					field: 'pli',
 					formatter: pliFormatter,
 					cellStyle: cellFormatter,
@@ -425,7 +428,7 @@
 					sortable: true
 				},
 				{
-					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD predicted loss-of-function.  Values less than 0.35 indicate that a gene appears to be intolerant of loss of function variation."></i></div>LOEUF',
+					title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="gnomAD v4.0 predicted loss-of-function.  Values less than 0.6 indicate that a gene appears to be intolerant of loss of function variation."></i></div>LOEUF',
 					field: 'plof',
 					formatter: plofFormatter,
 					cellStyle: cellFormatter,
@@ -437,8 +440,7 @@
 				},
 				{
 					field: 'date',
-					//title: 'Last Eval.',
-          			title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+          			title: 'Last<div>Evaluated Date</div>',
 					formatter: reportFormatter,
 					cellStyle: cellFormatter,
 					filterControl: 'input',
@@ -562,13 +564,13 @@
 
 		$(".fixed-table-toolbar .search .input-group").attr("style","width:800px;");
         $(".fixed-table-toolbar .search .input-group:first").attr("style","float:left; width:200px;");
-		$(".fixed-table-toolbar .search .input-group:first").after(html);
+		//$(".fixed-table-toolbar .search .input-group:first").after(html);
 
 		$("button[name='filterControlSwitch']").attr('title', 'Column Search');
 		$("button[aria-label='Columns']").attr('title', 'Show/Hide More Columns');
 
         $('[data-toggle="popover"]').popover();
-
+		
 		region_listener();
 
 		$('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {

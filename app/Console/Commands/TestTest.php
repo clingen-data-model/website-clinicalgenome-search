@@ -14,6 +14,7 @@ use DB;
 use App\Gtr;
 use App\Gene;
 use App\Drug;
+use App\Notification;
 
 class TestTest extends Command
 {
@@ -47,6 +48,49 @@ class TestTest extends Command
      * @return mixed
      */
     public function handle()
+    {
+        /*$duplicates = DB::table("curation_panel")
+            ->select(["curation_id", "panel_id", DB::raw("COUNT(*) as `count`")])
+            ->groupBy("curation_id", "panel_id")
+            ->havingRaw("COUNT(*) > 1")
+            ->get()
+            ->each(
+                fn($dupe) => DB::table("curation_panel")
+                ->where("curation_id", $dupe->curation_id)
+                ->where("panel_id", $dupe->panel_id)
+                ->limit(1)
+                ->delete()
+            );*/
+
+            $this->notificationfix();
+
+    }
+
+
+    public function notificationfix()
+    {
+        echo "Updating notifications...\n";
+
+        $records = Notification::all();
+
+        $disease = ['Daily' => [], 'Weekly' => [], 'Monthly' => [],
+                    'Pause' => [], 'Default' => [], 'Groups' => [] ];
+
+        foreach ($records as $record)
+        {
+            $frequency = $record->frequency;
+            $frequency['global_pause'] = 'off';
+            $frequency['global_pause_date'] = null;
+            $frequency['Disease'] = $disease;
+
+           $record->frequency = $frequency;
+
+            $record->save();
+        }
+    }
+
+
+    public function genefix()
     {
         echo "Fixing genes table...\n";
 

@@ -433,6 +433,39 @@ class Nodal extends Model
 
 
 	/**
+     * General location formatter
+     *
+     * @@param
+     * @return
+     */
+	public function format_location($coord, $attr = false)
+	{
+		 if (empty($coord))
+			  return null;
+
+		 if ($attr)
+		 { 
+			  return $coord[$attr] ?? null;
+		 }
+			  
+		 switch ($coord['chr'])
+		 {
+			  case '23':
+				   $chr = 'X';
+				   break;
+			  case '24':
+				   $chr = 'Y';
+				   break;
+			  default:
+				   $chr = $coord['chr'];
+		 }
+
+		 return 'chr' . $chr . ':' . $coord['start'] . '-' . $coord['stop'];
+	}
+
+
+
+	/**
      * Format for ensemble
      *
      * @@param

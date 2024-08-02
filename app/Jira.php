@@ -702,6 +702,10 @@ class Jira extends Model
 
           foreach ($response->issues as $issue)
           {
+               // Looks like fiter changed allow non-resolved issues, so filter them out here
+               if (!isset($issue->fields->resolution->name))
+                    continue;
+
                // skip over any won't fixes
                if ($issue->fields->resolution->name == "Won't Fix")
                     continue;
@@ -717,8 +721,8 @@ class Jira extends Model
                     'jira_report_date' => $issue->fields->resolutiondate ?? ''
                ]);
 
-               // for 30 and 40, Jira also sends text
-               if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
+          // for 30 and 40, Jira also sends text
+          if ($node->triplo_score == "30: Gene associated with autosomal recessive phenotype")
                $node->triplo_score = 30;
           else if ($node->triplo_score == "40: Dosage sensitivity unlikely")
                $node->triplo_score = 40;
@@ -1043,8 +1047,8 @@ class Jira extends Model
                     'grch38' => $issue->fields->customfield_10532 ?? null,
                     'pli' => $issue->fields->customfield_11635 ?? null,
                     'hi' => null,
-                    'triplo' => $issue->fields->customfield_10166->value ?? 'unknown',
-                    'haplo' => $issue->fields->customfield_10165->value ?? 'unknown',
+                    'triplo' => $issue->fields->customfield_10166->value ?? 'Not yet evaluated',
+                    'haplo' => $issue->fields->customfield_10165->value ?? 'Not yet evaluated',
                     'loss_comments' => $issue->fields->customfield_10198 ?? null,
                     'loss_pheno_omim' => $issue->fields->customfield_10200 ?? null,
                     'loss_pheno_name' => $issue->fields->customfield_11830 ?? null,
@@ -1258,7 +1262,7 @@ class Jira extends Model
                               $created = new Carbon($history->created);
                               if (Carbon::now()->diffInWeeks($created) <= 52)
                               {
-                                   //dd($issue);
+                                   //dd($item);
                                    if ($issue->fields->issuetype->name == "ISCA Gene Curation")
                                         $title = $issue->fields->customfield_10030;
                                    else if ($issue->fields->issuetype->name == "ISCA Region Curation")

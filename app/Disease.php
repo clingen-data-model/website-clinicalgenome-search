@@ -63,7 +63,7 @@ class Disease extends Model
     protected $fillable = [
         'curie', 'label', 'synonyms', 'curation_activities', 'last_curated_date',
         'do_id', 'orpha_id', 'gard_id', 'umls_id', 'synonym', 'omim_label', 'orpha_label',
-        'omim', 'description', 'type', 'status',
+        'omim', 'description', 'type', 'status', 'curation_activities->varpath'
     ];
 
     /**
@@ -126,6 +126,34 @@ class Disease extends Model
     {
         return $this->belongsToMany('App\Panel');
     }
+
+
+    /*
+     * The diseases associated with this user
+     */
+    public function users()
+    {
+        return $this->belongsToMany('App\User');
+    }
+
+
+    /*
+     * The ACMG SFs associated with this disease
+     */
+    public function acmgs()
+    {
+       return $this->hasMany('App\Acmg');
+    }
+
+
+    /*
+     * The curations associated with this disease
+     */
+    public function curations()
+    {
+       return $this->hasMany('App\Curation');
+    }
+
 
     /**
      * Query scope by ident
@@ -341,6 +369,20 @@ class Disease extends Model
         return (isset($this->curation_activities) ?
             ($this->curation_activities['varpath'] ?? false) : false);
     }
+
+
+    /**
+     * Flag indicating if gene has any dosage curations
+     *
+     * @@param
+     * @return
+     */
+    public function hasActivity($activity)
+    {
+         return (isset($this->curation_activities[$activity]) ?
+              $this->curation_activities[$activity] : false);
+    }
+
 
     /**
      * Query title for mondo id

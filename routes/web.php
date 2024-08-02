@@ -13,11 +13,15 @@
 
 Route::view('/message', 'error.message-standard');
 
+Route::get('/{id}', 'HomeController@ccid')->where(['id' => 'CCID:[0-9]+'])->name('test-ccid');
+
 Route::get('/', function () {
 
 	return redirect()->route('gene-curations');
 
 });
+
+Route::get('/CCID:{id}', 'TestController@ccid')->where(['id' => 'CCID:[0-9]+'])->name('test-ccid');
 
 Route::get('/kb/curations', function () {
 
@@ -56,6 +60,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::get('/', 'GeneController@index')->name('gene-index');
 
+		Route::get('/acmgsf', 'GeneController@acmg_index')->name('acmg-index');
+
 		Route::post('/', 'GeneController@search')->name('gene-search');
 
 		Route::get('/page/{page}', 'GeneController@index');
@@ -73,6 +79,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 		Route::get('/{id?}/groups', 'GeneController@show_groups')->name('gene-groups');
 
 		Route::get('/{id?}/external-resources', 'GeneController@external')->name('gene-external');
+
+		Route::get('/{id?}/genomeconnect', 'GeneController@show_genomeconnect')->name('gene-genomeconnect');
 
 		//Route::get('/{id?}/external_resources_genes', 'GeneController@external');
 
@@ -109,6 +117,8 @@ Route::group(['prefix' => 'kb/gene-validity'], function () {
 		Route::get('/', 'ValidityController@index')->name('validity-index');
 
 		Route::get('/download', 'ValidityController@download')->name('validity-download');
+
+		Route::get('/download/ls', 'ValidityController@download_ls')->name('validity-ls-download');
 
 		Route::get('/page/{page}', 'ValidityController@index');
 
@@ -184,6 +194,8 @@ Route::group(['prefix' => 'kb/gene-dosage'], function () {
 
 	Route::get('/download', 'DosageController@download')->name('dosage-download');
 
+	Route::get('/downloadall', 'DosageController@downloadall')->name('dosagefull-download');
+
 
 	Route::get('/ftp', function () {
 		return redirect(route('download-index'), 301);
@@ -248,6 +260,8 @@ Route::group(['prefix' =>'kb/variant-pathogenicity'], function () {
 // Redirect and/or legacy routes
 Route::get('/kb/home', 'HomeController@home');
 
-//Route::get('/test', 'TestController@index');
+Route::get('/test', 'TestController@index');
+
+Route::post('/kb/genomeconnect/upload', 'HomeController@gc_upload')->name('gencon-upload');
 
 Auth::routes();

@@ -86,7 +86,7 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-2">
             <div class="row">
                 <dt class="col-sm-4">Expert Panel:
                 <dd class="col-sm-8">
@@ -94,10 +94,10 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-1">
+        <div class="col-md-1 mt-2">
             &nbsp;
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 mt-2">
             <div class="row">
                 @if ($record->sop7_contributors ?? null)
                 <dt class="col-sm-3">Contributors:
@@ -120,16 +120,31 @@
                 </dd>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-1 mt-2">
+            &nbsp;
+        </div>
+        <div class="col-md-5 mt-2">
             <div class="row">
-                <dt class="col-sm-5">Contradictory Evidence:
-                <dd class="col-sm-7">
+                <dt class="col-sm-6">Contradictory Evidence:
+                <dd class="col-sm-4">
                     {{ $record->sop7_valid_contradictory_evidence }}
                 </dd>
             </div>
         </div>
+        <div class="col-md-12 mt-2">
+            <div class="row">
+                <dt class="col-sm-2 pt-2">ClinGen Curation ID:
+                <dd class="col-sm-8">
+                    {{ $slug->alias ?? '' }} <span data-toggle="tooltip" data-placement="top" title="The ClinGen Curation ID is an abbreviated link that you can use in documente.  Click on the button to the left to copy the link into your clipboard."><i class="fas fa-question-circle ml-1"></i></span>
+
+                    <button type="button" class="btn action-ccid-copy ml-4" data-toggle="tooltip" data-placement="right" data-html="true" title="<h5>Copied!</h5>" data-trigger="click" data-clipboard-text="{{ url('/') . '/' . ($slug->alias ?? '') }}">
+                        <i class="far fa-copy"></i> Copy <u>{{ url('/') . '/' . ($slug->alias ?? '') }}</u> to clipboard
+                    </button>
+                </dd>
+            </div>
+        </div>
         @if ($gcilink !== null)
-        <div class="col-md-12 mt-4">
+        <div class="col-md-6 mt-4">
             <div class="row">
                 <dt class="col-sm-4">GCI LINK:
                     <dd class="col-sm-8"><a href="{{ $gcilink }}" target="_gci">{{ $gcilink }}</a>
@@ -173,7 +188,7 @@
     <hr />
 
 	<!-- tab headers -->
-	<ul class="nav nav-tabs mt-1" style="">
+	<ul class="nav nav-tabs mt-1" style="margin-left: -50px; margin-right: -50px">
 		<li role="presentation" class="active" style="">
             <a href="#gdvt1" aria-controls="gdvt1" role="tab" data-toggle="tab">
               <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-1"></i>Summary</span>
@@ -208,6 +223,11 @@
         <li role="presentation" class="" style="">
 			<a href="#gdvt7" aria-controls="gdvt7" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
+            </a>
+		</li>
+        <li role="presentation" class="" style="">
+			<a href="#gdvt8" aria-controls="gdvt8" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-history mr-1"></i>History</span>
             </a>
 		</li>
         @else
@@ -624,6 +644,61 @@
                     </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="gdvt8">
+                <div class="panel panel-primary with-nav-tabs">
+                    <!--<div class="pull-right"><img src="/images/beta.png" height="60"></div>-->
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>History</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="gene_version" class="container">
+                                <table class="table table-hover mt-4">
+                                    <tr class="medium-font-size">
+                                        <th class="text-center bg-secondary text-white" style="vertical-align: middle"></th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Version</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Dates</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Reason for Update</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Changes</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Additional Notes</th>
+                                    </tr>
+                                    @foreach ($activities as $activity)
+                                        @if ($activity->status == 1)
+                                        <tr class="medium-font-size">
+                                        @else
+                                        <tr class="medium-font-size">
+                                        @endif
+                                        @if ($activity->status == 1)
+                                        <td style="vertical-align: middle"><i class="fas fa-arrow-right fa-lg text-danger"></i></td>
+                                        @else
+                                        <td style="vertical-align: middle"></td>
+                                        @endif
+                                        <td style="vertical-align: middle" class="p-4"><span class="btn btn-block btn-info text-white"><strong>{{ $activity->version['display'] ?? '' }}</strong></span></td>
+                                        <td class="p-4">
+                                            <div class="mb-1"><strong>Published:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['publish_date']) }}</span></div>
+                                            <div><strong>Classified:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['classification_date']) }}</span></div>
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->version['reasons'] as $reason)
+                                            <div><strong>{{ $reason }}:</strong><br>
+                                            <span class="text-muted">{{ $activity->display_reason($reason) }}</span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->changes as $change)
+                                            <div><strong>{{ $change['change_code'] }}:</strong><br>
+                                            <span class="text-muted">From {{ $change['from'] }} to {{ $change['to'] }} </span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4"><span class="text-muted">{{ $activity->notes['public'] ?? '' }}</span></td>
+                                       </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -775,6 +850,8 @@ overflow-x: scroll; overflow-y:hidden;}
 <script src="/js/jquery.validate.min.js" ></script>
 <script src="/js/additional-methods.min.js" ></script>
 
+<script src="/js/clipboard.min.js" ></script>
+
 
 <script>
 
@@ -920,6 +997,19 @@ $(function() {
         $(".wrapper1")
             .scrollLeft($("#geclv").scrollLeft());
     }); */
+
+    new ClipboardJS('.action-ccid-copy');
+
+    $('.action-ccid-copy').on('click', function(){
+        
+        var item = $(this);
+
+        setTimeout(function(){
+                item.tooltip('hide');
+        }, 1200);
+
+    });
+
 
     $('.action-beta-form').on('click', function(){
         $('#beta-form')[0].reset();

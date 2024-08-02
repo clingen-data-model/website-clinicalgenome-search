@@ -78,6 +78,7 @@ class Curation extends Model
      */
 	protected $casts = [
                 'gene_details' => 'array',
+                'variant_details' => 'array',
                 'affiliate_details' => 'array',
                 'condition_details' => 'array',
                 'conditions' => 'array',
@@ -86,7 +87,9 @@ class Curation extends Model
                 'score_details' => 'array',
                 'scores' => 'array',
                 'curators' => 'array',
-                'events' => 'array'
+                'events' => 'array',
+                'assertions' => 'array',
+                'url' => 'array'
 
 	];
 
@@ -100,7 +103,10 @@ class Curation extends Model
                             'affiliate_id', 'affiliate_details', 'gene_hgnc_id', 'gene_details', 'title',
                             'summary', 'description', 'comments', 'conditions', 'condition_details',
                             'evidence', 'evidence_details', 'scores', 'score_details', 'curators',
-                            'published', 'animal_model_only', 'events', 'version', 'status'
+                            'published', 'animal_model_only', 'events', 'version', 'status',
+                            'curation_version', 'panel_id', 'source_timestamp', 'source_offset', 'message_version',
+                            'url', 'assertions', 'document', 'variant_iri', 'variant_details', 
+                            'gene_id', 'disease_id', 'packet_id', 'context', 'region_id', 'region_details'
                          ];
 
 	/**
@@ -114,6 +120,8 @@ class Curation extends Model
     public const TYPE_DOSAGE_SENSITIVITY = 1;
     public const TYPE_GENE_VALIDITY = 2;
     public const TYPE_VARIANT_PATHOGENICITY = 3;
+    public const TYPE_ACTIONABILITY = 4;
+    public const TYPE_DOSAGE_SENSITIVITY_REGION = 5;
 
     /*
      * Type strings for display methods
@@ -124,6 +132,18 @@ class Curation extends Model
 	 		1 => 'Dosage Sensitivity'
         ];
 
+    public const SUBTYPE_NONE = 0;
+    public const SUBTYPE_ACTIONABILITY = 1;
+    public const SUBTYPE_VALIDITY_GCI = 2;
+    public const SUBTYPE_VALIDITY_GCE = 3;
+    public const SUBTYPE_VALIDITY_GGP = 4;
+    public const SUBTYPE_DOSAGE_DCI = 10;
+    public const SUBTYPE_DOSAGE_GGP = 11;
+    public const SUBTYPE_DOSAGE_REGION_DCI = 12;
+    public const SUBTYPE_DOSAGE_GENE_PRECURATION = 13;
+    public const SUBTYPE_VARIANT_PATHOGENICITY = 20;
+    public const SUBTYPE_VARIANT_PATHOGENICITY_ERP = 21;
+
 
     /*
     * Status constants and strings for display methods
@@ -133,6 +153,10 @@ class Curation extends Model
     public const STATUS_INITIALIZED = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_DEPRECATED = 2;
+    public const STATUS_ARCHIVE = 3;
+    public const STATUS_RETRACTED = 4;
+    public const STATUS_PRELIMINARY = 5;
+    public const STATUS_ACTIVE_REVIEW = 6;
     public const STATUS_DELETED = 9;
     public const STATUS_OPEN = 10;
     public const STATUS_PRIMARY_REVIEW = 11;
@@ -140,6 +164,7 @@ class Curation extends Model
     public const STATUS_GROUP_REVIEW = 14;
     public const STATUS_CLOSED = 20;
     public const STATUS_REOPENED = 30;
+    public const STATUS_UNPUBLISH = 31;
 
 
     /*
@@ -183,6 +208,62 @@ class Curation extends Model
     }
 
 
+    /*
+     * The gene associated with this curation
+     */
+    public function gene()
+    {
+       return $this->belongsTo('App\Gene');
+    }
+
+
+    /*
+     * The region associated with this curation
+     */
+    public function region()
+    {
+       return $this->belongsTo('App\Region');
+    }
+
+
+    /*
+     * The disease associated with this curation
+     */
+    public function disease()
+    {
+       return $this->belongsTo('App\Disease');
+    }
+
+
+    /*
+     * The kafka message packet associated with this curation
+     */
+    public function packet()
+    {
+       return $this->belongsTo('App\Packet');
+    }
+
+
+    /*
+     * The primary expert panel associated with this curation
+     */
+    public function panel()
+    {
+       return $this->belongsTo('App\Panel');
+    }
+
+
+    /*
+     * All the expert panels associated with this curation
+     */
+    public function panels()
+    {
+       return $this->belongsToMany('App\Panel');
+    }
+
+
+
+
 	/**
      * Query scope by ident
      *
@@ -204,6 +285,78 @@ class Curation extends Model
 	public function scopeType($query, $type)
     {
 		return $query->where('type', $type);
+    }
+
+
+    /**
+     * Query scope by type = dosage
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	  public function scopeDosage($query)
+    {
+		 return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY);
+    }
+
+
+    /**
+     * Query scope by type = dosage
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeDosage_region($query)
+  {
+  return $query->where('type', self::TYPE_DOSAGE_SENSITIVITY_REGION);
+  }
+
+
+    /**
+     * Query scope by type = actionability
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeActionability($query)
+    {
+		return $query->where('type', self::TYPE_ACTIONABILITY);
+    }
+
+
+    /**
+     * Query scope by type = validity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeValidity($query)
+    {
+		return $query->where('type', self::TYPE_GENE_VALIDITY);
+    }
+
+
+    /**
+     * Query scope by type = variant pathogenicity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeVariant($query)
+    {
+		return $query->where('type', self::TYPE_VARIANT_PATHOGENICITY);
+    }
+
+
+    /**
+     * Query scope by type = validity
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeActive($query)
+    {
+		return $query->whereIn('status', [self::STATUS_ACTIVE, self::STATUS_ACTIVE_REVIEW]);
     }
 
 
@@ -231,6 +384,18 @@ class Curation extends Model
     }
 
 
+    /**
+     * Query scope by alternate ID
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeAid($query, $id)
+    {
+		return $query->where('alternate_uuid', $id);
+    }
+
+
      /**
      * Query scope by subtype
      *
@@ -252,6 +417,18 @@ class Curation extends Model
 	public function scopePublished($query)
     {
 		return $query->where('published', true);
+    }
+
+
+    /**
+     * Query scope by record status
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeStatus($query, $type)
+    {
+		return $query->where('status', $type);
     }
 
 

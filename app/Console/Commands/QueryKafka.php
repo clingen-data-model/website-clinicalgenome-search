@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Stream;
 use App\Pmid;
 use App\Curation;
+use App\Packet;
 
 class QueryKafka extends Command
 {
@@ -89,7 +90,10 @@ class QueryKafka extends Command
 
         // Configure the group.id. All consumer with the same group.id will consume
         // different partitions.
-        $conf->set('group.id', 'web_prod');
+        if ($topic == 'all-curation-events') //  || $topic == 'actionability')
+            $conf->set('group.id', 'web_stage');
+        else
+            $conf->set('group.id', 'web_prod');
 
         $conf->set('security.protocol', 'sasl_ssl');
         $conf->set('sasl.mechanism', 'PLAIN');
@@ -107,11 +111,11 @@ class QueryKafka extends Command
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        $availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
+        /*$availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
         echo "Available Topics: \n";
         foreach ($availableTopics as $idx => $avlTopic) {
             echo $idx.': '.$avlTopic->getTopic()."\n";
-        }
+        }*/
 
         //$a = $consumer->getCommittedOffsets([new \RdKafka\TopicPartition('gene_dosage', 0)], 60*1000);
         //$low = $high = 0;
@@ -125,32 +129,49 @@ class QueryKafka extends Command
         //echo "Waiting for partition assignment... (make take some time when\n";
         //echo "quickly re-joining the group after leaving it.)\n";
 
-        echo "Reading...\n";
+        //echo "Reading...\n";
         while (true) {
-            $message = $consumer->consume(120*1000);
+            $message = $consumer->consume(45*1000);
             //echo $message->err . "\n";
+
+            if ($message === null)
+            {
+                echo "Nothing here, bye\n";
+                exit;
+            }
 
             switch ($message->err) {
                 case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                        if ($topic == "dosage")
+                        $m = new Packet(['topic' => $stream->topic,
+                                         'type' => Packet::TYPE_KAFKA,
+                                         'uuid' => $message->key,
+                                         'offset' => $message->offset,
+                                         'timestamp' => $message->timestamp,
+                                         'payload' => $message->payload,
+                                         'status' => Packet::STATUS_ACTIVE
+                                        ]);
+                        $m->save();
+                        if ($topic == "dosage" || $topic == "actionability" || $topic == 'gene-validity' || $topic == 'variant_interpretation')
                         {
-                            $payload = $message;
+                            $payload = json_decode($message->payload);
+                           // dd($payload);
+                            $a = $stream->parser;
+                            $a($message, $m);
+                            $stream->update(['offset' => $message->offset + 1]);
                         }
                         else
                         {
+                            // there is strong reasons to pass the entire message to the parser,
+                            // as we do with actionability and dosage above.  All new parsers should
+                            // be that way.  But for now, leave the existings parsers as is and 
+                            // we'll come back later to fix them.
                             $payload = json_decode($message->payload);
-                            //echo $payload->genes[0]->symbol . "\n";
-                            //dd($payload);
-                            //if ($payload->genes[0]->symbol == "LDLR")
-                        // {
-                            //   var_dump($payload);
-                            //}
-                        // //dd($payload->genes[0]);
+                            $a = $stream->parser;
+                            $a($payload);
+                            $stream->update(['offset' => $message->offset + 1]);
+                            
                         }
-                        $a = $stream->parser;
-                        $a($payload);
-                        $stream->update(['offset' => $message->offset + 1]);
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
                     echo "No more messages; will wait for more\n";

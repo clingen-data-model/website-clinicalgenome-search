@@ -7,6 +7,7 @@ use App\Http\Requests\ApiRequest;
 use App\Http\Resources\Validity as ValidityResource;
 
 use App\GeneLib;
+use App\Curation;
 
 class ValidityController extends Controller
 {
@@ -54,5 +55,26 @@ class ValidityController extends Controller
             return GeneLib::getError();
 
         return new AffiliateResource($record);
+    }
+
+
+
+    /**
+     * Display the summary notes of the curation
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function expand(ApiRequest $request, $id = null)
+    {
+
+        
+        $curation = Curation::validity()->active()->sid($id)->first();
+
+        if ($curation === null)
+            return null;
+
+
+        return view('gene-validity.expand')
+                ->with('curation', $curation);
     }
 }

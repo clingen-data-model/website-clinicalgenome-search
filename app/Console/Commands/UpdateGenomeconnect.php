@@ -138,7 +138,7 @@ class UpdateGenomeconnect extends Command
           $record->clinvar_ids = $json->esearchresult->idlist;
           $record->status = Genomeconnect::STATUS_SUCCESS;
 
-          $record->update();
+          $record->save();
 
         }
 

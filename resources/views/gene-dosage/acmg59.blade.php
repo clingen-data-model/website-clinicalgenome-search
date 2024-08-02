@@ -27,7 +27,7 @@
 			</div>
 		</div>
 
-		<div class="col-md-12 dark-table">
+		<div class="col-md-12 dark-table dark-detail">
 				@include('_partials.genetable')
 
 		</div>
@@ -81,7 +81,8 @@
 
 	window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+		if (Cookies.get('clingen_dash_token') != undefined)
+      		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 

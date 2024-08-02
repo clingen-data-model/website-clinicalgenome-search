@@ -133,6 +133,57 @@ class GeneController extends Controller
 
 
 	/**
+	* Display a listing of all ACMG SF entries.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function acmg_index(GeneListRequest $request, $page = 1, $size = 25, $search = "")
+	{
+		// process request args
+		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
+			$$key = $value;
+
+		// set display context for view
+        $display_tabs = collect([
+            'active' => "gene-curations",
+            'title' => "ACMG SF Genes",
+            'scrid' => null, //Filter::SCREEN_ALL_GENES,
+			'display' => "ACMG SF Genes"
+		]);
+
+        if (Auth::guard('api')->check())
+            $user = Auth::guard('api')->user();
+
+        // get list of all current bookmarks for the page
+        //$bookmarks = ($this->user === null ? collect() : $this->user->filters()->screen(Filter::SCREEN_ALL_GENES)->get()->sortBy('name', SORT_STRING | SORT_FLAG_CASE));
+
+        // get active bookmark, if any
+        //$filter = Filter::preferences($request, $this->user, Filter::SCREEN_ALL_GENES);
+
+        //if ($filter !== null && getType($filter) == "object" && get_class($filter) == "Illuminate\Http\RedirectResponse")
+        //    return $filter;
+
+        // don't apply global settings if local ones present
+        //$settings = Filter::parseSettings($request->fullUrl());
+
+        if (empty($settings['size']))
+            $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
+        else
+            $display_list = $settings['size'];
+
+		return view('gene.acmg', compact('display_tabs'))
+						->with('apiurl', '/api/genes/acmg')
+						->with('pagesize', $size)
+						->with('page', $page)
+						->with('search', $search)
+						->with('user', $this->user)
+						->with('display_list', $display_list);
+						//->with('bookmarks', $bookmarks)
+                        //->with('currentbookmark', $filter);
+	}
+
+
+	/**
 	* Show all of the curated genes
 	*
 	* @return \Illuminate\Http\Response
@@ -167,7 +218,7 @@ class GeneController extends Controller
 			$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
-
+	
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
@@ -244,7 +295,7 @@ class GeneController extends Controller
 		if (Auth::guard('api')->check())
 		{
 			$user = Auth::guard('api')->user();
-			//dd($user);
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		}
 		else
@@ -325,8 +376,8 @@ class GeneController extends Controller
                                //     'author' => $pmid->sortfirstauthor,
                                 //    'published' =>  $pmid->pubdate,
                                     'abstract' => $pmid->abstract];
-//dd($disease_collection);
-		//dd($disease_collection->where('disease', $disease->disease->label)->first()->validity);
+
+
 
         if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
@@ -381,12 +432,14 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
-//dd($variant_collection);
+
+		$show_clingen_comment = !empty($gene->notes);
+
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
-                        'pmids', 'mimflag', 'mims',
+                        'pmids', 'mimflag', 'mims', 'show_clingen_comment',
                          'disease_collection', 'total_panels', 'variant_collection', 'gc'))
 						->with('user', $this->user);;
 	}
@@ -458,7 +511,7 @@ class GeneController extends Controller
 		if (Auth::guard('api')->check())
 		{
 			$user = Auth::guard('api')->user();
-			//dd($user);
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		}
 		else
@@ -489,7 +542,6 @@ class GeneController extends Controller
         $mims = [];
         $pmids = [];
         $key = 0;
-
 
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
@@ -577,7 +629,7 @@ class GeneController extends Controller
 				$dosage_collection->push($node);
 			}
 		}
-       // dd($actionability_collection);
+
         // get the mim names
         $mim_names = MIM::whereIn('mim', $mims)->get();
 
@@ -609,8 +661,6 @@ class GeneController extends Controller
                                 //    'published' =>  $pmid->pubdate,
                                     'abstract' => $pmid->abstract];
 
-        //dd($pmids);
-
 		// reapply any sorting requirements
 		$validity_collection = $validity_collection->sortByDesc('order');
 
@@ -622,10 +672,10 @@ class GeneController extends Controller
 
         $validity_eps = count($validity_panels);
 		$actionability_collection = $actionability_collection->sortByDesc('order');
-//dd($validity_collection);
+
 		if ($record->nvariant > 0)
 			$variant_collection = collect($record->variant);
-//dd($variant_collection);
+
         // collect all the unique panels
         $variant_panels = [];
         $variant_collection->each(function ($item) use (&$variant_panels){
@@ -645,7 +695,7 @@ class GeneController extends Controller
 				if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 					continue;
 
-				if (empty($precuration['group_id']))
+			if (empty($precuration['group_id']))
 					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
 				else
 					$panel = Panel::allids($precuration['group_id'])->first();
@@ -671,23 +721,22 @@ class GeneController extends Controller
                         + ($actionability_collection->isEmpty() ? 0 : 1)
                         + */ count($pregceps);
 
-		//dd($record->curation_status);
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
 		//get GenomeConnect info
 		$gc = $gene->genomeconnect;
 
-        //dd($record);
-        //dd($variant_collection);
+		$show_clingen_comment = !empty($gene->notes);
+
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps',
-												'gceps', 'gc'))
+												'gceps', 'gc', 'show_clingen_comment'))
 												->with('user', $this->user);
 	}
 
@@ -719,6 +768,8 @@ class GeneController extends Controller
 				$id = $check->hgnc_id;
 		}
 
+		$gene = Gene::rosetta($id);
+
 		$record = GeneLib::geneDetail([
 			'gene' => $id,
 			'curations' => true,
@@ -743,7 +794,7 @@ class GeneController extends Controller
 
 		if (Auth::guard('api')->check()) {
 			$user = Auth::guard('api')->user();
-			//dd($user);
+		
 			$follow = $user->genes->contains('hgnc_id', $id);
 		} else {
 
@@ -807,7 +858,6 @@ class GeneController extends Controller
 
 				$actionability_collection->push($node);
 			}
-			//dd($actionability_collection);
 
 			// validity
 			foreach ($disease->gene_validity_assertions as $assertion) {
@@ -854,32 +904,33 @@ class GeneController extends Controller
 		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
 		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
         $pregceps = collect();
-//dd($record);
+
 		if ($record->curation_status !== null)
 		{
 			foreach ($record->curation_status as $precuration)
 			{
+				//dd($precuration);
                 switch ($precuration['status'])
 				{
 					case 'Uploaded':
-                        $bucket = 3;
+                        $bucket = 1;
                         break;
                     case "Precuration":
                     case "Disease Entity Assigned":
                     case "Disease entity assigned":
                     case "Precuration Complete":
-                        $bucket = 1;
+                        $bucket = 2;
                         break;
                     case "Curation Provisional":
                     case "Curation Approved":
-                        $bucket = 2;
+                        $bucket = 3;
                         break;
                     case "Retired Assignment":
                     case "Published":
                     default:
                         continue 2;
 				}
-//dd($precuration);
+
 				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
 				//	continue;
 
@@ -891,10 +942,27 @@ class GeneController extends Controller
 				if ($panel == null)
 					continue;
 
+				
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
-//dd($bucket);
+
+				// make sure only the top one remains
+				$current = $pregceps->where('affiliate_id', $panel->affiliate_id)->first();
+
+				if ($current !== null)
+				{
+					if ($current->bucket < $bucket)
+					{
+						$pregceps = $pregceps->filter(function ($item) use ($current) {
+
+							$item->affiliate_id !== $current->affiliate_id;
+						});
+					}
+					else
+						continue;
+				}
+
                 $panel->bucket = $bucket;
 
 				$pregceps->push($panel);
@@ -904,11 +972,11 @@ class GeneController extends Controller
 			$pregceps = $pregceps->whereNotIn('id', $remids);
 		}
 
-		$pregceps = $pregceps->unique();
+		$pregceps = $pregceps->sortByDesc('bucket')->unique();
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " curation results"
 		]);
 
@@ -916,6 +984,11 @@ class GeneController extends Controller
                         + ($record->ndosage > 0 ? 1 : 0)
                         + ($actionability_collection->isEmpty() ? 0 : 1)
                         +*/ count($pregceps);
+
+		//get GenomeConnect info
+		$gc = $gene->genomeconnect;
+
+		$show_clingen_comment = !empty($gene->notes);
 
 		return view('gene.show-groups', compact(
 			'display_tabs',
@@ -931,7 +1004,273 @@ class GeneController extends Controller
 			'gceps',
 			'vceps',
             'pregceps',
-            'total_panels'
+            'total_panels', 'gc', 'show_clingen_comment'
+		))
+			->with('user', $this->user);
+	}
+
+
+	/**
+	 * Display the specified gene, organized by condition.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function show_genomeconnect(Request $request, $id = null)
+	{
+		if ($id === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		// check if the condition came in as an OMIM ID, and if so convert it.
+		if (strpos($id, "HGNC:") !== 0) {
+			if (is_numeric($id))
+				$check = Gene::omim($id)->first();
+			else
+				$check = Gene::name($id)->first();
+
+			if ($check !== null)
+				$id = $check->hgnc_id;
+		}
+
+		$gene = Gene::rosetta($id);
+
+		$record = GeneLib::geneDetail([
+			'gene' => $id,
+			'curations' => true,
+			'action_scores' => true,
+			'validity' => true,
+			'dosage' => true,
+			'pharma' => true,
+			'variant' => true
+		]);
+
+		if ($record === null)
+			return view('error.message-standard')
+			->with('title', 'Error retrieving Gene details')
+			->with('message', 'The system was not able to retrieve details for this Gene.  Error message was: ' . GeneLib::getError() . '. Please return to the previous page and try again.')
+			->with('back', url()->previous())
+				->with('user', $this->user);
+
+		// the new follow stuff.  protptype wip
+		$follow = false;
+		$email = '';
+		$user = Auth::guard('api')->user();
+
+		if (Auth::guard('api')->check()) {
+			$user = Auth::guard('api')->user();
+
+			$follow = $user->genes->contains('hgnc_id', $id);
+		} else {
+
+			$cookie = $request->cookie('clingenfollow');
+
+			if ($cookie !== null) {
+				$user = User::cookie($cookie)->first();
+
+				if ($user !== null) {
+					$follow = $user->genes->contains('hgnc_id', $id);
+					$email = $user->email;
+				}
+			}
+		}
+		// end follow
+
+		//reformat the response structure for view by activity
+		$actionability_collection = collect();
+		$validity_collection = collect();
+		$dosage_collection = collect();
+		$variant_collection = collect();
+		$pharma_collection = collect();
+
+		foreach ($record->genetic_conditions as $key => $disease) {
+			// actionability
+			if (!empty($disease->actionability_assertions)) {
+				$adult = null;
+				$pediatric = null;
+				$order = 0;
+
+				// regroup the adult and pediatric assertions
+				foreach ($disease->actionability_assertions as $assertion) {
+					if ($assertion->attributed_to !== null) {
+						if ($assertion->attributed_to->label == "Adult Actionability Working Group") {
+							$adult = $assertion;
+						}
+						if ($assertion->attributed_to->label == "Pediatric Actionability Working Group") {
+							$pediatric = $assertion;
+						}
+					} else {
+						// workaround for genegraph bug 5/11/2021
+						if (strpos($assertion->source, "Adult") !== false) {
+							$adult = $assertion;
+						}
+						if (strpos($assertion->source, "Pediatric") !== false) {
+							$pediatric = $assertion;
+						}
+					}
+
+					$aorder = $this->actionability_sort_order[$assertion->classification->label] ?? 0;
+					if ($aorder > $order)
+						$order = $aorder;
+				}
+
+				$node = new Nodal([
+					'order' => $order,
+					'disease' => $disease->disease,
+					'adult_assertion' => $adult,
+					'pediatric_assertion' => $pediatric
+				]);
+
+				$actionability_collection->push($node);
+			}
+
+			// validity
+			foreach ($disease->gene_validity_assertions as $assertion) {
+				$node = new Nodal([
+					'order' => $this->validity_sort_order[$assertion->classification->curie] ?? 0,
+					'disease' => $disease->disease, 'assertion' => $assertion
+				]);
+				$validity_collection->push($node);
+			}
+
+			// dosage
+			foreach ($disease->gene_dosage_assertions as $assertion) {
+				$node = new Nodal([
+					'order' => $assertion->dosage_classification->oridinal ?? 0,
+					'disease' => $disease->disease, 'assertion' => $assertion
+				]);
+				$dosage_collection->push($node);
+			}
+		}
+
+		// reapply any sorting requirements
+        $validity_collection = $validity_collection->sortByDesc('order');
+
+        $validity_panels = [];
+        $validity_collection->each(function ($item) use (&$validity_panels){
+            if (!in_array($item->assertion->attributed_to->label, $validity_panels))
+                array_push($validity_panels, $item->assertion->attributed_to->label);
+        });
+
+        $validity_eps = count($validity_panels);
+		$actionability_collection = $actionability_collection->sortByDesc('order');
+
+		if ($record->nvariant > 0)
+			$variant_collection = collect($record->variant);
+
+        // collect all the unique panels
+        $variant_panels = [];
+        $variant_collection->each(function ($item) use (&$variant_panels){
+            $variant_panels = array_merge($variant_panels, array_column($item['panels'], 'affiliation'));
+        });
+
+        $variant_panels = array_unique($variant_panels);
+
+		$vceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_VCEP);
+		$gceps = Gene::hgnc($id)->first()->panels->where('type', PANEL::TYPE_GCEP);
+        $pregceps = collect();
+
+		if ($record->curation_status !== null)
+		{
+			foreach ($record->curation_status as $precuration)
+			{
+                switch ($precuration['status'])
+				{
+					case 'Uploaded':
+                        $bucket = 1;
+                        break;
+                    case "Precuration":
+                    case "Disease Entity Assigned":
+                    case "Disease entity assigned":
+                    case "Precuration Complete":
+                        $bucket = 2;
+                        break;
+                    case "Curation Provisional":
+                    case "Curation Approved":
+                        $bucket = 3;
+                        break;
+                    case "Retired Assignment":
+                    case "Published":
+                    default:
+                        continue 2;
+				}
+
+				//if ($precuration['status'] == "Retired Assignment" || $precuration['status'] == "Published")
+				//	continue;
+
+				if (empty($precuration['group_id']))
+					$panel = Panel::where('title_abbreviated', $precuration['group'])->first();
+				else
+					$panel = Panel::allids($precuration['group_id'])->first();
+
+				if ($panel == null)
+					continue;
+
+                // blacklist panels we don't want displayed
+                if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
+                    continue;
+//dd($bucket);
+				// make sure only the top one remains
+				$current = $pregceps->where('affiliate_id', $panel->affiliate_id)->first();
+
+				if ($current !== null)
+				{
+					if ($current->bucket < $bucket)
+					{
+						$pregceps = $pregceps->filter(function ($item) use ($current) {
+
+							$item->affiliate_id !== $current->affiliate_id;
+						});
+					}
+					else
+						continue;
+				}
+
+                $panel->bucket = $bucket;
+
+				$pregceps->push($panel);
+			}
+
+            $remids = $gceps->pluck('id');
+			$pregceps = $pregceps->whereNotIn('id', $remids);
+		}
+
+		$pregceps = $pregceps->sortByDesc('bucket')->unique();
+
+		// set display context for view
+		$display_tabs = collect([
+			'active' => "gene-curations",
+			'title' => $record->label . " curation results"
+		]);
+
+        $total_panels = /*$validity_eps + count($variant_panels)
+                        + ($record->ndosage > 0 ? 1 : 0)
+                        + ($actionability_collection->isEmpty() ? 0 : 1)
+                        +*/ count($pregceps);
+
+		//get GenomeConnect info
+		$gc = $gene->genomeconnect;
+
+		$show_clingen_comment = !empty($gene->notes);
+
+		return view('gene.show-genomeconnect', compact(
+			'display_tabs',
+			'record',
+			'follow',
+			'email',
+			'user',
+			'validity_collection',
+			'actionability_collection',
+			'variant_collection',
+            'variant_panels',
+			//'group_collection',
+			'gceps',
+			'vceps',
+            'pregceps',
+            'total_panels', 'gc', 'show_clingen_comment'
 		))
 			->with('user', $this->user);
 	}
@@ -953,6 +1292,7 @@ class GeneController extends Controller
 				->with('back', url()->previous())
 				->with('user', $this->user);
 
+		$gene = Gene::rosetta($id);
 
 		$record = GeneLib::geneDetail([
 										'gene' => $id,
@@ -971,11 +1311,16 @@ class GeneController extends Controller
 
 		// set display context for view
 		$display_tabs = collect([
-			'active' => "gene",
+			'active' => "gene-curations",
 			'title' => $record->label . " external resources"
 		]);
 
-		return view('gene.show-external-resources', compact('display_tabs', 'record'))
+		//get GenomeConnect info
+		$gc = $gene->genomeconnect;
+
+		$show_clingen_comment = !empty($gene->notes);
+
+		return view('gene.show-external-resources', compact('display_tabs', 'record', 'gc', 'show_clingen_comment'))
 						->with('user', $this->user);
 	}
 

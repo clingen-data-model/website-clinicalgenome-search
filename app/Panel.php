@@ -148,6 +148,24 @@ class Panel extends Model
     }
 
 
+    /*
+     * The curations associated with this group as a primary
+     */
+    public function primary_curations()
+    {
+       return $this->hasMany('App\Curation');
+    }
+
+
+    /*
+     * The curations associated with this group
+     */
+    public function curations()
+    {
+       return $this->belongsToMany('App\Curation');
+    }
+
+
 	/**
      * Query scope by ident
      *
@@ -181,6 +199,18 @@ class Panel extends Model
 	public function scopeAffiliate($query, $id)
     {
         return $query->where('affiliate_id', $id);
+    }
+
+
+    /**
+     * Query scope by group title
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function scopeTitle($query, $name)
+    {
+        return $query->where('title', $name);
     }
 
 

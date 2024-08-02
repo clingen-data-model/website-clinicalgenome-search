@@ -26,7 +26,7 @@
                     @php $variant_key = ($gene == $genename); @endphp
                     <tr class="">
                         <td class="@if($variant_key) border-0 pt-0 @endif pb-1 ">@if(!$variant_key) <a href="{{ route('gene-show', $gene) }}">{{ $gene }}</a> @endif</td>
-                        <td class="@if($variant_key) border-0 pt-0   @endif pb-1 ">@if(!$variant_key) {{ $record->label }} @endif</td>
+                        <td class="@if($variant_key) border-0 pt-0   @endif pb-1 ">@if(!$variant_key) {{ displayMondoLabel($record->label) }} {!! displayMondoObsolete($record->label) !!} @endif</td>
                         <td class="@if($variant_key) border-0 pt-0  @endif pb-1 ">@if(!$variant_key)<a href="https://clinicalgenome.org/affiliation/{{ \App\Panel::erepo_map_to_panel($classes['panels'][0]['id']) }}">{{  implode(', ', array_column($classes['panels'], 'affiliation')) }} <i class="fas fa-external-link-alt ml-1"></a>@endif</td>
 
                         <td class="text-center @if($variant_key) border-0 pt-0 @endif pb-1 ">

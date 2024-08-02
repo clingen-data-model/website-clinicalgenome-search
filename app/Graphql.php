@@ -561,6 +561,11 @@ class Graphql
 			$node->mane_select = $localgene->mane_select;
 			$node->mane_plus = $localgene->mane_plus;
             $node->curation_status = $localgene->curation_status;
+			$node->transcript = $localgene->transcript;
+			$node->is_acmg = (boolean) $localgene->acmg59;
+			$node->notes = $localgene->notes;
+			$node->is_par = $localgene->is_par;
+			$node->par_coordinates = $localgene->par_coordinates;
 		}
 
         $gencc = Gencc::hgnc($gene)->get();
@@ -1436,6 +1441,18 @@ class Graphql
                             curie
 							label
 						}
+						contributions {
+							realizes {
+							  curie
+							  label
+							}
+							agent {
+							  curie
+							  label
+							}
+						}
+						iri
+						description
                         '
 						. 'report_id
                         animal_model'
@@ -1456,7 +1473,7 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-        // get legacy list of animal mode only assertions
+			// get legacy list of animal mode only assertions
         $amo = Validity::animal()->get(['curie']);
 
 		// add each gene to the collection
@@ -1524,6 +1541,42 @@ class Graphql
             {
                 $nodal->animal_model_only = $record->animal_model;
             }
+
+			if ($include_lump_split ?? false)
+			{
+				// create additional entries for lumping and splitting
+				$nodal->las_included = [];
+				$nodal->las_excluded = [];
+				$nodal->las_rationale = [];
+				$nodal->las_curation = '';
+				$nodal->las_date = null;
+
+				if ($nodal->report_id !== null)
+				{
+					$map = Precuration::gdmid($nodal->report_id)->first();
+					if ($map !== null)
+					{
+						$nodal->las_included = $map->omim_phenotypes['included'] ?? [];
+						$nodal->las_excluded = $map->omim_phenotypes['excluded'] ?? [];
+						$nodal->las_rationale =$map->rationale;
+						$nodal->las_curation = $map->curation_type['description'] ?? '';
+
+						// the dates aren't always populated in the gene tracker, so we may need to restrict them.
+						$prec_date = $map->disease_date;
+						if ($prec_date !== null)
+						{
+							$dd = Carbon::parse($prec_date);
+							$rd = Carbon::parse($nodal->report_date);
+							$nodal->las_date = ($dd->gt($rd) ? $nodal->report_date : $prec_date);
+						}
+						else
+						{
+							$nodal->las_date = $nodal->report_date;
+						}
+					}
+
+				}
+			}
 
 			$collection->push($nodal);
 		}
@@ -1649,9 +1702,11 @@ class Graphql
 			$perm = "CGGCIEX:assertion_" . $perm;
 
         //resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56"
+		//resource(iri: "CGGV:f7637a83-ffe3-4d80-986c-e12f209dc4ce") {
+			//resource(iri: "' . $perm . '") {
 
 		$query = '{
-				resource(iri: "' . $perm . '") {
+			resource(iri: "' . $perm . '") {
 					...basicFields
 					... on ProbandEvidence {
 					  ...probandFields
@@ -1916,8 +1971,11 @@ class Graphql
                     label
                     multiple_authors
                     short_citation
-                    year_published
-                  }
+                    year_published' . 
+					/*is_about {
+						iri
+					}*/
+                  '}
 				}
 				fragment caseControlFields on CaseControlEvidence {
 				  iri
@@ -3590,6 +3648,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
+	/**     Retired, no longer used
     static function geneLook($args, $page = 0, $pagesize = 20)
     {
 		// break out the args
@@ -3615,16 +3674,6 @@ class Graphql
 		if (empty($response))
 			return $response;
 
-		// add each gene to the collection
-		/*foreach($response->suggest as $record)
-		{
-			$node = new Nodal((array) $record);
-			$node->label = $record->highlighted . '  (' . $record->alternative_curie . ')';
-			$node->href = route('gene-show', $record->alternative_curie);
-
-			$collection->push($node);
-		}*/
-
 		$array = [];
 		foreach($response->suggest as $record)
 		{
@@ -3637,6 +3686,7 @@ class Graphql
 		//return (object) ['count' => count($collection), 'collection' => $collection];
 		return json_encode($array);
 	}
+	*/
 
 
 	/**
@@ -3644,6 +3694,7 @@ class Graphql
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
+	/** Retired, no longer used
     static function geneFind($args, $page = 0, $pagesize = 20)
     {
 		// break out the args
@@ -3684,7 +3735,7 @@ class Graphql
 						'curated' => 2,
 						'hgncid' => '@AllVariant'
 					],
-					['label' => 'ACMG SF 3.1 Genes',
+					['label' => 'ACMG SF 3.2 Genes',
 						'short' => '@ACMG59',
 						'curated' => 2,
 						'hgncid' => '@ACMG59'
@@ -3725,6 +3776,7 @@ class Graphql
 
 		return json_encode($array);
 	}
+	*/
 
 
 	/**

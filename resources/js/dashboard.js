@@ -3,6 +3,7 @@ $(function() {
     var $table = $('#follow-table');
     var $reporttable = $('#table');
     var $gencontable = $('#gencon-table');
+    var $diseasetable = $('#disease-table');
 
     /**
      * Choose a date for report start
@@ -58,6 +59,17 @@ $(function() {
 
         $('#search_form')[0].reset();
         $('#modalSearchGene').modal('show');
+
+    });
+
+
+    /**
+     * Show screen to follow a new disease
+     */
+    $('.action-new-disease').on('click', function() {
+
+        $('#search_disease_form')[0].reset();
+        $('#modalSearchDisease').modal('show');
 
     });
 
@@ -316,18 +328,63 @@ $(function() {
 
         var tog;
 
-        if ($(this).hasClass('fa-toggle-off'))
+        var gnot = $('.action-toggle-pause').hasClass('fa-toggle-on');
+
+
+        if ($(this).hasClass('fa-toggle-off')) // turn global on
         {
             $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-danger').addClass('alert-warning');
+                $('.action-notification-text').html('PAUSED');
+                var pd = $('#ds_pause_date').val();
+                if (pd == '' || pd === null)
+                {
+                    $('.action-until-text').html(' until DATE NOT SET');
+                }
+                else{
+                    let date1 = new Date(pd).getTime();
+                    let date2 = new Date();
+                    if (date1 >= date2)
+                    {
+                        $('.action-until-text').html(' until '  + pd);
+                    }
+                    else
+                    {
+                        $('.action-notification-text').html('ON');
+                        $('.action-until-text').html(' (PAUSE is still set with an expired date)');
+                    }
+                }
+            }
+            else
+            {
+                $('.action-notification-alert').removeClass('alert-danger').addClass('alert-info');
+                $('.action-notification-text').html('ON');
+                $('.action-until-text').html('');
+            }
+
             $('.action-toggle-notifications-text').html('On');
-            $('.action-light-notification').addClass('fa-lightbulb');
+
             tog = 1;
         }
-        else
+        else // turn global off
         {
             $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-warning').addClass('alert-danger');
+                $('.action-notification-text').html('OFF');
+                $('.action-until-text').html('');
+            }
+            else
+            {
+                $('.action-notification-alert').removeClass('alert-info').addClass('alert-danger');
+                $('.action-notification-text').html('OFF');
+                $('.action-until-text').html('');
+            }
+
             $('.action-toggle-notifications-text').html('Off');
-            $('.action-light-notification').removeClass('fa-lightbulb')
             tog = 0;
         }
 
@@ -353,6 +410,84 @@ $(function() {
             swal({
                 title: "Error",
                 text: "An error occurred while setting notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
+        });
+
+    });
+
+
+    /**
+     * Toggle global notifications
+     */
+    $('.action-toggle-pause').on('click', function() {
+
+        var tog;
+
+        var gnot = $('.action-toggle-notifications').hasClass('fa-toggle-on');
+
+        if ($(this).hasClass('fa-toggle-off'))  // turning pause on
+        {
+            $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-info').addClass('alert-warning');
+                $('.action-notification-text').html('PAUSED');
+                var pd = $('#ds_pause_date').val();
+                if (pd == '' || pd === null)
+                {
+                    $('.action-until-text').html(' until DATE NOT SET');
+                }
+                else {
+                    let date1 = new Date(pd).getTime();
+                    let date2 = new Date();
+                    if (date1 >= date2)
+                    {
+                        $('.action-until-text').html(' until '  + pd);
+                    }
+                    else
+                    {
+                        $('.action-notification-text').html('ON');
+                        $('.action-until-text').html(' (PAUSE is still set with an expired date)');
+                    }
+                }
+            }
+            tog = 1;
+        }
+        else // turning pause off
+        {
+            $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+
+            if (gnot){
+                $('.action-notification-alert').removeClass('alert-warning').addClass('alert-info');
+                $('.action-notification-text').html('ON');
+                $('.action-until-text').html('');
+            }
+            tog = 0;
+        }
+
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+               }
+        });
+
+        var url = "/api/home/toggle-pause";
+
+        //submits to the form's action URL
+        $.post(url, { value: tog, _token: "{{ csrf_token() }}" }, function(response)
+        {
+
+        }).fail(function(response)
+        {
+            swal({
+                title: "Error",
+                text: "An error occurred while pausing notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
                 icon: "error",
             });
         });
@@ -469,6 +604,38 @@ $(function() {
 
 
     /**
+     * Expand the Disease section
+     */
+    $('#collapseDiseases').on('shown.bs.collapse', function () {
+        $('#collapseDiseaseIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+    });
+
+
+    /**
+     * Collapse the Disease sectio
+     */
+    $('#collapseDiseases').on('hidden.bs.collapse', function () {
+        $('#collapseDiseaseIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+    });
+
+
+    /**
+     * Expand the Gencon section
+     */
+    $('#collapseGenCon').on('shown.bs.collapse', function () {
+        $('#collapseGenConIcon').addClass('fa-minus-square').removeClass('fa-plus-square');
+    });
+
+
+    /**
+     * Collapse the Gencon sectio
+     */
+    $('#collapseGenCon').on('hidden.bs.collapse', function () {
+        $('#collapseGenConIcon').addClass('fa-plus-square').removeClass('fa-minus-square');
+    });
+
+
+    /**
      * Unfollow a gene
      */
     $table.on('click', '.action-follow-gene', function(element) {
@@ -508,11 +675,17 @@ $(function() {
             var original = btngrp.find('.selection').text();
             btngrp.find('.selection').text($(this).text());
 
-            //var gene = btngrp.closest('tr').find('td:first-child').attr('data-value');
-            var gene = btngrp.closest('tr').attr('data-hgnc');
-
-            // save the change
-            server_update(gene, original, $(this).text());
+            // is this a gene or a disease block
+            if ($(this).parents("ul").hasClass('action-disease-frequency'))
+            {
+                var disease = btngrp.closest('tr').attr('data-curie');
+                server_update_disease(disease, original, $(this).text());
+            }
+            else
+            {
+                var gene = btngrp.closest('tr').attr('data-hgnc');
+                server_update(gene, original, $(this).text());
+            }
 
         }
         else
@@ -552,7 +725,41 @@ $(function() {
         var url = "/api/home/notify";
 
         //submits to the form's action URL
-        $.post(url, { gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
+        $.post(url, { type: 'gene', gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
+        {
+            //alert("OK");
+        }).fail(function(response)
+        {
+            swal({
+                title: "Error",
+                text: "An error occurred while changing notifications.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                icon: "error",
+            });
+        });
+    }
+
+
+    /**
+     *
+     * Send otification changes to the server
+     */
+    function server_update_disease(gene, oldtype, newtype)
+    {
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+               }
+        });
+
+        var url = "/api/home/notify";
+
+        //submits to the form's action URL
+        $.post(url, { type: 'disease', gene: gene, old: oldtype, new: newtype, _token: "{{ csrf_token() }}" }, function(response)
         {
             //alert("OK");
         }).fail(function(response)
@@ -760,6 +967,232 @@ $(function() {
             $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
         }
     });
+
+
+    $( '#follow_disease_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/conditions/follow";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload_disease";
+
+                var gene = response.gene;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#disease-table').bootstrapTable('load', response.data);
+                    $('#disease-table').bootstrapTable("resetSearch","");
+                    /*
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', true);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', true);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', true);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', true);
+                    }
+                    */
+
+                    $('#modalSearchDisease').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while following a item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    $( '#unfollow_disease_form' ).validate( {
+        submitHandler: function(form) {
+            $.ajaxSetup({
+                cache: true,
+                contentType: "application/x-www-form-urlencoded",
+                processData: true,
+                headers:{
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN' : window.token,
+                    'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+                }
+            });
+
+            var url = "/api/conditions/unfollow";
+
+            var formData = $(form).serialize();
+
+            //submits to the form's action URL
+            $.post(url, formData, function(response)
+            {
+                var url = "/api/home/follow/reload_disease";
+
+                var disease = response.disease;
+
+                //submits to the form's action URL
+                $.get(url, function(response)
+                {
+                    //console.log(response.data);
+                    $('#disease-table').bootstrapTable('load', response.data);
+                    $('#disease-table').bootstrapTable("resetSearch","");
+
+                    switch (gene)
+                    {
+                        case '@AllActionability':
+                            $('#modalSettings').find('input[name="actionability_notify"]').prop('checked', false);
+                            break;
+                        case '@AllValidity':
+                            $('#modalSettings').find('input[name="validity_notify"]').prop('checked', false);
+                            break;
+                        case '@AllDosage':
+                            $('#modalSettings').find('input[name="dosage_notify"]').prop('checked', false);
+                            break;
+                        case '*':
+                            $('#modalSettings').find('input[name="allgenes_notify"]').prop('checked', false);
+                    }
+
+                    $('#modalSearchDisease').modal('hide');
+
+                }).fail(function(response)
+                {
+                    alert("Error reloading table");
+                });
+            }).fail(function(response)
+            {
+                swal({
+                    title: "Error",
+                    text: "An error occurred while unfollowing the item.  Please refresh the screen and try again.  If the error persists, contact Supprt.",
+                    icon: "error",
+                });
+            });
+
+            $('#modalUnFollowGene').modal('hide');
+        },
+        rules: {
+            email: {
+                required: true,
+                email: true,
+                maxlength: 80
+            }
+        },
+        messages: {
+            email:  {
+                required: "Please enter your email address",
+                email: "Please enter a valid email address",
+                maxlength: "Section names must be less than 80 characters"
+            },
+        },
+        errorElement: 'em',
+        errorClass: 'invalid-feedback',
+        errorPlacement: function ( error, element ) {
+            // Add the `help-block` class to the error element
+            error.addClass( "invalid-feedback" );
+
+            if ( element.prop( "type" ) === "checkbox" ) {
+                error.insertAfter( element.parent( "label" ) );
+            } else {
+                error.insertAfter( element );
+            }
+        },
+        highlight: function ( element, errorClass, validClass ) {
+            $( element ).addClass( "is-invalid" ).removeClass( "is-valid" );
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            $( element ).addClass( "is-valid" ).removeClass( "is-invalid" );
+        }
+    });
+
+
+    /**
+     * Unfollow a gene
+     */ 
+    $diseasetable.on('click', '.action-follow-disease', function(element) {
+        swal({
+            title: "Are you sure?",
+            text: "Unfollowed diseases or groups can always be refollowed later.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+            })
+            .then((yes) => {
+                if (yes) {
+                    var curie  = $(this).closest('tr').data('curie');
+                    $('#unfollow-disease-field').val(curie);
+                    $('#unfollow_disease_form').submit();
+                    var row = $(this).closest('tr').find('td:first-child').html();
+                    $diseasetable.bootstrapTable('remove', {
+                        field: 'symbol',
+                        values: row
+                    });
+                    $(":checkbox[value=" + curie.substring(1) + "]").prop("checked", false);
+
+                }
+        });
+    });
+
 
 
     $( '#search_region_form' ).validate( {
@@ -1130,6 +1563,15 @@ $(function() {
         }
     });
 
+    var followtermDisease = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+        url: window.dburl,
+        wildcard: '%QUERY'
+        }
+    });
+
     $('.queryFindGene').typeahead(null,
     {
         name: 'followtermGene',
@@ -1144,6 +1586,38 @@ $(function() {
 
         $('#follow-gene-field').val(item.hgncid);
         $('#follow_form').submit();
+
+    });
+
+
+    $('.queryFindDisease').typeahead(null,
+    {
+        name: 'followtermDisease',
+        display: 'label',
+        source: followtermDisease,
+        limit: 20,
+        highlight: true,
+        hint: false,
+        autoselect:true,
+        templates: {
+            //header: '<h3 class="league-name">Header</h3>',
+            //footer: '<div class=""><i class="fas fa-check-circle" style="color: green;"></i><span class="mr-2 ml-2">Disease has been curated by ClinGen</span></div>',
+            empty: [
+                '<div class="tt-suggestion tt-selectable"><div class="list-group-item">Nothing found.</div></div>'
+            ],/*,
+            header: [
+                '<div class="list-group search-results-dropdown">'
+            ],*/
+            suggestion: function (data) {
+                return '<div class="ml-1 mr-1 row pl-2 tt-ui-row ' + (data.curated ? 'tt-ui-curated-on' : '') + '" style=" border-bottom:1px solid #ccc"><span class="col-sm-7 col-xs-7 pl-0 tt-ui-label">' + data.label +  '<span class="tt-ui-alias"> ' + data.alias + '</span></span><span class=" col-sm-3 col-xs-5 tt-ui-curie">  ' + data.hgnc  + '</span>' + (data.curated ? '<span class="badge badge-success pull-right hidden-xs small mt-1 col-sm-2 tt-ui-curated">Curated </span>' : '') + '</div>'
+
+            }
+        },
+    }).bind('typeahead:selected',function(evt,item){
+        // here is where we can set the follow and refresh the screen.
+
+        $('#follow-disease-field').val(item.hgnc);
+        $('#follow_disease_form').submit();
 
     });
 
@@ -1188,6 +1662,17 @@ $(function() {
     });
 
 
+    /**
+     * Show screen to upload a spreadsheet
+     */
+    /*$('.action-gc-file').on('click', function() {
+
+        //$('#gc_search_form')[0].reset();
+        $('#modalUploadGenomeConnect').modal('show');
+
+    });*/
+
+
     // gene lookup selector specifically for genomeconnect
     $('.queryFindGenomeConnect').typeahead(null,
         {
@@ -1205,7 +1690,6 @@ $(function() {
             $('#follow_gencon_form').submit();
     
         });
-
 
         $( '#follow_gencon_form' ).validate( {
             submitHandler: function(form) {
@@ -1417,6 +1901,88 @@ $(function() {
                 }
         });
     });
+
+    /*
+	**	Set the dropzone listeners
+	*/
+	var dtarget = null;
+	$(".action-dropzone").each(function(i, el) {
+        
+        $.ajaxSetup({
+            cache: true,
+            contentType: "application/x-www-form-urlencoded",
+            processData: true,
+            headers:{
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN' : window.token,
+                'Authorization':'Bearer ' + Cookies.get('clingen_dash_token')
+            }
+        });
+
+		var dz = new Dropzone(el, {
+			url: "/kb/genomeconnect/upload",
+			uploadMultiple: false,
+			addRemoveLinks : false,
+			createImageThumbnails : false,
+            disablePreviews: true,
+			clickable : ".action-gc-file",
+            acceptedFiles : "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+			init : function() {
+				this.on("success", function(file, response) {
+                    // display confirmation
+
+					// reload the table
+                    var url = "/api/home/gc/reload";
+    
+                    var gene = response.gene;
+
+                    var errors = response.errors;
+                    var newcount = response.newcount;
+    
+                    //submits to the form's action URL
+                    $.get(url, function(response)
+                    {
+                        //console.log(response.data);
+                        $('#gencon-table').bootstrapTable('load', response.data);
+                        $('#gencon-table').bootstrapTable("resetSearch","");
+
+                        // Check if any warnings to display
+                        if (errors.length > 0)
+                        {
+
+                            swal({
+                                title: "Spreadsheet Processed w/ Warnings",
+                                text: errors.join(", "),
+                                icon: "warning",
+                                button: "OK"
+                              });
+                        }
+                        else
+                        {
+                            swal({
+                                title: "Spreadsheet Processed",
+                                text: newcount + " new gene(s) were added",
+                                icon: "success",
+                                button: "OK"
+                              });
+                        }
+    
+                    }).fail(function(response)
+                    {
+                        alert("Error reloading table");
+                    });
+
+				});
+
+				this.on("addedfile", function(event) {
+					// dtarget = id;
+				});
+			},
+			sending: function(file, xhr, formData) {
+				formData.append("_token", window.token);
+			}
+		});
+	});
 
 
 });

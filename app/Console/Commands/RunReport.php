@@ -23,6 +23,9 @@ use App\Validity;
 use App\Nodal;
 use App\Gdmmap;
 use App\Precuration;
+use App\Curation;
+use App\Acmg;
+use App\Metric;
 
 class RunReport extends Command
 {
@@ -81,11 +84,26 @@ class RunReport extends Command
                 $this->report9();
                 echo "Update Complete\n";
                 break;
+            case 'actionability':
+                echo "Creating Actionability Report\n";
+                $this->actionability();
+                echo "Update Complete\n";
+                break;
+            case 'sf':
+                echo "Creating ACMG SF Report\n";
+                $this->sf();
+                echo "Update Complete\n";
+                break;
             case 'test':
                 echo "Running test report\n";
                 $this->report10();
                 echo "Update Complete\n";
                 break;
+            case 'panels':
+                echo "Running Panel Report\n";
+                $this->report12();
+                break;
+                
             default:
                 echo "Nothing to do, exiting\n";
                 break;
@@ -533,7 +551,7 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
 
         $curations = Gene::acmg59()->where('date_last_curated', '!=', null)->orderBy('name', 'asc')->get();
 
-        $banner = "track name='ClinGen ACMG SF 3.1 Curated Genes' db=hg19\n";
+        $banner = "track name='ClinGen ACMG SF 3.2 Curated Genes' db=hg19\n";
 
         $collection = collect();
 
@@ -762,9 +780,21 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
         }
     }
 
+
+    public function actionability()
+    {
+        $curations = Curation::whereIn('status', [1, 6])->where('type', 4)->orderBy('document')->orderBy('context')->with('gene')->get();
+
+        foreach ($curations as $curation)
+        {
+            echo "$curation->document --- $curation->context --- " . $curation->gene->name . " --- " . $curation->conditions[0] . " \n";
+        }
+    }
+
+
     public function report10()
     {
-        $genes = Gene::whereNotNull('curation_status')->get();
+        $genes = Gene::whereIn('curation_status')->get();
 
         foreach ($genes as $gene)
         {
@@ -773,6 +803,96 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
                 echo $prec['status'] . "\n";
             }
         }
+    }
+
+
+    public function report12()
+    {
+        $start = Metric::where('created_at', 'like', '2021-01-01%')->first();
+        $stop = Metric::where('created_at', 'like', '2024-01-01%')->first();
+
+        $results = [];
+
+        foreach ($start->values['expert_panels'] as $key => $panel)
+        {
+            $pid = str_replace('CGAGENT:', '', $key);
+            $results[$pid] = ['label' => $panel['label'], 'begin_count' => $panel['count'], 'end_count' => null];
+        }
+
+        foreach ($stop->values['expert_panels'] as $key => $panel)
+        {
+            $pid = str_replace('CGAGENT:', '', $key);
+
+            if (isset($results[$pid]))
+            {
+                $a = $results[$pid];
+                $a['end_count'] = $panel['count'];
+                $results[$pid] = $a;
+            }
+            else{
+                $results[$pid] = ['label' => $panel['label'], 'begin_count' => 0, 'end_count' => $panel['count']];
+            }
+
+        }
+
+        // vceps
+        foreach ($stop->values['pathogenicity_expert_panels'] as $key => $panel)
+        {
+                $results[$panel['pid']] = ['label' => $panel['label'], 'begin_count' => 0, 'end_count' => $panel['count']];
+        }
+
+
+        $ohandle = fopen(base_path() . '/data/panelreport.tsv', "w");
+
+        $header = "Affiliate ID\tAffiliate Name\tBegin Count\tEnd Count\n";
+
+        fwrite($ohandle, $header);
+
+        foreach($results as $key => $value)
+        {
+            fwrite($ohandle, $key . "\t" . $value['label']. "\t" . $value['begin_count'] . "\t" . $value['end_count'] . PHP_EOL);
+        }
+
+        fclose($ohandle);
+        
+    }
+
+
+    public function sf()
+    {
+
+        $curations = Acmg::with('disease')->get();
+
+        $header = [
+                        "Gene Symbol",
+                        "Gene MIM",
+                        "Disease Name",
+                        "Disease MIM",
+                        "Disease MONDO"
+                    ];
+
+        $handle = fopen(base_path() . '/data/acmgsf.tsv', "w");
+        fwrite($handle, implode("\t", $header) . PHP_EOL);
+
+        $records = [];
+
+        foreach($curations as $curation)
+        {
+
+            $list = [   $curation->gene_symbol,
+                        $curation->gene_mim,
+                        $curation->disease->label,
+                        implode(', ', $curation->disease_mims),
+                        $curation->disease->curie,
+                    ];
+
+            fwrite($handle, implode("\t", $list) . PHP_EOL);
+
+        }
+
+        fclose($handle);
+
+        echo "DONE\n";
     }
 
 }

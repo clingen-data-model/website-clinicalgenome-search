@@ -49,20 +49,19 @@ class UpdateSources extends Command
           $this->call('update:Genenames');  // HGNC
           $this->call('update:activity');   // Genegraph
           $this->call('update:cpic');       // CPIC and PharmGKB
-          //$this->call('update:erepo');      // Erepo
-          $this->call('update:cytobands');  // UCSC (goldenpath hg19)
-          $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
-          $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
-          $this->call('update:dosages');    // DCI (Jira)
-          $this->call('update:map');        // local file
-          $this->call('update:ratings');    // DCI (Jira)
-          $this->call('update:region');     // local file
+          //$this->call('update:cytobands');  // UCSC (goldenpath hg19)
+         // $this->call('update:index', ['report' =>  'gene']); // Refresh index file from Jira
+         // $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
+          //$this->call('update:dosages');    // DCI (Jira)
+          //$this->call('update:map');        // local file
+          $this->call('update:ratings');    // DCI (Jira) <--- NEED TO FINISH THIS 
+          //$this->call('update:region');     // local file
           $this->call('update:mondo');
           $this->call('update:disease');    // Genephap
           $this->call('update:erepo');      // Erepo
           $this->call('update:orpha');      // Orphanet
           $this->call('gencc:query');       // Gencc souce
-         // $this->call('update:geneconnect');    // Update geneconnect counts from clinvar
+          $this->call('update:genomeconnect');    // Update geneconnect counts from clinvar
           $this->call('query:oms');         // update afflisliates from website
           $this->call('update:affiliates'); // Update from genegraph and erepo
           $this->call('update:changes');
@@ -78,9 +77,8 @@ class UpdateSources extends Command
           $this->call('update:omim');       // OMIM
           $this->call('update:morbid');     // OMIM Morbid
           $this->call('update:mim');       // OMIM
-          $this->call('update:plof');       // local file Gnomad EXAC
+          $this->call('update:gnomad');       // local file Gnomad EXAC
           $this->call('update:uniprot');    // Uniprot
-         // $this->call('update:mondo');      // Monarch
           break;
         case 'monthly':
           $this->call('update:acmg59');     // local file

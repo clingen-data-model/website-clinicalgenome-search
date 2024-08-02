@@ -90,12 +90,15 @@ class UpdateGenenames extends Command
             if (isset($doc['mane_plus']))
                 unset($doc['mane_plus']);
 
+            $doc['is_par'] = (strpos($doc['location'], ' and ') > 0);
+
+            $doc['status'] = 1;
+
 			// check if entry already exists, if not create
             $gene = Gene::updateOrCreate(['hgnc_id' => $doc['hgnc_id']], $doc);
 
             $term = Term::updateOrCreate(['name' => $gene->name, 'value' => $gene->hgnc_id],
                                         ['type' => 1, 'status -> 1']);
-//dd($doc);
             if ($gene->prev_symbol !== null)
                 foreach ($gene->prev_symbol as $symbol)
                     Term::updateOrCreate(['name' => $symbol, 'value' => $gene->hgnc_id],
@@ -106,6 +109,11 @@ class UpdateGenenames extends Command
                                         ['alias' => $gene->name, 'type' => 3, 'status -> 1']);
 
         }
+
+        // remove any withdrawn genes
+        Gene::where('status', 0)->delete();
+        Gene::where('status', 1)->update(['status' => 0]);
+
 
         echo "DONE\n";
 

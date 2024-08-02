@@ -47,13 +47,20 @@ Route::get('/reports/{id}', 'Api\SettingsController@edit');
 
 // affiliates
 Route::resource('affiliates', 'Api\AffiliateController')->only(['index', 'show']);
+Route::get('/affiliates/expand/{id}', 'Api\AffiliateController@expand')->name('affiliates.expand');
+
 
 // genes
 Route::resource('genes', 'Api\GeneController')->only(['index']);
 Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
+Route::get('/genes/lookByName/{term?}', 'Api\GeneController@lookByName')->name('genes.lookByName');
 Route::get('/genes/find/{term?}', 'Api\GeneController@find')->name('genes.find');
 Route::post('/genes/follow', 'Api\FollowController@create')->name('follows.create');
 Route::post('/genes/unfollow', 'Api\FollowController@remove')->name('follows.remove');
+
+// acmg
+Route::get('genes/acmg', 'Api\GeneController@acmg_index');
+Route::get('genes/acmg/expand/{id}', 'Api\GeneController@acmg_expand');
 
 // curated genes
 Route::resource('curations', 'Api\CurationController')->only(['index']);
@@ -69,6 +76,8 @@ Route::get('/dosage/expand/{id}', 'Api\DosageController@expand')->name('dosage.e
 
 // gene validity
 Route::resource('validity', 'Api\ValidityController')->only(['index']);
+Route::get('/validity/expand/{id}', 'Api\ValidityController@expand')->name('validity.expand');
+
 
 // clinical actionability
 Route::resource('actionability', 'Api\ActionabilityController')->only(['index']);
@@ -77,10 +86,13 @@ Route::resource('actionability', 'Api\ActionabilityController')->only(['index'])
 Route::resource('drugs', 'Api\DrugController')->only(['index']);
 Route::get('/drugs/look/{term?}', 'Api\DrugController@look')->name('drugs.look');
 
-
 // diseases
 Route::resource('conditions', 'Api\ConditionController')->only(['index', 'show']);
 Route::get('/conditions/look/{term?}', 'Api\ConditionController@look')->name('conditions.look');
+Route::get('/conditions/find/{term?}', 'Api\ConditionController@find')->name('conditions.find');
+Route::post('/conditions/follow', 'Api\FollowController@create_disease')->name('followd.create');
+Route::post('/conditions/unfollow', 'Api\FollowController@remove_disease')->name('followd.remove');
+
 
 // Geneconnect
 //Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
@@ -91,15 +103,20 @@ Route::get('/home/gc/reload', 'Api\GenomeConnectController@reload')->name('gc.re
 
 // region search
 Route::get('/region/search/{type}/{region}', 'Api\RegionController@search')->name('region.search');
+Route::get('/search/expand/{id}', 'Api\SearchController@expand')->name('search.expand');
+
 
 // dashboard
 Route::post('/home/notify', 'Api\HomeController@notify')->name('home.notify');
 Route::get('/home/rpex/{type}', 'Api\HomeController@report_expand')->name('home.report');
 Route::get('/home/reports/{type}', 'Api\HomeController@reports')->name('home.reports');
 Route::post('/home/toggle', 'Api\HomeController@toggle')->name('home.toggle');
+Route::post('/home/toggle-pause', 'Api\HomeController@pause')->name('home.pause');
 Route::get('/home/follow/reload', 'Api\FollowController@reload')->name('home.reload');
 Route::get('/home/dare/expand/{group}', 'Api\FollowController@dare_expand')->name('home.rexpand');
 Route::get('/home/dape/expand/{group}', 'Api\FollowController@dape_expand')->name('home.pexpand');
+Route::get('/home/follow/reload_disease', 'Api\FollowController@reload_disease')->name('home.reload_disease');
+
 
 // filters
 Route::resource('filters', 'Api\FilterController');

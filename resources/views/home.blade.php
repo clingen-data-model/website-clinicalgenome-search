@@ -14,7 +14,26 @@
 
     <div id="dashboard-logout" class="row justify-content-center">
 
-        <div class="col-md-9 mt-3 pl-0 pr-0 border">
+        <div class="col-md-9 mt-3 pl-0 pr-0">
+            @if ($notification->frequency['global'] == "on")
+                @if($notification->frequency['global_pause'] == "on")
+                     <div class="alert alert-warning action-notification-alert action-edit-settings" role="alert">
+                    @if ($notification->onVacation())
+                        Global notifications are <b><span class="action-notification-text">PAUSED</span></b> <span class="action-until-text">until {{ $notification->global_pause_date }}</span>
+                    @else 
+                        Global notifications are <b><span class="action-notification-text">ON</span></b> <span class="action-until-text">(PAUSE is still set with an expired date)</span>
+                    @endif
+                    </div>
+                @else 
+                    <div class="alert alert-info action-notification-alert action-edit-settings" role="alert">
+                        Global notifications are <b><span class="action-notification-text">ON</span></b> <span class="action-until-text"></span>
+                    </div>
+                @endif
+            @else 
+                <div class="alert alert-danger action-notification-alert action-edit-settings" role="alert">
+                    Global notifications are <b><span class="action-notification-text">OFF</span></b> <span class="action-until-text"></span>
+                </div>
+            @endif
 
             @if ($user->isGenomeConnectAdmin())
             <div class="mb-2">
@@ -35,15 +54,26 @@
 
 			@include('dashboard.includes.reports')
 
-            <div>
-                <a class="float-right m-2" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
-					<i class="far fa-minus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
-				<a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
-					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-light-notification" style="color:#ffffff"></i></a>
-				<h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
+            <div class="mb-2">
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseFollow" role="button" aria-expanded="true" aria-controls="collapseFollow">
+					<i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseFollowIcon"></i></a>
+				<!-- <a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Global Notifications: On">
+					<i class="far {{ $notification->frequency['global'] == "on" ? "fa-lightbulb" : '' }} fa-lg action-toggle-notification" style="color:#ffffff"></i></a>
+                <a class="float-right mt-2 mr-4 action-edit-settings" data-target-tab="#globals" data-toggle="tooltip" title="Pause All Notifications: On">
+                    <i class="fas {{ $notification->frequency['global_pause'] == "on" ? "fa-pause" : '' }} fa-lg action-pause-notification" style="color:#ffffff"></i></a>
+				-->
+                    <h4 class="m-0 p-2 text-white" style="background:#55aa7f">Followed Genes</h4>
             </div>
 
             @include('dashboard.includes.follow')
+
+            <div>
+                <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapseDiseases" role="button" aria-expanded="false" aria-controls="collapseDiseases">
+                    <i class="far fa-plus-square fa-lg" style="color:#ffffff" id="collapseDiseaseIcon"></i></a>
+				<h4 class="m-0 p-2 text-white" style="background:#E67E22">Followed Diseases</h4>
+            </div>
+
+            @include('dashboard.includes.diseases')
 
         </div>
         <div class="col-md-3 mt-3">
@@ -75,6 +105,10 @@
     @include('modals.followgencon', ['gene' => ''])
     @include('modals.unfollowgencon', ['ident' => ''])
     @include('modals.searchgenomeconnect')
+    @include('modals.genconupload')
+    @include('modals.followdisease', ['disease' => ''])
+    @include('modals.searchdisease')
+    @include('modals.unfollowdisease', ['disease' => ''])
 
 @endsection
 
@@ -85,8 +119,13 @@
 	<link href="/css/gijgo.min.css" rel="stylesheet">
 	<link href="/css/bootstrap-tagsinput.css" rel="stylesheet">
 
+    <link href="/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet">
+
+
 	<link rel="preconnect" href="https://fonts.gstatic.com">
 	<link href="https://fonts.googleapis.com/css2?family=Sriracha&display=swap" rel="stylesheet">
+
+    <link href="/css/dropzone.min.css" rel="stylesheet">
 
     <style>
         .profile-background
@@ -166,14 +205,20 @@
 <script src="/js/genetable.js"></script>
 <script src="/js/edit.js"></script>
 
+<script src="/js/bootstrap-datepicker.min.js"></script>
+
 <script>
 
     $(function() {
 		var $table = $('#follow-table');
 		var $reporttable = $('#table');
         var $gencontable = $('#gencon-table');
+        var $diseasetable = $('#disease-table')
 
 		window.burl = '{{  url('api/genes/find/%QUERY') }}';
+        window.dburl = '{{  url('api/conditions/find/%QUERY') }}';
+        window.token = "{{ csrf_token() }}";
+
 
         // make some mods to the search input field
         var search = $('.fixed-table-toolbar .search input');
@@ -182,6 +227,15 @@
         $( ".fixed-table-toolbar" ).show();
         $('[data-toggle="tooltip"]').tooltip();
         $('[data-toggle="popover"]').popover();
+
+        //ds_pause_date
+        $('#ds_pause_date').datepicker({ 
+            startDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+        });
+
+        $('#ds_pause_date').datepicker().on('changeDate', function (ev) {
+            
+        });
 
         $('#follow-table').on('click', '.action-region-expand', function() {
 
@@ -231,8 +285,6 @@
 
             $obj.attr('colspan',12);
 
-            console.log(row.hgnc.substring(1));
-
             if (row.hgnc.charAt(0) == '!')
                 $obj.load( "/api/home/dape/expand/" + row.hgnc.substring(1));
             else
@@ -274,6 +326,7 @@
 
 <script src="/js/typeahead.js"></script>
 <script src="/js/dashboard.js"></script>
+<script src="/js/dropzone.min.js"></script>
 
 <script>
 
@@ -287,7 +340,8 @@
 	function rowAttributes(row, index)
 	{
 	return {
-		'data-hgnc': row.hgnc
+		'data-hgnc': row.hgnc,
+        'data-curie': row.curie
 	}
 	}
 
@@ -299,12 +353,27 @@
             return value;
         else if (row.hgnc.charAt(0) == '!')
         {
-            console.log(row);
             return value;
         }
         else
 		    return '<a href="/kb/genes/' + row.hgnc + '">' + value + '</a></td>';
 	}
+
+    /**
+     * For a symbol or region cell
+     *
+     * @param {*} index
+     * @param {*} row
+     */
+    function ldateFormatter(index, row) {
+
+        if (row.display_last == null || row.display_last == '')
+            return '';
+
+        var d = new Date(row.display_last);
+
+        return d.toLocaleDateString();
+    }
 
 </script>
 

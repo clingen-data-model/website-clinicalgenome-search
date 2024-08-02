@@ -120,6 +120,9 @@ class UpdateMondo extends Command
             if (strpos($term, 'MONDO') !== 0)
                 continue;
 
+            //if ($term == "MONDO:0008380")
+             //   dd($node);
+
             $disease = Disease::curie($term)->first();
 
             if ($disease === null)
@@ -148,6 +151,12 @@ class UpdateMondo extends Command
             }
 
             $disease->description = $node->meta->definition->val ?? '';
+
+            // we need to clear out all the quick refs before assigning new ones
+            foreach (['omim', 'omim_label', 'orpha_id', 'orpha_label', 'do_id', 'medgen_id', 'gard_id', 'umls_id'] as $field)
+            {
+              $disease->$field = null;
+            }
 
             $synonyms = [];
             if (isset($node->meta->synonyms))
@@ -183,6 +192,7 @@ class UpdateMondo extends Command
                         case 'DOID':
                             $disease->do_id = $val[1];
                             break;
+                        case 'OMIMPS':
                         case 'OMIM':
                             $disease->omim = $val[1];
                             break;
@@ -205,12 +215,24 @@ class UpdateMondo extends Command
 
             // update the term Library
             $stat = Term::updateOrCreate(['name' => $disease->label, 'value' => $disease->curie],
-                                        ['type' => Term::TYPE_DISEASE_NAME, 'status -> 1']);
+                                        ['type' => Term::TYPE_DISEASE_NAME, 'status' => 0]);
+
+            // retrieve current list of terms so obsolete ones can be removed
+            $current_terms = Term::where('value', $disease->curie)->pluck('name')->toArray();
+            $new_terms = [];
 
             foreach ($synonyms as $synonym)
             {
                 $stat = Term::updateOrCreate(['name' => $synonym, 'value' => $disease->curie],
-                                        ['alias' => $disease->label, 'type' => Term::TYPE_DISEASE_SYN, 'status -> 1']);
+                                        ['alias' => $disease->label, 'type' => Term::TYPE_DISEASE_SYN, 'status' => 0]);
+
+                $new_terms[] = $synonym;
+            }
+
+            // remove obsolete tems
+            foreach (array_diff($current_terms, $new_terms) as $term)
+            {
+                Term::name($term)->where('value', $disease->curie)->delete();
             }
 
         }

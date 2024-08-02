@@ -66,7 +66,7 @@ class Variant extends Model
      *
      * @var array
      */
-	protected $fillable = ['iri', 'variant_id', 'caid', 'condition', 'evidence_links',
+	protected $fillable = ['iri', 'variant_id', 'caid', 'condition', 'evidence_links', 'erepo_uuid',
 					        'published_date', 'gene', 'guidelines', 'hgvs', 'type', 'status'
                          ];
 
@@ -78,6 +78,7 @@ class Variant extends Model
      protected $appends = ['display_date', 'list_date', 'display_status'];
 
      public const TYPE_NONE = 0;
+     public const TYPE_OBSOLETE = 1;
 
      /*
      * Type strings for display methods
@@ -168,8 +169,6 @@ class Variant extends Model
 
         $genelist = [];
 
-       // dd($records[0]->guidelines);
-
         foreach ($records as $record)
         {
             $tag = ($disease ? $record->gene['label'] : $record->condition['label']);
@@ -179,10 +178,11 @@ class Variant extends Model
                  // deal with some bad records coming from the erepo that contain no gene data
                  if ($disease && !isset($record->gene["NCBI_id"]))
                     continue;
-
+                
                 $genelist[$tag] = [ 'id' => ($disease ? $record->gene['NCBI_id'] : $record->condition['@id']),
-                                        'classifications' => $classifications,
-                                        'panels' => []];
+                                    'obsolete' => ($record->type == self::TYPE_OBSOLETE),
+                                    'classifications' => $classifications,
+                                    'panels' => []];
             }
 
             $a =& $genelist[$tag]['classifications'];
@@ -204,4 +204,251 @@ class Variant extends Model
         return $genelist;
     }
 
+
+    /**
+     * The variant_interpretations topic queue has died, so preload from
+     * erepo as of offset 2225
+     *
+     */
+    public static function preload()
+    {
+        //We already pull the erepo into the variant table.  
+
+        $records = self::all();
+
+        foreach ($records as $record)
+        {
+            //skip over duplicates
+            $check = Curation::variant()->active()->where('source_uuid',$record->erepo_uuid)->exists();
+            if ($check)
+                continue;
+
+            echo "Updating " . $record->erepo_uuid .  "\n";
+
+
+            // it seems that some records are published without a condition...
+            if (isset($record->condition))
+                $disease = Disease::curie($record->condition['@id'])->first();
+            else
+                $disease = null;
+
+            // the erepo buries the panel id in the agents label.  cut it out
+            $panel_id = $record->guidelines[0]['agents'][0]['label'];
+            $panel_id = substr($panel_id, 3);
+            $panel_id = strtok($panel_id, ' ');
+            $panel = Panel::allids($panel_id)->first();
+
+            if (isset($record->gene['NCBI_id']))
+                $gene = Gene::entrez($record->gene['NCBI_id'])->first();
+            else
+                $gene = Gene::name($record->gene['label'])->first();
+
+            // there are entries where label is N/A and there is no entrez field
+            if ($gene === null)
+                continue;
+
+            // finally, we can build the model
+            $data = [
+                'type' => Curation::TYPE_VARIANT_PATHOGENICITY,
+                'type_string' => 'Variant Pathogenicity',
+                'subtype' => Curation::SUBTYPE_VARIANT_PATHOGENICITY_ERP,
+                'subtype_string' => 'Erepo preload',
+                'group_id' => 0,
+                'sop_version' => null,
+                'curation_version' => $record->guidelines[0]['version'] ?? null,
+                'source' => 'erepo',
+                'source_uuid' => $record->erepo_uuid,
+                'source_timestamp' => 0,
+                'source_offset' => 0,
+                'packet_id' => null,
+                'message_version' => null,
+                'assertion_uuid' => $record->iri,
+                'alternate_uuid' => $record->caid,
+                'panel_id' => $panel->id ?? null,
+                'affiliate_id' => $panel_id,
+                'affiliate_details' => $record->guidelines[0]['agents'][0]['affiliation'],
+                'gene_id' => $gene->id,
+                'gene_hgnc_id' => $gene->hgnc_id,
+                'gene_details' => $record->gene,
+                'variant_iri' => $record->variant_id,
+                'variant_details' => $record->hgvs,
+                'document' => $record->variant_id,
+                'context' => null,
+                'title' => null,
+                'summary' => null,
+                'description' => null,
+                'comments' => null,
+                'disease_id' => $disease->id ?? null,
+                'conditions' => (isset($record->condition['@id']) ? [$record->condition['@id']] : []),
+                'condition_details' => [$record->condition ?? null],
+                'evidence' => $record->evidence_links,
+                'evidence_details' => $record->guidelines[0]['agents'][0]['evidenceCodes'],
+                'assertions' => $record->guidelines[0]['outcome']['label'],
+                'scores' => ['classification' => $record->guidelines[0]['outcome']['label'] ?? null],
+                'score_details' => $record->guidelines,
+                'curators' => null,
+                'published' => true,
+                'animal_model_only' => false,
+                'events' => ['publish_date' => $record->published_date
+                            ],
+                'url' => ['cspecId' => $record->guidelines[0]->cspecId ?? null],
+                'version' => 1,
+                'status' => Curation::STATUS_ACTIVE
+            ];
+
+            $curation = new Curation($data);
+
+            // adjust the version number
+            
+            $curation->save();
+            
+            //$old_curations->each(function ($item) {
+            //    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+            //});
+
+           
+        }
+
+    }
+
+
+    /**
+     * Map a variant pathogenicity record to a curation
+     *
+     */
+    public static function parser($message, $packet)
+    {
+        dd($message);
+        $record = json_decode($message->payload);
+
+        //dd($record);
+
+        // process unpublish requests
+        if ($record->statusPublishFlag == "Unpublish")
+        {
+            if (!isset($record->id))
+                die("Cannot unplublish id");//echo "Unpublish request with no iri \n";
+            else
+            {
+                $old_curations = Curation::variant()->where('document', basename($record->interpretation->id))
+                                                  ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                                  ->get();
+
+                $old_curations->each(function ($item) {
+                    $item->update(['status' => Curation::STATUS_ARCHIVE]);
+                });
+               
+            }
+
+            return;
+        }
+
+        if($record->statusPublishFlag != "Publish")
+            dd($record);
+
+            // save old ones to later archive
+        $old_curations = Curation::variant()->where('document', basename($record->interpretation->id))
+                                            ->where('status', '!=', Curation::STATUS_ARCHIVE)
+                                            ->get();
+
+        // it seems that some records are published without a condition...
+        if (isset($record->interpretation->condition))
+            $disease = Disease::curie($record->interpretation->condition[0]->disease[0]->id)->first();
+        else
+            $disease = null;
+
+        $panel = Panel::allids(basename($record->interpretation->contribution[0]->agent->id))->first();
+
+        // there is no nice way to extract the approval and publish dates.  We have to parse contributions
+        foreach($record->interpretation->contribution as $contributor)
+        {
+            if ($contributor->contributionRole->label = "publisher")
+                $approval_date = $contributor->contributionDate;
+
+            if ($contributor->contributionRole->label = "approver")
+                $publish_date = $contributor->contributionDate;
+        }
+
+        // the gene reference is deep within the evidence.  Find it
+        foreach($record->interpretation->evidenceLine as $evidence)
+        {
+            foreach($evidence->evidenceItem as $item)
+            {
+                if (isset($item->variant->relatedContextualAllele))
+                {
+                    foreach($item->variant->relatedContextualAllele as $allele)
+                    {
+                        if (isset($allele->relatedGene))
+                            $gene_info = $allele->relatedGene;
+                    }
+                }
+            }
+        }
+
+        if (isset($gene_info->id))
+            $gene = Gene::entrez(substr($gene_info->id, 9))->first();
+        else
+            $gene = Gene::name($gene_info->label)->first();
+
+
+        // finally, we can build the model
+        $data = [
+            'type' => Curation::TYPE_VARIANT_PATHOGENICITY,
+            'type_string' => 'Variant Pathogenicity',
+            'subtype' => Curation::SUBTYPE_VARIANT_PATHOGENICITY,
+            'subtype_string' => 'Variant Pathogenicity',
+            'group_id' => 0,
+            'sop_version' => $record->interpretation->assertionMethod->label,
+            'curation_version' => null,
+            'source' => 'variant_interpretation',
+            'source_uuid' => $message->key,
+            'source_timestamp' => $message->timestamp,
+            'source_offset' => $message->offset,
+            'packet_id' => $packet->id,
+            'message_version' => null,
+            'assertion_uuid' => basename($record->interpretation->id),
+            'alternate_uuid' => null,
+            'panel_id' => $panel->id ?? null,
+            'affiliate_id' => basename($record->interpretation->contribution[0]->agent->id),
+            'affiliate_details' => $record->interpretation->contribution[0]->agent,
+            'gene_id' => $gene->id,
+            'gene_hgnc_id' => $gene->hgnc_id,
+            'gene_details' => $gene_info,
+            'variant_iri' => $record->interpretation->variant,
+            'variant_details' => null,
+            'document' => basename($record->interpretation->id),
+            'context' => null,
+            'title' => null,
+            'summary' => null,
+            'description' => $record->interpretation->description,
+            'comments' => null,
+            'disease_id' => $disease->id ?? null,
+            'conditions' => (isset($record->interpretation->condition) ? [$record->interpretation->condition[0]->disease[0]->id] : []),
+            'condition_details' => [$record->interpretation->condition ?? null],
+            'evidence' => null,
+            'evidence_details' => $record->interpretation->evidenceLine,
+            'assertions' => null,
+            'scores' => ['classification' => $record->interpretation->statementOutcome->label ?? null],
+            'score_details' => $record->interpretation->statementOutcome,
+            'curators' => null,
+            'published' => ($record->statusPublishFlag == "Publish"),
+            'animal_model_only' => false,
+            'events' => ['approval_date' => $approval_date ?? null,
+                         'publish_date' => $publish_date ?? null
+                        ],
+            'url' => [],
+            'version' => 1,
+            'status' => Curation::STATUS_ACTIVE
+        ];
+
+        $curation = new Curation($data);
+
+        // adjust the version number
+        
+        $curation->save();
+        
+        $old_curations->each(function ($item) {
+            $item->update(['status' => Curation::STATUS_ARCHIVE]);
+        });
+    }
 }

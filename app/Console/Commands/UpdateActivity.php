@@ -64,22 +64,33 @@ class UpdateActivity extends Command
 
         foreach($results->collection as $gene)
         {
-            //echo "Updating  " . $gene->symbol . " " . $gene->hgnc_id . "\n";
-
-            $flags = ['actionability' => $gene->has_actionability,
-                        'validity' => $gene->has_validity,
-                        'dosage' => $gene->has_dosage,
-                        'pharma' => false,
-                        'varpath' => false,
-                    ];
+            if ($gene->label == 'A12M1')
+                dd($gene);
 
             $record = Gene::hgnc($gene->hgnc_id)->first();
 
-            if ($record !== null)
-                $record->update(['activity' => $flags, 'date_last_curated' => $gene->last_curated_date,
-                                'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
-            else
+            if ($record === null)
+            {
                 echo "\n(W001) WARN: Gene " . $gene->symbol . "not in local table\n";
+                continue;
+            }
+
+            if ($record->activity == null)
+                        $record->activity = ['pharma' => false, 'varpath' => false, 'dosage' => false, 'actionability' => false, 'validity' => false];
+
+            // deal with any new genes that might not have an activity object yest
+            if ($record->activity !== null)
+                $record->update(['date_last_curated' => $gene->last_curated_date,
+                                'genegraph' => ['present' => true, 'updated' => Carbon::now()]]);
+
+            $activity = $record->activity;
+            $activity['actionability'] = $gene->has_actionability;
+            $activity['validity'] = $gene->has_validity;
+            $activity['dosage'] = $gene->has_dosage;
+            $record->activity = $activity;
+            $record->date_last_curated = $gene->last_curated_date;
+            $record->genegraph = ['present' => true, 'updated' => Carbon::now()];
+            $record->save();
 
             // update search terms
             $terms = Term::where('value',$record->hgnc_id)->get();

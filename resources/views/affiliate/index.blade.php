@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 
     <div class="col-md-7">
       <table class="mt-3 mb-2">
@@ -33,9 +33,9 @@
 
     </div>
 
-    <div class="col-md-12 light-arrows dark-table">
+    <div class="col-md-12 light-arrows dark-table dark-detail">
 
-        @include('_partials.genetable')
+        @include('_partials.genetable', ['expand' => true])
 
     </div>
 	</div>
@@ -98,7 +98,8 @@
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+      if (Cookies.get('clingen_dash_token') != undefined)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 
@@ -118,12 +119,12 @@
       locale: 'en-US',
       columns: [
         {
-            title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
+            title: 'ClinGen<div>Gene Curation Expert Panel</div>',
             field: 'label',
             formatter: affiliateFormatter,
             cellStyle: cellFormatter,
             filterControl: 'input',
-            searchFormatter: false,
+            searchFormatter: true,
 			      sortable: true
         },
         {
@@ -134,37 +135,33 @@
             searchFormatter: false,
             visible: false
         },
-		    // {
-        //   title: 'Number of Curations',
-        //   field: 'count',
-        //   cellStyle: cellFormatter,
-        //   filterControl: 'input',
-        //   searchFormatter: false,
-        //   align: 'center'
-        // },
-		    // {
-        //   title: 'total_all_curations',
-        //   field: 'total_all_curations',
-        //   cellStyle: cellFormatter,
-        //   filterControl: 'input',
-        //   searchFormatter: false,
-        //   align: 'center'
-        // },
 		    {
-          title: '# Primary Curations',
+          title: 'Primary<div>Curations</div>',
           field: 'total_approver_curations',
           cellStyle: cellFormatter,
           filterControl: 'input',
           searchFormatter: false,
-          align: 'left'
+          align: 'left',
+          sortable: true
         },
 		    {
-          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Each curation has a primary contributor, and may have one or more secondary contributors. Secondary contributors collaborate with and provide feedback to the primary GCEP. Questions related to curations should be directed to the primary GCEP."></i></div> # Secondary Contributions',
+          title: '<div data-toggle="tooltip" data-placement="top" title="Each curation has a primary contributor, and may have one or more secondary contributors. Secondary contributors collaborate with and provide feedback to the primary GCEP. Questions related to curations should be directed to the primary GCEP.">Secondary</div><div>Contributions</div>',
           field: 'total_secondary_curations',
           cellStyle: cellFormatter,
+          formatter:  zeroFormatter,
           filterControl: 'input',
           searchFormatter: false,
-          align: 'left'
+          align: 'left',
+          sortable: true
+        },
+        {
+          title: 'View All Curations',
+          field: 'total_all_curations',
+          cellStyle: cellFormatter,
+          formatter:  afflinkFormatter,
+          filterControl: 'input',
+          searchFormatter: false,
+          sortable: false
         }
       ]
     })
@@ -213,6 +210,29 @@
     $table.on('post-body.bs.table', function (e, name, args) {
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+    $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.attr('colspan',12);
+
+      var t = $obj.closest('tr');
+
+      t.addClass('dosage-row-bottom');
+
+      t.prev().addClass('dosage-row-top');
+
+      $obj.load( "/api/affiliates/expand/" + row.agent );
+
+      return false;
+    })
+
+
+    $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+        $obj.closest('tr').prev().removeClass('dosage-row-top');
+
+        return false;
+    });
 
   }
 

@@ -201,12 +201,16 @@ class Report extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function run()
+    public function run($type = 'gene')
     {
-        $changes = Change::start(Carbon::parse($this->start_date))
-                            ->stop(Carbon::parse($this->stop_date))
-                            ->filters($this->filters)->get();
-
+        if ($type == 'gene')
+            $changes = Change::start(Carbon::parse($this->start_date))
+                                ->stop(Carbon::parse($this->stop_date))
+                                ->filters($this->filters)->get();
+        else if ($type == 'disease')
+            $changes = Change::start(Carbon::parse($this->start_date))
+                                ->stop(Carbon::parse($this->stop_date))
+                                ->disease_filters($this->filters)->get();
         return $changes;
     }
 

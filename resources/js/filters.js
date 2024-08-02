@@ -8,8 +8,8 @@ $(function() {
 function createBadges()
 {
     $('.filter-container').html('');
-    var dosageFilters = $('.dosage-filter');
-    var enabledFilters = dosageFilters.filter( function (filter) {
+    var advancedFilters = $('.advanced-filter');
+    var enabledFilters = advancedFilters.filter( function (filter) {
         return $(this).hasClass('fa-toggle-on')
     });
 
@@ -22,8 +22,129 @@ function createBadges()
             var newbadge = $('<span class="badge action-hi-badge bg-primary mr-1">' + filterObj.data('badge') + '</span>');
             $('.filter-container').append(newbadge);
         })
-
     }
+}
+
+
+
+/**
+ *
+ *
+ * ORIGINAL Listener for displfaying only genes
+ *
+ * */
+/*$('.action-show-genes').on('click', function() {
+    var viz = [];
+
+    if ($(this).hasClass('btn-primary'))
+    {
+        $(this).removeClass('btn-primary').addClass('btn-default active');
+        $(this).html('<b>Hide Genes</b>');
+    }
+    else
+    {
+        viz.push(0);
+        viz.push(3);
+        $(this).addClass('btn-primary').removeClass('btn-default active');
+        $(this).html('<b>Show Genes</b>')
+    }
+
+    if ($('.action-show-regions').hasClass('btn-primary'))
+        viz.push(1);
+
+    filter_push("geneswitch", "type", viz);
+    filter_process($table);
+});*/
+
+
+/**
+ *
+ * ORIGINAL Listener for displaying only regions
+ *
+ * */
+/*$('.action-show-regions').on('click', function() {
+    var viz = [];
+    if ($('.action-show-genes').hasClass('btn-primary'))
+    {
+        viz.push(0);
+        viz.push(3);
+    }
+
+    if ($(this).hasClass('btn-primary'))
+    {
+        $(this).removeClass('btn-primary').addClass('btn-default active');
+        $(this).html('<b>Hide Regions</b>');
+    }
+    else
+    {
+        viz.push(1);
+        $(this).addClass('btn-primary').removeClass('btn-default active');
+        $(this).html('<b>Show Regions</b>')
+    }
+
+    filter_push("geneswitch", "type", viz);
+    filter_process($table);
+});*/
+
+/**
+ *  Clear all the applied dosage filters
+ * 
+ */
+$('.action-show-dosage').on('click', function(e) {
+
+    if ($(this).prop('checked')) 
+        return;
+
+    filter_pop("haplo");
+    $('.action-show-hiknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-hiknown-text').html('Off');
+
+    filter_pop("triplo");
+    $('.action-show-tsknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-tsknown-text').html('Off');
+
+    filter_pop("hits");
+    $('.action-show-hitsknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-hitsknown-text').html('Off');
+
+    filter_pop("protein");
+    $('.action-show-protein').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-protein-text').html('Off');
+
+    filter_pop("recent");
+    $('.action-show-recent').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-recent-text').html('Off');
+
+    filter_pop("history");
+    $('.action-show-new').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+	$('.action-show-recent-new').html('Off');
+
+    createBadges()
+
+});
+
+function legacy_gene_switch(obj)
+{
+    var viz = [];
+
+    if (obj.hasClass('btn-success'))
+    {
+        obj.removeClass('btn-success').addClass('btn-default');
+        obj.html('<b>Genes: Off</b>');
+    }
+    else
+    {
+        viz.push(0);
+        viz.push(3);
+        obj.addClass('btn-success').removeClass('btn-default');
+        obj.html('<b>Genes: On</b>')
+    }
+
+    if ($('.action-show-regions').hasClass('btn-success'))
+        viz.push(1);
+
+    filter_push("geneswitch", "type", viz);
+    filter_process($table);
 }
 /**
  *
@@ -34,29 +155,49 @@ function createBadges()
 $('.action-show-genes').on('click', function() {
     var viz = [];
 
-    if ($(this).hasClass('btn-success'))
-    {
-        $(this).removeClass('btn-success').addClass('btn-default active');
-        $(this).html('<b>Genes: Off</b>');
-    }
-    else
+    // check for legacy objects
+    if ($(this).hasClass('btn'))
+        return legacy_gene_switch($(this));
+
+    if ($(this).prop('checked')) 
     {
         viz.push(0);
         viz.push(3);
-        $(this).addClass('btn-success').removeClass('btn-default active');
-        $(this).html('<b>Genes: On</b>')
     }
 
-    if ($('.action-show-regions').hasClass('btn-success'))
+
+    if ($('.action-show-regions').prop('checked')) 
         viz.push(1);
 
     filter_push("geneswitch", "type", viz);
     filter_process($table);
-
-    /*$table.bootstrapTable('filterBy', {
-            type: viz
-    });*/
 });
+
+
+function legacy_region_switch(obj)
+{
+    var viz = [];
+    if ($('.action-show-genes').hasClass('btn-success'))
+    {
+        viz.push(0);
+        viz.push(3);
+    }
+
+    if (obj.hasClass('btn-success'))
+    {
+        obj.removeClass('btn-success').addClass('btn-default');
+        obj.html('<b>Regions: Off</b>');
+    }
+    else
+    {
+        viz.push(1);
+        obj.addClass('btn-success').removeClass('btn-default');
+        obj.html('<b>Regions: On</b>')
+    }
+
+    filter_push("geneswitch", "type", viz);
+    filter_process($table);
+}
 
 
 /**
@@ -66,30 +207,113 @@ $('.action-show-genes').on('click', function() {
  * */
 $('.action-show-regions').on('click', function() {
     var viz = [];
-    if ($('.action-show-genes').hasClass('btn-success'))
+
+    // check for legacy objects
+    if ($(this).hasClass('btn'))
+        return legacy_region_switch($(this));
+
+    if ($(this).prop('checked')) 
+    {
+        viz.push(1);
+    }
+
+    if ($('.action-show-genes').prop('checked')) 
     {
         viz.push(0);
         viz.push(3);
     }
 
-    if ($(this).hasClass('btn-success'))
-    {
-        $(this).removeClass('btn-success').addClass('btn-default active');
-        $(this).html('<b>Regions: Off</b>');
-    }
-    else
-    {
-        viz.push(1);
-        $(this).addClass('btn-success').removeClass('btn-default active');
-        $(this).html('<b>Regions: On</b>')
-    }
-
     filter_push("geneswitch", "type", viz);
     filter_process($table);
 
-    /*$table.bootstrapTable('filterBy', {
-                type: viz
-    });*/
+});
+
+
+/**
+ *
+ * Listener for displaying only overlapping genes and regions
+ *
+ * */
+$('.action-show-overlap').on('click', function() {
+    var viz = [];
+
+    if ($(this).prop('checked')) 
+    {
+        viz.push("Overlap");
+    }
+
+    if ($('.action-show-contain').prop('checked'))
+        viz.push("Contained");
+
+    filter_push("container", "relationship", viz);
+    filter_process($table);
+
+});
+
+
+/**
+ *
+ * Listener for displaying only contained genes and regions
+ *
+ * */
+$('.action-show-contain').on('click', function() {
+    var viz = [];
+
+    if ($(this).prop('checked')) 
+    {
+        viz.push("Contained");
+    }
+
+    if ($('.action-show-overlap').prop('checked'))
+        viz.push("Overlap");
+
+    filter_push("container", "relationship", viz);
+    filter_process($table);
+
+});
+
+function filterNotPseudos(rows, filter)
+    {
+        return rows.locus_type != "pseudogene";
+    }
+
+$('.action-show-psuedo').on('click', function() {
+
+    if ($(this).prop('checked')) 
+    {
+        //filter_push("pseudogene", "@filter", filterNotPseudos);
+        filter_pop("pseudogene");
+        
+    }
+    else
+    {
+        filter_push("pseudogene", "@filter", filterNotPseudos);
+        //filter_pop("pseudogene");
+    }
+
+    filter_process($table);
+});
+
+
+/**
+ *
+ * Listener for displaying only contained genes and regions
+ *
+ * */
+$('.action-show-contain').on('click', function() {
+    var viz = [];
+
+    if ($(this).prop('checked')) 
+    {
+        viz.push("Contained");
+    }
+
+    if ($('.action-show-overlap').prop('checked'))
+        viz.push("Overlap");
+
+    filter_push("geneswitch", "relationship", viz);
+    filter_process($table);
+
 });
 
 
@@ -103,7 +327,7 @@ $('.action-show-hiknown').on('click', function() {
     if ($(this).hasClass('fa-toggle-off'))
     {
         //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
-        filter_push("haplo", "haplo_assertion", '3 (Sufficient Evidence)');
+        filter_push("haplo", "haplo_assertion", 3);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hiknown-text').html('On');
@@ -133,7 +357,7 @@ $('.action-show-hiknown').on('click', function() {
     if ($(this).hasClass('fa-toggle-off'))
     {
         //$table.bootstrapTable('filterBy', {triplo_assertion: '3 (Sufficient Evidence)'});
-        filter_push("triplo", "triplo_assertion", '3 (Sufficient Evidence)');
+        filter_push("triplo", "triplo_assertion", 3);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-tsknown-text').html('On');
@@ -163,7 +387,7 @@ $('.action-show-hiknown').on('click', function() {
     {
         //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
         filter_push("hits", ["haplo_assertion", "triplo_assertion"],
-                    ['3 (Sufficient Evidence)', '3 (Sufficient Evidence)']);
+                    [3, 3]);
 
         $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
         $('.action-show-hitsknown-text').html('On');
@@ -243,6 +467,34 @@ $('.action-show-hiknown').on('click', function() {
 
 			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
 			$('.action-show-pseudogenes-text').html('On');
+
+		}
+
+		filter_process($table);
+	});
+
+
+    /**
+	 *
+	 * Listener for displaying only protein coding genes
+	 *
+	 * */
+	$('.action-show-curated').on('click', function() {
+
+        if ($(this).hasClass('fa-toggle-off'))
+		{
+			filter_push("curated", "has_curations", true);
+
+			$(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+			$('.action-show-curated-text').html('On');
+
+		}
+		else
+		{
+			filter_pop("curated");
+
+			$(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+			$('.action-show--text').html('Off');
 
 		}
 
@@ -389,7 +641,7 @@ $('.action-show-hiknown').on('click', function() {
 
           $('.action-af-badge').remove();
 
-                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.1</span>');
+                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.2</span>');
                 $('.filter-container').append(newbadge);
 
         }
@@ -475,7 +727,6 @@ function filter_push(name, column, value) {
 
     filter_pop(name);
     filterstack.push(o);
-    console.log(filterstack);
 }
 
 

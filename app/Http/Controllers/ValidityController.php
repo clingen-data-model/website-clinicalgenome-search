@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Imports\Excel;
 use App\Exports\ValidityExport;
+use App\Exports\ValidityExportLS;
 
 use Auth;
 use Carbon\Carbon;
@@ -25,7 +26,8 @@ use App\Pmid;
 use App\Nodal;
 use App\Blacklist;
 use App\Mail\Feedback;
-use App\Validity;
+use App\Activity;
+use App\Slug;
 
 /**
  *
@@ -132,7 +134,21 @@ class ValidityController extends Controller
         // Genegraph never fixed the timestamp in the assertion ID, and now we have saved links of both in the wild :(
         //$id = Validity::fixid($id);
 
-        $record = GeneLib::validityDetail([
+        // if new Clingen slug, map to real id.
+        if (substr($id, 0, 5) == 'CCID:') {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+                return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene Validity details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+            $id = $s->target;
+        }
+
+       $record = GeneLib::validityDetail([
             'page' => 0,
             'pagesize' => 20,
             'perm' => $id
@@ -459,10 +475,19 @@ class ValidityController extends Controller
 
         $moiflag =  ($record->mode_of_inheritance->website_display_label === "Semidominant inheritance");
 
+        $t = (strpos($record->curie, 'CGGV:assertion_') === 0 ? substr($id, 0, 51)
+                        : $record->curie);
+
+        $slug = Slug::target($t)->first();
+
+        // get history
+        $activities = Activity::all();
+        
         //dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
-            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count', 'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb')
+            compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count',
+                    'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb', 'slug', 'activities')
         )
             ->with('user', $this->user);
     }
@@ -479,6 +504,20 @@ class ValidityController extends Controller
         $date = date('Y-m-d');
 
         return Gexcel::download(new ValidityExport, 'Clingen-Gene-Disease-Summary-' . $date . '.csv');
+    }
+
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function download_ls(Request $request)
+    {
+        $date = date('Y-m-d');
+
+        return Gexcel::download(new ValidityExportLS, 'Clingen-Gene-Disease-Summary-LS-' . $date . '.csv');
     }
 
 
@@ -515,12 +554,13 @@ class ValidityController extends Controller
             if (isset($data[$v]))
                 $classifications[] = $data[$v];
 
-        $mail->send(new Feedback(['fullname' => $data['name'], 'gcep' => $data['gcep'], 'company' => $data['company'], 'email' => $data['email'],
-                                    'title' => $data['position'], 'type_incorrect' => $data['type_incorrect'] ?? '', 'type_missing' => $data['type_missing'] ?? '',
-                                    'type_classification' => $data['type_classification'] ?? '', 'type_typo' => $data['type_typo'] ?? '', 'type_other' => $data['type_other'] ?? '',
-                                    'comment' => $data['comment'], 'link' => $data['link'], 'gene' => $data['gene'], 'classifications' => $classifications
+        $mail->send(new Feedback([
+            'fullname' => $data['name'], 'gcep' => $data['gcep'], 'company' => $data['company'], 'email' => $data['email'],
+            'title' => $data['position'], 'type_incorrect' => $data['type_incorrect'] ?? '', 'type_missing' => $data['type_missing'] ?? '',
+            'type_classification' => $data['type_classification'] ?? '', 'type_typo' => $data['type_typo'] ?? '', 'type_other' => $data['type_other'] ?? '',
+            'comment' => $data['comment'], 'link' => $data['link'], 'gene' => $data['gene'], 'classifications' => $classifications
 
-                                ]));
+        ]));
 
         return response()->json(
             [

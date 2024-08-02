@@ -54,16 +54,27 @@
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-download') }}"  class="btn btn-default watchdownloadclick" title="Gene-Disease Validity Curations"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
+                    <!--
+                    <tr>
+                        <td><strong>Gene-Disease Validity Curations w/ Lumping & Splitting </strong>
+                            <div class="small">This file provides a summary of the Gene-Disease Validity curations completed by ClinGen's GCEPs. This file is built in real-time and includes the associated Lumping & Splitting details.</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('validity-ls-download') }}"  class="btn btn-default watchdownloadclick" title="Gene-Disease Validity Curations w/ Lumping & Splitting"><i class="fas fa-download"></i> CSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                -->
                 </table>
             </div>
 
             <h3 class="pt-4" id="section_dosage"><img src="/images/dosageSensitivity-on.png" width="35" height="35"> Dosage Sensitivity Downloads</h3>
             <div class="card">
                 <table class="table table-striped table-hover  mb-0">
-                    <tr>
+                    <!--<tr>
                         <td colspan="4">
                             <div><p class="text-danger text-center"><strong><i>As previously announced, important changes were made to the Dosage Sensitivity download files on December 19th, 2021.<br />Please view the README file for more information.</i></strong></p></div>
                         </td>
+                    </tr> -->
                     <tr>
                         <td><strong>README</strong>
                             <div class="small">This files are produced by the ClinGen Dosage Sensitivity Curation Working Group, formerly the International Standards for Cytogenomic Arrays (ISCA) Consortium Evidence-Based Review Committee. The goal of this group is to curate regions of the genome (both single genes and particular genomic regions) with respect to their haploinsufficiency and/or triplosensitivity. </div>
@@ -73,11 +84,19 @@
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
-                        <td><strong>Dosage Sensitivity Curations </strong>
-                            <div class="small">This file provides a summary of the Dosage Sensitivity curations completed by ClinGen. This file is built in real-time. </div>
+                        <td><strong>Dosage Sensitivity Curations )Genes Only)</strong>
+                            <div class="small">This file provides a summary of the Dosage Sensitivity gene curations completed by ClinGen. This file is built in real-time. </div>
                         </td>
                         <td></td>
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosage-download') }}" target="_blank"  class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dosage Sensitivity Curations (Genes and Regions)</strong>
+                            <div class="small">This file provides a summary of the Dosage Sensitivity gene and region curations completed by ClinGen. This file is built in real-time. </div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('dosagefull-download') }}" target="_blank"  class="btn btn-default watchdownloadclick" title="Dosage Sensitivity Download CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>

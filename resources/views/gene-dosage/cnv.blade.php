@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 		<div class="col-md-7">
 
 
@@ -37,7 +37,7 @@
 
         </div>
 
-		<div class="col-md-12 light-arrows dark-table">
+		<div class="col-md-12 light-arrows dark-table dark-detail">
 				@include('_partials.genetable', ['expand' => true])
 
 		</div>
@@ -62,7 +62,7 @@
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
+	<link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -101,9 +101,20 @@
 
 	window.ajaxOptions = {
 		beforeSend: function (xhr) {
-		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+			if (Cookies.get('clingen_dash_token') != undefined)
+				xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
 		}
 	}
+
+	var hapChoices= {
+		'0': 'No Evidence',
+		'1': 'Little Evidence',
+		'2': 'Emerging Evidence',
+		'3': 'Sufficient Evidence',
+		'30': 'Autosomal Recessive',
+		'40': 'Dosage Sensitivity Unlikely',
+		'-5': 'Not Yet Evaluated',
+	};
 
 
 	function responseHandler(res) {
@@ -148,7 +159,7 @@
 			sortable: true
 		},
 		{
-			title: 'Location on GRCh37',
+			title: 'GRCh37',
 			field: 'location',
 			sortable: true,
 			filterControl: 'input',
@@ -156,29 +167,42 @@
 			cellStyle: cellFormatter,
 			sorter: locationSorter,
 			searchFormatter: false
-			//visible: false
+        },
+		{
+			title: 'GRCh38',
+			field: 'location38',
+			sortable: true,
+			filterControl: 'input',
+			formatter: cnvlocation38Formatter,
+			cellStyle: cellFormatter,
+			sorter: locationSorter,
+			searchFormatter: false
         },
         {
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Haploinsufficiency Score"></i></div>HI Score',
 			field: 'haplo_assertion',
 			filterControl: 'select',
-			formatter: cnvhaploFormatter,
+			formatter: haplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
+			filterData: 'var:hapChoices',
+			filterStrictSearch: true,
 			sortable: true
         },
 		{
 			title: '<div><i class="fas fa-info-circle color-white ml-1" data-toggle="tooltip" data-placement="top" title="Triplosensitivity Score"></i></div>TS Score',
-			field: 'cnvtriplo_assertion',
+			field: 'triplo_assertion',
 			filterControl: 'select',
-			formatter: cnvtriploFormatter,
+			formatter: triplo2Formatter,
 			cellStyle: cellFormatter,
 			searchFormatter: false,
+			filterData: 'var:hapChoices',
+			filterStrictSearch: true,
 			sortable: true
         },
 		{
 			field: 'date',
-      title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
+     		title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="Last Evaluated"></i></div> Last Eval.',
 			sortable: true,
 			filterControl: 'input',
 			cellStyle: cellFormatter,

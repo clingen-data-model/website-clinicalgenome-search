@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
 
 
 	  <div class="col-md-7">
@@ -33,10 +33,10 @@
      </button>-->
      <span class="text-info font-weight-bold mr-1 float-right action-hidden-columns hidden"><small>Click on <i class="glyphicon glyphicon-th icon-th" style="top: 2px"></i> below to view hidden columns</small></span>
 
- </div>
+    </div>
 
-    <div class="col-md-12 light-arrows dark-table">
-			@include('_partials.genetable', ['customload' => true])
+    <div class="col-md-12 light-arrows dark-table dark-detail">
+			@include('_partials.genetable', ['customload' => true, 'expand' => true])
 		</div>
 	</div>
 </div>
@@ -60,8 +60,7 @@
 @section('script_css')
 	<link href="/css/bootstrap-table.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/css/bootstrap-table-filter-control.css">
-	<link href="/css/bootstrap-table-group-by.css" rel="stylesheet">
-    <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
+  <link href="/css/bootstrap-table-sticky-header.css" rel="stylesheet">
 @endsection
 
 @section('script_js')
@@ -99,7 +98,8 @@
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+      if (Cookies.get('clingen_dash_token') != undefined)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 
@@ -150,9 +150,9 @@
 
   function inittable() {
     $table.bootstrapTable('destroy').bootstrapTable({
-        stickyHeader: true,
-    stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
-            stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
+      stickyHeader: true,
+      stickyHeaderOffsetLeft: parseInt($('body').css('padding-left'), 10),
+      stickyHeaderOffsetRight: parseInt($('body').css('padding-right'), 10),
       locale: 'en-US',
       sortName:  "symbol",
 			sortOrder: "asc",
@@ -161,9 +161,9 @@
         {
           title: 'Gene',
           field: 'symbol',
-          formatter: geneFormatter,
+          formatter: symbol2Formatter,
           cellStyle: cellFormatter,
-          searchFormatter: false,
+          searchFormatter: true,
           filterControl: 'input',
           sortable: true
         },
@@ -179,10 +179,10 @@
         },
         {
           title: 'Disease',
-          field: 'disease',
-          formatter: asdiseaseFormatter,
+          field: 'disease_name',
+          formatter: diseaseFormatter,
           cellStyle: cellFormatter,
-          searchFormatter: false,
+          searchFormatter: true,
           filterControl: 'input',
           sortable: true
         },
@@ -207,8 +207,9 @@
           cellStyle: cellFormatter,
         },
         {
-            title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
+          title: '<div><i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen Gene Curation Expert Panel (GCEP)"></i></div> Expert Panel',
           field: 'ep',
+          formatter: affiliate2Formatter,
           cellStyle: cellFormatter,
           searchFormatter: false,
           filterControl: 'select',
@@ -221,6 +222,7 @@
           searchFormatter: false,
           filterControl: 'select',
           filterData: 'var:sopChoices',
+          sorter: sopSorter,
           sortable: true
         },
 		    {
@@ -289,9 +291,38 @@
     })
 
     $table.on('post-body.bs.table', function (e, name, args) {
-
 			$('[data-toggle="tooltip"]').tooltip();
 		})
+
+    $table.on('expand-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.attr('colspan',12);
+
+      var t = $obj.closest('tr');
+
+      //var stripe = t.prev().hasClass('bt-even-row');
+
+      t.addClass('dosage-row-bottom');
+
+      //if (stripe)
+      //  t.addClass('bt-even-row');
+      //else
+      //  t.addClass('bt-odd-row');
+
+      t.prev().addClass('dosage-row-top');
+
+      $obj.load( "/api/validity/expand/" + row.perm_id );
+
+      return false;
+    })
+
+
+    $table.on('collapse-row.bs.table', function (e, index, row, $obj) {
+
+      $obj.closest('tr').prev().removeClass('dosage-row-top');
+
+      return false;
+    });
   }
 
 $(function() {
@@ -313,7 +344,7 @@ $(function() {
   $("button[name='filterControlSwitch']").attr('title', 'Column Search');
 	$("button[aria-label='Columns']").attr('title', 'Show/Hide Columns');
 
-    $('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
+  $('.fixed-table-toolbar').on('change', '.toggle-all', function (e, name, args) {
 
         var hidden = $table.bootstrapTable('getHiddenColumns');
 
@@ -321,7 +352,7 @@ $(function() {
             $('.action-hidden-columns').removeClass('hidden');
         else
             $('.action-hidden-columns').addClass('hidden');
-    });
+  });
 
 });
 

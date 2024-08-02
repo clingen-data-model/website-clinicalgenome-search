@@ -10,6 +10,7 @@ use App\Http\Resources\AffiliateDetail as AffiliateDetailResource;
 use Ahsan\Neo4j\Facade\Cypher;
 
 use App\GeneLib;
+use App\Panel;
 
 class AffiliateController extends Controller
 {
@@ -59,7 +60,28 @@ class AffiliateController extends Controller
 
         return ['total' => $results->count,
                 'totalNotFiltered' => $results->count,
+                'ngenes' => $results->ngenes,
                 'id' => $results->label,
                 'rows'=> AffiliateDetailResource::collection($results->collection, $results->label)];
+    }
+
+
+     /**
+     * Display the summary notes of the curation
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function expand(ApiRequest $request, $id = null)
+    {
+
+        
+        $panel = Panel::affiliate($id)->first();
+
+        if ($panel === null)
+            return null;
+
+
+        return view('affiliate.expand')
+                ->with('panel', $panel);
     }
 }

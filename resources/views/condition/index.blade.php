@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-	<div class="row justify-content-center">
+	<div class="row justify-content-center" style="margin-left: -100px; margin-right: -100px">
     <div class="col-md-8 curated-genes-table">
 
       <table class="mt-3 mb-2">
@@ -38,7 +38,7 @@
 
     </div>
 
-		<div class="col-md-12 light-arrows dark-table">
+		<div class="col-md-12 light-arrows dark-table dark-detail">
 
 			@include('_partials.genetable')
 
@@ -109,7 +109,8 @@
 
   window.ajaxOptions = {
     beforeSend: function (xhr) {
-      xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
+      if (Cookies.get('clingen_dash_token') != undefined)
+        xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
 

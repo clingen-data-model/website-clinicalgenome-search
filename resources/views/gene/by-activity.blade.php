@@ -25,6 +25,17 @@
 
 		@include("_partials.facts.gene-panel")
 
+		@if ($show_clingen_comment)
+		<div class="col-md-12">
+			<h4 class="border-bottom-1">ClinGen Variant Classification Guidance  
+				<!--<i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen comments are comments from ClinGen."></i>-->
+			</h4>
+				<p>
+					{{ $record->notes }}
+				</p>
+		</div>
+		@endif
+
 	</div>
 
 	<!-- tab headers -->
@@ -37,17 +48,17 @@
           <li class="" style="">
             <a href="{{ route('gene-groups', $record->hgnc_id) }}" class="">Status and Future Work <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $total_panels }}</span></a>
           </li>
+		  @if ($gc !== null && $gc->variant_count > 0)
+		<li class="" style="">
+			<a href="{{ route('gene-genomeconnect', $record->hgnc_id) }}" class="">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span></a>
+		</li>
+		@endif
 		<li class="" style="">
 			<a href="{{ route('gene-external', $record->hgnc_id) }}" class=""><span class='hidden-sm hidden-xs'>External Genomic </span>Resources </a>
 		</li>
 		<li class="" style="">
 			<a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
 		</li>
-		@if ($gc !== null && $gc->variant_count > 0)
-		<li class="" style="">
-			<a href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span>  <i class="glyphicon glyphicon-new-window small ml-2" id="external_clinvar_gene_variants"></i></a>
-		</li>
-		@endif
 	</ul>
 
 @endsection

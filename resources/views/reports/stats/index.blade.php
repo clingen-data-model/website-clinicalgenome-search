@@ -458,7 +458,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#990000; opacity:1">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT) }}%; background-color:#276749;">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -470,7 +470,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#990000; opacity:.8">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING) }}%; background-color:#68D391">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_EMERGING] ?? '' }}</span>
                   </div>
@@ -482,7 +482,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=1 (Little Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#990000; opacity:.6">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE) }}%; background-color:#FC8181">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_LITTLE] ?? '' }}</span>
                   </div>
@@ -494,7 +494,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=0 (No Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#990000; opacity:.5">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE) }}%; background-color:#A0AEC0">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_NONE] ?? '' }}</span>
                   </div>
@@ -506,7 +506,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#990000; opacity:0.4">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_AR) }}%; background-color:#63B3ED">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_AR] ?? '' }}</span>
                   </div>
@@ -518,7 +518,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=haplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
                   <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#990000; opacity:.3">
+                    <div class="progress-bar progress-bar-left-radius-0 " role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY) }}%; background-color:#E53E3E">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_HAP_UNLIKELY] ?? '' }}</span>
                   </div>
@@ -535,7 +535,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=3 (Sufficient Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#003366; opacity:1">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT) }}%; background-color:#276749">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_SUFFICIENT] ?? '' }}</span>
                   </div>
@@ -547,7 +547,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=2 (Emerging Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#003366; opacity:.8">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING) }}%; background-color:#68D391">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_EMERGING] ?? '' }}</span>
                   </div>
@@ -559,7 +559,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=1 (Little Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#003366; opacity:.6">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE) }}%; background-color:#FC8181">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_LITTLE] ?? '' }}</span>
                   </div>
@@ -571,7 +571,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=0 (No Evidence)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#66ccff; opacity:.5">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE) }}%; background-color:#A0AEC0">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_NONE] ?? '' }}</span>
                   </div>
@@ -583,7 +583,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=30 (Autosomal Recessive)" class="text-dark">
                   <div class="progress progress-no-bg mb-0">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#003366; opacity:.4">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR) }}%; background-color:#63B3ED">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_AR] ?? '' }}</span>
                   </div>
@@ -595,7 +595,7 @@
                 <td class="border-0">
                   <a  target="report" href="{{ route('dosage-index') }}?col_search=triplo&col_search_val=40 (Dosage Sensitivity Unlikely)" class="text-dark">
                   <div class="progress progress-no-bg mb-1 mt-2">
-                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#003366; opacity:.3">
+                    <div class="progress-bar progress-bar-success progress-bar-left-radius-0" role="progressbar" aria-valuenow="{{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ $metrics->graphDosagePercentage(App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY) }}%; background-color:#E53E3E">
                     </div>
                     <span class="ml-2">{{ $metrics->values[App\Metric::KEY_TOTAL_DOSAGE_TRIP_UNLIKELY] ?? '' }}</span>
                   </div>

@@ -1,5 +1,7 @@
 <div class="pl-3 pr-3 pr-3 pb-0 collapse" id="collapseGenCon">
     <div id="gencon-toolbar" class="text-right">
+        <div class="dropzone-area action-dropzone display-none"></div>
+        <button class="btn action-gc-file">Upload File</button>
         <button class="btn action-gc-gene">Add New Gene</button>
     </div>
 

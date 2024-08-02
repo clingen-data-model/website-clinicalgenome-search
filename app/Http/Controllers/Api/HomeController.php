@@ -65,12 +65,12 @@ class HomeController extends Controller
      */
     public function notify(Request $request)
     {
-        $input = $request->only('gene', 'old', 'new');
+        $input = $request->only('type', 'gene', 'old', 'new');
 
         if (empty($input['gene']))
             return response()->json(['success' => 'false',
 								 'status_code' => 1002,
-							 	 'message' => "Invalid Gene Symbol"],
+							 	 'message' => "Invalid Name"],
                                   501);
 
         // check if user is already participating
@@ -94,18 +94,27 @@ class HomeController extends Controller
         }
         else
         {
-            $gene = $user->genes->where('hgnc_id', $input['gene'])->first();
+            if ($input['type'] == 'disease')
+                $gene = $user->diseases->where('curie', $input['gene'])->first();
+            else
+                $gene = $user->genes->where('hgnc_id', $input['gene'])->first();
 
             if ($gene === null)
                 return response()->json(['success' => 'false',
                                 'status_code' => 1003,
-                                'message' => "Invalid Gene Symbol"],
+                                'message' => "Invalid Name"],
                                 501);
 
-            $name = $gene->name;
+            if ($input['type'] == 'disease')
+                $name = $gene->curie;
+            else
+                $name = $gene->name;
         }
 
-        $notification = $user->notification->frequency;
+        if ($input['type'] == 'disease')
+            $notification = $user->notification->frequency['Disease'];
+        else
+            $notification = $user->notification->frequency;
 
         if (isset($notification[$input['new']]))
         {
@@ -126,6 +135,13 @@ class HomeController extends Controller
             if (($key = array_search($name, $t)) !== false)
                 unset($t[$key]);
             $notification[$input['old']] = array_values($t);
+        }
+
+        if ($input['type'] == 'disease')
+        {
+            $k = $user->notification->frequency;
+            $k['Disease'] = $notification;
+            $notification = $k;
         }
 
         $t = $user->notification;
@@ -160,7 +176,36 @@ class HomeController extends Controller
         $t = $user->notification;
         $t->update(['frequency' => $notification]);
 
-        return response()->json(['success' => 'truue',
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'message' => "Request completed"],
+                                200);
+
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function pause(Request $request)
+    {
+        $input = $request->only('value');
+
+        // check if user is already participating
+        $user = Auth::guard('api')->user();
+
+        $notification = $user->notification->frequency;
+
+        $notification['global_pause'] = $input['value'] ? "on" : "off";
+
+        $t = $user->notification;
+        $t->update(['frequency' => $notification]);
+
+        return response()->json(['success' => 'true',
                                 'status_code' => 200,
                                 'message' => "Request completed"],
                                 200);

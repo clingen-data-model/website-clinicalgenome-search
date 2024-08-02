@@ -1,4 +1,4 @@
-<div class="pl-3 pr-3 pr-3 pb-0 collapse in" id="collapseFollow">
+<div class="pl-3 pr-3 pr-3 pb-0 collapse" id="collapseFollow">
     <div id="follow-toolbar" class="text-right">
         <button class="btn action-new-gene">Follow New Gene</button>
         <button class="btn action-new-region">Follow By Region</button>
@@ -49,7 +49,7 @@
                     <tr>
                         <th class="col-sm-2" data-field="symbol" data-sortable="true" data-cell-style="symbolClass" data-formatter="formatSymbol">Name</th>
                         <th class="col-sm-3" data-field="curations" data-searchable="false" data-align="center">Curation Status</th>
-                        <th class="col-sm-2" data-field="display_last" data-sortable="true">Last Updated</th>
+                        <th class="col-sm-2" data-field="display_last" data-sortable="true" data-formatter="ldateFormatter">Last Updated</th>
                         <th class="col-sm-2" data-field="notify" data-searchable="false" data-align="center">Notify</th>
                         <th class="col-sm-2" data-field="unfollow" data-searchable="false" data-align="center">Unfollow</th>
                         <th data-field="hgnc" data-visible="false"></th>
@@ -77,7 +77,7 @@
                             <img src="/images/Pharmacogenomics-{{ $gene->hasActivity('pharma') ? 'on' : 'off' }}.png" width="22" height="22">
                             @endif
                         </td>
-                        <td>{{ $gene->displayDate($gene->date_last_curated) }}</td>
+                        <td>{{ $gene->date_last_curated }}</td>
                         <td>
                             <div class="btn-group">
                                 <button type="button" class="text-left btn btn-sm btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -15,13 +15,15 @@ class Affiliate extends JsonResource
     public function toArray($request)
     {
         return [
-            'agent' => basename($this->iri),
+            'agent' => $this->agent,
+            //basename($this->iri),
             'label' => $this->label,
             'curie' => $this->curie,
             'total_all_curations' => $this->total_all_curations,
             'total_approver_curations' => $this->total_approver_curations,
             'total_secondary_curations' => $this->total_secondary_curations,
-            'count' => $this->gene_validity_assertions->count ?? 0
+            'count' => $this->count,
+            //$this->gene_validity_assertions->count ?? 0
             //'curations' => $this->mapCurations()
         ];
     }

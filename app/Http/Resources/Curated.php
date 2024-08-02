@@ -19,6 +19,7 @@ class Curated extends JsonResource
         return [
             'symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
+            'symbol_id' => $this->hgnc_id,
             'name' => $this->name,
             'followed' => $this->followed,
             'has_actionability' => $this->has_actionability ? 'Curated' : null,
@@ -27,28 +28,6 @@ class Curated extends JsonResource
             'has_pharma' => $this->has_pharma ? 'Curated' : null,
             'has_variant' => $this->has_variant ? 'Approved VCEP' : null,
             'acmg59' => $this->acmg59
-            //'vcep' => $this->vcep
         ];
     }
-
-
-    /**
-     *
-     * Map the node structure to a json consumable array
-     *
-     */
-    protected function mapCurations()
-    {
-		if (empty($this->curations))
-			return [];
-
-		foreach($this->curations as $node)
-		{
-			$map = $node->values();
-			$map['labels'] = $node->labels();
-			$curations[] = $map;
-		}
-
-		return $curations;
-	}
 }

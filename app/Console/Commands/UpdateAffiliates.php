@@ -4,13 +4,11 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel as Gexcel;
 
-use App\Gene;
-use App\GeneLib;
+use App\Imports\Excel;
+
 use App\Panel;
-use App\Variant;
-use App\Disease;
 
 class UpdateAffiliates extends Command
 {
@@ -26,7 +24,7 @@ class UpdateAffiliates extends Command
      *
      * @var string
      */
-    protected $description = 'Updating Affiliate associations';
+    protected $description = 'Command description';
 
     /**
      * Create a new command instance.
@@ -44,6 +42,48 @@ class UpdateAffiliates extends Command
      * @return mixed
      */
     public function handle()
+    {
+
+        echo "Updating affiliation data from local file ...";
+
+        $file = base_path() . "/data/Affiliations.xlsx";
+
+        $worksheets = (new Excel)->toArray($file);
+
+        foreach ($worksheets[0] as $row)
+        {
+            if ($row[0] == "Affiliation Full Name")
+                continue;
+
+            if (!empty($row[9]) && is_numeric($row[9]))
+            {
+    
+                $panel = Panel::affiliate((int) $row[9])->first();
+
+                $id = (int) $row[1];
+                if ($panel !== null)
+                {
+                    $panel->update(['alternate_id' => $id]);
+                }
+            }
+            else if (!empty($row[7]) && is_numeric($row[7]))
+            {
+                $panel = Panel::affiliate((int) $row[7])->first();
+
+                $id = (int) $row[1];
+
+                if ($panel !== null)
+                {
+                    $panel->update(['alternate_id' => $id]);
+                }
+            }
+        }
+
+        echo "DONE\n";
+    }
+
+
+    protected function legacy()
     {
         echo "Updating Affiliate Information from Genegraph ...";
 
@@ -180,6 +220,6 @@ class UpdateAffiliates extends Command
         // what about WGs like Dosage?
 
         echo "DONE\n";
-
     }
+
 }

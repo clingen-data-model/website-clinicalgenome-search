@@ -93,6 +93,15 @@ class User extends Authenticatable implements MustVerifyEmail
        return $this->belongsToMany('App\Panel');
     }
 
+
+    /*
+     * The diseases that this user is following
+     */
+    public function diseases()
+    {
+       return $this->belongsToMany('App\Disease');
+    }
+
     /*
      * The notification preferences for this user
      */

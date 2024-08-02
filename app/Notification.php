@@ -147,6 +147,8 @@ class Notification extends Model
                               'Groups' => [],
                               'Pause' => [],
                               'global' => "on",
+                              'global_pause' => 'off',
+                              'global_pause_date' => null,
                               'first' => self::FREQUENCY_NONE,
                               'frequency' => self::FREQUENCY_DAILY,
                               'summary' => self::FREQUENCY_MONTHLY
@@ -200,6 +202,20 @@ class Notification extends Model
            $sum = $this->frequency['summary'] ?? self::FREQUENCY_NONE;
 
            return $this->frequency_strings[$sum];
+      }
+
+
+      /**
+      * Get all the followed genes
+      */
+      public function getGlobalPauseDateAttribute()
+      {
+          $until = $this->frequency['global_pause_date'] ?? false;
+
+          if ($until === false)
+               return "DATE NOT SET";
+
+          return $until;
       }
 
 
@@ -272,6 +288,38 @@ class Notification extends Model
 
          return true;
      }
+
+
+     /**
+     * Add one of more diseases to the default list
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function addDefaultDisease($diseases)
+    {
+         if ($diseases instanceof Collection)
+         {
+              foreach ($diseases as $disease)
+                   $this->addDiseaseDefault($disease);
+         }
+         else if ($diseases instanceof \App\Disease)          // just one
+         {
+              $freq = $this->frequency;
+              $disease = $freq['Disease'];
+              array_push($disease['Default'], $diseases->curie);
+              $freq['Disease'] = $disease;
+              $this->frequency = $freq;
+         }
+         else           //string
+         {
+              $freq = $this->frequency;
+              $disease = $freq['Disease'];
+              array_push($disease['Default'], $diseases);
+              $freq['Disease'] = $disease;
+              $this->frequency = $freq;
+         }
+    }
 
      /**
      * Convert the stored constant to hours
@@ -370,6 +418,75 @@ class Notification extends Model
 
                $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
                             'filters' => json_decode('{"gene_label":[' . implode(', ', $genes)  . ']}')];
+          }
+
+          return $reports;
+     }
+
+
+     /**
+     * Transform the stored disease frequency strucure
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function toDiseaseReport()
+     {
+          $reports = [];
+
+          $frequency = $this->frequency;
+
+          // Daily report or First Curation
+          if ($frequency['first'] || !empty($frequency['Disease']['Daily']) || ($frequency['frequency'] == self::FREQUENCY_DAILY && !empty($frequency['Disease']['Default'])))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Daily']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Daily']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_DAILY && isset($frequency['Disease']['Default']))
+                    $diseases = array_merge($genes, $frequency['Default']);
+
+               array_walk($diseases, array($this, 'walk'));
+
+               $reports[] = ['start_date' => Carbon::yesterday(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
+          }
+
+          // Weekly Report
+          if (Carbon::now()->isDayOfWeek(Carbon::SUNDAY) && (!empty($frequency['Disease']['Weekly']) || ($frequency['frequency'] == self::FREQUENCY_WEEKLY && !empty($frequency['Disease']['Default']))))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Weekly']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Weekly']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_WEEKLY && isset($frequency['Disease']['Default']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Default']);
+
+               array_walk($diseases, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::now()->subWeek(), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
+          }
+
+          // Monthly Report
+          if (Carbon::now()->format('d') == '01' && (!empty($frequency['Disease']['Monthly']) || ($frequency['frequency'] == self::FREQUENCY_MONTHLY && !empty($frequency['Disease']['Default']))))
+          {
+               $diseases = [];
+
+               if (isset($frequency['Disease']['Monthly']))
+                    $diseases = array_merge($diseases, $frequency['Disease']['Monthly']);
+
+               if ($frequency['frequency'] == self::FREQUENCY_MONTHLY && isset($frequency['Disease']['Default']))
+                    $genes = array_merge($diseases, $frequency['Disease']['Default']);
+
+               array_walk($genes, array($this, 'walk'));
+
+
+               $reports[] = ['start_date' => Carbon::now()->subMonth()->setTime(0, 0, 0), 'stop_date' => Carbon::yesterday()->setTime(23, 59, 59),
+                            'filters' => json_decode('{"disease_label":[' . implode(', ', $diseases)  . ']}')];
           }
 
           return $reports;
@@ -487,6 +604,27 @@ class Notification extends Model
 
 
      /**
+     * Check if name is part of any notification bucket
+     *
+     * @@param	string	$gene
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function checkGroupDisease($name)
+     {
+          foreach (['Daily', 'Weekly', 'Monthly', 'Pause', 'Default'] as $bucket)
+          {
+               if (!(isset($this->frequency['Disease'][$bucket]) && is_array($this->frequency['Disease'][$bucket])))
+                    continue;
+
+               if (in_array($name, $this->frequency['Disease'][$bucket]))
+                    return $bucket;
+          }
+
+          return false;
+     }
+
+
+     /**
      * Add to the group
      *
      * @@param	string	$gene
@@ -548,6 +686,34 @@ class Notification extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
+	public function removeGroupDisease($name, $bucket)
+     {
+         if ($this->frequency === null)
+             return false;
+
+         if (!isset($this->frequency[$bucket]))
+             return false;
+
+         if (!in_array($name, $this->frequency['Disease'][$bucket]))
+             return false;
+
+         $frequency = $this->frequency;
+         if (($key = array_search($name, $frequency['Disease'][$bucket])) !== false)
+              unset($frequency['Disease'][$bucket][$key]);
+         $frequency['Disease'][$bucket] = array_values($frequency['Disease'][$bucket]);
+         $this->frequency = $frequency;
+
+         return true;
+     }
+
+
+
+     /**
+     * remove an interest item from the profile
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
 	/*public function removeGroup($group)
      {
          if ($this->frequency === null)
@@ -567,6 +733,32 @@ class Notification extends Model
 
          return true;
      }*/
+
+
+     /**
+     * Determine if the user is paused and within the vacation period
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+	public function onVacation()
+     {
+          if ($this->frequency['global_pause'] == 'on')
+          {
+                $until = $this->frequency['global_pause_date'];
+                if (!empty($until))
+                {
+                    $date1 = Carbon::createFromFormat('m/d/Y', $until);
+                    if ($date1->gte(Carbon::now()))
+                    {
+                        return true;
+                    }
+                }
+          }
+
+          return false;
+
+     }
 
 
      public function walk(&$item, $key)

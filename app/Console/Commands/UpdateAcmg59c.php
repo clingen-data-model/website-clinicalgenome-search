@@ -39,11 +39,11 @@ class UpdateAcmg59c extends Command
      */
     public function handle()
     {
-        echo "Updating ACMG 3.0 flag from gene list ...";
+        echo "Updating ACMG 3.2 flag from gene list ...";
 
         //$handle = fopen(base_path() . '/data/acmg59.dat', "r");
 
-        $handle = fopen(base_path() . '/data/ACMG_SF_v3.0.txt', "r");
+        $handle = fopen(base_path() . '/data/ACMG_SF_v3.2.txt', "r");
         if ($handle)
         {
             // clear the old flags just in case there are future updates

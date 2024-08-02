@@ -27,6 +27,7 @@ use App\Title;
 use App\Notification;
 use App\Actionability;
 use App\Panel;
+use App\Slug;
 
 use App\Mail\NotifyFrequency;
 //use App\Neo4j;
@@ -49,6 +50,24 @@ class TestController extends Controller
 		return view('survey');
 	}
 
+	public function ccid($id)
+	{
+		if (substr($id, 0, 5) == 'CCID:') {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+                return view('error.message-standard')
+                    ->with('title', 'Error retrieving Gene Validity details')
+                    ->with('message', 'The system was not able to retrieve details for this Disease. Please return to the previous page and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+            $id = $s->target;
+        }
+
+		return redirect()->route('validity-show', ['id' => $id]);
+	}
+
     /**
      * Show the application dashboard.
      *
@@ -56,6 +75,16 @@ class TestController extends Controller
      */
     public function index()
     {
+
+		$results = GeneLib::validityList(['page' => 0,
+										'pagesize' => null,
+										'sort' => 'GENE_LABEL',
+										'direction' => 'ASC',
+										'search' => '',
+                                        'include_lump_split' => true,
+                                        'curated' => true ]);
+
+		dd($results->collection->first());
 
         $id = "CGGCIEX:assertion_3210";
 

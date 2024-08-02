@@ -69,6 +69,7 @@ class Group extends Model
      public const TYPE_INTERNAL = 0;
      public const TYPE_REGION_37 = 1;
      public const TYPE_REGION_38 = 2;
+     public const TYPE_INTERNAL_DISEASE = 3;
 
      /*
      * Type strings for display methods
@@ -163,6 +164,7 @@ class Group extends Model
      */
     public static function intializeGroups()
     {
+        /*
         $t = new Group(['name' => '@AllGenes', 'display_name' => 'All Genes', 'search_name' => '*',
                         'description' => 'Follow All Genes']);
         $t->save();
@@ -179,12 +181,32 @@ class Group extends Model
                         'description' => 'Follow All Clinical Actionability Activity']);
         $t->save();
 
-        $t = new Group(['name' => '@ACMG59', 'display_name' => 'ACMG SF 3.1 Genes', 'search_name' => '@ACMG59',
-                        'description' => 'Follow All ACMG SF 3.1 Genes']);
+        $t = new Group(['name' => '@ACMG59', 'display_name' => 'ACMG SF 3.2 Genes', 'search_name' => '@ACMG59',
+                        'description' => 'Follow All ACMG SF 3.2 Genes']);
         $t->save();
 
         $t = new Group(['name' => '@AllVariant', 'display_name' => 'All Variant', 'search_name' => '@AllVariant',
                         'description' => 'Follow All Variant Pathogenicity Activity']);
+        $t->save();
+*/
+        $t = new Group(['name' => '@AllDiseases', 'display_name' => 'All Diseases', 'search_name' => '*',
+                        'description' => 'Follow All Diseases', 'type' => 3]);
+        $t->save();
+
+        $t = new Group(['name' => '@AllDosage', 'display_name' => 'All Dosage', 'search_name' => '@AllDosage',
+                        'description' => 'Follow All Dosage Sensitivity Activity', 'type' => 3]);
+        $t->save();
+
+        $t = new Group(['name' => '@AllValidity', 'display_name' => 'All Validity', 'search_name' => '@AllValidity',
+                        'description' => 'Follow All Gene-Disease Validity Activity', 'type' => 3]);
+        $t->save();
+
+        $t = new Group(['name' => '@AllActionability', 'display_name' => 'All Actionability', 'search_name' => '@AllActionability',
+                        'description' => 'Follow All Clinical Actionability Activity', 'type' => 3]);
+        $t->save();
+
+        $t = new Group(['name' => '@AllVariant', 'display_name' => 'All Variant', 'search_name' => '@AllVariant',
+                        'description' => 'Follow All Variant Pathogenicity Activity', 'type' => 3]);
         $t->save();
     }
 

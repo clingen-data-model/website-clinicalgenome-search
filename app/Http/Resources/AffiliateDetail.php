@@ -16,41 +16,29 @@ class AffiliateDetail extends JsonResource
      */
     public function toArray($request)
     {
-
-        // foreach ($this->contributions as $contribution) {
-        //     //dd($contribution);
-        //     // Check if the current agent is this one.
-        //         if ($this->attributed_to->curie == $contribution->agent->curie) {
-        //             if ($contribution->realizes->curie == "SEPIO:0000155") {
-        //                 $contributor_type = "Primary";
-        //             }
-        //             if ($contribution->realizes->curie == "SEPIO:0004099") {
-        //                 $contributor_type = "Secondary";
-        //             }
-        //         }
-        // }
-
-        $temp = Genelib::ValidityClassificationString($this->classification->label);
+        $temp = Genelib::ValidityClassificationString($this->classification);
 
         if ($this->animal_model_only)
             $temp .= '*';
 
         return [
-            'symbol' => $this->gene->label,
-            'hgnc_id' => $this->gene->hgnc_id,
-            'href' => $this->href,
-            'disease' => displayMondoLabel($this->disease->label) . '  ' . displayMondoObsolete($this->disease->label),
-            'mondo' => $this->disease->curie,
-            'moi' => $this->displayMoi($this->mode_of_inheritance->curie ?? ''),
-            'sop' => Genelib::ValidityCriteriaString($this->specified_by->label ?? ''),
+            'symbol' => $this->label,
+            'hgnc_id' => $this->hgnc_id,
+            'symbol_id' => $this->hgnc_id,
+            'ep' => $this->ep ?? '',
+            'affiliate_id' => $this->affiliate_id,
+            'disease_name' => displayMondoLabel($this->disease) . '  ' . displayMondoObsolete($this->disease),
+            'mondo' => $this->mondo,
+            'moi' => $this->displayMoi($this->moi),
+            'sop' => Genelib::ValidityCriteriaString($this->sop),
             'classification' => $temp,
-            'order' => Genelib::ValiditySortOrder($temp),
-            'perm_id' => $this->curie,
             'contributor_type' => $this->contributor_type,
+            'order' => Genelib::ValiditySortOrder($temp),
+            'perm_id' => $this->perm_id,
             'animal_model_only' => $this->animal_model_only,
             'report_id' => $this->report_id ?? null,
-            'released' => $this->displayDate($this->report_date),
-            'date' => $this->report_date
+            'released' => $this->displayDate($this->date),
+            'date' => $this->date
         ];
     }
 

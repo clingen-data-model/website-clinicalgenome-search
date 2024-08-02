@@ -1,0 +1,95 @@
+Gene Symbol	Gene MIM	Disease Name	Disease MIM	Disease MONDO
+APC	611731	familial adenomatous polyposis 1	175100	MONDO:0021056
+MYH11	160745	aortic aneurysm, familial thoracic 4	132900	MONDO:0007568
+ACTA2	102620	aortic aneurysm, familial thoracic 6	611788	MONDO:0012730
+TMEM43	612048	arrhythmogenic right ventricular dysplasia 5	604400	MONDO:0011459
+DSP	125647	arrhythmogenic right ventricular dysplasia 8	607450	MONDO:0011831
+PKP2	602861	arrhythmogenic right ventricular dysplasia 9	609040	MONDO:0012180
+DSG2	125671	arrhythmogenic right ventricular dysplasia 10	610193	MONDO:0012434
+DSC2	125645	arrhythmogenic right ventricular dysplasia 11	610476	MONDO:0012506
+BTD	609019	biotinidase deficiency	253260	MONDO:0009665
+BRCA1	113705	breast-ovarian cancer, familial, susceptibility to, 1	604370	MONDO:0011450
+BRCA2	600185	breast-ovarian cancer, familial, susceptibility to, 2	612555	MONDO:0012933
+SCN5A	600163	Brugada syndrome 1	601144	MONDO:0011001
+RYR2	180902	catecholaminergic polymorphic ventricular tachycardia 1	604772	MONDO:0011484
+CASQ2	114251	catecholaminergic polymorphic ventricular tachycardia 2	611938	MONDO:0012762
+CALM1	614916	catecholaminergic polymorphic ventricular tachycardia 4	614916	MONDO:0013966
+TRDN	603283	catecholaminergic polymorphic ventricular tachycardia 5	615441	MONDO:0014191
+FLNC	102565	hypertrophic cardiomyopathy 26	617047	MONDO:0014883
+LMNA	150330	familial cardiomyopathy	115200	MONDO:0005217
+TNNT2	191045	dilated cardiomyopathy 1D	601494	MONDO:0011095
+SCN5A	600163	dilated cardiomyopathy 1E	601154	MONDO:0011003
+DES	125660	dilated cardiomyopathy 1I	604765	MONDO:0011482
+MYH7	160760	dilated cardiomyopathy 1S	613426	MONDO:0013262
+TNNC1	191040	dilated cardiomyopathy 1Z	611879	MONDO:0012745
+RBM20	613171	dilated cardiomyopathy 1DD	613172	MONDO:0013168
+BAG3	603883	dilated cardiomyopathy 1HH	613881	MONDO:0013479
+TTN	188840	dilated cardiomyopathy 1G	604145	MONDO:0011400
+DSP	125647	cardiomyopathy, dilated, with wooly hair, keratoderma, and tooth agenesis	615821	MONDO:0014355
+COL3A1	120180	autosomal dominant Ehlers-Danlos syndrome, vascular type	130050	MONDO:0007524
+GLA	300644	Fabry disease	301500	MONDO:0010526
+LDLR	606945	hypercholesterolemia, familial, 1	143890	MONDO:0007750
+APOB	107730	hypercholesterolemia, autosomal dominant, type B	144010	MONDO:0007751
+MYH7	160760	familial hypertrophic cardiomyopathy	192600	MONDO:0024573
+TNNT2	191045	hypertrophic cardiomyopathy 2	115195	MONDO:0007266
+TPM1	191010	hypertrophic cardiomyopathy 3	115196	MONDO:0007267
+MYBPC3	600958	hypertrophic cardiomyopathy 4	115197	MONDO:0007268
+PRKAG2	602743	hypertrophic cardiomyopathy 6	600858	MONDO:0010946
+TNNI3	191044	hypertrophic cardiomyopathy 7	613690	MONDO:0013369
+MYL3	160790	hypertrophic cardiomyopathy 8	608751	MONDO:0012111
+MYL2	160781	hypertrophic cardiomyopathy 10	608758	MONDO:0012112
+ACTC1	102540	hypertrophic cardiomyopathy 11	612098	MONDO:0012799
+RET	164761	familial medullary thyroid carcinoma	155240	MONDO:0007958
+PALB2	610355	hereditary breast carcinoma	114480	MONDO:0016419
+HFE	613609	hemochromatosis type 1	235200	MONDO:0021001
+ENG	131195	telangiectasia, hereditary hemorrhagic, type 1	187300	MONDO:0008535
+ACVRL1	601284	telangiectasia, hereditary hemorrhagic, type 2	600376	MONDO:0010880
+SDHD	602690	paragangliomas 1	168000, 171300	MONDO:0008192
+SDHB	185470	paragangliomas 4	115310, 171300	MONDO:0007273
+TTR	176300	ATTRV122I amyloidosis	105210	MONDO:0019441
+PCSK9	607786	hypercholesterolemia, autosomal dominant, 3	603776	MONDO:0011369
+BMPR1A	601299	generalized juvenile polyposis/juvenile polyposis coli	174900	MONDO:0008276
+SMAD4	600993	generalized juvenile polyposis/juvenile polyposis coli	174900	MONDO:0008276
+SMAD4	600993	juvenile polyposis/hereditary hemorrhagic telangiectasia syndrome	175050	MONDO:0008278
+TP53	191170	Li-Fraumeni syndrome	151623	MONDO:0018875
+TGFBR1	190181	Loeys-Dietz syndrome 1	609192	MONDO:0012212
+TGFBR2	190182	Loeys-Dietz syndrome 2	610168	MONDO:0012427
+SMAD3	603109	aneurysm-osteoarthritis syndrome	613795	MONDO:0013426
+TRDN	603283	long QT syndrome		MONDO:0002442
+KCNQ1	607542	familial long QT syndrome	192500	MONDO:0019171
+KCNH2	152427	long QT syndrome 2	613688	MONDO:0013367
+SCN5A	600163	long QT syndrome 3	603830	MONDO:0011377
+CALM1	114180	long QT syndrome 14	616247	MONDO:0014548
+CALM2	114182	long QT syndrome 15	616249	MONDO:0014550
+CALM3	114183	long QT syndrome 16	618782	MONDO:0032915
+MSH2	609309	Lynch syndrome 1	120435	MONDO:0007356
+MLH1	120436	Lynch syndrome 2	609310	MONDO:0012249
+PMS2	600259	Lynch syndrome 4	614337	MONDO:0013699
+MSH6	600678	Lynch syndrome 5	614350	MONDO:0013710
+RYR1	180901	malignant hyperthermia of anesthesia	145600	MONDO:0018493
+CACNA1S	114208	malignant hyperthermia, susceptibility to, 5	601887	MONDO:0011163
+FBN1	134797	Marfan syndrome	154700	MONDO:0007947
+HNF1A	142410	maturity-onset diabetes of the young type 3	600496	MONDO:0010894
+MEN1	613733	multiple endocrine neoplasia	131100	MONDO:0017169
+RET	164761	multiple endocrine neoplasia type 2A	171400	MONDO:0008234
+RET	164761	multiple endocrine neoplasia type 2B	162300	MONDO:0008082
+MUTYH	604933	familial adenomatous polyposis 2	608456	MONDO:0012041
+DES	125660	myofibrillar myopathy	601419	MONDO:0018943
+FLNC	102565	myofibrillar myopathy 5	609524	MONDO:0012289
+BAG3	603883	myofibrillar myopathy 6	612954	MONDO:0013061
+NF2	607379	neurofibromatosis type 2	101000	MONDO:0007039
+OTC	300461	ornithine carbamoyltransferase deficiency	311250	MONDO:0010703
+SDHAF2	613019	paragangliomas 2	601650	MONDO:0011121
+SDHC	602413	paragangliomas 3	605373	MONDO:0011544
+STK11	602216	Peutz-Jeghers syndrome	175200	MONDO:0008280
+MAX	154950	adrenal gland pheochromocytoma	171300	MONDO:0004974
+TMEM127	613403	adrenal gland pheochromocytoma	171300	MONDO:0004974
+GAA	606800	glycogen storage disease II	232300	MONDO:0009290
+PTEN	601728	Cowden syndrome 1	158350	MONDO:0008021
+RB1	614041	hereditary retinoblastoma	180200	MONDO:0018160
+RPE65	180069	Leber congenital amaurosis 2	204100, 613794	MONDO:0008765
+TSC1	605284	tuberous sclerosis	191100	MONDO:0001734
+TSC2	191092	tuberous sclerosis 2	613254	MONDO:0013199
+VHL	608537	von Hippel-Lindau disease	193300	MONDO:0008667
+WT1	607102	Wilms tumor 1	194070	MONDO:0008679
+ATP7B	606882	Wilson disease	277900	MONDO:0010200

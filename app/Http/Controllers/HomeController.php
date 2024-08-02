@@ -7,14 +7,19 @@ use Illuminate\Support\Collection;
 use Ahsan\Neo4j\Facade\Cypher;
 
 use Auth;
+use Storage;
 use Carbon\Carbon;
 
 use App\Gene;
+use App\Disease;
 use App\Title;
 use App\Report;
 use App\Region;
 use App\Panel;
 use App\Genomeconnect;
+use App\Slug;
+
+use App\Imports\ExcelGC;
 
 class HomeController extends Controller
 {
@@ -36,6 +41,52 @@ class HomeController extends Controller
 
 
     /**
+     * Shortcut function for processing the CCID
+     * 
+     */
+    public function ccid($id)
+	{
+		if (substr($id, 0, 5) == 'CCID:') {
+            $s = Slug::alias($id)->first();
+
+            if ($s === null || $s->target === null)
+                return view('error.message-standard')
+                    ->with('title', 'Unlnown ClinGen Curation ID')
+                    ->with('message', 'Please use the correct CCID and try again.')
+                    ->with('back', url()->previous())
+                    ->with('user', $this->user);
+
+            $id = $s->target;
+
+            // determing the path
+            if ($s->type == Slug::TYPE_CURATION)
+            {
+                switch ($s->subtype)
+                {
+                    case Slug::SUBTYPE_VALIDITY:
+                        $path = "validity-show";
+                        break;
+                    case Slug::SUBTYPE_DOSAGE:
+                        $path = 'dosage-show';
+                        break;
+                    default:
+                        return redirect()->route('gene-curations');
+                        
+                }
+            }
+            else
+            {
+
+            }
+
+            return redirect()->route($path, ['id' => $id]);
+        }
+
+		return redirect()->route('gene-curations');
+	}
+
+
+    /**
      * Show the application dashboard.
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -50,11 +101,15 @@ class HomeController extends Controller
 
         $genes = collect();
 
+        $diseases = collect();
+
         if (Auth::guard('api')->check())
         {
             $user = Auth::guard('api')->user();
 
             $genes = $user->genes;
+
+            $diseases = $user->diseases;
 
             $notification = $user->notification;
 
@@ -75,6 +130,9 @@ class HomeController extends Controller
                 case '@AllGenes':
                     $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
                     break;
+                case '@AllDiseases':
+                    $a = ['dosage' => true, 'pharma' => true, 'varpath' => true, 'validity' => true, 'actionability' => true];
+                    break;
                 case '@AllDosage':
                     $a = ['dosage' => true, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
@@ -90,16 +148,29 @@ class HomeController extends Controller
                 default:
                     $a = ['dosage' => false, 'pharma' => false, 'varpath' => false, 'validity' => false, 'actionability' => false];
                     break;
-
             }
 
-            $gene = new Gene(['name' => $group->display_name,
-                                'hgnc_id' => $group->search_name,
-                                'activity' => $a,
-                                'date_last_curated' => ''
+            if ($group->type == 3)
+            {
+                $disease = new Disease(['label' => $group->display_name,
+                                'curie' => $group->search_name,
+                                'curation_activities' => $a,
+                                'type' => 1,
+                                'last_curated_date' => ''
                             ]);
 
-            $genes->prepend($gene);
+                $diseases->prepend($disease);
+            }
+            else
+            {
+                $gene = new Gene(['name' => $group->display_name,
+                                    'hgnc_id' => $group->search_name,
+                                    'activity' => $a,
+                                    'date_last_curated' => ''
+                                ]);
+
+                $genes->prepend($gene);
+            }
         }
 
         // do a little self repair
@@ -147,11 +218,12 @@ class HomeController extends Controller
         $gceps = Panel::gcep()->blacklist(['40018', '40019', '40058'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
         $vceps = Panel::vcep()->blacklist(['4acafdd5-80f3-47f0-8522-f4bd04da175f'])->get()->sortBy('title_short', SORT_NATURAL | SORT_FLAG_CASE);
 
+
         $gcs = Genomeconnect::with('gene')->get();
 
         return view('home', compact('display_tabs', 'genes', 'total', 'curations', 'recent', 'user',
                     'notification', 'reports', 'system_reports', 'user_reports', 'shared_reports',
-                    'gceps', 'vceps', 'gcs'));
+                    'gceps', 'vceps', 'gcs', 'diseases'));
     }
 
 
@@ -189,6 +261,88 @@ class HomeController extends Controller
             ->with('user', $this->user);
     }
 
+
+    
+    /**
+    *
+    * Show the ftp downloads page.
+    *
+    * @return \Illuminate\Http\Response
+    */
+    public function gc_upload(Request $request)
+    {     
+        if(!$request->hasFile('file'))
+            return response()->json(['success' => 'false',
+                    'status_code' => 7201,
+                    'message' => "File coulds not be processed"],
+                    502);
+
+        $file = $request->file('file');
+
+        $filename = $file->getClientOriginalName();
+
+        Storage::disk('local')->put('genomeconnect/'.$filename, file_get_contents($file));
+
+        $sfile = storage_path('app') . '/genomeconnect/' . $filename;
+
+        $worksheets = (new ExcelGC)->toArray($sfile);
+
+        $errors = [];
+
+        $newcount = 0;
+
+        // process the first worksheet tab
+        foreach ($worksheets[0] as $row)
+        {
+            $symbol = $row[0];
+
+            if (empty($symbol))
+                continue;       // skip empty lines
+
+            // try to determine if this is a comment or an intended gene symbol
+            if (strpos($symbol, '#') === 0)
+                continue;       // skip obvious comment
+            $test = preg_split("/[\s,]+/", $symbol);
+            if (count($test) > 1)
+                continue;       // probably a comment
+
+            $gene = Gene::name($symbol)->first();
+
+            if ($gene === null) // check previous and alias
+            {
+                $gene = Gene::previous($symbol)->first();
+
+                if ($gene === null)
+                {
+                    $gene = Gene::alias($symbol)->first();
+                }
+            }
+
+            if ($gene === null)
+            {
+                $errors[] = "Skipping $symbol, unknown gene symbol.";
+                continue;
+            }
+
+            if ($gene->genomeconnect === null)
+            {
+                $gc = new Genomeconnect( ['status' => Genomeconnect::STATUS_INITIALIZED]);
+                $gene->genomeconnect()->save($gc);
+
+                $newcount++;
+            }
+
+        }
+            
+        //breturn redirect('/dashboard');
+        return response()->json(['success' => 'true',
+                                'status_code' => 200,
+                                'errors' => $errors,
+                                'newcount' => $newcount,
+                                'message' => "File Processed"],
+                                200);
+
+    }
 
     /**
      * Show the application dashboard.

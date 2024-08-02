@@ -62,8 +62,8 @@ class UpdateRegion extends Command
                 $start = (isset($location[1]) ? str_replace(',', '', $location[1]) : null);
                 $stop = (isset($location[2]) ? str_replace(',', '', $location[2]) : null);
 
-                $issue = Region::updateOrCreate(['location' => trim($value[0]), 'type' => 1],
-                                                ['issue' => trim($value[1]),
+                $issue = Region::updateOrCreate(['issue' => trim($value[1]), 'type' => 1],
+                                                ['location' => trim($value[0]),
                                                  'chr' => $chr,
                                                  'start' => $start,
                                                  'stop' => $stop,
