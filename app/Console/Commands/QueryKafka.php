@@ -90,7 +90,10 @@ class QueryKafka extends Command
 
         // Configure the group.id. All consumer with the same group.id will consume
         // different partitions.
-        $conf->set('group.id', 'web_prod');
+        if ($topic == 'all-curation-events') //  || $topic == 'actionability')
+            $conf->set('group.id', 'web_stage');
+        else
+            $conf->set('group.id', 'web_prod');
 
         $conf->set('security.protocol', 'sasl_ssl');
         $conf->set('sasl.mechanism', 'PLAIN');

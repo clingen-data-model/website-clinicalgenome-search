@@ -188,7 +188,7 @@
     <hr />
 
 	<!-- tab headers -->
-	<ul class="nav nav-tabs mt-1" style="">
+	<ul class="nav nav-tabs mt-1" style="margin-left: -50px; margin-right: -50px">
 		<li role="presentation" class="active" style="">
             <a href="#gdvt1" aria-controls="gdvt1" role="tab" data-toggle="tab">
               <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-1"></i>Summary</span>
@@ -223,6 +223,11 @@
         <li role="presentation" class="" style="">
 			<a href="#gdvt7" aria-controls="gdvt7" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
+            </a>
+		</li>
+        <li role="presentation" class="" style="">
+			<a href="#gdvt8" aria-controls="gdvt8" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-history mr-1"></i>History</span>
             </a>
 		</li>
         @else
@@ -634,6 +639,61 @@
                                         @endforeach
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="gdvt8">
+                <div class="panel panel-primary with-nav-tabs">
+                    <!--<div class="pull-right"><img src="/images/beta.png" height="60"></div>-->
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>History</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="gene_version" class="container">
+                                <table class="table table-hover mt-4">
+                                    <tr class="medium-font-size">
+                                        <th class="text-center bg-secondary text-white" style="vertical-align: middle"></th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Version</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Dates</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Reason for Update</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Changes</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Additional Notes</th>
+                                    </tr>
+                                    @foreach ($activities as $activity)
+                                        @if ($activity->status == 1)
+                                        <tr class="medium-font-size">
+                                        @else
+                                        <tr class="medium-font-size">
+                                        @endif
+                                        @if ($activity->status == 1)
+                                        <td style="vertical-align: middle"><i class="fas fa-arrow-right fa-lg text-danger"></i></td>
+                                        @else
+                                        <td style="vertical-align: middle"></td>
+                                        @endif
+                                        <td style="vertical-align: middle" class="p-4"><span class="btn btn-block btn-info text-white"><strong>{{ $activity->version['display'] ?? '' }}</strong></span></td>
+                                        <td class="p-4">
+                                            <div class="mb-1"><strong>Published:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['publish_date']) }}</span></div>
+                                            <div><strong>Classified:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['classification_date']) }}</span></div>
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->version['reasons'] as $reason)
+                                            <div><strong>{{ $reason }}:</strong><br>
+                                            <span class="text-muted">{{ $activity->display_reason($reason) }}</span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->changes as $change)
+                                            <div><strong>{{ $change['change_code'] }}:</strong><br>
+                                            <span class="text-muted">From {{ $change['from'] }} to {{ $change['to'] }} </span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4"><span class="text-muted">{{ $activity->notes['public'] ?? '' }}</span></td>
+                                       </tr>
+                                    @endforeach
+                                </table>
                             </div>
                         </div>
                     </div>

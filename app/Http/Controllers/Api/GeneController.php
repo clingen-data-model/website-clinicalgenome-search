@@ -88,7 +88,7 @@ class GeneController extends Controller
 
         // ...otherwise assume gene
         $gene = Gene::with('curations')->hgnc($id)->first();
-        
+
         $curations = $gene->curations->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
 
         if ($filter == 'preferred_only')
@@ -112,7 +112,7 @@ class GeneController extends Controller
             $validity = $gene->curations->where('type', Curation::TYPE_GENE_VALIDITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                         ->where('disease_id', $disease->id)->first();
-            
+
             if ($validity !== null)
             {
                 if ($validity->subtype == Curation::SUBTYPE_VALIDITY_GGP)
@@ -137,7 +137,7 @@ class GeneController extends Controller
                     $validity_tooltip = $validity_score;
                     $validity_moi = GeneLib::validityMoiAbvrString($validity_moi);
                 }
-             
+
                 // temp hack to deal with line length
                 if ($validity_score == "No Known Disease Relationship")
                     $validity_score = "No Known";
@@ -178,7 +178,7 @@ class GeneController extends Controller
             }
 
             $dosage_link = ($dosage === null ? '#' : "/kb/gene-dosage/" . $dosage->gene_hgnc_id);
-            
+
             // actionability
             $adult = $gene->curations->where('type', Curation::TYPE_ACTIONABILITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
@@ -203,7 +203,7 @@ class GeneController extends Controller
             }
 
             $ped_score = $actionability_ped_link = null;
-            
+
             if ($ped !== null)
             {
                 $ped_score = $ped->assertions['assertion'];
@@ -219,12 +219,13 @@ class GeneController extends Controller
             $variant = $gene->curations->where('type', Curation::TYPE_VARIANT_PATHOGENICITY)
                                     ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                     ->where('disease_id', $disease->id)->first();
-                    
+
             $variant_link = ($variant !== null ? "https://erepo.clinicalgenome.org/evrepo/ui/summary/classifications?columns=gene,mondoId&values="
                              . $gene->name . "," . $disease->curie
                              . "&matchTypes=exact,exact&pgSize=25&pg=1&matchMode=and" : null);
 
-            $scores[$disease->id] = ['validity_score' => $validity_score ?? null, 'validity_moi' => $validity_moi ?? null,
+            $scores[$disease->id] = ['disease' => $disease->label, 'mondo' => $disease->curie, 'has_actionability' => $disease->has_actionability,
+                                     'validity_score' => $validity_score ?? null, 'validity_moi' => $validity_moi ?? null, 'validity_order' => self::validity_order($validity_score ?? null),
                                      'validity_tooltip' => $validity_tooltip ?? null, 'validity_link' => $validity_link ?? '#',
                                      'variant_link' => $variant_link,
                                      'dosage_haplo_score' => $haplo_score ?? null, 'dosage_triplo_score' => $triplo_score ?? null,
@@ -234,12 +235,12 @@ class GeneController extends Controller
                                      'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
                                     ];
         }
-        
+
         // Check if there are gene level dosage classifications
         $dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                         ->whereNull('disease_id');
-        
+
         if ($dosages->isNotEmpty())
         {
             $haplo_gene_score = $haplo_gene_tooltip = $triplo_gene_score = $triplo_gene_tooltip = null;
@@ -252,7 +253,7 @@ class GeneController extends Controller
                     $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
                     $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
                 }
-                
+
 
                 if (isset($dosage->assertions['triplosensitivity_assertion']))
                 {
@@ -262,13 +263,21 @@ class GeneController extends Controller
                 }
             }
 
-            $scores[0] = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
+            $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
                         'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
                         'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
                         ];
-            
+
         }
 
+        usort($scores, function($a, $b){
+            if ($a['validity_order'] == $b['validity_order'])
+                return strcasecmp($a['disease'], $b['disease']);
+
+            return ($a['validity_order'] > $b['validity_order'] ? -1 : 1);
+        });
+
+        //dd($scores);
                 /*foreach($diseases as $disease)
                 {
                     $activity = [];
@@ -286,9 +295,9 @@ class GeneController extends Controller
                                     'disease_label' => $disease->label,
                                     'disease_mondo' => $disease->curie,
                                     'disease_count' => 1,
-                                    'curation' => ($disease->hasActivity('dosage') ? 'D' : '') . 
-                                                    ($disease->hasActivity('actionability') ? 'A' : '') . 
-                                                    ($disease->hasActivity('validity') ? 'V' : '') . 
+                                    'curation' => ($disease->hasActivity('dosage') ? 'D' : '') .
+                                                    ($disease->hasActivity('actionability') ? 'A' : '') .
+                                                    ($disease->hasActivity('validity') ? 'V' : '') .
                                                     ($disease->hasActivity('varpath') ? 'R' : ''),
                                     'curation_activities' => $activity,
                                     'has_comment' => false,
@@ -306,8 +315,37 @@ class GeneController extends Controller
         return view('gene.acmg_expand')
                     ->with('gene', $gene)
                     ->with('scores', $scores)
+                    ->with('gene_scores', $gene_scores ?? null)
                     ->with('diseases', $diseases);
     }
+
+
+public static function validity_order($classification)
+{
+    switch ($classification)
+    {
+        case 'Definitive':
+            return 8;
+        case 'Strong':
+            return 7;
+        case 'Moderate':
+            return 6;
+        case 'Limited':
+            return 5;
+        case 'Disputed':
+            return 4;
+        case 'Refuted':
+            return 3;
+        case 'Animal Model Only':
+            return 2;
+        case 'No Known':
+            return 1;
+        default:
+            return 0;
+    }
+
+    return 0;
+}
 
 
     /**
@@ -323,6 +361,23 @@ class GeneController extends Controller
                                         'direction' => $input['order'] ?? 'ASC',
                                         'search' => $term ?? null,
                                         'curated' => false ]);
+
+        return $results;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function lookByName(Request $request, $term = null)
+    {
+        $results = GeneLib::geneLookByName([	'page' => $input['offset'] ?? 0,
+            'pagesize' => $input['limit'] ?? "null",
+            'sort' => $sort ?? 'GENE_LABEL',
+            'direction' => $input['order'] ?? 'ASC',
+            'search' => $term ?? null,
+            'curated' => false ]);
 
         return $results;
     }

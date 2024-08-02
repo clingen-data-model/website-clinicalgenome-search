@@ -25,7 +25,17 @@ if (!function_exists('dislpayCitation')) {
             $str .= 'et al., ';
 
         $str .= '<strong>' .$obj->year_published . '</strong>, <a href="' . $obj->iri . '" rel="noopener noreferrer" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="'
-                . ($obj->label ?? 'No title') . '">PMID: ' . basename($obj->iri) . '  <i class="glyphicon glyphicon-new-window"></i></a>';
+                . ($obj->label ?? 'No title') . '">';
+
+        $base = basename($obj->iri);
+                
+        if (is_numeric($base))
+            $str .=  'PMID: ';
+        else
+            $base = str_replace('clinvar.submission:', '', $base);
+
+        
+        $str .=  $base . '  <i class="glyphicon glyphicon-new-window"></i></a>';
 
         return $str;
 
