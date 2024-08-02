@@ -454,7 +454,7 @@ class Actionability extends Model
         $record = json_decode($message->payload);
 
         // if this is a new variant-condition record, call the variant parser
-        if ($record->curationType == 'Variant-Condition')
+        if (isset($record->curationType) && $record->curationType == 'Variant-Condition')
             return self::variant_parser($message, $packet);
 
         // there are no incremental updates in actionability, so
