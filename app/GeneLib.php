@@ -73,6 +73,7 @@ class GeneLib extends Model
      ];
 
      protected static $word_dosage_assertion_strings = [
+          '-5' => '',
           '0' => 'No Evidence',
           '1' => 'Little',
           '2' => 'Emerging',

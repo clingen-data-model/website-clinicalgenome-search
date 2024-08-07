@@ -514,6 +514,7 @@ function haplo2Formatter(index, row) {
         case 30:
         case "30":
         case '30: Autosomal Recessive':
+        case '30: Gene associated with autosomal recessive phenotype':
             display = "Autosomal<div>Recessive</div>";
             tooltip = "30 (Autosomal Recessive)";
             badge = 30;
@@ -746,7 +747,7 @@ function affiliateFormatter(index, row) {
     //return html;
 
     var html = '<a onclick="event.stopPropagation();" href="https://clinicalgenome.org/affiliation/' + row.agent + '" target="_gcep">' + row.label + '</a>' 
-                    + '<div class="text-muted small">ClinGen Affliate ID: ' + row.agent + '</div>';
+                    + '<div class="text-muted small">ClinGen Affiliate ID: ' + row.agent + '</div>';
     return html;
 }
 
