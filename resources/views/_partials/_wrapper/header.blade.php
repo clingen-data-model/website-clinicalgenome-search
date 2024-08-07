@@ -38,10 +38,7 @@
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/about/clingen-job-opportunities/'><span class=' d-inline-block text-truncate'>ClinGen Job Opportunities</span></a>
               </li>
               <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/terms-of-use/'><span class=' d-inline-block text-truncate'>ClinGen Terms of Use</span></a>
-              </li>
-              <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/clingen-collaborations/'><span class=' d-inline-block text-truncate'>Collaborations</span></a>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/terms-of-use/'><span class=' d-inline-block text-truncate'>Citing ClinGen &amp; Terms of Use</span></a>
               </li>
 
               <li class='nav-item '>
@@ -56,11 +53,23 @@
               </li>
 
               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://clinicalgenome.org/tools/justice-equity-diversity-and-inclusion-jedi-action-plan/'><span class=' d-inline-block text-truncate'>JEDI Action Plan</span></a>
+              </li>
+
+              <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/clingen-leadership/'><span class=' d-inline-block text-truncate'>Leadership</span></a>
               </li>
 
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/people/'><span class=' d-inline-block text-truncate'>Member Directory</span></a>
+              </li>
+
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/organizations/'><span class=' d-inline-block text-truncate'>Organization Directory</span></a>
+              </li>
+
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/clingen-collaborations/'><span class=' d-inline-block text-truncate'>Partnerships</span></a>
               </li>
 
               <li class='nav-item '>
@@ -152,6 +161,10 @@
 
               <li class='nav-item '>
                 <a class='nav-link nav-link-small pl-4' href='https://ccdb.clinicalgenome.org/'><span class=' d-inline-block text-truncate'><i class='fas fa-angle-double-right text-muted-more'></i> Community Curation Database</span></a>
+              </li>
+
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://clinicalgenome.org/curation-activities/clingen-curation-of-clinvar/'><span class=' d-inline-block text-truncate'> ClinGen Curation of ClinVar</span></a>
               </li>
 
               <li class='divider'></li>
