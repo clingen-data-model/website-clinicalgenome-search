@@ -225,11 +225,11 @@
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
             </a>
 		</li>
-        <li role="presentation" class="" style="">
+        <!--<li role="presentation" class="" style="">
 			<a href="#gdvt8" aria-controls="gdvt8" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-history mr-1"></i>History</span>
             </a>
-		</li>
+		</li>-->
         @else
         <span class="pull-right mt-2 mr-5 text-danger"><b><i>Additional evidence details have not been made available for this particular Gene-Disease assertion </i></b></span>
         @endif
