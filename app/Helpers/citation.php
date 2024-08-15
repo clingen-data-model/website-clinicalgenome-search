@@ -14,7 +14,7 @@ if (!function_exists('dislpayCitation')) {
                 $str .=  'PMID: ';
             else 
             {
-                $str .= 'ClinVar SVC: ';
+                $str .= 'ClinVar SCV: ';
                 $base = str_replace('clinvar.submission:', '', $base);
             }
 
