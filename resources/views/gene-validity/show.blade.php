@@ -449,14 +449,22 @@
                                         @foreach ($evidence->evidence as $source)
                                         <p>
                                             <a href="{{ $source->source->iri }}" target="_pubmed">
-                                                <strong>{{ $source->source->curie ?? '' }}</strong>
+                                                @if (strpos($source->source->curie,'CVSCV') === 0)
+                                                <strong>ClinVar SCV: {{ str_replace('CVSCV:','', $source->source->curie ?? '') }}</strong>
+                                                @else
+                                                <strong>{{ str_replace('PMID:', 'PMID: ', $source->source->curie ?? '') }}</strong>
+                                                @endif
                                                 <i class="glyphicon glyphicon-new-window"></i>
                                             </a>
                                             @if (in_array($source->source->curie, $extrecord->eas))
                                             <span class="ml-1" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span>
                                             @endif
                                             <br>
-                                            {{ $source->source->first_author ?? ''}}, et. al., {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
+                                            {{ $source->source->first_author ?? ''}},
+                                            @if ($source->source->multiple_authors)
+                                             et. al., 
+                                            @endif
+                                            {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
                                             <br>
                                             @if (empty($evidence->description))
                                             <strong>Explanation:  </strong>None

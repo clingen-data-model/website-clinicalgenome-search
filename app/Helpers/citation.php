@@ -6,9 +6,19 @@ if (!function_exists('dislpayCitation')) {
         if ($exp)
         {
             $str = '<strong><a href="' . $obj->iri . '" rel="noopener noreferrer" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="'
-                     . ($obj->label ?? 'No title') . '">PMID: ' . basename($obj->iri) . '  <i class="glyphicon glyphicon-new-window"></i></a></strong>';
+                     . ($obj->label ?? 'No title') . '">';
 
-            $str .= '<br>' . $obj->first_author . ', ';
+            $base = basename($obj->iri);
+
+            if (is_numeric($base))
+                $str .=  'PMID: ';
+            else 
+            {
+                $str .= 'ClinVar SVC: ';
+                $base = str_replace('clinvar.submission:', '', $base);
+            }
+
+            $str .=  $base . '  <i class="glyphicon glyphicon-new-window"></i></a></strong><br>' . $obj->first_author . ', ';
 
             if ($obj->multiple_authors)
                 $str .= 'et al., ';
@@ -28,13 +38,15 @@ if (!function_exists('dislpayCitation')) {
                 . ($obj->label ?? 'No title') . '">';
 
         $base = basename($obj->iri);
-                
+
         if (is_numeric($base))
             $str .=  'PMID: ';
         else
+        {
+            $str .= 'ClinVar SCV: ';
             $base = str_replace('clinvar.submission:', '', $base);
+        }
 
-        
         $str .=  $base . '  <i class="glyphicon glyphicon-new-window"></i></a>';
 
         return $str;
