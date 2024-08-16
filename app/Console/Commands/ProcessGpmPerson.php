@@ -39,20 +39,17 @@ class ProcessGpmPerson extends Command
      */
     public function handle()
     {
-        $members = Member::get();
+        //$members = Member::whereNull('processwire_id')->take(3)->offset(20)->first();
+        $members = Member::where('id', 13473)->get();
         //Get all data from members where last_nameis unique...
-//        $members = Member::select('*', DB::raw('count(*) as count'))
+//        $members = Member::select('*', DB::raw('crount(*) as count'))
 //            ->whereNull('processwire_id')
 //            ->groupBy('last_name')
 //            ->having('count', '=', 1)->get();
 
         $bar = $this->output->createProgressBar($members->count());
         $members->each ( function (Member $member) use ($bar) {
-            $response = $member->pushToProcessWire('update-gpm-id');
-            if ($userData = json_decode($response, true)) {
-                $member->processwire_id = $userData['page_id'];
-                $member->save();
-            }
+            $response = $member->createProcessWireUser();
             $bar->advance();
         });
 

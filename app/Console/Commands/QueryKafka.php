@@ -163,11 +163,9 @@ class QueryKafka extends Command
                         } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events') {
                             $payload = json_decode($message->payload, true);
                             $a = $stream->parser;
-                            $a($payload);
+                            $a($payload, $message->timestamp);
                             $stream->update(['offset' => $message->offset + 1]);
-                        }
-                        else
-                        {
+                        } else {
                             // there is strong reasons to pass the entire message to the parser,
                             // as we do with actionability and dosage above.  All new parsers should
                             // be that way.  But for now, leave the existings parsers as is and
