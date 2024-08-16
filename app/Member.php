@@ -154,16 +154,15 @@ class Member extends Model
         return sprintf('%s %s %s', $this->first_name, $this->last_name, $this->credentials);
     }
 
-    public function parser($data)
+    public function parser($data, $timestamp = null)
     {
         if ($eventType = data_get($data, 'event_type')) {
             if ($eventType === 'deleted') {
                 if ($gpm_id = data_get($data,'data.person.id')) {
                     $member = self::where('gpm_id', $gpm_id)->first();
-                    //what if didn't happen
-                    //$member->removeFromProcessWire();
-                    //self::where('gpm_id', data_get('data.person.id'))->delete();
-                    //return true;
+                    $member->removeFromProcessWire();
+                    $member->delete();
+                    return true;
                 }
 
             } else {
@@ -213,6 +212,8 @@ class Member extends Model
 
             $member->save();
 
+            $member->createProcessWireUser();
+
             return $member;
 
         }
@@ -227,26 +228,30 @@ class Member extends Model
 
     public function removeFromProcessWire()
     {
-        $data = [
-            'type' => 'deleted',
-            'email' => $this->email
-        ];
+        $response =  $this->pushToProcessWire('delete');
+        return $response->successful();
+    }
 
-        $response = $this->HttpRequest()->post($this->processWireUrl(), $data);
-
+    public function createProcessWireUser()
+    {
+        $response = $this->pushToProcessWire();
         if ($response->successful()) {
-            return json_decode($response->body(), true);
+            if ($userData = json_decode($response->body(), true)) {
+                $this->processwire_id = $userData['id'];
+                $this->save();
+                return $this;
+            }
         }
 
         return false;
+
     }
 
     public function pushToProcessWire($action = null)
     {
         $data = $this->processwireData();
         $data['action'] = $action;
-        $response = $this->HttpRequest()->post($this->processWireUrl(), $data);
-        return $response->body();
+        return $this->HttpRequest()->post($this->processWireUrl(), $data);
     }
 
 }

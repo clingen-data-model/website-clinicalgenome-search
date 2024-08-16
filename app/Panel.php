@@ -641,12 +641,13 @@ class Panel extends Model
         }
     }
 
-    public function parser($data)
+    public function parser($data, $timestamp)
     {
-        return $this->syncFromKafka($data);
+        $panel = new static();
+        return $panel->syncFromKafka($data, $timestamp);
     }
 
-    public function syncFromKafka($data)
+    public function syncFromKafka($data, $timestamp = null)
     {
         $eventType = data_get($data, 'event_type');
 
@@ -666,41 +667,44 @@ class Panel extends Model
         switch ($eventType) {
             case 'ep_definition_approved':
 
-                $this->title_abbreviated = data_get($data, 'data.expert_panel.name');
-                $this->gpm_id = data_get($data, 'data.expert_panel.id');
-                $this->affiliate_type = data_get($data, 'data.expert_panel.type');
-                $this->affiliate_id = data_get($data, 'data.expert_panel.affiliation_id');
-                //$panel->name = data_get($data, 'value.data.expert_panel.name');
+                $activity = $this->activities()->firstOrNew([
+                    'activity' => 'ep_definition_approved'
+                ]);
 
-                if ($this->save()) {
-                    if ($members = data_get($data, 'data.members')) {
-                        foreach ($members as $member) {
-                            //look for email first
+                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->save();
+                break;
 
-                            if ($memberObj = $this->validateMemberFromKafka($member)) {
-                                $role = [];
-                                if (count($member['group_roles'])) {
-                                    if ($member['group_roles'][0] === 'chair') {
-                                        $userRole = 'leader';
-                                    } else {
-                                        $userRole = $member['group_roles'][0];
-                                    }
-                                    $role = ['role' => $userRole];
-                                }
-                                $this->members()->syncWithoutDetaching([$memberObj->id, $role]);
-                            }
-                        }
-                    }
-                }
-            //$panel->affliate_id =
-
-            //$panel->name =
             case 'vcep_draft_specifications_approved':
                 //
-                dd($$data);
+                $activity = $this->activities()->firstOrNew([
+                    'activity' => 'vcep_draft_specifications_approved'
+                ]);
+
+                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->save();
+                break;
+
             case 'vcep_pilot_approved':
-                //
+
+                $activity = $this->activities()->firstOrNew([
+                    'activity' => 'vcep_pilot_approved'
+                ]);
+
+                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->save();
+
+                break;
+
             case 'ep_final_approval':
+
+                $activity = $this->activities()->firstOrNew([
+                    'activity' => 'ep_final_approval'
+                ]);
+
+                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->save();
+                break;
                 //
             case 'member_removed':
                 //
@@ -722,37 +726,54 @@ class Panel extends Model
                         }
                     }
                 }
+
+                break;
             //
             case 'member_role_removed':
                 //
-            case 'gene_added':
-                //
-            case 'member_permission_granted':
-                //
+                if ($members = data_get($data, 'data.members')) {
+                    foreach ($members as $member) {
+                        $memberObj = $this->validateMemberFromKafka($member);
+
+                        if (null !== $memberObj) {
+                            $groupRoles = json_decode($memberObj->groupRoles, true);
+
+                            if (!is_array($groupRoles)) continue;
+
+                            $currentRoles = array_diff($groupRoles, $member['group_roles']);
+
+                            $role = [
+                                'role' => count($currentRoles) ? $this->getPanelMembership($currentRoles) : '',
+                                'group_roles' => json_encode($currentRoles)
+                            ];
+
+                            $this->members()->sync([$memberObj->id, $role]);
+
+                        }
+                    }
+
+                }
             case 'member_added':
             case 'member_role_assigned':
+            case 'member_unretired':
                 if ($members = data_get($data, 'data.members')) {
                     foreach ($members as $member) {
                         $memberObj = $this->validateMemberFromKafka($member);
 
                         if (null !== $memberObj) {
 
-                            if (count($member['group_roles'])) {
-                                if ($member['group_roles'][0] === 'chair') {
-                                    $userRole = 'leader';
-                                } else {
-                                    $userRole = $member['group_roles'][0];
-                                }
-                                $role = ['role' => $userRole];
+                            $role = [
+                                'role' => count($member['group_roles']) ? $this->getPanelMembership($member['group_roles']) : '',
+                                'group_roles' => json_encode($member['group_roles'])
+                            ];
 
-                            }
-
-                            $this->members()->syncWithoutDetaching([$memberObj->id, $role]);
+                            $this->members()->sync([$memberObj->id, $role]);
 
                         }
                     }
 
                 }
+                break;
             case 'member_retired':
                 if ($members = data_get($data, 'data.members')) {
                     foreach ($members as $member) {
@@ -763,29 +784,7 @@ class Panel extends Model
                         }
                     }
                 }
-            case 'gene_removed';
-                //
-            case 'member_unretired':
-                if ($members = data_get($data, 'data.members')) {
-                    foreach ($members as $member) {
-                        $memberObj = $this->validateMemberFromKafka($member);
-
-                        if (null !== $memberObj) {
-
-                            if (count($member['group_roles'])) {
-                                if ($member['group_roles'][0] === 'chair') {
-                                    $userRole = 'leader';
-                                } else {
-                                    $userRole = $member['group_roles'][0];
-                                }
-                                $role = ['role' => $userRole];
-                            }
-                            $this->members()->syncWithoutDetaching([$memberObj->id, $role]);
-                        }
-                    }
-                }
-            case 'member_permission_revoked':
-                //
+                break;
             default:
                 //
 
@@ -816,6 +815,13 @@ class Panel extends Model
         }
 
         return null;
+    }
+
+    public function getPanelMembership($roles)
+    {
+        if (in_array('leader', $roles)) return 'leader';
+        if (in_array('biocurator', $roles)) return 'curator';
+        return 'member';
     }
 
 }

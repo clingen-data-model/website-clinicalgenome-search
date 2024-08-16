@@ -24,7 +24,8 @@ class AddDataToStreamsTable extends Migration
                 'type' => 1,
                 'description' => 'Stream for GPM general events',
                 'offset' => 0,
-                'parser' => \App\Panel::class,
+                'parser' => 'App\\Panel::parser',
+                'endpoint' => 'pkc-4yyd6.us-east1.gcp.confluent.cloud:9092'
             ],
             [
                 'name' => 'gpm-person-events',
@@ -32,8 +33,8 @@ class AddDataToStreamsTable extends Migration
                 'type' => 1,
                 'description' => 'Stream for GPM general events',
                 'offset' => 0,
-                'parser' => \App\Panel::class,
-
+                'parser' => 'App\\Member::parser',
+                'endpoint' => 'pkc-4yyd6.us-east1.gcp.confluent.cloud:9092'
             ],
 
         ];
