@@ -47,9 +47,11 @@ class ProcessGpmPerson extends Command
 //            ->groupBy('last_name')
 //            ->having('count', '=', 1)->get();
 
+
         $bar = $this->output->createProgressBar($members->count());
         $members->each ( function (Member $member) use ($bar) {
             $response = $member->createProcessWireUser();
+            dd($response);
             $bar->advance();
         });
 
