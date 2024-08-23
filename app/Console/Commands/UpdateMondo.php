@@ -103,7 +103,17 @@ class UpdateMondo extends Command
 
         echo "Updating MONDO Disease Library from Monarch ...";
 
-        $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
+        try {
+
+          //$data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
+          $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo.json');
+
+
+        } catch (\Exception $e) {
+      
+          echo "\n(E001) Error accessing MONDO file\n";
+          return;
+        }
 
         $json = json_decode($data);
 

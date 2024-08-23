@@ -298,9 +298,9 @@ class GeneLib extends Model
           //if (empty($health->genegraph) || empty($args['curated']))
 
           //if (!empty($args['curated']))
-               $response = Mysql::geneList($args);
+          $response = Mysql::geneList($args);
           //else
-             //  $response = Graphql::geneList($args);
+          //  $response = Graphql::geneList($args);
 
           /*if ($args['curated'] || !empty($args['forcegg']))
                $response = Graphql::geneList($args);
@@ -317,15 +317,15 @@ class GeneLib extends Model
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
-      static function acmgList($args)
-      {
+     static function acmgList($args)
+     {
           if (is_null($args) || !is_array($args))
                return collect([]);
 
           $response = Mysql::acmgList($args);
 
-           return $response;
-      }
+          return $response;
+     }
 
 
 
@@ -453,21 +453,21 @@ class GeneLib extends Model
           return $response;
      }
 
-    /**
-     * Typeahead search for gene matches
-     *
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    static function geneLookByName($args)
-    {
-        if (is_null($args) || !is_array($args))
-            return collect([]);
+     /**
+      * Typeahead search for gene matches
+      *
+      *
+      * @return Illuminate\Database\Eloquent\Collection
+      */
+     static function geneLookByName($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-        $response = Mysql::geneLookByName($args);
+          $response = Mysql::geneLookByName($args);
 
-        return $response;
-    }
+          return $response;
+     }
 
 
      /**
@@ -521,7 +521,7 @@ class GeneLib extends Model
           //$response = Neo4j::affiliateList($args);
 
           // The affiliate and curation data is currently in graphql
-         // $response = Graphql::affiliateList($args);
+          // $response = Graphql::affiliateList($args);
 
           $response = Mysql::affiliateList($args);
 
@@ -769,15 +769,41 @@ class GeneLib extends Model
 
           if ($supplement !== null) {
                // combine the two
-               foreach ([
-                    'summary', 'genetype', 'genesymbol', 'genereviews', 'locusdb',
-                    'triplo_score', 'haplo_score', 'cytoband', 'key', 'reduced_penetrance',
-                    'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-                    'loss_pheno_ontology', 'loss_pheno_ontology_id', 'loss_pheno_name', 'history',
-                    'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'gain_pheno_name', 'links',
-                    'resolution', 'issue_type', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-                    'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status'
-               ] as $field) {
+               foreach (
+                    [
+                         'summary',
+                         'genetype',
+                         'genesymbol',
+                         'genereviews',
+                         'locusdb',
+                         'triplo_score',
+                         'haplo_score',
+                         'cytoband',
+                         'key',
+                         'reduced_penetrance',
+                         'loss_comments',
+                         'loss_pheno_omim',
+                         'loss_pmids',
+                         'reduced_penetrance_comment',
+                         'loss_pheno_ontology',
+                         'loss_pheno_ontology_id',
+                         'loss_pheno_name',
+                         'history',
+                         'gain_comments',
+                         'gain_pheno_omim',
+                         'gain_pmids',
+                         'gain_pheno_name',
+                         'links',
+                         'resolution',
+                         'issue_type',
+                         'gain_pheno_ontology',
+                         'gain_pheno_ontology_id',
+                         'GRCh37_seqid',
+                         'GRCh38_seqid',
+                         'issue_status',
+                         'jira_status'
+                    ] as $field
+               ) {
                     // Prefer the NIH wording over the local Jira one.
                     if ($field == 'genetype' && !empty($response->locus_group)) {
                          $response->$field = $response->locus_group;
@@ -827,17 +853,46 @@ class GeneLib extends Model
 
           if ($supplement !== null) {
                // combine the two
-               foreach ([
-                    'summary', 'genetype', 'label', 'date',
-                    'triplo_score', 'haplo_score', 'cytoband', 'key', 'breakpoint',
-                    'loss_comments', 'loss_pheno_omim', 'loss_pmids', 'reduced_penetrance_comment',
-                    'loss_pheno_name', 'loss_pheno_ontology', 'loss_pheno_ontology_id',
-                    'gain_comments', 'gain_pheno_omim', 'gain_pmids', 'reduced_penetrance',
-                    'gain_pheno_name', 'gain_pheno_ontology', 'gain_pheno_ontology_id',
-                    'grch37', 'grch38', 'chromosome_band', 'allele', 'knownhits', 'links',
-                    'resolution', 'issue_type', 'description',
-                    'GRCh37_seqid', 'GRCh38_seqid', 'issue_status', 'jira_status'
-               ] as $field) {
+               foreach (
+                    [
+                         'summary',
+                         'genetype',
+                         'label',
+                         'date',
+                         'triplo_score',
+                         'haplo_score',
+                         'cytoband',
+                         'key',
+                         'breakpoint',
+                         'loss_comments',
+                         'loss_pheno_omim',
+                         'loss_pmids',
+                         'reduced_penetrance_comment',
+                         'loss_pheno_name',
+                         'loss_pheno_ontology',
+                         'loss_pheno_ontology_id',
+                         'gain_comments',
+                         'gain_pheno_omim',
+                         'gain_pmids',
+                         'reduced_penetrance',
+                         'gain_pheno_name',
+                         'gain_pheno_ontology',
+                         'gain_pheno_ontology_id',
+                         'grch37',
+                         'grch38',
+                         'chromosome_band',
+                         'allele',
+                         'knownhits',
+                         'links',
+                         'resolution',
+                         'issue_type',
+                         'description',
+                         'GRCh37_seqid',
+                         'GRCh38_seqid',
+                         'issue_status',
+                         'jira_status'
+                    ] as $field
+               ) {
                     if ($field == 'genetype' && !empty($response->locus_group)) {
                          $response->$field = $response->locus_group;
                          continue;
@@ -867,24 +922,24 @@ class GeneLib extends Model
           if (is_null($args) || !is_array($args))
                return collect([]);
 
-         // regions are still only found in Jira
-         //$response = Jira::cnvList($args);
+          // regions are still only found in Jira
+          //$response = Jira::cnvList($args);
 
-         $response = Mysql::cnvList($args);
+          $response = Mysql::cnvList($args);
 
-         return $response;
-    }
+          return $response;
+     }
 
 
-    /**
+     /**
       * Get all current prepublish curations
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
-      static function dosagePrecuration($args)
-      {
-           if (is_null($args) || !is_array($args))
-                return collect([]);
+     static function dosagePrecuration($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
           // regions are still only found in Jira
           $response = Jira::precuration($args);
@@ -945,7 +1000,7 @@ class GeneLib extends Model
           //$local = Jira::regionList($args);
 
           $local = Mysql::regionList($args);
-//dd($local->collection->first());
+          //dd($local->collection->first());
           // combine
           /*$c = $local->collection;
          $records = $records->map( function ($record) use ($c)
@@ -987,10 +1042,10 @@ class GeneLib extends Model
           //$response = Neo4j::drugList($args);
 
           // Drug data is now in graphql
-         // if (!empty($args['forcegg']))
+          // if (!empty($args['forcegg']))
           //     $response = Graphql::drugList($args);
           //else      // Drug data is now local
-               $response = Mysql::drugList($args);
+          $response = Mysql::drugList($args);
 
           return $response;
      }
@@ -1118,16 +1173,16 @@ class GeneLib extends Model
       *
       * @return Illuminate\Database\Eloquent\Collection
       */
-      static function conditionFind($args)
-      {
-           if (is_null($args) || !is_array($args))
-                return collect([]);
+     static function conditionFind($args)
+     {
+          if (is_null($args) || !is_array($args))
+               return collect([]);
 
-           // Gene listing using Graphql
-           $response = Mysql::conditionFind($args);
+          // Gene listing using Graphql
+          $response = Mysql::conditionFind($args);
 
-           return $response;
-      }
+          return $response;
+     }
 
 
      /**
@@ -1149,13 +1204,13 @@ class GeneLib extends Model
       *
       * @return string
       */
-      public static function wordAssertionString($str)
-      {
-           if ($str === null || $str === false || $str === 'unknown')
-                return 'Unknown';
+     public static function wordAssertionString($str)
+     {
+          if ($str === null || $str === false || $str === 'unknown')
+               return 'Unknown';
 
-           return self::$word_dosage_assertion_strings[$str];
-      }
+          return self::$word_dosage_assertion_strings[$str];
+     }
 
 
      /**

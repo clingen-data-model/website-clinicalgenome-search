@@ -108,7 +108,7 @@ class ReportController extends Controller
 	{
 		$queryResponse = GeneLib::actionabilityList(['iri' => "HGNC:6407"]);
 
-		dd($queryResponse);
+		//dd($queryResponse);
 
 		/*
 			foreach ($queryResponse->users as $user) {
