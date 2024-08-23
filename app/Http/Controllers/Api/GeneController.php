@@ -12,6 +12,7 @@ use App\Gene;
 use App\Disease;
 use App\Curation;
 use App\Acmg;
+use App\Reportable;
 
 class GeneController extends Controller
 {
@@ -108,6 +109,9 @@ class GeneController extends Controller
 
         foreach ($diseases as $disease)
         {
+            // get reportables flag
+            $reportable = Reportable::hgnc($gene->hgnc_id)->mondo($disease->curie)->first();
+
             // validity
             $validity = $gene->curations->where('type', Curation::TYPE_GENE_VALIDITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
@@ -232,7 +236,8 @@ class GeneController extends Controller
                                      'dosage_haplo_tooltip' => $haplo_tooltip, 'dosage_triplo_tooltip' => $triplo_tooltip,
                                      'dosage_link' => $dosage_link,
                                      'actionability_adult_score' => $adult_score, 'actionability_pediatric_score' => $ped_score,
-                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
+                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link,
+                                     'reportable' => $reportable->reportable ?? ''
                                     ];
         }
 

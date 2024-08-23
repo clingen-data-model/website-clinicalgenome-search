@@ -87,17 +87,32 @@
 		</div>
 		<!-- reportable -->
 		<div class="col-md-2 pt-2 pb-2 text-center">
-			@if ($gene->name == "BRCA1")
-			@if ($score['mondo'] == "MONDO:0011450")
-			<span class="text-success"><i class="fas fa-check fa-lg mt-3"></i></span>
-			@else 
-			<span class="text-success mt-3">&nbsp;</span>
-			@endif
-			@elseif (rand(0,1))
-			<span class="text-success"><i class="fas fa-check fa-lg mt-3"></i></span>
-			@else 
-			<span class="text-success mt-3">&nbsp;</span>
-			@endif
+			@switch($score['reportable'])
+			@case('Yes')
+			<div class="text-success mt-1 pt-2">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@break
+			@case('No')
+			<div class="text-danger mt-1 pt-2">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@break
+			@case('NA')
+			<div class="text-muted mt-1 pt-2">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@break
+			@case('Pending')
+			<div class="text-warning mt-1 pt-2" data-toggle="tooltip" data-placement="top" title="Decision to report this gene-disease relationship as SF under review">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@break
+			@default
+			<div class="mt-1 pt-2">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@endswitch
 		</div>
 	</div>
 @endforeach

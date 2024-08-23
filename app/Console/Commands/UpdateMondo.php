@@ -105,7 +105,9 @@ class UpdateMondo extends Command
 
         try {
 
-          $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
+          //$data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo-with-equivalents.json');
+          $data = file_get_contents('http://purl.obolibrary.org/obo/mondo/mondo.json');
+
 
         } catch (\Exception $e) {
       

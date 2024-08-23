@@ -29,7 +29,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
             $triplosensitivity_assertion = '';
             $dosage_report = '';
             $dosage_group = '';
-
+            
             if (isset($gene->dosage_curation)) {
                 //dd($gene->dosage_curation->haploinsufficiency_assertion->dosage_classification);
                     //foreach ($gene->dosage_curation as $dosage_curation) {

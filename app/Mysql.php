@@ -1851,4 +1851,47 @@ class Mysql
 
 		return json_encode($array);
 	}
+
+
+    /**
+	 * Get gene list with curation flags and last update
+	 *
+	 * @return Illuminate\Database\Eloquent\Collection
+	 */
+	static function geneListForExportReport($args, $curated = true, $page = 0, $pagesize = 20000)
+	{
+		// break out the args
+		foreach ($args as $key => $value)
+			$$key = $value;
+
+		// initialize the collection
+		$collection = collect();
+
+        $gene_list = Gene::whereNotNull('activity')->with('curations')->get(['name as label', 'hgnc_id', 'date_last_curated as last_curated_date', 'activity', 'acmg59', 'disease']);
+
+        foreach ($gene_list as $gene)
+        {
+            dd($gene);
+            $return[] = [
+                'gene_symbol' => $gene->label,
+                'hgnc_id' => $gene->hgnc_id,
+                'gene_url' => route('gene-show', ['id' => $gene->hgnc_id]),
+                'disease_label' => $genetic_condition->disease->label,
+                'mondo_id' => $genetic_condition->disease->curie,
+                'disease_url' => route('condition-show', ['id' => $genetic_condition->disease->curie]),
+                'mois' => $mois,
+                'haploinsufficiency_assertion' => $haploinsufficiency_assertion,
+                'triplosensitivity_assertion' => $triplosensitivity_assertion,
+                'dosage_report' => $dosage_report,
+                'dosage_group' => $dosage_group,
+                'gene_validity_assertion_classifications' => $gene_validity_assertions_classifications,
+                'gene_validity_assertion_reports' => $gene_validity_assertion_reports,
+                'gene_validity_gceps' => $gene_validity_gceps,
+                'actionability_assertion_classifications' => $actionability_assertion_classifications,
+                'actionability_assertion_reports' => $actionability_assertions_reports,
+                'actionability_groups' => $actionability_groups,
+
+            ];
+        }
+    }
 }

@@ -28,6 +28,7 @@ use App\Notification;
 use App\Actionability;
 use App\Panel;
 use App\Slug;
+use App\Mysql;
 
 use App\Mail\NotifyFrequency;
 //use App\Neo4j;
@@ -76,7 +77,8 @@ class TestController extends Controller
     public function index()
     {
 
-		$results = GeneLib::validityList(['page' => 0,
+		$results = Mysql::geneListForExportReport(
+										['page' => 0,
 										'pagesize' => null,
 										'sort' => 'GENE_LABEL',
 										'direction' => 'ASC',
@@ -84,9 +86,9 @@ class TestController extends Controller
                                         'include_lump_split' => true,
                                         'curated' => true ]);
 
-		dd($results->collection->first());
+		dd($results);
 
-        $id = "CGGCIEX:assertion_3210";
+        /*$id = "CGGCIEX:assertion_3210";
 
         $g = Graphql::newValidityDetail(['page' => 0,
                         'pagesize' => 20,

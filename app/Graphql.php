@@ -276,6 +276,14 @@ class Graphql
 									label
 									last_curated_date
 								}
+								gene_dosage_assertions {
+									report_date
+									assertion_type
+									curie
+									disease
+									iri
+									label
+								}
 								actionability_assertions {
 									report_date
 									source
@@ -343,8 +351,6 @@ class Graphql
 		// query genegraph
 		$response = self::query($query, __METHOD__);
 
-
-
 		if (empty($response))
 			return $response;
 
@@ -367,6 +373,7 @@ class Graphql
 
 		// create node list and add pharma and variant curation indicators to the current gene list
 		foreach ($response->genes->gene_list as $record) {
+			
 			$node = new Nodal((array) $record);
 			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
 			if ($extra !== null) {
