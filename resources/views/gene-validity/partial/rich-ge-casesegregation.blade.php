@@ -82,7 +82,7 @@
                 <tbody role="rowgroup">
                     @foreach ($extrecord->segregation as $record)
                         @foreach($record->evidence as $evidence)
-                        @if ($evidence->proband === null)
+                        @if (!isset($evidence->proband) || $evidence->proband === null)
                         @continue
                         @endif
                     <tr>

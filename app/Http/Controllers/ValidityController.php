@@ -284,6 +284,8 @@ class ValidityController extends Controller
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence)) {
                     //dd($item->evidence);
                     foreach ($item->evidence as $e) {
+                        if (!isset($e->proband))
+                            continue;
                         if ($e->proband !== null) // && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
                             $clfs = true;
                         else if ($e->proband === null) // || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
@@ -421,7 +423,7 @@ class ValidityController extends Controller
         if ($extrecord && !empty($extrecord->segregation)) {
             $exomeflag = false;
             foreach ($extrecord->segregation[0]->evidence as $evidence) {
-                if ($evidence->meets_inclusion_criteria == true) {
+                if (isset($evidence->meets_inclusion_criteria) && $evidence->meets_inclusion_criteria == true) {
                     if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                         if (($evidence->sequencing_method->curie ?? false) == "SEPIO:0004541")
