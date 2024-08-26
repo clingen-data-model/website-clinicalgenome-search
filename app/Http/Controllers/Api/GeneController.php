@@ -194,26 +194,32 @@ class GeneController extends Controller
                                         ->where('context', 'Pediatric')
                                         ->where('disease_id', $disease->id)->first();
 
-            $adult_score = $actionability_adult_link = null;
+            $adult_score = $actionability_adult_link = $actionability_adult_tooltip = null;
 
             if ($adult !== null)
             {
                 $adult_score = $adult->assertions['assertion'];
+                $actionability_adult_tooltip = $adult_score;
                 $adult_score = strtok($adult_score, " "); // extract first word
+                if ($adult_score == 'N/A')
+                    $adult_score = "Early RO";
                 if ($adult_score == "Assertion")
-                    $adult_score = "Pending";
+                    $adult_score = "Assert Pend";
                 $actionability_adult_link = "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document;
 
             }
 
-            $ped_score = $actionability_ped_link = null;
+            $ped_score = $actionability_ped_link = $actionability_ped_tooltip = null;
 
             if ($ped !== null)
             {
                 $ped_score = $ped->assertions['assertion'];
+                $actionability_ped_tooltip = $ped_score;
                 $ped_score = strtok($ped_score, " "); // extract first word
+                if ($ped_score == 'N/A')
+                    $ped_score = "Early RO";
                 if ($ped_score == "Assertion")
-                    $ped_score = "Pending";
+                    $ped_score = "Assert Pend";
                 $actionability_ped_link = "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document;
 
             }
@@ -237,6 +243,8 @@ class GeneController extends Controller
                                      'dosage_link' => $dosage_link,
                                      'actionability_adult_score' => $adult_score, 'actionability_pediatric_score' => $ped_score,
                                      'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link,
+                                     'actionability_adult_tooltip' => 'Adult Actionability Assertion: ' . $actionability_adult_tooltip,
+                                     'actionability_ped_tooltip' => 'Pediatric Actionability Assertion: ' . $actionability_ped_tooltip,
                                      'reportable' => $reportable->reportable ?? ''
                                     ];
         }

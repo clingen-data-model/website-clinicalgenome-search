@@ -224,9 +224,9 @@ class SearchController extends Controller
                 $adult_long_score = $adult_score;
                 $adult_score = strtok($adult_score, " "); // extract first word
                 if ($adult_score == "Assertion")
-                    $adult_score = "Pending";
+                    $adult_score = "Assert Pend";
                 else if ($adult_score == "N/A")
-                    $adult_score = "Early R/O";
+                    $adult_score = "Early RO";
                 $actionability_adult_link = "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document;
 
             }
@@ -238,10 +238,10 @@ class SearchController extends Controller
                 $ped_score = $ped->assertions['assertion'];
                 $ped_long_score = $ped_score;
                 $ped_score = strtok($ped_score, " "); // extract first word
-                if ($ped_score == "Assertion")
+                if ($ped_score == "Assert Pend")
                     $ped_score = "Pending";
                 else if ($ped_score == "N/A")
-                    $ped_score = "Early R/O";
+                    $ped_score = "Early RO";
                 $actionability_ped_link = "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document;
 
             }
@@ -264,7 +264,7 @@ class SearchController extends Controller
                                      'dosage_link' => $dosage_link,
                                      'actionability_adult_score' => $adult_score, 'actionability_pediatric_score' => $ped_score,
                                      'actionability_adult_tooltip' => $adult_long_score ?? '', 'actionability_ped_tooltip' => $ped_long_score ?? '',
-                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
+                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link,
                                     ];
         }
         
