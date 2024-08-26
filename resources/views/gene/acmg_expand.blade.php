@@ -64,10 +64,10 @@
 		<div class="col-md-1 border-right  border-left pt-2 pr-2 pl-2 text-center">
 			@if($score['has_actionability'])
 			@if ($score['actionability_adult_score'] !== null)
-			<span class="small badge cg-{{ $score['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Adult Actionability Assertion"><a class="text-white" href="{{ $score['actionability_adult_link'] }}" target="_akb">{{ $score['actionability_adult_score'] }}</a></span>
+			<span class="small badge cg-{{ $score['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_adult_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_adult_link'] }}" target="_akb">{{ $score['actionability_adult_score'] }}</a></span>
 			@endif
 			@if ($score['actionability_pediatric_score'] !== null)
-			<span class="small badge cg-{{ $score['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="Pediatric Actionability Assertion"><a class="text-white" href="{{ $score['actionability_pediatric_link'] }}" target="_akb">{{ $score['actionability_pediatric_score'] }}</a></span>
+			<span class="small badge cg-{{ $score['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_ped_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_pediatric_link'] }}" target="_akb">{{ $score['actionability_pediatric_score'] }}</a></span>
 			@endif
 			@else 
 			<span class="small">&nbsp;</span>

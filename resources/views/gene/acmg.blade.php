@@ -39,7 +39,7 @@
 				    We welcome further requests from the community when additional clarification or guidance is needed.
 			</p>
 			<p class="p-2">
-				<strong>History of ACMG Policy Statements on Reporting Secondary Findings (SF)</strong>
+				<strong>Links to ACMG Policy Statements on Reporting Secondary Findings (SF)</strong>
 				<ul>
 					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
 						<p class="p-2">Citation:
@@ -322,6 +322,14 @@
           		})
         	}*/
 		})
+
+
+		$table.on('page-change.bs.table', function (e, name, args) {
+			//$('[data-toggle="tooltip"]').tooltip();
+			AddReadMore();
+
+		})
+
 
 
 		$table.on('click-row.bs.table', function (e, row, $obj, field) {
