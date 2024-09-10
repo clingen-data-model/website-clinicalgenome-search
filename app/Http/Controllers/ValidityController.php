@@ -465,6 +465,7 @@ class ValidityController extends Controller
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
         switch ($record->specified_by->label) {
+            case "ClinGen Gene Validity Evaluation Criteria SOP11":
             case "ClinGen Gene Validity Evaluation Criteria SOP10":
             case "ClinGen Gene Validity Evaluation Criteria SOP9":
             case "ClinGen Gene Validity Evaluation Criteria SOP8":
