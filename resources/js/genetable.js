@@ -848,7 +848,15 @@ function diseaseCountFormatter(index, row) {
     else
         html += '<img class="ml-2" src="/images/variantPathogenicity-off.png" title="Variant Pathogenicity" style="width:30px">';
 
-    html += '<h6 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated <i class="far fa-caret-square-down fa-lg ml-1 action-acmg-expand"></i></h6>';
+    return html;
+}
+
+
+function variantGuidanceFormatter(index, row) {
+    var html = '';
+
+    html += '<h5 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated. </h5>';
+    html += '<h6 class="ml-2 mt-1">( Click here to view curations and any available guidance <i class="far fa-caret-square-down fa-lg ml-1 action-acmg-expand"></i> )</h6>';
 
     return html;
 }
