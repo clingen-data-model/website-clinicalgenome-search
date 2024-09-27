@@ -855,8 +855,17 @@ function diseaseCountFormatter(index, row) {
 function variantGuidanceFormatter(index, row) {
     var html = '';
 
-    html += '<h5 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated. </h5>';
-    html += '<h6 class="ml-2 mt-1">( Click here to view curations and any available guidance <i class="far fa-caret-square-down fa-lg ml-1 action-acmg-expand"></i> )</h6>';
+    html += '<h5 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated by ClinGen.'
+    
+    if (row.has_comment)
+        html += '  <span class="text-danger">Reporting guidance available</span>'
+    
+    html += '</h5><h6 class="ml-2 mt-1">( Click here to view ClinGen curations';
+    
+    if(row.has_comment)
+        html += ' and reporting guidance';
+    
+    html += '. <i class="far fa-caret-square-down fa-lg ml-1 action-acmg-expand"></i> )</h6>';
 
     return html;
 }

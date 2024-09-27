@@ -33,20 +33,54 @@
 			</p>-->
 			<p class="p-2">
 				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide a cohesive
-				website for documenting the history of ACMG policy statements related to the reporting of secondary findings,
+				website for documenting the history of ACMG policy statements related to the reporting of secondary findings, 
 				as well as additional guidance related to which findings are reportable from the SF gene list. 
-				This guidance encompasses which associated conditions are reportable for each gene, based both on ClinGen’s 
-				gene-disease validity curations and clarification from the SFWG. Where relevant, ClinGen is also independently 
-				providing additional considerations for interpreting variants in certain genes where complexities exist, 
-				such as reporting recommendations by gene region, transcript, pathogenicity mechanism or variant type considerations. 
-				While some of these considerations are direct footnotes included in the SFWG’s publications, 
-				others are provided by ClinGen VCEPs or via other expert input (e.g., All of Us Return of Results program). 
-				We welcome further requests from the community when additional clarification or guidance is needed. 
+				This reporting guidance includes reportability by condition, variant, variant allelic states, gene region, 
+				transcript, pathogenicity mechanism or other variant type considerations. While some of these considerations 
+				are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
+				discussion with the SFWG or via other expert input. We welcome further requests from the community when 
+				additional clarification or guidance is needed.
 			</p>
 			<p class="p-2">
 				The current, complete ACMG SF v3.2 list is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
-				Please note, this file is provided by the ACMG Secondary Findings Maintenance Working Group, 
-				and does not include the curated information from ClinGen available below.
+				<i>Please note, this file is provided by the ACMG Secondary Findings Maintenance Working Group, 
+				and does not include the curated information from ClinGen available below</i>.  
+				We also provide a downloadable list of the reporting guidance per gene <a href="/SF_Gene_Reporting_Guidance.xlsx" target="_acmg">here</a>.
+			</p>
+
+			<p class="p-2">
+				Considerations for using this table:
+				<ul>
+					<li>
+						The table below lists the genes included in the ACMG SF v3.2 list. Each row must be expanded by clicking on the [˅] to reveal the following:
+						<ul>
+							<li>
+								<strong>Reporting recommendations by disease.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
+									<ul>
+										<li>Yes - Reporting is recommended for P/LP variants associated with this disease, along with any reporting guidance noted</li>
+										<li>No - Reporting is not recommended for P/LP variants associated with this disease </li>
+										<li>Pending - Decision to report P/LP variants associated with disease  is under review by the SFWG</li>
+										<li>N/A -  Gene-disease relationship not applicable to SF reporting due to Limited or below evidence level</li>
+									</ul>
+							</li>
+							<li>
+								Reporting guidance, when available, appears above the ClinGen Curated Diseases table for each gene.
+								<ul>
+									<li>
+										If no additional considerations are available, the entry will say “There are no reporting guidance details at this time”
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (MIM) and ClinGen MONDO. 
+						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
+						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the MONDO ID is distinct
+					</li>
+				</ul>
+			</p>
+
 			</p>
 			<p class="p-2">
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
@@ -291,7 +325,7 @@
 			width: 300
 		},
 		{
-			title: 'ClinGen Variant Classification Guidance',
+			title: 'Variant Classification and Reporting Guidance',
 			field: 'comments',
 			sortable: true,
 			filterControl: 'input',
