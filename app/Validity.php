@@ -758,7 +758,10 @@ class Validity extends Model
         }
 
         // archive any unpublished items
-        Curation::validity()->where('group_id', 1)->update(['status' => Curation::STATUS_UNPUBLISH]);
+        Curation::validity()->where('group_id', 1)->each(function ($item) {
+            $item->panels()->detach();
+            $item->update(['status' => Curation::STATUS_UNPUBLISH]);
+        });
 
     }
 
