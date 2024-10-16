@@ -33,7 +33,7 @@ class Member extends Model
     const LEADER = 'leader';
     const PAST_MEMBER = 'past_member';
     const MEMBER = 'member';
-    const CURATOR = 'curator';
+    const CURATOR = 'biocurator';
     const COMMITTEE = 'committee';
     const COORDINATOR = 'coordinator';
 
@@ -212,6 +212,7 @@ class Member extends Model
 
             $member->save();
 
+
             $member->createProcessWireUser();
 
             return $member;
@@ -252,6 +253,27 @@ class Member extends Model
         $data = $this->processwireData();
         $data['action'] = $action;
         return $this->HttpRequest()->post($this->processWireUrl(), $data);
+    }
+
+    public function panelPosition( $memberPositions = [])
+    {
+        $hierarchy = [
+            'chair',
+            'coordinator',
+            'grant liaison',
+            'expert',
+            'biocurator',
+            'member',
+            'past member'
+        ];
+
+        foreach( $hierarchy as $position) {
+            if (in_array($position, $memberPositions)) {
+                return $position;
+            }
+        }
+
+        return 'member';
     }
 
 }

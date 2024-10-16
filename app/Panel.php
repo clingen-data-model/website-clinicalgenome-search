@@ -185,7 +185,7 @@ class Panel extends Model
      */
     public function members()
     {
-        return $this->belongsToMany(Member::class)->withPivot(['role']);
+        return $this->belongsToMany(Member::class)->withPivot(['role', 'group_roles']);
     }
 
 
@@ -432,14 +432,19 @@ class Panel extends Model
         return $this->members->filter( function($member) use ($type) {
             return $member->pivot->role === $type;
         })->map( function ($memb) {
+            $inst = $memb->institution ? json_decode($memb->institution, true) : [];
             return [
                 'user_name_full' => $memb->display_name,
                 'user_name_first' => $memb->first_name,
                 'user_name_last' => $memb->last_name,
-                'id' => $memb->processwire_id,
+                'user_title' => '',
+                'user_url' => '',
+                'relate_institutions' => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
                 'email' => $memb->email,
                 'user_photo' => $memb->profile_photo,
-                'institution' => $memb->institution
+                'user_bio' => $memb->biography,
+                'user_professional_attributes' => $memb->credentials,
+                'gpm_id' => $memb->gpm_id,
             ];
         })->values()->toArray();
     }
@@ -453,18 +458,12 @@ class Panel extends Model
             'name' => $this->affiliate_id,
             'title' => $this->title,
             'title_short' => $this->title_short,
-            'title_abbreviated' => $this->titlfe_abbreviated,
+            'title_abbreviated' => $this->title_abbreviated,
             'summary' => $this->summary,
             'body_1' => $this->description,
             'expert_panel_type' => $this->affiliate_type === 'gcep' ? [1] : [2] ,
             'affiliate_status_gene' => $this->affiliateStatusForGeneOrVcep(),
-            'affiliate_status_gene_date_step_1' => $this->getActivityValue('affiliate_status_gene_date_step_1'), //status date wil come from activity
-            'affiliate_status_gene_date_step_2' => $this->getActivityValue('affiliate_status_gene_date_step_2'),
             'affiliate_status_variant' => $this->affiliateStatusForGeneOrVcep(),
-            'affiliate_status_variant_date_step_1' => $this->getActivityValue('affiliate_status_variant_date_step_1'), //status date wil come from activity
-            'affiliate_status_variant_date_step_2' => $this->getActivityValue('affiliate_status_variant_date_step_2'),
-            'affiliate_status_variant_date_step_3' => $this->getActivityValue('affiliate_status_variant_date_step_3'),
-            'affiliate_status_variant_date_step_4' => $this->getActivityValue('affiliate_status_variant_date_step_4'),
             'ep_status_inactive' => $this->is_inactive ?? 0,
             'ep_status_inactive_date' => $this->inactive_date ?? '',
             'group_clinvar_org_id' => $this->group_clinvar_org_id,
@@ -479,8 +478,19 @@ class Panel extends Model
             'relate_user_committee' => $this->getMembersByType(Member::COMMITTEE),
             'relate_user_members' => $this->getMembersByType(Member::MEMBER),
             'relate_user_members_past' => $this->getMembersByType(Member::PAST_MEMBER),
-            'metadata_search_terms' => $this->metadata_search_terms
+            'metadata_search_terms' => $this->metadata_search_terms,
+            'gpm_id' => $this->gpm_id
         ];
+
+        if ($this->affiliate_type === 'gcep') {
+            $processWireFields['affiliate_status_gene_date_step_1'] = $this->getActivityValue('ep_definition_approved');
+            $processWireFields['affiliate_status_gene_date_step_2'] = $this->getActivityValue('ep_final_approval');
+        } else {
+            $processWireFields['affiliate_status_variant_date_step_1'] = $this->getActivityValue('ep_definition_approved');
+            $processWireFields['affiliate_status_variant_date_step_2'] = $this->getActivityValue('vcep_draft_specifications_approved');
+            $processWireFields['affiliate_status_variant_date_step_3'] = $this->getActivityValue('vcep_pilot_approved');
+            $processWireFields['affiliate_status_variant_date_step_4'] = $this->getActivityValue('ep_final_approval');
+        }
 
         $response = $this->HttpRequest()->post($this->processWireUrl(), $processWireFields);
 
@@ -644,25 +654,61 @@ class Panel extends Model
     public function parser($data, $timestamp)
     {
         $panel = new static();
-        return $panel->syncFromKafka($data, $timestamp);
+
+        if ($affiliationId = data_get($data, 'data.expert_panel.affiliation_id')) {
+            $panelObj = $panel->firstOrNew([
+                'affiliate_id' => $affiliationId
+            ]);
+
+            $panelObj->gpm_id = data_get($data, 'data.expert_panel.id');
+            $panelObj->affiliate_type = data_get($data, 'data.expert_panel.type');
+
+            if ($summary = data_get($data, 'data.scope.statement')) {
+                $panelObj->summary = $summary;
+            }
+
+            if ($longName = data_get($data, 'data.expert_panel.long_name')) {
+                $panelObj->title = $longName;
+                $panelObj->name = $longName;
+            }
+
+            if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
+                $panelObj->title_abbreviated = $shortName;
+                $panelObj->title_short = $shortName;
+            }
+
+
+            if ($name = data_get($data, 'data.expert_panel.name')) {
+                $panelObj->name = $name;
+                $panelObj->title = $name;
+            }
+
+            $panelObj->save();
+
+            return $panelObj->syncFromKafka($data, $timestamp);
+        }
+
     }
 
     public function syncFromKafka($data, $timestamp = null)
     {
         $eventType = data_get($data, 'event_type');
 
-        $this->title_abbreviated = data_get($data, 'data.expert_panel.name');
-
-        if ($affiliate_id = data_get($data, 'data.expert_panel.affiliation_id')) {
-            $this->affiliate_id = $affiliate_id;
-        }
-
-        $this->gpm_id = data_get($data, 'data.expert_panel.id');
-        $this->affiliate_type = data_get($data, 'data.expert_panel.type');
-
-        $this->name = data_get($data, 'data.expert_panel.name');
-
-        $this->save();
+//        if ($members = data_get($data, 'members')) {
+//            collect($members)->each( function ($member) {
+//                $memberObj = Member::firstOrNew([
+//                   'gpm_id' => $member['id']
+//                ]);
+//
+//                $memberObj->first_name = $member['first_name'];
+//                $memberObj->last_name = $member['last_name'];
+//                $memberObj->email = $member['email'];
+//
+//                $memberObj->save();
+//
+//                //should we create memberships;
+//            });
+//        }
 
         switch ($eventType) {
             case 'ep_definition_approved':
@@ -675,6 +721,38 @@ class Panel extends Model
                 $activity->save();
                 break;
 
+            case 'ep_info_updated':
+                if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
+                    $this->title_short = $shortName;
+                }
+
+                if ($longName = data_get($data, 'data.expert_panel.long_name')) {
+                    $this->title = $longName;
+                }
+
+                if ($urlCspec = data_get($data, 'data.expert_panel.cspec_url')) {
+                    $this->url_cspec = $urlCspec;
+                }
+
+                if ($clinvarUrl = data_get($data, 'data.expert_panel.clinvar_url')) {
+                    $this->url_clinvar = $clinvarUrl ;
+                }
+
+                if ($clinvarId = data_get($data, 'data.expert_panel.clinvar_id')) {
+                    $this->group_clinvar_org_id = $clinvarId;
+                }
+
+                if ($status = data_get($data, 'active')) {
+                    if ($status === 'active') {
+                        $this->is_inactive = false;
+                    } else {
+                        $this->is_inactive = true;
+                    }
+                }
+
+                $this->save();
+
+                break;
             case 'vcep_draft_specifications_approved':
                 //
                 $activity = $this->activities()->firstOrNew([
@@ -715,11 +793,7 @@ class Panel extends Model
                         if (null !== $memberObj) {
 
                             if (count($member['group_roles'])) {
-                                if ($member['group_roles'][0] === 'chair') {
-                                    $userRole = 'leader';
-                                } else {
-                                    $userRole = $member['group_roles'][0];
-                                }
+                                $userRole = $memberObj->panelPosition($member['group_roles']);
                                 $role = ['role' => $userRole];
                             }
                             $this->members()->detach($memberObj->id);
@@ -747,7 +821,7 @@ class Panel extends Model
                                 'group_roles' => json_encode($currentRoles)
                             ];
 
-                            $this->members()->sync([$memberObj->id, $role]);
+                            $this->members()->detach([$memberObj->id, $role]);
 
                         }
                     }
@@ -763,11 +837,11 @@ class Panel extends Model
                         if (null !== $memberObj) {
 
                             $role = [
-                                'role' => count($member['group_roles']) ? $this->getPanelMembership($member['group_roles']) : '',
+                                'role' => $memberObj->panelPosition($member['group_roles']),
                                 'group_roles' => json_encode($member['group_roles'])
                             ];
 
-                            $this->members()->sync([$memberObj->id, $role]);
+                            $this->members()->syncWithoutDetaching([$memberObj->id => $role]);
 
                         }
                     }
