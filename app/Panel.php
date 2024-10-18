@@ -459,11 +459,11 @@ class Panel extends Model
             'title' => $this->title,
             'title_short' => $this->title_short,
             'title_abbreviated' => $this->title_abbreviated,
-            'summary' => $this->summary,
-            'body_1' => $this->description,
+            'summary' => $this->description,
+            'body_1' => $this->summary,
             'expert_panel_type' => $this->affiliate_type === 'gcep' ? [1] : [2] ,
-            'affiliate_status_gene' => $this->affiliateStatusForGeneOrVcep(),
-            'affiliate_status_variant' => $this->affiliateStatusForGeneOrVcep(),
+            'affiliate_status_gene' => $this->getProcessWirePanelStatus(),
+            'affiliate_status_variant' => $this->getProcessWirePanelStatus(),
             'ep_status_inactive' => $this->is_inactive ?? 0,
             'ep_status_inactive_date' => $this->inactive_date ?? '',
             'group_clinvar_org_id' => $this->group_clinvar_org_id,
@@ -523,8 +523,8 @@ class Panel extends Model
             $this->title = data_get($panelData, 'title');
             $this->title_short = data_get($panelData, 'title_short');
             $this->title_abbreviated = data_get($panelData, 'title_abbreviated');
-            $this->summary = data_get($panelData, 'summary');
-            $this->description = data_get($panelData, 'body_1');
+            $this->summary = data_get($panelData, 'body_1');
+            $this->description = data_get($panelData, 'summary');
             if ($expertPanelData = data_get($panelData, 'expert_panel_type')) {
                 $this->affiliate_type = $this->getPanelFromPW($expertPanelData);
             }
@@ -547,7 +547,7 @@ class Panel extends Model
                 if ($dateTime = data_get($panelData, 'affiliate_status_gene_date_step_1')) {
                     //create activity for panel
                     $activity = $this->activities()->firstOrNew([
-                        'activity' => 'affiliate_status_gene_date_step_1'
+                        'activity' => 'ep_definition_approved'
                     ]);
 
                     $activity->date = Carbon::createFromTimestamp($dateTime);
@@ -557,7 +557,7 @@ class Panel extends Model
                 if ($dateTime = data_get($panelData, 'affiliate_status_gene_date_step_2')) {
                     //create activity for panel
                     $activity = $this->activities()->firstOrNew([
-                        'activity' => 'affiliate_status_gene_date_step_2'
+                        'activity' => 'ep_final_approval'
                     ]);
 
                     $activity->activity_date = Carbon::createFromTimestamp($dateTime);
@@ -567,7 +567,7 @@ class Panel extends Model
                 if ($dateTime = data_get($panelData, 'affiliate_status_variant_date_step_1')) {
                     //create activity for panel
                     $activity = $this->activities()->firstOrNew([
-                        'activity' => 'affiliate_status_variant_date_step_1'
+                        'activity' => 'ep_definition_approved'
                     ]);
 
                     $activity->activity_date = Carbon::createFromTimestamp($dateTime);
@@ -577,7 +577,7 @@ class Panel extends Model
                 if ($activityDate = data_get($panelData, 'affiliate_status_variant_date_step_2')) {
                     //create activity for panel
                     $activity = $this->activities()->firstOrNew([
-                        'activity' => 'affiliate_status_variant_date_step_2'
+                        'activity' => 'vcep_draft_specifications_approved'
                     ]);
 
                     $activity->activity_date = Carbon::createFromTimestamp($activityDate);
@@ -598,7 +598,7 @@ class Panel extends Model
                 if ($activityDate = data_get($panelData, 'affiliate_status_variant_date_step_4')) {
                     //create activity for panel
                     $activity = $this->activities()->firstOrNew([
-                        'activity' => 'affiliate_status_variant_date_step_4'
+                        'activity' => 'ep_final_approval'
                     ]);
 
                     $activity->activity_date = Carbon::createFromTimestamp($activityDate);
@@ -896,6 +896,34 @@ class Panel extends Model
         if (in_array('leader', $roles)) return 'leader';
         if (in_array('biocurator', $roles)) return 'curator';
         return 'member';
+    }
+
+    public function getProcessWirePanelStatus()
+    {
+        $values = [
+            'gcep' => [
+                1 => 'ep_definition_approved',
+                2 => 'ep_final_approval'
+            ],
+            'vcep' => [
+                1 => 'ep_definition_approved',
+                2 => 'vcep_draft_specifications_approved',
+                3 => 'vcep_pilot_approved',
+                4 => 'ep_final_approval'
+            ]
+        ];
+        $activities = $this->activities;
+        $activityValues = $values[$this->affiliate_type];
+
+        $status = 1;
+
+
+        foreach ($activityValues as $index => $value) {
+            $activity = $this->activities->where('activity', $value)->first();
+            if (null !== $activity) $status = $index;
+        }
+
+        return $status;
     }
 
 }
