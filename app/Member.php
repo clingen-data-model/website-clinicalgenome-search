@@ -30,7 +30,7 @@ class Member extends Model
     use Display;
     use HttpClient;
 
-    const LEADER = 'leader';
+    const LEADER = 'chair';
     const PAST_MEMBER = 'past_member';
     const MEMBER = 'member';
     const CURATOR = 'biocurator';
