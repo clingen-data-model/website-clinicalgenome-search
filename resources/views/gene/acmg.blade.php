@@ -53,7 +53,7 @@
 				<ul>
 					<li>
 						The table below lists the genes included in the ACMG SF v3.2 list. Each row must be expanded by clicking on the [˅] to reveal the following:
-						<ul>
+						<ol type="a">
 							<li>
 								<strong>Reporting recommendations by disease.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
 									<ul>
@@ -71,7 +71,7 @@
 									</li>
 								</ul>
 							</li>
-						</ul>
+						</ol>
 					</li>
 					<li>
 						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (MIM) and ClinGen MONDO. 
