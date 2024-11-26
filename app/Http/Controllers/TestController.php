@@ -74,8 +74,20 @@ class TestController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+
+		ReportController::summary_report($request);
+
+		// get all the genes with active curations
+		/*$genes = Gene::whereHas('curations', function ($query) {
+			$query->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
+		})->with('curations')->orderBy('name')->get();
+
+		foreach ($genes as $gene)
+		{
+			dd($gene);
+		}*/
 
 		$results = Mysql::geneListForExportReport(
 										['page' => 0,

@@ -144,9 +144,11 @@ class Activity extends Model
     }
 
 
-    public static function parse($message, $packet = null)
+    public static function parser($message, $packet = null)
     {
         $record = json_decode($message->payload);
+
+        dd($payload);
 
         if ($record->event_subtype == "TEST")
             return;
