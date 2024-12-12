@@ -1168,7 +1168,7 @@ class Validity extends Model
      */
     public static function alleleUrlString($x)
     {
-        if (strpos($x, "CLINVAR:variation/") === 0) {
+        if (strpos($x, "https://www.ncbi.nlm.nih.gov/clinvar/variation/") === 0) {
             //return "https://reg.clinicalgenome.org/redmine/projects/registry/genboree_registry/alleles?ClinVar.variationId=" . basename($x);
 
             return "https://www.ncbi.nlm.nih.gov/clinvar/variation/" . basename($x);

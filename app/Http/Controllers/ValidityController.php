@@ -486,7 +486,7 @@ class ValidityController extends Controller
         // get history
         $activities = Activity::all();
         
-        //dd($extrecord->genetic_evidence);
+        // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
             compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count',
