@@ -45,7 +45,7 @@ class UpdateAcmgsf extends Command
         echo "Updating Blacklist data from data ...";
 
 
-        $handle = fopen(base_path() . '/data/ACMG_SF_Sept_2024.csv', "r");
+        $handle = fopen(base_path() . '/data/ACMG_SF_Annotations.csv', "r");
         if ($handle)
         {
             // discard the header
