@@ -32,20 +32,16 @@
 				<a href="https://pubmed.ncbi.nlm.nih.gov/37347242/">ACMG SF v3.2</a>.
 			</p>-->
 			<p class="p-2">
-				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide a cohesive
-				website for documenting the history of ACMG policy statements related to the reporting of secondary findings, 
-				as well as additional guidance related to which findings are reportable from the SF gene list. 
-				This reporting guidance includes reportability by condition, variant, variant allelic states, gene region, 
-				transcript, pathogenicity mechanism or other variant type considerations. While some of these considerations 
-				are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
-				discussion with the SFWG or via other expert input. We welcome further requests from the community when 
-				additional clarification or guidance is needed.
+				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide a website for providing guidance 
+				related to which findings are reportable from the SF gene list and a comprehensive list of publications from the SFWG including 
+				policy statements and historical SF lists. The reporting guidance includes reportability by condition, and may include specific variants, 
+				variant allelic states, gene region, transcript, pathogenicity mechanism or other variant type considerations. 
+				While some of these considerations are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
+				discussion with the SFWG or via other expert input. We welcome further requests from the community when additional clarification 
+				or guidance is needed. Please send questions to: clingen@clinicalgenome.org 
 			</p>
 			<p class="p-2">
-				The current, complete ACMG SF v3.2 list is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
-				<i>Please note, this file is provided by the ACMG Secondary Findings Maintenance Working Group, 
-				and does not include the curated information from ClinGen available below</i>.  
-				We also provide a downloadable list of the reporting guidance per gene <a href="/SF_Gene_Reporting_Guidance.xlsx" target="_acmg">here</a>.
+				The published ACMG SF v3.2 list along with reporting guidance is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
 			</p>
 
 			<p class="p-2">
@@ -64,7 +60,7 @@
 									</ul>
 							</li>
 							<li>
-								Reporting guidance, when available, appears above the ClinGen Curated Diseases table for each gene.
+								<strong>Reporting guidance</strong>, when available, appears above the ClinGen Curated Diseases table for each gene.
 								<ul>
 									<li>
 										If no additional considerations are available, the entry will say “There are no reporting guidance details at this time”

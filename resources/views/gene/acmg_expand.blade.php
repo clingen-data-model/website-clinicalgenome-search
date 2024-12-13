@@ -1,7 +1,7 @@
 <div class="row mt-2 mb-2">
 	<div class="col-md-10">
 		@if (empty($gene->notes))
-		<span class="text-muted text-center font-italic ml-3">There are no guidance notes at this time</span>
+		<span class="text-muted text-center font-italic ml-3">There are no guidance details at this time</span>
 		@else
 		{{ $gene->notes }}
 		@endif
