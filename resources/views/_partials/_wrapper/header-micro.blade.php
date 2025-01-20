@@ -14,6 +14,9 @@
 					<a class=' text-white' href='https://www.clinicalgenome.org/about/events/'>Events</a>
 				</li>
 				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
+					<a class=' text-white' href='https://www.clinicalgenome.org/docs/terms-of-use/'>Citing ClinGen</a>
+				</li>
+				<li class='visible-inline-md visible-inline-lg visible-inline-xl'>
 					<a class=' text-white' href='https://www.clinicalgenome.org/about/contact-clingen/'>Contact</a>
 				</li>
 				{{-- <li class='visible-inline-md visible-inline-lg visible-inline-xl text-white'>

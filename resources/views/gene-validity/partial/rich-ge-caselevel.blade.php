@@ -189,7 +189,7 @@
                                         <i class="glyphicon glyphicon-new-window"></i>
                                     </a>
                                     </div>
-                                    @elseif (isset($v->canonical_reference[0]->curie) && $v->canonical_reference[0]->curie != "http://reg.genome.network/allele/"  && strpos($v->canonical_reference[0]->curie, 'CLINVAR:') === 0 )
+                                    @elseif (isset($v->canonical_reference[0]->curie) && strpos($v->canonical_reference[0]->curie, 'https://www.ncbi.nlm.nih.gov/clinvar/variation/') === 0 )
                                     <div class="mt-1">
                                         <a  target="_cgar" href="{{ App\Validity::alleleUrlString($v->canonical_reference[0]->curie) }}" >
                                             <i>ClinVar:</i><br>
@@ -212,7 +212,7 @@
                                             <i class="glyphicon glyphicon-new-window"></i>
                                         </a>
                                     </div>
-                                    @elseif (isset($evidence->variant->canonical_reference[0]->curie) && strpos($evidence->variant->canonical_reference[0]->curie, 'CLINVAR:') === 0 )
+                                    @elseif (isset($evidence->variant->canonical_reference[0]->curie) && strpos($evidence->variant->canonical_reference[0]->curie, 'https://www.ncbi.nlm.nih.gov/clinvar/variation/') === 0 )
                                     <div class="mt-1">
                                         <a  target="_cgar" href="{{ App\Validity::alleleUrlString($evidence->variant->canonical_reference[0]->curie) }}" >
                                             <i>ClinVar:</i><br>

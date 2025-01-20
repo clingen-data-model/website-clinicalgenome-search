@@ -1,3 +1,12 @@
+<div class="row mt-2 mb-2">
+	<div class="col-md-10">
+		@if (empty($gene->notes))
+		<span class="text-muted text-center font-italic ml-3">There are no guidance details at this time</span>
+		@else
+		{{ $gene->notes }}
+		@endif
+	</div>
+</div>
 <div class="row mt-0 mb-2">
 	<div class="col-md-3">
 		<b>Last Curated Date:  </b>{{ $gene->displayDate($gene->date_last_curated) }}

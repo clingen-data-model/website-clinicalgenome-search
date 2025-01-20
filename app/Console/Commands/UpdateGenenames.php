@@ -56,7 +56,9 @@ class UpdateGenenames extends Command
 
             //$results = file_get_contents("ftp://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
             //$results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/new/json/hgnc_complete_set.json");
-            $results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json");
+            //$results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json");
+            $results = file_get_contents("https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json");
+
 
 		} catch (\Exception $e) {
 
@@ -90,7 +92,7 @@ class UpdateGenenames extends Command
             if (isset($doc['mane_plus']))
                 unset($doc['mane_plus']);
 
-            $doc['is_par'] = (strpos($doc['location'], ' and ') > 0);
+            $doc['is_par'] = isset($doc['location']) && (strpos($doc['location'], ' and ') > 0);
 
             $doc['status'] = 1;
 

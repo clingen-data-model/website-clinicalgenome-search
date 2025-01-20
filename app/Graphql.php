@@ -276,14 +276,6 @@ class Graphql
 									label
 									last_curated_date
 								}
-								gene_dosage_assertions {
-									report_date
-									assertion_type
-									curie
-									disease
-									iri
-									label
-								}
 								actionability_assertions {
 									report_date
 									source
@@ -347,6 +339,16 @@ class Graphql
 			label
 			curie
 		}*/
+		/*
+		gene_dosage_assertions {
+									report_date
+									assertion_type
+									curie
+									disease
+									iri
+									label
+								}
+								*/
 
 		// query genegraph
 		$response = self::query($query, __METHOD__);
@@ -1457,6 +1459,7 @@ class Graphql
 							  curie
 							  label
 							}
+							date
 						}
 						iri
 						description
@@ -2126,7 +2129,8 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-//dd($response);
+
+		//dd($query);
 		if (empty($response))
 			return $response;
 

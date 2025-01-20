@@ -690,12 +690,19 @@ class Actionability extends Model
         // because each message can have multiple curations, we need to break them up.
         foreach($record->variants as $variant)
         {
+            if ($record->curationType == "Variant-Condition")
+                continue;
+            
             // create a list of all preferred conditions associated with this gene
             $preferred = [];
 
             foreach($record->preferred_conditions as $condition)
+            {
+                //if (!isset($condition->id))
+                //    dd($record);
                 if ($variant->id == $condition->id)
                     $preferred[] = $condition->curie;
+            }
 
             $preferred = array_unique($preferred);
             $preferred_done = [];

@@ -10,8 +10,10 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 use Auth;
 
 use App\GeneLib;
-use App\Graphql;
+use App\Gene;
 use App\Metric;
+use App\Disease;
+use App\Curation;
 
 class ReportController extends Controller
 {

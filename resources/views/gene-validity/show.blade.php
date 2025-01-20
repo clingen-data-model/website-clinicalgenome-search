@@ -276,7 +276,10 @@
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
                                         <div class="content-space content-border">
-                                            @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
+                                            @if($record->json_message_version == "GCI.8.3" || strpos($record->specified_by->label,"SOP11"))
+                                                @include('gene-validity.partial.report-heading')
+                                                @include('gene-validity.partial.rich-sop8-1')
+                                            @elseif($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
                                                 @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.rich-sop8-1')
                                             @elseif(strpos($record->specified_by->label,"SOP8"))
@@ -715,7 +718,10 @@
     <div class="row geneValidityScoresWrapper">
         <div class="col-sm-12">
             <div class="content-space content-border">
-                @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
+                @if($record->json_message_version == "GCI.8.3" || strpos($record->specified_by->label,"SOP11"))
+                    @include('gene-validity.partial.report-heading')
+                    @include('gene-validity.partial.sop8-1')
+                @elseif($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
                     @include('gene-validity.partial.report-heading')
                     @include('gene-validity.partial.sop8-1')
                 @elseif(strpos($record->specified_by->label,"SOP8"))

@@ -57,7 +57,7 @@
                 <tbody>
                 @foreach ($diseases as $disease)
                     <tr >
-                        <td scope="row" data-value="{{ $disease->label }}">{{ $disease->label }}</td>
+                        <td scope="row" data-value="{{ $disease->label }}">{{ $disease->label }} {{ $disease->curie }} </td>
                         <td>
                             <img src="/images/clinicalValidity-{{ $disease->hasActivity('validity') ? 'on' : 'off' }}.png" width="22" height="22">
                             <img src="/images/dosageSensitivity-{{ $disease->hasActivity('dosage') ? 'on' : 'off' }}.png" width="22" height="22">

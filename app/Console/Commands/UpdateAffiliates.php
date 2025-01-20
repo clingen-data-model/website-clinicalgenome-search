@@ -55,10 +55,10 @@ class UpdateAffiliates extends Command
             if ($row[0] == "Affiliation Full Name")
                 continue;
 
-            if (!empty($row[9]) && is_numeric($row[9]))
+            if (!empty($row[6]) && is_numeric($row[6]))
             {
     
-                $panel = Panel::affiliate((int) $row[9])->first();
+                $panel = Panel::affiliate((int) $row[6])->first();
 
                 $id = (int) $row[1];
                 if ($panel !== null)
@@ -66,9 +66,9 @@ class UpdateAffiliates extends Command
                     $panel->update(['alternate_id' => $id]);
                 }
             }
-            else if (!empty($row[7]) && is_numeric($row[7]))
+            else if (!empty($row[4]) && is_numeric($row[4]))
             {
-                $panel = Panel::affiliate((int) $row[7])->first();
+                $panel = Panel::affiliate((int) $row[4])->first();
 
                 $id = (int) $row[1];
 

@@ -1375,9 +1375,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => 'OMIM:' . $record->omim,
+                        $array[] = ['hgnc' => 'OMIM:' . $record->omim,
                                     'alias' => '(' . $record->curie . ')',
-                                    'hgnc' => $record->label,
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
@@ -1388,9 +1388,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => 'DOID:' . $record->do_id,
+                        $array[] = ['hgnc' => 'DOID:' . $record->do_id,
                                     'alias' => '(' . $record->curie . ')',
-                                    'hgnc' => $record->label,
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
@@ -1402,9 +1402,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => 'ORPHANET:' . $record->orpha_id,
+                        $array[] = ['hgnc' => 'ORPHANET:' . $record->orpha_id,
                                     'alias' => '(' . $record->curie . ')',
-                                    'hgnc' => $record->label,
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
@@ -1415,9 +1415,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => 'GARD:' . $record->gard_id,
+                        $array[] = ['hgnc' => 'GARD:' . $record->gard_id,
                                     'alias' => '(' . $record->curie . ')',
-                                    'hgnc' => $record->label,
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
@@ -1428,9 +1428,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => $record->curie,
-                                    'alias' => 'aaaa',
-                                    'hgnc' => $record->label,
+                        $array[] = ['hgnc' => $record->curie,
+                                    'alias' => '',
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
@@ -1442,9 +1442,9 @@ class Mysql
 
                     foreach($records as $record)
                     {
-                        $array[] = ['label' => 'UMLS:' . $record->umls_id,
+                        $array[] = ['hgnc' => 'UMLS:' . $record->umls_id,
                                     'alias' => '(' . $record->curie . ')',
-                                    'hgnc' => $record->label,
+                                    'label' => $record->label,
                                     'url' => route('condition-show', $record->curie),
                                     'curated' => !empty($record->curation_activities)];
                     }
