@@ -474,6 +474,7 @@ class Panel extends Model
             'relate_cdwg' => $this->cdwg_parent_name,
             'relate_user_leaderships' => $this->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $this->getMembersByType(Member::COORDINATOR),
+            'relate_user_experts' => $this->getMembersByType('expert'),
             'relate_user_curators' => $this->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $this->getMembersByType(Member::COMMITTEE),
             'relate_user_members' => $this->getMembersByType(Member::MEMBER),
@@ -491,6 +492,7 @@ class Panel extends Model
             $processWireFields['affiliate_status_variant_date_step_3'] = $this->getActivityValue('vcep_pilot_approved');
             $processWireFields['affiliate_status_variant_date_step_4'] = $this->getActivityValue('ep_final_approval');
         }
+
 
         $response = $this->HttpRequest()->post($this->processWireUrl(), $processWireFields);
 
@@ -513,8 +515,60 @@ class Panel extends Model
 
     public function syncFromProcessWire()
     {
-        $url = $this->processWireUrl();
+        $url = $this->processWireUrl() . '/' . $this->gpm_id;
         $response = Http::withoutVerifying()->get($url);
+
+        $responseData = json_decode($response->body(), true);
+
+        $memberGroups = [
+            'relate_user_leaderships',
+            'relate_user_coordinators',
+            'relate_user_curators',
+            'relate_user_committee',
+            'relate_user_members',
+            'relate_user_members_past',
+        ];
+
+        $gpmIds = [];
+
+        foreach ($memberGroups as $group) {
+            if ($data = data_get($responseData, $group)) {
+                foreach ($data as $d) {
+                    $gpmIds[] = [
+                        'group' => $group,
+                        'gpm_id' => $d['gpm_id']
+                    ];
+                }
+            }
+        }
+
+        $ids = array_map(function ($id) {
+            return $id['gpm_id'];
+        }, $gpmIds);
+
+
+        $members = $this->members->pluck('gpm_id')->toArray();
+
+        $removedMembers = array_diff($ids, $members);
+
+        if (count($removedMembers)) {
+            $membersToRemove = array_filter($gpmIds, function ($gpmId)  use ($removedMembers) {
+                return in_array($gpmId['gpm_id'], $removedMembers);
+            });
+
+            $dataToSend = [
+                'action' => 'remove-members',
+                'members' => $membersToRemove
+            ];
+
+            $response = $this->HttpRequest()->post($this->processWireUrl(), $dataToSend);
+        }
+
+
+        //$removedMembers = $this->members()->whereNotIn('')
+
+        //forea
+
 
         if ($response->successful()) {
             $panelData = json_decode($response->body(), true);
@@ -685,7 +739,8 @@ class Panel extends Model
 
             $panelObj->save();
 
-            return $panelObj->syncFromKafka($data, $timestamp);
+            $panelObj->syncFromKafka($data, $timestamp);
+            $panelObj->pushToProcessWire();
         }
 
     }
@@ -717,8 +772,26 @@ class Panel extends Model
                     'activity' => 'ep_definition_approved'
                 ]);
 
-                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->activity_date = Carbon::parse(data_get($data, 'date'));
                 $activity->save();
+
+                if ($members = data_get($data, 'data.members')) {
+                    foreach ($members as $member) {
+                        $memberObj = $this->validateMemberFromKafka($member);
+
+                        if (null !== $memberObj) {
+
+                            $role = [
+                                'role' => $memberObj->panelPosition($member['group_roles']),
+                                'group_roles' => json_encode($member['group_roles'])
+                            ];
+
+                            $this->members()->syncWithoutDetaching([$memberObj->id => $role]);
+
+                        }
+                    }
+
+                }
                 break;
 
             case 'ep_info_updated':
@@ -742,6 +815,10 @@ class Panel extends Model
                     $this->group_clinvar_org_id = $clinvarId;
                 }
 
+                if ($summary = data_get($data, 'data.scope_description')) {
+                    $this->summary = $summary;
+                }
+
                 if ($status = data_get($data, 'active')) {
                     if ($status === 'active') {
                         $this->is_inactive = false;
@@ -759,7 +836,7 @@ class Panel extends Model
                     'activity' => 'vcep_draft_specifications_approved'
                 ]);
 
-                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->activity_date = Carbon::parse(data_get($data, 'date'));
                 $activity->save();
                 break;
 
@@ -769,7 +846,7 @@ class Panel extends Model
                     'activity' => 'vcep_pilot_approved'
                 ]);
 
-                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->activity_date = Carbon::parse(data_get($data, 'date'));
                 $activity->save();
 
                 break;
@@ -780,7 +857,7 @@ class Panel extends Model
                     'activity' => 'ep_final_approval'
                 ]);
 
-                $activity->activity_date = Carbon::createFromTimestamp($timestamp);
+                $activity->activity_date = Carbon::parse(data_get($data, 'date'));
                 $activity->save();
                 break;
                 //
@@ -791,12 +868,7 @@ class Panel extends Model
                         $memberObj = $this->validateMemberFromKafka($member);
 
                         if (null !== $memberObj) {
-
-                            if (count($member['group_roles'])) {
-                                $userRole = $memberObj->panelPosition($member['group_roles']);
-                                $role = ['role' => $userRole];
-                            }
-                            $this->members()->detach($memberObj->id);
+                            $r = $this->members()->detach($memberObj->id);
                         }
                     }
                 }
@@ -889,6 +961,11 @@ class Panel extends Model
         }
 
         return null;
+    }
+
+    public function getDataFromProcessWire()
+    {
+        //$response = Http::get()
     }
 
     public function getPanelMembership($roles)
