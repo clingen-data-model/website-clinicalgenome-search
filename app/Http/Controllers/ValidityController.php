@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
 use Illuminate\Support\Facades\Mail;
 
@@ -177,9 +178,14 @@ class ValidityController extends Controller
         if ($extrecord && $extrecord->experimental_evidence) {
             $scorable = [];
 
+
             foreach ($extrecord->experimental_evidence as $e)
-                if (isset($e->score_status->label) && $e->score_status->label == "Score")
-                    $scorable[] = $e;
+                if (isset($e->score_status->label) && $e->score_status->label == "Score") {
+                    $scorable[] = [
+                        'type' => $this->getEvidenceCategory($e->evidence[0]->type[0]->label),
+                        'score' => $e->score
+                    ];
+                }
 
             $exp_count = number_format(array_sum(array_column($scorable, 'score')), 2);
         }
@@ -485,7 +491,7 @@ class ValidityController extends Controller
 
         // get history
         $activities = Activity::all();
-        
+
         // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
@@ -493,6 +499,50 @@ class ValidityController extends Controller
                     'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb', 'slug', 'activities')
         )
             ->with('user', $this->user);
+    }
+
+    private function getEvidenceCategory($evidenceType)
+    {
+        $evidenceType = strtolower($evidenceType);
+        if (Str::contains($evidenceType, ['biochemical function', 'protein', 'expression', 'gene expression'], true)) return 'function';
+        if (Str::contains($evidenceType, ['functional alteration', 'patient cells', 'non-patient cells'], true)) return 'functional-alteration';
+        if (Str::contains($evidenceType, ['non-human model organism', 'rescue in non-human model', 'rescue', 'model'], true)) return 'model-rescue';
+    }
+
+    private function maxEvidenceScores()
+    {
+        return [
+            'function' => 2,
+            'functional-alteration' => 2,
+            'model-rescue' => 4
+        ];
+    }
+
+    private function sumScoresByType($objects)
+    {
+        $typeScores = [];
+        $maxScores = $this->maxEvidenceScores();
+
+        // Loop through the input array
+        foreach ($objects as $object) {
+            // Check if the type already exists in the result array
+            if (isset($typeScores[$object['type']])) {
+                // Add the current score to the existing type's score
+                $typeScores[$object['type']] += $object['score'];
+            } else {
+                // Initialize the score for this type
+                $typeScores[$object['type']] = $object['score'];
+            }
+        }
+
+        // Convert the result array to the desired format
+        $result = [];
+        foreach ($typeScores as $type => $score)
+            { $limitedScore = min($score, $maxScores[$type] ?? $score); // Cap the score to the max limit if specified
+                $result[] = ['type' => $type, 'totalScore' => $limitedScore];
+            }
+
+        return $result;
     }
 
 
