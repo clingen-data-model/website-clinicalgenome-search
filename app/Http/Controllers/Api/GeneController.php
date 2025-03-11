@@ -438,12 +438,13 @@ class GeneController extends Controller
                 }
 
             }
+
+            $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
+                        'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip ?? '', 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip ?? '',
+                        'dosage_link' => "/kb/gene-dosage/" . ($dosage->gene_hgnc_id ?? '')
+                        ];
         }
 
-        $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
-                        'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
-                        'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
-                        ];
         
         /*$dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])

@@ -32,23 +32,22 @@
 				<a href="https://pubmed.ncbi.nlm.nih.gov/37347242/">ACMG SF v3.2</a>.
 			</p>-->
 			<p class="p-2">
-				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide a website for providing guidance 
-				related to which findings are reportable from the SF gene list and a comprehensive list of publications from the SFWG including 
-				policy statements and historical SF lists. The reporting guidance includes reportability by condition, and may include specific variants, 
+				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide guidance 
+				related to which findings are reportable from the SF gene list. The reporting guidance includes reportability by condition, and may include specific variants, 
 				variant allelic states, gene region, transcript, pathogenicity mechanism or other variant type considerations. 
 				While some of these considerations are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
 				discussion with the SFWG or via other expert input. We welcome further requests from the community when additional clarification 
 				or guidance is needed. Please send questions to: clingen@clinicalgenome.org 
 			</p>
 			<p class="p-2">
-				The published ACMG SF v3.2 list along with reporting guidance is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
+				The published ACMG SF v3.3 list along with reporting guidance is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
 			</p>
 
 			<p class="p-2">
 				Considerations for using this table:
 				<ul>
 					<li>
-						The table below lists the genes included in the ACMG SF v3.2 list. Each row must be expanded by clicking on the [˅] to reveal the following:
+						The table below lists the genes included in the ACMG SF v3.3 list. Each row must be expanded by clicking on the [˅] to reveal the following:
 						<ol type="a">
 							<li>
 								<strong>Reporting recommendations by disease.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
@@ -70,9 +69,9 @@
 						</ol>
 					</li>
 					<li>
-						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (MIM) and ClinGen MONDO. 
+						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (OMIM) and ClinGen (Mondo). 
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
-						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the MONDO ID is distinct
+						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the Mondo ID is distinct
 					</li>
 				</ul>
 			</p>
@@ -81,7 +80,7 @@
 			<p class="p-2">
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
 				<ul>
-					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
+					<li class="mb-2">2025 - ACMG Policy Statement with updated list of 84 genes (ACMG SF v3.3)
 						<p class="p-2">Publication:  
 							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
 						</p>
@@ -94,6 +93,11 @@
 				</ul>
 				<strong>Policy Updates and Prior Versions of the ACMG Secondary Findings (SF) List</strong>
 				<ul>
+					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
+						<p class="p-2">Publication:  
+							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
+						</p>
+					</li>
 					<li class="mb-2">2023 - ACMG SF Policy Update - Considerations of Penetrance
 						<p class="p-2">Publication:  
 							<a href="https://pubmed.ncbi.nlm.nih.gov/38819344/" target="_acmg">PMID: 38819344; PMCID: PMC11227955</a>

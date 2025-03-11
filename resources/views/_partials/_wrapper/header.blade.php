@@ -164,6 +164,10 @@
               </li>
 
               <li class='nav-item '>
+                <a class='nav-link nav-link-small pl-4' href='https://clinicalgenome.org/working-groups/clingen-curation-of-clinvar/'><span class=' d-inline-block text-truncate'><i class='fas fa-angle-double-right text-muted-more'></i> ClinGen Curation of ClinVar</span></a>
+              </li>
+
+              <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/curation-activities/clingen-curation-of-clinvar/'><span class=' d-inline-block text-truncate'> ClinGen Curation of ClinVar</span></a>
               </li>
 
@@ -195,9 +199,11 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/biocurators/'><span class=' d-inline-block text-truncate'> Biocurator</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/elsi/'><span class=' d-inline-block text-truncate'> CADRe (Consent & Disclosure Recommendations)</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/cancer-variant-interpretation/'><span class=' d-inline-block text-truncate'> Cancer Variant Interpretation</span></a>
               </li>
@@ -205,13 +211,21 @@
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/clingen-community-curation-c3/'><span class=' d-inline-block text-truncate'> ClinGen Community Curation (C3)</span></a>
               </li>
               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/clingen-curation-of-clinvar/'><span class=' d-inline-block text-truncate'> ClinGen Curation of ClinVar</span></a>
+              </li>
+              <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/clinical-domain/'><span class=' d-inline-block text-truncate'> Clinical Domain Working Groups</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/complex-disease/'><span class=' d-inline-block text-truncate'> Complex Disease</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/copy-number-variant-interpretation-guidelines/'><span class=' d-inline-block text-truncate'> Copy Number Variant Interpretation Guidelines</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/curated-disease-entity/'><span class=' d-inline-block text-truncate'> Curated Disease Entity</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/data-access-protection-and-confidentiality/'><span class=' d-inline-block text-truncate'> Data Access, Protection, and Confidentiality</span></a>
@@ -219,51 +233,65 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/data-platform/'><span class=' d-inline-block text-truncate'> Data Platform</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/disease-naming-advisory-committee/'><span class=' d-inline-block text-truncate'> Disease Naming Advisory Committee</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/dosage-sensitivity-curation/'><span class=' d-inline-block text-truncate'> Dosage Sensitivity Curation</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/ect/'><span class=' d-inline-block text-truncate'> Education, Coordination and Training</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/ehr/'><span class=' d-inline-block text-truncate'> EHR</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/external-scientific-panel/'><span class=' d-inline-block text-truncate'> External Scientific Panel</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/gene-curation/'><span class=' d-inline-block text-truncate'> Gene Curation</span></a>
               </li>
-
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/working-groups/jedi-advisory-board/'><span class=' d-inline-block text-truncate'> Justice, Equity, Diversity, and Inclusion (JEDI) Advisory Board</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/working-groups/justice-equity-diversity-and-inclusion-coordination-team/'><span class=' d-inline-block text-truncate'> Justice, Equity, Diversity, and Inclusion (JEDI) Coordination Team</span></a>
               </li>
-
+            -->
 
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/low-penetrance-risk-allele-working-group/'><span class=' d-inline-block text-truncate'> Low Penetrance/Risk Allele</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/lumping-and-splitting/'><span class=' d-inline-block text-truncate'> Lumping and Splitting</span></a>
               </li>
+            -->
               <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics</span></a>
+                <a class='nav-link nav-link-header' href='https://clinicalgenome.org/working-groups/partnership/'><span class=' d-inline-block text-truncate'> Partnership</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics Interpretation Committee</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pseudodeficiency-working-group/'><span class=' d-inline-block text-truncate'> Pseudodeficiency Working Group</span></a>
               </li>
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/sequence-variant-interpretation/'><span class=' d-inline-block text-truncate'> Sequence Variant Interpretation</span></a>
               </li>
               <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/somatic-germline-variant-curation/'><span class=' d-inline-block text-truncate'> Somatic/Germline Variant Curation</span></a>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/somatic-germline-variant-curation/'><span class=' d-inline-block text-truncate'> Germline/Somatic Variant Curation</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/stakeholder-partnership/'><span class=' d-inline-block text-truncate'> Stakeholder Partnership</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/steering-committee/'><span class=' d-inline-block text-truncate'> Steering Committee</span></a>
               </li>
