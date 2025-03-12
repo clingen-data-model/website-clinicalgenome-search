@@ -79,7 +79,7 @@
 						<dt></dt>
 						<dd><scan class="text-primary"><i>pLI and LOEUF metrics based on</i> {{ $record->transcript}} <i>transcript</i></scan></dd>
 						@endif
-						<dt>ACMG SF v3.2 Gene?</dt>
+						<dt>ACMG SF v3.3 Gene?</dt>
 						<dd>{{ $record->is_acmg ? "Yes" : "No" }}</dd>
 						@if($record->chromosome_band)
 						<dt>Cytoband</dt>
