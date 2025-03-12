@@ -652,6 +652,7 @@ class Mysql
                 'chromosome_band' => $gene->location,
                 'grch37' => $gene->grch37 ?? null,
                 'grch38' => $gene->grch38 ?? null,
+                'acmgsf' => $gene->acmg59,
                 'pli' => $gene->pli,
                 'hi' => $gene->hi,
                 'haplo_assertion' => $haplo->scores['classification'] ?? ($haplo->scores['haploinsufficiency']['value'] ?? ($haplo->scores['haploinsufficiency_assertion'] ?? null ) ),

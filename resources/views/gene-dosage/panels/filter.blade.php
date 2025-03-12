@@ -13,6 +13,13 @@
                 <span class="ml-4 hgnc text-muted action-show-regions-text">On</span>
             </div>
         </div>-->
+        <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only ACMG SF 3.3 Genes </label>
+        <div class="col-sm-3">
+            <div class="form-inline p-0 m-0 col-sm-12">
+                <i class="fas fa-toggle-off fa-lg advanced-filter action-show-acmgsf" data-badge="ACMG SF v3.3"></i>
+                <span class="ml-2 hgnc text-muted action-show-acmgsf-text">Off</span>
+            </div>
+        </div>
         <label for="gene" class="col-sm-8 ml-5 col-form-label">Show only Genes/Regions with HI Score 3 (Sufficient Evidence) </label>
         <div class="col-sm-3">
             <div class="form-inline p-0 m-0 col-sm-12">
