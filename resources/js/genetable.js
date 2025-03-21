@@ -1111,7 +1111,7 @@ function drbadgeFormatter(index, row) {
 var terms = {
     "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
     "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
-    'UD': 'Undetermined Mode of Inheritance'
+    'SM': 'Somatic Mosaicism', 'UD': 'Undetermined Mode of Inheritance'
 };
 
 function moiFormatter(index, row) {

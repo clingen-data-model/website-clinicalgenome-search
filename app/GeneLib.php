@@ -156,7 +156,8 @@ class GeneLib extends Model
           'Semidominant inheritance' => 'Semidominant',
           'Undetermined' => 'Undetermined',
           'X-linked recessive inheritance' => 'X-Linked Recessive',
-          'Mitochondrial inheritance' => 'Mitochondrial inheritance'
+          'Mitochondrial inheritance' => 'Mitochondrial inheritance',
+          'Somatic Mosaicism' => 'Somatic Mosaicism'
      ];
 
      protected static $validity_moi_abvr_strings = [
@@ -169,7 +170,8 @@ class GeneLib extends Model
           'Semidominant inheritance' => 'SD',
           'Undetermined' => 'UD',
           'X-linked recessive inheritance' => 'XLR',
-          'Mitochondrial inheritance' => 'MT'
+          'Mitochondrial inheritance' => 'MT',
+          'Somatic Mosaicism' => 'SM'
      ];
 
      protected static $validity_criteria_strings = [
@@ -732,7 +734,6 @@ class GeneLib extends Model
                // Much of the data is in graphql....
                $response = Graphql::dosageDetail($args);
                $expand = false;
-
                // This is a real ugly characteristic of genegraph that requires a really ugly workaround
                if ($response === null && self::getError() == "There was an error with the GraphQL response, no data key was found.") {
                     // gene not found, create a dummy one and see if that worls
