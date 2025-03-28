@@ -52,9 +52,11 @@
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/about/fda-recognition/'><span class=' d-inline-block text-truncate'>FDA Recognition</span></a>
               </li>
 
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://clinicalgenome.org/tools/justice-equity-diversity-and-inclusion-jedi-action-plan/'><span class=' d-inline-block text-truncate'>JEDI Action Plan</span></a>
               </li>
+            -->
 
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/about/clingen-leadership/'><span class=' d-inline-block text-truncate'>Leadership</span></a>
@@ -193,9 +195,11 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/actionability/'><span class=' d-inline-block text-truncate'> Actionability</span></a>
               </li>
+              <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/ancestry/'><span class=' d-inline-block text-truncate'> Ancestry and Diversity Working Group</span></a>
               </li>
+            -->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/biocurators/'><span class=' d-inline-block text-truncate'> Biocurator</span></a>
               </li>
