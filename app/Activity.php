@@ -55,7 +55,7 @@ class Activity extends Model
      */
     protected $fillable = [
         'ident', 'type', 'subtype', 'source', 'source_uuid', 'alternate_uuid',
-        'workflow', 'activity', 'activity_string', 'references', 'affiliation',
+        'workflow', 'workflow->unpublish_date', 'activity', 'activity_string', 'references', 'affiliation',
         'version', 'changes', 'notes', 'urls', 'status'
     ];
 
@@ -96,6 +96,8 @@ class Activity extends Model
     public const STATUS_INITIALIZED = 0;
     public const STATUS_ACTIVE = 1;
     public const STATUS_ARCHIVE = 2;
+    public const STATUS_UNPUBLISH = 3;
+    public const STATUS_RETRACT = 4;
 
     /*
     * Status strings for display methods
@@ -134,6 +136,53 @@ class Activity extends Model
         parent::__construct($attributes);
     }
 
+    /**
+     * Query scope by source_uuid
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeSid($query, $id)
+    {
+        return $query->where('source_uuid', $id);
+    }
+
+
+    /**
+     * Query scope by version
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeVersion($query, $version)
+    {
+        return $query->whereJsonContains('version->internal', $version);
+    }
+
+
+    /**
+     * Query scope by published status
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopePublished($query)
+    {
+        return $query->where('type', self::TYPE_PUBLISH);
+    }
+
+
+    /**
+     * Query scope by active status
+     *
+     * @@param	string	$ident
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function scopeDisplayable($query)
+    {
+        return $query->whereIn('status', [self::STATUS_ACTIVE, self::STATUS_ARCHIVE, self::STATUS_UNPUBLISH]);
+    }
+
 
     public function display_reason($reason)
     {
@@ -148,27 +197,29 @@ class Activity extends Model
     {
         $record = json_decode($message->payload);
 
-        dd($payload);
 
         if ($record->event_subtype == "TEST")
             return;
 
-        switch ($record->type)
+        switch ($record->event_type)
         {
             case 'PUBLISH':
                 $type = self::TYPE_PUBLISH;
                 break;
             case 'UNPUBLISH':
                 $type = self::TYPE_UNPUBLISH;
+                $status = self::STATUS_UNPUBLISH;
+                $record->references->source_uuid = $record->references->alternate_uuid; //handle bug in current validity data
                 break;
             case 'RETRACT':
                 $type = self::TYPE_RETRACT;
+                $status = self::STATUS_RETRACT;
                 break;
             default:
                 $type = self::TYPE_NONE;
         }
 
-        switch ($record->subtype)
+        switch ($record->event_subtype)
         {
             case 'CURATION':
                 $subtype = self::SUBTYPE_CURATION;
@@ -182,28 +233,57 @@ class Activity extends Model
         {
             case 'VALIDITY':
                 $activity = self::ACTIVITY_VALIDITY;
+                $source_prefix = 'CGGV:assertion_';                                 // handle bug in current validity data
+                $activity_string = 'GENE_DISEASE_VALIDITY';
+                $record->version->reasons = array($record->version->reasons);       // handle bug in current validity data
                 break;
             case 'ACTIONABILITY':
                 $activity = self::ACTIVITY_ACTIONABILITY;
+                $source_prefix = '';
+                $activity_string = $record->activity;
                 break;
             case 'DOSAGE':
                 $activity = self::ACTIVITY_DOSAGE;
+                $source_prefix = '';
+                $activity_string = $record->activity;
                 break;
             case 'VARIANT':
                 $activity = self::ACTIVITY_VARIANT;
+                $source_prefix = '';
+                $activity_string = $record->activity;
                 break;
             default:
                 $activity = self::ACTIVITY_NONE;
+                $source_prefix = '';
+                $activity_string = 'UNKNOWN';
         }
 
-        $iri = $record->references['alternate_uuid'] ?? null;
+        $iri = $record->references->alternate_uuid ?? null;
 
         if ($iri === null)
             return;
+
+        // if unpublish, process the affected record now
+        if ($type == self::TYPE_UNPUBLISH  || $type == self::TYPE_RETRACT)
+        {
+            $a = self::sid($source_prefix . basename($record->references->source_uuid))
+                            ->version($record->version->internal)
+                            ->where('status', self::STATUS_ACTIVE)
+                            ->first();
+            if ($a !== null)
+            {
+                $workflow = $a->workflow;
+                $workflow['unpublish_date'] = $record->workflow->unpublish_date;
+                $a->update(['status' => $status,
+                            'workflow' => $workflow]);
+            }
+            /*else
+                dd($record);*/
+        }
         
         // save old ones to later archive
-        $old_curations = self::validity()->where('alternate_uuid', $iri)
-                                ->where('status', '!=', Activity::STATUS_ARCHIVE)
+        $old_activity = self::sid($source_prefix . basename($record->references->source_uuid))
+                                ->where('status', self::STATUS_ACTIVE)
                                 ->get();
 
         $record = new Activity([
@@ -212,20 +292,22 @@ class Activity extends Model
             'workflow' => $record->workflow,
             'source' => $record->source,
             'activity' => $activity,
-            'activity_string' => $record->activity,
-            'source_uuid' => $record->references['source_uuid'] ?? null,
-            'alternate_uuid' => $record->references['alternate_uuid'] ?? null,
+            'activity_string' => $activity_string,
+            'source_uuid' => isset($record->references->source_uuid) ? $source_prefix . basename($record->references->source_uuid) : null,
+            'alternate_uuid' => $record->references->alternate_uuid ?? null,
             'references' => $record->references,
             'affiliation' => $record->affiliation,
             'version' => $record->version,
-            'notes' => $record->notes,
-            'urls' => $record->urls,
+            'changes' => $record->changes ?? [],
+            'notes' => $record->notes ?? null,
+            'urls' => $record->urls ?? null,
             'status' => self::STATUS_ACTIVE
         ]);
+
         $record->save();
  
         // archive the older curations
-        $old_curations->each(function ($item) {
+        $old_activity->each(function ($item) {
              $item->update(['status' => Activity::STATUS_ARCHIVE]);
         });
      }

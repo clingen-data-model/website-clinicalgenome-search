@@ -617,7 +617,7 @@ class Validity extends Model
         Curation::validity()->active()->update(['group_id' => 1]);
 
         foreach ($records->collection as $record) {
-            $publish_date = null;
+            $publish_date = false;
 
             // find published date
             foreach ($record->contributions as $contribution)
@@ -632,6 +632,8 @@ class Validity extends Model
             else
                 $check = Curation::validity()->active()->where('source_uuid', $record->curie)->exists();*/
 
+            //if ($record->curie == "CGGCIEX:assertion_8249")
+            //    dd($record);
             if ($curation !== null && isset($curation->events['publish_date']) && $curation->events['publish_date'] == $publish_date) 
             {
                 // unset the remove flag
