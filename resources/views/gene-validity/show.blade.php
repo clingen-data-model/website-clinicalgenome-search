@@ -225,11 +225,13 @@
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
             </a>
 		</li>
-        <!--<li role="presentation" class="" style="">
+        @if(env("PREVIEW_SITE", false))
+        <li role="presentation" class="" style="">
 			<a href="#gdvt8" aria-controls="gdvt8" role="tab" data-toggle="tab">
                 <span class='hidden-sm hidden-xs'><i class="fas fa-history mr-1"></i>History</span>
             </a>
-		</li>-->
+		</li>
+        @endif
         @else
         <span class="pull-right mt-2 mr-5 text-danger"><b><i>Additional evidence details have not been made available for this particular Gene-Disease assertion </i></b></span>
         @endif
@@ -688,6 +690,9 @@
                                         <td class="p-4">
                                             <div class="mb-1"><strong>Published:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['publish_date']) }}</span></div>
                                             <div><strong>Classified:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['classification_date']) }}</span></div>
+                                            @if ($activity->status == App\Activity::STATUS_UNPUBLISH)
+                                            <div class="mt-1"><strong>Unpublished:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['unpublish_date']) }}</span></div>
+                                            @endif
                                         </td>
                                         <td class="p-4">
                                             @foreach($activity->version['reasons'] as $reason)
