@@ -19,7 +19,8 @@ use App\Filter;
 use App\Omim;
 use App\Mim;
 use App\Pmid;
-use App\Genomeconnect;
+use App\Curation;
+use App\Disease;
 
 /**
 *
@@ -543,6 +544,74 @@ class GeneController extends Controller
         $pmids = [];
         $key = 0;
 
+		// display on the preferred actionability disease
+		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+		
+		$actionability_reports = [];
+		foreach ($actionability_records as $actionability_record)
+		{
+			if (!isset($actionability_reports[$actionability_record->document]))
+				$actionability_reports[$actionability_record->document] = ['adult' => null, 'ped' => null, 'aliases' => []];
+
+			// extract the preferred disease 
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $record->hgnc_id)
+				{
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							$actionability_reports[$actionability_record->document]['adult'] = $actionability_record;
+							break;
+						case 'Pediatric':
+							$actionability_reports[$actionability_record->document]['ped'] = $actionability_record;
+							break;
+					}
+				}
+			}
+			$actionability_reports[$actionability_record->document]['aliases'] = $actionability_record;
+		}
+		
+		$actionability_preferred = $actionability_records->filter(function($item) {
+					return ($item->conditions[0] == $item->evidence_details[0]['curie']);
+			});
+		$actionability_others = $actionability_records->filter(function($item) {
+				return ($item->conditions[0] != $item->evidence_details[0]['curie']);
+		});
+//dd($actionability_records);
+		$actionability_reports = [];
+		foreach ($actionability_preferred as $preferred)
+		{
+			if (!isset($actionability_reports[$preferred->document]))
+				$actionability_reports[$preferred->document] = ['adult' => null, 'ped' => null, 'aliases' => []];
+
+			switch ($preferred->context)
+			{
+				case 'Adult':
+					$disease = Disease::curie($preferred->conditions[0])->first();
+					if ($disease)
+						$preferred->condition_info = $disease;
+					$actionability_reports[$preferred->document]['adult'] = $preferred;
+					break;
+				case 'Pediatric':
+					$disease = Disease::curie($preferred->conditions[0])->first();
+					if ($disease)
+						$preferred->condition_info = $disease;
+					$actionability_reports[$preferred->document]['ped'] = $preferred;
+					break;
+			}
+		}
+		
+		foreach ($actionability_others as $other)
+		{
+			if (!isset($actionability_reports[$preferred->document]))
+				continue;
+
+			$actionability_reports[$preferred->document]['aliases'][] = $other;
+		}
+
+		//dd($actionability_reports);
+		
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -732,11 +801,20 @@ class GeneController extends Controller
 
 		$show_clingen_comment = !empty($gene->notes);
 
+		// somatic cancer demo
+		$somatic_collection = collect([
+			['gene' => 'LDLR', 'disease' => 'a disease', 'ep' => 'Expert Panel', 'level' => 'Tier I - Level A', 'type' => 'Predictive', 'significance' => 'Sensitivity/Response', 'date' => '2025-02-28'],
+			['gene' => 'LDLR', 'disease' => 'another disease', 'ep' => 'Expert Panel', 'level' => 'Tier II - Level C', 'type' => 'Diagnostic', 'significance' => 'Positive', 'date' => '2025-02-28'],
+			['gene' => 'LDLR', 'disease' => 'yet another disease', 'ep' => 'Expert Panel', 'level' => 'Tier I - Level A', 'type' => 'Oncogenic', 'significance' => 'Oncogenic', 'date' => '2025-02-28']
+		]);
+
+
+
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
-                                                'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps',
-												'gceps', 'gc', 'show_clingen_comment'))
+                                                'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps', 'somatic_collection',
+												'gceps', 'gc', 'show_clingen_comment',  'actionability_reports'))
 												->with('user', $this->user);
 	}
 

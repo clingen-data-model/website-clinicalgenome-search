@@ -8,9 +8,6 @@
 <h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
 	<div class="card mb-4">
 		<div class="card-body p-0 m-0">
-			<!--
-			<div class="p-2 text-muted small bg-light">The following <strong>{{ $record->naction }} curations</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Actionability's Adult &amp; Pediatric Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>
-			-->
 			<table class="panel-body table mb-0">
 				<thead class="thead-labels">
 					<tr>
@@ -25,108 +22,95 @@
 
 				<tbody class="">
 
-				@foreach($actionability_collection as $actionability)
-                    @php global $show_gene; $show_gene = true; @endphp
-                    @php global $show_report; $show_report = true; @endphp
-                    @php global $show_border; $show_border = false; @endphp
-                @foreach($actionability->reports as $label => $report)
-					@if ($report['adult'] !== null)
-                    @php global $show_border; $show_border = $loop->last && $report['pediatric'] === null; @endphp
+                @foreach($actionability_reports as $label => $report)
+					@if ($report['adult'])
 					<tr>
-						<td class="@if(!$show_border && !$show_gene) border-0 @endif ">
-                            @if ($show_gene)
+						<td class="">
                             <div>
 							{{ $record->label }}
                             </div>
-                            @endif
 						</td>
 
-						<td class="@if(!$show_border && !$show_gene) border-0 @endif ">
-                            @if($show_gene)
-							<a href="{{ route('condition-show', $record->getMondoString($actionability->disease->iri, true)) }}">{{ displayMondoLabel($actionability->disease->label) }}</a>
-							<div class="text-muted small">{{ $record->getMondoString($actionability->disease->iri, true) }} {!! displayMondoObsolete($actionability->disease->label) !!}</div>
-                            @endif
+						<td class="">
+							<div>
+								<a href="{{ route('condition-show', $report['adult']->conditions[0]) }}">{{ $report['adult']->condition_info->label }}</a>
+								<div class="text-muted small">{{ $report['adult']->conditions[0] }} {!! displayMondoObsolete($report['adult']->condition_info->label) !!}</div>
+							</div>
+						</td>
+
+                        <td class="">
+							<div>
+							{{ $report['adult']->document }}
+							</div>
                         </td>
 
-                        <td class="@if(!$show_border && !$show_gene) border-0 @endif ">
-                            @if ($show_report)
-							<span class="small">{{ App\Genelib::actionabilityReportString($label) }}</span>
-                            @endif
-                        </td>
-
-						<td class="@if(!$show_border && !$show_gene) border-0 @endif ">
-                            <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
+						<td class="">
+							<div class="">
+                        		<a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
                                 <i class="fas fa-external-link-alt ml-1"></i></a>
+							</div>
+						</td>
+
+						<td class="text-center">
+							<div>
+								<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $report['adult']->url['scoreDetails'] }}">
+								<div class="text-muted small">Adult</div>{{ App\Genelib::actionabilityAssertionString($report['adult']->assertions['assertion']) }}
+								@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($report['adult']->assertions['assertion'])))
+								</a>
+							</div>
 						</td>
 
 						<td class="text-center @if(!$show_border && !$show_gene) border-0 @endif ">
-								@if ($actionability->adult_assertion)
-									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $report['adult']->source }}">
-									<div class="text-muted small">Adult</div>{{ App\Genelib::actionabilityAssertionString($report['adult']->classification->label) }}
-									@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($report['adult']->classification->label)))
-									</a>
-								@endif
-						</td>
-
-						<td class="text-center @if(!$show_border && !$show_gene) border-0 @endif ">
-							@if ($actionability->adult_assertion)
-								<a class="btn btn-xs btn-success btn-block btn-report" style="margin-bottom: 1.35rem;" href="{{ $report['adult']->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($report['adult']->report_date) }}</a>
-							@endif
+							<div>
+								<a class="btn btn-xs btn-success btn-block btn-report" style="margin-bottom: 1.35rem;" href="{{ $report['adult']->url['scoreDetails'] }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($report['adult']->events['searchDates'][array_key_last($report['adult']->events['searchDates'])]) }}</a>
+							</div>
 						</td>
 
 					</tr>
-                    @php global $show_gene; $show_gene = false; @endphp
-                    @php global $show_report; $show_report = false; @endphp
 					@endif
-
-					@if ($report['pediatric'] !== null)
-                    @php global $show_border; $show_border = $loop->last; @endphp
-
+					@if ($report['ped'])
 					<tr>
-						<td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif ">
-							@if($show_gene)
-							{{ $record->label }}
-							@endif
+						<td class="">
+                            <div>
+							 {{ $record->label }} 
+                            </div>
 						</td>
 
-						<td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif ">
-							@if($show_gene)
-							<a href="{{ route('condition-show', $record->getMondoString($actionability->disease->iri, true)) }}">{{ $actionability->disease->label }}</a>
-							<div class="text-muted small">{{ $record->getMondoString($actionability->disease->iri, true) }}</div>
-							@endif
+						<td class="">
+							<div>
+								<a href="{{ route('condition-show', $report['ped']->conditions[0]) }}">{{ $report['ped']->condition_info->label }}</a>
+								<div class="text-muted small">{{ $report['ped']->conditions[0] }} {!! displayMondoObsolete($report['ped']->condition_info->label) !!}</div>
+							</div>
 						</td>
 
-                        <td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif ">
-                            @if ($show_report)
-							<span class="small">{{ App\Genelib::actionabilityReportString($label ?? '') }}</span>
-                            @endif
+                        <td class="">
+							{{ $report['ped']->document }}
                         </td>
 
-						<td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif ">
-                            <a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
-                                <i class="fas fa-external-link-alt"></i></a>
+						<td class="">
+							<div class="">
+								<a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
+                                <i class="fas fa-external-link-alt ml-1"></i></a>
+							</div>
 						</td>
 
-						<td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif text-center">
-								@if ($actionability->pediatric_assertion)
-									<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $report['pediatric']->source }}">
-										<div class="text-muted small">Pediatric</div>{{ App\Genelib::actionabilityAssertionString($report['pediatric']->classification->label) }}
-									@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($report['pediatric']->classification->label)))
-									</a>
-								@endif
+						<td class="text-center">
+							<div>
+								<a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $report['ped']->url['scoreDetails'] }}">
+								<div class="text-muted small">Pediatric</div>{{ App\Genelib::actionabilityAssertionString($report['ped']->assertions['assertion']) }}
+								@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($report['ped']->assertions['assertion'])))
+								</a>
+							</div>
 						</td>
 
-						<td class="@if($show_border) pb-0 border-top-0 @else border-0 pt-0 @endif text-center">
-							@if ($actionability->pediatric_assertion)
-								<a class="btn btn-xs btn-success btn-block btn-report" style="margin-bottom: 1.35rem;" href="{{ $report['pediatric']->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($report['pediatric']->report_date) }}</a>
-							@endif
+						<td class="text-center @if(!$show_border && !$show_gene) border-0 @endif ">
+							<div>
+								<a class="btn btn-xs btn-success btn-block btn-report" style="margin-bottom: 1.35rem;" href="{{ $report['ped']->url['scoreDetails'] }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($report['ped']->events['searchDates'][array_key_last($report['ped']->events['searchDates'])]) }}</a>
+							</div>
 						</td>
-
 					</tr>
-                    @php global $show_gene; $show_gene = false; @endphp
-                    @php global $show_report; $show_report = true; @endphp
 					@endif
-                    @endforeach
+                    
 				@endforeach
 
 				</tbody>
