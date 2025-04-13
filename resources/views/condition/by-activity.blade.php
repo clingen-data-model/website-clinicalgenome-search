@@ -269,7 +269,21 @@
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												@if($first == true) {{ displayMondoLabel($record->label) }}
-                                                {!! displayMondoObsolete($record->label) !!} @endif
+                                                {!! displayMondoObsolete($record->label) !!} 
+												<div class="text-muted small">{{ $record->getMondoString($record->iri, true) }}</div>
+					
+												@php
+												$i = strpos($actionability->source, '?doc=');
+												$k = substr($actionability->source, $i + 5);
+												$j = ($actionability->attributed_to->label == "Adult Actionability Working Group" ? 'adult' : 'ped');
+												//dd($record);
+												@endphp
+												@if($record->getMondoString($record->iri, true) != $actionability_reports[$disease->gene->hgnc_id][$k][$j])
+												<div class="">
+													The preferred disease is {{ $actionability_reports[$disease->gene->hgnc_id][$k][$j] }}
+												</div>
+												@endif
+												@endif
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">

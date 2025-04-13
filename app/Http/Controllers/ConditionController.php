@@ -8,7 +8,7 @@ use Auth;
 
 use App\GeneLib;
 use App\Nodal;
-use App\User;
+use App\Curation;
 use App\Filter;
 use App\Disease;
 use App\Mim;
@@ -312,9 +312,41 @@ class ConditionController extends Controller
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
 
-        //dd($disease);
+        $actionability_records = Curation::actionability()->whereJsonContains('conditions', $id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+        $actionability_reports = [];
+		foreach ($actionability_records as $actionability_record)
+		{
+            $preferred_gene = $actionability_record->gene_hgnc_id;
+
+            if (!isset($actionability_reports[$preferred_gene]))
+				$actionability_reports[$preferred_gene] = [];
+
+			if (!isset($actionability_reports[$preferred_gene][$actionability_record->document]))
+				$actionability_reports[$preferred_gene][$actionability_record->document] = ['adult' => null, 'ped' => null, 'aliases' => []];
+
+			// extract the preferred disease 
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $preferred_gene)
+				{
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							$actionability_reports[$preferred_gene][$actionability_record->document]['adult'] = $evidence_detail['curie'];
+							break;
+						case 'Pediatric':
+							$actionability_reports[$preferred_gene][$actionability_record->document]['ped'] = $evidence_detail['curie'];
+							break;
+					}
+				}
+			}
+			$actionability_reports[$preferred_gene][$actionability_record->document]['aliases'] = $evidence_detail;
+		}       
+       
+        //dd($actionability_reports);
+
 		return view('condition.by-activity', compact('display_tabs', 'record', 'disease', 'validity_collection', 'total_panels',
-                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection'));
+                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection', 'actionability_reports'));
 	}
 
 
