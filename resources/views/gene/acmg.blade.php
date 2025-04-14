@@ -73,6 +73,16 @@
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
 						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the Mondo ID is distinct
 					</li>
+					<li>
+						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
+						please fill out the form <a href="#">here</a>
+
+					</li>
+					<li>
+						The SFWG also welcomes reportability questions and clarifications around specific variants, 
+						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
+						To submit a question or suggestion, please fill out the form <a href="#">here</a>
+					</li>
 				</ul>
 			</p>
 
@@ -160,8 +170,23 @@
 					</li>
 				</ul>
 			</p>
-
 		</div>
+
+		<div class="col-md-12 mb-0 p-0">
+			<div class="card">
+				<table class="table table-striped table-hover mb-0">
+					<tr>
+						<td><strong>ClinGen ACMG SF v3.3 Curation Data  </strong>
+							<div class="small">This file provides ClinGen summary curation information for all ACMG SF v3.3 genes.</div>
+						</td>
+						<td></td>
+						<td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('acmg-activity-summary-cvs') }}"  class="btn btn-primary watchdownloadclick" title="ClinGen ACMG SF Summary Report CVS"><i class="fas fa-download"></i> CSV</a></td>
+						<td class="text-10px" nowrap=""></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+			
 
 		<div class="col-md-12 light-arrows dark-table pl-0 pr-0 dark-detail">
 				@include('_partials.genetable', ['expand' => true, 'no_expand_click' => true])

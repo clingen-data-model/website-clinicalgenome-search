@@ -558,6 +558,9 @@ class GeneController extends Controller
 			{
 				if($evidence_detail['gene'] == $record->hgnc_id)
 				{
+					$disease = Disease::curie($evidence_detail['curie'])->first();
+					if ($disease)
+						$actionability_record->condition_info = $disease;
 					switch($actionability_record->context)
 					{
 						case 'Adult':
@@ -572,13 +575,13 @@ class GeneController extends Controller
 			$actionability_reports[$actionability_record->document]['aliases'] = $actionability_record;
 		}
 		
-		$actionability_preferred = $actionability_records->filter(function($item) {
+		/*$actionability_preferred = $actionability_records->filter(function($item) {
 					return ($item->conditions[0] == $item->evidence_details[0]['curie']);
 			});
 		$actionability_others = $actionability_records->filter(function($item) {
 				return ($item->conditions[0] != $item->evidence_details[0]['curie']);
 		});
-//dd($actionability_records);
+
 		$actionability_reports = [];
 		foreach ($actionability_preferred as $preferred)
 		{
@@ -601,14 +604,13 @@ class GeneController extends Controller
 					break;
 			}
 		}
-		
 		foreach ($actionability_others as $other)
 		{
 			if (!isset($actionability_reports[$preferred->document]))
 				continue;
 
 			$actionability_reports[$preferred->document]['aliases'][] = $other;
-		}
+		}*/
 
 		//dd($actionability_reports);
 		
