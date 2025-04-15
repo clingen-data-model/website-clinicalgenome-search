@@ -574,7 +574,7 @@ class GeneController extends Controller
 			}
 			$actionability_reports[$actionability_record->document]['aliases'] = $actionability_record;
 		}
-		dd($actionability_reports);
+		//dd($actionability_reports);
 		/*$actionability_preferred = $actionability_records->filter(function($item) {
 					return ($item->conditions[0] == $item->evidence_details[0]['curie']);
 			});
