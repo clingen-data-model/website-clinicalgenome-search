@@ -546,7 +546,7 @@ class GeneController extends Controller
 
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
-		
+		//dd($actionability_records);
 		$actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
 		{
@@ -556,7 +556,7 @@ class GeneController extends Controller
 			// extract the preferred disease 
 			foreach ($actionability_record->evidence_details as $evidence_detail)
 			{
-				if($evidence_detail['gene'] == $record->hgnc_id)
+				if($evidence_detail['gene'] == $record->hgnc_id && $evidence_detail['curie'] == $actionability_record->conditions[0])
 				{
 					$disease = Disease::curie($evidence_detail['curie'])->first();
 					if ($disease)
@@ -574,7 +574,7 @@ class GeneController extends Controller
 			}
 			$actionability_reports[$actionability_record->document]['aliases'] = $actionability_record;
 		}
-		
+		dd($actionability_reports);
 		/*$actionability_preferred = $actionability_records->filter(function($item) {
 					return ($item->conditions[0] == $item->evidence_details[0]['curie']);
 			});

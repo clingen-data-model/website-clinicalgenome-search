@@ -40,7 +40,7 @@
 
                         <td class="">
 							<div>
-							{{ $report['adult']->document }}
+								<span class="small">{{ App\Genelib::actionabilityReportString($report['adult']->title) }}</span>
 							</div>
                         </td>
 
@@ -84,7 +84,7 @@
 						</td>
 
                         <td class="">
-							{{ $report['ped']->document }}
+							<span class="small">{{ App\Genelib::actionabilityReportString($report['ped']->title) }}</span>
                         </td>
 
 						<td class="">
