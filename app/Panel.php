@@ -449,7 +449,7 @@ class Panel extends Model
         })->values()->toArray();
     }
 
-    public function pushToProcessWire()
+    public function getProcessWireData()
     {
         $this->load('activities');
 
@@ -493,11 +493,16 @@ class Panel extends Model
             $processWireFields['affiliate_status_variant_date_step_4'] = $this->getActivityValue('ep_final_approval');
         }
 
+        return $processWireFields;
+    }
 
-        $response = $this->HttpRequest()->post($this->processWireUrl(), $processWireFields);
+    public function pushToProcessWire()
+    {
+        $response = $this->HttpRequest()->post($this->processWireUrl(), $this->getProcessWireData());
 
         return $response->body();
     }
+
 
     private function processWireUrl()
     {
