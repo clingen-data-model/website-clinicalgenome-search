@@ -54,6 +54,8 @@ class TestVersions extends Command
 
 		}
 
+        Activity::query()->truncate();
+
         while (($line = fgets($handle)) !== false)
         {
             $object = (object) ['payload' => $line];
