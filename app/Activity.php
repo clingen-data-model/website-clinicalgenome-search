@@ -209,7 +209,7 @@ class Activity extends Model
             case 'UNPUBLISH':
                 $type = self::TYPE_UNPUBLISH;
                 $status = self::STATUS_UNPUBLISH;
-                $record->references->source_uuid = $record->references->alternate_uuid; //handle bug in current validity data
+                //$record->references->source_uuid = $record->references->alternate_uuid; //handle bug in current validity data
                 break;
             case 'RETRACT':
                 $type = self::TYPE_RETRACT;
@@ -235,7 +235,7 @@ class Activity extends Model
                 $activity = self::ACTIVITY_VALIDITY;
                 $source_prefix = 'CGGV:assertion_';                                 // handle bug in current validity data
                 $activity_string = 'GENE_DISEASE_VALIDITY';
-                $record->version->reasons = array($record->version->reasons);       // handle bug in current validity data
+                //$record->version->reasons = array($record->version->reasons);       // handle bug in current validity data
                 break;
             case 'ACTIONABILITY':
                 $activity = self::ACTIVITY_ACTIONABILITY;
@@ -277,8 +277,8 @@ class Activity extends Model
                 $a->update(['status' => $status,
                             'workflow' => $workflow]);
             }
-            /*else
-                dd($record);*/
+            else
+                dd($record);
         }
         
         // save old ones to later archive
