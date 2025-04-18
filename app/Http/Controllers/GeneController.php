@@ -551,7 +551,7 @@ class GeneController extends Controller
 		foreach ($actionability_records as $actionability_record)
 		{
 			if (!isset($actionability_reports[$actionability_record->document]))
-				$actionability_reports[$actionability_record->document] = [];  // ['adult' => null, 'ped' => null, 'aliases' => []];
+				$actionability_reports[$actionability_record->document] = ['adult' => [], 'ped' => [], 'aliases' => []];
 
 			// extract the preferred disease 
 			foreach ($actionability_record->evidence_details as $evidence_detail)
@@ -562,16 +562,13 @@ class GeneController extends Controller
 					if ($disease)
 						$actionability_record->condition_info = $disease;
 
-					if (!isset($actionability_reports[$actionability_record->document][$disease->curie]))
-						$actionability_reports[$actionability_record->document][$disease->curie] = ['adult' => null, 'ped' => null, 'aliases' => []];
-
 					switch($actionability_record->context)
 					{
 						case 'Adult':
-							$actionability_reports[$actionability_record->document][$disease->curie]['adult'] = $actionability_record;
+							$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
 							break;
 						case 'Pediatric':
-							$actionability_reports[$actionability_record->document][$disease->curie]['ped'] = $actionability_record;
+							$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
 							break;
 					}
 				}
