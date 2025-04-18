@@ -40,7 +40,7 @@
 				or guidance is needed. Please send questions to: clingen@clinicalgenome.org 
 			</p>
 			<p class="p-2">
-				The published ACMG SF v3.3 list along with reporting guidance is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
+				The published ACMG SF v3.3 list along with reporting guidance is available as a spreadsheet <a href="https://docs.google.com/spreadsheets/d/1ecSUe0bJ-2gAMXBsrf5U1wMEDOmiIjtR_A5388uj7HY" target="_acmg">here</a>. 
 			</p>
 
 			<p class="p-2">

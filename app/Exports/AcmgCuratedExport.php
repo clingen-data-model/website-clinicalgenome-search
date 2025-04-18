@@ -27,7 +27,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
         // get the list of gene relative to SF 3.3
         $genes = Gene::acmg59()
                         ->with('curations', function($query) {
-                                $query->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
+                                $query->validity()->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
                             })
                         ->get();
 
@@ -43,8 +43,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
                     'hgnc_id' => $gene->hgnc_id,
                     'disease_label' => isset($curation->conditions[0]) ? ($curation->disease->label ?? null) : null,
                     'mondo_id' => $curation->conditions[0] ?? null,
-                    'mode_of_inheritance' => $curation->scores['moi'] ?? null,
-                    'activity' => $curation->type_string,
+                    'mode_of_inheritance' => GeneLib::validityMoiAbvrString($curation->scores['moi'] ?? null),
                     'assertion' => $this->assertion($curation),
                     'reportability' => $reportable->reportable ?? null
 
@@ -60,7 +59,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
         return [
             ["ClinGen Curation ACMG SF c3.3 Summary Report - FILE CREATED: " . Carbon::now()->format('Y-m-d')],
             ["README 1: ", " This file provides ClinGen summary curation information about ACMG SF v3.3."],
-            ["gene_symbol", "hgnc_id", "disease_label", "mondo_id", "mode_of_inheritance", "activity", "assertion", "reportability"],
+            ["Gene Symbol", "HGNC ID", "MONDO Disease Name", "MONDO ID", "MOI", "Gene-Disease Validity", "Report?"],
         ];
     }
 
@@ -93,7 +92,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
                 $value = "";
                 break;
             case Curation::TYPE_GENE_VALIDITY:
-                $value =  $curation->scores['classification'];
+                $value =  ucwords($curation->scores['classification']);
                 break;
             case Curation::TYPE_VARIANT_PATHOGENICITY:
                 $value =  $curation->scores['classification'];
