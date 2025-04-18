@@ -345,7 +345,7 @@
     document.documentElement.scrollTop = 0;
   }
 </script>
-    <script>
+      <script>
       $(".action-login").click(function() {
 
         $('#modalLogin').modal('show');
@@ -357,97 +357,142 @@
     </script>
     <script src="/js/typeahead.js"></script>
     <script>
+        var tabRequests = {};
+        $(document).ready( () => {
+            tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
+                if (tabRequests.active === 'condition') {
+                    enableConditionSearch()
+                } else if (tabRequests.active === 'gene') {
+                    enableGeneNameSearch()
+                } else if (tabRequests.active === 'region') {
+                    enableRegion38Search()
+                } else if (tabRequests.active === 'drug') {
+                    enableDrugSearch()
+                } else {
+                    enableGeneSearch()
+                }
+        })
 
+        function enableGeneSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+            $( ".inputQueryGene" ).show();
+            $( ".inputQueryGene .queryGene" ).show();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Gene Symbol ");
+        }
+
+        function enableGeneNameSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+            $( ".inputQueryGeneName" ).show();
+            $( ".inputQueryGene .queryGeneName" ).show();
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Gene Name ");
+        }
+
+        function enableConditionSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+            $( ".inputQueryDisease" ).show();
+            $( ".inputQueryDisease .queryDisease" ).show();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Disease Name  ");
+        }
+
+        function enableDrugSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).show();
+            $( ".inputQueryDrug .queryDrug" ).show();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Drug Name  ");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
+
+        function enableRegion37Search()
+        {
+            $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).show();
+            $( ".inputQueryRegion .queryRegion" ).show();
+            $( ".typeQueryLabel").text("GRCh38 Region  ");
+            $( ".buildtype").val("GRCh38");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
+
+        function enableRegion38Search()
+        {
+            $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).show();
+            $( ".inputQueryRegion .queryRegion" ).show();
+            $( ".typeQueryLabel").text("GRCh38 Region  ");
+            $( ".buildtype").val("GRCh38");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
 
       $( ".typeQueryGene" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
-        $( ".inputQueryGene" ).show();
-        $( ".inputQueryGene .queryGene" ).show();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Gene Symbol ");
+        enableGeneSearch()
       });
 
       $( ".typeQueryGeneName" ).click(function() {
-          $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
-          $( ".inputQueryGeneName" ).show();
-          $( ".inputQueryGene .queryGeneName" ).show();
-          $( ".inputQueryGene" ).hide();
-          $( ".inputQueryGene .queryGene" ).hide();
-          $( ".inputQueryDisease" ).hide();
-          $( ".inputQueryDisease .queryDisease" ).hide();
-          $( ".inputQueryDrug" ).hide();
-          $( ".inputQueryDrug .queryDrug" ).hide();
-          $( ".inputQueryRegion" ).hide();
-          $( ".inputQueryRegion .queryRegion" ).hide();
-          $( ".typeQueryLabel").text("Gene Name ");
+         enableGeneNameSearch()
       });
 
       $( ".typeQueryDisease" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
-        $( ".inputQueryDisease" ).show();
-        $( ".inputQueryDisease .queryDisease" ).show();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Disease Name  ");
+        enableConditionSearch()
       });
 
+
       $( ".typeQueryDrug" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).show();
-        $( ".inputQueryDrug .queryDrug" ).show();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Drug Name  ");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableDrugSearch()
       });
 
       $( ".typeQueryRegionGRCh37" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).show();
-        $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh37 Region  ");
-        $( ".buildtype").val("GRCh37");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableRegion37Search()
       });
       $( ".typeQueryRegionGRCh38" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).show();
-        $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh38 Region  ");
-        $( ".buildtype").val("GRCh38");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableRegion38Search()
       });
 
 
