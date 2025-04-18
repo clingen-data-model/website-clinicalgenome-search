@@ -10,8 +10,10 @@ use Maatwebsite\Excel\Facades\Excel as Gexcel;
 use Auth;
 
 use App\GeneLib;
-use App\Graphql;
+use App\Gene;
 use App\Metric;
+use App\Disease;
+use App\Curation;
 
 class ReportController extends Controller
 {
@@ -108,7 +110,7 @@ class ReportController extends Controller
 	{
 		$queryResponse = GeneLib::actionabilityList(['iri' => "HGNC:6407"]);
 
-		dd($queryResponse);
+		//dd($queryResponse);
 
 		/*
 			foreach ($queryResponse->users as $user) {

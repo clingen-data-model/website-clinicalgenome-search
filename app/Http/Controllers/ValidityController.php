@@ -26,7 +26,7 @@ use App\Pmid;
 use App\Nodal;
 use App\Blacklist;
 use App\Mail\Feedback;
-use App\Validity;
+use App\Activity;
 use App\Slug;
 
 /**
@@ -148,7 +148,7 @@ class ValidityController extends Controller
             $id = $s->target;
         }
 
-        $record = GeneLib::validityDetail([
+       $record = GeneLib::validityDetail([
             'page' => 0,
             'pagesize' => 20,
             'perm' => $id
@@ -284,6 +284,8 @@ class ValidityController extends Controller
                 if ($item->type[0]->curie == "SEPIO:0004012"  && !empty($item->evidence)) {
                     //dd($item->evidence);
                     foreach ($item->evidence as $e) {
+                        if (!isset($e->proband))
+                            continue;
                         if ($e->proband !== null) // && $e->proband->label !== null && ($e->estimated_lod_score !== null || $e->published_lod_score !== null))
                             $clfs = true;
                         else if ($e->proband === null) // || $e->proband->label === null || ($e->estimated_lod_score === null && $e->published_lod_score === null))
@@ -421,7 +423,7 @@ class ValidityController extends Controller
         if ($extrecord && !empty($extrecord->segregation)) {
             $exomeflag = false;
             foreach ($extrecord->segregation[0]->evidence as $evidence) {
-                if ($evidence->meets_inclusion_criteria == true) {
+                if (isset($evidence->meets_inclusion_criteria) && $evidence->meets_inclusion_criteria == true) {
                     if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
                         $cls_count += ($evidence->published_lod_score === null ? $evidence->estimated_lod_score : $evidence->published_lod_score);
                         if (($evidence->sequencing_method->curie ?? false) == "SEPIO:0004541")
@@ -463,6 +465,7 @@ class ValidityController extends Controller
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
         switch ($record->specified_by->label) {
+            case "ClinGen Gene Validity Evaluation Criteria SOP11":
             case "ClinGen Gene Validity Evaluation Criteria SOP10":
             case "ClinGen Gene Validity Evaluation Criteria SOP9":
             case "ClinGen Gene Validity Evaluation Criteria SOP8":
@@ -479,12 +482,15 @@ class ValidityController extends Controller
                         : $record->curie);
 
         $slug = Slug::target($t)->first();
+
+        // get history
+        $activities = Activity::all();
         
-        //dd($extrecord->genetic_evidence);
+        // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
             compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count',
-                    'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb', 'slug')
+                    'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb', 'slug', 'activities')
         )
             ->with('user', $this->user);
     }

@@ -28,6 +28,7 @@ use App\Notification;
 use App\Actionability;
 use App\Panel;
 use App\Slug;
+use App\Mysql;
 
 use App\Mail\NotifyFrequency;
 //use App\Neo4j;
@@ -73,10 +74,23 @@ class TestController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
 
-		$results = GeneLib::validityList(['page' => 0,
+		ReportController::summary_report($request);
+
+		// get all the genes with active curations
+		/*$genes = Gene::whereHas('curations', function ($query) {
+			$query->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
+		})->with('curations')->orderBy('name')->get();
+
+		foreach ($genes as $gene)
+		{
+			dd($gene);
+		}*/
+
+		$results = Mysql::geneListForExportReport(
+										['page' => 0,
 										'pagesize' => null,
 										'sort' => 'GENE_LABEL',
 										'direction' => 'ASC',
@@ -84,9 +98,9 @@ class TestController extends Controller
                                         'include_lump_split' => true,
                                         'curated' => true ]);
 
-		dd($results->collection->first());
+		dd($results);
 
-        $id = "CGGCIEX:assertion_3210";
+        /*$id = "CGGCIEX:assertion_3210";
 
         $g = Graphql::newValidityDetail(['page' => 0,
                         'pagesize' => 20,

@@ -122,21 +122,88 @@ class SearchController extends Controller
 
             foreach ($dosages as $dosage)
             {
-                if (isset($dosage->assertions['haploinsufficiency_assertion']))
+                switch ($dosage->context)
                 {
-                    $haplo_score = GeneLib::wordAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']);
-                    $haplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal']) . " for Haploinsufficiency";
-                }
+                    case 'haploinsufficiency_assertion':
+                        if (isset($dosage->scores['classification']))
+                        {
+                            $haplo_score = $dosage->scores['classification'];
+                            if ($haplo_score == "30: Gene associated with autosomal recessive phenotype")
+                                $haplo_score = 30;
+                            else if ($haplo_score == "40: Dosage sensitivity unlikely")
+                                $haplo_score = 40;
+                            else if ($haplo_score == "Not yet evaluated")
+                                $haplo_score = -5;
+                            $haplo_tooltip = GeneLib::shortAssertionString($haplo_score) . " for Haploinsufficiency";
+                            $haplo_score = GeneLib::wordAssertionString($haplo_score);
+                        }
+                        else
+                        {
+                            if (isset($dosage->scores['haploinsufficiency_assertion']))
+                            {
+                                $haplo_score = $dosage->scores['haploinsufficiency_assertion'];
+                                $haplo_tooltip = GeneLib::shortAssertionString($haplo_score) . " for Haploinsufficiency";
+                                $haplo_score = GeneLib::wordAssertionString($haplo_score);
+                            }
+                            else if (isset($dosage->scores['haploinsufficiency']))
+                            {
+                                $haplo_score = $dosage->scores['haploinsufficiency']['value'];
 
-                if (isset($dosage->assertions['triplosensitivity_assertion']))
-                {
-                    $triplo_score = GeneLib::wordAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']);
-                    $triplo_tooltip = GeneLib::shortAssertionString($dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal']) . " for Triplosensitivity";
-                }
-                
+                                // for 30 and 40, Jira also sends text
+                                if ($haplo_score == "30: Gene associated with autosomal recessive phenotype")
+                                    $haplo_score = 30;
+                                else if ($haplo_score == "40: Dosage sensitivity unlikely")
+                                    $haplo_score = 40;
+                                else if ($haplo_score == "Not yet evaluated")
+                                    $haplo_score = -5;
+                                $haplo_tooltip = GeneLib::shortAssertionString($haplo_score) . " for Haploinsufficiency";
+                                $haplo_score = GeneLib::wordAssertionString($haplo_score);
+                            }
+                        }
+                        break;
+                    case 'triplosensitivity_assertion':
+                        if (isset($dosage->scores['classification']))
+                        {
+                            $triplo_score = $dosage->scores['classification'];
+                            if ($triplo_score == "30: Gene associated with autosomal recessive phenotype")
+                                $triplo_score = 30;
+                            else if ($triplo_score == "40: Dosage sensitivity unlikely")
+                                $triplo_score = 40;
+                            else if ($triplo_score == "Not yet evaluated")
+                                $triplo_score = -5;
+
+                            $triplo_tooltip = GeneLib::shortAssertionString($triplo_score) . " for Triplosensitivity";
+                            $triplo_score = GeneLib::wordAssertionString($triplo_score);
+                        }
+                        else
+                        {
+                            if (isset($dosage->scores['triplosensitivity_assertion']))
+                            {
+                                $triplo_score = $dosage->scores['triplosensitivity_assertion'];
+                                $triplo_tooltip = GeneLib::shortAssertionString($triplo_score) . " for Triplosensitivity";
+                                $triplo_score = GeneLib::wordAssertionString($triplo_score);
+                            }
+                            else if (isset($dosage->scores['triplosensitivity']))
+                            {
+                                $triplo_score = $dosage->scores['triplosensitivity']['value'];
+
+                                // for 30 and 40, Jira also sends text
+                                if ($triplo_score == "30: Gene associated with autosomal recessive phenotype")
+                                    $triplo_score = 30;
+                                else if ($triplo_score == "40: Dosage sensitivity unlikely")
+                                    $triplo_score = 40;
+                                else if ($triplo_score == "Not yet evaluated")
+                                    $triplo_score = -5;
+
+                                $triplo_tooltip = GeneLib::shortAssertionString($triplo_score) . " for Triplosensitivity";
+                                $triplo_score = GeneLib::wordAssertionString($triplo_score);
+                            }
+                        }
+                        break;
+                    }
+
                 $dosage_link = "/kb/gene-dosage/" . $dosage->gene_hgnc_id;
             }
-            
 
             // actionability
             $adult = $gene->curations->where('type', Curation::TYPE_ACTIONABILITY)
@@ -157,9 +224,9 @@ class SearchController extends Controller
                 $adult_long_score = $adult_score;
                 $adult_score = strtok($adult_score, " "); // extract first word
                 if ($adult_score == "Assertion")
-                    $adult_score = "Pending";
+                    $adult_score = "Assert Pend";
                 else if ($adult_score == "N/A")
-                    $adult_score = "Earlr R/O";
+                    $adult_score = "Early RO";
                 $actionability_adult_link = "https://actionability.clinicalgenome.org/ac/Adult/ui/stg2SummaryRpt?doc=" . $adult->document;
 
             }
@@ -171,10 +238,10 @@ class SearchController extends Controller
                 $ped_score = $ped->assertions['assertion'];
                 $ped_long_score = $ped_score;
                 $ped_score = strtok($ped_score, " "); // extract first word
-                if ($ped_score == "Assertion")
+                if ($ped_score == "Assert Pend")
                     $ped_score = "Pending";
                 else if ($ped_score == "N/A")
-                    $ped_score = "Earlr R/O";
+                    $ped_score = "Early RO";
                 $actionability_ped_link = "https://actionability.clinicalgenome.org/ac/Pediatric/ui/stg2SummaryRpt?doc=" . $ped->document;
 
             }
@@ -197,7 +264,7 @@ class SearchController extends Controller
                                      'dosage_link' => $dosage_link,
                                      'actionability_adult_score' => $adult_score, 'actionability_pediatric_score' => $ped_score,
                                      'actionability_adult_tooltip' => $adult_long_score ?? '', 'actionability_ped_tooltip' => $ped_long_score ?? '',
-                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link
+                                     'actionability_adult_link' => $actionability_adult_link, 'actionability_pediatric_link' => $actionability_ped_link,
                                     ];
         }
         
@@ -205,55 +272,94 @@ class SearchController extends Controller
         $dosages = $gene->curations->where('type', $dosage_type)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                         ->whereNull('disease_id');
-        
+
         if ($dosages->isNotEmpty())
         {
             $haplo_gene_score = $haplo_gene_tooltip = $triplo_gene_score = $triplo_gene_tooltip = null;
 
             foreach($dosages as $dosage)
             {
-                if (isset($dosage->scores['classification']))
+                switch ($dosage->context)
                 {
-                    switch ($dosage->context)
-                    {
-                        case 'haploinsufficiency_assertion':
+                    case 'haploinsufficiency_assertion':
+                        if (isset($dosage->scores['classification']))
+                        {
                             $haplo_gene_score = $dosage->scores['classification'];
-                            if ($haplo_gene_score == "40: Dosage sensitivity unlikely")
+                            
+                            if ($haplo_gene_score == "30: Gene associated with autosomal recessive phenotype")
+                                $haplo_gene_score = 30;
+                            else if ($haplo_gene_score == "40: Dosage sensitivity unlikely")
                                 $haplo_gene_score = 40;
                             $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
                             $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
-                            break;
-                        case 'triplosensitivity_assertion':
+                        }
+                        else
+                        {
+                            if (isset($dosage->scores['haploinsufficiency_assertion']))
+                            {
+                                $haplo_gene_score = $dosage->scores['haploinsufficiency_assertion'];
+                                $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
+                                $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
+                            }
+                            else if (isset($dosage->scores['haploinsufficiency']))
+                            {
+                                $haplo_gene_score = $dosage->scores['haploinsufficiency']['value'];
+
+                                // for 30 and 40, Jira also sends text
+                                if ($haplo_gene_score == "30: Gene associated with autosomal recessive phenotype")
+                                    $haplo_gene_score = 30;
+                                else if ($haplo_gene_score == "40: Dosage sensitivity unlikely")
+                                    $haplo_gene_score = 40;
+
+                                $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
+                                $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
+                            }
+                        }
+                        break;
+                    case 'triplosensitivity_assertion':
+                        if (isset($dosage->scores['classification']))
+                        {
                             $triplo_gene_score = $dosage->scores['classification'];
-                            if ($triplo_gene_score == "40: Dosage sensitivity unlikely")
+                            if ($triplo_gene_score == "30: Gene associated with autosomal recessive phenotype")
+                                $triplo_gene_score = 30;
+                            else if ($triplo_gene_score == "40: Dosage sensitivity unlikely")
                                 $triplo_gene_score = 40;
+                           
                             $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
                             $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
-                            break;
-                    }
-                }
-                /*
-                if (isset($dosage->assertions['haploinsufficiency_assertion']))
-                {
-                    $haplo_gene_score = $dosage->assertions['haploinsufficiency_assertion']['dosage_classification']['ordinal'];
-                    $haplo_gene_tooltip = GeneLib::shortAssertionString($haplo_gene_score) . " for Haploinsufficiency";
-                    $haplo_gene_score = GeneLib::wordAssertionString($haplo_gene_score);
-                }
-                
+                        }
+                        else
+                        {
+                            if (isset($dosage->scores['triplosensitivity_assertion']))
+                            {
+                                $triplo_gene_score = $dosage->scores['triplosensitivity_assertion'];
+                                $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
+                                $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
+                            }
+                            else if (isset($dosage->scores['triplosensitivity']))
+                            {
+                                $triplo_gene_score = $dosage->scores['triplosensitivity']['value'];
 
-                if (isset($dosage->assertions['triplosensitivity_assertion']))
-                {
-                    $triplo_gene_score = $dosage->assertions['triplosensitivity_assertion']['dosage_classification']['ordinal'];
-                    $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
-                    $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
-                }*/
+                                // for 30 and 40, Jira also sends text
+                                if ($triplo_gene_score == "30: Gene associated with autosomal recessive phenotype")
+                                    $triplo_gene_score = 30;
+                                else if ($triplo_gene_score == "40: Dosage sensitivity unlikely")
+                                    $triplo_gene_score = 40;
+
+                                $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
+                                $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
+                            }
+                        }
+                        break;
+                }
+
             }
 
             $scores[0] = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
                         'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
                         'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
                         ];
-            
+
         }
 
         return view('region.search_expand')

@@ -188,7 +188,7 @@
     <hr />
 
 	<!-- tab headers -->
-	<ul class="nav nav-tabs mt-1" style="">
+	<ul class="nav nav-tabs mt-1" style="margin-left: -50px; margin-right: -50px">
 		<li role="presentation" class="active" style="">
             <a href="#gdvt1" aria-controls="gdvt1" role="tab" data-toggle="tab">
               <span class='hidden-sm hidden-xs'><i class="fas fa-file-alt mr-1"></i>Summary</span>
@@ -225,6 +225,11 @@
                 <span class='hidden-sm hidden-xs'><i class="fas fa-asterisk mr-1"></i>References</span>
             </a>
 		</li>
+        <!--<li role="presentation" class="" style="">
+			<a href="#gdvt8" aria-controls="gdvt8" role="tab" data-toggle="tab">
+                <span class='hidden-sm hidden-xs'><i class="fas fa-history mr-1"></i>History</span>
+            </a>
+		</li>-->
         @else
         <span class="pull-right mt-2 mr-5 text-danger"><b><i>Additional evidence details have not been made available for this particular Gene-Disease assertion </i></b></span>
         @endif
@@ -271,7 +276,10 @@
                                 <div class="row geneValidityScoresWrapper">
                                     <div class="col-sm-12">
                                         <div class="content-space content-border">
-                                            @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
+                                            @if($record->json_message_version == "GCI.8.3" || strpos($record->specified_by->label,"SOP11"))
+                                                @include('gene-validity.partial.report-heading')
+                                                @include('gene-validity.partial.rich-sop8-1')
+                                            @elseif($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
                                                 @include('gene-validity.partial.report-heading')
                                                 @include('gene-validity.partial.rich-sop8-1')
                                             @elseif(strpos($record->specified_by->label,"SOP8"))
@@ -444,14 +452,22 @@
                                         @foreach ($evidence->evidence as $source)
                                         <p>
                                             <a href="{{ $source->source->iri }}" target="_pubmed">
-                                                <strong>{{ $source->source->curie ?? '' }}</strong>
+                                                @if (strpos($source->source->curie,'CVSCV') === 0)
+                                                <strong>ClinVar SCV: {{ str_replace('CVSCV:','', $source->source->curie ?? '') }}</strong>
+                                                @else
+                                                <strong>{{ str_replace('PMID:', 'PMID: ', $source->source->curie ?? '') }}</strong>
+                                                @endif
                                                 <i class="glyphicon glyphicon-new-window"></i>
                                             </a>
                                             @if (in_array($source->source->curie, $extrecord->eas))
                                             <span class="ml-1" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="The article is selected as earliest report of a variant in the gene causing the disease of interest in a human"><i class="fas fa-check-square text-success"></i></span>
                                             @endif
                                             <br>
-                                            {{ $source->source->first_author ?? ''}}, et. al., {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
+                                            {{ $source->source->first_author ?? ''}},
+                                            @if ($source->source->multiple_authors)
+                                             et. al., 
+                                            @endif
+                                            {{ $source->source->label ?? '' }} <strong>{{ $source->source->year_published ?? ''}}</strong><br>
                                             <br>
                                             @if (empty($evidence->description))
                                             <strong>Explanation:  </strong>None
@@ -639,6 +655,61 @@
                     </div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="gdvt8">
+                <div class="panel panel-primary with-nav-tabs">
+                    <!--<div class="pull-right"><img src="/images/beta.png" height="60"></div>-->
+                    <div class="panel-heading" style="height:71px;">
+                        <h4>History</h4>
+                    </div>
+                    <div class="panel-body">
+                        <div class="tab-content">
+                            <div id="gene_version" class="container">
+                                <table class="table table-hover mt-4">
+                                    <tr class="medium-font-size">
+                                        <th class="text-center bg-secondary text-white" style="vertical-align: middle"></th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Version</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Dates</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Reason for Update</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Changes</th>
+                                        <th class="text-center bg-secondary text-white"" style="vertical-align: middle">Additional Notes</th>
+                                    </tr>
+                                    @foreach ($activities as $activity)
+                                        @if ($activity->status == 1)
+                                        <tr class="medium-font-size">
+                                        @else
+                                        <tr class="medium-font-size">
+                                        @endif
+                                        @if ($activity->status == 1)
+                                        <td style="vertical-align: middle"><i class="fas fa-arrow-right fa-lg text-danger"></i></td>
+                                        @else
+                                        <td style="vertical-align: middle"></td>
+                                        @endif
+                                        <td style="vertical-align: middle" class="p-4"><span class="btn btn-block btn-info text-white"><strong>{{ $activity->version['display'] ?? '' }}</strong></span></td>
+                                        <td class="p-4">
+                                            <div class="mb-1"><strong>Published:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['publish_date']) }}</span></div>
+                                            <div><strong>Classified:  </strong><span class="text-muted">{{ $activity->displayDate($activity->workflow['classification_date']) }}</span></div>
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->version['reasons'] as $reason)
+                                            <div><strong>{{ $reason }}:</strong><br>
+                                            <span class="text-muted">{{ $activity->display_reason($reason) }}</span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4">
+                                            @foreach($activity->changes as $change)
+                                            <div><strong>{{ $change['change_code'] }}:</strong><br>
+                                            <span class="text-muted">From {{ $change['from'] }} to {{ $change['to'] }} </span></div>
+                                            @endforeach
+                                        </td>
+                                        <td class="p-4"><span class="text-muted">{{ $activity->notes['public'] ?? '' }}</span></td>
+                                       </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -647,7 +718,10 @@
     <div class="row geneValidityScoresWrapper">
         <div class="col-sm-12">
             <div class="content-space content-border">
-                @if($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
+                @if($record->json_message_version == "GCI.8.3" || strpos($record->specified_by->label,"SOP11"))
+                    @include('gene-validity.partial.report-heading')
+                    @include('gene-validity.partial.sop8-1')
+                @elseif($record->json_message_version == "GCI.8.1" || strpos($record->specified_by->label,"SOP9") || strpos($record->specified_by->label,"SOP10"))
                     @include('gene-validity.partial.report-heading')
                     @include('gene-validity.partial.sop8-1')
                 @elseif(strpos($record->specified_by->label,"SOP8"))

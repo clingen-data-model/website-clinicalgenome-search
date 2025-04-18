@@ -339,11 +339,19 @@ class Graphql
 			label
 			curie
 		}*/
+		/*
+		gene_dosage_assertions {
+									report_date
+									assertion_type
+									curie
+									disease
+									iri
+									label
+								}
+								*/
 
 		// query genegraph
 		$response = self::query($query, __METHOD__);
-
-
 
 		if (empty($response))
 			return $response;
@@ -367,6 +375,7 @@ class Graphql
 
 		// create node list and add pharma and variant curation indicators to the current gene list
 		foreach ($response->genes->gene_list as $record) {
+			
 			$node = new Nodal((array) $record);
 			$extra = $extras->where('hgnc_id', $node->hgnc_id)->first();
 			if ($extra !== null) {
@@ -1450,6 +1459,7 @@ class Graphql
 							  curie
 							  label
 							}
+							date
 						}
 						iri
 						description
@@ -1702,9 +1712,11 @@ class Graphql
 			$perm = "CGGCIEX:assertion_" . $perm;
 
         //resource(iri: "CGGV:c28a8d2b-91dc-47b4-9b6c-daebe6057d56"
+		//resource(iri: "CGGV:f7637a83-ffe3-4d80-986c-e12f209dc4ce") {
+			//resource(iri: "' . $perm . '") {
 
 		$query = '{
-				resource(iri: "' . $perm . '") {
+			resource(iri: "' . $perm . '") {
 					...basicFields
 					... on ProbandEvidence {
 					  ...probandFields
@@ -1969,8 +1981,11 @@ class Graphql
                     label
                     multiple_authors
                     short_citation
-                    year_published
-                  }
+                    year_published' . 
+					/*is_about {
+						iri
+					}*/
+                  '}
 				}
 				fragment caseControlFields on CaseControlEvidence {
 				  iri
@@ -2114,7 +2129,8 @@ class Graphql
 
 		// query genegraph
 		$response = self::query($query,  __METHOD__);
-//dd($response);
+
+		//dd($query);
 		if (empty($response))
 			return $response;
 

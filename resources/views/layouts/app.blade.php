@@ -80,7 +80,7 @@
 	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene Symbol  </span></button>
 	           <ul class="dropdown-menu dropdown-menu-left">
 	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
-                   <li><a class="typeQueryGeneName pointer">Gene Name</a></li>
+                 <li><a class="typeQueryGeneName pointer">Gene Name</a></li>
 	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
 	             <li><a class="typeQueryDrug pointer">Drug Name</a></li>
 	             <li><a class="typeQueryRegionGRCh37 pointer">Region (GRCh37)</a></li>
@@ -96,9 +96,6 @@
            <span class="inputQueryGene">
             <input type="text" class="form-control queryGene" aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:15766)">
            </span>
-                <span class="inputQueryGeneName" style="display: none">
-            <input type="text" class="form-control queryGeneName" aria-label="..." value="" name="search[]" placeholder="Enter a gene name (Example: Adenylate cyclase 1)" >
-           </span>
            <span class="inputQueryDisease" style="display: none">
             <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys Dietz, MONDO:0018954)" >
            </span>
@@ -108,6 +105,9 @@
            <span class="inputQueryRegion" style="display: none">
            <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region, or full cytoband (Examples: chr7:75158048-76063176, chr7, chr7:70008000, 12q24.31)">
            </span>
+                <span class="inputQueryGeneName" style="display: none">
+                    <input type="text" class="form-control queryGeneName" aria-label="..." value="" name="search[]" placeholder="Enter a gene name (Example: Adenylate cyclase 1)" >
+            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit">Search</button>
 	          </span>
@@ -128,7 +128,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a class="" href="{{ route('gene-curations') }}">All Curated Genes</a></li>
-                <!-- <li><a class=""" href="{{ route('acmg-index') }}">ACMG SF v3.2 Curations</a></li> -->
+               <li><a class=""" href="{{ route('acmg-index') }}">ACMG SF v3.2 Curations</a></li>
               </ul>
             </li>
 
@@ -482,7 +482,6 @@
       $( ".typeQueryDisease" ).click(function() {
         enableConditionSearch()
       });
-
 
       $( ".typeQueryDrug" ).click(function() {
         enableDrugSearch()

@@ -816,7 +816,7 @@ dd("not logged in");  }*/
         */
        /* else
         { */
-
+            
             $disease = Disease::curie($input['disease'])->first();
 
             if ($disease === null)
