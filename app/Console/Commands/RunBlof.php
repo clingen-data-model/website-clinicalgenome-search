@@ -196,7 +196,8 @@ class RunBlof extends Command
                             $segregation[] = $item;
                         } else if ($item->type[0]->curie == "SEPIO:0004021" || $item->type[0]->curie == "SEPIO:0004020")
                             $casecontrol[] = $item;
-                        else if ($item->type[0]->curie == "SEPIO:0004174") // the separate proband counted points records
+                        else if ($item->type[0]->curie == "SEPIO:0004174"
+                        ) // the separate proband counted points records
                         {
                             // This thing is a hot mess and totally unusable as is.  Only choice it to completely restructure.
                             // First, seperate out the two statement records from the proband
@@ -286,7 +287,7 @@ class RunBlof extends Command
                 }
 
                 //if ($gene->name == "ABCG5")
-                     //                  dd($record->caselevel);
+                                       //dd($record->caselevel);
 
                 foreach($record->caselevel as $key => $subrecord)
                 {
@@ -333,45 +334,26 @@ class RunBlof extends Command
 
                                 if (($v->type[0]->curie ?? '') == 'SEPIO:0004017' ||
                                 ($v->type[0]->curie ?? '') == 'SEPIO:0004117' ||
-                                ($v->type[0]->curie ?? '') == 'SEPIO:0004120'
+                                ($v->type[0]->curie ?? '') == 'SEPIO:0004120' ||
+                                ($v->type[0]->curie ?? '') == 'SEPIO:0004018'
                                 )
                                 {
-                                    // Validity::evidenceTypeString($v->type[0]->curie ?? '');
-                                   /* @if (!$loop->last)
-                                    <hr>
-                                    @endif */
-                                    // get the PMID, variant name, GCEP name
-
-                                   //if (!isset($v->source->curie))
-                                   //     dd($v->variant->source);
-
-                                   if (isset($apmids[$v->variant->source->curie]))
-                                   {
-                                        $apmids[$v->variant->source->curie]['variants'][] = $v->variant->variant->label;
-                                   }
-                                   else
-                                   {
-                                        $apmids[$v->variant->source->curie] = ['variants' => [$v->variant->variant->label]];
-                                   }
-
-                                    /*$results[] = [
-                                        'gene_name' => $gene->name,
-                                        'gene_hgnc' => $gene->hgnc_id,
-                                        'disease_name' => $disease->label,
-                                        'disease_mondo' => $disease->curie,
-                                            'variant_name' => $v->variant->variant->label,
-                                            //'variant_type' => $v->variant->variant_type,
-                                            'gcep_name' => $ep->label,
-                                            'gcep_id' => $ep->curie,
-                                            'pmid' => $v->variant->source->curie,
-                                            'pmid_comment' => 'The ClinGen ' . $ep->label . ' GCEP scored [#] unique predicted or proven null variants from this paper, including:' 
-                                                            . $v->variant->variant->label . ', observed in [#] affected homozygous probands and [#] affected compound heterozygous probands.  This variant segregated in [#] additional family members across [#] presumably unrelated families.',
-                                            'loss_comment' => 'The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' evidence supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->report_date . "."
-                                                            . 'As part of their evaluation, the GCEP scored at least [#] unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation, there were ' . $line[8] . ' total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; ' . $line[9] . ' of these (' . $line[10] . '), are predicted/proven null variants.  These LP/P variants are observed in at least ' . $line[5] . ' distinct exons. *There are no observations of homozygous loss of function variants in gnomAD v4.1.' . ""
-                                                            . '*Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]). *Of note, per GTEx v8, ' . $line[7] . ' appears to be alternatively spliced and therefore has relatively low expression across multiple tissue types.' . ""
-                                                            . 'In summary, biallelic loss of function is an [ESTABLISHED/LIKELY/SUSPECTED/UNCERTAIN] mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '.'
-                                    ];
-                                    */
+                                    if (isset($v->variant->source->curie))
+                                    {
+                                        if (isset($apmids[$v->variant->source->curie]))
+                                        {
+                                            $apmids[$v->variant->source->curie]['variants'][] = $v->variant->variant->label;
+                                        }
+                                        else
+                                        {
+                                            $apmids[$v->variant->source->curie] = ['variants' => [$v->variant->variant->label]];
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //if ($gene->name == "ABCG5")
+                                        //dd($v);
+                                    }
                                 }
                             }
                         }
@@ -380,41 +362,46 @@ class RunBlof extends Command
                             // ignore ones with no score
                             if ($subrecord->score <= 0)
                                 continue;
-
-                            if (($subrecord->type[0]->curie ?? '') == 'SEPIO:0004017' ||
-                                ($subrecord->type[0]->curie ?? '') == 'SEPIO:0004117' ||
-                                ($subrecord->type[0]->curie ?? '') == 'SEPIO:0004120'
-                                )
+                            
+                            if(!isset($evidence->variant->label) && isset($evidence->variants) && is_array($evidence->variants))
+                            {
+                                foreach($evidence->variants as $v)
                                 {
-                                    if (isset($apmids[$subrecord->variant->source->curie]))
-                                   {
-                                        $apmids[$subrecord->variant->source->curie]['variants'][] = $subrecord->variant->variant->label;
-                                   }
-                                   else
-                                   {
-                                        $apmids[$subrecord->variant->source->curie] = ['variants' => [$subrecord->variant->variant->label]];
-                                   }
-
-                                // Validity::evidenceTypeString($record->type[0]->curie ?? '');
-                                // get the PMID, variant name, GCEP name
-                                /*$results[] = [
-                                    'gene_name' => $gene->name,
-                                    'gene_hgnc' => $gene->hgnc_id,
-                                    'disease_name' => $disease->label,
-                                    'disease_mondo' => $disease->curie,
-                                    'variant_name' => $subrecord->variant->variant->label,
-                                   // 'variant_type' => $subrecord->variant->variant_type,
-                                    'gcep_name' => $ep->label,
-                                    'gcep_id' => $ep->curie,
-                                    'pmid' =>  $subrecord->variant->source->curie,
-                                    'pmid_comment' => 'The ClinGen ' . $ep->label . ' GCEP scored [#] unique predicted or proven null variants from this paper, including:' 
-                                                            . $subrecord->variant->variant->label . ', observed in [#] affected homozygous probands and [#] affected compound heterozygous probands.  This variant segregated in [#] additional family members across [#] presumably unrelated families.',
-                                    'loss_comment' => 'The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' evidence supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->report_date . "."
-                                                            . 'As part of their evaluation, the GCEP scored at least [#] unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation, there were [#] total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; [#] of these (X%), are predicted/proven null variants.  These LP/P variants are observed in at least [#] distinct exons. *There are no observations of homozygous loss of function variants in gnomAD v4.1.' . ""
-                                                            . '*Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]). *Of note, per GTEx v8, [EXON #s] appears to be alternatively spliced and therefore has relatively low expression across multiple tissue types.' . ""
-                                                            . 'In summary, biallelic loss of function is an [ESTABLISHED/LIKELY/SUSPECTED/UNCERTAIN] mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '.'
-                                    ];*/
+                                    if (($subrecord->type[0]->curie ?? '') == 'SEPIO:0004017' ||
+                                        ($subrecord->type[0]->curie ?? '') == 'SEPIO:0004117' ||
+                                        ($subrecord->type[0]->curie ?? '') == 'SEPIO:0004120' ||
+                                        ($subrecord->type[0]->curie ?? '') == 'SEPIO:0004018'
+                                        )
+                                    {
+                                        if (isset($subrecord->variant->source->curie))
+                                        {
+                                            //if ($gene->name == "ABCG5")
+                                        //dd($v);
+                                            if (isset($apmids[$subrecord->variant->source->curie]))
+                                            {
+                                                $apmids[$subrecord->variant->source->curie]['variants'][] = $v->label;
+                                            }
+                                            else
+                                            {
+                                                $apmids[$subrecord->variant->source->curie] = ['variants' => [$v->label]];
+                                            }
+                                        }
+                                        else if (isset($subrecord->evidence[0]->source->curie))
+                                        {
+                                        //if ($gene->name == "ABCG5")
+                                        //dd($subrecord->evidence[0]->source->curie);
+                                            if (isset($apmids[$subrecord->evidence[0]->source->curie]))
+                                            {
+                                                $apmids[$subrecord->evidence[0]->source->curie]['variants'][] = $v->label;
+                                            }
+                                            else
+                                            {
+                                                $apmids[$subrecord->evidence[0]->source->curie] = ['variants' => [$v->label]];
+                                            }
+                                        }
+                                    }
                                 }
+                            }
                         }
 
 

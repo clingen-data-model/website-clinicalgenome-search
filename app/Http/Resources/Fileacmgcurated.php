@@ -21,7 +21,6 @@ class Fileacmgcurated extends JsonResource
             'disease_label ' => $this['disease_label'] ?? "",
             'mondo_id' => $this['mondo_id'] ?? "",
             'mode_of_inheritance' => $this[ 'mode_of_inheritance'] ?? "",
-            'activity' => $this['activity'] ?? "",
             'assertion' => $this['assertion'] ?? "",
             'reportability' => $this['reportability'] ?? "",
         ];
