@@ -116,7 +116,7 @@ class RunBlof extends Command
                     continue;
                 }
 
-                $this->info("Processing " . $line[1] . ',' . $line[2] . "...");
+               // $this->info("Processing " . $line[1] . ',' . $line[2] . "...");
 
                 // see if there is a validity curation matching gene and disease
                 $curation = Curation::type(Curation::TYPE_GENE_VALIDITY)->where('gene_id', $gene->id)->where('disease_id', $disease->id)->active()->first();
@@ -346,7 +346,7 @@ class RunBlof extends Command
                                         }
                                         else
                                         {
-                                            $apmids[$v->variant->source->curie] = ['variants' => [$v->variant->variant->label]];
+                                            $apmids[$v->variant->source->curie] = ['variants' => [$v->variant->variant->label], 'curie' => $record->curie];
                                         }
                                     }
                                     else
@@ -383,7 +383,7 @@ class RunBlof extends Command
                                             }
                                             else
                                             {
-                                                $apmids[$subrecord->variant->source->curie] = ['variants' => [$v->label]];
+                                                $apmids[$subrecord->variant->source->curie] = ['variants' => [$v->label], 'curie' => $record->curie];
                                             }
                                         }
                                         else if (isset($subrecord->evidence[0]->source->curie))
@@ -396,7 +396,7 @@ class RunBlof extends Command
                                             }
                                             else
                                             {
-                                                $apmids[$subrecord->evidence[0]->source->curie] = ['variants' => [$v->label]];
+                                                $apmids[$subrecord->evidence[0]->source->curie] = ['variants' => [$v->label], 'curie' => $record->curie];
                                             }
                                         }
                                     }
@@ -428,11 +428,12 @@ class RunBlof extends Command
                         'pmid' => "\"$pmid\"",
                         'pmid_comment' => '"The ClinGen ' . $ep->label . ' GCEP scored ' . count($variants['variants']) . ' unique predicted or proven null variants from this paper, including:' . "\n\n" . $pmid_comment_include . '"',
                         'loss_comment' => '"The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' evidence supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->displayDate($summary->report_date) . ".\n\n"
-                                        . 'As part of their evaluation, the GCEP scored at least ' . $line[15] . ' unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation, there were ' . $line[8] . ' total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; ' . $line[9] . ' of these (' . $line[10] . '), are predicted/proven null variants.  These LP/P variants are observed in ' . $line[11] . ' distinct exons.' . "\n\n"
+                                        . 'As part of their evaluation, the GCEP scored at least ' . $line[15] . ' unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation (July 2024), there were ' . $line[8] . ' total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; ' . $line[9] . ' of these (' . $line[10] . '), are predicted/proven null variants.  These LP/P variants are observed in ' . $line[11] . ' distinct exons.' . "\n\n"
                                         . ($line[18] == "0" ? '* There are no observations of homozygous loss of function variants in gnomAD v4.1.' . "\n\n" : '')
                                         . ($line[17] != "0" ? '* Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]).' . "\n\n" : '')
                                         . ($line[6] == "Yes" ? '* Of note, per GTEx v8, ' . $line[7] . ' appears to be alternatively spliced and therefore has relatively low expression across multiple tissue types.' . "\n\n" : '')
-                                        . 'In summary, biallelic loss of function is an ESTABLISHED mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '."'
+                                        . 'In summary, biallelic loss of function is an ESTABLISHED mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '."',
+                        'link' => 'https://search.clinicalgenome.org/kb/gene-validity/' . $variants['curie']
                     ];
                 }
 
@@ -453,7 +454,8 @@ class RunBlof extends Command
                         "GCEP ID",
                         "PMID",
                         'PMID COmment',
-                        'Loss Phenotype Comment'
+                        'Loss Phenotype Comment',
+                        'Link to ClinGen Page'
                     ];
 
             $handle = fopen(base_path() . '/data/BLOF Output Draft 3.tsv', "w");
