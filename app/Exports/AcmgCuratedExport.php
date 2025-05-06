@@ -45,7 +45,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
                     'mondo_id' => $curation->conditions[0] ?? null,
                     'mode_of_inheritance' => GeneLib::validityMoiAbvrString($curation->scores['moi'] ?? null),
                     'assertion' => $this->assertion($curation),
-                    'reportability' => $reportable->reportable ?? null
+                    'reportability' => $reportable->reportable ?? $this->reportable($this->assertion($curation))
 
                 ];
             }
@@ -102,5 +102,26 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
         }
 
 		return ($value);
+    }
+
+
+    /**
+     * For empty reportable values, use assertion to determine if pending or NA
+     * 
+     */
+    protected function reportable($assertion)
+    {
+        switch (ucwords($assertion))
+        {
+            case 'Disputing':
+            case 'Limited Evidence':
+            case 'No Known Disease Relationship':
+            case  'Refuting Evidence':
+                return "NA";
+            default:
+                return "Reportabinility Pending";
+        }
+
+        return "Reportabinility Pending";
     }
 }
