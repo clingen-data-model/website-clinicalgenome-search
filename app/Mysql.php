@@ -1746,7 +1746,6 @@ class Mysql
 
         // do some cleanup
         $search = trim($search);
-
         $parts = explode(' ', $search);
 
         $records = Gene::where( function($gene) use ($parts) {

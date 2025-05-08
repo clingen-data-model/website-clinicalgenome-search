@@ -86,7 +86,7 @@ class GeneController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(GeneListRequest $request, $page = 1, $size = 25, $search = "", $byName = false)
+	public function index(GeneListRequest $request, $page = 1, $size = 25, $search = "")
 	{
 		// process request args
 		foreach ($request->only(['page', 'size', 'order', 'sort', 'search']) as $key => $value)
@@ -97,7 +97,8 @@ class GeneController extends Controller
             'active' => "gene",
             'title' => "Genes",
             'scrid' => Filter::SCREEN_ALL_GENES,
-			'display' => "All Genes"
+			'display' => "All Genes",
+            'by_name' => $request->byName
 		]);
 
         if (Auth::guard('api')->check())
@@ -121,7 +122,7 @@ class GeneController extends Controller
         else
             $display_list = $settings['size'];
 
-        if ($byName) {
+        if ($request->byName) {
             $this->api = '/api/genes/lookByName';
         }
 
@@ -500,6 +501,7 @@ class GeneController extends Controller
 									'pharma' => true,
 									'variant' => true
 								]);
+
 
 		if ($record === null)
 			return view('error.message-standard')
@@ -1344,7 +1346,7 @@ class GeneController extends Controller
 
 		// the way layouts is set up, everything is named search.  Gene is the first
 
-		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0] ]);
+		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], 'byName' => 0]);
 	}
 
     /**
@@ -1360,6 +1362,6 @@ class GeneController extends Controller
 
         // the way layouts is set up, everything is named search.  Gene is the first
 
-        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], $byName => true ]);
+        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], 'byName' => 1 ]);
     }
 }

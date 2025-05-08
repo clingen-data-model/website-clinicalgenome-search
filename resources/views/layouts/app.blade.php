@@ -362,7 +362,7 @@
             tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
                 if (tabRequests.active === 'condition') {
                     enableConditionSearch()
-                } else if (tabRequests.active === 'gene') {
+                } else if (tabRequests.active === 'gene' && parseInt(tabRequests.by_name) === 1) {
                     enableGeneNameSearch()
                 } else if (tabRequests.active === 'region') {
                     enableRegion38Search()
@@ -391,7 +391,7 @@
 
         function enableGeneNameSearch()
         {
-            $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+            $("#navSearchBar").attr("action", "{{ route('gene-name-search') }}");
             $( ".inputQueryGeneName" ).show();
             $( ".inputQueryGene .queryGeneName" ).show();
             $( ".inputQueryGene" ).hide();
