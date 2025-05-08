@@ -448,8 +448,8 @@
             $( ".inputQueryDrug .queryDrug" ).hide();
             $( ".inputQueryRegion" ).show();
             $( ".inputQueryRegion .queryRegion" ).show();
-            $( ".typeQueryLabel").text("GRCh38 Region  ");
-            $( ".buildtype").val("GRCh38");
+            $( ".typeQueryLabel").text("GRCh37 Region  ");
+            $( ".buildtype").val("GRCh37");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
         }
