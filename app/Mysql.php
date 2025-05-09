@@ -1771,7 +1771,7 @@ class Mysql
                 'has_validity' => false,
                 'has_variant' => false,
                 'hgnc_id' => $record->hgnc_id,
-                'location' => $resord->location,
+                'location' => $record->location,
                 'locus_group' => $record->locus_group,
                 'name' => $record->description,
                 'symbol_id' => $record->hgnc_id
