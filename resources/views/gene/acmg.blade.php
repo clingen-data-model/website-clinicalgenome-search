@@ -75,13 +75,13 @@
 					</li>
 					<li>
 						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
-						please fill out the form <a href="#">here</a>
+						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>
 
 					</li>
 					<li>
 						The SFWG also welcomes reportability questions and clarifications around specific variants, 
 						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
-						To submit a question or suggestion, please fill out the form <a href="#">here</a>
+						To submit a question or suggestion, please email to clingen@clinicalgenome.org
 					</li>
 				</ul>
 			</p>
@@ -91,8 +91,8 @@
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
 				<ul>
 					<li class="mb-2">2025 - ACMG Policy Statement with updated list of 84 genes (ACMG SF v3.3)
-						<p class="p-2">Publication:  
-							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
+						<p class="p-2">Publication:  Pending
+							<!--<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>-->
 						</p>
 						<!--<p class="p-2">Citation:
 							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="sf">
