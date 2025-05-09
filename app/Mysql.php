@@ -1754,9 +1754,11 @@ class Mysql
             }
         })->get();
 
+
         foreach ($records as $record) {
+            dd($record);
             $array[] = [
-                'symbol' => $record->description,
+                'symbol' => $record->name,
                 'label' => $record->description,
                 'alias' => '',
                 'hgnc' => $record->name,
@@ -1772,7 +1774,7 @@ class Mysql
                 'hgnc_id' => $record->name,
                 'location' => '19q13.43',
                 'locus_group' => "proteib-coding gene",
-                'name' => $record->name,
+                'name' => $record->description,
                 'symbol_id' => $record->name
             ];
         }
