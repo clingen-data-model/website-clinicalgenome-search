@@ -598,7 +598,7 @@ public static function validity_order($classification)
 
         return ['total' => count($results),
             'totalNotFiltered' => count($results),
-            'rows'=> $results,
+            'rows'=> GeneResource::collection($results),
             'search' => $request->search ?? null,
 //            'naction' => $results->naction,
 //            'ndosage' => $results->ndosage,
