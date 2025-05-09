@@ -19,7 +19,7 @@ class GeneController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index(ApiRequest $request)
     {
@@ -576,7 +576,7 @@ public static function validity_order($classification)
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function lookByName(Request $request, $term = null)
     {
@@ -590,7 +590,20 @@ public static function validity_order($classification)
             'direction' => $input['order'] ?? 'ASC',
             'search' => $term ?? '',
             'curated' => false ]);
-        return $results;
+
+        if ($results === null)
+            return GeneLib::getError();
+
+        return ['total' => $results->count,
+            'totalNotFiltered' => $results->count,
+            'rows'=> GeneResource::collection($results->collection),
+            'search' => $input['search'] ?? null,
+            'naction' => $results->naction,
+            'ndosage' => $results->ndosage,
+            'nvalid' => $results->nvalid,
+            'npharma' => $results->npharma ?? 0,
+            'nvariant' => $results->nvariant ?? 0,
+            'ncurated' => $results->ncurated];
     }
 
 
