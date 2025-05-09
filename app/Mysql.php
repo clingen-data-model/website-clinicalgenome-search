@@ -1755,11 +1755,26 @@ class Mysql
         })->get();
 
         foreach ($records as $record) {
-            $array[] = ['label' => $record->description,
+            $array[] = [
+                'symbol' => $record->description,
+                'label' => $record->description,
                 'alias' => '',
                 'hgnc' => $record->name,
                 'url' => route('gene-show', $record->hgnc_id),
-                'curated' => !empty($record->activity)];
+                'curated' => !empty($record->activity),
+                'curation' => !empty($record->activity),
+                'data_last_created' => "",
+                'has_actionability' => false,
+                'has_dosage' => false,
+                'has_pharma' => false,
+                'has_validity' => false,
+                'has_variant' => false,
+                'hgnc_id' => $record->name,
+                'location' => '19q13.43',
+                'locus_group' => "proteib-coding gene",
+                'name' => $record->name,
+                'symbol_id' => $record->name
+            ];
         }
 
 
