@@ -92,7 +92,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
                 $value = "";
                 break;
             case Curation::TYPE_GENE_VALIDITY:
-                $value =  ucwords($curation->scores['classification']);
+                $value =  GeneLib::validityClassificationString($curation->scores['classification']);
                 break;
             case Curation::TYPE_VARIANT_PATHOGENICITY:
                 $value =  $curation->scores['classification'];
