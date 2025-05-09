@@ -594,7 +594,7 @@ public static function validity_order($classification)
         if ($results === null)
             return GeneLib::getError();
 
-        dd($results);
+        $results = json_decode($results)
 
         return ['total' => count($results),
             'totalNotFiltered' => count($results),
