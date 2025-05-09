@@ -594,16 +594,17 @@ public static function validity_order($classification)
         if ($results === null)
             return GeneLib::getError();
 
-        return ['total' => $results->count,
-            'totalNotFiltered' => $results->count,
-            'rows'=> GeneResource::collection($results->collection),
-            'search' => $input['search'] ?? null,
-            'naction' => $results->naction,
-            'ndosage' => $results->ndosage,
-            'nvalid' => $results->nvalid,
-            'npharma' => $results->npharma ?? 0,
-            'nvariant' => $results->nvariant ?? 0,
-            'ncurated' => $results->ncurated];
+        return ['total' => count($results),
+            'totalNotFiltered' => count($results),
+            'rows'=> GeneResource::collection($results),
+            'search' => $request->search ?? null,
+//            'naction' => $results->naction,
+//            'ndosage' => $results->ndosage,
+//            'nvalid' => $results->nvalid,
+//            'npharma' => $results->npharma ?? 0,
+//            'nvariant' => $results->nvariant ?? 0,
+//            'ncurated' => $results->ncurated];
+        ];
     }
 
 
