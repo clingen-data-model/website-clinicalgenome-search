@@ -187,6 +187,7 @@ class Mysql
                 $activity[] = 'ACTIONABILITY';
 
             $curations = $gene->curations->whereNotNull('disease_id')
+                        ->where('type', 2)      // only get validity curations HR 5/9/2025
                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
 
             if ($filter == 'preferred_only')

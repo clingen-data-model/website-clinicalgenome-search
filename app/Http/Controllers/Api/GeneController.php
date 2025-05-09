@@ -521,11 +521,27 @@ class GeneController extends Controller
                     $disease_index++;
                 }*/
 
+        // per request 05/09/25 filter out all diseases without a validity curation
+        $removed = false;
+        $scores = array_filter($scores, function($e) use ($removed) {
+            if ($e['validity_score'] === null)
+            {
+                $removed = true;
+                return false;
+            }
+
+            return true;
+        });
+
+        if (!$removed && isset($gene_scores))
+            $removed = true;
+
         return view('gene.acmg_expand')
                     ->with('gene', $gene)
                     ->with('scores', $scores)
-                    ->with('gene_scores', $gene_scores ?? null)
-                    ->with('diseases', $diseases);
+                    ->with('gene_scores', null)
+                    ->with('diseases', $diseases)
+                    ->with ('removed', $removed);
     }
 
 

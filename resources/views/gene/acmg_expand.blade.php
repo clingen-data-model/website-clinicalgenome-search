@@ -125,24 +125,13 @@
 		</div>
 	</div>
 @endforeach
-@if (isset($gene_scores))
+@if (isset($removed))
 <div class="row mt-3 mb-1">
 	<div class="col-md-12">
-		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: </span>
-		Dosage Sensitivity also has a non-disease specific score for this gene of 
-		<span class="font-weight-bold">
-		@if ($gene_scores['dosage_haplo_gene_score'] !== null)
-			<span class="small ml-1 mr-1 badge cg-{{ $gene_scores['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $gene_scores['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $gene_scores['dosage_link'] }}" target="_gt">{{ $gene_scores['dosage_haplo_gene_tooltip'] }}</a></span>
-		@endif
+		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: 
+			"Reportable as SF" annotations are only provided for gene-disease-MOI triads curated for gene-disease validity. 
+			To see a full list of ClinGen curations for this gene, click <a href="/kb/genes/{{ $gene->hgnc_id }}">here</a>
 		</span>
-		@if ($gene_scores['dosage_triplo_gene_score'] !== null)
-			@if ($gene_scores['dosage_haplo_gene_score'] !== null)
-				and
-			@endif
-			<span class="font-weight-bold">
-				<span class="small ml-1 badge cg-{{ $gene_scores['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $gene_scores['dosage_triplo_gene_tooltip'] }}"><a class="text-white" href="{{ $gene_scores['dosage_link'] }}" target="_gt">{{ $gene_scores['dosage_triplo_gene_tooltip'] }}</a></span>
-			</span>
-		@endif
 	</div>
 </div>
 @endif 

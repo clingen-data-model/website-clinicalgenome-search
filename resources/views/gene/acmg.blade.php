@@ -86,7 +86,7 @@
 				</ul>
 			</p>
 
-			</p>
+			<hr>
 			<p class="p-2">
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
 				<ul>
@@ -101,6 +101,9 @@
 						</p>-->
 					</li>
 				</ul>
+			</p>
+			<hr >
+			<p class="p-2">	
 				<strong>Policy Updates and Prior Versions of the ACMG Secondary Findings (SF) List</strong>
 				<ul>
 					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
@@ -170,9 +173,19 @@
 					</li>
 				</ul>
 			</p>
+			<hr>
+			<p class="p-2">
+				<strong>ClinGen ACMG SF v3.3 Curation Data  </strong>
+				<div class="pl-4 pb-4">
+					<span>Click on the button to the right to download the applicable ClinGen curation information for all ACMG SF v3.3 genes shown on this page.</span>
+					<span class="float-right">
+						<a href="{{ route('acmg-activity-summary-cvs') }}"  class="btn btn-primary watchdownloadclick" title="ClinGen ACMG SF Summary Report CVS"><i class="fas fa-download mr-1"></i> CSV</a>
+					</span>
+				</div>
+			</p>
 		</div>
 
-		<div class="col-md-12 mb-0 p-0">
+		<!-- <div class="col-md-12 mb-0 p-0">
 			<div class="card">
 				<table class="table table-striped table-hover mb-0">
 					<tr>
@@ -185,7 +198,7 @@
 					</tr>
 				</table>
 			</div>
-		</div>
+		</div>-->
 			
 
 		<div class="col-md-12 light-arrows dark-table pl-0 pr-0 dark-detail">
@@ -350,12 +363,22 @@
 			width: 300
 		},
 		{
-			title: 'Variant Classification and Reporting Guidance',
+			title: 'Variant Classifications',
 			field: 'comments',
 			sortable: true,
 			filterControl: 'input',
 			formatter: variantGuidanceFormatter,
 			searchFormatter: false,
+			cellStyle: cellFormatter
+		},
+		{
+			title: '<span class="pr-3">Reporting Guidance</span>',
+			field: 'comments',
+			sortable: true,
+			filterControl: 'input',
+			formatter: reportingGuidanceFormatter,
+			searchFormatter: false,
+			align: 'center',
 			cellStyle: cellFormatter
 		}
 		/*
