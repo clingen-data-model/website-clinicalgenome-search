@@ -594,6 +594,8 @@ public static function validity_order($classification)
         if ($results === null)
             return GeneLib::getError();
 
+        dd($results);
+
         return ['total' => count($results),
             'totalNotFiltered' => count($results),
             'rows'=> GeneResource::collection($results),
