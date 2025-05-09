@@ -475,7 +475,7 @@
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
-			$obj.attr('colspan',3);
+			$obj.attr('colspan',4);
 
 			var t = $obj.closest('tr');
 
