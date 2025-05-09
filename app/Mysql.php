@@ -1756,7 +1756,6 @@ class Mysql
 
 
         foreach ($records as $record) {
-            dd($record);
             $array[] = [
                 'symbol' => $record->name,
                 'label' => $record->description,
@@ -1768,14 +1767,14 @@ class Mysql
                 'data_last_created' => "",
                 'has_actionability' => false,
                 'has_dosage' => false,
-                'has_pharma' => false,
+                'has_pharma' => (bool) $record->has_pharma,
                 'has_validity' => false,
                 'has_variant' => false,
-                'hgnc_id' => $record->name,
-                'location' => '19q13.43',
-                'locus_group' => "proteib-coding gene",
+                'hgnc_id' => $record->hgnc_id,
+                'location' => $resord->location,
+                'locus_group' => $record->locus_group,
                 'name' => $record->description,
-                'symbol_id' => $record->name
+                'symbol_id' => $record->hgnc_id
             ];
         }
 
