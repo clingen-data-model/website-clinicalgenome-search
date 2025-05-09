@@ -59,7 +59,7 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
         return [
             ["ClinGen Curation ACMG SF c3.3 Summary Report - FILE CREATED: " . Carbon::now()->format('Y-m-d')],
             ["README 1: ", " This file provides ClinGen summary curation information about ACMG SF v3.3."],
-            ["Gene Symbol", "HGNC ID", "MONDO Disease Name", "MONDO ID", "MOI", "Gene-Disease Validity", "Report?"],
+            ["Gene Symbol", "HGNC ID", "MONDO Disease Name", "MONDO ID", "MOI", "Gene-Disease Validity", "Reportable as SF"],
         ];
     }
 
@@ -119,9 +119,9 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
             case  'Refuting Evidence':
                 return "NA";
             default:
-                return "Reportabinility Pending";
+                return "Pending";
         }
 
-        return "Reportabinility Pending";
+        return "Pending";
     }
 }
