@@ -79,7 +79,8 @@ class GeneLib extends Model
           '2' => 'Emerging',
           '3' => 'Sufficient',
           '30' => 'AR',
-          '40' => 'Unlikely'
+          '40' => 'Unlikely',
+          'Not yet evaluated' => ''
      ];
 
      protected static $dosage_assertion_strings = [
