@@ -857,7 +857,7 @@ function variantGuidanceFormatter(index, row) {
 
     html += '<h5 class="ml-2 mt-1">ClinGen has <span class="badge badge-light pb-2" style="font-size: 1.1em"> ' + row.disease_count + ' </span> gene-disease validity' + (row.disease_count == 1 ? ' curation ' : ' curations ') + ' available<br>for this gene.'
     
-    html += '</h5><h6 class="ml-2 mt-1">( Click here to view ClinGen curations';
+    html += '</h5><h6 class="ml-2 mt-1">( Click here to view these curations';
     
     if(row.has_comment)
         html += ' and reporting guidance';
