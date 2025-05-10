@@ -544,6 +544,9 @@ class GeneController extends Controller
         $pmids = [];
         $key = 0;
 
+		/* This is the new actionability display, but we need to hide it and continue using the old until
+		** approved.
+		*//*
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
 		//dd($actionability_records);
@@ -573,48 +576,8 @@ class GeneController extends Controller
 					}
 				}
 			}
-			//$actionability_reports[$actionability_record->document]['aliases'] = $actionability_record;
-		}
-		//dd($actionability_reports);
-		/*$actionability_preferred = $actionability_records->filter(function($item) {
-					return ($item->conditions[0] == $item->evidence_details[0]['curie']);
-			});
-		$actionability_others = $actionability_records->filter(function($item) {
-				return ($item->conditions[0] != $item->evidence_details[0]['curie']);
-		});
-
-		$actionability_reports = [];
-		foreach ($actionability_preferred as $preferred)
-		{
-			if (!isset($actionability_reports[$preferred->document]))
-				$actionability_reports[$preferred->document] = ['adult' => null, 'ped' => null, 'aliases' => []];
-
-			switch ($preferred->context)
-			{
-				case 'Adult':
-					$disease = Disease::curie($preferred->conditions[0])->first();
-					if ($disease)
-						$preferred->condition_info = $disease;
-					$actionability_reports[$preferred->document]['adult'] = $preferred;
-					break;
-				case 'Pediatric':
-					$disease = Disease::curie($preferred->conditions[0])->first();
-					if ($disease)
-						$preferred->condition_info = $disease;
-					$actionability_reports[$preferred->document]['ped'] = $preferred;
-					break;
-			}
-		}
-		foreach ($actionability_others as $other)
-		{
-			if (!isset($actionability_reports[$preferred->document]))
-				continue;
-
-			$actionability_reports[$preferred->document]['aliases'][] = $other;
-		}*/
-
-		//dd($actionability_reports);
-		
+		}		
+		*/
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -817,7 +780,7 @@ class GeneController extends Controller
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps', 'somatic_collection',
-												'gceps', 'gc', 'show_clingen_comment',  'actionability_reports'))
+												'gceps', 'gc', 'show_clingen_comment')) // ,  'actionability_reports'))
 												->with('user', $this->user);
 	}
 

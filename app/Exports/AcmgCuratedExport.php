@@ -35,8 +35,12 @@ class AcmgCuratedExport implements FromCollection, WithHeadings
         {
             foreach ($gene->curations as $curation)
             {
-               
-                $reportable = $reportables->where('gene_hgnc_id', $gene->hgnc_id)->where('disease_mondo_id', $curation->conditions[0] ?? null)->first();
+                $moi = Genelib::validityMoiAbvrString($curation->scores['moi']);
+                
+                $reportable = $reportables->where('gene_hgnc_id', $gene->hgnc_id)
+                                          ->where('disease_mondo_id', $curation->conditions[0] ?? null)
+                                          ->where('moi', $moi)
+                                          ->first();
                 
                 $return[] = [
                     'gene_symbol' => $gene->name,
