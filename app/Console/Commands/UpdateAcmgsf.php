@@ -42,7 +42,7 @@ class UpdateAcmgsf extends Command
      */
     public function handle()
     {
-        echo "Updating Blacklist data from data ...";
+        echo "Updating ACMG SF data from file ...";
 
 
         $handle = fopen(base_path() . '/data/ACMG_SF_Annotations.csv', "r");
@@ -61,13 +61,13 @@ class UpdateAcmgsf extends Command
 
                 // add entry
                 $record = Reportable::create( [
-                    'gene_symbol' => $line[0],
-                    'gene_hgnc_id' => $line[1],
-                    'disease_name' => $line[2],
-                    'disease_mondo_id' => $line[3],
-                    'moi' => $line[4],
-                    'reportable' => $line[5],
-                    'comment' => $line[6],
+                    'gene_symbol' => trim($line[0]),
+                    'gene_hgnc_id' => trim($line[1]),
+                    'disease_name' => trim($line[2]),
+                    'disease_mondo_id' => trim($line[3]),
+                    'moi' => trim($line[4]),
+                    'reportable' => trim($line[5]),
+                    'comment' => trim($line[6]),
                     'type' => 1,
                     'status' => 1]);
 

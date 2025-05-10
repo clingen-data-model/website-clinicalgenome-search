@@ -130,6 +130,14 @@ class GeneController extends Controller
 
             if ($validity !== null)
             {
+                $moi = Genelib::validityMoiAbvrString($validity->scores['moi']);
+
+                // get reportables flag
+                $reportable = Reportable::hgnc($gene->hgnc_id)
+                                        ->mondo($disease->curie)
+                                        ->where('moi', $moi)
+                                        ->first();
+
                 if ($validity->subtype == Curation::SUBTYPE_VALIDITY_GGP)
                 {
                     $validity_score = GeneLib::validityClassificationString($validity->score_details['label']);

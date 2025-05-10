@@ -312,6 +312,9 @@ class ConditionController extends Controller
 			'title' => $record->label . " curation results by ClinGen activity"
 		]);
 
+		/**
+		 * This is the new actionability display, which can be uncommented out after its approved.
+		 */ /*
         $actionability_records = Curation::actionability()->whereJsonContains('conditions', $id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
         $actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
@@ -344,9 +347,10 @@ class ConditionController extends Controller
 		}       
        
         //dd($actionability_reports);
+		*/
 
 		return view('condition.by-activity', compact('display_tabs', 'record', 'disease', 'validity_collection', 'total_panels',
-                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection', 'actionability_reports'));
+                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection')); // , 'actionability_reports'));
 	}
 
 
