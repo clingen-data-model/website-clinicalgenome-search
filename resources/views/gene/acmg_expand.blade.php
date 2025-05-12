@@ -40,7 +40,7 @@
 		<div class="col-md-5 border-right pt-2 pb-2"><span onclick="event.stopPropagation();"><a href="/kb/conditions/{{ $score['mondo'] }}" class="text-primary">{{ $score['disease'] }}</a></span><div class="small text-muted">{{ $score['mondo'] }}</div></div>
 		<!-- moi -->
 		<div class="col-md-1 border-right pt-2 pb-2 text-center">
-			<div class="mt-1 pt-2">{{ $score['validity_moi'] }}
+			<div class="pt-2">{{ $score['validity_moi'] }}
 				@if (!empty($score['validity_moi']))
 				<span class="cursor-pointer ml-1 mt-4" data-toggle="tooltip" data-placement="top" title="{{ $score['validity_moi'] }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
 				@else
@@ -57,12 +57,13 @@
 			@endif
 		</div>
 		<!-- Dosage -->
-		<div class="col-md-1 pt-2 pr-2 pl-2 text-center">
+		<div class="col-md-1 pt-1 pr-2 pl-2 pb-1 text-center">
 			@if($score['dosage_haplo_score'] !== null)
 				<span class="small badge cg-{{ $score['dosage_haplo_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['dosage_haplo_tooltip'] }}"><a class="text-white" href="{{ $score['dosage_link'] }}" target="_gt">{{ $score['dosage_haplo_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
+			<hr class="mt-1 mb-1" />
 			@if($score['dosage_triplo_score'] !== null)
 				<span class="small badge cg-{{ $score['dosage_triplo_score'] }} w-100"  data-toggle="tooltip" data-placement="top" title="{{ $score['dosage_triplo_tooltip'] }}"><a class="text-white" href="{{ $score['dosage_link'] }}" target="_gt">{{ $score['dosage_triplo_score'] }}</a></span>
 			@else
@@ -70,11 +71,12 @@
 			@endif
 		</div>
 		<!-- Actionability -->
-		<div class="col-md-1 border-right  border-left pt-2 pr-2 pl-2 text-center">
+		<div class="col-md-1 border-right  border-left pt-1 pb-1 pr-2 pl-2 text-center">
 			@if($score['has_actionability'])
 			@if ($score['actionability_adult_score'] !== null)
 			<span class="small badge cg-{{ $score['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_adult_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_adult_link'] }}" target="_akb">{{ $score['actionability_adult_score'] }}</a></span>
 			@endif
+			<hr class="mt-1 mb-1" />
 			@if ($score['actionability_pediatric_score'] !== null)
 			<span class="small badge cg-{{ $score['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_ped_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_pediatric_link'] }}" target="_akb">{{ $score['actionability_pediatric_score'] }}</a></span>
 			@endif
