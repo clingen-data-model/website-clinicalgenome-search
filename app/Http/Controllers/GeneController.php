@@ -546,7 +546,7 @@ class GeneController extends Controller
 
 		/* This is the new actionability display, but we need to hide it and continue using the old until
 		** approved.
-		*//*
+		*/
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
 		//dd($actionability_records);
@@ -577,7 +577,7 @@ class GeneController extends Controller
 				}
 			}
 		}		
-		*/
+		/* end of ned actionability */
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -780,7 +780,7 @@ class GeneController extends Controller
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps', 'somatic_collection',
-												'gceps', 'gc', 'show_clingen_comment')) // ,  'actionability_reports'))
+												'gceps', 'gc', 'show_clingen_comment', 'actionability_reports'))
 												->with('user', $this->user);
 	}
 
