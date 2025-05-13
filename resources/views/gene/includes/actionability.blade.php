@@ -38,7 +38,7 @@
 								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
 									<div>
 										@if ($loop->first)
-											<span class="small">{{ App\Genelib::actionabilityReportString($report->title) }}</span>
+											{{ App\Genelib::actionabilityReportString($report->title) }}
 										@endif
 									</div>
 								</td>
@@ -90,7 +90,7 @@
 
 								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
 									@if ($loop->first)
-										<span class="small">{{ App\Genelib::actionabilityReportString($report->title) }}</span>
+										{{ App\Genelib::actionabilityReportString($report->title) }}
 									@endif
 								</td>
 
