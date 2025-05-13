@@ -178,7 +178,6 @@ class ValidityController extends Controller
         if ($extrecord && $extrecord->experimental_evidence) {
             $scorable = [];
 
-
             foreach ($extrecord->experimental_evidence as $e)
                 if (isset($e->score_status->label) && $e->score_status->label == "Score") {
                     $scorable[] = [
@@ -187,7 +186,14 @@ class ValidityController extends Controller
                     ];
                 }
 
-            $exp_count = number_format(array_sum(array_column($scorable, 'score')), 2);
+            $evidenceGroups = $this->maxEvidenceScores();
+            foreach ($evidenceGroups as $group)
+                $$group = 0;
+
+
+            $sums = $this->sumScoresByType($scorable);
+
+            $exp_count = number_format($sums['total'], 2);
         }
 
         // set display context for view
@@ -409,6 +415,7 @@ class ValidityController extends Controller
 
         //$ge_count = ($extrecord && !empty($extrecord->caselevel) ? number_format(array_sum(array_column($extrecord->caselevel, 'score')), 2) : null);
         $ge_count = null;
+
         // do not count the reviews
         if ($extrecord && $extrecord->caselevel) {
             $scorable = [];
@@ -492,6 +499,7 @@ class ValidityController extends Controller
         // get history
         $activities = Activity::all();
 
+
         // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
@@ -518,7 +526,36 @@ class ValidityController extends Controller
         ];
     }
 
-    private function sumScoresByType($objects)
+    function sumScoresByType($data)
+    {
+        $sums = [];
+        $caps  = $this->maxEvidenceScores();
+
+        foreach ($data as $item) {
+            if (!isset($item['type']) || !isset($item['score'])) {
+                continue;
+            }
+
+            $type = $item['type'];
+            $score = $item['score'];
+
+            if (!isset($sums[$type])) {
+                $sums[$type] = 0;
+            }
+
+            $sums[$type] += $score;
+
+            if (isset($caps[$type]) && $sums[$type] > $caps[$type]) {
+                $sums[$type] = $caps[$type];
+            }
+        }
+
+        $sums['total'] = array_sum($sums);
+
+        return $sums;
+    }
+
+    private function sumScoresByType2($objects)
     {
         $typeScores = [];
         $maxScores = $this->maxEvidenceScores();
