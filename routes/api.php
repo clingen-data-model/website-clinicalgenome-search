@@ -54,6 +54,7 @@ Route::get('/affiliates/expand/{id}', 'Api\AffiliateController@expand')->name('a
 Route::resource('genes', 'Api\GeneController')->only(['index']);
 Route::get('/genes/look/{term?}', 'Api\GeneController@look')->name('genes.look');
 Route::get('/genes/lookByName/{term?}', 'Api\GeneController@lookByName')->name('genes.lookByName');
+Route::get('/genes/searchByName/{term?}', 'Api\GeneController@lookByName')->name('genes.searchByName');
 Route::get('/genes/find/{term?}', 'Api\GeneController@find')->name('genes.find');
 Route::post('/genes/follow', 'Api\FollowController@create')->name('follows.create');
 Route::post('/genes/unfollow', 'Api\FollowController@remove')->name('follows.remove');

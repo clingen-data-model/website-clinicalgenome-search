@@ -123,7 +123,7 @@ class GeneController extends Controller
             $display_list = $settings['size'];
 
         if ($request->byName) {
-            $this->api = '/api/genes/lookByName';
+            $this->api = '/api/genes/searchByName';
         }
 
 		return view('gene.index', compact('display_tabs'))
@@ -1362,6 +1362,6 @@ class GeneController extends Controller
 
         // the way layouts is set up, everything is named search.  Gene is the first
 
-        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], 'byName' => 1 ]);
+        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[4], 'byName' => 1 ]);
     }
 }
