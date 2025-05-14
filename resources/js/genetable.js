@@ -855,12 +855,9 @@ function diseaseCountFormatter(index, row) {
 function variantGuidanceFormatter(index, row) {
     var html = '';
 
-    html += '<h5 class="ml-2 mt-1">' + row.disease_count + (row.disease_count == 1 ? ' disease has ' : ' diseases have ') + 'been curated by ClinGen.'
+    html += '<h5 class="ml-2 mt-1">ClinGen has <span class="badge badge-light pb-2" style="font-size: 1.1em"> ' + row.disease_count + ' </span> gene-disease validity' + (row.disease_count == 1 ? ' curation ' : ' curations ') + ' available<br>for this gene.'
     
-    if (row.has_comment)
-        html += '  <span class="text-danger">Reporting guidance available</span>'
-    
-    html += '</h5><h6 class="ml-2 mt-1">( Click here to view ClinGen curations';
+    html += '</h5><h6 class="ml-2 mt-1">( Click here to view these curations';
     
     if(row.has_comment)
         html += ' and reporting guidance';
@@ -869,6 +866,17 @@ function variantGuidanceFormatter(index, row) {
 
     return html;
 }
+
+
+function reportingGuidanceFormatter(index, row) {
+    var html = '';
+    
+    if (row.has_comment)
+        html += '  <h5 class="text-danger">Reporting<br>Guidance<br>Available</h5>'
+
+    return html;
+}
+
 
 
 function singleBadgeFormatter(index, row) {
@@ -1111,7 +1119,7 @@ function drbadgeFormatter(index, row) {
 var terms = {
     "AD": "Autosomal Dominant", "AR": "Autosomal Recessive", "XL": "X-Linked",
     "XLR": "X-linked recessive", "MT": "Mitochondrial", "SD": "Semidominant",
-    'UD': 'Undetermined Mode of Inheritance'
+    'SM': 'Somatic Mosaicism', 'UD': 'Undetermined Mode of Inheritance'
 };
 
 function moiFormatter(index, row) {

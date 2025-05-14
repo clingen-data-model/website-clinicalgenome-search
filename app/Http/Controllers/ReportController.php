@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\GenesCuratedExport;
+use App\Exports\AcmgCuratedExport;
 use Illuminate\Http\Request;
 use App\Http\Resources\Dosage as DosageResource;
 use Maatwebsite\Excel\Facades\Excel as Gexcel;
@@ -76,6 +77,13 @@ class ReportController extends Controller
 	{
 		$date = date('Y-m-d');
 		return Gexcel::download(new GenesCuratedExport, 'Clingen-Curation-Activity-Summary-Report-' . $date . '.csv');
+	}
+
+
+	public function acmgReportDownload()
+	{
+		$date = date('Y-m-d');
+		return Gexcel::download(new AcmgCuratedExport, 'Clingen-Curation-ACMG-Summary-Report-' . $date . '.csv');
 	}
 
 

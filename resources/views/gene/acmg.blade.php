@@ -32,23 +32,22 @@
 				<a href="https://pubmed.ncbi.nlm.nih.gov/37347242/">ACMG SF v3.2</a>.
 			</p>-->
 			<p class="p-2">
-				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide a website for providing guidance 
-				related to which findings are reportable from the SF gene list and a comprehensive list of publications from the SFWG including 
-				policy statements and historical SF lists. The reporting guidance includes reportability by condition, and may include specific variants, 
+				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide guidance 
+				related to which findings are reportable from the SF gene list. The reporting guidance includes reportability by condition, and may include specific variants, 
 				variant allelic states, gene region, transcript, pathogenicity mechanism or other variant type considerations. 
 				While some of these considerations are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
 				discussion with the SFWG or via other expert input. We welcome further requests from the community when additional clarification 
 				or guidance is needed. Please send questions to: clingen@clinicalgenome.org 
 			</p>
 			<p class="p-2">
-				The published ACMG SF v3.2 list along with reporting guidance is available as a spreadsheet <a href="/ACMG SF List Supplemental Table 1_v3.2.xlsx" target="_acmg">here</a>. 
+				The published ACMG SF v3.3 list along with reporting guidance is available as a spreadsheet <a href="https://docs.google.com/spreadsheets/d/1ecSUe0bJ-2gAMXBsrf5U1wMEDOmiIjtR_A5388uj7HY" target="_acmg">here</a>. 
 			</p>
 
 			<p class="p-2">
 				Considerations for using this table:
 				<ul>
 					<li>
-						The table below lists the genes included in the ACMG SF v3.2 list. Each row must be expanded by clicking on the [˅] to reveal the following:
+						The table below lists the genes included in the ACMG SF v3.3 list. Each row must be expanded by clicking on the [˅] to reveal the following:
 						<ol type="a">
 							<li>
 								<strong>Reporting recommendations by disease.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
@@ -70,20 +69,30 @@
 						</ol>
 					</li>
 					<li>
-						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (MIM) and ClinGen MONDO. 
+						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (OMIM) and ClinGen (Mondo). 
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
-						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the MONDO ID is distinct
+						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the Mondo ID is distinct
+					</li>
+					<li>
+						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
+						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>
+
+					</li>
+					<li>
+						The SFWG also welcomes reportability questions and clarifications around specific variants, 
+						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
+						To submit a question or suggestion, please email to clingen@clinicalgenome.org
 					</li>
 				</ul>
 			</p>
 
-			</p>
+			<hr>
 			<p class="p-2">
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
 				<ul>
-					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
-						<p class="p-2">Publication:  
-							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
+					<li class="mb-2">2025 - ACMG Policy Statement with updated list of 84 genes (ACMG SF v3.3)
+						<p class="p-2">Publication:  Pending
+							<!--<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>-->
 						</p>
 						<!--<p class="p-2">Citation:
 							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="sf">
@@ -92,8 +101,16 @@
 						</p>-->
 					</li>
 				</ul>
+			</p>
+			<hr >
+			<p class="p-2">	
 				<strong>Policy Updates and Prior Versions of the ACMG Secondary Findings (SF) List</strong>
 				<ul>
+					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
+						<p class="p-2">Publication:  
+							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
+						</p>
+					</li>
 					<li class="mb-2">2023 - ACMG SF Policy Update - Considerations of Penetrance
 						<p class="p-2">Publication:  
 							<a href="https://pubmed.ncbi.nlm.nih.gov/38819344/" target="_acmg">PMID: 38819344; PMCID: PMC11227955</a>
@@ -156,8 +173,33 @@
 					</li>
 				</ul>
 			</p>
-
+			<hr>
+			<p class="p-2">
+				<strong>ClinGen ACMG SF v3.3 Curation Data  </strong>
+				<div class="pl-4 pb-4">
+					<span>Click on the button to the right to download the applicable ClinGen curation information for all ACMG SF v3.3 genes shown on this page.</span>
+					<span class="float-right">
+						<a href="{{ route('acmg-activity-summary-cvs') }}"  class="btn btn-primary watchdownloadclick" title="ClinGen ACMG SF Summary Report CVS"><i class="fas fa-download mr-1"></i> CSV</a>
+					</span>
+				</div>
+			</p>
 		</div>
+
+		<!-- <div class="col-md-12 mb-0 p-0">
+			<div class="card">
+				<table class="table table-striped table-hover mb-0">
+					<tr>
+						<td><strong>ClinGen ACMG SF v3.3 Curation Data  </strong>
+							<div class="small">This file provides ClinGen summary curation information for all ACMG SF v3.3 genes.</div>
+						</td>
+						<td></td>
+						<td colspan="2" style="text-align:center; vertical-align:middle"><a href="{{ route('acmg-activity-summary-cvs') }}"  class="btn btn-primary watchdownloadclick" title="ClinGen ACMG SF Summary Report CVS"><i class="fas fa-download"></i> CSV</a></td>
+						<td class="text-10px" nowrap=""></td>
+					</tr>
+				</table>
+			</div>
+		</div>-->
+			
 
 		<div class="col-md-12 light-arrows dark-table pl-0 pr-0 dark-detail">
 				@include('_partials.genetable', ['expand' => true, 'no_expand_click' => true])
@@ -321,12 +363,22 @@
 			width: 300
 		},
 		{
-			title: 'Variant Classification and Reporting Guidance',
+			title: 'Variant Classifications',
 			field: 'comments',
 			sortable: true,
 			filterControl: 'input',
 			formatter: variantGuidanceFormatter,
 			searchFormatter: false,
+			cellStyle: cellFormatter
+		},
+		{
+			title: '<span class="pr-3">Reporting Guidance</span>',
+			field: 'comments',
+			sortable: true,
+			filterControl: 'input',
+			formatter: reportingGuidanceFormatter,
+			searchFormatter: false,
+			align: 'center',
 			cellStyle: cellFormatter
 		}
 		/*
@@ -423,7 +475,7 @@
 
 		$table.on('expand-row.bs.table', function (e, index, row, $obj) {
 
-			$obj.attr('colspan',3);
+			$obj.attr('colspan',4);
 
 			var t = $obj.closest('tr');
 

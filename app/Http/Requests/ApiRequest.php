@@ -30,7 +30,7 @@ class ApiRequest extends Request
 			'size' => 'integer|between:1,9999|nullable',
 			'order' => 'string|max:20|nullable',
 			'sort' => 'string|max:80|nullable',
-            'search' => 'string|max:80|nullable',
+            'search' => 'string|max:120|nullable',
         ];
     }
 }
