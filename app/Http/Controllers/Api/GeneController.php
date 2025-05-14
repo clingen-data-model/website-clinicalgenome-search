@@ -19,7 +19,7 @@ class GeneController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index(ApiRequest $request)
     {
@@ -176,13 +176,13 @@ class GeneController extends Controller
             $dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                         ->where('disease_id', $disease->id);
-            
+
             $haplo_score = null;
             $haplo_tooltip = "";
             $triplo_score = null;
             $triplo_tooltip = "";
             $dosage_link = '#';
-                            
+
             foreach ($dosages as $dosage)
             {
                 switch ($dosage->context)
@@ -377,7 +377,7 @@ class GeneController extends Controller
                         if (isset($dosage->scores['classification']))
                         {
                             $haplo_gene_score = $dosage->scores['classification'];
-                            
+
                             if ($haplo_gene_score == "30: Gene associated with autosomal recessive phenotype")
                                 $haplo_gene_score = 30;
                             else if ($haplo_gene_score == "40: Dosage sensitivity unlikely")
@@ -416,7 +416,7 @@ class GeneController extends Controller
                                 $triplo_gene_score = 30;
                             else if ($triplo_gene_score == "40: Dosage sensitivity unlikely")
                                 $triplo_gene_score = 40;
-                           
+
                             $triplo_gene_tooltip = GeneLib::shortAssertionString($triplo_gene_score) . " for Triplosensitivity";
                             $triplo_gene_score = GeneLib::wordAssertionString($triplo_gene_score);
                         }
@@ -451,9 +451,9 @@ class GeneController extends Controller
                         'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip ?? '', 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip ?? '',
                         'dosage_link' => "/kb/gene-dosage/" . ($dosage->gene_hgnc_id ?? '')
                         ];
+
         }
 
-        
         /*$dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
                                         ->whereNull('disease_id');
@@ -601,18 +601,56 @@ public static function validity_order($classification)
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function lookByName(Request $request, $term = null)
+    public function searchByName(Request $request, $term = null)
     {
-        $results = GeneLib::geneLookByName([	'page' => $input['offset'] ?? 0,
+        if ($request->search) {
+            $term = $request->search;
+        }
+
+        $results = GeneLib::geneLookByName(['page' => $input['offset'] ?? 0,
             'pagesize' => $input['limit'] ?? "null",
             'sort' => $sort ?? 'GENE_LABEL',
             'direction' => $input['order'] ?? 'ASC',
-            'search' => $term ?? null,
+            'search' => $term ?? '',
             'curated' => false ]);
 
-        return $results;
+        if ($results === null)
+            return GeneLib::getError();
+
+        $results = json_decode($results);
+
+        return ['total' => count($results),
+            'totalNotFiltered' => count($results),
+            'rows'=> $results,
+            'search' => $request->search ?? null,
+//            'naction' => $results->naction,
+//            'ndosage' => $results->ndosage,
+//            'nvalid' => $results->nvalid,
+//            'npharma' => $results->npharma ?? 0,
+//            'nvariant' => $results->nvariant ?? 0,
+//            'ncurated' => $results->ncurated];
+        ];
+    }
+
+    public function lookByName(Request $request, $term = null)
+    {
+        if ($request->search) {
+            $term = $request->search;
+        }
+
+        $results = GeneLib::geneLookByName(['page' => $input['offset'] ?? 0,
+            'pagesize' => $input['limit'] ?? "null",
+            'sort' => $sort ?? 'GENE_LABEL',
+            'direction' => $input['order'] ?? 'ASC',
+            'search' => $term ?? '',
+            'curated' => false ]);
+
+        if ($results === null)
+            return GeneLib::getError();
+
+        return json_decode($results);
     }
 
 
