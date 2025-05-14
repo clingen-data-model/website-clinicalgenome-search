@@ -80,7 +80,13 @@
 						<dd><scan class="text-primary"><i>pLI and LOEUF metrics based on</i> {{ $record->transcript}} <i>transcript</i></scan></dd>
 						@endif
 						<dt>ACMG SF v3.3 Gene?</dt>
-						<dd>{{ $record->is_acmg ? "Yes" : "No" }}</dd>
+						<dd>
+							@if ($record->is_acmg)
+							Yes<a href="/kb/genes/acmgsf" class="ml-3">(Click here to view additional information regarding reporting for secondary findings)</a>
+							@else
+							No 
+							@endif
+						</dd>
 						@if($record->chromosome_band)
 						<dt>Cytoband</dt>
 						<dd>{{ $record->chromosome_band }}</dd>
