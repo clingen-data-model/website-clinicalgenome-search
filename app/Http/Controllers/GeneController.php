@@ -19,7 +19,8 @@ use App\Filter;
 use App\Omim;
 use App\Mim;
 use App\Pmid;
-use App\Genomeconnect;
+use App\Curation;
+use App\Disease;
 
 /**
 *
@@ -550,6 +551,44 @@ class GeneController extends Controller
         $pmids = [];
         $key = 0;
 
+		/* This is the new actionability display, but we need to hide it and continue using the old until
+		** approved.
+		*/
+		// display on the preferred actionability disease
+		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+		
+		$actionability_reports = [];
+		foreach ($actionability_records as $actionability_record)
+		{
+			if (!isset($actionability_reports[$actionability_record->document]))
+				$actionability_reports[$actionability_record->document] = ['adult' => [], 'ped' => [], 'aliases' => []];
+
+			// extract the preferred disease 
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $record->hgnc_id && $evidence_detail['curie'] == $actionability_record->conditions[0])
+				{
+					$disease = Disease::curie($evidence_detail['curie'])->first();
+					if ($disease)
+						$actionability_record->condition_info = $disease;
+
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							// ignore duplicates
+							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['adult']))
+								$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
+							break;
+						case 'Pediatric':
+							// ignore duplicates
+							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['ped']))
+								$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
+							break;
+					}
+				}
+			}
+		}		
+		/* end of ned actionability */
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -739,11 +778,20 @@ class GeneController extends Controller
 
 		$show_clingen_comment = !empty($gene->notes);
 
+		// somatic cancer demo
+		$somatic_collection = collect([
+			['gene' => 'LDLR', 'disease' => 'a disease', 'ep' => 'Expert Panel', 'level' => 'Tier I - Level A', 'type' => 'Predictive', 'significance' => 'Sensitivity/Response', 'date' => '2025-02-28'],
+			['gene' => 'LDLR', 'disease' => 'another disease', 'ep' => 'Expert Panel', 'level' => 'Tier II - Level C', 'type' => 'Diagnostic', 'significance' => 'Positive', 'date' => '2025-02-28'],
+			['gene' => 'LDLR', 'disease' => 'yet another disease', 'ep' => 'Expert Panel', 'level' => 'Tier I - Level A', 'type' => 'Oncogenic', 'significance' => 'Oncogenic', 'date' => '2025-02-28']
+		]);
+
+
+
 		return view('gene.by-activity', compact('display_tabs', 'record', 'follow', 'email', 'user',
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
-                                                'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps',
-												'gceps', 'gc', 'show_clingen_comment'))
+                                                'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps', 'somatic_collection',
+												'gceps', 'gc', 'show_clingen_comment', 'actionability_reports'))
 												->with('user', $this->user);
 	}
 

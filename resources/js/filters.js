@@ -95,6 +95,10 @@ $('.action-show-dosage').on('click', function(e) {
     if ($(this).prop('checked')) 
         return;
 
+    filter_pop("acmgsf");
+    $('.action-show-acmgsf').removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    $('.action-show-acmgsf-text').html('Off');
+
     filter_pop("haplo");
     $('.action-show-hiknown').removeClass('fa-toggle-on').addClass('fa-toggle-off');
     $('.action-show-hiknown-text').html('Off');
@@ -345,6 +349,37 @@ $('.action-show-hiknown').on('click', function() {
 
     filter_process($table);
 });
+
+
+/**
+ *
+ * Listener for displaying only the ACMG SF genes in dosage
+ *
+ * */
+$('.action-show-acmgsf').on('click', function() {
+
+    if ($(this).hasClass('fa-toggle-off'))
+    {
+        //$table.bootstrapTable('filterBy', {haplo_assertion: '3 (Sufficient Evidence)'});
+        filter_push("acmgsf", "acmgsf", 1);
+
+        $(this).removeClass('fa-toggle-off').addClass('fa-toggle-on');
+        $('.action-show-acmgsf-text').html('On');
+
+    }
+    else
+    {
+        //$table.bootstrapTable('filterBy', {type: [0, 1, 3]});
+        filter_pop("acmgsf");
+
+        $(this).removeClass('fa-toggle-on').addClass('fa-toggle-off');
+        $('.action-show-acmgsf-text').html('Off');
+
+    }
+
+    filter_process($table);
+});
+
 
 
 /**
@@ -641,7 +676,7 @@ $('.action-show-hiknown').on('click', function() {
 
           $('.action-af-badge').remove();
 
-                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.2</span>');
+                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.3</span>');
                 $('.filter-container').append(newbadge);
 
         }

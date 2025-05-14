@@ -187,6 +187,7 @@ class Mysql
                 $activity[] = 'ACTIONABILITY';
 
             $curations = $gene->curations->whereNotNull('disease_id')
+                        ->where('type', 2)      // only get validity curations HR 5/9/2025
                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW]);
 
             if ($filter == 'preferred_only')
@@ -652,6 +653,7 @@ class Mysql
                 'chromosome_band' => $gene->location,
                 'grch37' => $gene->grch37 ?? null,
                 'grch38' => $gene->grch38 ?? null,
+                'acmgsf' => $gene->acmg59,
                 'pli' => $gene->pli,
                 'hi' => $gene->hi,
                 'haplo_assertion' => $haplo->scores['classification'] ?? ($haplo->scores['haploinsufficiency']['value'] ?? ($haplo->scores['haploinsufficiency_assertion'] ?? null ) ),

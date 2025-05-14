@@ -91,6 +91,10 @@
 			@include('gene.includes.pharma')
 
 			@include('gene.includes.pharmagkb')
+			
+			@if(env("PREVIEW_SITE", false))
+			@include('gene.includes.somatic')
+			@endif
 
 
 			{{-- Check to see if curations are showing --}}

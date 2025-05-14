@@ -130,6 +130,14 @@ class GeneController extends Controller
 
             if ($validity !== null)
             {
+                $moi = Genelib::validityMoiAbvrString($validity->scores['moi']);
+
+                // get reportables flag
+                $reportable = Reportable::hgnc($gene->hgnc_id)
+                                        ->mondo($disease->curie)
+                                        ->where('moi', $moi)
+                                        ->first();
+
                 if ($validity->subtype == Curation::SUBTYPE_VALIDITY_GGP)
                 {
                     $validity_score = GeneLib::validityClassificationString($validity->score_details['label']);
@@ -438,12 +446,13 @@ class GeneController extends Controller
                 }
 
             }
-        }
 
-        $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
-                        'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip, 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip,
-                        'dosage_link' => "/kb/gene-dosage/" . $dosage->gene_hgnc_id
+            $gene_scores = ['dosage_haplo_gene_score' => $haplo_gene_score ?? null, 'dosage_triplo_gene_score' => $triplo_gene_score ?? null,
+                        'dosage_haplo_gene_tooltip' => $haplo_gene_tooltip ?? '', 'dosage_triplo_gene_tooltip' => $triplo_gene_tooltip ?? '',
+                        'dosage_link' => "/kb/gene-dosage/" . ($dosage->gene_hgnc_id ?? '')
                         ];
+
+        }
 
         /*$dosages = $gene->curations->where('type', Curation::TYPE_DOSAGE_SENSITIVITY)
                                         ->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])
@@ -520,11 +529,27 @@ class GeneController extends Controller
                     $disease_index++;
                 }*/
 
+        // per request 05/09/25 filter out all diseases without a validity curation
+        $removed = false;
+        $scores = array_filter($scores, function($e) use ($removed) {
+            if ($e['validity_score'] === null)
+            {
+                $removed = true;
+                return false;
+            }
+
+            return true;
+        });
+
+        if (!$removed && isset($gene_scores))
+            $removed = true;
+
         return view('gene.acmg_expand')
                     ->with('gene', $gene)
                     ->with('scores', $scores)
-                    ->with('gene_scores', $gene_scores ?? null)
-                    ->with('diseases', $diseases);
+                    ->with('gene_scores', null)
+                    ->with('diseases', $diseases)
+                    ->with ('removed', $removed);
     }
 
 

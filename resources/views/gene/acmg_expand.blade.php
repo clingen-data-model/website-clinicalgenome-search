@@ -1,5 +1,5 @@
 <div class="row mt-2 mb-2">
-	<div class="col-md-10">
+	<div class="col-md-12">
 		@if (empty($gene->notes))
 		<span class="text-muted text-center font-italic ml-3">There are no guidance details at this time</span>
 		@else
@@ -40,7 +40,7 @@
 		<div class="col-md-5 border-right pt-2 pb-2"><span onclick="event.stopPropagation();"><a href="/kb/conditions/{{ $score['mondo'] }}" class="text-primary">{{ $score['disease'] }}</a></span><div class="small text-muted">{{ $score['mondo'] }}</div></div>
 		<!-- moi -->
 		<div class="col-md-1 border-right pt-2 pb-2 text-center">
-			<div class="mt-1 pt-2">{{ $score['validity_moi'] }}
+			<div class="pt-2">{{ $score['validity_moi'] }}
 				@if (!empty($score['validity_moi']))
 				<span class="cursor-pointer ml-1 mt-4" data-toggle="tooltip" data-placement="top" title="{{ $score['validity_moi'] }} Mode Of Inheritance"><i class="fas fa-info-circle text-muted"></i></span>
 				@else
@@ -57,12 +57,13 @@
 			@endif
 		</div>
 		<!-- Dosage -->
-		<div class="col-md-1 pt-2 pr-2 pl-2 text-center">
+		<div class="col-md-1 pt-1 pr-2 pl-2 pb-1 text-center">
 			@if($score['dosage_haplo_score'] !== null)
 				<span class="small badge cg-{{ $score['dosage_haplo_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['dosage_haplo_tooltip'] }}"><a class="text-white" href="{{ $score['dosage_link'] }}" target="_gt">{{ $score['dosage_haplo_score'] }}</a></span>
 			@else
 				<div class="small">&nbsp;</div>
 			@endif
+			<hr class="mt-1 mb-1" />
 			@if($score['dosage_triplo_score'] !== null)
 				<span class="small badge cg-{{ $score['dosage_triplo_score'] }} w-100"  data-toggle="tooltip" data-placement="top" title="{{ $score['dosage_triplo_tooltip'] }}"><a class="text-white" href="{{ $score['dosage_link'] }}" target="_gt">{{ $score['dosage_triplo_score'] }}</a></span>
 			@else
@@ -70,13 +71,18 @@
 			@endif
 		</div>
 		<!-- Actionability -->
-		<div class="col-md-1 border-right  border-left pt-2 pr-2 pl-2 text-center">
+		<div class="col-md-1 border-right  border-left pt-1 pb-1 pr-2 pl-2 text-center">
 			@if($score['has_actionability'])
 			@if ($score['actionability_adult_score'] !== null)
 			<span class="small badge cg-{{ $score['actionability_adult_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_adult_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_adult_link'] }}" target="_akb">{{ $score['actionability_adult_score'] }}</a></span>
+			@else
+				<div class="small">&nbsp;</div>
 			@endif
+			<hr class="mt-1 mb-1" />
 			@if ($score['actionability_pediatric_score'] !== null)
 			<span class="small badge cg-{{ $score['actionability_pediatric_score'] }} w-100" data-toggle="tooltip" data-placement="top" title="{{ $score['actionability_ped_tooltip'] }}"><a class="text-white" href="{{ $score['actionability_pediatric_link'] }}" target="_akb">{{ $score['actionability_pediatric_score'] }}</a></span>
+			@else
+				<div class="small">&nbsp;</div>
 			@endif
 			@else 
 			<span class="small">&nbsp;</span>
@@ -125,24 +131,13 @@
 		</div>
 	</div>
 @endforeach
-@if (isset($gene_scores))
+@if (isset($removed))
 <div class="row mt-3 mb-1">
 	<div class="col-md-12">
-		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: </span>
-		Dosage Sensitivity also has a non-disease specific score for this gene of 
-		<span class="font-weight-bold">
-		@if ($gene_scores['dosage_haplo_gene_score'] !== null)
-			<span class="small ml-1 mr-1 badge cg-{{ $gene_scores['dosage_haplo_gene_score'] }}" data-toggle="tooltip" data-placement="top" title="{{ $gene_scores['dosage_haplo_gene_tooltip'] }}"><a class="text-white" href="{{ $gene_scores['dosage_link'] }}" target="_gt">{{ $gene_scores['dosage_haplo_gene_tooltip'] }}</a></span>
-		@endif
+		<span class="text-danger font-weight-bold font-italic mr-2">NOTE: 
+			"Reportable as SF" annotations are only provided for gene-disease-MOI triads curated for gene-disease validity. 
+			To see a full list of ClinGen curations for this gene, click <a href="/kb/genes/{{ $gene->hgnc_id }}">here</a>
 		</span>
-		@if ($gene_scores['dosage_triplo_gene_score'] !== null)
-			@if ($gene_scores['dosage_haplo_gene_score'] !== null)
-				and
-			@endif
-			<span class="font-weight-bold">
-				<span class="small ml-1 badge cg-{{ $gene_scores['dosage_triplo_gene_score'] }}"  data-toggle="tooltip" data-placement="top" title="{{ $gene_scores['dosage_triplo_gene_tooltip'] }}"><a class="text-white" href="{{ $gene_scores['dosage_link'] }}" target="_gt">{{ $gene_scores['dosage_triplo_gene_tooltip'] }}</a></span>
-			</span>
-		@endif
 	</div>
 </div>
 @endif 

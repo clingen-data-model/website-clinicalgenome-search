@@ -28,6 +28,7 @@ class Dosage extends JsonResource
                 'relationship' => null,
                 'grch37' => $this->grch37 ?? null,
                 'grch38' => $this->grch38 ?? null,
+                'acmgsf' => $this->acmgsf ?? 0,
                 'pli' => is_null($this->pli) ? null : round($this->pli, 2),
                 'hi' => is_null($this->hi) ? null : round($this->hi, 2),
                 //'haplo_assertion' => GeneLib::shortAssertionString(($this->haplo_assertion ?? $this->has_dosage_haplo)),
