@@ -77,6 +77,8 @@
 					@endif
 				</div>
 			@endif
+		</div>
+		<div class="col-md-12">
 
 			@php global $currations_set; $currations_set = false; @endphp
 
