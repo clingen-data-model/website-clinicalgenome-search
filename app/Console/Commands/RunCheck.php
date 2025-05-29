@@ -166,6 +166,9 @@ class RunCheck extends Command
                 {
                     echo "NOT FOUND: " . $record->label ." " . $record->hgnc_id . "\n";
                 }
+
+                if ($record->hgnc_id == "HGNC:23109")
+                    dd($gene);
             }
 
             $stat = Health::where('service', 'GeneSearch')->update(['genegraph' => $hash]);

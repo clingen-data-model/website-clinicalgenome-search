@@ -581,6 +581,7 @@ class GeneController extends Controller
 				}
 			}
 		}		
+		
 		/* end of ned actionability */
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
