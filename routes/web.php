@@ -64,6 +64,8 @@ Route::group(['prefix' => 'kb/genes'], function () {
 
 		Route::post('/', 'GeneController@search')->name('gene-search');
 
+        Route::post('/search-by-name', 'GeneController@searchByName')->name('gene-name-search');
+
 		Route::get('/page/{page}', 'GeneController@index');
 
 		Route::get('/page/{page}/view/{psize}', 'GeneController@index');

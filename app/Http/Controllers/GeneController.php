@@ -98,7 +98,8 @@ class GeneController extends Controller
             'active' => "gene",
             'title' => "Genes",
             'scrid' => Filter::SCREEN_ALL_GENES,
-			'display' => "All Genes"
+			'display' => "All Genes",
+            'by_name' => $request->byName
 		]);
 
         if (Auth::guard('api')->check())
@@ -116,10 +117,15 @@ class GeneController extends Controller
         // don't apply global settings if local ones present
         $settings = Filter::parseSettings($request->fullUrl());
 
+
         if (empty($settings['size']))
             $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
+
+        if ($request->byName) {
+            $this->api = '/api/genes/searchByName';
+        }
 
 		return view('gene.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
@@ -219,7 +225,7 @@ class GeneController extends Controller
 			$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
-	
+
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
@@ -496,6 +502,7 @@ class GeneController extends Controller
 									'pharma' => true,
 									'variant' => true
 								]);
+
 
 		if ($record === null)
 			return view('error.message-standard')
@@ -861,7 +868,7 @@ class GeneController extends Controller
 
 		if (Auth::guard('api')->check()) {
 			$user = Auth::guard('api')->user();
-		
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		} else {
 
@@ -1009,7 +1016,7 @@ class GeneController extends Controller
 				if ($panel == null)
 					continue;
 
-				
+
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
@@ -1406,6 +1413,22 @@ class GeneController extends Controller
 
 		// the way layouts is set up, everything is named search.  Gene is the first
 
-		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0] ]);
+		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], 'byName' => 0]);
 	}
+
+    /**
+     * Display a listing of all genes.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchByName(Request $request)
+    {
+        // process request args
+        foreach ($request->only(['search']) as $key => $value)
+            $$key = $value;
+
+        // the way layouts is set up, everything is named search.  Gene is the first
+
+        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[4], 'byName' => 1 ]);
+    }
 }
