@@ -80,16 +80,16 @@
 							@endif
 							@if ($group == 'ped')
 							<tr>
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0  @else border-0 @endif">
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0  @else border-0 @endif">
 									<div>
-										@if ($loop->first)
+										@if ($loop->first && empty($groups['adult']))
 											{{ $record->label }}
 										@endif
 									</div>
 								</td>
 
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
-									@if ($loop->first)
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
+									@if ($loop->first && empty($groups['adult']))
 										{{ App\Genelib::actionabilityReportString($report->title) }}
 									@endif
 								</td>

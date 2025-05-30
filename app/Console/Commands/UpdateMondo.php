@@ -130,9 +130,6 @@ class UpdateMondo extends Command
             if (strpos($term, 'MONDO') !== 0)
                 continue;
 
-            //if ($term == "MONDO:0008380")
-             //   dd($node);
-
             $disease = Disease::curie($term)->first();
 
             if ($disease === null)
