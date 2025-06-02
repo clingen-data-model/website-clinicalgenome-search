@@ -556,7 +556,7 @@ class GeneController extends Controller
 		*/
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
-		
+
 		$actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
 		{
@@ -576,18 +576,37 @@ class GeneController extends Controller
 					{
 						case 'Adult':
 							// ignore duplicates
-							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['adult']))
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
 								$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
 							break;
 						case 'Pediatric':
 							// ignore duplicates
-							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['ped']))
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
 								$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
 							break;
 					}
 				}
 			}
-		}		
+		}
+		//dd($actionability_reports);
 		/* end of ned actionability */
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
