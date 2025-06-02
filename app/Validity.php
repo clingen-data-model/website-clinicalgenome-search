@@ -357,8 +357,10 @@ class Validity extends Model
 
             if ($current === null)          // new assertion
             {
-                if (!isset($assertion->disease->label))
-                    dd($assertion);
+                 // deal with malformed genegraph records
+                 if (!isset($assertion->disease->label))
+                    continue;
+
                 $current = Validity::create([
                     'curie' => $assertion->curie,
                     'report_date' => Carbon::parse($assertion->report_date)->format('Y-m-d H:i:s.0000'),
