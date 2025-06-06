@@ -84,7 +84,7 @@
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                     <tr>
-                        <td><strong>Dosage Sensitivity Curations )Genes Only)</strong>
+                        <td><strong>Dosage Sensitivity Curations (Genes Only)</strong>
                             <div class="small">This file provides a summary of the Dosage Sensitivity gene curations completed by ClinGen. This file is built in real-time. </div>
                         </td>
                         <td></td>

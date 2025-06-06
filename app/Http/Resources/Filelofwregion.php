@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\GeneLib;
+use Carbon\Carbon;
 
 class Filelofwregion extends JsonResource
 {
@@ -17,27 +18,30 @@ class Filelofwregion extends JsonResource
      */
     public function toArray($request)
     {
-        if ($this->type == 1)
+        if (isset($this->iri))
         {
-            $haplo = GeneLib::haploAssertionString($this->haplo);
-            $triplo = GeneLib::triploAssertionString($this->triplo);
+            $haplo = GeneLib::haploAssertionString($this->scores['haploinsufficiency']);
+            $triplo = GeneLib::triploAssertionString($this->scores['triplosensitivity']);
+            $date = (new Carbon($this->events['resolved']))->toIso8601String();
+            $report = "https://search.clinicalgenome.org/kb/gene-dosage/region/" . $this->iri;
         }
         else
         {
-            $haplo = GeneLib::haploAssertionString($this->has_dosage_haplo);
-            $triplo = GeneLib::triploAssertionString($this->has_dosage_triplo);
-
+            $haplo = GeneLib::haploAssertionString($this->has_dosage_haplo === false ? '-5' : $this->has_dosage_haplo);
+            $triplo = GeneLib::triploAssertionString($this->has_dosage_triplo === false ? '-5' : $this->has_dosage_triplo);
+            $date = (new Carbon($this->dosage_report_date))->toIso8601String();
+            $report = "https://search.clinicalgenome.org/kb/gene-dosage/" . $this->hgnc_id;
         }
     
         return [
-            'gene_symbol' => $this->symbol,
-            'hgnc_id' => $this->hgnc_id,
-            'grch37' => $this->grch37,
-            'grch38' => $this->grch38,
+            'gene_symbol' => $this->symbol ?? $this->name,
+            'hgnc_id' => $this->hgnc_id ?? $this->iri,
+            'grch37' => $this->grch37 == 'chr:-' ? '' : $this->grch37,
+            'grch38' => $this->grch38 == 'chr:-' ? '' : $this->grch38,
             'haploinsufficiency' => $haplo,
             'triplosensitivity' => $triplo,
-            'online_report' => env('CG_URL_CURATIONS_DOSAGE', '#') . $this->symbol . '&subject=',
-            'date' => $this->dosage_report_date
+            'online_report' => $report,
+            'date' => $date
         ];
     }
 }
