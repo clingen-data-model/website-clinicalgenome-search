@@ -603,7 +603,7 @@
                                                 @if (!empty($record->las_rationale['pmids']))
                                                     @foreach ($record->las_rationale['pmids'] as $pmid)
                                                     @if (isset($pmids[$pmid]))
-                                                        <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{ $pmids[$pmid]['title'] }}">{{ $pmid }}</a>@if(!$loop->last), @endif
+                                                        <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="{{ $pmids[$pmid]->label ?? '' }}">{{ $pmid }}</a>@if(!$loop->last), @endif
                                                     @else
                                                         <a href="https://pubmed.ncbi.nlm.nih.gov/{{ $pmid }}" target="_pmid">{{ $pmid }}</a>@if(!$loop->last), @endif
                                                     @endif

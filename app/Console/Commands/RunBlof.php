@@ -21,6 +21,7 @@ use App\GeneLib;
 use App\Panel;
 use App\Validity;
 use App\Nodal;
+use App\Jira;
 
 class RunBlof extends Command
 {
@@ -59,7 +60,6 @@ class RunBlof extends Command
 
         switch ($report)
         {
-            
             default:
                 echo "Running BLOF Report\n";
                 $this->blof_spreadsheet();
@@ -407,6 +407,22 @@ class RunBlof extends Command
 
                 }
 
+                // query the dci for the gene record and status
+                $dosage = Curation::dosage()->where('gene_hgnc_id', $gene->hgnc_id)->where('status', 1)->first();
+
+                $dosage_status = "Open";    // assume default of open;
+
+                if ($dosage !== null)
+                {
+                    $dosage_issue = $dosage->document;
+
+                    if (!empty($dosage_issue))
+                    {
+                        $jira = Jira::getIssue($dosage_issue);
+                        $dosage_status = $jira->status->name;
+                    }
+                }
+
                 foreach ($apmids as $pmid => $variants)
                 {
                     $pmid_comment_include = '';
@@ -419,6 +435,8 @@ class RunBlof extends Command
                     $results[] = [
                         'gene_name' => "\"$gene->name\"",
                         'gene_hgnc' => "\"$gene->hgnc_id\"",
+                        'dci_issue' => "\"$dosage_issue\"",
+                        'dci_status' => "\"$dosage_status\"",
                         'disease_name' => "\"$disease->label\"",
                         'disease_mondo' => "\"$disease->curie\"",
                         'variant_name' => "\"" . implode(', ', $variants['variants']) . "\"",
@@ -427,7 +445,7 @@ class RunBlof extends Command
                         'gcep_id' => "\"$ep->curie\"",
                         'pmid' => "\"$pmid\"",
                         'pmid_comment' => '"The ClinGen ' . $ep->label . ' GCEP scored ' . count($variants['variants']) . ' unique predicted or proven null variants from this paper, including:' . "\n\n" . $pmid_comment_include . '"',
-                        'loss_comment' => '"The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' evidence supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->displayDate($summary->report_date) . ".\n\n"
+                        'loss_comment' => '"The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->displayDate($summary->report_date) . ".\n\n"
                                         . 'As part of their evaluation, the GCEP scored at least ' . $line[15] . ' unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation (July 2024), there were ' . $line[8] . ' total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; ' . $line[9] . ' of these (' . $line[10] . '), are predicted/proven null variants.  These LP/P variants are observed in ' . $line[11] . ' distinct exons.' . "\n\n"
                                         . ($line[18] == "0" ? '* There are no observations of homozygous loss of function variants in gnomAD v4.1.' . "\n\n" : '')
                                         . ($line[17] != "0" ? '* Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]).' . "\n\n" : '')
@@ -447,6 +465,8 @@ class RunBlof extends Command
 
             $header = [   "Gene Name",
                         "Gene HGNC ID",
+                        "DCI Issue",
+                        "DCI Status",
                         "Disease Name",
                         "Disease MONDO",
                         "Variant Name",
@@ -458,7 +478,7 @@ class RunBlof extends Command
                         'Link to ClinGen Page'
                     ];
 
-            $handle = fopen(base_path() . '/data/BLOF Output Draft 3.tsv', "w");
+            $handle = fopen(base_path() . '/data/BLOF Output Draft 4.tsv', "w");
             fwrite($handle, implode("\t", $header) . PHP_EOL);
 
             foreach($results as $result)
