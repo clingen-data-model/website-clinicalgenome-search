@@ -872,6 +872,7 @@ class Region extends Model
 
           $node = [
                     'iri' => $issue->key,
+                    'issue' => $issue->key,
                     'type' => self::TYPE_REGION_DOSAGE,
                     'type_substring' => 'Dosage Sensitivity Region',
                     'subtype' => self::SUBTYPE_REGION_DOSAGE_JIRA_PRELOAD,
