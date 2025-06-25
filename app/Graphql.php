@@ -2483,6 +2483,7 @@ class Graphql
 					}
 					actionability_assertions {
 						report_date
+						report_label
 						source
                         attributed_to {
                             label

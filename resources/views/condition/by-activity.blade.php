@@ -251,7 +251,8 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-1 th-curation-group text-left">Gene</th>
-								<th class="col-sm-4 text-left"> Disease</th>
+								<th class="col-sm-3 text-left"> Disease</th>
+								<th class="col-sm-1 text-left"> Report</th>
 								<th class="col-sm-2">Working Group</th>
 								<th class="col-sm-2">Assertions</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -270,6 +271,19 @@
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
 												@if($first == true) {{ displayMondoLabel($record->label) }}
                                                 {!! displayMondoObsolete($record->label) !!} @endif
+												@if ($actionability->attributed_to->label == "Adult Actionability Working Group")
+													@if (!empty($actionability_reports[$disease->gene->hgnc_id][$actionability->report_label]['adult']) &&
+													$actionability_reports[$disease->gene->hgnc_id][$actionability->report_label]['adult'] !=  $save_disease->curie)
+													<span class="small"><i>The preferred disease term is {{ $actionability_reports[$disease->gene->hgnc_id][$actionability->report_label]['adult'] }}
+													</i></span>
+													@endif
+												@endif
+											</td>
+
+											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">
+												@if($first == true)
+													 {{ $actionability->report_label }}
+                                                @endif
 											</td>
 
 											<td class=" @if($first != true) border-0 pt-0 @else pb-0 @endif ">

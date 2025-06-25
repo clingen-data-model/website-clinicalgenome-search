@@ -1,10 +1,11 @@
 @if ($somatic_collection->isNotEmpty())
     @php global $currations_set; $currations_set = true; @endphp
 
-    <h3 id="link-gene-validity" class=" mt-6 mb-0">
+    <h3 id="link-gene-validity" class=" mt-6 mb-0 rounded-top" style="background: #FFFFFF;
+background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 24%, rgba(142, 20, 118, 1) 100%);">
         <img src="/images/clingen-somatic-icon.png" width="40" height="40" style="margin-top:-4px" class="hidden-sm hidden-xs"> Somatic Cancer
     </h3>
-    <div class="card mb-4">
+    <div class="card mb-5">
          <div class="card-body p-0 m-0">
              <!--
              <div class="p-2 text-muted small bg-light">The following <strong>{{ $record->nvariant }} variant classifications</strong> were completed by <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">{{ implode(', ', $variant_panels) }}</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>

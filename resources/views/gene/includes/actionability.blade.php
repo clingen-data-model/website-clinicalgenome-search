@@ -5,8 +5,11 @@
     @php global $show_border; $show_border = false; @endphp
     @php global $currations_set; $currations_set = true; @endphp
 
-<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
-	<div class="card mb-4">
+<h3 id="link-actionability" class="mb-0 rounded-top" style="background: #FFFFFF;
+background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 28%, rgba(245, 138, 45, 1) 100%);">
+	<img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability
+</h3>
+	<div class="card mb-5">
 		<div class="card-body p-0 m-0">
 			<table class="panel-body table mb-0">
 				<thead class="thead-labels">

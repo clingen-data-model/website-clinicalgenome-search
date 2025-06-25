@@ -60,6 +60,9 @@ class RunBlof extends Command
 
         switch ($report)
         {
+            case 'test':
+                $this->test();
+                break;
             default:
                 echo "Running BLOF Report\n";
                 $this->blof_spreadsheet();
@@ -404,7 +407,6 @@ class RunBlof extends Command
                             }
                         }
 
-
                 }
 
                 // query the dci for the gene record and status
@@ -432,6 +434,20 @@ class RunBlof extends Command
 
                     }
 
+                    $save_field = null;
+                    $save_comment = null;
+
+                    // we need to run through all the loss pmid fields to find a match
+                    foreach(['customfield_10183' => 'customfield_10184', 'customfield_10185' => 'customfield_10186', 'customfield_10187' => 'customfield_10188', 'customfield_12231' => 'customfield_12237', 'customfield_12232' => 'customfield_12238', 'customfield_12233' => 'customfield_12239'] as $pmid_field => $pmid_comment)
+                    {
+                        if (isset($jira->customFields[$pmid_field]) && str_replace('PMID:', '', $pmid) == $jira->customFields[$pmid_field])
+                        {
+                            $save_field = $pmid_field;
+                            $save_comment = $pmid_comment;
+                            break;
+                        }
+                    }
+
                     $results[] = [
                         'gene_name' => "\"$gene->name\"",
                         'gene_hgnc' => "\"$gene->hgnc_id\"",
@@ -451,14 +467,16 @@ class RunBlof extends Command
                                         . ($line[17] != "0" ? '* Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]).' . "\n\n" : '')
                                         . ($line[6] == "Yes" ? '* Of note, per GTEx v8, ' . $line[7] . ' appears to be alternatively spliced and therefore has relatively low expression across multiple tissue types.' . "\n\n" : '')
                                         . 'In summary, biallelic loss of function is an ESTABLISHED mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '."',
-                        'link' => 'https://search.clinicalgenome.org/kb/gene-validity/' . $variants['curie']
+                        'link' => 'https://search.clinicalgenome.org/kb/gene-validity/' . $variants['curie'],
+                        'pmid_field' => "\"$save_field\"",
+                        'old_pmid_comment' => "\"" . ($jira->customFields[$save_comment] ?? '') . "\"",
+                        'old_loss_comment' => "\"" . ( $jira->customFields['custumfield_10198'] ?? '') . "\""
                     ];
+
                 }
 
-
-
-
-
+                break;
+           
             }
 
            //dd($results);
@@ -475,7 +493,10 @@ class RunBlof extends Command
                         "PMID",
                         'PMID COmment',
                         'Loss Phenotype Comment',
-                        'Link to ClinGen Page'
+                        'Link to ClinGen Page',
+                        'Jira PMID Field',
+                        'Old PMID Comment',
+                        'Old Loss Comment'
                     ];
 
             $handle = fopen(base_path() . '/data/BLOF Output Draft 4.tsv', "w");
@@ -488,8 +509,84 @@ class RunBlof extends Command
             }
 
             fclose($handle);
+
+            $this->update_open_issues($results);
         }
     
+    }
+
+    protected function update_open_issues($results)
+    {
+        $comment_map = ['customfield_10183' => 'customfield_10184', 
+                        'customfield_10185' => 'customfield_10186',
+                        'customfield_10187' => 'customfield_10188',
+                        'customfield_12231' => 'customfield_12237', 
+                        'customfield_12232' => 'customfield_12238',
+                        'customfield_12233' => 'customfield_12239'];
+
+        $order_map = ['customfield_10183' => "Loss PMID 1 Description", 
+                        'customfield_10185' => "Loss PMID 2 Description",
+                        'customfield_10187' => "Loss PMID 3 Description",
+                        'customfield_12231' => "Loss PMID 4 Description",
+                        'customfield_12232' => "Loss PMID 5 Description",
+                        'customfield_12233' => "Loss PMID 6 Description"];
+
+        foreach($results as $result)
+        {
+            if ($result['dci_status'] == '"Reopened"')
+            {
+                echo "Looking up issue " . $result['dci_issue'] . "\n";
+
+                $jira = Jira::getIssue(str_replace('"', '', $result['dci_issue']), 'fields', true);
+
+                if ($jira->fields->status->name == 'Reopened')
+                {
+                    // we need the pmid field from results, and we need to identify the pmid order number
+                    $pmid_field = str_replace('"', '', $result['pmid_field']);
+
+                    // per request, we overwrite comments that are a year or more old, and append if under a year
+                    $last_pmid_comment = null;
+                    $last_loss_comment = null;
+
+                    foreach($jira->changelog->histories as $history)
+                    {
+                        foreach ($history->items as $item)
+                        {
+                            if ($item->field == $order_map[$pmid_field])
+                                $last_pmid_comment = $history->created;
+                            else if ($item->field == 'Loss phenotype comments')
+                                $last_loss_comment = $history->created;
+                        }
+                    }
+
+                    // morecho $jira->fields->customFields[$comment_map[$pmid_field]] . "\n\n" .  trim($result['pmid_comment'], ' "') . "\n";
+
+                    $issue = trim($result['dci_issue'], ' "');
+
+                    echo "Updating $issue \n";
+
+                    if ($last_pmid_comment === null || Carbon::parse($last_pmid_comment)->diffInYears(Carbon::now()) > 1)
+                        $key = Jira::updateIssue($issue, $comment_map[$pmid_field], trim($result['pmid_comment'], ' "'));
+                    else
+                        $key = Jira::updateIssue($issue, $comment_map[$pmid_field],
+                                $jira->fields->customFields[$comment_map[$pmid_field]] . "\n\n" .  trim($result['pmid_comment'], ' "'));
+
+                    if ($last_loss_comment === null || Carbon::parse($last_loss_comment)->diffInYears(Carbon::now()) > 1)
+                        $key = Jira::updateIssue($issue, 'customfield_10198', trim($result['loss_comment'], ' "'));
+                    else
+                        $key = Jira::updateIssue($issue, 'customfield_10198',
+                                $jira->fields->customFields['customfield_10198'] . "\n\n" .  trim($result['loss_comment'], ' "'));
+
+                }
+            }
+            die($key);
+        }
+    }
+
+
+    public function test()
+    {
+        Jira::updateIssue('"ISCA-25754"', 'customfield_11635',  0);
     }
 
 
