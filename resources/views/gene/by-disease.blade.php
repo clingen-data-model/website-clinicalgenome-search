@@ -24,17 +24,6 @@
     </div>
 
 		@include("_partials.facts.gene-panel")
-
-        @if ($show_clingen_comment)
-		<div class="col-md-12">
-			<h4 class="border-bottom-1">ClinGen Variant Classification Guidance  
-				<!--<i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen comments are comments from ClinGen."></i>-->
-			</h4>
-				<p>
-					{{ $record->notes }}
-				</p>
-		</div>
-		@endif
         
 </div>
 
@@ -63,11 +52,6 @@
           <li class="" style="">
             <a href="https://www.ncbi.nlm.nih.gov/clinvar/?term={{ $record->label }}%5Bgene%5D"  class="" target="clinvar">ClinVar <span class='hidden-sm hidden-xs'>Variants  </span><i class="glyphicon glyphicon-new-window small" id="external_clinvar_gene_variants"></i></a>
           </li>
-          @if ($gc !== null && $gc->variant_count > 0)
-            <li class="" style="">
-                <a href='https://www.ncbi.nlm.nih.gov/clinvar/?term=(("genomeconnect"%5BSubmitter%5D)+OR+"genomeconnect%2C+clingen"%5BSubmitter%5D)+AND+"{{ $record->label }}"%5BGene+Name%5D'  class="" target="clinvar">GenomeConnect <span class="border-1 bg-white badge border-primary text-primary px-1 py-1/2 text-10px ">{{ $gc->variant_count }}</span>  <i class="glyphicon glyphicon-new-window small ml-2" id="external_clinvar_gene_variants"></i></a>
-            </li>
-        @endif
 		</ul>
 
 @endsection
@@ -85,8 +69,8 @@
 			@endif
 
 		@forelse ($record->genetic_conditions as $disease)
-
-
+            @continue (empty($disease->gene_validity_assertions) && empty($disease->gene_dosage_assertions) && empty($actionability_reports[basename($disease->disease->iri)]))
+               
 
 				<h3  id="link-gene-validity" style="" class="h3 mt-4 mb-0"><i>{{ $record->symbol }}</i> -
 					<a class="text-dark" href="{{ route('condition-show', $record->getMondoString($disease->disease->iri, true)) }}" >{{ displayMondoLabel($disease->disease->label) }} <span class="text-muted small">({{ $record->getMondoString($disease->disease->iri, true) }}) {!! displayMondoObsolete($disease->disease->label) !!}</span></a></h3>
@@ -374,24 +358,23 @@
 
 						<!-- Actionability		-->
                         @php ($show_report = true) @endphp
-						@foreach($disease->actionability_assertions as $key => $actionability)
-								@php ($first = true) @endphp
+                        @php ($first = true) @endphp
+						@foreach($actionability_reports[basename($disease->disease->iri)] as $key => $actionability)
+                            @foreach($actionability as $adult)
 								<tr>
-									<td class=" @if(!$loop->first) border-0 @endif ">
-										@if($loop->first)
+									<td class=" @if(!$first) border-0 @endif ">
+										@if($first)
 										<a tabindex="0" class="info-popover" data-container="body" data-toggle="popover" data-placement="top" data-trigger="focus" role="button" data-title="Learn more" data-href="https://www.clinicalgenome.org/curation-activities/clinical-actionability/" data-content="How does this genetic diagnosis impact medical management?"> <img style="width:20px" src="/images/clinicalActionability-on.png" alt="Clinicalactionability on"> Clinical Actionability <i class="glyphicon glyphicon-question-sign text-muted"></i></a>
 										@endif
 									</td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif ">
-                                        @if ($show_report)
-                                        <span class="small">{{ App\Genelib::actionabilityReportString($actionability->report_label) }}</span>
-                                        @endif
+									<td class=" @if(!$first) border-0 @endif ">
+                                        <span class="small">{{ App\Genelib::actionabilityReportString($adult->title) }}</span>
                                     </td>
 
-                                    <td class=" @if(!$loop->first) border-0 @endif ">
-                                        @if ($actionability->attributed_to->label == "Adult Actionability Working Group")
+                                    <td class=" @if(!$first) border-0 @endif ">
+                                        @if ($adult->affiliate_details['name'] == "Adult Actionability Working Group")
                                         <a href="https://clinicalgenome.org/working-groups/actionability/adult-actionability-working-group/">Adult Actionability WG
                                             <i class="fas fa-external-link-alt ml-1"></i></a>
                                             @php ($show_report = false) @endphp
@@ -402,15 +385,19 @@
                                         @endif
                                     </td>
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $actionability->source }}"><div class="text-muted small">{{ $record->displayActionType($actionability->source, true) }}</div> {{ App\Genelib::actionabilityAssertionString($actionability->classification->label) }}
-										@include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($actionability->classification->label)))
-									</a>
+									<td class=" @if(!$first) border-0 @endif ">
+                                        <a class="btn btn-default btn-block text-left mb-2 btn-classification" href="{{ $adult->url['scoreDetails'] }}">
+                                            <div class="text-muted small">{{ $record->displayActionType($adult->url['scoreDetails'], true) }}</div>
+                                             {{ App\Genelib::actionabilityAssertionString($adult->assertions['assertion']) }}
+										    @include('gene.includes.actionability_assertion_label_info', array('assertion'=> App\Genelib::actionabilityAssertionString($adult->assertions['assertion'])))
+									    </a>
 									</td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $actionability->source }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($actionability->report_date) }}</a></td>
+									<td class=" @if(!$first) border-0 @endif "><a class="btn btn-xs btn-success btn-block btn-report" href="{{ $adult->url['scoreDetails'] }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($adult->events['searchDates'][array_key_last($adult->events['searchDates'])]) }}</a></td>
 								</tr>
-								@php ($first = false) @endphp
+                                @php ($first = false) @endphp
+                            @endforeach
 						@endforeach
 
 

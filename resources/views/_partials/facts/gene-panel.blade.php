@@ -79,7 +79,7 @@
 						<dt></dt>
 						<dd><scan class="text-primary"><i>pLI and LOEUF metrics based on</i> {{ $record->transcript}} <i>transcript</i></scan></dd>
 						@endif
-						<dt>ACMG SF v3.3 Gene?</dt>
+						<dt>ACMG SF v3.2 Gene?</dt>
 						<dd>
 							@if ($record->is_acmg)
 							Yes<a href="/kb/genes/acmgsf" class="ml-3">(Click here to view additional information regarding reporting for secondary findings)</a>
