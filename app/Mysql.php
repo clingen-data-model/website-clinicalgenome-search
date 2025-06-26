@@ -1748,7 +1748,6 @@ class Mysql
 
         // do some cleanup
         $search = trim($search);
-
         $parts = explode(' ', $search);
 
         $records = Gene::where( function($gene) use ($parts) {
@@ -1757,12 +1756,28 @@ class Mysql
             }
         })->get();
 
+
         foreach ($records as $record) {
-            $array[] = ['label' => $record->description,
+            $array[] = [
+                'symbol' => $record->name,
+                'label' => $record->description,
                 'alias' => '',
                 'hgnc' => $record->name,
                 'url' => route('gene-show', $record->hgnc_id),
-                'curated' => !empty($record->activity)];
+                'curated' => !empty($record->activity),
+                'curation' => !empty($record->activity),
+                'data_last_created' => "",
+                'has_actionability' => false,
+                'has_dosage' => false,
+                'has_pharma' => (bool) $record->has_pharma,
+                'has_validity' => false,
+                'has_variant' => false,
+                'hgnc_id' => $record->hgnc_id,
+                'location' => $record->location,
+                'locus_group' => $record->locus_group,
+                'name' => $record->description,
+                'symbol_id' => $record->hgnc_id
+            ];
         }
 
 

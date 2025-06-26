@@ -25,17 +25,6 @@
 
 		@include("_partials.facts.gene-panel")
 
-		@if ($show_clingen_comment)
-		<!--<div class="col-md-12">
-			<h4 class="border-bottom-1">ClinGen Variant Classification Guidance  
-				<!--<i class="fas fa-info-circle color-white" data-toggle="tooltip" data-placement="top" title="ClinGen comments are comments from ClinGen."></i>-->
-			<!--</h4>
-				<p>
-					{{ $record->notes }}
-				</p>
-		</div>-->
-		@endif
-
 	</div>
 
 	<!-- tab headers -->
@@ -77,6 +66,8 @@
 					@endif
 				</div>
 			@endif
+		</div>
+		<div class="col-md-12">
 
 			@php global $currations_set; $currations_set = false; @endphp
 

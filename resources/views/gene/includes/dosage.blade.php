@@ -3,8 +3,11 @@
 				@if(count($disease->gene_dosage_assertions))
 				@php global $currations_set; $currations_set = true; @endphp
 				@if($header_dos == true)
-					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
-					<div class="card mb-4">
+					<h3 id="link-dosage-curation" class="mb-0 mt-6 rounded-top" style="background: #FFFFFF;
+background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 27%, rgba(235, 52, 118, 1) 100%);">
+						<img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity
+					</h3>
+					<div class="card mb-5">
 						<div class="card-body p-0 m-0">
                             <!--
 							<div class="p-2 text-muted small">The following <strong>{{ $record->ndosage }} curations</strong> were completed by the <a href='{{ route('gene-groups', $record->hgnc_id) }}' class="border-1 bg-white badge border-primary text-primary px-1   ">Dosage Working Group</a>. <a href="{{ route('gene-groups', $record->hgnc_id) }}">Learn more</a></div>

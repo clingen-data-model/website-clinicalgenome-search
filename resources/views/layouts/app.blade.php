@@ -80,7 +80,7 @@
 	           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='typeQueryLabel'>Gene Symbol  </span></button>
 	           <ul class="dropdown-menu dropdown-menu-left">
 	             <li><a class="typeQueryGene pointer">Gene Symbol</a></li>
-               <!--    <li><a class="typeQueryGeneName pointer">Gene Name</a></li> -->
+                 <li><a class="typeQueryGeneName pointer">Gene Name</a></li>
 	             <li><a class="typeQueryDisease pointer">Disease Name</a></li>
 	             <li><a class="typeQueryDrug pointer">Drug Name</a></li>
 	             <li><a class="typeQueryRegionGRCh37 pointer">Region (GRCh37)</a></li>
@@ -96,9 +96,6 @@
            <span class="inputQueryGene">
             <input type="text" class="form-control queryGene" aria-label="..." value="" name="search[]" placeholder="Enter a gene symbol or HGNC ID (Examples: ADNP, HGNC:15766)">
            </span>
-                <!--<span class="inputQueryGeneName" style="display: none">
-            <input type="text" class="form-control queryGeneName" aria-label="..." value="" name="search[]" placeholder="Enter a gene name (Example: Adenylate cyclase 1)" >
-           </span>-->
            <span class="inputQueryDisease" style="display: none">
             <input type="text" class="form-control  queryDisease" aria-label="..." value="" name="search[]" placeholder="Enter a disease name or MONDO ID (Examples: Loeys Dietz, MONDO:0018954)" >
            </span>
@@ -108,6 +105,9 @@
            <span class="inputQueryRegion" style="display: none">
            <input type="text" class="form-control queryRegion" aria-label="..." value="" name="search[]" placeholder="Enter a full or partial region, or full cytoband (Examples: chr7:75158048-76063176, chr7, chr7:70008000, 12q24.31)">
            </span>
+                <span class="inputQueryGeneName" style="display: none">
+                    <input type="text" class="form-control queryGeneName" aria-label="..." value="" name="search[]" placeholder="Enter a gene name (Example: Adenylate cyclase 1)" >
+            </span>
 	         <span class="input-group-btn">
 	                 <button class="btn btn-default btn-search-submit" type="submit">Search</button>
 	          </span>
@@ -345,7 +345,7 @@
     document.documentElement.scrollTop = 0;
   }
 </script>
-    <script>
+      <script>
       $(".action-login").click(function() {
 
         $('#modalLogin').modal('show');
@@ -357,97 +357,141 @@
     </script>
     <script src="/js/typeahead.js"></script>
     <script>
+        var tabRequests = {};
+        $(document).ready( () => {
+            tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
+                if (tabRequests.active === 'condition') {
+                    enableConditionSearch()
+                } else if (tabRequests.active === 'gene' && parseInt(tabRequests.by_name) === 1) {
+                    enableGeneNameSearch()
+                } else if (tabRequests.active === 'region') {
+                    enableRegion38Search()
+                } else if (tabRequests.active === 'drug') {
+                    enableDrugSearch()
+                } else {
+                    enableGeneSearch()
+                }
+        })
 
+        function enableGeneSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
+            $( ".inputQueryGene" ).show();
+            $( ".inputQueryGene .queryGene" ).show();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Gene Symbol ");
+        }
+
+        function enableGeneNameSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('gene-name-search') }}");
+            $( ".inputQueryGeneName" ).show();
+            $( ".inputQueryGene .queryGeneName" ).show();
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Gene Name ");
+        }
+
+        function enableConditionSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+            $( ".inputQueryDisease" ).show();
+            $( ".inputQueryDisease .queryDisease" ).show();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Disease Name  ");
+        }
+
+        function enableDrugSearch()
+        {
+            $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).show();
+            $( ".inputQueryDrug .queryDrug" ).show();
+            $( ".inputQueryRegion" ).hide();
+            $( ".inputQueryRegion .queryRegion" ).hide();
+            $( ".typeQueryLabel").text("Drug Name  ");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
+
+        function enableRegion37Search()
+        {
+            $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).show();
+            $( ".inputQueryRegion .queryRegion" ).show();
+            $( ".typeQueryLabel").text("GRCh37 Region  ");
+            $( ".buildtype").val("GRCh37");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
+
+        function enableRegion38Search()
+        {
+            $("#navSearchBar").attr("action", "{{ route('region-search') }}");
+            $( ".inputQueryGene" ).hide();
+            $( ".inputQueryGene .queryGene" ).hide();
+            $( ".inputQueryDisease" ).hide();
+            $( ".inputQueryDisease .queryDisease" ).hide();
+            $( ".inputQueryDrug" ).hide();
+            $( ".inputQueryDrug .queryDrug" ).hide();
+            $( ".inputQueryRegion" ).show();
+            $( ".inputQueryRegion .queryRegion" ).show();
+            $( ".typeQueryLabel").text("GRCh38 Region  ");
+            $( ".buildtype").val("GRCh38");
+            $( ".inputQueryGeneName" ).hide();
+            $( ".inputQueryGene .queryGeneName" ).hide();
+        }
 
       $( ".typeQueryGene" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
-        $( ".inputQueryGene" ).show();
-        $( ".inputQueryGene .queryGene" ).show();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Gene Symbol ");
+        enableGeneSearch()
       });
 
       $( ".typeQueryGeneName" ).click(function() {
-          $("#navSearchBar").attr("action", "{{ route('gene-search') }}");
-          $( ".inputQueryGeneName" ).show();
-          $( ".inputQueryGene .queryGeneName" ).show();
-          $( ".inputQueryGene" ).hide();
-          $( ".inputQueryGene .queryGene" ).hide();
-          $( ".inputQueryDisease" ).hide();
-          $( ".inputQueryDisease .queryDisease" ).hide();
-          $( ".inputQueryDrug" ).hide();
-          $( ".inputQueryDrug .queryDrug" ).hide();
-          $( ".inputQueryRegion" ).hide();
-          $( ".inputQueryRegion .queryRegion" ).hide();
-          $( ".typeQueryLabel").text("Gene Name ");
+         enableGeneNameSearch()
       });
 
       $( ".typeQueryDisease" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('condition-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
-        $( ".inputQueryDisease" ).show();
-        $( ".inputQueryDisease .queryDisease" ).show();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Disease Name  ");
+        enableConditionSearch()
       });
 
       $( ".typeQueryDrug" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('drug-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).show();
-        $( ".inputQueryDrug .queryDrug" ).show();
-        $( ".inputQueryRegion" ).hide();
-        $( ".inputQueryRegion .queryRegion" ).hide();
-        $( ".typeQueryLabel").text("Drug Name  ");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableDrugSearch()
       });
 
       $( ".typeQueryRegionGRCh37" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).show();
-        $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh37 Region  ");
-        $( ".buildtype").val("GRCh37");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableRegion37Search()
       });
       $( ".typeQueryRegionGRCh38" ).click(function() {
-        $("#navSearchBar").attr("action", "{{ route('region-search') }}");
-        $( ".inputQueryGene" ).hide();
-        $( ".inputQueryGene .queryGene" ).hide();
-        $( ".inputQueryDisease" ).hide();
-        $( ".inputQueryDisease .queryDisease" ).hide();
-        $( ".inputQueryDrug" ).hide();
-        $( ".inputQueryDrug .queryDrug" ).hide();
-        $( ".inputQueryRegion" ).show();
-        $( ".inputQueryRegion .queryRegion" ).show();
-        $( ".typeQueryLabel").text("GRCh38 Region  ");
-        $( ".buildtype").val("GRCh38");
-          $( ".inputQueryGeneName" ).hide();
-          $( ".inputQueryGene .queryGeneName" ).hide();
+        enableRegion38Search()
       });
 
 

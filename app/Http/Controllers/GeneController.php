@@ -98,7 +98,8 @@ class GeneController extends Controller
             'active' => "gene",
             'title' => "Genes",
             'scrid' => Filter::SCREEN_ALL_GENES,
-			'display' => "All Genes"
+			'display' => "All Genes",
+            'by_name' => $request->byName
 		]);
 
         if (Auth::guard('api')->check())
@@ -116,10 +117,15 @@ class GeneController extends Controller
         // don't apply global settings if local ones present
         $settings = Filter::parseSettings($request->fullUrl());
 
+
         if (empty($settings['size']))
             $display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
+
+        if ($request->byName) {
+            $this->api = '/api/genes/searchByName';
+        }
 
 		return view('gene.index', compact('display_tabs'))
 						->with('apiurl', $this->api)
@@ -219,7 +225,7 @@ class GeneController extends Controller
 			$display_list = ($this->user === null ? 25 : $this->user->preferences['display_list'] ?? 25);
         else
             $display_list = $settings['size'];
-	
+
 		return view('gene.curated', compact('display_tabs'))
 						->with('apiurl', $this->api_curated)
 						->with('pagesize', $size)
@@ -322,6 +328,71 @@ class GeneController extends Controller
         $mims = [];
         $pmids = [];
 
+		/* This is the new actionability display,   */
+		// display on the preferred actionability disease
+		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+
+		$actionability_reports = [];
+		foreach ($actionability_records as $actionability_record)
+		{
+			// we have to morph the mondo format because genegrach uses undescore in its irir
+			$mondo = str_replace(':', '_', $actionability_record->conditions[0]);
+
+			if (!isset($actionability_reports[$mondo]))
+				$actionability_reports[$mondo] = ['adult' => [], 'ped' => [], 'aliases' => []];
+
+			// extract the preferred disease 
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $record->hgnc_id && $evidence_detail['curie'] == $actionability_record->conditions[0])
+				{
+					$disease = Disease::curie($evidence_detail['curie'])->first();
+					if ($disease)
+						$actionability_record->condition_info = $disease;
+
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$mondo]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$mondo]['adult'][] = $actionability_record;
+							break;
+						case 'Pediatric':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$mondo]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$mondo]['ped'][] = $actionability_record;
+							break;
+					}
+				}
+			}
+		}
+
+		// prune out the empty diseases
+		$actionability_reports = array_filter($actionability_reports, function($v, $k) {
+    		return (!(empty($v['adult']) && empty($v['ped'])));
+		}, ARRAY_FILTER_USE_BOTH);
+
+		/* end of new actionability */
+
+
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			$node = new Nodal([	'disease' => $disease->disease->label, 'validity' => null]);
@@ -342,6 +413,7 @@ class GeneController extends Controller
 			// reapply any sorting requirements
 			if ($validity_collection->isNotEmpty())
 				$node->validity = $validity_collection->sortByDesc('order');
+
 
 			$disease_collection->push($node);
 
@@ -437,10 +509,11 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-		$show_clingen_comment = !empty($gene->notes);
+		$show_clingen_comment = false; // !empty($gene->notes);
 
+		//dd($actionability_reports);
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
-                        'pmids', 'mimflag', 'mims', 'show_clingen_comment',
+                        'pmids', 'mimflag', 'mims', 'show_clingen_comment', 'actionability_reports',
                          'disease_collection', 'total_panels', 'variant_collection', 'gc'))
 						->with('user', $this->user);;
 	}
@@ -546,10 +619,10 @@ class GeneController extends Controller
 
 		/* This is the new actionability display, but we need to hide it and continue using the old until
 		** approved.
-		*//*
+		*/
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
-		//dd($actionability_records);
+
 		$actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
 		{
@@ -568,16 +641,40 @@ class GeneController extends Controller
 					switch($actionability_record->context)
 					{
 						case 'Adult':
-							$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
 							break;
 						case 'Pediatric':
-							$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
 							break;
 					}
 				}
 			}
-		}		
-		*/
+		}
+		
+		/* end of new actionability */
+
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability
@@ -780,7 +877,7 @@ class GeneController extends Controller
 												'validity_collection', 'actionability_collection', 'pmids',
 												'variant_collection', 'validity_eps', 'variant_panels',
                                                 'pregceps', 'total_panels', 'mimflag', 'mims', 'vceps', 'somatic_collection',
-												'gceps', 'gc', 'show_clingen_comment')) // ,  'actionability_reports'))
+												'gceps', 'gc', 'show_clingen_comment', 'actionability_reports'))
 												->with('user', $this->user);
 	}
 
@@ -838,7 +935,7 @@ class GeneController extends Controller
 
 		if (Auth::guard('api')->check()) {
 			$user = Auth::guard('api')->user();
-		
+
 			$follow = $user->genes->contains('hgnc_id', $id);
 		} else {
 
@@ -986,7 +1083,7 @@ class GeneController extends Controller
 				if ($panel == null)
 					continue;
 
-				
+
                 // blacklist panels we don't want displayed
                 if ($panel->affiliate_id == "40018" || $panel->affiliate_id == "40019")
                     continue;
@@ -1383,6 +1480,22 @@ class GeneController extends Controller
 
 		// the way layouts is set up, everything is named search.  Gene is the first
 
-		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0] ]);
+		return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[0], 'byName' => 0]);
 	}
+
+    /**
+     * Display a listing of all genes.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function searchByName(Request $request)
+    {
+        // process request args
+        foreach ($request->only(['search']) as $key => $value)
+            $$key = $value;
+
+        // the way layouts is set up, everything is named search.  Gene is the first
+
+        return redirect()->route('gene-index', ['page' => 1, 'size' => 50, 'search' => $search[4], 'byName' => 1 ]);
+    }
 }
