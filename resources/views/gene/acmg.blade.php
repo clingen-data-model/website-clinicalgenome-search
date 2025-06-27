@@ -67,17 +67,17 @@
 						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (OMIM) and ClinGen (Mondo). 
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
 						have sometimes used distinct disease labels or IDs, the presence of other curations may be missing due to use of a distinct Mondo ID
-						compared to the gene-disease validity curated disease entity
+						compared to the gene-disease validity curated disease entity.
 					</li>
 					<li>
 						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
-						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>
+						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>.
 
 					</li>
 					<li>
 						The SFWG also welcomes reportability questions and clarifications around specific variants, 
 						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
-						To submit a question or suggestion, please email to clingen@clinicalgenome.org
+						To submit a question or suggestion, please email to clingen@clinicalgenome.org.
 					</li>
 				</ul>
 			</p>
