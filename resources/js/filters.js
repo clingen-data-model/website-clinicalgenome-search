@@ -676,7 +676,7 @@ $('.action-show-acmgsf').on('click', function() {
 
           $('.action-af-badge').remove();
 
-                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.3</span>');
+                var newbadge = $('<span class="badge action-acmg-badge bg-primary mr-1">ACMG SF v3.2</span>');
                 $('.filter-container').append(newbadge);
 
         }

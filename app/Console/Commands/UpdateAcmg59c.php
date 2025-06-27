@@ -43,7 +43,7 @@ class UpdateAcmg59c extends Command
 
         //$handle = fopen(base_path() . '/data/acmg59.dat', "r");
 
-        $handle = fopen(base_path() . '/data/ACMG_SF_v3.2.txt', "r");
+        $handle = fopen(base_path() . '/data/ACMG_SF_v3.3.txt', "r");
         if ($handle)
         {
             // clear the old flags just in case there are future updates
