@@ -81,7 +81,7 @@
 							<thead class="thead-labels">
 								<tr>
 								<th class="col-sm-3 th-curation-group text-left">Activity</th>
-								<th class="col-sm-2 text-left">MOI</th>
+								<th class="col-sm-2 text-left">MOI / Report</th>
 								<th class="col-sm-2 text-left">Expert Panel / Working Group</th>
                                 <th class="col-sm-2">Classification</th>
 								<th class="col-sm-1 text-center">Report &amp; Date</th>
@@ -362,7 +362,11 @@
 									</td>
 
 
-									<td class=" @if(!$loop->first) border-0 @endif "></td>
+									<td class=" @if(!$loop->first) border-0 @endif ">
+                                        @if($loop->first)
+                                            <span class="small">{{ App\Genelib::actionabilityReportString($actionability->report_label) }}</span>
+                                        @endif
+                                    </td>
 
                                     <td class=" @if(!$loop->first) border-0 @endif ">
                                         @if ($actionability->attributed_to->label == "Adult Actionability Working Group")

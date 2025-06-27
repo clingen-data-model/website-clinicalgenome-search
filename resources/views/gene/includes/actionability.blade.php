@@ -5,8 +5,11 @@
     @php global $show_border; $show_border = false; @endphp
     @php global $currations_set; $currations_set = true; @endphp
 
-<h3 id="link-actionability" class="mb-0"><img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability</h3>
-	<div class="card mb-4">
+<h3 id="link-actionability" class="mb-0 rounded-top" style="background: #FFFFFF;
+background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 28%, rgba(245, 138, 45, 1) 100%);">
+	<img style="margin-top:-4px" src="/images/clinicalActionability-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Clinical Actionability
+</h3>
+	<div class="card mb-5">
 		<div class="card-body p-0 m-0">
 			<table class="panel-body table mb-0">
 				<thead class="thead-labels">
@@ -80,21 +83,21 @@
 							@endif
 							@if ($group == 'ped')
 							<tr>
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0  @else border-0 @endif">
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0  @else border-0 @endif">
 									<div>
-										@if ($loop->first)
+										@if ($loop->first && empty($groups['adult']))
 											{{ $record->label }}
 										@endif
 									</div>
 								</td>
 
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
-									@if ($loop->first)
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
+									@if ($loop->first && empty($groups['adult']))
 										{{ App\Genelib::actionabilityReportString($report->title) }}
 									@endif
 								</td>
 
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
 									<div class="">
 										@if ($loop->first)
 											<a href="https://clinicalgenome.org/working-groups/actionability/pediatric-actionability-working-group/">Pediatric Actionability WG
@@ -103,7 +106,7 @@
 									</div>
 								</td>
 
-								<td class="@if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
+								<td class="@if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
 									<div>
 										<a href="{{ route('condition-show', $report->conditions[0]) }}">{{ $report->condition_info->label }}</a>
 										<div class="text-muted small">{{ $report->conditions[0] }} {!! displayMondoObsolete($report->condition_info->label) !!}</div>
@@ -119,7 +122,7 @@
 									</div>
 								</td>
 
-								<td class="text-center @if ($loop->first) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
+								<td class="text-center @if ($loop->first && empty($groups['adult'])) border-top @elseif ($loop->last) border-top-0 @else border-0 @endif">
 									<div>
 										@if ($loop->first)
 											<a class="btn btn-xs btn-success btn-block btn-report" style="margin-bottom: 1.35rem;" href="{{ $report->url['scoreDetails'] }}"><i class="glyphicon glyphicon-file"></i> {{ $record->displayDate($report->events['searchDates'][array_key_last($report->events['searchDates'])]) }}</a>

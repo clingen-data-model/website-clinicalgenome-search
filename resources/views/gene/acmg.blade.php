@@ -26,11 +26,6 @@
 		</div>
 
 		<div class="col-md-12 mb-2 border" style="background: #f2f7fc">
-			<!--<p class="p-2">
-				The American College of Medical Genetics and Genomics has published recommendations for reporting secondary findings
-				in clinical exome and genome sequencing.  The most recent recommendation is 
-				<a href="https://pubmed.ncbi.nlm.nih.gov/37347242/">ACMG SF v3.2</a>.
-			</p>-->
 			<p class="p-2">
 				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide guidance 
 				related to which findings are reportable from the SF gene list. The reporting guidance includes reportability by condition, and may include specific variants, 
@@ -71,17 +66,18 @@
 					<li>
 						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (OMIM) and ClinGen (Mondo). 
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
-						have sometimes used distinct disease labels or IDs, a given disease may be listed more than once if the Mondo ID is distinct
+						have sometimes used distinct disease labels or IDs, the presence of other curations may be missing due to use of a distinct Mondo ID
+						compared to the gene-disease validity curated disease entity.
 					</li>
 					<li>
 						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
-						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>
+						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>.
 
 					</li>
 					<li>
 						The SFWG also welcomes reportability questions and clarifications around specific variants, 
 						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
-						To submit a question or suggestion, please email to clingen@clinicalgenome.org
+						To submit a question or suggestion, please email to clingen@clinicalgenome.org.
 					</li>
 				</ul>
 			</p>
@@ -91,14 +87,9 @@
 				<strong>Current ACMG Secondary Findings (SF) List</strong>
 				<ul>
 					<li class="mb-2">2025 - ACMG Policy Statement with updated list of 84 genes (ACMG SF v3.3)
-						<p class="p-2">Publication:  Pending
-							<!--<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>-->
+						<p class="p-2">Publication:
+							<a href="https://www.gimjournal.org/article/S1098-3600(25)00101-7/fulltext" target="_acmg">PMID:  40568962</a>
 						</p>
-						<!--<p class="p-2">Citation:
-							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="sf">
-								Miller DT, Lee K, Abul-Husn NS, Amendola LM, Brothers K, Chung WK, Gollob MH, Gordon AS, Harrison SM, Hershberger RE, Klein TE, Richards CS, Stewart DR, Martin CL; ACMG Secondary Findings Working Group. Electronic address: documents@acmg.net. ACMG SF v3.2 list for reporting of secondary findings in clinical exome and genome sequencing: A policy statement of the American College of Medical Genetics and Genomics (ACMG). Genet Med. 2023 Aug;25(8):100866. doi: 10.1016/j.gim.2023.100866. Epub 2023 Jun 22. PMID: 37347242; PMCID: PMC10524344.
-							</a>
-						</p>-->
 					</li>
 				</ul>
 			</p>

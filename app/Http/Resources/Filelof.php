@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 use App\GeneLib;
+use Carbon\Carbon;
 
 class Filelof extends JsonResource
 {
@@ -20,10 +21,10 @@ class Filelof extends JsonResource
         return [
             'gene_symbol' => $this->symbol,
             'hgnc_id' => $this->hgnc_id,
-            'haploinsufficiency' => GeneLib::haploAssertionString($this->has_dosage_haplo),
-            'triplosensitivity' => GeneLib::triploAssertionString($this->has_dosage_triplo),
-            'online_report' => env('CG_URL_CURATIONS_DOSAGE', '#') . $this->symbol . '&subject=',
-            'date' => $this->dosage_report_date
+            'haploinsufficiency' => GeneLib::haploAssertionString($this->haplo_assertion),
+            'triplosensitivity' => GeneLib::triploAssertionString($this->triplo_assertion),
+            'online_report' => "https://search.clinicalgenome.org/kb/gene-dosage/" . $this->hgnc_id,
+            'date' => (new Carbon($this->resolved_date))->toIso8601String()
         ];
     }
 }

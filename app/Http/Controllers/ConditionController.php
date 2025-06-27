@@ -182,6 +182,65 @@ class ConditionController extends Controller
         $mims = [];
         $pmids = [];
 
+		/** Find the prefereed condition for each report */
+		/*$actionability_records = Curation::actionability()->whereJsonContains('conditions', $disease->curie)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+
+		$actionability_reports = [];
+
+	
+		foreach ($actionability_records as $actionability_record)
+		{
+			if (!isset($actionability_reports[$actionability_record->gene_hgnc_id]))
+				$actionability_reports[$actionability_record->gene_hgnc_id] = [];
+
+			if (!isset($actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title]))
+				$actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title] = ['adult' => [], 'ped' => []];
+
+			// extract the preferred disease 
+			/*
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $actionability_record->gene_hgnc_id && $evidence_detail['curie'] == $disease->curie)
+				{
+
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title]['adult'][] = $actionability_record;
+							break;
+						case 'Pediatric':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$actionability_record->gene_hgnc_id][$actionability_record->title]['ped'][] = $actionability_record;
+							break;
+					}
+				}
+			}
+		}
+		//dd($actionability_reports);
+		
+		/* end of search for preferred condition */
+
 		foreach ($record->genetic_conditions as $key => $ndisease)
 		{
 			// actionability
@@ -314,7 +373,7 @@ class ConditionController extends Controller
 
 		/**
 		 * This is the new actionability display, which can be uncommented out after its approved.
-		 */ /*
+		 */
         $actionability_records = Curation::actionability()->whereJsonContains('conditions', $id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
         $actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
@@ -324,8 +383,8 @@ class ConditionController extends Controller
             if (!isset($actionability_reports[$preferred_gene]))
 				$actionability_reports[$preferred_gene] = [];
 
-			if (!isset($actionability_reports[$preferred_gene][$actionability_record->document]))
-				$actionability_reports[$preferred_gene][$actionability_record->document] = ['adult' => null, 'ped' => null, 'aliases' => []];
+			if (!isset($actionability_reports[$preferred_gene][$actionability_record->title]))
+				$actionability_reports[$preferred_gene][$actionability_record->title] = ['adult' => null, 'ped' => null, 'aliases' => []];
 
 			// extract the preferred disease 
 			foreach ($actionability_record->evidence_details as $evidence_detail)
@@ -335,22 +394,23 @@ class ConditionController extends Controller
 					switch($actionability_record->context)
 					{
 						case 'Adult':
-							$actionability_reports[$preferred_gene][$actionability_record->document]['adult'] = $evidence_detail['curie'];
+							$actionability_reports[$preferred_gene][$actionability_record->title]['adult'] = $evidence_detail['curie'];
 							break;
 						case 'Pediatric':
-							$actionability_reports[$preferred_gene][$actionability_record->document]['ped'] = $evidence_detail['curie'];
+							$actionability_reports[$preferred_gene][$actionability_record->title]['ped'] = $evidence_detail['curie'];
 							break;
 					}
 				}
 			}
-			$actionability_reports[$preferred_gene][$actionability_record->document]['aliases'] = $evidence_detail;
+			//$actionability_reports[$preferred_gene][$actionability_record->document]['aliases'] = $evidence_detail;
 		}       
        
-        //dd($actionability_reports);
-		*/
+       // dd($disease);
+	
+	   $save_disease = $disease;  // fix for error in view that overwrites disease
 
-		return view('condition.by-activity', compact('display_tabs', 'record', 'disease', 'validity_collection', 'total_panels',
-                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection')); // , 'actionability_reports'));
+		return view('condition.by-activity', compact('display_tabs', 'record', 'disease', 'validity_collection', 'total_panels', 'save_disease',
+                                                    'mims', 'pmids', 'mimflag', 'pregceps', 'variant_collection', 'actionability_reports'));
 	}
 
 

@@ -328,6 +328,71 @@ class GeneController extends Controller
         $mims = [];
         $pmids = [];
 
+		/* This is the new actionability display,   */
+		// display on the preferred actionability disease
+		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
+
+		$actionability_reports = [];
+		foreach ($actionability_records as $actionability_record)
+		{
+			// we have to morph the mondo format because genegrach uses undescore in its irir
+			$mondo = str_replace(':', '_', $actionability_record->conditions[0]);
+
+			if (!isset($actionability_reports[$mondo]))
+				$actionability_reports[$mondo] = ['adult' => [], 'ped' => [], 'aliases' => []];
+
+			// extract the preferred disease 
+			foreach ($actionability_record->evidence_details as $evidence_detail)
+			{
+				if($evidence_detail['gene'] == $record->hgnc_id && $evidence_detail['curie'] == $actionability_record->conditions[0])
+				{
+					$disease = Disease::curie($evidence_detail['curie'])->first();
+					if ($disease)
+						$actionability_record->condition_info = $disease;
+
+					switch($actionability_record->context)
+					{
+						case 'Adult':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$mondo]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$mondo]['adult'][] = $actionability_record;
+							break;
+						case 'Pediatric':
+							// ignore duplicates
+							$check = true;
+							foreach ($actionability_reports[$mondo]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
+								$actionability_reports[$mondo]['ped'][] = $actionability_record;
+							break;
+					}
+				}
+			}
+		}
+
+		// prune out the empty diseases
+		$actionability_reports = array_filter($actionability_reports, function($v, $k) {
+    		return (!(empty($v['adult']) && empty($v['ped'])));
+		}, ARRAY_FILTER_USE_BOTH);
+
+		/* end of new actionability */
+
+
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			$node = new Nodal([	'disease' => $disease->disease->label, 'validity' => null]);
@@ -348,6 +413,7 @@ class GeneController extends Controller
 			// reapply any sorting requirements
 			if ($validity_collection->isNotEmpty())
 				$node->validity = $validity_collection->sortByDesc('order');
+
 
 			$disease_collection->push($node);
 
@@ -443,10 +509,11 @@ class GeneController extends Controller
 			'title' => $record->label . " curation results"
 		]);
 
-		$show_clingen_comment = !empty($gene->notes);
+		$show_clingen_comment = false; // !empty($gene->notes);
 
+		//dd($actionability_reports);
         return view('gene.by-disease', compact('display_tabs', 'record', 'follow', 'email', 'user',
-                        'pmids', 'mimflag', 'mims', 'show_clingen_comment',
+                        'pmids', 'mimflag', 'mims', 'show_clingen_comment', 'actionability_reports',
                          'disease_collection', 'total_panels', 'variant_collection', 'gc'))
 						->with('user', $this->user);;
 	}
@@ -503,7 +570,6 @@ class GeneController extends Controller
 									'variant' => true
 								]);
 
-
 		if ($record === null)
 			return view('error.message-standard')
 						->with('title', 'Error retrieving Gene details')
@@ -556,7 +622,7 @@ class GeneController extends Controller
 		*/
 		// display on the preferred actionability disease
 		$actionability_records = Curation::actionability()->where('gene_hgnc_id', $record->hgnc_id)->whereIn('status', [Curation::STATUS_ACTIVE, Curation::STATUS_ACTIVE_REVIEW])->get();
-		
+
 		$actionability_reports = [];
 		foreach ($actionability_records as $actionability_record)
 		{
@@ -576,19 +642,39 @@ class GeneController extends Controller
 					{
 						case 'Adult':
 							// ignore duplicates
-							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['adult']))
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['adult'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
 								$actionability_reports[$actionability_record->document]['adult'][] = $actionability_record;
 							break;
 						case 'Pediatric':
 							// ignore duplicates
-							if (!in_array($actionability_record, $actionability_reports[$actionability_record->document]['ped']))
+							$check = true;
+							foreach ($actionability_reports[$actionability_record->document]['ped'] as $element)
+							{
+								if ($element->conditions[0] == $actionability_record->conditions[0])
+								{
+									$check = false;
+									break;
+								}
+							}
+							if ($check)
 								$actionability_reports[$actionability_record->document]['ped'][] = $actionability_record;
 							break;
 					}
 				}
 			}
-		}		
-		/* end of ned actionability */
+		}
+		
+		/* end of new actionability */
+
 		foreach ($record->genetic_conditions as $key => $disease)
 		{
 			// actionability

@@ -21,6 +21,7 @@ use App\GeneLib;
 use App\Panel;
 use App\Validity;
 use App\Nodal;
+use App\Jira;
 
 class RunBlof extends Command
 {
@@ -59,7 +60,9 @@ class RunBlof extends Command
 
         switch ($report)
         {
-            
+            case 'test':
+                $this->test();
+                break;
             default:
                 echo "Running BLOF Report\n";
                 $this->blof_spreadsheet();
@@ -404,7 +407,22 @@ class RunBlof extends Command
                             }
                         }
 
+                }
 
+                // query the dci for the gene record and status
+                $dosage = Curation::dosage()->where('gene_hgnc_id', $gene->hgnc_id)->where('status', 1)->first();
+
+                $dosage_status = "Open";    // assume default of open;
+
+                if ($dosage !== null)
+                {
+                    $dosage_issue = $dosage->document;
+
+                    if (!empty($dosage_issue))
+                    {
+                        $jira = Jira::getIssue($dosage_issue);
+                        $dosage_status = $jira->status->name;
+                    }
                 }
 
                 foreach ($apmids as $pmid => $variants)
@@ -416,9 +434,25 @@ class RunBlof extends Command
 
                     }
 
+                    $save_field = null;
+                    $save_comment = null;
+
+                    // we need to run through all the loss pmid fields to find a match
+                    foreach(['customfield_10183' => 'customfield_10184', 'customfield_10185' => 'customfield_10186', 'customfield_10187' => 'customfield_10188', 'customfield_12231' => 'customfield_12237', 'customfield_12232' => 'customfield_12238', 'customfield_12233' => 'customfield_12239'] as $pmid_field => $pmid_comment)
+                    {
+                        if (isset($jira->customFields[$pmid_field]) && str_replace('PMID:', '', $pmid) == $jira->customFields[$pmid_field])
+                        {
+                            $save_field = $pmid_field;
+                            $save_comment = $pmid_comment;
+                            break;
+                        }
+                    }
+
                     $results[] = [
                         'gene_name' => "\"$gene->name\"",
                         'gene_hgnc' => "\"$gene->hgnc_id\"",
+                        'dci_issue' => "\"$dosage_issue\"",
+                        'dci_status' => "\"$dosage_status\"",
                         'disease_name' => "\"$disease->label\"",
                         'disease_mondo' => "\"$disease->curie\"",
                         'variant_name' => "\"" . implode(', ', $variants['variants']) . "\"",
@@ -427,26 +461,30 @@ class RunBlof extends Command
                         'gcep_id' => "\"$ep->curie\"",
                         'pmid' => "\"$pmid\"",
                         'pmid_comment' => '"The ClinGen ' . $ep->label . ' GCEP scored ' . count($variants['variants']) . ' unique predicted or proven null variants from this paper, including:' . "\n\n" . $pmid_comment_include . '"',
-                        'loss_comment' => '"The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' evidence supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->displayDate($summary->report_date) . ".\n\n"
+                        'loss_comment' => '"The ClinGen ' . $ep->label . ' gene curation expert panel (GCEP) identified ' . $summary->classification->label . ' supporting the role of ' . $gene->name . ' in ' . $disease->label . ', an autosomal recessive condition, on ' . $summary->displayDate($summary->report_date) . ".\n\n"
                                         . 'As part of their evaluation, the GCEP scored at least ' . $line[15] . ' unique predicted or proven null variants; these variants are documented in the PMID sections above.  In addition, at the time of this evaluation (July 2024), there were ' . $line[8] . ' total likely pathogenic/pathogenic (LP/P) variants submitted to ClinVar with review statuses of 1 star or higher; ' . $line[9] . ' of these (' . $line[10] . '), are predicted/proven null variants.  These LP/P variants are observed in ' . $line[11] . ' distinct exons.' . "\n\n"
                                         . ($line[18] == "0" ? '* There are no observations of homozygous loss of function variants in gnomAD v4.1.' . "\n\n" : '')
                                         . ($line[17] != "0" ? '* Supportive experimental evidence includes a knockout model organism with consistent phenotype([INCLUDE PMID FROM GENE CURATION]).' . "\n\n" : '')
                                         . ($line[6] == "Yes" ? '* Of note, per GTEx v8, ' . $line[7] . ' appears to be alternatively spliced and therefore has relatively low expression across multiple tissue types.' . "\n\n" : '')
                                         . 'In summary, biallelic loss of function is an ESTABLISHED mechanism of disease for ' . $gene->name . ' and autosomal recessive ' . $disease->label . '."',
-                        'link' => 'https://search.clinicalgenome.org/kb/gene-validity/' . $variants['curie']
+                        'link' => 'https://search.clinicalgenome.org/kb/gene-validity/' . $variants['curie'],
+                        'pmid_field' => "\"$save_field\"",
+                        'old_pmid_comment' => "\"" . ($jira->customFields[$save_comment] ?? '') . "\"",
+                        'old_loss_comment' => "\"" . ( $jira->customFields['custumfield_10198'] ?? '') . "\""
                     ];
+
                 }
 
-
-
-
-
+                break;
+           
             }
 
            //dd($results);
 
             $header = [   "Gene Name",
                         "Gene HGNC ID",
+                        "DCI Issue",
+                        "DCI Status",
                         "Disease Name",
                         "Disease MONDO",
                         "Variant Name",
@@ -455,10 +493,13 @@ class RunBlof extends Command
                         "PMID",
                         'PMID COmment',
                         'Loss Phenotype Comment',
-                        'Link to ClinGen Page'
+                        'Link to ClinGen Page',
+                        'Jira PMID Field',
+                        'Old PMID Comment',
+                        'Old Loss Comment'
                     ];
 
-            $handle = fopen(base_path() . '/data/BLOF Output Draft 3.tsv', "w");
+            $handle = fopen(base_path() . '/data/BLOF Output Draft 4.tsv', "w");
             fwrite($handle, implode("\t", $header) . PHP_EOL);
 
             foreach($results as $result)
@@ -468,8 +509,84 @@ class RunBlof extends Command
             }
 
             fclose($handle);
+
+            $this->update_open_issues($results);
         }
     
+    }
+
+    protected function update_open_issues($results)
+    {
+        $comment_map = ['customfield_10183' => 'customfield_10184', 
+                        'customfield_10185' => 'customfield_10186',
+                        'customfield_10187' => 'customfield_10188',
+                        'customfield_12231' => 'customfield_12237', 
+                        'customfield_12232' => 'customfield_12238',
+                        'customfield_12233' => 'customfield_12239'];
+
+        $order_map = ['customfield_10183' => "Loss PMID 1 Description", 
+                        'customfield_10185' => "Loss PMID 2 Description",
+                        'customfield_10187' => "Loss PMID 3 Description",
+                        'customfield_12231' => "Loss PMID 4 Description",
+                        'customfield_12232' => "Loss PMID 5 Description",
+                        'customfield_12233' => "Loss PMID 6 Description"];
+
+        foreach($results as $result)
+        {
+            if ($result['dci_status'] == '"Reopened"')
+            {
+                echo "Looking up issue " . $result['dci_issue'] . "\n";
+
+                $jira = Jira::getIssue(str_replace('"', '', $result['dci_issue']), 'fields', true);
+
+                if ($jira->fields->status->name == 'Reopened')
+                {
+                    // we need the pmid field from results, and we need to identify the pmid order number
+                    $pmid_field = str_replace('"', '', $result['pmid_field']);
+
+                    // per request, we overwrite comments that are a year or more old, and append if under a year
+                    $last_pmid_comment = null;
+                    $last_loss_comment = null;
+
+                    foreach($jira->changelog->histories as $history)
+                    {
+                        foreach ($history->items as $item)
+                        {
+                            if ($item->field == $order_map[$pmid_field])
+                                $last_pmid_comment = $history->created;
+                            else if ($item->field == 'Loss phenotype comments')
+                                $last_loss_comment = $history->created;
+                        }
+                    }
+
+                    // morecho $jira->fields->customFields[$comment_map[$pmid_field]] . "\n\n" .  trim($result['pmid_comment'], ' "') . "\n";
+
+                    $issue = trim($result['dci_issue'], ' "');
+
+                    echo "Updating $issue \n";
+
+                    if ($last_pmid_comment === null || Carbon::parse($last_pmid_comment)->diffInYears(Carbon::now()) > 1)
+                        $key = Jira::updateIssue($issue, $comment_map[$pmid_field], trim($result['pmid_comment'], ' "'));
+                    else
+                        $key = Jira::updateIssue($issue, $comment_map[$pmid_field],
+                                $jira->fields->customFields[$comment_map[$pmid_field]] . "\n\n" .  trim($result['pmid_comment'], ' "'));
+
+                    if ($last_loss_comment === null || Carbon::parse($last_loss_comment)->diffInYears(Carbon::now()) > 1)
+                        $key = Jira::updateIssue($issue, 'customfield_10198', trim($result['loss_comment'], ' "'));
+                    else
+                        $key = Jira::updateIssue($issue, 'customfield_10198',
+                                $jira->fields->customFields['customfield_10198'] . "\n\n" .  trim($result['loss_comment'], ' "'));
+
+                }
+            }
+            die($key);
+        }
+    }
+
+
+    public function test()
+    {
+        Jira::updateIssue('"ISCA-25754"', 'customfield_11635',  0);
     }
 
 

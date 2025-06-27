@@ -1,0 +1,182 @@
+Gene Symbol	HGNC ID	MONDO Disease Name	MONDO ID	MOI	Gene-Disease Validity	Reportable as SF
+ABCD1	HGNC:61	adrenoleukodystrophy	MONDO:0018544	XL	Definitive	Yes
+ACTA2	HGNC:130	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+ACTC1	HGNC:143	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+ACTC1	HGNC:143	dilated cardiomyopathy	MONDO:0005021	AD	Moderate	Yes
+ACTC1	HGNC:143	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+ACVRL1	HGNC:175	telangiectasia, hereditary hemorrhagic, type 2	MONDO:0010880	AD	Definitive	Yes
+APC	HGNC:583	gastric adenocarcinoma and proximal polyposis of the stomach	MONDO:0017790	AD	Definitive	No
+APC	HGNC:583	classic or attenuated familial adenomatous polyposis	MONDO:0021057	AD	Definitive	Yes
+APOB	HGNC:603	hypercholesterolemia, autosomal dominant, type B	MONDO:0007751	AD	Definitive	Yes
+APOB	HGNC:603	familial hypobetalipoproteinemia 1	MONDO:0014252	SD	Definitive	No
+ATP7B	HGNC:870	Wilson disease	MONDO:0010200	AR	Definitive	Yes
+BAG3	HGNC:939	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+BAG3	HGNC:939	myofibrillar myopathy	MONDO:0018943	AD	Definitive	Yes
+BMPR1A	HGNC:1076	juvenile polyposis syndrome	MONDO:0017380	AD	Definitive	Yes
+BMPR1A	HGNC:1076	pulmonary arterial hypertension	MONDO:0015924	Other	Disputed	NA
+BRCA1	HGNC:1100	BRCA1-related cancer predisposition	MONDO:0700268	AD	Definitive	Yes
+BRCA1	HGNC:1100	Fanconi anemia, complementation group S	MONDO:0054748	AR	Definitive	Yes
+BRCA2	HGNC:1101	Fanconi anemia complementation group D1	MONDO:0011584	AR	Definitive	Yes
+BRCA2	HGNC:1101	BRCA2-related cancer predisposition	MONDO:0700269	AD	Definitive	Yes
+BTD	HGNC:1122	biotinidase deficiency	MONDO:0009665	AR	Definitive	Yes
+BTD	HGNC:1122	Leigh syndrome	MONDO:0009723	AR	Moderate	NA
+CACNA1S	HGNC:1397	malignant hyperthermia, susceptibility to, 5	MONDO:0011163	AD	Moderate	Yes
+CALM1	HGNC:1442	long QT syndrome	MONDO:0002442	AD	Definitive	Yes
+CALM1	HGNC:1442	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Moderate	Yes
+CALM2	HGNC:1445	long QT syndrome	MONDO:0002442	AD	Definitive	Yes
+CALM2	HGNC:1445	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Moderate	Yes
+CALM3	HGNC:1449	long QT syndrome	MONDO:0002442	AD	Definitive	Yes
+CALM3	HGNC:1449	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Moderate	Yes
+CASQ2	HGNC:1513	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AR	Definitive	Yes
+CASQ2	HGNC:1513	hypertrophic cardiomyopathy	MONDO:0005045	AD	Disputed	NA
+CASQ2	HGNC:1513	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Moderate	No
+COL3A1	HGNC:2201	Ehlers-Danlos syndrome, vascular type	MONDO:0017314	AD	Definitive	Yes
+CYP27A1	HGNC:2605	cerebrotendinous xanthomatosis	MONDO:0008948	AR	Definitive	Yes
+DES	HGNC:2770	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+DES	HGNC:2770	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Moderate	Yes
+DSC2	HGNC:3036	familial isolated arrhythmogenic right ventricular dysplasia	MONDO:0016342	AD	Definitive	Yes
+DSG2	HGNC:3049	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Definitive	Yes
+DSG2	HGNC:3049	dilated cardiomyopathy	MONDO:0005021	AD	Limited	NA
+DSP	HGNC:3052	arrhythmogenic cardiomyopathy with wooly hair and keratoderma	MONDO:0011581	AD	Definitive	Yes
+DSP	HGNC:3052	hypertrophic cardiomyopathy	MONDO:0005045	AD	Disputed	NA
+ENG	HGNC:3349	telangiectasia, hereditary hemorrhagic, type 1	MONDO:0008535	AD	Definitive	Yes
+ENG	HGNC:3349	juvenile polyposis syndrome	MONDO:0017380	AD	Limited	NA
+FBN1	HGNC:3603	Marfan syndrome	MONDO:0007947	AD	Definitive	Yes
+FBN1	HGNC:3603	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+FBN1	HGNC:3603	Shprintzen-Goldberg syndrome	MONDO:0008426	AD	Disputed	NA
+FLNC	HGNC:3756	myofibrillar myopathy	MONDO:0018943	AD	Definitive	Yes
+FLNC	HGNC:3756	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+GAA	HGNC:4065	glycogen storage disease II	MONDO:0009290	AR	Definitive	Yes
+GLA	HGNC:4296	Fabry disease	MONDO:0010526	XL	Definitive	Yes
+HFE	HGNC:4886	hereditary hemochromatosis	MONDO:0006507	AR	Definitive	Yes
+HNF1A	HGNC:11621	monogenic diabetes	MONDO:0015967	AD	Definitive	Yes
+KCNH2	HGNC:6251	long QT syndrome	MONDO:0002442	AD	Definitive	Yes
+KCNH2	HGNC:6251	short QT syndrome	MONDO:0000453	AD	Definitive	Yes
+KCNH2	HGNC:6251	Brugada syndrome	MONDO:0015263	AD	Disputed	NA
+KCNQ1	HGNC:6294	Jervell and Lange-Nielsen syndrome	MONDO:0002441	AR	Definitive	Yes
+KCNQ1	HGNC:6294	long QT syndrome	MONDO:0002442	AD	Definitive	Yes
+KCNQ1	HGNC:6294	hypertrophic cardiomyopathy	MONDO:0005045	AD	Disputed	NA
+KCNQ1	HGNC:6294	short QT syndrome	MONDO:0000453	AD	Strong	Yes
+LDLR	HGNC:6547	hypercholesterolemia, familial, 1	MONDO:0007750	SD	Definitive	Yes
+LMNA	HGNC:6636	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+LMNA	HGNC:6636	lipodystrophy	MONDO:0006573	SD	Definitive	Pending
+LMNA	HGNC:6636	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+MAX	HGNC:6913	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+MEN1	HGNC:7010	multiple endocrine neoplasia type 1	MONDO:0007540	AD	Definitive	Yes
+MLH1	HGNC:7127	Lynch syndrome	MONDO:0005835	AD	Definitive	Yes
+MLH1	HGNC:7127	mismatch repair cancer syndrome 1	MONDO:0010159	AR	Definitive	Yes
+MLH1	HGNC:7127	hereditary breast carcinoma	MONDO:0016419	AD	Refuted	NA
+MSH2	HGNC:7325	Lynch syndrome	MONDO:0005835	AD	Definitive	Yes
+MSH2	HGNC:7325	mismatch repair cancer syndrome 1	MONDO:0010159	AR	Definitive	Yes
+MSH2	HGNC:7325	hereditary breast carcinoma	MONDO:0016419	AD	Refuted	NA
+MSH6	HGNC:7329	mismatch repair cancer syndrome 1	MONDO:0010159	AR	Definitive	Yes
+MSH6	HGNC:7329	Lynch syndrome	MONDO:0005835	AD	Definitive	Yes
+MSH6	HGNC:7329	hereditary breast carcinoma	MONDO:0016419	AD	Disputed	NA
+MUTYH	HGNC:7527	familial adenomatous polyposis 2	MONDO:0012041	AR	Definitive	Yes
+MUTYH	HGNC:7527	familial ovarian cancer	MONDO:0016248	AR	Disputed	NA
+MUTYH	HGNC:7527	familial ovarian cancer	MONDO:0016248	AD	Disputed	NA
+MUTYH	HGNC:7527	hereditary breast carcinoma	MONDO:0016419	AR	Disputed	NA
+MUTYH	HGNC:7527	colorectal cancer	MONDO:0005575	AD	Disputed	NA
+MUTYH	HGNC:7527	hereditary breast carcinoma	MONDO:0016419	AD	Refuted	NA
+MYBPC3	HGNC:7551	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+MYBPC3	HGNC:7551	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+MYBPC3	HGNC:7551	congenital heart disease	MONDO:0005453	AD	Limited	NA
+MYBPC3	HGNC:7551	dilated cardiomyopathy	MONDO:0005021	AD	Limited	NA
+MYH11	HGNC:7569	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+MYH11	HGNC:7569	congenital heart disease	MONDO:0005453	AD	Limited	NA
+MYH7	HGNC:7577	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+MYH7	HGNC:7577	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+MYH7	HGNC:7577	MYH7-related skeletal myopathy	MONDO:0008050	AD	Definitive	No
+MYH7	HGNC:7577	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+MYH7	HGNC:7577	congenital heart disease	MONDO:0005453	AD	Limited	NA
+MYL2	HGNC:7583	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+MYL2	HGNC:7583	hypertrophic cardiomyopathy 10	MONDO:0012112	AD	Definitive	Yes
+MYL2	HGNC:7583	dilated cardiomyopathy	MONDO:0005021	AD	Limited	NA
+MYL2	HGNC:7583	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+MYL3	HGNC:7584	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+MYL3	HGNC:7584	dilated cardiomyopathy	MONDO:0005021	AD	Disputed	NA
+MYL3	HGNC:7584	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+NF2	HGNC:7773	NF2-related schwannomatosis	MONDO:0007039	AD	Definitive	Yes
+OTC	HGNC:8512	ornithine carbamoyltransferase deficiency	MONDO:0010703	XL	Definitive	Yes
+PALB2	HGNC:26144	Fanconi anemia complementation group N	MONDO:0012565	AR	Definitive	Yes
+PALB2	HGNC:26144	PALB2-related cancer predisposition	MONDO:0700272	AD	Definitive	Yes
+PCSK9	HGNC:20001	hypercholesterolemia, autosomal dominant, 3	MONDO:0011369	AD	Definitive	Yes
+PKP2	HGNC:9024	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Definitive	Yes
+PKP2	HGNC:9024	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Disputed	NA
+PKP2	HGNC:9024	dilated cardiomyopathy	MONDO:0005021	AD	Disputed	NA
+PKP2	HGNC:9024	Brugada syndrome 1	MONDO:0011001	AD	Disputed	NA
+PLN	HGNC:9080	intrinsic cardiomyopathy	MONDO:0000591	AD	Definitive	Yes
+PLN	HGNC:9080	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Moderate	Yes
+PMS2	HGNC:9122	Lynch syndrome	MONDO:0005835	AD	Definitive	Yes
+PMS2	HGNC:9122	mismatch repair cancer syndrome 1	MONDO:0010159	AR	Definitive	Yes
+PMS2	HGNC:9122	hereditary breast carcinoma	MONDO:0016419	AD	Disputed	NA
+PRKAG2	HGNC:9386	PRKAG2-related cardiomyopathy	MONDO:0800484	AD	Definitive	Yes
+PTEN	HGNC:9588	PTEN hamartoma tumor syndrome	MONDO:0017623	AD	Definitive	Yes
+RB1	HGNC:9884	retinoblastoma	MONDO:0008380	AD	Definitive	Yes
+RBM20	HGNC:27424	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+RBM20	HGNC:27424	hypertrophic cardiomyopathy	MONDO:0005045	AD	Limited	NA
+RET	HGNC:9967	multiple endocrine neoplasia type 2B	MONDO:0008082	AD	Definitive	Yes
+RET	HGNC:9967	multiple endocrine neoplasia type 2A	MONDO:0008234	AD	Definitive	Yes
+RPE65	HGNC:10294	RPE65-related recessive retinopathy	MONDO:0100368	AR	Definitive	Yes
+RPE65	HGNC:10294	RPE65-related dominant retinopathy	MONDO:0100452	AD	Strong	No
+RYR1	HGNC:10483	malignant hyperthermia, susceptibility to, 1	MONDO:0007783	AD	Definitive	Yes
+RYR1	HGNC:10483	RYR1-related myopathy	MONDO:0100150	AR	Definitive	No
+RYR1	HGNC:10483	RYR1-related myopathy	MONDO:0100150	AD	Definitive	No
+RYR2	HGNC:10484	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Definitive	Yes
+RYR2	HGNC:10484	hypertrophic cardiomyopathy	MONDO:0005045	AD	Limited	NA
+RYR2	HGNC:10484	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Refuted	NA
+SCN5A	HGNC:10593	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+SCN5A	HGNC:10593	familial long QT syndrome	MONDO:0019171	AD	Definitive	Yes
+SCN5A	HGNC:10593	Brugada syndrome	MONDO:0015263	AD	Definitive	Yes
+SCN5A	HGNC:10593	short QT syndrome	MONDO:0000453	AD	Disputed	NA
+SCN5A	HGNC:10593	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AD	Disputed	NA
+SCN5A	HGNC:10593	congenital heart disease	MONDO:0005453	AD	Disputed	NA
+SCN5A	HGNC:10593	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+SDHAF2	HGNC:26034	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+SDHB	HGNC:10681	mitochondrial disease	MONDO:0044970	AR	Definitive	No
+SDHB	HGNC:10681	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+SDHC	HGNC:10682	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+SDHC	HGNC:10682	mitochondrial disease	MONDO:0044970	Other	No Known Disease Relationship	NA
+SDHD	HGNC:10683	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+SDHD	HGNC:10683	mitochondrial disease	MONDO:0044970	AR	Limited	NA
+SMAD3	HGNC:6769	aneurysm-osteoarthritis syndrome	MONDO:0013426	AD	Definitive	Yes
+SMAD3	HGNC:6769	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+SMAD4	HGNC:6770	Myhre syndrome	MONDO:0007688	AD	Definitive	No
+SMAD4	HGNC:6770	juvenile polyposis/hereditary hemorrhagic telangiectasia syndrome	MONDO:0008278	AD	Definitive	Yes
+SMAD4	HGNC:6770	pulmonary arterial hypertension	MONDO:0015924	AD	Disputed	NA
+STK11	HGNC:11389	Peutz-Jeghers syndrome	MONDO:0008280	AD	Definitive	Yes
+STK11	HGNC:11389	familial ovarian cancer	MONDO:0016248	AD	No Known Disease Relationship	NA
+TGFBR1	HGNC:11772	multiple self-healing squamous epithelioma	MONDO:0007566	AD	Definitive	No
+TGFBR1	HGNC:11772	Loeys-Dietz syndrome	MONDO:0018954	AD	Definitive	Yes
+TGFBR1	HGNC:11772	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+TGFBR2	HGNC:11773	Loeys-Dietz syndrome 2	MONDO:0012427	AD	Definitive	Yes
+TGFBR2	HGNC:11773	familial thoracic aortic aneurysm and aortic dissection	MONDO:0019625	AD	Definitive	Yes
+TMEM127	HGNC:26038	hereditary pheochromocytoma-paraganglioma	MONDO:0017366	AD	Definitive	Yes
+TMEM43	HGNC:28472	arrhythmogenic right ventricular dysplasia 5	MONDO:0011459	AD	Definitive	Yes
+TNNC1	HGNC:11943	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+TNNC1	HGNC:11943	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+TNNC1	HGNC:11943	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+TNNI3	HGNC:11947	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+TNNI3	HGNC:11947	dilated cardiomyopathy	MONDO:0005021	AD	Moderate	Yes
+TNNI3	HGNC:11947	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+TNNT2	HGNC:11949	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+TNNT2	HGNC:11949	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+TNNT2	HGNC:11949	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+TP53	HGNC:11998	Li-Fraumeni syndrome	MONDO:0018875	AD	Definitive	Yes
+TPM1	HGNC:12010	hypertrophic cardiomyopathy	MONDO:0005045	AD	Definitive	Yes
+TPM1	HGNC:12010	dilated cardiomyopathy	MONDO:0005021	AD	Moderate	Yes
+TPM1	HGNC:12010	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	No Known Disease Relationship	NA
+TRDN	HGNC:12261	catecholaminergic polymorphic ventricular tachycardia	MONDO:0017990	AR	Definitive	Yes
+TRDN	HGNC:12261	long QT syndrome	MONDO:0002442	AR	Strong	Yes
+TSC1	HGNC:12362	tuberous sclerosis	MONDO:0001734	AD	Definitive	Yes
+TSC2	HGNC:12363	tuberous sclerosis	MONDO:0001734	AD	Definitive	Yes
+TTN	HGNC:12403	dilated cardiomyopathy	MONDO:0005021	AD	Definitive	Yes
+TTN	HGNC:12403	TTN-related myopathy	MONDO:0100175	AR	Definitive	No
+TTN	HGNC:12403	arrhythmogenic right ventricular cardiomyopathy	MONDO:0016587	AD	Limited	NA
+TTN	HGNC:12403	hypertrophic cardiomyopathy	MONDO:0005045	AD	Limited	NA
+TTN	HGNC:12403	myopathy, myofibrillar, 9, with early respiratory failure	MONDO:0011362	AD	Moderate	No
+TTN	HGNC:12403	tibial muscular dystrophy	MONDO:0010870	AD	Moderate	No
+TTR	HGNC:12405	hereditary ATTR amyloidosis	MONDO:0017132	AD	Definitive	Yes
+VHL	HGNC:12687	von Hippel-Lindau disease	MONDO:0008667	AD	Definitive	Yes
+WT1	HGNC:12796	Wilms tumor 1	MONDO:0008679	AD	Definitive	Yes
+WT1	HGNC:12796	Denys-Drash syndrome	MONDO:0008682	AD	Definitive	Pending

@@ -255,10 +255,10 @@ class ValidityController extends Controller
         // get the pmids
         $pmid_names = Pmid::whereIn('pmid', $pmids)->get();
 
-        $pmids = [];
+        $other_pmids = [];
 
         foreach ($pmid_names as $pmid)
-            $pmids[$pmid->pmid] = [
+            $other_pmids["$pmid->pmid"] = [
                 'title' => $pmid->sortfirstauthor . ', et al, ' . $pmid->pubdate . ', ' . $pmid->title,
                 //     'author' => $pmid->sortfirstauthor,
                 //    'published' =>  $pmid->pubdate,
@@ -486,11 +486,12 @@ class ValidityController extends Controller
         // get history
         $activities = Activity::sid($t)->published()->displayable()->orderBy('id','desc')->get();
 
+        //dd($record->las_rationale);
         // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',
             compact('gcilink', 'showzygosity', 'showfunctionaldata', 'propoints', 'display_tabs', 'record', 'moiflag', 'extrecord', 'ge_count', 'exp_count', 'cc_count',
-                    'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'mims', 'clfs', 'clfswopb', 'slug', 'activities')
+                    'cls_count', 'cls_pt_count', 'clfs_count', 'cls_sum', 'pmids', 'other_pmids', 'mims', 'clfs', 'clfswopb', 'slug', 'activities')
         )
             ->with('user', $this->user);
     }
