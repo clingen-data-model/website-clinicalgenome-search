@@ -57,7 +57,11 @@
 								<strong>Reporting guidance</strong>, when available, appears above the ClinGen Curated Diseases table for each gene.
 								<ul>
 									<li>
-										If no additional considerations are available, the entry will say “There are no reporting guidance details at this time”
+										If no additional considerations are available, the entry will say “There are no reporting guidance details at this time”.
+									</li>
+									<li>
+										Please note that while some of the reporting guidances are direct footnotes included in the SFWG’s publications, 
+										others are provided by ClinGen Expert Panels, discussion with the SFWG or via other expert input.
 									</li>
 								</ul>
 							</li>
