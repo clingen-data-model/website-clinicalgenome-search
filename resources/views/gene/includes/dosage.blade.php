@@ -110,7 +110,10 @@ background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255,
 					@if(!empty($record->dosage_curation ) && !empty($record->dosage_curation_map))
 					@if($header_dos == true)
 					@php global $currations_set; $currations_set = true; @endphp
-					<h3 id="link-dosage-curation" class="mb-0"><img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity</h3>
+					<h3 id="link-dosage-curation" class="mb-0 mt-6 rounded-top" style="background: #FFFFFF;
+background: linear-gradient(90deg,rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 27%, rgba(235, 52, 118, 1) 100%);">
+						<img style="margin-top:-4px" src="/images/dosageSensitivity-on.png" width="40" height="40" class="hidden-sm hidden-xs"> Dosage Sensitivity
+					</h3>
 					<div class="card mb-4">
 						<div class="card-body p-0 m-0">
                             <!--

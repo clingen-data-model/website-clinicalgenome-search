@@ -212,8 +212,8 @@ class GeneLib extends Model
           '3' => 'Sufficient Evidence for ####',
           '30' => 'Gene Associated with Autosomal Recessive Phenotype',
           '30: Gene associated with autosomal recessive phenotype' => 'Gene Associated with Autosomal Recessive Phenotype',
-          '40' => 'Dosage Sensitivity Unlikely',
-          '40: Dosage sensitivity unlikely' => 'Dosage Sensitivity Unlikely',
+          '40' => 'Dosage Sensitivity Unlikely for ####',
+          '40: Dosage sensitivity unlikely for ####' => 'Dosage Sensitivity Unlikely',
           'Not yet evaluated' => 'Not yet evaluated'
      ];
 
