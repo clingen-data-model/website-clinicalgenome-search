@@ -359,14 +359,18 @@
     <script>
         var tabRequests = {};
         $(document).ready( () => {
+            const savedTab = localStorage.getItem('activeTab') || 'gene';
+
             tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
-                if (tabRequests.active === 'condition') {
+                if (savedTab === 'condition') {
                     enableConditionSearch()
-                } else if (tabRequests.active === 'gene' && parseInt(tabRequests.by_name) === 1) {
+                } else if (savedTab  === 'gene-name') {
                     enableGeneNameSearch()
-                } else if (tabRequests.active === 'region') {
+                } else if (savedTab === 'region-37') {
+                    enableRegion37Search()
+                } else if (savedTab === 'region-38') {
                     enableRegion38Search()
-                } else if (tabRequests.active === 'drug') {
+                } else if (savedTab === 'drug') {
                     enableDrugSearch()
                 } else {
                     enableGeneSearch()
@@ -387,6 +391,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Gene Symbol ");
+            localStorage.setItem('activeTab', 'gene');
         }
 
         function enableGeneNameSearch()
@@ -403,6 +408,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Gene Name ");
+            localStorage.setItem('activeTab', 'gene-name');
         }
 
         function enableConditionSearch()
@@ -419,6 +425,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Disease Name  ");
+            localStorage.setItem('activeTab', 'disease');
         }
 
         function enableDrugSearch()
@@ -435,6 +442,7 @@
             $( ".typeQueryLabel").text("Drug Name  ");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
+            localStorage.setItem('activeTab', 'drug');
         }
 
         function enableRegion37Search()
@@ -452,6 +460,7 @@
             $( ".buildtype").val("GRCh37");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
+            localStorage.setItem('activeTab', 'region-37');
         }
 
         function enableRegion38Search()
@@ -469,6 +478,7 @@
             $( ".buildtype").val("GRCh38");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
+            localStorage.setItem('activeTab', 'region-38');
         }
 
       $( ".typeQueryGene" ).click(function() {
