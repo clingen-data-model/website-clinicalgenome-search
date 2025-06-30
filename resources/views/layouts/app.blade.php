@@ -359,7 +359,7 @@
     <script>
         var tabRequests = {};
         $(document).ready( () => {
-            const savedTab = localStorage.getItem('activeTab') || 'gene';
+            const savedTab = sessionStorage.getItem('activeTab') || 'gene';
 
             tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
                 if (savedTab === 'condition') {
@@ -391,7 +391,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Gene Symbol ");
-            localStorage.setItem('activeTab', 'gene');
+            sessionStorage.setItem('activeTab', 'gene');
         }
 
         function enableGeneNameSearch()
@@ -408,7 +408,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Gene Name ");
-            localStorage.setItem('activeTab', 'gene-name');
+            sessionStorage.setItem('activeTab', 'gene-name');
         }
 
         function enableConditionSearch()
@@ -425,7 +425,7 @@
             $( ".inputQueryRegion" ).hide();
             $( ".inputQueryRegion .queryRegion" ).hide();
             $( ".typeQueryLabel").text("Disease Name  ");
-            localStorage.setItem('activeTab', 'disease');
+            sessionStorage.setItem('activeTab', 'condition');
         }
 
         function enableDrugSearch()
@@ -442,7 +442,7 @@
             $( ".typeQueryLabel").text("Drug Name  ");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
-            localStorage.setItem('activeTab', 'drug');
+            sessionStorage.setItem('activeTab', 'drug');
         }
 
         function enableRegion37Search()
@@ -460,7 +460,7 @@
             $( ".buildtype").val("GRCh37");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
-            localStorage.setItem('activeTab', 'region-37');
+            sessionStorage.setItem('activeTab', 'region-37');
         }
 
         function enableRegion38Search()
@@ -478,7 +478,7 @@
             $( ".buildtype").val("GRCh38");
             $( ".inputQueryGeneName" ).hide();
             $( ".inputQueryGene .queryGeneName" ).hide();
-            localStorage.setItem('activeTab', 'region-38');
+            sessionStorage.setItem('activeTab', 'region-38');
         }
 
       $( ".typeQueryGene" ).click(function() {
