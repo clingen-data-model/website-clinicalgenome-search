@@ -122,23 +122,24 @@ class Jira extends Model
                     return null;
 
                 $response = $results->issues[0];
+
                 $issue = $response->key;
                 $response = $response->fields;
-                //dd($response);
             }
             else
                 $issue = $issue->issue;
         }
         else
             $issue = $gene;
-
+//dd($response);
         if ($response === null)
+        {
             $response = self::getIssue($issue, 'changelog', true);
 
             // temp adjustment to accomodate changelog while dci model is being backported
             $changelog = $response->changelog;
             $response = $response->fields;
-
+        }
           // map the jira response into a somewhat sane structure
 		$node = new Nodal([
                'label' => $response->customfield_10030 ?? 'unknown',
