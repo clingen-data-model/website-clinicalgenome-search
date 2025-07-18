@@ -598,6 +598,9 @@ class Dosage extends Model
                      dd($issue->fields->status->name);
                  }
 
+                 if (!isset($record->customfield_12230))
+                    continue;
+
                 // only store the minimal amount of precuration information
                 $gene = Gene::hgnc($record->customfield_12230)->first();
 
@@ -773,6 +776,9 @@ class Dosage extends Model
                                                 . ' to ' . $item->to . ' on ' . $item->when;
             }
           }
+
+          if (!isset($record->customfield_12230))
+            continue;
 
           $gene = Gene::hgnc($record->customfield_12230)->first();
 
