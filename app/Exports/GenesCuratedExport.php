@@ -41,7 +41,7 @@ class GenesCuratedExport implements FromCollection, WithHeadings
                         if(isset($gene->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal)) {
                             $report_date = strtotime($gene->dosage_curation->report_date);
                             $report_date = date("m/d/Y", $report_date);
-                    $triplosensitivity_assertion .= "" . $gene->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal . " - " . \App\GeneLib::haploAssertionString($gene->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal ?? null) . " (" . $report_date . ")";
+                            $triplosensitivity_assertion .= "" . $gene->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal . " - " . \App\GeneLib::triploAssertionString($gene->dosage_curation->triplosensitivity_assertion->dosage_classification->ordinal ?? null) . " (" . $report_date . ")";
                         }
                     //}
                     $dosage_report = route('dosage-show', $gene->hgnc_id);
