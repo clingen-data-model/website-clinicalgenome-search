@@ -195,7 +195,6 @@ class Panel extends Model
         return $this->belongsTo(Panel::class, 'parent_id');
     }
 
-
 	/**
      * Query scope by ident
      *
@@ -775,7 +774,6 @@ class Panel extends Model
         if ($eventType !== 'group_checkpoint_event') return true;
 
 
-
 //        if ($members = data_get($data, 'members')) {
 //            collect($members)->each( function ($member) {
 //                $memberObj = Member::firstOrNew([
@@ -793,9 +791,11 @@ class Panel extends Model
 //        }
 
         switch ($eventType) {
+
             case 'group_checkpoint_event':
                 app(PanelImportService::class)->create($data);
                 break;
+
             case 'ep_definition_approved':
 
                 $activity = $this->activities()->firstOrNew([
