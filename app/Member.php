@@ -267,6 +267,8 @@ class Member extends Model
             'past member'
         ];
 
+        $memberPositions = array_map('strtolower', $memberPositions);
+
         foreach( $hierarchy as $position) {
             if (in_array($position, $memberPositions)) {
                 return $position;

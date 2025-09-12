@@ -164,7 +164,9 @@ class QueryKafka extends Command
                             $payload = json_decode($message->payload, true);
                             $a = $stream->parser;
                             $a($payload, $message->timestamp);
-                            $stream->update(['offset' => $message->offset + 1]);
+                            $stream->offset++;
+                            $stream->save();
+                            //$stream->update(['offset' => $offset + 1]);
                         } else {
                             // there is strong reasons to pass the entire message to the parser,
                             // as we do with actionability and dosage above.  All new parsers should
@@ -174,7 +176,6 @@ class QueryKafka extends Command
                             $a = $stream->parser;
                             $a($payload);
                             $stream->update(['offset' => $message->offset + 1]);
-
                         }
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Concerns\HttpClient;
+use App\Services\PanelImportService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +53,8 @@ class Panel extends Model
           'member' => 'json|nullable',
           'summary' => 'string|nullable',
           'type' => 'integer',
-          'status' => 'integer'
+          'status' => 'integer',
+          'parent_id' => 'integer'
 	];
 
 	/**
@@ -77,7 +79,7 @@ class Panel extends Model
                             'cdwg_parent_name', 'member', 'contacts',
                            'summary', 'type', 'status', 'wg_status', 'metadata_search_terms', 'is_active',
                            'group_clinvar_org_id', 'inactive_date', 'url_clinvar', 'url_cspec', 'url_curations',
-                            'url_erepo', 'gpm_id'
+                            'url_erepo', 'gpm_id', 'parent_id'
                             ];
 
 	/**
@@ -186,6 +188,11 @@ class Panel extends Model
     public function members()
     {
         return $this->belongsToMany(Member::class)->withPivot(['role', 'group_roles']);
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Panel::class, 'parent_id');
     }
 
 
@@ -712,47 +719,62 @@ class Panel extends Model
 
     public function parser($data, $timestamp)
     {
-        $panel = new static();
+        $schema = data_get($data, 'schema_version');
 
-        if ($affiliationId = data_get($data, 'data.expert_panel.affiliation_id')) {
-            $panelObj = $panel->firstOrNew([
-                'affiliate_id' => $affiliationId
-            ]);
+        $eventType = data_get($data, 'event_type');
 
-            $panelObj->gpm_id = data_get($data, 'data.expert_panel.id');
-            $panelObj->affiliate_type = data_get($data, 'data.expert_panel.type');
+        if ($schema !== '2.0.0') return true;
+        if ($eventType !== 'group_checkpoint_event') return true;
 
-            if ($summary = data_get($data, 'data.scope.statement')) {
-                $panelObj->summary = $summary;
-            }
+        app(PanelImportService::class)->create($data);
+        //$panel = new static();
 
-            if ($longName = data_get($data, 'data.expert_panel.long_name')) {
-                $panelObj->title = $longName;
-                $panelObj->name = $longName;
-            }
-
-            if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
-                $panelObj->title_abbreviated = $shortName;
-                $panelObj->title_short = $shortName;
-            }
-
-
-            if ($name = data_get($data, 'data.expert_panel.name')) {
-                $panelObj->name = $name;
-                $panelObj->title = $name;
-            }
-
-            $panelObj->save();
-
-            $panelObj->syncFromKafka($data, $timestamp);
-            $panelObj->pushToProcessWire();
-        }
+//        if ($affiliationId = data_get($data, 'data.expert_panel.affiliation_id')) {
+//            $panelObj = $panel->firstOrNew([
+//                'affiliate_id' => $affiliationId
+//            ]);
+//
+//            $panelObj->gpm_id = data_get($data, 'data.expert_panel.id');
+//            $panelObj->affiliate_type = data_get($data, 'data.expert_panel.type');
+//
+//            if ($summary = data_get($data, 'data.scope.statement')) {
+//                $panelObj->summary = $summary;
+//            }
+//
+//            if ($longName = data_get($data, 'data.expert_panel.long_name')) {
+//                $panelObj->title = $longName;
+//                $panelObj->name = $longName;
+//            }
+//
+//            if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
+//                $panelObj->title_abbreviated = $shortName;
+//                $panelObj->title_short = $shortName;
+//            }
+//
+//
+//            if ($name = data_get($data, 'data.expert_panel.name')) {
+//                $panelObj->name = $name;
+//                $panelObj->title = $name;
+//            }
+//
+//            $panelObj->save();
+//
+//            $panelObj->syncFromKafka($data, $timestamp);
+//            $panelObj->pushToProcessWire();
+//        }
 
     }
 
     public function syncFromKafka($data, $timestamp = null)
     {
+        $schema = data_get($data, 'schema_version');
+
         $eventType = data_get($data, 'event_type');
+
+        if ($schema !== '2.0.0') return true;
+        if ($eventType !== 'group_checkpoint_event') return true;
+
+
 
 //        if ($members = data_get($data, 'members')) {
 //            collect($members)->each( function ($member) {
@@ -771,6 +793,9 @@ class Panel extends Model
 //        }
 
         switch ($eventType) {
+            case 'group_checkpoint_event':
+                app(PanelImportService::class)->create($data);
+                break;
             case 'ep_definition_approved':
 
                 $activity = $this->activities()->firstOrNew([
@@ -929,7 +954,6 @@ class Panel extends Model
                 if ($members = data_get($data, 'data.members')) {
                     foreach ($members as $member) {
                         $memberObj = $this->validateMemberFromKafka($member);
-
                         if (null !== $memberObj) {
                             $this->members()->syncWithoutDetaching([$memberObj->id, ['role' => 'past_member']]);
                         }
@@ -998,7 +1022,6 @@ class Panel extends Model
         $activityValues = $values[$this->affiliate_type];
 
         $status = 1;
-
 
         foreach ($activityValues as $index => $value) {
             $activity = $this->activities->where('activity', $value)->first();
