@@ -774,6 +774,11 @@ class Panel extends Model
 
         $eventType = data_get($data, 'event_type');
 
+        $this->firstOrNew([
+            'gpm_id' => data_get('group.id')
+        ]);
+
+        dd($this);
 
 
 //        if ($members = data_get($data, 'members')) {
@@ -973,6 +978,22 @@ class Panel extends Model
         }
 
         return $this;
+    }
+
+    public function findOrCreateWorkingGroup($data)
+    {
+        $panel = Panel::firstOrNew([
+            'gpm_id' => $data['uuid']
+        ]);
+
+        $panel->wg_status = $data['status'];
+        $panel->name = $data['name'];
+        $panel->title = $data['name'];
+        $panel->summary = $data['description'];
+
+        $panel->save();
+
+        return $panel;
     }
 
     protected function validateMemberFromKafka($member)
