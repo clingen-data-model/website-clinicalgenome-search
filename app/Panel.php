@@ -723,9 +723,13 @@ class Panel extends Model
         $eventType = data_get($data, 'event_type');
 
         if ($schema !== '2.0.0') return true;
-        if ($eventType !== 'group_checkpoint_event') return true;
+        if ($eventType === 'group_checkpoint_event')  {
+            app(PanelImportService::class)->create($data);
+        } else {
+            $this->syncFromKafka($data);
+        }
 
-        app(PanelImportService::class)->create($data);
+
         //$panel = new static();
 
 //        if ($affiliationId = data_get($data, 'data.expert_panel.affiliation_id')) {
@@ -770,8 +774,6 @@ class Panel extends Model
 
         $eventType = data_get($data, 'event_type');
 
-        if ($schema !== '2.0.0') return true;
-        if ($eventType !== 'group_checkpoint_event') return true;
 
 
 //        if ($members = data_get($data, 'members')) {
