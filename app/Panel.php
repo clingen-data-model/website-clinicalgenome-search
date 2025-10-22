@@ -883,6 +883,11 @@ class Panel extends Model
 
                 break;
 
+            case 'group_description_updated':
+                if ($status = data_get($data, 'data.new_status')) {
+                    $this->summary = $status;
+                    $this->save();
+                }
             case 'ep_final_approval':
 
                 $activity = $this->activities()->firstOrNew([
