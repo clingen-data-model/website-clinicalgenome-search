@@ -239,12 +239,68 @@
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
-                    <tr>
-                        <td><strong>API Documentation </strong>
-                            <div class="small">OpenAPI specification and documentation for the ClinGen Evidence Repository JSON-LD REST API</div>
+                     <tr>
+                        <td><strong>Evidence Repository API </strong>
+                            <div class="small">REST-API endpoints to get variant pathogenicity classifications from ClinGen Evidence Repository</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://brl-bcm.stoplight.io/docs/erepo"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation"> Documentation</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.clinicalgenome.org/evrepo/api/summary/srvc"  class="btn btn-default watchdownloadclick" title="Evidence Repository API"> API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evidence Repository API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get Variant Pathogenicity classifications from ClinGen Evidence Repository</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.clinicalgenome.org/docs/cg-erepo/"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation">API Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Allele Registry API</strong>
+                            <div class="small">REST-API endpoints to get variant data from ClinGen Allele Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://reg.clinicalgenome.org/"  class="btn btn-default watchdownloadclick" title="Allele Registry API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Allele Registry API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get variant data from ClinGen Allele Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://reg.clinicalgenome.org/docs/cg-car/"  class="btn btn-default watchdownloadclick" title="Allele Registry Documentation"> Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Criteria Specification Registry API</strong>
+                            <div class="small">REST-API endpoints to get criteria specifications and related data from ClinGen Criteria Specification Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://cspec.clinicalgenome.org/cspec/srvc"  class="btn btn-default watchdownloadclick" title="Criteria Specification Registry API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Criteria Specification Registry API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get criteria specifications and related data from ClinGen Criteria Specification Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://genboree.org/gitlab/clingen/cspec/cspec-registry/-/wikis/CSpec-Registry-API"  class="btn btn-default watchdownloadclick" title="Criteria Specification Registry API Documentation">Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                     <tr>
+                        <td><strong>Linked Data Hub API</strong>
+                            <div class="small">REST-API endpoints to get aggregated variant annotations from ClinGen Linked Data Hub</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://ldh.clinicalgenome.org/ldh/srvc"  class="btn btn-default watchdownloadclick" title="Linked Data Hub API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linked Data Hub API Documentation </strong>
+                            <div class="small">Documentation of REST-API endpoints and data entities to get aggregated variant annotations from ClinGen Linked Data Hub</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://ldh.clinicalgenome.org/docs/ldh/api/"  class="btn btn-default watchdownloadclick" title="Linked Data Hub API Documentation">Documentation</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>

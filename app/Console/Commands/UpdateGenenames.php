@@ -59,6 +59,8 @@ class UpdateGenenames extends Command
             //$results = file_get_contents("http://ftp.ebi.ac.uk/pub/databases/genenames/hgnc/json/hgnc_complete_set.json");
             $results = file_get_contents("https://storage.googleapis.com/public-download-files/hgnc/json/json/hgnc_complete_set.json");
 
+            //$results = file_get_contents("https://storage.googleapis.com/public-download-files/hgnc/archive/archive/monthly/json/hgnc_complete_set_2025-09-05.json");
+
 
 		} catch (\Exception $e) {
 
@@ -77,7 +79,8 @@ class UpdateGenenames extends Command
 
 		foreach ($data['response']['docs'] as $doc)
 		{
-			//echo "Processing " . $doc['symbol'] . "  " . $doc['name'] .  "  " .  $doc['hgnc_id'] . "\n";
+    
+			//echo "Processing " . $doc['symbol'] . "  " . $doc['name'] .  "  " .  $doc['hgnc_id'] . "\n"
 
 			// change doc status to gene status
 			$doc['status'] = 0;
