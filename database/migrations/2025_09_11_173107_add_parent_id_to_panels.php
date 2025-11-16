@@ -15,7 +15,8 @@ class AddParentIdToPanels extends Migration
     {
         Schema::table('panels', function (Blueprint $table) {
             //
-            $table->unsignedBigInteger('parent_id')->nullable();
+		$table->unsignedBigInteger('parent_id')->nullable();
+		$table->boolean('is_inactive')->nullable();
         });
     }
 
