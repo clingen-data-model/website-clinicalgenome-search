@@ -55,6 +55,9 @@ Route::get('/reports/view/{id}', 'HomeController@view')->name('dashboard-show-re
 Route::get('/members', 'MembersController@index')->name('members.index');
 Route::post('/members/sync', 'MembersController@sync')->name('members.sync');
 
+Route::get('/panels', [PanelsController::class, 'index'])->name('panels.index');
+Route::post('/panels/sync-gpm', [PanelsController::class, 'syncGpm'])->name('panels.syncGpm');
+
 /*
  * Gene display routes
  */
