@@ -74,6 +74,7 @@
                         <th>Affiliate ID</th>
                         <th>Summary</th>
                         <th>Type</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,6 +84,14 @@
                             <td>{{ $panel->affiliate_id }}</td>
                             <td>{{ $panel->summary }}</td>
                             <td>{{ $panel->type }}</td>
+                            <td>
+                                <form action="{{ route('panels.sync', $panel->affiliate_id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-primary">
+                                        Sync with GPM
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
