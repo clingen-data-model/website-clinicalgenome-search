@@ -60,11 +60,13 @@ class PanelExporter
                 'expertpanel' =>  $panel->name . ' VCEP'
             );
             $panel->url_erepo = $base_url . '?' . http_build_query($params);
+
+            if ($panel->group_clinvar_org_id) {
+                $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
+            }
         }
 
-        if ($panel->group_clinvar_org_id) {
-            $panel->url->clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
-        }
+
 
 
         //map process wire fields
