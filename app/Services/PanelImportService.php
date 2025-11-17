@@ -14,7 +14,7 @@ class PanelImportService
         $panel = null;
         if ($expertPanel = data_get($data, 'data.expert_panel')) {
             if (data_get($expertPanel, 'affiliation_id')) {
-                $panel = $this->findOrCreatePanel($expertPanel);
+                $panel = $this->findOrCreatePanel($data['data']);;
                 $this->createActivities($panel, $expertPanel);
             }
         } else {
@@ -53,8 +53,9 @@ class PanelImportService
 
     }
 
-    public function findOrCreatePanel($expertPanel)
+    public function findOrCreatePanel($data)
     {
+        $expertPanel = data_get($data, 'expert_panel');
         if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
                 'gpm_id' => $expertPanel['uuid'],
@@ -63,22 +64,30 @@ class PanelImportService
 
             $type = data_get($expertPanel, 'type');
 
+            $titleSuffix = '';
+
+            if ($type == 'gcep') {
+                $titleSuffix = ' Gene Curation Expert Panel';
+            } else if ($type == 'vcep') {
+                $titleSuffix = ' Variant Curation Expert Panel';;
+            }
+
             $panel->affiliate_type = $type;
             $panel->name = data_get($expertPanel, 'name');
             $panel->title_short = data_get($expertPanel, 'short_name');
-            $panel->title = data_get($expertPanel, 'name');
-            $panel->summary = data_get($expertPanel, 'scope_description');
+            $panel->title = data_get($expertPanel, 'name') . $titleSuffix;
+            $panel->summary = data_get($expertPanel, 'scope_description') ?? data_get($data, 'description');
 
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
                 $panel->is_inactive = false;
             }
 
-            if ($iconUrl = data_get($expertPanel, 'icon_url')) {
+            if ($iconUrl = data_get($data, 'icon_url')) {
                 $panel->icon_url = $iconUrl;
             }
 
-            if ($caption = data_get($expertPanel, 'caption')) {
+            if ($caption = data_get($data, 'caption')) {
                 $panel->caption = $caption;
             }
 
