@@ -68,8 +68,15 @@ class PanelImportService
 
             if ($type == 'gcep') {
                 $titleSuffix = ' Gene Curation Expert Panel';
+                $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $affiliateId;
             } else if ($type == 'vcep') {
-                $titleSuffix = ' Variant Curation Expert Panel';;
+                $titleSuffix = ' Variant Curation Expert Panel';
+                $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
+                $params = array(
+                   'matchMode' => 'exact',
+                   'expertpanel' =>  data_get($expertPanel, 'name')
+                );
+                $panel->url_erepo = $base_url . '?' . http_build_query($params);
             }
 
             $panel->affiliate_type = $type;
@@ -77,6 +84,7 @@ class PanelImportService
             $panel->title_short = data_get($expertPanel, 'short_name');
             $panel->title = data_get($expertPanel, 'name') . $titleSuffix;
             $panel->summary = data_get($expertPanel, 'scope_description') ?? data_get($data, 'description');
+            $panel->url_cspec = 'https://cspec.genome.network/cspec/ui/svi/affiliation/' . $affiliateId;
 
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d');
@@ -90,6 +98,8 @@ class PanelImportService
             if ($caption = data_get($data, 'caption')) {
                 $panel->caption = $caption;
             }
+
+            //if (isset($panel->group_clinvar_org_id)) {}
 
             $panel->save();
 
