@@ -4,6 +4,7 @@ namespace App;
 
 use App\Concerns\HttpClient;
 use App\Services\PanelImportService;
+use App\Services\PanelIncrementalService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -718,54 +719,7 @@ class Panel extends Model
 
     public function parser($data, $timestamp)
     {
-        $schema = data_get($data, 'schema_version');
-
-        $eventType = data_get($data, 'event_type');
-
-        if ($schema !== '2.0.0') return true;
-        if ($eventType === 'group_checkpoint_event')  {
-            app(PanelImportService::class)->create($data);
-        } else {
-            $this->syncFromKafka($data);
-        }
-
-
-        //$panel = new static();
-
-//        if ($affiliationId = data_get($data, 'data.expert_panel.affiliation_id')) {
-//            $panelObj = $panel->firstOrNew([
-//                'affiliate_id' => $affiliationId
-//            ]);
-//
-//            $panelObj->gpm_id = data_get($data, 'data.expert_panel.id');
-//            $panelObj->affiliate_type = data_get($data, 'data.expert_panel.type');
-//
-//            if ($summary = data_get($data, 'data.scope.statement')) {
-//                $panelObj->summary = $summary;
-//            }
-//
-//            if ($longName = data_get($data, 'data.expert_panel.long_name')) {
-//                $panelObj->title = $longName;
-//                $panelObj->name = $longName;
-//            }
-//
-//            if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
-//                $panelObj->title_abbreviated = $shortName;
-//                $panelObj->title_short = $shortName;
-//            }
-//
-//
-//            if ($name = data_get($data, 'data.expert_panel.name')) {
-//                $panelObj->name = $name;
-//                $panelObj->title = $name;
-//            }
-//
-//            $panelObj->save();
-//
-//            $panelObj->syncFromKafka($data, $timestamp);
-//            $panelObj->pushToProcessWire();
-//        }
-
+        app(PanelIncrementalService::class)->create($data);
     }
 
     public function syncFromKafka($data, $timestamp = null)
