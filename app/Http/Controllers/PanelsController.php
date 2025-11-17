@@ -51,7 +51,7 @@ class PanelsController extends Controller
 
         // php artisan processwire:panels {affiliate_id}
         \Artisan::call('processwire:panels', [
-            'affiliate_id' => $panel->affiliate_id,
+            'panel_id' => $panel->affiliate_id,
         ]);
 
         return redirect()
