@@ -160,7 +160,7 @@ class QueryKafka extends Command
                             $a($message, $m);
                             $stream->update(['offset' => $message->offset + 1]);
 
-                        } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events') {
+                        } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events' || $topic === 'gpm-gene-events' || $topic === 'gpm-checkpoint-events') {
                             $payload = json_decode($message->payload, true);
                             $a = $stream->parser;
                             $a($payload, $message->timestamp);
