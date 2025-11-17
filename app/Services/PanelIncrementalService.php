@@ -149,6 +149,12 @@ class PanelIncrementalService
                 return null;
             }
 
+            $affiliateId = data_get($expertPanel, 'affiliation_id');
+
+            if (! $affiliateId) {
+                return null;
+            }
+
             $panel = Panel::firstOrNew([
                 'gpm_id' => $gpmId,
             ]);
