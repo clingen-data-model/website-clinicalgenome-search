@@ -79,8 +79,8 @@ class PanelImportService
             $panel->summary = data_get($expertPanel, 'scope_description') ?? data_get($data, 'description');
 
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
-                $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
-                $panel->is_inactive = false;
+                $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d');
+                $panel->is_inactive = true;
             }
 
             if ($iconUrl = data_get($data, 'icon_url')) {

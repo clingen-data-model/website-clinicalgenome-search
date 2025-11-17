@@ -61,7 +61,7 @@ class PanelExporter
             'expert_panel_type' => $panel->affiliate_type === 'gcep' ? [1] : [2] ,
             'affiliate_status_gene' => $panel->getProcessWirePanelStatus(),
             'affiliate_status_variant' => $panel->getProcessWirePanelStatus(),
-            'ep_status_inactive' => $panel->is_inactive ?? 0,
+            'ep_status_inactive' => $panel->is_inactive ? 1 : 0,
             'ep_status_inactive_date' => $panel->inactive_date ?? '',
             'group_clinvar_org_id' => $panel->group_clinvar_org_id,
             'url_clinvar' => $panel->url_clinvar,
