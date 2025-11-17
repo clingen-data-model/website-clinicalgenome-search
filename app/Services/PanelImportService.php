@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class PanelImportService
 {
+
     public function create($data)
     {
         //we are only creating expert panels here ...
@@ -33,6 +34,25 @@ class PanelImportService
         return $panel;
     }
 
+    public function update($data, $event = null)
+    {
+        if ($gpmId = data_get($data, 'group.id')) {
+            $panel = Panel::where('gpm_id', $gpmId)->first();
+            if (null === $panel) {
+                $panel = new Panel();
+                if ($affiliationId = data_get($data, 'group.id')) {
+                    $panel->affiliation_id = $affiliationId;
+                    $panel->gpm_id = $gpmId;
+                    $panel->save();
+                }
+            }
+        }
+    }
+
+    public function updateEvent($data, $event) {
+
+    }
+
     public function findOrCreatePanel($expertPanel)
     {
         if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
@@ -52,6 +72,14 @@ class PanelImportService
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
                 $panel->is_inactive = false;
+            }
+
+            if ($iconUrl = data_get($expertPanel, 'icon_url')) {
+                $panel->icon_url = $iconUrl;
+            }
+
+            if ($caption = data_get($expertPanel, 'caption')) {
+                $panel->caption = $caption;
             }
 
             $panel->save();
