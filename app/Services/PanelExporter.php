@@ -63,7 +63,7 @@ class PanelExporter
         }
 
         if ($panel->group_clinvar_org_id) {
-            $panel->url->clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id
+            $panel->url->clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
         }
 
 
