@@ -719,7 +719,7 @@ class Panel extends Model
 
     public function parser($data, $timestamp)
     {
-        app(PanelIncrementalService::class)->create($data);
+        app(PanelIncrementalService::class)->syncFromKafka($data);
     }
 
     public function syncFromKafka($data, $timestamp = null)
