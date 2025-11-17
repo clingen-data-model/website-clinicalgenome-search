@@ -57,7 +57,7 @@ class PanelExporter
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
             $params = array(
                 'matchMode' => 'exact',
-                'expertpanel' =>  $panel->name
+                'expertpanel' =>  $panel->name . ' VCEP'
             );
             $panel->url_erepo = $base_url . '?' . http_build_query($params);
         }
