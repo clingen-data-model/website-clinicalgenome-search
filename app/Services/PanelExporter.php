@@ -49,6 +49,24 @@ class PanelExporter
         $panel = $this->panel;
         $panel->load('activities');
 
+        $type = $panel->affiliate_type;
+
+        if ($type == 'gcep') {
+            $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $affiliateId;
+        } else if ($type == 'vcep') {
+            $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
+            $params = array(
+                'matchMode' => 'exact',
+                'expertpanel' =>  $panel->name
+            );
+            $panel->url_erepo = $base_url . '?' . http_build_query($params);
+        }
+
+        if ($panel->group_clinvar_org_id) {
+            $panel->url->clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id
+        }
+
+
         //map process wire fields
         $processWireFields = [
             'name' => $panel->affiliate_id,
