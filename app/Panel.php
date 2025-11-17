@@ -60,19 +60,19 @@ class Panel extends Model
 	  'caption' => 'string'
 	];
 
-	/**
+/**
      * Map the json attributes to associative arrays.
      *
      * @var array
      */
-	protected $casts = [
-            'contacts' => 'array',
-            'affiliate_status' => 'array',
-            'member' => 'array',
-            'contact' => 'array'
-		];
+    protected $casts = [
+        'contacts' => 'array',
+        'affiliate_status' => 'array',
+        'member' => 'array',
+        'contact' => 'array'
+    ];
 
-     /**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -82,45 +82,39 @@ class Panel extends Model
                             'cdwg_parent_name', 'member', 'contacts',
                            'summary', 'type', 'status', 'wg_status', 'metadata_search_terms', 'is_active',
                            'group_clinvar_org_id', 'inactive_date', 'url_clinvar', 'url_cspec', 'url_curations',
-                            'url_erepo', 'gpm_id', 'parent_id', 'icon_url', 'caption'
-                            ];
+                            'url_erepo', 'gpm_id', 'parent_id', 'icon_url', 'caption'];
+			    
+			    protected $appends = ['display_date', 'list_date', 'display_status'];
 
-	/**
-     * Non-persistent storage model attributes.
-     *
-     * @var array
-     */
-     protected $appends = ['display_date', 'list_date', 'display_status'];
+    public const TYPE_INTERNAL = 0;
+    public const TYPE_GCEP = 1;
+    public const TYPE_VCEP = 2;
+    public const TYPE_WG = 3;
 
-     public const TYPE_INTERNAL = 0;
-     public const TYPE_GCEP = 1;
-     public const TYPE_VCEP = 2;
-     public const TYPE_WG = 3;
+    /*
+    * Type strings for display methods
+    *
+    * */
+    protected $type_strings = [
+        0 => 'Unknown',
+        1 => 'GCEP',
+        2 => 'VCEP',
+        3 => 'WG',
+    ];
 
-     /*
-     * Type strings for display methods
-     *
-     * */
-     protected $type_strings = [
-	 		0 => 'Unknown',
-            1 => 'GCEP',
-            2 => 'VCEP',
-            3 => 'WG',
-	];
+    public const STATUS_INITIALIZED = 0;
 
-     public const STATUS_INITIALIZED = 0;
-
-     /*
-     * Status strings for display methods
-     *
-     * */
-     protected $status_strings = [
-	 		0 => 'Initialized',
-	 		9 => 'Deleted'
+    /*
+    * Status strings for display methods
+    *
+    * */
+    protected $status_strings = [
+        0 => 'Initialized',
+        9 => 'Deleted'
     ];
 
 
-	/**
+    /**
      * Automatically assign an ident on instantiation
      *
      * @param	array	$attributes
@@ -138,7 +132,7 @@ class Panel extends Model
      */
     public function users()
     {
-       return $this->belongsToMany('App\User');
+        return $this->belongsToMany('App\User');
     }
 
 
@@ -147,7 +141,7 @@ class Panel extends Model
      */
     public function genes()
     {
-       return $this->belongsToMany('App\Gene');
+        return $this->belongsToMany('App\Gene');
     }
 
 
@@ -156,7 +150,7 @@ class Panel extends Model
      */
     public function diseases()
     {
-       return $this->belongsToMany('App\Disease');
+        return $this->belongsToMany('App\Disease');
     }
 
     /*
@@ -173,7 +167,7 @@ class Panel extends Model
      */
     public function primary_curations()
     {
-       return $this->hasMany('App\Curation');
+        return $this->hasMany('App\Curation');
     }
 
 
@@ -182,7 +176,7 @@ class Panel extends Model
      */
     public function curations()
     {
-       return $this->belongsToMany('App\Curation');
+        return $this->belongsToMany('App\Curation');
     }
 
     /*
@@ -198,13 +192,13 @@ class Panel extends Model
         return $this->belongsTo(Panel::class, 'parent_id');
     }
 
-	/**
+    /**
      * Query scope by ident
      *
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeIdent($query, $ident)
+    public function scopeIdent($query, $ident)
     {
         return $query->where('ident', $ident);
     }
@@ -216,7 +210,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeName($query, $name)
+    public function scopeName($query, $name)
     {
         return $query->where('name', $name);
     }
@@ -228,7 +222,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeAffiliate($query, $id)
+    public function scopeAffiliate($query, $id)
     {
         return $query->where('affiliate_id', $id);
     }
@@ -240,7 +234,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeTitle($query, $name)
+    public function scopeTitle($query, $name)
     {
         return $query->where('title', $name);
     }
@@ -252,7 +246,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeAllids($query, $id)
+    public function scopeAllids($query, $id)
     {
         return $query->where('affiliate_id', $id)->orWhere('alternate_id', $id);
     }
@@ -264,7 +258,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeGcep($query)
+    public function scopeGcep($query)
     {
         return $query->where('type', self::TYPE_GCEP);
     }
@@ -276,7 +270,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeVcep($query)
+    public function scopeVcep($query)
     {
         return $query->where('type', self::TYPE_VCEP);
     }
@@ -288,7 +282,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function scopeblacklist($query, $list)
+    public function scopeblacklist($query, $list)
     {
         return $query->whereNotIn('affiliate_id', $list);
     }
@@ -300,7 +294,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function getHrefAttribute()
+    public function getHrefAttribute()
     {
         switch ($this->type)
         {
@@ -365,7 +359,7 @@ class Panel extends Model
      * @@param	string	$ident
      * @return Illuminate\Database\Eloquent\Collection
      */
-	public function getTypeStringAttribute()
+    public function getTypeStringAttribute()
     {
         switch ($this->affiliate_type)
         {
@@ -438,25 +432,33 @@ class Panel extends Model
 
     public function getMembersByType($type)
     {
-        return $this->members->filter( function($member) use ($type) {
-            return $member->pivot->role === $type;
-        })->map( function ($memb) {
-            $inst = $memb->institution ? json_decode($memb->institution, true) : [];
-            return [
-                'user_name_full' => $memb->display_name,
-                'user_name_first' => $memb->first_name,
-                'user_name_last' => $memb->last_name,
-                'user_title' => '',
-                'user_url' => '',
-                'relate_institutions' => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
-                'email' => $memb->email,
-                'user_photo' => $memb->profile_photo,
-                'user_bio' => $memb->biography,
-                'user_professional_attributes' => $memb->credentials,
-                'gpm_id' => $memb->gpm_id,
-            ];
-        })->values()->toArray();
+        $typeLower = strtolower($type);
+
+        return $this->members
+            ->filter(function ($member) use ($typeLower) {
+                return strtolower($member->pivot->role) === $typeLower;
+            })
+            ->map(function ($memb) {
+                $inst = $memb->institution ? json_decode($memb->institution, true) : [];
+
+                return [
+                    'user_name_full' => $memb->display_name,
+                    'user_name_first' => $memb->first_name,
+                    'user_name_last' => $memb->last_name,
+                    'user_title' => '',
+                    'user_url' => '',
+                    'relate_institutions' => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
+                    'email' => $memb->email,
+                    'user_photo' => $memb->profile_photo,
+                    'user_bio' => $memb->biography,
+                    'user_professional_attributes' => $memb->credentials,
+                    'gpm_id' => $memb->gpm_id,
+                ];
+            })
+            ->values()
+            ->toArray();
     }
+
 
     public function getProcessWireData()
     {
@@ -858,7 +860,7 @@ class Panel extends Model
                 $activity->activity_date = Carbon::parse(data_get($data, 'date'));
                 $activity->save();
                 break;
-                //
+            //
             case 'member_removed':
                 //
                 if ($members = data_get($data, 'data.members')) {
