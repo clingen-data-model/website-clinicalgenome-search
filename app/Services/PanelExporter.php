@@ -52,7 +52,7 @@ class PanelExporter
         $type = $panel->affiliate_type;
 
         if ($type == 'gcep') {
-            $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $affiliateId;
+            $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affliate_id;
         } else if ($type == 'vcep') {
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
             $params = array(
