@@ -11,7 +11,7 @@ class PanelsController extends Controller
     //
     public function index()
     {
-        $panels = Panel::orderBy('title')->get();
+	    $panels = Panel::get();
         return view('panels', compact('panels'));
     }
 

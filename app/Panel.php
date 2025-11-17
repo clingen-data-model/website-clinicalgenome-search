@@ -54,7 +54,9 @@ class Panel extends Model
           'summary' => 'string|nullable',
           'type' => 'integer',
           'status' => 'integer',
-          'parent_id' => 'integer'
+	  'parent_id' => 'integer',
+	  'icon_url' => 'string',
+	  'caption' => 'string'
 	];
 
 	/**
@@ -79,7 +81,7 @@ class Panel extends Model
                             'cdwg_parent_name', 'member', 'contacts',
                            'summary', 'type', 'status', 'wg_status', 'metadata_search_terms', 'is_active',
                            'group_clinvar_org_id', 'inactive_date', 'url_clinvar', 'url_cspec', 'url_curations',
-                            'url_erepo', 'gpm_id', 'parent_id'
+                            'url_erepo', 'gpm_id', 'parent_id', 'icon_url', 'caption'
                             ];
 
 	/**
