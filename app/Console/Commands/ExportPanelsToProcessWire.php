@@ -43,14 +43,14 @@ class ExportPanelsToProcessWire extends Command
         $query = Panel::query();
         if ($panelId = $this->argument('panel_id')) {
             $type = null;
-            $query->where('id', $panelId);
+            $query->where('affiliate_id', $panelId);
         }
 
         if ($type) {
             $query->where('affiliate_type', $type);
         }
 
-        $panels = $query->get();
+	$panels = $query->get();
 
         foreach ($panels as $panel) {
             $this->info('sending affliation id ' . $panel->name);
