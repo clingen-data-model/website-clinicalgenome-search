@@ -80,7 +80,11 @@
                 <tbody>
                     @foreach ($panels as $panel)
                         <tr>
-                            <td>{{ $panel->title }}</td>
+                            <td>
+                                <a href="{{ route('panels.show', $panel->id) }}">
+                                {{ $panel->title }}
+                                </a>
+                            </td>
                             <td>{{ $panel->affiliate_id }}</td>
                             <td>{{ $panel->summary }}</td>
                             <td>{{ $panel->type }}</td>
