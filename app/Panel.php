@@ -434,34 +434,43 @@ class Panel extends Model
         return optional($this->activities->where('activity', $activity)->first())->activity_date;
     }
 
-    public function getMembersByType($type)
-    {
-        $typeLower = strtolower($type);
-
-        return $this->members
-            ->filter(function ($member) use ($typeLower) {
-                return strtolower($member->pivot->role) === $typeLower;
-            })
-            ->map(function ($memb) {
-                $inst = $memb->institution ? json_decode($memb->institution, true) : [];
-
-                return [
-                    'user_name_full' => $memb->display_name,
-                    'user_name_first' => $memb->first_name,
-                    'user_name_last' => $memb->last_name,
-                    'user_title' => '',
-                    'user_url' => '',
-                    'relate_institutions' => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
-                    'email' => $memb->email,
-                    'user_photo' => $memb->profile_photo,
-                    'user_bio' => $memb->biography,
-                    'user_professional_attributes' => $memb->credentials,
-                    'gpm_id' => $memb->gpm_id,
-                ];
-            })
-            ->values()
-            ->toArray();
+   public function getMembersByType($type)
+{
+    // Normalize $type to an array of lower-cased role names
+    if (is_array($type)) {
+        $types = array_map('strtolower', $type);
+    } else {
+        $types = [strtolower($type)];
     }
+
+    return $this->members
+        ->filter(function ($member) use ($types) {
+            $role = $member->pivot->role ?? '';
+
+            // case-insensitive match against any of the types
+            return in_array(strtolower($role), $types, true);
+        })
+        ->map(function ($memb) {
+            $inst = $memb->institution ? json_decode($memb->institution, true) : [];
+
+            return [
+                'user_name_full'              => $memb->display_name,
+                'user_name_first'             => $memb->first_name,
+                'user_name_last'              => $memb->last_name,
+                'user_title'                  => '',
+                'user_url'                    => '',
+                'relate_institutions'         => is_array($inst) && isset($inst['name']) ? $inst['name'] : '',
+                'email'                       => $memb->email,
+                'user_photo'                  => $memb->profile_photo,
+                'user_bio'                    => $memb->biography,
+                'user_professional_attributes'=> $memb->credentials,
+                'gpm_id'                      => $memb->gpm_id,
+            ];
+        })
+        ->values()
+        ->toArray();
+}
+
 
 
     public function getProcessWireData()
