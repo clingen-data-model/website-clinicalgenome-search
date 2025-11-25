@@ -152,7 +152,7 @@ class PanelImportService
 
     protected function createActivities(Panel $panel, $data)
     {
-        if ($type = data_get($data, 'data.type')) {
+        if ($type = data_get($data, 'type')) {
             if ($type == 'vcep') {
                 $this->createVCEPActivities($panel, $data);
             } else if ($type == 'gcep') {
