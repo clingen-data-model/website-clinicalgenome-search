@@ -120,6 +120,10 @@ class PanelImportService
         $panel->name = $data['name'];
         $panel->title = $data['name'];
         $panel->summary = $data['description'];
+        $panel->affiliate_type = $data['type'];
+        $panel->icon_url = data_get($data, 'icon_url');
+        $panel->caption = data_get($data, 'caption');
+        $panel->description = data_get($data, 'description');
 
         $panel->save();
 
