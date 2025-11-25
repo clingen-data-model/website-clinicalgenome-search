@@ -15,7 +15,7 @@ class PanelImportService
         if ($expertPanel = data_get($data, 'data.expert_panel')) {
             if (data_get($expertPanel, 'affiliation_id')) {
                 $panel = $this->findOrCreatePanel($data['data']);;
-                $this->createActivities($panel, $data);
+                $this->createActivities($panel, $data['data']);
             }
         } else {
             //This is a working group
@@ -152,7 +152,7 @@ class PanelImportService
 
     protected function createActivities(Panel $panel, $data)
     {
-        if ($type = data_get($data, 'data.type')) {
+        if ($type = data_get($data, 'type')) {
             if ($type == 'vcep') {
                 $this->createVCEPActivities($panel, $data);
             } else if ($type == 'gcep') {
@@ -214,7 +214,7 @@ class PanelImportService
 
         }
 
-        if ($gcepApproval = data_get($data, 'expert_panel.gcep_approval')) {
+        if ($gcepApproval = data_get($data, 'expert_panel.gcep_final_approval')) {
             $activity = $panel->activities()->firstOrNew([
                 'activity' => 'ep_final_approval'
             ]);
