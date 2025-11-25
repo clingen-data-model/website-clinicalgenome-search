@@ -29,8 +29,13 @@ class PanelExporter
     {
         if ($this->panel->affiliate_type === 'cdwg') {
             $data = $this->cdwgData();
-            $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
+            $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
+        } else if ($this->panel->affiliate_type === 'wg') {
+            $data = $this->wgData();
+            $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
+            return $response->body();
+
         } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep') {
             $data = $this->getProcessWireData();
             $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
@@ -127,11 +132,33 @@ class PanelExporter
             'images_1' => [],
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
+            //'relate_user_experts' => $panel->getMembersByType('expert'),
+            'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
+            'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert']),
+            //'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
+            'metadata_search_terms' => $panel->metadata_search_terms,
+            'gpm_id' => $panel->gpm_id
+        ];
+    }
+
+    private function wgData()
+    {
+        $panel = $this->panel;
+        return [
+            'title' => $panel->title,
+            'title_short' => $panel->title_short,
+            'summary' => $panel->description,
+            'body_1' => $panel->summary,
+            'images_icon_url' => $panel->icon_url,
+            'images_1' => [],
+            'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
+            'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
             'relate_user_experts' => $panel->getMembersByType('expert'),
             'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
-            'relate_user_members' => $panel->getMembersByType(Member::MEMBER),
-            'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert']),
+            //'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
         ];
