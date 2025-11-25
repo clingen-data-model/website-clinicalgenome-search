@@ -146,8 +146,8 @@ class PanelExporter
     {
         $panel = $this->panel;
         return [
-            'name' => $panel->title . ' Working Group',
-            'title' => $panel->title . ' Working Group',
+            'name' => $panel->title,
+            'title' => $panel->title,
             'title_short' => $panel->title_short,
             'summary' => $panel->description,
             'body_1' => $panel->summary,
