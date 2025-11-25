@@ -35,7 +35,6 @@ class PanelExporter
             $data = $this->wgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
-
         } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep') {
             $data = $this->getProcessWireData();
             $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
