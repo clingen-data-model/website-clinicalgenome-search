@@ -27,7 +27,7 @@ class PanelIncrementalService
         $eventType = data_get($data, 'event_type');
 
         // Only handle schema 2.0.0
-        if ($schema !== '2.0.0') {
+        if ($schema !== '2.0.1') {
             return null;
         }
 
@@ -73,7 +73,6 @@ class PanelIncrementalService
                 $this->applyEpInfoUpdated($panel, $data);
                 break;
 
-            // ---- activities / milestones ----
             case 'ep_definition_approved':
                 $this->recordActivity($panel, 'ep_definition_approved', data_get($data, 'date'));
                 break;

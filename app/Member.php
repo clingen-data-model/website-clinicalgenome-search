@@ -156,22 +156,7 @@ class Member extends Model
 
     public function parser($data, $timestamp = null)
     {
-        if ($eventType = data_get($data, 'event_type')) {
-            if ($eventType === 'deleted') {
-                if ($gpm_id = data_get($data,'data.person.id')) {
-                    $member = self::where('gpm_id', $gpm_id)->first();
-                    $member->removeFromProcessWire();
-                    $member->delete();
-                    return true;
-                }
-
-            } else {
-                // it's either created or updated
-                $credentialsArray = [];
-                self::createFromGpm($data);
-                return true;
-            }
-        }
+        app(\App\Services\PersonUpdateService::class)->syncFromKafka($data);
     }
 
 
