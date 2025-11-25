@@ -122,6 +122,7 @@ class PanelExporter
     {
         $panel = $this->panel;
         return [
+            'name' => $panel->title . ' CDWG',
             'title' => $panel->title . ' CDWG',
             'title_short' => $panel->title_short,
             'title_abbreviated' => $panel->title_abbreviated,
@@ -145,7 +146,8 @@ class PanelExporter
     {
         $panel = $this->panel;
         return [
-            'title' => $panel->title,
+            'name' => $panel->title . ' Working Group',
+            'title' => $panel->title . ' Working Group',
             'title_short' => $panel->title_short,
             'summary' => $panel->description,
             'body_1' => $panel->summary,
