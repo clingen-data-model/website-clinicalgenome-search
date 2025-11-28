@@ -65,13 +65,10 @@ class PanelExporter
             );
             $panel->url_erepo = $base_url . '?' . http_build_query($params);
 
-            if ($panel->group_clinvar_org_id) {
+            if ($panel->group_clinvar_org_id && $panel->affiliate_type === 'vcep') {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
         }
-
-
-
 
         //map process wire fields
         $processWireFields = [
@@ -88,7 +85,6 @@ class PanelExporter
             'ep_status_inactive' => $panel->is_inactive ? 1 : 0,
             'ep_status_inactive_date' => $panel->inactive_date ?? '',
             'group_clinvar_org_id' => $panel->group_clinvar_org_id,
-            'url_clinvar' => $panel->url_clinvar,
             'url_cspec' => $panel->url_cspec,
             'url_curations' => $panel->url_curations,
             'url_erepo' => $panel->url_erepo,
@@ -112,6 +108,11 @@ class PanelExporter
             $processWireFields['affiliate_status_variant_date_step_2'] = $panel->getActivityValue('vcep_draft_specifications_approved');
             $processWireFields['affiliate_status_variant_date_step_3'] = $panel->getActivityValue('vcep_pilot_approved');
             $processWireFields['affiliate_status_variant_date_step_4'] = $panel->getActivityValue('ep_final_approval');
+
+            if ($panel->group_clinvar_org_id) {
+                $processWireFields['url_clinvar'] = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
+            }
+
         }
 
         return $processWireFields;

@@ -144,6 +144,7 @@ class Member extends Model
             'user_bio' => $this->biography,
             'user_professional_attributes' => $this->credentials,
             'gpm_id' => $this->gpm_id,
+
             'prev_email' => $this->prev_email
             //''
         ];
