@@ -244,6 +244,10 @@ class PanelImportService
                     $memberObj->first_name = $firstName;
                 }
 
+                 if ($email = data_get($member, 'email')) {
+                    $memberObj->email = $email;
+                }
+
                 if ($lastName = data_get($member, 'last_name')) {
                     $memberObj->last_name = $lastName;
                 }
