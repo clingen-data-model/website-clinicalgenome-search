@@ -163,7 +163,7 @@ class PanelImportService
 
     protected function createVCEPActivities(Panel $panel, $data)
     {
-        if ($ep_definition_approved = data_get($data, 'expert_panel.vcep_define_group')) {
+        if ($ep_definition_approved = data_get($data, 'expert_panel.vcep_definition_approval')) {
             $activity = $panel->activities()->firstOrNew([
                 'activity' => 'ep_definition_approved'
             ]);
@@ -173,7 +173,7 @@ class PanelImportService
 
         }
 
-        if ($vcep_classification_rules = data_get($data, 'expert_panel.vcep_classification_rules')) {
+        if ($vcep_classification_rules = data_get($data, 'expert_panel.vcep_draft_specification_approval')) {
             $activity = $panel->activities()->firstOrNew([
                 'activity' => 'vcep_draft_specifications_approved'
             ]);
@@ -182,7 +182,7 @@ class PanelImportService
             $activity->save();
         }
 
-        if ($vcep_pilot_rules = data_get($data, 'expert_panel.vcep_pilot_rules')) {
+        if ($vcep_pilot_rules = data_get($data, 'expert_panel.vcep_pilot_approval')) {
             $activity = $panel->activities()->firstOrNew([
                 'activity' => 'vcep_pilot_approved'
             ]);
@@ -191,7 +191,7 @@ class PanelImportService
             $activity->save();
         }
 
-        if ($vcep_approval = data_get($data, 'expert_panel.vcep_approval')) {
+        if ($vcep_approval = data_get($data, 'expert_panel.vcep_final_approval')) {
             $activity = $panel->activities()->firstOrNew([
                 'activity' => 'ep_final_approval'
             ]);
