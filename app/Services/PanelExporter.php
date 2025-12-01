@@ -56,7 +56,7 @@ class PanelExporter
         $type = $panel->affiliate_type;
 
         if ($type == 'gcep') {
-            $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affliate_id;
+            $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affiliate_id;
         } else if ($type == 'vcep') {
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
             $params = array(
@@ -88,6 +88,7 @@ class PanelExporter
             'url_cspec' => $panel->url_cspec,
             'url_curations' => $panel->url_curations,
             'url_erepo' => $panel->url_erepo,
+            'url_clinvar' => $panel->url_clinvar,
             'relate_cdwg' => optional($panel->parent)->gpm_id,
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),

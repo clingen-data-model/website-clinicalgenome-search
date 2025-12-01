@@ -749,6 +749,13 @@ class Panel extends Model
         return 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/'.$this->group_clinvar_org_id;
     }
 
+    public function getUrlCurationsAttribute($value)
+    {
+        if ($this->affiliate_type !== 'gcep') return null;
+        if (!$this->affiliate_id) return null;
+        return 'https://search.clinicalgenome.org/kb/affiliate/'.$this->affiliate_id;
+    }
+
     public function syncFromKafka($data, $timestamp = null)
     {
         $schema = data_get($data, 'schema_version');
