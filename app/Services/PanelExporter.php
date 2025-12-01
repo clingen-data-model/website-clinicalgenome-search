@@ -111,7 +111,7 @@ class PanelExporter
             $processWireFields['affiliate_status_variant_date_step_4'] = $panel->getActivityValue('ep_final_approval');
 
             if ($panel->group_clinvar_org_id) {
-                $processWireFields['url_clinvar'] = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
+                //$processWireFields['url_clinvar'] = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
 
         }
