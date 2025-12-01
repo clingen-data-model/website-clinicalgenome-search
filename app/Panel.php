@@ -46,7 +46,6 @@ class Panel extends Model
         'title' => 'string',
         'title_short' => 'string',
         'title_abbreviated' => 'string',
-        'affiliate_id' => 'string',
         'affiliate_type' => 'string',
         'affiliate_status' => 'json',
         'cdwg_parent_name' => 'string',
@@ -737,6 +736,20 @@ class Panel extends Model
     public function parser($data, $timestamp)
     {
         app(PanelIncrementalService::class)->syncFromKafka($data);
+    }
+
+    public function getUrlCspecAttribute($value)
+    {
+        if ($this->affiliate_type !== 'vcep') return NULL;
+        if (!$this->affiliate_id) return NULL;
+        return 'https://cspec.genome.network/cspec/ui/svi/affiliation/'.$this->affiliate_id;
+    }
+
+    public function getUrlClinvarAttribute($value)
+    {
+        if ($this->affiliate_type !== 'vcep') return null;
+        if (!$this->group_clinvar_org_id) return null;
+        return 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/'.$this->group_clinvar_org_id;
     }
 
     public function syncFromKafka($data, $timestamp = null)
