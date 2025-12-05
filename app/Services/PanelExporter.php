@@ -93,9 +93,9 @@ class PanelExporter
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
             //'relate_user_experts' => $panel->getMembersByType(['expert']),
-            'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
+            //'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
-            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert']),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert', Member::CURATOR]),
             'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
@@ -105,7 +105,9 @@ class PanelExporter
             $processWireFields['affiliate_status_gene_date_step_1'] = $panel->getActivityValue('ep_definition_approved');
             $processWireFields['affiliate_status_gene_date_step_2'] = $panel->getActivityValue('ep_final_approval');
         } else {
+            $
             $processWireFields['affiliate_status_variant_date_step_1'] = $panel->getActivityValue('ep_definition_approved');
+            if ($processWireFields['affiliate_status_variant_date_step_1']) $
             $processWireFields['affiliate_status_variant_date_step_2'] = $panel->getActivityValue('vcep_draft_specifications_approved');
             $processWireFields['affiliate_status_variant_date_step_3'] = $panel->getActivityValue('vcep_pilot_approved');
             $processWireFields['affiliate_status_variant_date_step_4'] = $panel->getActivityValue('ep_final_approval');
@@ -135,9 +137,9 @@ class PanelExporter
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
             //'relate_user_experts' => $panel->getMembersByType('expert'),
-            'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
+            //'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
-            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert']),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert', Member::CURATOR]),
             //'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
@@ -158,9 +160,9 @@ class PanelExporter
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
             'relate_user_experts' => $panel->getMembersByType('expert'),
-            'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
+            //'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
-            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert']),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert', Member::CURATOR]),
             //'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
