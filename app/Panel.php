@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Display;
-
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Artisan;
 use Uuid;
 
 /**
@@ -83,7 +83,7 @@ class Panel extends Model
                            'summary', 'type', 'status', 'wg_status', 'metadata_search_terms', 'is_active',
                            'group_clinvar_org_id', 'inactive_date', 'url_clinvar', 'url_cspec', 'url_curations',
                             'url_erepo', 'gpm_id', 'parent_id', 'icon_url', 'caption'];
-			    
+
 			    protected $appends = ['display_date', 'list_date', 'display_status'];
 
     public const TYPE_INTERNAL = 0;
@@ -732,7 +732,8 @@ class Panel extends Model
 
     public function parser($data, $timestamp)
     {
-        app(PanelIncrementalService::class)->syncFromKafka($data);
+        $panel = app(PanelIncrementalService::class)->syncFromKafka($data);
+        Artisan::call('processwire:panels', ['panelId' => $panel->id]);
     }
 
     public function getUrlCspecAttribute($value)
