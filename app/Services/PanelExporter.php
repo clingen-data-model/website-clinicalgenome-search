@@ -105,9 +105,7 @@ class PanelExporter
             $processWireFields['affiliate_status_gene_date_step_1'] = $panel->getActivityValue('ep_definition_approved');
             $processWireFields['affiliate_status_gene_date_step_2'] = $panel->getActivityValue('ep_final_approval');
         } else {
-            $
             $processWireFields['affiliate_status_variant_date_step_1'] = $panel->getActivityValue('ep_definition_approved');
-            if ($processWireFields['affiliate_status_variant_date_step_1']) $
             $processWireFields['affiliate_status_variant_date_step_2'] = $panel->getActivityValue('vcep_draft_specifications_approved');
             $processWireFields['affiliate_status_variant_date_step_3'] = $panel->getActivityValue('vcep_pilot_approved');
             $processWireFields['affiliate_status_variant_date_step_4'] = $panel->getActivityValue('ep_final_approval');
