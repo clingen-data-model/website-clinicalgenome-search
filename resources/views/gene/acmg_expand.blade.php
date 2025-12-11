@@ -1,5 +1,6 @@
 <div class="row mt-2 mb-2">
 	<div class="col-md-12">
+	<b>Reporting Guidance:</b>
 		@if (empty($gene->notes))
 		<span class="text-muted text-center font-italic ml-3">There are no guidance details at this time</span>
 		@else
@@ -120,6 +121,11 @@
 			@break
 			@case('Pending')
 			<div class="text-warning mt-1 pt-2" data-toggle="tooltip" data-placement="top" title="Decision to report this gene-disease relationship as SF under review">
+				<strong>{{ $score['reportable'] }}</strong>
+			</div>
+			@break
+			@case('See Guidance')
+			<div class="text-warning mt-1 pt-2" data-toggle="tooltip" data-placement="top" title="Refer to the reporting guidamce text above for more information">
 				<strong>{{ $score['reportable'] }}</strong>
 			</div>
 			@break
