@@ -11,7 +11,7 @@ class AppendCurrentTime extends Command
     /**
      * The name and signature of the console command.
      */
-    protected $signature = 'app:append-time'
+    protected $signature = 'app:append-time';
 
     /**
      * The console command description.
