@@ -39,7 +39,7 @@ class PushMembersToProcessWire extends Command
     public function handle()
     {
         $args = $this->arguments();
-        $query = Member::whereNotNull('gpm_id');
+        $query = Member::query();
 
         if ($memberId = $this->argument('member_id')) {
             $query->where('id', $memberId);
