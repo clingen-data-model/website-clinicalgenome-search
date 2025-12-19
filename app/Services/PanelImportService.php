@@ -12,6 +12,7 @@ class PanelImportService
     {
         //we are only creating expert panels here ...
         $panel = null;
+
         if ($expertPanel = data_get($data, 'data.expert_panel')) {
             if (data_get($expertPanel, 'affiliation_id')) {
                 $panel = $this->findOrCreatePanel($data['data']);;
@@ -29,7 +30,6 @@ class PanelImportService
                 $this->assignParent($panel, $parent);
             }
         }
-
 
         return $panel;
     }

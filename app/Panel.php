@@ -734,7 +734,7 @@ class Panel extends Model
     {
         $panel = app(PanelIncrementalService::class)->syncFromKafka($data);
         if (null !== $panel) {
-            Artisan::call('processwire:panels', ['panelId' => $panel->id]);
+            Artisan::call('processwire:panels', ['panel_id' => $panel->id]);
         }
 
     }
