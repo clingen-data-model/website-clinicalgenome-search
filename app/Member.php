@@ -157,7 +157,11 @@ class Member extends Model
     public function parser($data, $timestamp = null)
     {
         $member = app(\App\Services\PersonUpdateService::class)->syncFromKafka($data);
-        Artisan::call('processwire:members', ['member_id' => $member->id]);
+
+        if ($member) {
+            Artisan::call('processwire:members', ['member_id' => $member->id]);
+        }
+
     }
 
 

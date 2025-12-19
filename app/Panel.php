@@ -733,7 +733,10 @@ class Panel extends Model
     public function parser($data, $timestamp)
     {
         $panel = app(PanelIncrementalService::class)->syncFromKafka($data);
-        Artisan::call('processwire:panels', ['panelId' => $panel->id]);
+        if (null !== $panel) {
+            Artisan::call('processwire:panels', ['panelId' => $panel->id]);
+        }
+
     }
 
     public function getUrlCspecAttribute($value)
