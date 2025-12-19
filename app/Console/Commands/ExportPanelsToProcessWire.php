@@ -13,7 +13,7 @@ class ExportPanelsToProcessWire extends Command
      *
      * @var string
      */
-    protected $signature = 'processwire:panels {panel_id?} {--type=vcep}';
+    protected $signature = 'processwire:panels {panel_id?} {affiliate_id?} {--type=vcep}';
 
     /**
      * The console command description.
@@ -41,9 +41,14 @@ class ExportPanelsToProcessWire extends Command
     {
         $type = $this->option('type');
         $query = Panel::query();
+        if ($affiliateId = $this->argument('affiliate_id')) {
+            $type = null;
+            $query->where('affiliate_id', $affiliateId);
+        }
+
         if ($panelId = $this->argument('panel_id')) {
             $type = null;
-            $query->where('affiliate_id', $panelId);
+            $query->where('id', $affiliateId);
         }
 
         if ($type) {
