@@ -48,7 +48,7 @@ class ExportPanelsToProcessWire extends Command
 
         if ($panelId = $this->argument('panel_id')) {
             $type = null;
-            $query->where('id', $affiliateId);
+            $query->where('id', $panelId);
         }
 
         if ($type) {
