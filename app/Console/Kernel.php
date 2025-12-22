@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')
         //          ->hourly();
 
-        $schedule->command('app:append-time')->everyFiveMinutes();
+        //$schedule->command('app:append-time')->everyFiveMinutes();
         $schedule->command('query:kafka gpm-general-events')->everyTenMinutes();
         $schedule->command('query:kafka gpm-person-events')->everyTenMinutes();
     }

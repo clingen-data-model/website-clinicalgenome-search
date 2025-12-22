@@ -79,7 +79,7 @@ class QueryKafka extends Command
                     break;
 
                 case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
-                   // echo "Revoke: ";
+                    // echo "Revoke: ";
                     //var_dump($partitions);
                     $kafka->assign(NULL);
                     break;
@@ -131,65 +131,78 @@ class QueryKafka extends Command
 
         //echo "Reading...\n";
         while (true) {
-            $message = $consumer->consume(45*1000);
-            //echo $message->err . "\n";
+            $message = $consumer->consume(45 * 1000);
 
-            if ($message === null)
-            {
-                echo "Nothing here, bye\n";
-                exit;
+            if ($message === null) {
+                // Should not normally happen, but just continue polling
+                continue;
             }
 
             switch ($message->err) {
-                case 0:
-                case RD_KAFKA_RESP_ERR_NO_ERROR:
-                        $m = new Packet(['topic' => $stream->topic,
-                                         'type' => Packet::TYPE_KAFKA,
-                                         'uuid' => $message->key,
-                                         'offset' => $message->offset,
-                                         'timestamp' => $message->timestamp,
-                                         'payload' => $message->payload,
-                                         'status' => Packet::STATUS_ACTIVE
-                                        ]);
-                        $m->save();
-                        if ($topic == "dosage" || $topic == "actionability" || $topic == 'gene-validity' || $topic == 'variant_interpretation')
-                        {
-                            $payload = json_decode($message->payload);
-                           // dd($payload);
-                            $a = $stream->parser;
-                            $a($message, $m);
-                            $stream->update(['offset' => $message->offset + 1]);
 
-                        } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events' || $topic === 'gpm-gene-events' || $topic === 'gpm-checkpoint-events') {
-                            $payload = json_decode($message->payload, true);
-                            $a = $stream->parser;
-                            $a($payload, $message->timestamp);
-                            $stream->offset++;
-                            $stream->save();
-                            //$stream->update(['offset' => $offset + 1]);
-                        } else {
-                            // there is strong reasons to pass the entire message to the parser,
-                            // as we do with actionability and dosage above.  All new parsers should
-                            // be that way.  But for now, leave the existings parsers as is and
-                            // we'll come back later to fix them.
-                            $payload = json_decode($message->payload);
-                            $a = $stream->parser;
-                            $a($payload);
-                            $stream->update(['offset' => $message->offset + 1]);
-                        }
+                case RD_KAFKA_RESP_ERR_NO_ERROR:
+                    $m = new Packet([
+                        'topic'     => $stream->topic,
+                        'type'      => Packet::TYPE_KAFKA,
+                        'uuid'      => $message->key,
+                        'offset'    => $message->offset,
+                        'timestamp' => $message->timestamp,
+                        'payload'   => $message->payload,
+                        'status'    => Packet::STATUS_ACTIVE,
+                    ]);
+
+                    $m->save();
+
+                    // Topic-specific handling (unchanged)
+                    if (
+                        $topic === 'dosage' ||
+                        $topic === 'actionability' ||
+                        $topic === 'gene-validity' ||
+                        $topic === 'variant_interpretation'
+                    ) {
+                        $payload = json_decode($message->payload);
+                        $parser  = $stream->parser;
+                        $parser($message, $m);
+
+                        $stream->update(['offset' => $message->offset + 1]);
+
+                    } elseif (
+                        $topic === 'gpm-general-events' ||
+                        $topic === 'gpm-person-events' ||
+                        $topic === 'gpm-gene-events' ||
+                        $topic === 'gpm-checkpoint-events'
+                    ) {
+                        $payload = json_decode($message->payload, true);
+                        $parser  = $stream->parser;
+                        $parser($payload, $message->timestamp);
+
+                        $stream->offset++;
+                        $stream->save();
+
+                    } else {
+                        $payload = json_decode($message->payload);
+                        $parser  = $stream->parser;
+                        $parser($payload);
+
+                        $stream->update(['offset' => $message->offset + 1]);
+                    }
+
                     break;
-                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
-                    echo "No more messages; will wait for more\n";
-                    break 2;
+
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
-                    echo "Timed out\n";
-                    break 2;
+                    // Expected when topic is quiet — DO NOT EXIT
+                    continue 2;
+
+                case RD_KAFKA_RESP_ERR__PARTITION_EOF:
+                    // Reached end of partition — wait for new messages
+                    continue 2;
+
                 default:
                     throw new \Exception($message->errstr(), $message->err);
-                    break;
             }
         }
 
-		echo "Update Complete\n";
-	}
+
+        echo "Update Complete\n";
+    }
 }
