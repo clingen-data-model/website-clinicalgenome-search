@@ -138,16 +138,16 @@
 
                     <tr>
                         <td><strong>Dosage Sensitivity Recurrent CNV</strong>
-                            <div class="small">These files contains recurrent copy number variations (CNV) that have been, or are in the process of being, reviewed by the recurrent CNV ClinGen DSC Subgroup. This file is available in genome build hg19 and hg38 and can be opened in ChAS software (.aed) or in array analysis software that utilizes (.bed) files as well as the UCSC genome browser. The orange bars represent each recurrent region. The black bars represent the segmental duplication clusters/breakpoints.</div>
+                            <div class="small">These files contains recurrent copy number variations (CNV) that have been, or are in the process of being, reviewed by the recurrent CNV ClinGen DSC Subgroup. This file is available in genome build hg37 and hg38 and can be opened in ChAS software (.aed) or in array analysis software that utilizes (.bed) files as well as the UCSC genome browser. The orange bars represent each recurrent region. The black bars represent the segmental duplication clusters/breakpoints.</div>
                         </td>
                         <td></td>
                         <td style="text-align:center"">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG19 (bed)"><i class="fas fa-download"></i> HG19 (bed)</a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG19 (aed)"><i class="fas fa-download"></i> HG19 (aed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen_recurrent_CNV_V2.0-hg37.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG37 (bed)"><i class="fas fa-download"></i> HG37 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V2.0-hg37.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG37 (aed)"><i class="fas fa-download"></i> HG37 (aed)</a>
                         </td>
                         <td style="text-align:center">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen_recurrent_CNV_V2.0-hg38.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V2.0-hg38.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</a>
                         </td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
