@@ -24,7 +24,7 @@
 		  <ul class="list-inline pb-0 mb-0 small">
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countCurations text-18px">{{ $record->nvalid ?? '0' }}</span><br />Gene-Disease Validity<br />Classifications</li>
             <li class="text-stats line-tight text-center pl-3 pr-3"><span class="countGenes text-18px">{{ $record->ndosage ?? '0' }}</span><br />Dosage Sensitivity<br />Classifications</li>
-			@if($disease->curie != 'MONDO:0006823')
+			@if($save_disease->curie != 'MONDO:0006823')
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">{{ $record->naction ?? '0' }}</span><br /> Clinical Actionability<br />Assertions</li>
             @else
 			<li class="text-stats line-tight text-center pl-3 pr-3"><span class="countEps text-18px">2</span><br /> Clinical Actionability<br />Assertions</li>
@@ -324,7 +324,7 @@
 				</div>
 				@endisset
 
-				@if($disease->curie == 'MONDO:0006823')
+				@if($save_disease->curie == 'MONDO:0006823')
    					@php $currations_set = true; @endphp
 					@include('condition.includes.actionability_region')
 				@endif
