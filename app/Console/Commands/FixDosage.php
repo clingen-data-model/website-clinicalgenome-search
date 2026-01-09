@@ -46,15 +46,18 @@ class FixDosage extends Command
 
         Curation::dosage()->status(Curation::STATUS_ACTIVE)->each(function ($item) {
 
-            if ($item->disease_id !==null)
+            if ($item->disease_id !== null)
             {
-                if (isset($item->condition_details['disease_phenotype_name']) && empty($item->condition_details['disease_phenotype_name']))
-                {        
+                if (array_key_exists('disease_phenotype_name', $item->condition_details) && empty($item->condition_details['disease_phenotype_name']))
+                {   
                     $disease = Disease::find($item->disease_id);
 
                     if ($disease !== null)
                     {
-                        $item->condition_details['disease_phenotype_name'] = $disease->label;
+                        echo "...fixing $item->assertion_uuid \n";
+                        $details = $item->condition_details;
+                        $details['disease_phenotype_name'] = $disease->label;
+                        $item->condition_details = $details;
                         $item->save();
                     }
                 }
