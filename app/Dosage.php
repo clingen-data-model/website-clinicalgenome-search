@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Curation;
 use App\Slug;
 use App\Jira;
+use App\Disease;
 
 /**
  *
@@ -933,6 +934,16 @@ class Dosage extends Model
                 'version' => 1,
                 'status' => $curation_status
               ];
+
+              // populate disease names if they were not provided
+              if ($data['disease_id'] !== null && $data['condition_details']['disease_phenotype_name'] == null)
+              {
+                $disease = Disease::find($data['disease_id']);
+
+                if ($disease !== null)
+                    $data['condition_details']['disease_phenotype_name'] = $disease->label;
+
+              }
 
               $curation = new Curation($data);
               $curation->save();
