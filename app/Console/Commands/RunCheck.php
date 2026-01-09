@@ -13,6 +13,7 @@ use App\Validity;
 use App\Actionability;
 use App\Dosage;
 use App\Region;
+use App\Disease;
 
 use Setting;
 use Mail;
@@ -132,6 +133,9 @@ class RunCheck extends Command
                 //echo "updating " . $record->label ." " . $record->hgnc_id . "\n";
                 $gene = Gene::hgnc($record->hgnc_id)->first();
 
+                //if ($record->hgnc_id == "HGNC:1232")
+                //    dd($record);
+
                 if ($gene !== null)
                 {
                     $gene->date_last_curated = $record->last_curated_date;
@@ -206,6 +210,14 @@ class RunCheck extends Command
         $model = new Validity();
         $model->preload();
         echo "DONE\n";
+ 
+        // this is an ugly hack but only foolproof way to ensure the actionability activity for klienfelter syndrome is preserved
+        $disease = Disease::curie('MONDO:0006823')->first();
+
+        if ($disease !== null)
+        {
+            $disease->update(['curation_activities' => ['dosage' => false, 'varpath' => false, 'validity' => false, 'actionability' => true]]);
+        }
 
         @unlink($this->lockfile);
 
