@@ -85,7 +85,7 @@ class PanelIncrementalService
                 $this->recordActivity($panel, 'vcep_draft_specifications_approved', data_get($data, 'date'));
                 break;
 
-            case 'vcep_pilot_approved':
+            case 'vcep_pilot_approval':
                 $this->recordActivity($panel, 'vcep_pilot_approved', data_get($data, 'date'));
                 break;
 
