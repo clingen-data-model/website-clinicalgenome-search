@@ -221,7 +221,7 @@ class PanelIncrementalService
                 $panel->summary        = data_get($group, 'description');
                 $panel->wg_status      = data_get($group, 'status');
                 $panel->affiliate_type = data_get($group, 'type');
-                $panel->coi_url        = data_get($group, 'coi');
+                //$panel->coi_url        = data_get($group, 'coi');
                 $panel->save();
             }
 
