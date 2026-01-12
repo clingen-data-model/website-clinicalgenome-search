@@ -863,7 +863,7 @@ class Panel extends Model
                 $this->save();
 
                 break;
-            case 'vcep_draft_specifications_approved':
+            case 'vcep_draft_specifications_approval':
                 //
                 $activity = $this->activities()->firstOrNew([
                     'activity' => 'vcep_draft_specifications_approved'
