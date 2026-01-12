@@ -447,10 +447,12 @@ class Panel extends Model
             return in_array(strtolower($role), $types, true);
         })
         ->map(function ($memb) {
-            if (!is_array($memb->institution)  {
-                $inst = $memb->institution ? json_decode($memb->institution, true) : [];
+            if ($memb->institution && !is_array($memb->institution))  {
+                $inst = json_decode($memb->institution, true);
+            } else {
+                $inst = $memb->institution ?? [];
             }
-            
+
             return [
                 'user_name_full'              => $memb->display_name,
                 'user_name_first'             => $memb->first_name,
