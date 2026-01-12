@@ -162,7 +162,7 @@ class PanelIncrementalService
                 $panel->affiliate_id    = data_get($expertPanel, 'affiliation_id');
                 $panel->affiliate_type  = data_get($expertPanel, 'type');
                 $panel->name            = data_get($expertPanel, 'name');
-                $panel->title_short     = data_get($expertPanel, 'short_name', data_get($expertPanel, 'name'));
+                $panel->title_short     = data_get($expertPanel, 'short_name') ?? ' ';
                 $panel->title           = data_get($expertPanel, 'name');
                 $panel->summary         = data_get($expertPanel, 'scope_description');
 
