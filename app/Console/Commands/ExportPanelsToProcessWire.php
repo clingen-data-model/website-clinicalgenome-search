@@ -61,6 +61,7 @@ class ExportPanelsToProcessWire extends Command
             $this->info('sending affliation id ' . $panel->name);
             $exporter = new PanelExporter($panel);
             $result = $exporter->pushToProcessWire();
+            dd($result);
         }
     }
 }
