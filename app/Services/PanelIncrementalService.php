@@ -371,6 +371,7 @@ class PanelIncrementalService
      */
     protected function handleParentUpdated(Panel $panel, array $data): void
     {
+        dd($data);
         $parentData = data_get($data, 'data.parent_new');
 
         if (! $parentData) {
