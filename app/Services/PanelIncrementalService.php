@@ -38,7 +38,7 @@ class PanelIncrementalService
 
         $panel = $this->resolvePanelFromKafka($data);
 
-        if (! $panel) {
+        if (!$panel) {
             // No panel => nothing to update incrementally
             return null;
         }
@@ -73,15 +73,17 @@ class PanelIncrementalService
                 $this->applyEpInfoUpdated($panel, $data);
                 break;
 
-            case 'ep_definition_approved':
+            case 'vcep_definition_approval':
                 $this->recordActivity($panel, 'ep_definition_approved', data_get($data, 'date'));
                 break;
 
-            case 'ep_final_approval':
+            case 'vcep_final_approval':
+            case 'gcep_final_approval':
                 $this->recordActivity($panel, 'ep_final_approval', data_get($data, 'date'));
                 break;
 
-            case 'vcep_draft_specifications_approved':
+
+            case 'vcep_draft_specification_approval':
                 $this->recordActivity($panel, 'vcep_draft_specifications_approved', data_get($data, 'date'));
                 break;
 
@@ -171,7 +173,7 @@ class PanelIncrementalService
                     $panel->is_inactive   = true;
                 }
 
-                 if ($iconUrl = data_get($expertPanel, 'icon_url')) {
+                if ($iconUrl = data_get($expertPanel, 'icon_url')) {
                     $panel->icon_url = $iconUrl;
                 }
 
@@ -182,19 +184,19 @@ class PanelIncrementalService
                 $panel->save();
 
                 if ($gcepDefineGroup = data_get($expertPanel, 'gcep_define_group')) {
-                   $this->recordActivity($panel, 'ep_definition_approved', Carbon::parse($gcepDefineGroup)->format('Y-m-d H:i:s'));
+                    $this->recordActivity($panel, 'ep_definition_approved', Carbon::parse($gcepDefineGroup)->format('Y-m-d H:i:s'));
                 }
 
                 if ($gcepApproval = data_get($expertPanel, 'gcep_approval')) {
-                   $this->recordActivity($panel, 'ep_final_approval',  Carbon::parse($gcepApproval)->format('Y-m-d H:i:s'));
+                    $this->recordActivity($panel, 'ep_final_approval',  Carbon::parse($gcepApproval)->format('Y-m-d H:i:s'));
                 }
 
                 if ($vcepDefineGroup = data_get($expertPanel, 'vcep_define_group')) {
-                   $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepDefineGroup)->format('Y-m-d H:i:s'));
+                    $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepDefineGroup)->format('Y-m-d H:i:s'));
                 }
 
                 if ($vcepClassify = data_get($expertPanel, 'vcep_classification_rules')) {
-                   $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepClassify)->format('Y-m-d H:i:s'));
+                    $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepClassify)->format('Y-m-d H:i:s'));
                 }
 
                 //WE'LL UPDATE THE PARENT HERE AS WELL
