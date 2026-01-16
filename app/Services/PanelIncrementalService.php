@@ -82,7 +82,6 @@ class PanelIncrementalService
                 $this->recordActivity($panel, 'ep_final_approval', data_get($data, 'date'));
                 break;
 
-
             case 'vcep_draft_specification_approval':
                 $this->recordActivity($panel, 'vcep_draft_specifications_approved', data_get($data, 'date'));
                 break;
@@ -371,8 +370,7 @@ class PanelIncrementalService
      */
     protected function handleParentUpdated(Panel $panel, array $data): void
     {
-        dd($data);
-        $parentData = data_get($data, 'data.parent_new');
+        $parentData = data_get($data, 'data.new_parent');
 
         if (! $parentData) {
             return;
