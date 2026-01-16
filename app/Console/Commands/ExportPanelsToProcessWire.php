@@ -13,34 +13,26 @@ class ExportPanelsToProcessWire extends Command
      *
      * @var string
      */
-    protected $signature = 'processwire:panels {panel_id?} {affiliate_id?} {--type=vcep}';
+    protected $signature = 'processwire:panels
+        {panel_id?}
+        {affiliate_id?}
+        {--type=vcep}
+        {--debug : Dump response instead of continuing}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Export panels to ProcessWire';
 
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
     public function handle()
     {
-        $type = $this->option('type');
+        $type  = $this->option('type');
+        $debug = (bool) $this->option('debug');
+
         $query = Panel::query();
+
         if ($affiliateId = $this->argument('affiliate_id')) {
             $type = null;
             $query->where('affiliate_id', $affiliateId);
@@ -55,13 +47,25 @@ class ExportPanelsToProcessWire extends Command
             $query->where('affiliate_type', $type);
         }
 
-	$panels = $query->get();
+        $panels = $query->get();
 
         foreach ($panels as $panel) {
-            $this->info('sending affliation id ' . $panel->name);
+            $this->info('Sending affiliation: ' . $panel->name);
+
             $exporter = new PanelExporter($panel);
-            $result = $exporter->pushToProcessWire();
-            dd($result);
+            $result   = $exporter->pushToProcessWire();
+
+            if ($debug) {
+                dd([
+                    'panel_id'   => $panel->id,
+                    'panel_name' => $panel->name,
+                    'result'     => $result,
+                ]);
+
+                return Command\::SUCCESS;
+            }
         }
+
+        return Command::SUCCESS;
     }
 }
