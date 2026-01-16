@@ -371,7 +371,7 @@ class PanelIncrementalService
      */
     protected function handleParentUpdated(Panel $panel, array $data): void
     {
-        $parentData = data_get($data, 'data.group.parent');
+        $parentData = data_get($data, 'data.parent_new');
 
         if (! $parentData) {
             return;
@@ -379,16 +379,21 @@ class PanelIncrementalService
 
         if ($gpmId = data_get($parentData, 'uuid')) {
             $parentPanel = Panel::firstOrNew([
-                'gpm_id' => $gpmId,
+                'gpm_id' => $gpmId
             ]);
 
-            $parentPanel->name           = data_get($parentData, 'name', $parentPanel->name);
-            $parentPanel->affiliate_type = data_get($parentData, 'type', $parentPanel->affiliate_type);
-            $parentPanel->wg_status      = data_get($parentData, 'status', $parentPanel->wg_status);
-            $parentPanel->save();
-
-            $panel->parent_id = $parentPanel->id;
-            $panel->save();
+            if ($parentPanel->exists) {
+                $panel->parent_id = $parentPanel->id;
+                $panel->save();
+            } else {
+                //create a new parent
+                $parentPanel->name           = data_get($parentData, 'name', $parentPanel->name);
+                $parentPanel->affiliate_type = data_get($parentData, 'type', $parentPanel->affiliate_type);
+                $parentPanel->wg_status      = data_get($parentData, 'status', $parentPanel->wg_status);
+                $parentPanel->save();
+                $panel->parent_id = $parentPanel->id;
+                $panel->save();
+            }
         }
     }
 
