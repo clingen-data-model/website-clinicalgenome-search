@@ -253,6 +253,7 @@ class PanelIncrementalService
         //$panel->save();
     }
 
+
     /**
      * Group status updated – keep wg_status and is_inactive in sync.
      */
@@ -267,6 +268,24 @@ class PanelIncrementalService
         }
 
         $panel->save();
+    }
+
+     /**
+     * Parent Updated – swtich the parentage of an expert panel
+     */
+    protected function applyParentUpdate(Panel $panel, array $data): void
+    {
+        $newParent = data_get($data, 'data.new_parent');
+
+        if ($newParent) {
+            $parent = Panel::where('gpm_id', $newParent['uuid'])->first();
+
+            if (null !== $parent) {
+                $panel->parent_id = $parent->id;
+                $panel->save();
+            }
+        }
+
     }
 
     /**
