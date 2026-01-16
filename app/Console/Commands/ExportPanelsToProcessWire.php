@@ -62,7 +62,7 @@ class ExportPanelsToProcessWire extends Command
                     'result'     => $result,
                 ]);
 
-                return Command\::SUCCESS;
+                return Command::SUCCESS;
             }
         }
 
