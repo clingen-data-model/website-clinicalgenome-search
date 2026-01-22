@@ -24,10 +24,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('query:kafka gpm-general-events')
-            ->everyTenMinutes()
-            ->withoutOverlapping(30)   // prevents overlap for up to 30 mins
-            ->appendOutputTo('/tmp/gpm-general.out');
+       $schedule->command('query:kafka gpm-general-events --assign')
+        ->everyTenMinutes()
+        ->withoutOverlapping(30)   // prevents overlap for up to 30 mins
+        ->appendOutputTo('/tmp/gpm-general.out');
+
 
         $schedule->command('query:kafka gpm-person-events')
             ->everyTenMinutes()
