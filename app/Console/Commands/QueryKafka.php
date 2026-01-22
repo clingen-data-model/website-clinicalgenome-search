@@ -37,7 +37,8 @@ class QueryKafka extends Command
             return 1;
         }
 
-        $useAssign = (bool) $this->option('assign');
+        //$useAssign = (bool) $this->option('assign');
+        $useAssign = true;
 
         if (!$useAssign) {
             $this->error("This rewritten version is intended for --assign mode. Run with --assign.");
