@@ -24,13 +24,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('query:kafka gpm-general-events')
+            ->everyTenMinutes()
+            ->withoutOverlapping(30)   // prevents overlap for up to 30 mins
+            ->appendOutputTo('/tmp/gpm-general.out');
 
-        //$schedule->command('app:append-time')->everyFiveMinutes();
-        $schedule->command('query:kafka gpm-general-events')->everyTenMinutes();
-        $schedule->command('query:kafka gpm-person-events')->everyTenMinutes();
-    }
+        $schedule->command('query:kafka gpm-person-events')
+            ->everyTenMinutes()
+            ->withoutOverlapping(30) // prevents overlap for up to 30 mins
+            ->appendOutputTo('/tmp/gpm-person.out');
+        }
 
     /**
      * Register the commands for the application.
