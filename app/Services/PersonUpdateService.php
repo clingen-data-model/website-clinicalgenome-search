@@ -19,7 +19,7 @@ class PersonUpdateService
         $eventType = data_get($data, 'event_type');
 
         // Only process schema 2.0.0
-        if ($schema !== '2.0.0') {
+        if ($schema !== '2.0.1') {
             return null;
         }
 
