@@ -132,7 +132,12 @@ class Member extends Model
 
     public function processwireData()
     {
-        $inst = $this->institution ? json_decode($this->institution, true) : [];
+        if (!is_array($this->institution)) {
+            $inst = json_decode($this->institution, true);
+        } else {
+            $inst = $this->institution;
+        }
+
         return [
             'user_name_full' => $this->display_name,
             'user_name_first' => $this->first_name,
