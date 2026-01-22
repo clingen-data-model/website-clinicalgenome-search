@@ -32,10 +32,12 @@ class QueryKafka extends Command
 
         // group.id selection
         if ($topicName === 'all-curation-events') {
-            $conf->set('group.id', 'web_stage');
+            $groupId = 'web_stage';
         } else {
-            $conf->set('group.id', 'web_prod');
+            $groupId = 'web_prod';
         }
+
+        $conf->set('group.id', $groupId);
 
         // Confluent Cloud / SASL
         $conf->set('security.protocol', 'sasl_ssl');
@@ -81,7 +83,7 @@ class QueryKafka extends Command
 
         // If user only wants offsets dump, do it and exit
         if ($this->option('debug-offsets')) {
-            $this->dumpOffsetsAndExit($consumer, $stream->topic, $conf->get('group.id'), $storedOffset);
+            $this->dumpOffsetsAndExit($consumer, $stream->topic, $groupId, $storedOffset);
             return 0;
         }
 
