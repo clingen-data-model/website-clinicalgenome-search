@@ -3,193 +3,232 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
 use App\Stream;
-use App\Pmid;
-use App\Curation;
 use App\Packet;
 
 class QueryKafka extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'query:kafka {topic}';
+    protected $signature = 'query:kafka {topic} {--debug-offsets : Dump low/high watermarks and current/committed offsets then exit}';
+    protected $description = 'Consume a Kafka topic and persist packets';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    // gene_dosage, gene_dosage_raw, gene_dosage_sepio_in.
-
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        $topic = $this->argument('topic');
+        $topicName = $this->argument('topic');
 
-        if ($topic === null)
-        {
-            echo "Topic not found \n";
-            exit;
+        if (!$topicName) {
+            $this->error("Topic not found");
+            return 1;
         }
 
-        $stream = Stream::name($topic)->first();
-
-        if ($stream === null)
-        {
-            echo "Topic not found \n";
-            exit;
+        $stream = Stream::name($topicName)->first();
+        if (!$stream) {
+            $this->error("Topic not found");
+            return 1;
         }
 
-        $offset = $stream->offset;
+        $storedOffset = (int) ($stream->offset ?? 0);
 
         $conf = new \RdKafka\Conf();
 
-        // Set a rebalance callback to log partition assignments (optional)
-        $conf->setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) use ($offset) {
-            switch ($err) {
-                case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
-                    //echo "Assign: ";
-                    //var_dump($partitions);
-                    $kafka->assign($partitions);
-
-                    foreach ($partitions as $tp) {
-                        $tp->setOffset($offset);
-                        $kafka->commit([$tp]);
-                    }
-                    break;
-
-                case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
-                   // echo "Revoke: ";
-                    //var_dump($partitions);
-                    $kafka->assign(NULL);
-                    break;
-                default:
-                    throw new \Exception($err);
-            }
-        });
-
-        // Configure the group.id. All consumer with the same group.id will consume
-        // different partitions.
-        if ($topic == 'all-curation-events') //  || $topic == 'actionability')
+        // group.id selection
+        if ($topicName === 'all-curation-events') {
             $conf->set('group.id', 'web_stage');
-        else
+        } else {
             $conf->set('group.id', 'web_prod');
+        }
 
+        // Confluent Cloud / SASL
         $conf->set('security.protocol', 'sasl_ssl');
         $conf->set('sasl.mechanism', 'PLAIN');
         $conf->set('sasl.username', $stream->username);
         $conf->set('sasl.password', $stream->password);
 
-        // Initial list of Kafka brokers
         $conf->set('metadata.broker.list', $stream->endpoint);
-        // Set where to start consuming messages when there is no initial offset in
-        // offset store or the desired offset is out of range.
-        // 'earliest': start from the beginning
         $conf->set('auto.offset.reset', 'earliest');
-        //$conf->set('enable.auto.commit', 'false');
 
+        // IMPORTANT: do not auto-commit while you’re debugging offsets
+        // (you can set it back later)
+        $conf->set('enable.auto.commit', 'false');
+
+        // --- Rebalance callback (kept, but safer) ---
+        $conf->setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) use ($storedOffset) {
+            switch ($err) {
+                case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
+                    // If you want to force a specific offset, do it PER partition *before* assign
+                    if ($partitions) {
+                        foreach ($partitions as $tp) {
+                            // Only force if storedOffset is > 0, otherwise let RD_KAFKA_OFFSET_STORED work
+                            if ($storedOffset > 0) {
+                                $tp->setOffset($storedOffset);
+                            } else {
+                                $tp->setOffset(RD_KAFKA_OFFSET_STORED);
+                            }
+                        }
+                    }
+                    $kafka->assign($partitions);
+                    break;
+
+                case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
+                    $kafka->assign(NULL);
+                    break;
+
+                default:
+                    throw new \Exception((string) $err);
+            }
+        });
 
         $consumer = new \RdKafka\KafkaConsumer($conf);
 
-        /*$availableTopics = $consumer->getMetadata(true, null, 60e3)->getTopics();
-        echo "Available Topics: \n";
-        foreach ($availableTopics as $idx => $avlTopic) {
-            echo $idx.': '.$avlTopic->getTopic()."\n";
-        }*/
+        // If user only wants offsets dump, do it and exit
+        if ($this->option('debug-offsets')) {
+            $this->dumpOffsetsAndExit($consumer, $stream->topic, $conf->get('group.id'), $storedOffset);
+            return 0;
+        }
 
-        //$a = $consumer->getCommittedOffsets([new \RdKafka\TopicPartition('gene_dosage', 0)], 60*1000);
-        //$low = $high = 0;
-
-        //$consumer->queryWatermarkOffsets('web-group-events', 0, $low, $high, 60*1000);
-        //dd($high);
-
-        // Subscribe to topic 'test'
+        // Subscribe (group-managed)
         $consumer->subscribe([$stream->topic]);
 
-        //echo "Waiting for partition assignment... (make take some time when\n";
-        //echo "quickly re-joining the group after leaving it.)\n";
-
-        //echo "Reading...\n";
         while (true) {
-            $message = $consumer->consume(45*1000);
-            //echo $message->err . "\n";
+            $message = $consumer->consume(45 * 1000);
 
-            if ($message === null)
-            {
-                echo "Nothing here, bye\n";
-                exit;
+            if ($message === null) {
+                $this->line("Nothing here, bye");
+                return 0;
             }
 
             switch ($message->err) {
-                case 0:
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
-                        $m = new Packet(['topic' => $stream->topic,
-                                         'type' => Packet::TYPE_KAFKA,
-                                         'uuid' => $message->key,
-                                         'offset' => $message->offset,
-                                         'timestamp' => $message->timestamp,
-                                         'payload' => $message->payload,
-                                         'status' => Packet::STATUS_ACTIVE
-                                        ]);
-                        $m->save();
-                        if ($topic == "dosage" || $topic == "actionability" || $topic == 'gene-validity' || $topic == 'variant_interpretation')
-                        {
-                            $payload = json_decode($message->payload);
-                           // dd($payload);
-                            $a = $stream->parser;
-                            $a($message, $m);
-                            $stream->update(['offset' => $message->offset + 1]);
-                        } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events' || $topic === 'gpm-gene-events' || $topic === 'gpm-checkpoint-events') {
-                            $payload = json_decode($message->payload, true);
-                            dd($payload);
-                            $a = $stream->parser;
-                            $a($payload, $message->timestamp);
-                            $stream->offset++;
-                            $stream->save();
-                        } else {
-                            // there is strong reasons to pass the entire message to the parser,
-                            // as we do with actionability and dosage above.  All new parsers should
-                            // be that way.  But for now, leave the existings parsers as is and
-                            // we'll come back later to fix them.
-                            $payload = json_decode($message->payload);
-                            $a = $stream->parser;
-                            $a($payload);
-                            $stream->update(['offset' => $message->offset + 1]);
+                case 0:
+                    $m = new Packet([
+                        'topic' => $stream->topic,
+                        'type' => Packet::TYPE_KAFKA,
+                        'uuid' => $message->key,
+                        'offset' => $message->offset,
+                        'timestamp' => $message->timestamp,
+                        'payload' => $message->payload,
+                        'status' => Packet::STATUS_ACTIVE
+                    ]);
+                    $m->save();
 
-                        }
+                    // Your existing parsing behavior
+                    if ($topicName == "dosage" || $topicName == "actionability" || $topicName == 'gene-validity' || $topicName == 'variant_interpretation') {
+                        $payload = json_decode($message->payload);
+                        $a = $stream->parser;
+                        $a($message, $m);
+
+                        $stream->update(['offset' => $message->offset + 1]);
+
+                    } else if (in_array($topicName, ['gpm-general-events','gpm-person-events','gpm-gene-events','gpm-checkpoint-events'], true)) {
+                        $payload = json_decode($message->payload, true);
+
+                        $a = $stream->parser;
+                        $a($payload, $message->timestamp);
+
+                        $stream->offset = $message->offset + 1;
+                        $stream->save();
+
+                    } else {
+                        $payload = json_decode($message->payload);
+                        $a = $stream->parser;
+                        $a($payload);
+
+                        $stream->update(['offset' => $message->offset + 1]);
+                    }
+
+                    // commit the message we just processed (per partition)
+                    // (commit AFTER work completes)
+                    $consumer->commit($message);
+
                     break;
+
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
-                    echo "No more messages; will wait for more\n";
-                    break 2;
+                    $this->line("No more messages; will wait for more");
+                    return 0;
+
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
-                    echo "Timed out\n";
-                    break 2;
+                    $this->line("Timed out");
+                    return 0;
+
                 default:
                     throw new \Exception($message->errstr(), $message->err);
-                    break;
+            }
+        }
+    }
+
+    private function dumpOffsetsAndExit(\RdKafka\KafkaConsumer $consumer, string $topic, string $groupId, int $storedOffset): void
+    {
+        $this->line("=== Kafka Offset Debug ===");
+        $this->line("Topic: {$topic}");
+        $this->line("Group: {$groupId}");
+        $this->line("Stored offset (DB streams.offset): {$storedOffset}");
+        $this->line("");
+
+        // Discover partitions from metadata
+        $md = $consumer->getMetadata(true, null, 60 * 1000);
+        $partitions = [];
+
+        foreach ($md->getTopics() as $t) {
+            if ($t->getTopic() !== $topic) continue;
+            foreach ($t->getPartitions() as $p) {
+                $partitions[] = $p->getId();
             }
         }
 
-		echo "Update Complete\n";
-	}
+        if (!$partitions) {
+            $this->error("No partitions found for topic (or topic missing in metadata).");
+            return;
+        }
+
+        // Committed offsets for this group
+        $tps = array_map(function ($pid) use ($topic) {
+            return new \RdKafka\TopicPartition($topic, $pid);
+        }, $partitions);
+
+        $committed = [];
+        try {
+            $committedTps = $consumer->getCommittedOffsets($tps, 60 * 1000);
+            foreach ($committedTps as $tp) {
+                $committed[$tp->getPartition()] = $tp->getOffset();
+            }
+        } catch (\Throwable $e) {
+            $this->warn("Could not fetch committed offsets for group (yet). Error: " . $e->getMessage());
+        }
+
+        // Print per-partition low/high + committed + lag + stored range check
+        foreach ($partitions as $pid) {
+            $low = 0;
+            $high = 0;
+
+            try {
+                $consumer->queryWatermarkOffsets($topic, $pid, $low, $high, 60 * 1000);
+            } catch (\Throwable $e) {
+                $this->error("Partition {$pid}: watermark query failed: " . $e->getMessage());
+                continue;
+            }
+
+            $comm = $committed[$pid] ?? null;
+
+            // librdkafka uses special negatives when unknown
+            $commLabel = ($comm === null) ? 'N/A' : (string) $comm;
+
+            $lag = null;
+            if ($comm !== null && $comm >= 0) {
+                $lag = $high - $comm;
+            }
+
+            $inRange = ($storedOffset === 0) ? 'N/A' : (($storedOffset >= $low && $storedOffset <= $high) ? 'yes' : 'NO (out of range)');
+
+            $this->line("Partition {$pid}:");
+            $this->line("  start(low):  {$low}");
+            $this->line("  end(high):   {$high}  (next offset, so message count ~= high-low)");
+            $this->line("  committed:   {$commLabel}");
+            if ($lag !== null) {
+                $this->line("  lag:         {$lag}");
+            }
+            $this->line("  storedOffset in range?: {$inRange}");
+            $this->line("");
+        }
+
+        $this->line("=== End Offset Debug ===");
+    }
 }
