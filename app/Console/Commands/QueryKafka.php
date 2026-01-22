@@ -159,14 +159,13 @@ class QueryKafka extends Command
                             $a = $stream->parser;
                             $a($message, $m);
                             $stream->update(['offset' => $message->offset + 1]);
-
                         } else if ($topic === 'gpm-general-events' || $topic === 'gpm-person-events' || $topic === 'gpm-gene-events' || $topic === 'gpm-checkpoint-events') {
                             $payload = json_decode($message->payload, true);
+                            dd($payload);
                             $a = $stream->parser;
                             $a($payload, $message->timestamp);
                             $stream->offset++;
                             $stream->save();
-                            //$stream->update(['offset' => $offset + 1]);
                         } else {
                             // there is strong reasons to pass the entire message to the parser,
                             // as we do with actionability and dosage above.  All new parsers should
@@ -176,6 +175,7 @@ class QueryKafka extends Command
                             $a = $stream->parser;
                             $a($payload);
                             $stream->update(['offset' => $message->offset + 1]);
+
                         }
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
