@@ -75,9 +75,11 @@ class PersonUpdateService
             $member->email = $email;
         }
 
+        $display_name = '';
+
         // Display name (fallback to "First Last")
         if ($member->first_name || $member->last_name) {
-            $member->display_name = trim($member->first_name . ' ' . $member->last_name);
+            $display_name = trim($member->first_name . ' ' . $member->last_name);
         }
 
         // Institution (Member::casts['institution' => 'array'])
@@ -112,6 +114,8 @@ class PersonUpdateService
                 $member->credentials = $credentials;
             }
         }
+        
+        $member->display_name = $display_name . $credentials;
 
         // Biography, profile photo, timezone
         if (array_key_exists('biography', $person)) {
