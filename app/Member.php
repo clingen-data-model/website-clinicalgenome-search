@@ -37,6 +37,8 @@ class Member extends Model
     const CURATOR = 'biocurator';
     const COMMITTEE = 'committee';
     const COORDINATOR = 'coordinator';
+    const GRANT_LIAISON = 'grant liaison';
+    const EXPERT = 'expert';
 
     /**
      * The attributes that should be validity checked.
@@ -163,7 +165,7 @@ class Member extends Model
     public function parser($data, $timestamp = null)
     {
         $member = app(\App\Services\PersonUpdateService::class)->syncFromKafka($data);
-        
+
         if ($member) {
             Artisan::call('processwire:members', ['member_id' => $member->id]);
         }
