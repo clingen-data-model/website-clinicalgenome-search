@@ -208,6 +208,7 @@ class Validity extends Model
     ];
 
     protected static $location_sop = [
+        'ClinGen Gene Validity Evaluation Criteria SOP12' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedures-version-12/',
         'ClinGen Gene Validity Evaluation Criteria SOP11' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedures-version-11/',
         'ClinGen Gene Validity Evaluation Criteria SOP10' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-10',
         'ClinGen Gene Validity Evaluation Criteria SOP9' => 'https://clinicalgenome.org/docs/gene-disease-validity-standard-operating-procedure-version-9',
@@ -621,6 +622,9 @@ class Validity extends Model
         foreach ($records->collection as $record) {
             $publish_date = false;
 
+            //if ($record->curie == 'CGGV:assertion_03c758a6-9290-4e14-9501-0ffb0fbfe8ce-2020-04-24T160000.000Z')
+            //    dd($record);
+
             // find published date
             foreach ($record->contributions as $contribution)
                 if ($contribution->realizes->curie == "CG:PublisherRole" )
@@ -634,8 +638,6 @@ class Validity extends Model
             else
                 $check = Curation::validity()->active()->where('source_uuid', $record->curie)->exists();*/
 
-            //if ($record->curie == "CGGCIEX:assertion_8249")
-            //    dd($record);
             if ($curation !== null && isset($curation->events['publish_date']) && $curation->events['publish_date'] == $publish_date) 
             {
                 // unset the remove flag
@@ -764,6 +766,10 @@ class Validity extends Model
                     'status' => Slug::STATUS_INITIALIZED
                 ]
             );
+
+            // remove any stale entries from the pivot table
+            $curation->panels()->detatch();
+
 
             // update the panel pivot table
             foreach ($data['curators'] as $contribution) {

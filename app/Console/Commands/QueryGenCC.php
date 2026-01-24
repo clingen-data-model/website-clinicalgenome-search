@@ -45,7 +45,17 @@ class QueryGenCC extends Command
 
 		//$results = file_get_contents('https://search.thegencc.org/download/action/submissions-export-csv');
 
-        $fp = fopen('https://search.thegencc.org/download/action/submissions-export-csv', 'r');
+        // GenCC blocked empty ua requests, so we need to fake it.
+        $opts = array (
+            'http' => array (
+            'header'  => array(
+                "User-Agent: " . 'ClinGen/4' . "\r\n"),
+            )
+        );
+
+        $context = stream_context_create($opts);
+
+        $fp = fopen('https://search.thegencc.org/download/action/submissions-export-csv', 'r', false, $context);
 
 		if ($fp === false)
 		{
