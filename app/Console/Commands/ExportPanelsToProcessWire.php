@@ -53,6 +53,12 @@ class ExportPanelsToProcessWire extends Command
             $this->info('Sending affiliation: ' . $panel->name);
 
             $exporter = new PanelExporter($panel);
+
+            if ($debug) {
+                dd($exporter->getProcessWireData());
+
+                return Command::SUCCESS;
+            }
             $result   = $exporter->pushToProcessWire();
 
             if ($debug) {

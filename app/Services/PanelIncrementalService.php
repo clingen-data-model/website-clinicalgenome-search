@@ -74,12 +74,12 @@ class PanelIncrementalService
                 break;
 
             case 'vcep_definition_approval':
-                $this->recordActivity($panel, 'ep_definition_approved', data_get($data, 'date'));
+                $this->recordActivity($panel, 'ep_definition_approved', data_get($data, 'date_approved'));
                 break;
 
             case 'vcep_final_approval':
             case 'gcep_final_approval':
-                $this->recordActivity($panel, 'ep_final_approval', data_get($data, 'date'));
+                $this->recordActivity($panel, 'ep_final_approval', data_get($data, 'date_approved'));
                 break;
 
             case 'vcep_draft_specification_approval':
