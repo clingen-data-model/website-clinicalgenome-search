@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class PanelImportService
 {
 
-    public function create($data)
+    public function create($data, $members = [])
     {
         //we are only creating expert panels here ...
         $panel = null;
@@ -24,7 +24,7 @@ class PanelImportService
         }
 
         if ($panel) {
-            $this->assignMembers($panel, $data);
+            $this->assignMembers($panel, $members);
 
             if ($parent = data_get($data, 'data.parent')) {
                 $this->assignParent($panel, $parent);
@@ -224,9 +224,9 @@ class PanelImportService
         }
     }
 
-    public function assignMembers(Panel $panel, $data)
+    public function assignMembers(Panel $panel, $members)
     {
-        if ($members = data_get($data, 'members')) {
+        if ($members)) {
             foreach ($members as $member) {
                 $memberObj = Member::firstOrNew([
                     'gpm_id' => data_get($member, 'uuid')
