@@ -99,6 +99,24 @@ class PanelImportService
                 $panel->caption = $caption;
             }
 
+            //parent_id
+            if ($parent = data_get($data, 'parent')) {
+                $parentPanel = Panel::firstOrNew([
+                    'gpm_id' => $parent['uuid']
+                ]);
+
+                if ($parentPanel->exists) {
+                    $panel->parent_id = $parentPanel->id;
+                } else {
+                    //create a new one
+                    $parentPanel->name = $parent['name'];
+                    $parentPanel->affiliate_type = $parent['type'];
+                    $parentPanel->save();
+
+                    $panel->parent_id = $parentPanel->id;
+                }
+            }
+
             //if (isset($panel->group_clinvar_org_id)) {}
 
             $panel->save();
