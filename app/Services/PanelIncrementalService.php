@@ -527,6 +527,7 @@ class PanelIncrementalService
      */
     protected function handleMemberRetired(Panel $panel, array $data): void
     {
+        dd($data);
         $members = data_get($data, 'data.members', []);
 
         foreach ($members as $member) {
