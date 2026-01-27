@@ -55,6 +55,7 @@ class PanelImportService
 
     public function findOrCreatePanel($data)
     {
+        dd($data);
         $expertPanel = data_get($data, 'expert_panel');
         if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
