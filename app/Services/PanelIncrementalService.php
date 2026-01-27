@@ -32,7 +32,7 @@ class PanelIncrementalService
         }
 
         // Full snapshot import – delegate to original importer
-        if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved' || 'gcep_final_approval') {
+        if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved' || $eventType === 'gcep_final_approval') {
             if ($eventType !== 'group_checkpoint_event') {
                 $groupData = data_get($data, 'data.group');
                 $members = data_get($data, 'data.members');
@@ -150,7 +150,6 @@ class PanelIncrementalService
      */
     protected function resolvePanelFromKafka(array $data)
     {
-        dd($data);
         // Expert panel shape (gcep/vcep etc) under data.group.expert_panel or data.expert_panel
         if ($expertPanel = data_get($data, 'data.group.expert_panel') ?: data_get($data, 'data.expert_panel')) {
             $gpmId = data_get($expertPanel, 'uuid');
@@ -529,7 +528,6 @@ class PanelIncrementalService
      */
     protected function handleMemberRetired(Panel $panel, array $data): void
     {
-        dd($data);
         $members = data_get($data, 'data.members', []);
 
         foreach ($members as $member) {
