@@ -40,6 +40,7 @@ class PanelIncrementalService
             || $eventType === 'vcep_pilot_approval'
             || $eventType === 'vcep_final_approval'
             || $eventType === 'vcep_draft_specification_approval'
+            || $eventType === 'group_status_updated'
         )
         {
             if ($eventType !== 'group_checkpoint_event') {
