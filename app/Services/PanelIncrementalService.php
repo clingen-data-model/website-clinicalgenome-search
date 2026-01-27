@@ -35,6 +35,8 @@ class PanelIncrementalService
         if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved') {
             if ($eventType !== 'group_checkpoint_event') {
                 $data = data_get($data, 'data.group');
+            } else {
+                $data = data_get($data, 'data.data');
             }
             return $this->panelImportService->create($data);
         }

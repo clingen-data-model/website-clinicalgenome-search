@@ -13,18 +13,17 @@ class PanelImportService
         //we are only creating expert panels here ...
         $panel = null;
 
-        if ($expertPanel = data_get($data, 'data.expert_panel')) {
+        if ($expertPanel = data_get($data, 'expert_panel')) {
             if (data_get($expertPanel, 'affiliation_id')) {
-                $panel = $this->findOrCreatePanel($data['data']);;
-                $this->createActivities($panel, $data['data']);
+                $this->createActivities($panel, $data);
             }
         } else {
             //This is a working group
-            $panel = $this->findOrCreateWorkingGroup($data['data']);
+            $panel = $this->findOrCreateWorkingGroup($data);
         }
 
         if ($panel) {
-            $this->assignMembers($panel, $data['data']);
+            $this->assignMembers($panel, $data);
 
             if ($parent = data_get($data, 'data.parent')) {
                 $this->assignParent($panel, $parent);
