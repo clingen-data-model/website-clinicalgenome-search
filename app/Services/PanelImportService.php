@@ -14,6 +14,7 @@ class PanelImportService
         $panel = null;
 
         if ($expertPanel = data_get($data, 'expert_panel')) {
+            $panel = $this->findOrCreatePanel($data);
             if (data_get($expertPanel, 'affiliation_id')) {
                 $this->createActivities($panel, $data);
             }
