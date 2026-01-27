@@ -160,8 +160,8 @@ class PanelExporter
             'relate_user_experts' => $panel->getMembersByType('expert'),
             //'relate_user_curators' => $panel->getMembersByType(Member::CURATOR),
             'relate_user_committee' => $panel->getMembersByType(Member::COMMITTEE),
-            'relate_user_grant_liaison' => $panel->getMembersByType(Member::GRANT_LIAISON),
-            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert', Member::CURATOR]),
+            //'relate_user_grant_liaison' => $panel->getMembersByType(Member::GRANT_LIAISON),
+            'relate_user_members' => $panel->getMembersByType([Member::MEMBER, 'expert', Member::CURATOR, Member::GRANT_LIAISON]),
             //'relate_user_members_past' => $panel->getMembersByType(Member::PAST_MEMBER),
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
