@@ -32,7 +32,7 @@ class PanelIncrementalService
         }
 
         // Full snapshot import – delegate to original importer
-        if ($eventType === 'group_checkpoint_event') {
+        if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved') {
             return $this->panelImportService->create($data);
         }
 
