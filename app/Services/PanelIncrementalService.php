@@ -47,6 +47,7 @@ class PanelIncrementalService
 
         if (!$panel) {
             // No panel => nothing to update incrementally
+
             return null;
         }
 
@@ -149,6 +150,7 @@ class PanelIncrementalService
      */
     protected function resolvePanelFromKafka(array $data)
     {
+        dd($data);
         // Expert panel shape (gcep/vcep etc) under data.group.expert_panel or data.expert_panel
         if ($expertPanel = data_get($data, 'data.group.expert_panel') ?: data_get($data, 'data.expert_panel')) {
             $gpmId = data_get($expertPanel, 'uuid');
