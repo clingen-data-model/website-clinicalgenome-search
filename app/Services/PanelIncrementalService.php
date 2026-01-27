@@ -32,7 +32,7 @@ class PanelIncrementalService
         }
 
         // Full snapshot import – delegate to original importer
-        if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved') {
+        if ($eventType === 'group_checkpoint_event' || $eventType === 'vcep_definition_approval' || $eventType === 'ep_definition_approved' || 'gcep_final_approval') {
             if ($eventType !== 'group_checkpoint_event') {
                 $groupData = data_get($data, 'data.group');
                 $members = data_get($data, 'data.members');
