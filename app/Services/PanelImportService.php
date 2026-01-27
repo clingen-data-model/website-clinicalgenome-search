@@ -226,7 +226,7 @@ class PanelImportService
 
     public function assignMembers(Panel $panel, $members)
     {
-        if ($members)) {
+        if (count($members)) {
             foreach ($members as $member) {
                 $memberObj = Member::firstOrNew([
                     'gpm_id' => data_get($member, 'uuid')
