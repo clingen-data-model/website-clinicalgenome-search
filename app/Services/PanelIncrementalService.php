@@ -36,7 +36,7 @@ class PanelIncrementalService
             if ($eventType !== 'group_checkpoint_event') {
                 $data = data_get($data, 'data.group');
                 $members = data_get($data, 'data.members');
-                
+                dd($members);
             } else {
                 $data = data_get($data, 'data.data');
                 $members = data_get($data, 'data.data.members');
