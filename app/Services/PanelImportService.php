@@ -81,7 +81,7 @@ class PanelImportService
 
             $panel->affiliate_type = $type;
             $panel->name = data_get($expertPanel, 'name');
-            $panel->title_short = data_get($expertPanel, 'short_name');
+            $panel->title_short = data_get($expertPanel, 'short_name') ?? ' ';
             $panel->title = data_get($expertPanel, 'name') . $titleSuffix;
             $panel->summary = data_get($expertPanel, 'scope_description') ?? data_get($data, 'description');
             $panel->url_cspec = 'https://cspec.genome.network/cspec/ui/svi/affiliation/' . $affiliateId;
