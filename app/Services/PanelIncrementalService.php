@@ -236,7 +236,7 @@ class PanelIncrementalService
             if (! $panel->exists) {
                 $panel->name           = data_get($group, 'name');
                 $panel->title          = data_get($group, 'name');
-                $panel->title_short     = data_get($group, 'name');
+                $panel->title_short     = data_get($group, 'name') ?? ' ';
                 $panel->summary        = data_get($group, 'description');
                 $panel->wg_status      = data_get($group, 'status');
                 $panel->affiliate_type = data_get($group, 'type');
@@ -353,7 +353,7 @@ class PanelIncrementalService
     protected function applyEpInfoUpdated(Panel $panel, array $data): void
     {
         if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
-            $panel->title_short = $shortName;
+            $panel->title_short = $shortName ?? ' ';
         }
 
         if ($longName = data_get($data, 'data.expert_panel.long_name')) {
