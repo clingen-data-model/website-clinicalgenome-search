@@ -47,8 +47,8 @@ class PanelIncrementalService
                 $groupData = data_get($data, 'data.group');
                 $members = data_get($data, 'data.members');
             } else {
-                $groupData = data_get($data, 'data.data');
-                $members = data_get($data, 'data.data.members');
+                $groupData = data_get($data, 'data');
+                $members = data_get($data, 'data.members');
             }
             return $this->panelImportService->create($groupData, $members);
         }
