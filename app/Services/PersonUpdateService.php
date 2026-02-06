@@ -133,7 +133,7 @@ class PersonUpdateService
         // ORCID / Hypothesis mapping
         // NOTE: person uses "orcid_id", model uses "orchid_id" (typo in model)
         if (array_key_exists('orcid_id', $person)) {
-            $member->orchid_id = $person['orcid_id'];
+            $member->orchid_id = $person['orcid_id'] ?? ' ';
         }
 
         if (array_key_exists('hypothesis_id', $person)) {
