@@ -137,7 +137,7 @@ class PersonUpdateService
         }
 
         if (array_key_exists('hypothesis_id', $person)) {
-            $member->hypothesis_id = $person['hypothesis_id'];
+            $member->hypothesis_id = $person['hypothesis_id'] ?? ' ';
         }
 
         // Ensure gpm_id always matches person.id
