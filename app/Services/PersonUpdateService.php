@@ -115,7 +115,12 @@ class PersonUpdateService
             }
         }
 
-        $member->display_name = $display_name . ' '.  $member->credentials;
+        if ($member->credentials) {
+            $member->display_name = $display_name . ', '.  $member->credentials;
+        } else {
+            $member->display_name = $display_name;
+        }
+
 
         // Biography, profile photo, timezone
         if (array_key_exists('biography', $person)) {

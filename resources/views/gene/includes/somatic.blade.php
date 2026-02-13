@@ -96,97 +96,6 @@ if (isset($record) && isset($record->hgnc_id)) {
 }
 @endphp
 
-{{-- ===========================================================
-     PREDICTIVE SUMMARY
-=========================================================== --}}
-@if ($civic_predictive->count())
-<div class="p-2 text-muted small bg-light">
-  <strong>Predictive Assertions</strong> — by Evidence Level:
-  @foreach ($predictive_by_level as $level => $count)
-    <a target="_civic"
-       href="https://civicdb.org/assertions?evidence_level={{ urlencode($level) }}"
-       class="border-1 bg-white badge border-primary text-primary px-1 ml-1">
-      {{ $level }}: {{ $count }}
-      <i class="fas fa-external-link-alt ml-1"></i>
-    </a>
-  @endforeach
-</div>
-@endif
-
-{{-- ===========================================================
-     PREDICTIVE TABLE
-=========================================================== --}}
-@if ($civic_predictive->count())
-<h3 class="mt-6 mb-0 rounded-top"
-    style="background:linear-gradient(90deg,#fff 0%,#fff 24%,#14768e 100%);">
-  <img src="/images/clingen-somatic-icon.png"
-       width="40" height="40"
-       style="margin-top:-4px"
-       class="hidden-sm hidden-xs">
-  Predictive (Drug Response) – CIViC Assertions
-</h3>
-
-<div class="card mb-5">
-  <div class="card-body p-0">
-    <table class="panel-body table mb-0">
-      <thead class="thead-labels">
-        <tr>
-          <th>Variant</th>
-          <th>Disease</th>
-          <th>Expert Panel</th>
-          <th class="text-center">Level</th>
-          <th class="text-center">Drug</th>
-          <th class="text-center">Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($civic_predictive as $row)
-        <tr>
-          <td>
-            <a target="_civic" href="{{ $row['civic_url'] }}">
-              {{ $row['gene'] }} {{ $row['variant'] }}
-            </a>
-            <div class="text-muted small">{{ $row['aid'] }}</div>
-          </td>
-          <td>
-            <a target="_civic" href="{{ $row['civic_url'] }}">
-              {{ $row['disease'] }}
-            </a>
-          </td>
-          <td>
-            <a href="{{ $wg_url }}"
-               class="badge border-primary text-primary bg-white">
-              Somatic Expert Panel
-            </a>
-            <a target="_blank" href="{{ $wg_url }}">
-              <i class="fas fa-external-link-alt ml-1"></i>
-            </a>
-          </td>
-          <td class="text-center">{{ $row['evidence_level'] }}</td>
-          <td class="text-center">{{ $row['drug'] }}</td>
-          <td class="text-center">{{ $row['score'] }}</td>
-        </tr>
-        @endforeach
-
-        {{-- Reference row --}}
-        <tr class="bg-light">
-          <td colspan="6" class="text-center small">
-            View complete predictive evidence and context on
-            <a target="_civic" href="https://civicdb.org">
-              CIViC <i class="fas fa-external-link-alt ml-1"></i>
-            </a>
-          </td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-</div>
-@endif
-
-{{-- ===========================================================
-     SOMATIC SUMMARY
-=========================================================== --}}
 @if ($civic_somatic->count())
 <div class="p-2 text-muted small bg-light">
   <strong>Somatic Oncogenicity</strong> — by Significance:
@@ -211,7 +120,7 @@ if (isset($record) && isset($record->hgnc_id)) {
        width="40" height="40"
        style="margin-top:-4px"
        class="hidden-sm hidden-xs">
-  Somatic Oncogenicity – CIViC Assertions
+  Somatic Oncogenicity
 </h3>
 
 <div class="card mb-5">
@@ -269,3 +178,93 @@ if (isset($record) && isset($record->hgnc_id)) {
   </div>
 </div>
 @endif
+
+{{-- ===========================================================
+     PREDICTIVE SUMMARY
+=========================================================== --}}
+@if ($civic_predictive->count())
+<div class="p-2 text-muted small bg-light">
+  <strong>Predictive Assertions</strong>:
+  @foreach ($predictive_by_level as $level => $count)
+    <a target="_civic"
+       href="https://civicdb.org/assertions?evidence_level={{ urlencode($level) }}"
+       class="border-1 bg-white badge border-primary text-primary px-1 ml-1">
+      {{ $level }}: {{ $count }}
+      <i class="fas fa-external-link-alt ml-1"></i>
+    </a>
+  @endforeach
+</div>
+@endif
+
+{{-- ===========================================================
+     PREDICTIVE TABLE
+=========================================================== --}}
+@if ($civic_predictive->count())
+<h3 class="mt-6 mb-0 rounded-top"
+    style="background:linear-gradient(90deg,#fff 0%,#fff 24%,#14768e 100%);">
+  <img src="/images/clingen-somatic-icon.png"
+       width="40" height="40"
+       style="margin-top:-4px"
+       class="hidden-sm hidden-xs">
+  Predictive (Drug Response)
+</h3>
+
+<div class="card mb-5">
+  <div class="card-body p-0">
+    <table class="panel-body table mb-0">
+      <thead class="thead-labels">
+        <tr>
+          <th>Variant</th>
+          <th>Disease</th>
+          <th>Expert Panel</th>
+          <th class="text-center">Classification</th>
+          <th class="text-center">Drug</th>
+          <th class="text-center">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($civic_predictive as $row)
+        <tr>
+          <td>
+            <a target="_civic" href="{{ $row['civic_url'] }}">
+              {{ $row['gene'] }} {{ $row['variant'] }}
+            </a>
+            <div class="text-muted small">{{ $row['aid'] }}</div>
+          </td>
+          <td>
+            <a target="_civic" href="{{ $row['civic_url'] }}">
+              {{ $row['disease'] }}
+            </a>
+          </td>
+          <td>
+            <a href="{{ $wg_url }}"
+               class="badge border-primary text-primary bg-white">
+              Somatic Expert Panel
+            </a>
+            <a target="_blank" href="{{ $wg_url }}">
+              <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
+          </td>
+          <td class="text-center">{{ $row['evidence_level'] }}</td>
+          <td class="text-center">{{ $row['drug'] }}</td>
+          <td class="text-center">{{ $row['score'] }}</td>
+        </tr>
+        @endforeach
+
+        {{-- Reference row --}}
+        <tr class="bg-light">
+          <td colspan="6" class="text-center small">
+            View complete predictive evidence and context on
+            <a target="_civic" href="https://civicdb.org">
+              CIViC <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+@endif
+
+
