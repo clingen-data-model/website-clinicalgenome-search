@@ -236,8 +236,8 @@ class Member extends Model
         $response = $this->pushToProcessWire();
         if ($response->successful()) {
             if ($userData = json_decode($response->body(), true)) {
-                $this->processwire_id = $userData['id'];
-                $this->save();
+//                $this->processwire_id = $userData['id'];
+//                $this->save();
                 return $this;
             }
         }
