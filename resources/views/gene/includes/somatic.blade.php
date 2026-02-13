@@ -147,7 +147,7 @@ if (isset($record) && isset($record->hgnc_id)) {
           <th>Expert Panel</th>
             <th> Count </th>
           <th class="text-center">Classification</th>
-          <th class="text-center">Significance</th>
+          <th class="text-center"></th>
         </tr>
       </thead>
       <tbody>
@@ -173,6 +173,7 @@ if (isset($record) && isset($record->hgnc_id)) {
               <i class="fas fa-external-link-alt ml-1"></i>
             </a>
           </td>
+            <td> {{ $row['count'] }} </td>
           <td class="text-center">{{ $row['classification'] }}</td>
           <td class="text-center"> <a target="_civic" href="https://civicdb.org">
               CIViC <i class="fas fa-external-link-alt ml-1"></i>
