@@ -36,6 +36,7 @@ $civic_predictive = collect(array(
     'drug' => 'Erlotinib',
     'evidence_level' => 'IA',
     'score' => 8,
+    'classification' => 'Oncogenic',
     'civic_url' => 'https://civicdb.org/links/assertions/5',
   ),
 
@@ -47,6 +48,7 @@ $civic_predictive = collect(array(
     'drug' => 'Erdafitinib',
     'evidence_level' => 'IA',
     'score' => 7,
+    'classification' => 'Oncogenic',
     'civic_url' => 'https://civicdb.org/links/assertions/105',
   ),
 ));
@@ -59,6 +61,7 @@ $civic_somatic = collect(array(
     'disease' => 'Cancer',
     'significance' => 'Oncogenic',
     'count' => 2,
+    'classification' => 'Oncogenic',
     'evidence_level' => 'A',
     'civic_url' => 'https://civicdb.org/links/assertions/9001',
   ),
@@ -70,6 +73,7 @@ $civic_somatic = collect(array(
     'disease' => 'Breast Cancer',
     'significance' => 'Progenic',
     'count' => 3,
+    'classification' => 'Oncogenic',
     'evidence_level' => 'B',
     'civic_url' => 'https://civicdb.org/links/assertions/9003',
   ),
