@@ -267,7 +267,6 @@ if (isset($record) && isset($record->hgnc_id)) {
                class="badge border-primary text-primary bg-white">
               Somatic Expert Panel
             </a>
-            <td class="border-0 pb-1 "><a href="https://clinicalgenome.org/affiliation/}">{{ $wg_url }} <i class="fas fa-external-link-alt ml-1"></i></a></td>
           </td>
           <td class="text-center">{{ $row['drug'] }}</td>
           <td class="text-center">{{ $row['score'] }}</td>
