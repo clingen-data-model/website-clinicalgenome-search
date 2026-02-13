@@ -12,9 +12,8 @@ $civic_predictive = collect(array(
     'aid' => 'AID130',
     'gene' => 'EGFR',
     'variant' => 'T790M',
-    'disease' => 'Lung Non-small Cell…',
-    'drug' => 'Osimertinib',
-    'evidence_level' => 'IA',
+    'disease' => 'Cancer',
+    'classification' => 'Oncogenic',
     'score' => 10,
     'civic_url' => 'https://civicdb.org/links/assertions/130',
   ),
@@ -22,18 +21,30 @@ $civic_predictive = collect(array(
     'aid' => 'AID5',
     'gene' => 'EGFR',
     'variant' => 'L858R',
-    'disease' => 'Lung Non-small Cell…',
+    'disease' => 'Cancer',
+    'evidence_level' => 'IA',
+    'classification' => 'Oncogenic',
+    'score' => 8,
+    'civic_url' => 'https://civicdb.org/links/assertions/5',
+  ),
+
+  array(
+    'aid' => 'AID5',
+    'gene' => 'EGFR',
+    'variant' => 'L858R',
+    'disease' => 'Lung Non-small Cell Carcinoma',
     'drug' => 'Erlotinib',
     'evidence_level' => 'IA',
     'score' => 8,
     'civic_url' => 'https://civicdb.org/links/assertions/5',
   ),
+
   array(
     'aid' => 'AID105',
     'gene' => 'EGFR',
     'variant' => 'L858R',
-    'disease' => 'Lung Non-small Cell…',
-    'drug' => 'Gefitinib',
+    'disease' => 'Urothelial Carcinoma',
+    'drug' => 'Erdafitinib',
     'evidence_level' => 'IA',
     'score' => 7,
     'civic_url' => 'https://civicdb.org/links/assertions/105',
@@ -45,19 +56,22 @@ $civic_somatic = collect(array(
     'aid' => 'AID9001',
     'gene' => 'EGFR',
     'variant' => 'L858R',
-    'disease' => 'Lung Non-small Cell…',
+    'disease' => 'Cancer',
     'significance' => 'Oncogenic',
+    'count' => 2,
     'evidence_level' => 'A',
     'civic_url' => 'https://civicdb.org/links/assertions/9001',
   ),
+
   array(
     'aid' => 'AID9002',
     'gene' => 'EGFR',
     'variant' => 'T790M',
-    'disease' => 'Lung Non-small Cell…',
-    'significance' => 'Likely Oncogenic',
+    'disease' => 'Breast Cancer',
+    'significance' => 'Progenic',
+    'count' => 3,
     'evidence_level' => 'B',
-    'civic_url' => 'https://civicdb.org/links/assertions/9002',
+    'civic_url' => 'https://civicdb.org/links/assertions/9003',
   ),
 ));
 
@@ -131,7 +145,8 @@ if (isset($record) && isset($record->hgnc_id)) {
           <th>Variant</th>
           <th>Disease</th>
           <th>Expert Panel</th>
-          <th class="text-center">Level</th>
+            <th> Count </th>
+          <th class="text-center">Classification</th>
           <th class="text-center">Significance</th>
         </tr>
       </thead>
@@ -140,9 +155,9 @@ if (isset($record) && isset($record->hgnc_id)) {
         <tr>
           <td>
             <a target="_civic" href="{{ $row['civic_url'] }}">
-              {{ $row['gene'] }} {{ $row['variant'] }}
+              {{ $row['gene'] }}
             </a>
-            <div class="text-muted small">{{ $row['aid'] }}</div>
+{{--            <div class="text-muted small">{{ $row['aid'] }}</div>--}}
           </td>
           <td>
             <a target="_civic" href="{{ $row['civic_url'] }}">
@@ -158,8 +173,10 @@ if (isset($record) && isset($record->hgnc_id)) {
               <i class="fas fa-external-link-alt ml-1"></i>
             </a>
           </td>
-          <td class="text-center">{{ $row['evidence_level'] }}</td>
-          <td class="text-center">{{ $row['significance'] }}</td>
+          <td class="text-center">{{ $row['classification'] }}</td>
+          <td class="text-center"> <a target="_civic" href="https://civicdb.org">
+              CIViC <i class="fas fa-external-link-alt ml-1"></i>
+            </a></td>
         </tr>
         @endforeach
 
@@ -217,9 +234,9 @@ if (isset($record) && isset($record->hgnc_id)) {
           <th>Variant</th>
           <th>Disease</th>
           <th>Expert Panel</th>
-          <th class="text-center">Classification</th>
           <th class="text-center">Drug</th>
           <th class="text-center">Score</th>
+            <th></th>
         </tr>
       </thead>
       <tbody>
@@ -227,9 +244,9 @@ if (isset($record) && isset($record->hgnc_id)) {
         <tr>
           <td>
             <a target="_civic" href="{{ $row['civic_url'] }}">
-              {{ $row['gene'] }} {{ $row['variant'] }}
+              {{ $row['gene'] }}
             </a>
-            <div class="text-muted small">{{ $row['aid'] }}</div>
+{{--            <div class="text-muted small">{{ $row['aid'] }}</div>--}}
           </td>
           <td>
             <a target="_civic" href="{{ $row['civic_url'] }}">
@@ -241,25 +258,16 @@ if (isset($record) && isset($record->hgnc_id)) {
                class="badge border-primary text-primary bg-white">
               Somatic Expert Panel
             </a>
-            <a target="_blank" href="{{ $wg_url }}">
-              <i class="fas fa-external-link-alt ml-1"></i>
-            </a>
+            <td class="border-0 pb-1 "><a href="https://clinicalgenome.org/affiliation/}">{{ $wg_url }} <i class="fas fa-external-link-alt ml-1"></i></a></td>
           </td>
-          <td class="text-center">{{ $row['evidence_level'] }}</td>
           <td class="text-center">{{ $row['drug'] }}</td>
           <td class="text-center">{{ $row['score'] }}</td>
+            <td>  <a target="_civic" href="https://civicdb.org">
+              CIViC <i class="fas fa-external-link-alt ml-1"></i>
+            </a></td>
         </tr>
         @endforeach
 
-        {{-- Reference row --}}
-        <tr class="bg-light">
-          <td colspan="6" class="text-center small">
-            View complete predictive evidence and context on
-            <a target="_civic" href="https://civicdb.org">
-              CIViC <i class="fas fa-external-link-alt ml-1"></i>
-            </a>
-          </td>
-        </tr>
 
       </tbody>
     </table>
