@@ -17,6 +17,8 @@ use Carbon\Carbon;
 use App\Gene;
 use App\GeneLib;
 use App\Morbid;
+use App\Gencc;
+use App\Mim;
 use App\Panel;
 use App\Sensitivity;
 use App\Validity;
@@ -103,7 +105,10 @@ class RunReport extends Command
                 echo "Running Panel Report\n";
                 $this->report12();
                 break;
-                
+            case 'loeuf':
+                echo "Running GC LOEUF Report\n";
+                $this->report13();
+                break;
             default:
                 echo "Nothing to do, exiting\n";
                 break;
@@ -855,6 +860,75 @@ Recuration Report Run Date:  ' . Carbon::now()->format('m/d/Y') . '
 
         fclose($ohandle);
         
+    }
+
+
+    public function report13()
+    {
+        $number = .35;
+
+        $results = DB::table('genes')
+                 ->whereRaw('CAST(plof AS FLOAT) < ?', [$number])
+                 ->get();
+
+        $header = [
+                        "Gene Symbol",
+                        "HGNG ID",
+                        "LOEUF",
+                        "Curated by Clingen",
+                        "Curated by Gencc",
+                        "Has OMIM disease",
+                        "Link"
+                    ];
+
+        $handle = fopen(base_path() . '/data/loeuf.tsv', "w");
+        fwrite($handle, implode("\t", $header) . PHP_EOL);
+
+        foreach($results as $curation)
+        {
+
+            if ($curation->plof == 'NA')
+                continue;
+
+            $curated_by_clingen = 'No';
+            $curated_by_gencc = 'No';
+            $curated_by_omim = 'No';
+
+            $activity = json_decode($curation->activity, true);
+
+            // check if this gene has been curated by clingen
+            if ($activity !== null && !is_array($activity))
+                dd($curation);
+
+            if ($curation->activity != null && in_array(true, $activity))
+                $curated_by_clingen = 'Yes';
+            
+            // check if this gene has been curated by gencc
+            if (Gencc::where('gene_curie', $curation->hgnc_id)->exists())
+                $curated_by_gencc = 'Yes';
+
+            // check if disease association in OMIM
+            if (Mim::where('gene_name', $curation->name)->exists())
+                $curated_by_omim = 'Yes';
+
+        
+
+            $list = [   $curation->name,
+                        $curation->hgnc_id,
+                        $curation->plof,
+                        $curated_by_clingen,
+                        $curated_by_gencc,
+                        $curated_by_omim,
+                        'https://search.clinicalgenome.org/kb/genes/' . $curation->hgnc_id
+                    ];
+
+            fwrite($handle, implode("\t", $list) . PHP_EOL);
+
+        }
+
+        fclose($handle);
+
+        echo "DONE\n";
     }
 
 
