@@ -276,7 +276,6 @@ if (isset($record) && isset($record->hgnc_id)) {
         </tr>
         @endforeach
 
-
       </tbody>
     </table>
   </div>

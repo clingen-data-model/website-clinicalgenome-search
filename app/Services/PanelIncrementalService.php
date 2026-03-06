@@ -364,11 +364,11 @@ class PanelIncrementalService
             $panel->url_cspec = $cspecUrl;
         }
 
-        if ($clinvarUrl = data_get($data, 'data.expert_panel.clinvar_url')) {
-            $panel->url_clinvar = $clinvarUrl;
-        }
+//        if ($clinvarUrl = data_get($data, 'data.expert_panel.clinvar_url')) {
+//            $panel->url_clinvar = $clinvarUrl;
+//        }
 
-        if ($clinvarId = data_get($data, 'data.expert_panel.clinvar_id')) {
+        if ($clinvarId = data_get($data, 'data.expert_panel.clinvar_org_id')) {
             $panel->group_clinvar_org_id = $clinvarId;
         }
 
