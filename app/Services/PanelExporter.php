@@ -123,7 +123,8 @@ class PanelExporter
     private function cdwgData()
     {
         $panel = $this->panel;
-        $name = $panel->title ?? $panel->name;
+        $name = isset($panel->title) ? $panel->title : $panel->name;
+
         return [
             'name' => $name . ' CDWG',
             'title' => $name . ' CDWG',
