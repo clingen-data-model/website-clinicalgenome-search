@@ -123,9 +123,10 @@ class PanelExporter
     private function cdwgData()
     {
         $panel = $this->panel;
+        $name = $panel->title ?? $panel->name;
         return [
-            'name' => $panel->title . ' CDWG',
-            'title' => $panel->title . ' CDWG',
+            'name' => $name . ' CDWG',
+            'title' => $name . ' CDWG',
             'title_short' => $panel->title_short,
             'title_abbreviated' => $panel->title_abbreviated,
             'summary' => $panel->description,
