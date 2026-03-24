@@ -8,32 +8,33 @@ use Carbon\Carbon;
 class PanelImportService
 {
 
-    public function create($data, $members = [])
-    {
-        //we are only creating expert panels here ...
-        $panel = null;
+ public function create($data, $members = [])
+{
+    $panel = null;
+    $expertPanel = data_get($data, 'expert_panel');
 
-        if ($expertPanel = data_get($data, 'expert_panel')) {
-            $panel = $this->findOrCreatePanel($data);
-            if (data_get($expertPanel, 'affiliation_id')) {
-                $this->createActivities($panel, $data);
-            }
-        } else {
-            //This is a working group
-            $panel = $this->findOrCreateWorkingGroup($data);
+    if ($expertPanel) {
+        if (!data_get($expertPanel, 'affiliation_id')) {
+            return null;
         }
 
-        if ($panel) {
-            $this->assignMembers($panel, $members);
-
-            if ($parent = data_get($data, 'data.parent')) {
-                $this->assignParent($panel, $parent);
-            }
-        }
-
-        return $panel;
+        $panel = $this->findOrCreatePanel($data);
+        $this->createActivities($panel, $data);
+    } else {
+        $panel = $this->findOrCreateWorkingGroup($data);
     }
 
+    if ($panel) {
+        $this->assignMembers($panel, $members);
+
+        $parent = data_get($data, 'data.parent');
+        if (!is_null($parent)) {
+            $this->assignParent($panel, $parent);
+        }
+    }
+
+    return $panel;
+}
     public function update($data, $event = null)
     {
         if ($gpmId = data_get($data, 'group.id')) {
