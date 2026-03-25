@@ -29,7 +29,7 @@ class PanelExporter
     {
         if ($this->panel->affiliate_type === 'cdwg') {
             $data = $this->cdwgData();
-            dd($data);
+            dd($this->panel);
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
         } else if ($this->panel->affiliate_type === 'wg') {
