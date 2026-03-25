@@ -1030,6 +1030,8 @@ class Panel extends Model
 
     public function getProcessWirePanelStatus()
     {
+        if ($this->affiliate_type !== 'vcep' || $this->affiliate_type !== 'gcep') return null;
+
         $values = [
             'gcep' => [
                 1 => 'ep_definition_approved',
