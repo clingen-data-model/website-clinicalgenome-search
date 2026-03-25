@@ -54,11 +54,11 @@ class ExportPanelsToProcessWire extends Command
 
             $exporter = new PanelExporter($panel);
 
-            if ($debug) {
-                dd($exporter->getProcessWireData());
-
-                return Command::SUCCESS;
-            }
+//            if ($debug) {
+//                dd($exporter->getProcessWireData());
+//
+//                return Command::SUCCESS;
+//            }
             $result   = $exporter->pushToProcessWire();
 
             if ($debug) {
