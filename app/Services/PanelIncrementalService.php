@@ -553,51 +553,60 @@ class PanelIncrementalService
      * Member role removed – subtract roles from pivot, detach if none left.
      */
     protected function handleMemberRoleRemoved(Panel $panel, array $data): void
-    {
-        dd($data);
-        $members     = data_get($data, 'data.members', []);
-        $globalRoles = data_get($data, 'data.roles'); // optional
+{
+    $members     = data_get($data, 'data.members', []);
+    $globalRoles = data_get($data, 'data.roles'); // optional
 
-        foreach ($members as $member) {
-            $memberObj = $this->validateMemberFromKafka($member);
+    foreach ($members as $member) {
+        $memberObj = $this->validateMemberFromKafka($member);
 
-            if (! $memberObj) {
-                continue;
-            }
-
-            $existing = $panel->members()->find($memberObj->id);
-
-            if (! $existing) {
-                continue;
-            }
-
-            $currentRoles = json_decode($existing->pivot->group_roles ?? '[]', true);
-            if (! is_array($currentRoles)) {
-                $currentRoles = [];
-            }
-
-            // Roles to remove – prefer member.roles, fallback to global data.roles
-            $rolesToRemove = data_get($member, 'roles', $globalRoles ?? []);
-            if (! is_array($rolesToRemove)) {
-                $rolesToRemove = [$rolesToRemove];
-            }
-
-            $updatedRoles = array_values(array_diff($currentRoles, $rolesToRemove));
-
-            if (empty($updatedRoles)) {
-                // No roles left => detach membership
-                $panel->members()->detach($memberObj->id);
-                continue;
-            }
-
-            $panel->members()->syncWithoutDetaching([
-                $memberObj->id => [
-                    'role'        => $memberObj->panelPosition($updatedRoles),
-                    'group_roles' => json_encode($updatedRoles),
-                ],
-            ]);
+        if (! $memberObj) {
+            continue;
         }
+
+        $existing = $panel->members()->find($memberObj->id);
+
+        if (! $existing) {
+            continue;
+        }
+
+        $currentRoles = json_decode($existing->pivot->group_roles ?? '[]', true);
+        if (! is_array($currentRoles)) {
+            $currentRoles = [];
+        }
+
+        // Roles to remove – prefer member.roles, fallback to global data.roles
+        $rolesToRemove = data_get($member, 'roles', $globalRoles ?? []);
+        if (! is_array($rolesToRemove)) {
+            $rolesToRemove = [$rolesToRemove];
+        }
+
+        // Normalize roles for case-insensitive comparison
+        $normalizedCurrent = array_map('strtolower', $currentRoles);
+        $normalizedRemove  = array_map('strtolower', $rolesToRemove);
+
+        // Build updated roles while preserving original casing
+        $updatedRoles = [];
+        foreach ($currentRoles as $index => $role) {
+            if (! in_array(strtolower($role), $normalizedRemove, true)) {
+                $updatedRoles[] = $role;
+            }
+        }
+
+        if (empty($updatedRoles)) {
+            // No roles left => detach membership
+            $panel->members()->detach($memberObj->id);
+            continue;
+        }
+
+        $panel->members()->syncWithoutDetaching([
+            $memberObj->id => [
+                'role'        => $memberObj->panelPosition($updatedRoles),
+                'group_roles' => json_encode($updatedRoles),
+            ],
+        ]);
     }
+}
 
     /**
      * Member permission granted – ensure members exist.
