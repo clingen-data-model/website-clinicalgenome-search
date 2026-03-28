@@ -554,6 +554,7 @@ class PanelIncrementalService
      */
     protected function handleMemberRoleRemoved(Panel $panel, array $data): void
     {
+        dd($data);
         $members     = data_get($data, 'data.members', []);
         $globalRoles = data_get($data, 'data.roles'); // optional
 
