@@ -576,7 +576,8 @@ class PanelIncrementalService
         }
 
         // Roles to remove – prefer member.roles, fallback to global data.roles
-        $rolesToRemove = data_get($member, 'roles', $globalRoles ?? []);
+        //$rolesToRemove = data_get($member, 'roles', $globalRoles ?? []);
+        $rolesToRemove = $globalRoles ?? [];
         if (! is_array($rolesToRemove)) {
             $rolesToRemove = [$rolesToRemove];
         }
