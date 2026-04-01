@@ -1030,7 +1030,6 @@ class Panel extends Model
 
     public function getProcessWirePanelStatus()
     {
-        dd($this->affiliate_type);
         if ($this->affiliate_type !== 'vcep' || $this->affiliate_type !== 'gcep') return null;
 
         $values = [
@@ -1049,6 +1048,8 @@ class Panel extends Model
         $activityValues = $values[$this->affiliate_type];
 
         $status = 1;
+
+        dd($activityValues);
 
         foreach ($activityValues as $index => $value) {
             $activity = $this->activities()->where('activity', $value)->first();
