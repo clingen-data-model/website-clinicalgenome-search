@@ -1050,7 +1050,7 @@ class Panel extends Model
         $status = 1;
 
         foreach ($activityValues as $index => $value) {
-            $activity = $this->activities->where('activity', $value)->first();
+            $activity = $this->activities()->where('activity', $value)->first();
             if (null !== $activity) $status = $index;
         }
 
