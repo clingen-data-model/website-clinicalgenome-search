@@ -1029,34 +1029,36 @@ class Panel extends Model
     }
 
     public function getProcessWirePanelStatus()
-    {
-        if ($this->affiliate_type !== 'vcep' || $this->affiliate_type !== 'gcep') return null;
-
-        $values = [
-            'gcep' => [
-                1 => 'ep_definition_approved',
-                2 => 'ep_final_approval'
-            ],
-            'vcep' => [
-                1 => 'ep_definition_approved',
-                2 => 'vcep_draft_specifications_approved',
-                3 => 'vcep_pilot_approved',
-                4 => 'ep_final_approval'
-            ]
-        ];
-        $activities = $this->activities;
-        $activityValues = $values[$this->affiliate_type];
-
-        $status = 1;
-
-        dd($activityValues);
-
-        foreach ($activityValues as $index => $value) {
-            $activity = $this->activities()->where('activity', $value)->first();
-            if (null !== $activity) $status = $index;
-        }
-
-        return $status;
+{
+    if (! in_array($this->affiliate_type, ['vcep', 'gcep'], true)) {
+        return null;
     }
+
+    $values = [
+        'gcep' => [
+            1 => 'ep_definition_approved',
+            2 => 'ep_final_approval',
+        ],
+        'vcep' => [
+            1 => 'ep_definition_approved',
+            2 => 'vcep_draft_specifications_approved',
+            3 => 'vcep_pilot_approved',
+            4 => 'ep_final_approval',
+        ],
+    ];
+
+    $activityValues = $values[$this->affiliate_type];
+    $status = 1;
+
+    foreach ($activityValues as $index => $value) {
+        $activity = $this->activities()->where('activity', $value)->first();
+
+        if ($activity !== null) {
+            $status = $index;
+        }
+    }
+
+    return $status;
+}
 
 }
