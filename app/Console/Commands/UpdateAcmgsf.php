@@ -205,7 +205,7 @@ class UpdateAcmgsf extends Command
         echo "Updating ACMG SF data from file ...";
 
 
-        $handle = fopen(base_path() . '/data/Clingen-Curation-ACMG-Summary-Report-2026-02-26.tsv', "r");
+        $handle = fopen(base_path() . '/data/Clingen-Curation-ACMG-Summary-Report-2026-03-09.tsv', "r");
         if ($handle)
         {
             // discard the date line
@@ -258,7 +258,7 @@ class UpdateAcmgsf extends Command
         echo "Updating ACMG SF data from file ...";
 
 
-        $handle = fopen(base_path() . '/data/Clingen-Curation-ACMG-Summary-Report-2026-02-26.tsv', "r");
+        $handle = fopen(base_path() . '/data/Clingen-Curation-ACMG-Summary-Report-2026-03-09.tsv', "r");
 
         if ($handle)
         {
