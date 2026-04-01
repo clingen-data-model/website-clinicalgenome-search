@@ -195,6 +195,9 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/actionability/'><span class=' d-inline-block text-truncate'> Actionability</span></a>
               </li>
+               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/ai-automation-working-group/'><span class=' d-inline-block text-truncate'> AI and Automation Working Group</span></a>
+              </li>
               <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/ancestry/'><span class=' d-inline-block text-truncate'> Ancestry and Diversity Working Group</span></a>
@@ -257,6 +260,9 @@
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/external-scientific-panel/'><span class=' d-inline-block text-truncate'> External Scientific Panel</span></a>
               </li>
               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/gencc-mechanism-curation/'><span class=' d-inline-block text-truncate'> GenCC Mechanism Curation</span></a>
+              </li>
+              <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/gene-curation/'><span class=' d-inline-block text-truncate'> Gene Curation</span></a>
               </li>
               <!--
@@ -271,6 +277,9 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/low-penetrance-risk-allele-working-group/'><span class=' d-inline-block text-truncate'> Low Penetrance/Risk Allele</span></a>
               </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/hla-working-group/'><span class=' d-inline-block text-truncate'> HLA Working Group</span></a>
+              </li>
               <!--
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/lumping-and-splitting/'><span class=' d-inline-block text-truncate'> Lumping and Splitting</span></a>
@@ -283,11 +292,17 @@
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics Interpretation Committee</span></a>
               </li>
               <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pseudodeficiency-working-group/'><span class=' d-inline-block text-truncate'> Pseudodeficiency Working Group</span></a>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/phenotyping/'><span class=' d-inline-block text-truncate'> Phenotyping</span></a>
               </li>
               <li class='nav-item '>
-                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/sequence-variant-interpretation/'><span class=' d-inline-block text-truncate'> Sequence Variant Interpretation</span></a>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/pseudodeficiency-working-group/'><span class=' d-inline-block text-truncate'> Pseudodeficiency Working Group</span></a>
               </li>
+               <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/reach-impact-sustainability-evaluation/'><span class=' d-inline-block text-truncate'> Reach, Impact, Sustainability, Evaluation</span></a>
+              </li>
+             <!-- <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/sequence-variant-interpretation/'><span class=' d-inline-block text-truncate'> Sequence Variant Interpretation</span></a>
+              </li>-->
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/somatic-germline-variant-curation/'><span class=' d-inline-block text-truncate'> Germline/Somatic Variant Curation</span></a>
               </li>
@@ -299,8 +314,14 @@
               <li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/steering-committee/'><span class=' d-inline-block text-truncate'> Steering Committee</span></a>
               </li>
-              <li class='nav-item '>
+              <!--<li class='nav-item '>
                 <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/genomic-variant-workgroup/'><span class=' d-inline-block text-truncate'> Variant Curation</span></a>
+              </li>-->
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/variant-classification/'><span class=' d-inline-block text-truncate'> Variant Classification Working Group</span></a>
+              </li>
+              <li class='nav-item '>
+                <a class='nav-link nav-link-header' href='https://www.clinicalgenome.org/working-groups/variant-curation-workgroup/'><span class=' d-inline-block text-truncate'> VCEP Management</span></a>
               </li>
             </ul>
 
