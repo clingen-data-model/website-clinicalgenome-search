@@ -202,6 +202,10 @@ class PanelIncrementalService
                     $panel->caption = $caption;
                 }
 
+                 if ($clinvarId = data_get($expertPanel, 'clinvar_org_id')) {
+                     $panel->group_clinvar_org_id = $clinvarId;
+                }
+
                 $panel->save();
 
                 if ($gcepDefineGroup = data_get($expertPanel, 'gcep_define_group')) {
