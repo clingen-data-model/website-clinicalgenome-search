@@ -83,6 +83,10 @@ class PanelIncrementalService
                 $this->applyGroupDescriptionUpdated($panel, $data);
                 break;
 
+                case 'group_name_updated':
+                $this->applyGroupNameUpdated($panel, $data);
+                break;
+
             case 'parent_updated':
                 $this->handleParentUpdated($panel, $data);
                 break;
@@ -342,6 +346,18 @@ class PanelIncrementalService
     {
         if ($newDescription = data_get($data, 'data.new_description')) {
             $panel->summary = $newDescription;
+            $panel->save();
+            //Do we want to update the activities?
+        }
+    }
+
+    /**
+     * Group name updated (new_description field).
+     */
+    protected function applyGroupNameUpdated(Panel $panel, array $data): void
+    {
+        if ($newName = data_get($data, 'data.new_name')) {
+            $panel->name = $newName;
             $panel->save();
             //Do we want to update the activities?
         }
