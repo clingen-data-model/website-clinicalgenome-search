@@ -181,7 +181,7 @@ class PanelIncrementalService
                 'gpm_id' => $gpmId,
             ]);
 
-            if (! $panel->exists) {
+            //if (! $panel->exists) {
                 $panel->affiliate_id    = data_get($expertPanel, 'affiliation_id');
                 $panel->affiliate_type  = data_get($expertPanel, 'type');
                 $panel->name            = data_get($expertPanel, 'name');
@@ -202,7 +202,7 @@ class PanelIncrementalService
                     $panel->caption = $caption;
                 }
 
-                 if ($clinvarId = data_get($expertPanel, 'clinvar_org_id')) {
+                if ($clinvarId = data_get($expertPanel, 'clinvar_org_id')) {
                      $panel->group_clinvar_org_id = $clinvarId;
                 }
 
@@ -225,7 +225,7 @@ class PanelIncrementalService
                 }
 
                 //WE'LL UPDATE THE PARENT HERE AS WELL
-            }
+
 
             return $panel;
         }
