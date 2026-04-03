@@ -358,6 +358,7 @@ class PanelIncrementalService
     {
         if ($newName = data_get($data, 'data.new_name')) {
             $panel->name = $newName;
+            $panel->title = $newName;
             $panel->save();
             //Do we want to update the activities?
         }
