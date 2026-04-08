@@ -73,9 +73,9 @@ class PanelExporter
         //map process wire fields
         $processWireFields = [
             'name' => $panel->affiliate_id,
-            'title' => $panel->title,
-            'title_short' => $panel->title_short,
-            'title_abbreviated' => $panel->title_abbreviated,
+            'title' => $panel->effective_title,
+            'title_short' => $panel->effective_short_title,
+            'title_abbreviated' => $panel->effective_abbreviated_title,
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,

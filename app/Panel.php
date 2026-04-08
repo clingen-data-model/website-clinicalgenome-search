@@ -84,7 +84,7 @@ class Panel extends Model
                            'group_clinvar_org_id', 'inactive_date', 'url_clinvar', 'url_cspec', 'url_curations',
                             'url_erepo', 'gpm_id', 'parent_id', 'icon_url', 'caption'];
 
-			    protected $appends = ['display_date', 'list_date', 'display_status'];
+    protected $appends = ['display_date', 'list_date', 'display_status', 'effective_title', 'effective_abbreviated_title', 'effective_short_title'];
 
     public const TYPE_INTERNAL = 0;
     public const TYPE_GCEP = 1;
@@ -1059,6 +1059,113 @@ class Panel extends Model
     }
 
     return $status;
+}
+
+/**
+ * Return the base panel name without any panel-type suffixes.
+ */
+protected function getEffectiveBaseName(): string
+{
+    $name = trim((string) $this->name);
+
+    $suffixes = [
+        ' Variant Curation Expert Panel',
+        ' Gene Curation Expert Panel',
+        ' VCEP',
+        ' GCEP',
+    ];
+
+    foreach ($suffixes as $suffix) {
+        if ($this->endsWithIgnoreCase($name, $suffix)) {
+            $name = trim(substr($name, 0, -strlen($suffix)));
+            break;
+        }
+    }
+
+    return $name;
+}
+
+/**
+ * Return the suffix for the full title.
+ */
+protected function getEffectiveTitleSuffix(): string
+{
+    if ($this->affiliate_type === 'vcep') {
+        return ' Variant Curation Expert Panel';
+    }
+
+    if ($this->affiliate_type === 'gcep') {
+        return ' Gene Curation Expert Panel';
+    }
+
+    return '';
+}
+
+/**
+ * Return the suffix for the abbreviated title.
+ */
+protected function getEffectiveAbbreviatedTitleSuffix(): string
+{
+    if ($this->affiliate_type === 'vcep') {
+        return ' VCEP';
+    }
+
+    if ($this->affiliate_type === 'gcep') {
+        return ' GCEP';
+    }
+
+    return '';
+}
+
+/**
+ * Full effective title.
+ */
+public function getEffectiveTitleAttribute(): string
+{
+    $base = $this->getEffectiveBaseName();
+    $suffix = $this->getEffectiveTitleSuffix();
+
+    if ($suffix === '' || $this->endsWithIgnoreCase($base, $suffix)) {
+        return $base;
+    }
+
+    return $base . $suffix;
+}
+
+/**
+ * Effective abbreviated title.
+ */
+public function getEffectiveAbbreviatedTitleAttribute(): string
+{
+    $base = $this->getEffectiveBaseName();
+    $suffix = $this->getEffectiveAbbreviatedTitleSuffix();
+
+    if ($suffix === '' || $this->endsWithIgnoreCase($base, $suffix)) {
+        return $base;
+    }
+
+    return $base . $suffix;
+}
+
+/**
+ * Effective short title.
+ * Never includes VCEP/GCEP or the full panel suffix.
+ */
+public function getEffectiveShortTitleAttribute(): string
+{
+    return $this->getEffectiveBaseName();
+}
+
+/**
+ * Case-insensitive endsWith helper.
+ */
+protected function endsWithIgnoreCase(string $value, string $suffix): bool
+{
+    if ($suffix === '') {
+        return true;
+    }
+
+    return mb_strtolower(mb_substr($value, -mb_strlen($suffix))) === mb_strtolower($suffix);
 }
 
 }
