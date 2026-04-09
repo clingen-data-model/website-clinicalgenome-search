@@ -576,7 +576,7 @@ class PanelIncrementalService
     protected function handleMemberRoleRemoved(Panel $panel, array $data): void
 {
     $members     = data_get($data, 'data.members', []);
-    $globalRoles = data_get($data, 'data.roles'); // optional
+    $globalRoles = data_get($data, 'data.role'); // optional
 
     foreach ($members as $member) {
         $memberObj = $this->validateMemberFromKafka($member);
