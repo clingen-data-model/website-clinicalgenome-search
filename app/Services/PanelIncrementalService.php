@@ -519,7 +519,7 @@ class PanelIncrementalService
             }
 
             // Roles to add – prefer member.roles, fallback to global data.roles
-            $rolesToAdd = data_get($member, 'roles', $globalRoles ?? []);
+            $rolesToAdd = data_get($member, 'roles');
             if (! is_array($rolesToAdd)) {
                 $rolesToAdd = [$rolesToAdd];
             }
@@ -530,12 +530,19 @@ class PanelIncrementalService
                 continue;
             }
 
-            $panel->members()->syncWithoutDetaching([
-                $memberObj->id => [
-                    'role'        => $memberObj->panelPosition($updatedRoles),
+            if ($existing) {
+                // Update pivot
+                $panel->members()->updateExistingPivot($memberObj->id, [
+                    'role'        => $memberObj->panelPosition($rolesToAdd),
                     'group_roles' => json_encode($rolesToAdd),
-                ],
-            ]);
+                ]);
+            } else {
+                // Attach new
+                $panel->members()->attach($memberObj->id, [
+                    'role'        => $memberObj->panelPosition($rolesToAdd),
+                    'group_roles' => json_encode($rolesToAdd),
+                ]);
+}
         }
     }
 
