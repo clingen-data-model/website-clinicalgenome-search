@@ -59,7 +59,7 @@ class PanelImportService
         $expertPanel = data_get($data, 'expert_panel');
         if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
-                'gpm_id' => $expertPanel['uuid'],
+                //'gpm_id' => $expertPanel['uuid'],
                 'affiliate_id' => $expertPanel['affiliation_id']
             ]);
 
@@ -84,8 +84,10 @@ class PanelImportService
             $panel->name = data_get($expertPanel, 'name');
             $panel->title_short = data_get($expertPanel, 'short_name') ?? ' ';
             $panel->title = data_get($expertPanel, 'name') . $titleSuffix;
-            $panel->summary = data_get($expertPanel, 'scope_description') ?? data_get($data, 'description');
+            $panel->summary = data_get($data, 'description');
             $panel->url_cspec = 'https://cspec.genome.network/cspec/ui/svi/affiliation/' . $affiliateId;
+            $panel->group_clinvar_org_id = data_get($expertPanel, 'clinvar_org_id');
+            $panel->gpm_id = $expertPanel['uuid'];
 
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d');

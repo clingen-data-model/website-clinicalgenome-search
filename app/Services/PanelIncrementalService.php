@@ -127,6 +127,7 @@ class PanelIncrementalService
                 break;
 
             case 'member_role_assigned': // role added
+            case 'member_role_removed':
                 $this->handleMemberRoleAdded($panel, $data);
                 break;
 
@@ -138,9 +139,9 @@ class PanelIncrementalService
                 $this->handleMemberRetired($panel, $data);
                 break;
 
-            case 'member_role_removed':
-                $this->handleMemberRoleRemoved($panel, $data);
-                break;
+//            case 'member_role_removed':
+//                $this->handleMemberRoleAdded($panel, $data);
+//                break;
 
             case 'member_permission_granted':
                 $this->handleMemberPermissionGranted($panel, $data);
