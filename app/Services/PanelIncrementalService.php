@@ -184,11 +184,11 @@ class PanelIncrementalService
 
             //if (! $panel->exists) {
                 $panel->affiliate_id    = data_get($expertPanel, 'affiliation_id');
-                $panel->affiliate_type  = data_get($expertPanel, 'type');
-                $panel->name            = data_get($expertPanel, 'name');
+                $panel->affiliate_type  = data_get($expertPanel, 'type') ?? '';
+                $panel->name            = data_get($expertPanel, 'name') ?? '';
                 $panel->title_short     = data_get($expertPanel, 'short_name') ?? ' ';
-                $panel->title           = data_get($expertPanel, 'name');
-                $panel->summary         = data_get($expertPanel, 'scope_description');
+                $panel->title           = data_get($expertPanel, 'name') ?? '';
+                $panel->summary         = data_get($expertPanel, 'scope_description') ?? '';
 
                 if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                     $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
@@ -533,7 +533,7 @@ class PanelIncrementalService
             $panel->members()->syncWithoutDetaching([
                 $memberObj->id => [
                     'role'        => $memberObj->panelPosition($updatedRoles),
-                    'group_roles' => json_encode($updatedRoles),
+                    'group_roles' => json_encode($rolesToAdd),
                 ],
             ]);
         }
