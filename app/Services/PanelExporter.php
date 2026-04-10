@@ -154,6 +154,7 @@ class PanelExporter
         return [
             'name' => $panel->title,
             'title' => $panel->title,
+            'type' => 'wg',
             'title_short' => $panel->title_short,
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
