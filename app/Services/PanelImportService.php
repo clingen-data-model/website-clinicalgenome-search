@@ -124,7 +124,6 @@ class PanelImportService
 
             $panel->save();
 
-            dd($panel);
 
             return $panel;
         }
