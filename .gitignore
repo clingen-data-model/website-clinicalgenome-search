@@ -35,3 +35,4 @@ yarn-error.log
 **/*(another copy)
 **/OLD
 **/*.erb
+.DS_Store
