@@ -52,6 +52,15 @@ Route::group(['prefix' => '/dashboard'], function () {
 });
 
 Route::get('/reports/view/{id}', 'HomeController@view')->name('dashboard-show-report');
+Route::get('/members', 'MembersController@index')->name('members.index');
+Route::post('/members/sync', 'MembersController@sync')->name('members.sync');
+
+Route::get('/panels', 'PanelsController@index')->name('panels.index');
+Route::post('/panels/sync-gpm', 'PanelsController@syncGpm')->name('panels.syncGpm');
+
+Route::get('/panels/{panel}', 'PanelsController@show')->name('panels.show');
+Route::post('/panels/{affiliate_id}/sync', 'PanelsController@sync')->name('panels.sync');
+
 
 /*
  * Gene display routes

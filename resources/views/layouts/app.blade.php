@@ -361,7 +361,7 @@
         $(document).ready( () => {
             const savedTab = sessionStorage.getItem('activeTab') || 'gene';
 
-            tabRequests = {!! isset($display_tabs) ? json_encode($display_tabs) : [] !!}
+            tabRequests = @json($display_tabs ?? []);
                 if (savedTab === 'condition') {
                     enableConditionSearch()
                 } else if (savedTab  === 'gene-name') {

@@ -164,13 +164,13 @@ class QueryKafka extends Command
                         {
                             // there is strong reasons to pass the entire message to the parser,
                             // as we do with actionability and dosage above.  All new parsers should
-                            // be that way.  But for now, leave the existings parsers as is and 
+                            // be that way.  But for now, leave the existings parsers as is and
                             // we'll come back later to fix them.
                             $payload = json_decode($message->payload);
                             $a = $stream->parser;
                             $a($payload);
                             $stream->update(['offset' => $message->offset + 1]);
-                            
+
                         }
                     break;
                 case RD_KAFKA_RESP_ERR__PARTITION_EOF:
