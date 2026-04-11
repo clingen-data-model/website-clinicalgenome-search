@@ -74,7 +74,7 @@ class UpdateCpic extends Command
                                 'guideline' => $row->guidelineurl,
                                 'cpic_level' => $row->cpiclevel,
                                 'cpic_level_status' => $row->provisional ? "Provisional" : "Final",
-                                'pharmgkb_level_of_evidence' => $row->pgkbcalevel,
+                                'pharmgkb_level_of_evidence' => $row->clinpgxlevel,
                                 'pa_id' => null,
                                 'pa_id_drug' => null,
                                 'is_vip' => $row->usedforrecommendation,

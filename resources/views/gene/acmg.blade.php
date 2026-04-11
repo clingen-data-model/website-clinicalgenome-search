@@ -8,7 +8,7 @@
       <table class="mt-3 mb-2">
         <tr>
           <td class="valign-top"><img src="/images/acmg.png" width="45" height="45"></td>
-          <td class="pl-2"><h1 class="h2 p-0 m-0"> ACMG Secondary Findings Genes and Diseases</h1>
+          <td class="pl-2"><h1 class="h2 p-0 m-0"> ClinGen Secondary Findings Resource</h1>
           </td>
         </tr>
       </table>
@@ -27,30 +27,58 @@
 
 		<div class="col-md-12 mb-2 border" style="background: #f2f7fc">
 			<p class="p-2">
-				ClinGen has partnered with the ACMG Secondary Findings Maintenance Working Group (SFWG) to provide guidance 
-				related to which findings are reportable from the SF gene list. The reporting guidance includes reportability by condition, and may include specific variants, 
-				variant allelic states, gene region, transcript, pathogenicity mechanism or other variant type considerations. 
-				While some of these considerations are direct footnotes included in the SFWG’s publications, others are provided by ClinGen Expert Panels, 
-				discussion with the SFWG or via other expert input. We welcome further requests from the community when additional clarification 
-				or guidance is needed. Please send questions to: clingen@clinicalgenome.org 
+				The ACMG Secondary Findings Working Group (SFWG) regularly publishes updates to its policy statements and minimum 
+				list of recommended gene-disease pairs for opportunistic screening to facilitate the identification and/or 
+				management of risks for selected genetic disorders through established interventions aimed at preventing or 
+				significantly reducing morbidity and mortality. ClinGen collaborates with the ACMG SFWG, as described below, 
+				to present guidance related to which findings are reportable from the SF gene list.
 			</p>
 			<p class="p-2">
-				The published ACMG SF v3.3 list along with reporting guidance is available as a spreadsheet <a href="https://docs.google.com/spreadsheets/d/1ecSUe0bJ-2gAMXBsrf5U1wMEDOmiIjtR_A5388uj7HY" target="_acmg">here</a>. 
+				To support the ACMG SFWG’s recommendations, ClinGen maintains this webpage to provide easy access to publications 
+				from the ACMG SFWG. From this page, users can also easily access the 
+				<a href="https://form.jotform.com/203275021199048" target="_acmg"><u>ACMG SFWG’s portal for community requests for consideration</u></a>
+				(e.g. new conditions/genes to be added, genes to be considered for removal, or clarification about 
+				reportability of existing genes in terms of specific conditions or variants). Note that ClinGen is not involved in 
+				the final decision on which genes or conditions are included on the SF list.
+			</p>
+			<p class="p-2">
+				Curation results from ClinGen Expert Panels provide evidence for gene-disease relationships and variant 
+				pathogenicity, which may be used by the ACMG SFWG to make the final decisions on which diseases associated 
+				with a given gene on the ACMG SF list should be reported. For variants within reportable gene-disease 
+				relationships that have been raised by the community as possibly not reportable, the ACMG SFWG decides if 
+				a variant should be excluded from reporting using evidence provided by ClinGen. ClinGen Expert Panels and 
+				a ClinGen Secondary Findings Resource Working Group may also provide additional curated information, such 
+				as known mechanisms of pathogenicity, relevant transcripts, exons, variant types and allelic states, 
+				penetrance data and other insights for the ACMG SFWG to use in making decisions on reportability, as well 
+				as to assist laboratories in accurately classifying variants and following the ACMG SFWG’s guidance on 
+				reportability.
+			</p>
+			<p class="p-2">
+				<b>The information on this website is not intended for direct diagnostic use or medical decision-making without
+				 review by a genetics professional. Individuals should not change their health behavior solely on the basis of 
+				 information contained on this website. If you have questions about the information contained on this website, 
+				 please see a healthcare professional.</b>
+			</p>
+			<p class="p-2 border border-3 border-primary">
+				The published ACMG SF v3.3 list along with reporting guidance from the website below is available as a spreadsheet <a href="https://docs.google.com/spreadsheets/d/1ecSUe0bJ-2gAMXBsrf5U1wMEDOmiIjtR_A5388uj7HY" target="_acmg"><b><u>here</u></b></a>. 
 			</p>
 
 			<p class="p-2">
 				Considerations for using this table:
 				<ul>
 					<li>
-						The table below lists the genes included in the ACMG SF v3.3 list. Each row must be expanded by clicking on the [˅] to reveal the following:
+						The table below lists the genes included in the latest ACMG SF list. Each row must be expanded by clicking on the [˅] to reveal the following:
 						<ol type="a">
 							<li>
-								<strong>Reporting recommendations by disease.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
+								<strong>Reporting recommendations by disease(s) associated with the gene.</strong> This resource is intended to be used in conjunction with the SFWG publications and your own clinical judgment.
 									<ul>
 										<li>Yes - Reporting is recommended for P/LP variants associated with this disease, along with any reporting guidance noted</li>
 										<li>No - Reporting is not recommended for P/LP variants associated with this disease </li>
-										<li>Pending - Decision to report P/LP variants associated with disease  is under review by the SFWG</li>
-										<li>N/A -  Gene-disease relationship not applicable to SF reporting due to Limited or below evidence level</li>
+										<li>Pending - Decision to report P/LP variants associated with disease  is under review by the ACMG SFWG</li>
+										<li>NA -  Gene-disease relationship not applicable to SF reporting due to Limited or below evidence level</li>
+										<li>See Guidance - The written “Reporting Guidance” summary is a better reflection of disease-level guidance than a Yes/No response
+</li>
+										<li>Blank - Data is missing and will be updated soon</li>
 									</ul>
 							</li>
 							<li>
@@ -60,26 +88,30 @@
 										If no additional considerations are available, the entry will say “There are no reporting guidance details at this time”.
 									</li>
 									<li>
-										Please note that while some of the reporting guidances are direct footnotes included in the SFWG’s publications, 
-										others are provided by ClinGen Expert Panels, discussion with the SFWG or via other expert input.
+									Please note that while some of the reporting guidance are direct footnotes included in the 
+									ACMG SFWG’s publications, others are provided by ClinGen Expert Panels, discussion with the 
+									ACMG SFWG or via other expert input. All reporting guidance is reviewed and approved by the 
+									ACMG SFWG. We welcome further requests from the community when additional clarification or 
+									guidance is needed. Please send questions to: clingen@clinicalgenome.org
 									</li>
 								</ul>
 							</li>
 						</ol>
 					</li>
 					<li>
-						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the SFWG due to differences in the disease identifiers used by the SFWG (OMIM) and ClinGen (Mondo). 
+						The disease terms listed in the table below may not match the disease terms listed in the spreadsheet provided by the ACMG SFWG due to differences in the disease identifiers used by the ACMG SFWG (OMIM) and ClinGen (Mondo). 
 						Furthermore, given that different curation efforts within ClinGen (e.g. Gene-Disease Validity, Actionability, etc) 
-						have sometimes used distinct disease labels or IDs, the presence of other curations may be missing due to use of a distinct Mondo ID
-						compared to the gene-disease validity curated disease entity.
+						have sometimes used distinct disease labels or IDs, the presence of other curations may be missing
+						compared to the gene-disease validity curated disease entity.  These can still be found on the main ClinGen curation summary page for the gene.
 					</li>
 					<li>
-						The SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for consideration, 
-						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform">here</a>.
+						The ACMG SFWG welcomes nominations for new genes to be considered for addition to the list. To nominate a gene for the ACMG SFWG's consideration, 
+						please fill out the form <a href="https://form.jotform.com/203275021199048" target="_acmgform"><b><u>here</u></b></a>.
+						ClinGen is not involved in the final decision on which genes should be reported.
 
 					</li>
 					<li>
-						The SFWG also welcomes reportability questions and clarifications around specific variants, 
+						The ACMG SFWG also welcomes reportability questions and clarifications around specific variants, 
 						variant types and conditions associated with each gene on the list, which will be added to this web resource. 
 						To submit a question or suggestion, please email to clingen@clinicalgenome.org.
 					</li>
@@ -99,8 +131,10 @@
 			</p>
 			<hr >
 			<p class="p-2">	
+				 <a class="float-right m-2 collapsed" data-toggle="collapse" href="#collapsesf" role="button" aria-expanded="false" aria-controls="collapsesf">
+                    Click to view <i class="far fa-plus-square fa-lg ml-2" id="collapsesficon"></i></a>
 				<strong>Policy Updates and Prior Versions of the ACMG Secondary Findings (SF) List</strong>
-				<ul>
+				<ul class="collapse" id="collapsesf">
 					<li class="mb-2">2023 - ACMG Policy Statement with updated list of 81 genes (ACMG SF v3.2)
 						<p class="p-2">Publication:  
 							<a href="https://www.gimjournal.org/article/S1098-3600(23)00879-1/fulltext" target="_acmg">PMID:  37347242; PMCID:  PMC10524344</a>
@@ -155,6 +189,16 @@
 								Kalia SS, Adelman K, Bale SJ, Chung WK, Eng C, Evans JP, Herman GE, Hufnagel SB, Klein TE, Korf BR, McKelvey KD, Ormond KE, Richards CS, Vlangos CN, Watson M, Martin CL, Miller DT. Recommendations for reporting of secondary findings in clinical exome and genome sequencing, 2016 update (ACMG SF v2.0): a policy statement of the American College of Medical Genetics and Genomics. Genet Med. 2017 Feb;19(2):249-255. doi: 10.1038/gim.2016.190. Epub 2016 Nov 17. Erratum in: Genet Med. 2017 Apr;19(4):484. doi: 10.1038/gim.2017.17. PMID: 27854360
 							</a>
 						</p>-->
+					</li>
+					<li class="mb-2">2015 - ACMG Policy Statement - Updated Recommendations Regarding Analysis and Reporting
+						<p class="p-2">Publication:  
+							<a href="https://www.gimjournal.org/article/S1098-3600(21)04921-2/fulltext" target="_acmg">PMID:  25356965</a>
+						</p>
+					</li>
+					<li class="mb-2">2013 - ACMG Policy Clarification
+					<p class="p-2">Publication:  
+							<a href="https://www.gimjournal.org/article/S1098-3600(21)02746-5/fulltext" target="_acmg">PMID:  23828017</a>
+						</p>
 					</li>
 					<li class="mb-2">2013 - Original ACMG Policy Statement and minimum list of 56 genes
 						<p class="p-2">Publication:  
@@ -259,6 +303,15 @@
       		xhr.setRequestHeader('Authorization', 'Bearer ' + Cookies.get('clingen_dash_token'))
     }
   }
+
+    $('#collapsesf').on('shown.bs.collapse', function () {
+        $('#collapsesficon').addClass('fa-minus-square').removeClass('fa-plus-square');
+    });
+
+
+    $('#collapsesf').on('hidden.bs.collapse', function () {
+        $('#collapsesficon').addClass('fa-plus-square').removeClass('fa-minus-square');
+    });
 
 	function responseHandler(res) {
 		$('.countGenes').html(res.ngenes);

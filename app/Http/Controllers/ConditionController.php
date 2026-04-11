@@ -405,7 +405,7 @@ class ConditionController extends Controller
 			//$actionability_reports[$preferred_gene][$actionability_record->document]['aliases'] = $evidence_detail;
 		}       
        
-       // dd($disease);
+     //dd($disease->curie);
 	
 	   $save_disease = $disease;  // fix for error in view that overwrites disease
 

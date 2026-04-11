@@ -59,7 +59,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-12 mt-3">
-            <p>Other ClinGen expert panels and/or other curation working groups may be in the process of evaluating <strong><i>{{  $record->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other groups and an indication of their evaluation status. Evaluation statuses include:<p>
+            <p>Other ClinGen Gene Curation Expert Panels (GCEPs) may be in the process of evaluating <strong><i>{{  $record->label }}</i></strong> in addition to the completed curations available on the “Curation Summaries” tab.  See below for a listing of these other GCEPs and an indication of their evaluation status. Evaluation statuses include:<p>
                 <div class="row mb-2">
                     <div class="col-md-offset-1 col-md-2 under-review-color text-center p-1 img-rounded">
                         <span class=""><strong>Under review</strong></span>
@@ -84,8 +84,15 @@
                         The group has indicated that this gene is of potential interest for future evaluation, but active curation has not yet begun.
                     </div>
                 </div>
-            <p class="mb-5"><a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
-            </p>
+
+                @if($total_panels == 0)
+                    <div class="mt-3 alert alert-info text-center" role="alert">No other ClinGen GCEPs are in the process of evaluating <strong>{{ $record->label }}.</strong> </div>
+
+                @endif
+                     <p class="mb-5">
+                        <a href='https://clinicalgenome.org/affiliation/'>Click here to learn more about all the ClinGen Expert Panels and Working Groups.</a>
+                     </p>
+
 
             {{-- @foreach($gceps as $gcep)
                 @include('gene.includes.ep')

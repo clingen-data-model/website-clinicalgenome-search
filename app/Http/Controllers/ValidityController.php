@@ -465,6 +465,7 @@ class ValidityController extends Controller
         $showzygosity = $record->mode_of_inheritance->label == "Semidominant inheritance";
 
         switch ($record->specified_by->label) {
+            case "ClinGen Gene Validity Evaluation Criteria SOP12":
             case "ClinGen Gene Validity Evaluation Criteria SOP11":
             case "ClinGen Gene Validity Evaluation Criteria SOP10":
             case "ClinGen Gene Validity Evaluation Criteria SOP9":
@@ -486,7 +487,6 @@ class ValidityController extends Controller
         // get history
         $activities = Activity::sid($t)->published()->displayable()->orderBy('id','desc')->get();
 
-        //dd($record->las_rationale);
         // dd($extrecord->genetic_evidence);
         return view(
             'gene-validity.show',

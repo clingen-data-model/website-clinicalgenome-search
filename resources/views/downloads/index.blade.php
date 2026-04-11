@@ -138,16 +138,16 @@
 
                     <tr>
                         <td><strong>Dosage Sensitivity Recurrent CNV</strong>
-                            <div class="small">These files contains recurrent copy number variations (CNV) that have been, or are in the process of being, reviewed by the recurrent CNV ClinGen DSC Subgroup. This file is available in genome build hg19 and hg38 and can be opened in ChAS software (.aed) or in array analysis software that utilizes (.bed) files as well as the UCSC genome browser. The orange bars represent each recurrent region. The black bars represent the segmental duplication clusters/breakpoints.</div>
+                            <div class="small">These files contains recurrent copy number variations (CNV) that have been, or are in the process of being, reviewed by the recurrent CNV ClinGen DSC Subgroup. This file is available in genome build hg37 and hg38 and can be opened in ChAS software (.aed) or in array analysis software that utilizes (.bed) files as well as the UCSC genome browser. The orange bars represent each recurrent region. The black bars represent the segmental duplication clusters/breakpoints.</div>
                         </td>
                         <td></td>
                         <td style="text-align:center"">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg19.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG19 (bed)"><i class="fas fa-download"></i> HG19 (bed)</a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg19.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG19 (aed)"><i class="fas fa-download"></i> HG19 (aed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen_recurrent_CNV_V2.0-hg37.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG37 (bed)"><i class="fas fa-download"></i> HG37 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V2.0-hg37.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG37 (aed)"><i class="fas fa-download"></i> HG37 (aed)</a>
                         </td>
                         <td style="text-align:center">
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.bed%20file%20V1.1-hg38.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</a>
-                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V1.1-hg38.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen_recurrent_CNV_V2.0-hg38.bed" target="_blank" class="btn btn-default watchdownloadclick mt-3 mb-3" title="Dosage Sensitivity Recurrent CNV HG38 (bed)"><i class="fas fa-download"></i> HG38 (bed)</a>
+                            <a href="ftp://ftp.clinicalgenome.org/ClinGen%20recurrent%20CNV%20.aed%20file%20V2.0-hg38.aed" target="_blank" class="btn btn-default watchdownloadclick mb-1" title="Dosage Sensitivity Recurrent CNV HG38 (aed)"><i class="fas fa-download"></i> HG38 (aed)</a>
                         </td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
@@ -239,12 +239,68 @@
                         <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
-                    <tr>
-                        <td><strong>API Documentation </strong>
-                            <div class="small">OpenAPI specification and documentation for the ClinGen Evidence Repository JSON-LD REST API</div>
+                     <tr>
+                        <td><strong>Evidence Repository API </strong>
+                            <div class="small">REST-API endpoints to get variant pathogenicity classifications from ClinGen Evidence Repository</div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://brl-bcm.stoplight.io/docs/erepo"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation"> Documentation</a></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.clinicalgenome.org/evrepo/api/summary/srvc"  class="btn btn-default watchdownloadclick" title="Evidence Repository API"> API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Evidence Repository API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get Variant Pathogenicity classifications from ClinGen Evidence Repository</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://erepo.clinicalgenome.org/docs/cg-erepo/"  class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads Documentation">API Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Allele Registry API</strong>
+                            <div class="small">REST-API endpoints to get variant data from ClinGen Allele Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://reg.clinicalgenome.org/"  class="btn btn-default watchdownloadclick" title="Allele Registry API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Allele Registry API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get variant data from ClinGen Allele Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://reg.clinicalgenome.org/docs/cg-car/"  class="btn btn-default watchdownloadclick" title="Allele Registry Documentation"> Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Criteria Specification Registry API</strong>
+                            <div class="small">REST-API endpoints to get criteria specifications and related data from ClinGen Criteria Specification Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://cspec.clinicalgenome.org/cspec/srvc"  class="btn btn-default watchdownloadclick" title="Criteria Specification Registry API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Criteria Specification Registry API Documentation </strong>
+                            <div class="small">Documentation of the REST-API endpoints to get criteria specifications and related data from ClinGen Criteria Specification Registry</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://genboree.org/gitlab/clingen/cspec/cspec-registry/-/wikis/CSpec-Registry-API"  class="btn btn-default watchdownloadclick" title="Criteria Specification Registry API Documentation">Documentation</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                     <tr>
+                        <td><strong>Linked Data Hub API</strong>
+                            <div class="small">REST-API endpoints to get aggregated variant annotations from ClinGen Linked Data Hub</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://ldh.clinicalgenome.org/ldh/srvc"  class="btn btn-default watchdownloadclick" title="Linked Data Hub API">API</a></td>
+                        <td class="text-10px" nowrap=""></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Linked Data Hub API Documentation </strong>
+                            <div class="small">Documentation of REST-API endpoints and data entities to get aggregated variant annotations from ClinGen Linked Data Hub</div>
+                        </td>
+                        <td></td>
+                        <td colspan="2" style="text-align:center; vertical-align:middle"><a target="_blank" href="https://ldh.clinicalgenome.org/docs/ldh/api/"  class="btn btn-default watchdownloadclick" title="Linked Data Hub API Documentation">Documentation</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                 </table>

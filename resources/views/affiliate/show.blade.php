@@ -132,7 +132,8 @@
                 'SOP8',
                 'SOP9',
                 'SOP10',
-                'SOP11'
+                'SOP11',
+                'SOP12'
   ];
 
   function checkclass(text, value, field, data)

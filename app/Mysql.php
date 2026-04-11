@@ -416,7 +416,7 @@ class Mysql
 			$affiliate = "0";
 
         $panel = Panel::affiliate($affiliate)->first();
-
+        
         if ($panel == null)
             die($affiliate);
 
@@ -960,6 +960,10 @@ class Mysql
 
     /**
      * Suggester for Condition names
+     * 
+     * NOTE:  We are overriding MONDO:0006283 to account for the Actionability Variant Curation that
+     *        isn't supported by the current curation table.  PLW 2/19/2025.  When we introduce the
+     *        next evolution of the search system, we can remove this static handling.
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -1007,7 +1011,7 @@ class Mysql
                             'alias' => $ctag,
                             'hgnc' => $record->value,
                             'url' => route('condition-show', $record->value),
-                            'curated' => !empty($record->curated)];
+                            'curated' => ($record->value == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
             }
 
 
@@ -1056,7 +1060,7 @@ class Mysql
                                     'alias' => '(' . $record->curie . ')',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 case 'DOID':
@@ -1069,7 +1073,7 @@ class Mysql
                                     'alias' => '(' . $record->curie . ')',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 case 'ORPHANET':
@@ -1083,7 +1087,7 @@ class Mysql
                                     'alias' => '(' . $record->curie . ')',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 case 'GARD':
@@ -1096,7 +1100,7 @@ class Mysql
                                     'alias' => '(' . $record->curie . ')',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 case 'MONDO':
@@ -1109,7 +1113,7 @@ class Mysql
                                     'alias' => '',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 case 'MEDGEN':
@@ -1123,7 +1127,7 @@ class Mysql
                                     'alias' => '(' . $record->curie . ')',
                                     'hgnc' => $record->label,
                                     'url' => route('condition-show', $record->curie),
-                                    'curated' => !empty($record->curation_activities)];
+                                    'curated' => ($record->curie == 'MONDO:0006823' ? true : !empty($record->curation_activities))];
                     }
                     break;
                 default:
