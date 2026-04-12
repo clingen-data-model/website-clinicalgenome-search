@@ -47,6 +47,8 @@ class ExportPanelsToProcessWire extends Command
             $query->where('affiliate_type', $type);
         }
 
+        $query->whereNotNull('gpm_id');
+
         $panels = $query->get();
 
         foreach ($panels as $panel) {
