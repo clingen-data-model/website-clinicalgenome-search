@@ -188,7 +188,11 @@ class PanelIncrementalService
                 $panel->title_short     = data_get($expertPanel, 'short_name') ?? ' ';
                 $panel->title           = data_get($expertPanel, 'name') ?? '';
                 //$panel->summary         = data_get($expertPanel, 'scope_description') ?? '';
-                $panel->summary =          data_get($data, 'description');
+
+            if ($description = data_get($data, 'description')) {
+                $panel->summary =         $description;
+            }
+
 
                 if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                     $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
@@ -339,7 +343,7 @@ class PanelIncrementalService
             ?? data_get($data, 'data.expert_panel.scope_description');
 
         if ($scope) {
-            $panel->summary = $scope;
+            $panel->description = $scope;
             $panel->save();
         }
     }
