@@ -41,7 +41,7 @@ class QueryOms extends Command
     {
         // for now, we're importing a json file
 
-        foreach (['gceps', 'vceps', 'cwdgs', 'wgs'] as $target)
+        foreach (['wgs'] as $target)
         {
             echo "Updating $target \n";
 
@@ -99,7 +99,7 @@ class QueryOms extends Command
                     $entry['title_abbreviated'] = str_replace('&#039;', "'", $entry['title_abbreviated']);
 
                 Panel::updateOrCreate(
-                    ['affiliate_id' => $entry['affiliation_id']],
+                    ['title' => $entry['title']],
                     [
                         'alternate_id' => $alternate_id,
                         'title' => $entry['title'],
@@ -108,21 +108,10 @@ class QueryOms extends Command
                         'title_abbreviated' => $entry['title_abbreviated'] ?? "",
                         'summary' => ($entry['summary'] != "" ? $entry['summary'] :
                                                 $entry['description']),
-                        'affiliate_type' => $entry['affiliate_type'],
-                        'affiliate_status' => [
-                            'gene' => $entry['affiliate_status_gene'],
-                            'gene_date_step_1' => $entry['affiliate_status_gene_date_step_1'],
-                            'gene_date_step_2' => $entry['affiliate_status_gene_date_step_2'],
-                            'variant' => $entry['affiliate_status_variant'],
-                            'variant_date_step_1' => $entry['affiliate_status_variant_date_step_1'],
-                            'variant_date_step_2' => $entry['affiliate_status_variant_date_step_2'],
-                            'variant_date_step_3' => $entry['affiliate_status_variant_date_step_3'],
-                            'variant_date_step_4' => $entry['affiliate_status_variant_date_step_4']
-                        ],
-                        'cdwg_parent_name' => $entry['cdwg_parent_name'],
-                        'member' => $entry['member'],
                         'status' => 1,
-                        'type' => $typemap[$entry['affiliate_type']] ?? 0
+                        'type' => $typemap[$entry['affiliate_type']] ?? 0,
+                        'gpm_id' => $entry['gpm_id'],
+                        'affiliate_type' => 'wg'
                     ]
                 );
             }
