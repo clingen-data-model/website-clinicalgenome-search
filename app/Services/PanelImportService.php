@@ -59,8 +59,8 @@ class PanelImportService
         $expertPanel = data_get($data, 'expert_panel');
         if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
-                //'gpm_id' => $expertPanel['uuid'],
-                'affiliate_id' => $expertPanel['affiliation_id']
+                'gpm_id' => $expertPanel['uuid'],
+                //'affiliate_id' => $expertPanel['affiliation_id']
             ]);
 
             $type = data_get($expertPanel, 'type');
