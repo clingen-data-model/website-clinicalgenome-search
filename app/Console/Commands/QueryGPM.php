@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use App\Stream;
 use App\Packet;
 
-class QueryKafka extends Command
+class QueryGPM extends Command
 {
     /**
      * Usage examples:
