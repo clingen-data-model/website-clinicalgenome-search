@@ -64,7 +64,7 @@ class ImportGpmUuids extends Command
                     $notFound++;
                     continue;
                 }
-            } elseif (in_array($type, ['wg', 'cdwg'])) {
+            } elseif ($type === 'cdwg') {
                 $panel = Panel::where('name', $name)
                     ->orWhere('title', $name)
                     ->first();
