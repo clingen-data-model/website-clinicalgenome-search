@@ -1118,9 +1118,9 @@ protected function getEffectiveAbbreviatedTitleSuffix(): string
 }
 
 /**
- * Full effective title.
+ * Title accessor — returns the effective title with proper suffix.
  */
-public function getEffectiveTitleAttribute(): string
+public function getTitleAttribute(): string
 {
     $base = $this->getEffectiveBaseName();
     $suffix = $this->getEffectiveTitleSuffix();
@@ -1133,9 +1133,9 @@ public function getEffectiveTitleAttribute(): string
 }
 
 /**
- * Effective abbreviated title.
+ * Title abbreviated accessor — returns base name with VCEP/GCEP suffix.
  */
-public function getEffectiveAbbreviatedTitleAttribute(): string
+public function getTitleAbbreviatedAttribute(): string
 {
     $base = $this->getEffectiveBaseName();
     $suffix = $this->getEffectiveAbbreviatedTitleSuffix();
@@ -1148,12 +1148,35 @@ public function getEffectiveAbbreviatedTitleAttribute(): string
 }
 
 /**
+ * Title short accessor — returns base name without any suffix.
+ */
+public function getTitleShortAttribute(): string
+{
+    return $this->getEffectiveBaseName();
+}
+
+/**
+ * Full effective title.
+ */
+public function getEffectiveTitleAttribute(): string
+{
+    return $this->getTitleAttribute();
+}
+
+/**
+ * Effective abbreviated title.
+ */
+public function getEffectiveAbbreviatedTitleAttribute(): string
+{
+    return $this->getTitleAbbreviatedAttribute();
+}
+
+/**
  * Effective short title.
- * Never includes VCEP/GCEP or the full panel suffix.
  */
 public function getEffectiveShortTitleAttribute(): string
 {
-    return $this->getEffectiveBaseName();
+    return $this->getTitleShortAttribute();
 }
 
 /**

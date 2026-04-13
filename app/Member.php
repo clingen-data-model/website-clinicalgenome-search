@@ -164,6 +164,7 @@ class Member extends Model
 
     public function parser($data, $timestamp = null)
     {
+        //Log::info('Creating meember Parser', ['data' => $data]);
         $member = app(\App\Services\PersonUpdateService::class)->syncFromKafka($data);
 
         if ($member) {
