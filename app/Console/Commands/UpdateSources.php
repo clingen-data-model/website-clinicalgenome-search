@@ -54,7 +54,7 @@ class UpdateSources extends Command
          // $this->call('update:index', ['report' =>  'region']);// Refresh index file from Jira
           //$this->call('update:dosages');    // DCI (Jira)
           //$this->call('update:map');        // local file
-          $this->call('update:ratings');    // DCI (Jira) <--- NEED TO FINISH THIS 
+          $this->call('update:ratings');    // DCI (Jira) <--- NEED TO FINISH THIS
           //$this->call('update:region');     // local file
           $this->call('update:mondo');
           $this->call('update:disease');    // Genephap
@@ -62,8 +62,8 @@ class UpdateSources extends Command
           $this->call('update:orpha');      // Orphanet
           $this->call('gencc:query');       // Gencc souce
           $this->call('update:genomeconnect');    // Update geneconnect counts from clinvar
-          $this->call('query:oms');         // update afflisliates from website
-          $this->call('update:affiliates'); // Update from genegraph and erepo
+         // $this->call('query:oms');         // update afflisliates from website
+          //$this->call('update:affiliates'); // Update from genegraph and erepo
           $this->call('update:changes');
           $this->call('update:follow');
           $this->call('update:summary');
