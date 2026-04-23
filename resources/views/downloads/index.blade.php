@@ -236,7 +236,8 @@
                             <div class="small">This file provides a summary of the Variant Pathogenicitycurations completed by ClinGen's VCEPs. </div>
                         </td>
                         <td></td>
-                        <td colspan="2" style="text-align:center; vertical-align:middle"><a href="http://erepo.clinicalgenome.org/evrepo/api/classifications/all?format=tabbed"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://erepo.clinicalgenome.org/evrepo/api/summary/classifications/download?type=csv"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads CVS"><i class="fas fa-download"></i> CSV</a></td>
+                        <td style="text-align:center; vertical-align:middle"><a href="https://erepo.clinicalgenome.org/evrepo/api/summary/classifications/download"  target="_blank" class="btn btn-default watchdownloadclick" title="Variant Pathogenicity Downloads TSV"><i class="fas fa-download"></i> TSV</a></td>
                         <td class="text-10px" nowrap=""></td>
                     </tr>
                      <tr>
