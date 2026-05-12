@@ -140,6 +140,8 @@ class UpdateGenomeconnect extends Command
 
           $record->save();
 
+           sleep(1);
+
         }
 
         echo "DONE\n";
