@@ -26,9 +26,7 @@
             </div>
             <div class="col-md-9">
                 <div class="text-muted">
-                    <p>
-                        {{ strip_tags($gcep->summary) }}
-                    </p>
+                    @markdown{{ $gcep->summary }}@endmarkdown
                     @if ($gcep->bucket == 3)
                     <p>The {{ $gcep->smart_title }} is in the process of reviewing <span class="badge">{{ $record->label }}</span></p>
                     @elseif ($gcep->bucket == 2)
