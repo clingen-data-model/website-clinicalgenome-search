@@ -620,6 +620,7 @@ class Validity extends Model
         Curation::validity()->active()->update(['group_id' => 1]);
 
         foreach ($records->collection as $record) {
+
             $publish_date = false;
 
             //if ($record->curie == 'CGGV:assertion_03c758a6-9290-4e14-9501-0ffb0fbfe8ce-2020-04-24T160000.000Z')
@@ -638,7 +639,8 @@ class Validity extends Model
             else
                 $check = Curation::validity()->active()->where('source_uuid', $record->curie)->exists();*/
 
-            if ($curation !== null && isset($curation->events['publish_date']) && $curation->events['publish_date'] == $publish_date) 
+            if ($curation !== null && isset($curation->events['publish_date']) && $curation->events['publish_date'] == $publish_date 
+                && $record->disease->label == $curation->condition_details['label'] ) 
             {
                 // unset the remove flag
                 Curation::validity()->active()->where('source_uuid', $record->curie)->update(['group_id' => 0]);
@@ -768,7 +770,7 @@ class Validity extends Model
             );
 
             // remove any stale entries from the pivot table
-            $curation->panels()->detatch();
+            //$curation->panels()->detatch();
 
 
             // update the panel pivot table
