@@ -454,8 +454,8 @@ class Precuration extends Model
         if ($current->status == self::STATUS_DELETED)
             $current->delete();
 
-        // Check if the group exists, if not, add
-        if (!empty($record->group->affiliation_id))
+        // Check if the group exists, if not, add.  Note, this was pre-gpm intefration and no longer needed.
+        /*if (!empty($record->group->affiliation_id))
         {
             $id = ($record->group->affiliation_id < 20000 ? $record->group->affiliation_id + 30000 :
                                                 $record->group->affiliation_id);
@@ -476,6 +476,6 @@ class Precuration extends Model
                                     'status' => 1]);
                 $panel->save();
             }
-        }
+        }*/
     }
 }
