@@ -296,6 +296,7 @@ class Precuration extends Model
                 break;
         }
 
+
         // if event type is deleted, then no extra status detail will be present
         if ($current->status !== self::STATUS_DELETED)
         {
@@ -344,16 +345,15 @@ class Precuration extends Model
             }
         }
 
-        if ($current->status !== self::STATUS_DELETED)
+        // we want to copy the latest status into a gene column, but we can't garuntee order
+        $gene = Gene::hgnc('HGNC:' . $current->hgnc_id)->first();
+
+        if ($gene !== null)
         {
-
-            // we want to copy the latest status into a gene column, but we can't garuntee order
-            $gene = Gene::hgnc('HGNC:' . $current->hgnc_id)->first();
-
-            if ($gene !== null)
+            $a = $gene->curation_status;
+            if ($a === null)
             {
-                $a = $gene->curation_status;
-                if ($a === null)
+                if ($current->status !== self::STATUS_DELETED)
                 {
                     $gene->curation_status = [ $record->id => [
                                         'group' => $record->group->name,
@@ -363,11 +363,12 @@ class Precuration extends Model
                                         'status_date' => $record->status->effective_date
                                     ]];
 
-                    //dd($gene->curation_status);
-
                     $gene->save();
                 }
-                else
+            }
+            else
+            {
+                if ($current->status !== self::STATUS_DELETED)
                 {
                     if (!isset($a[$record->id]) || ((self::$curation_priority[$record->status->name] ?? 0) >= (self::$curation_priority[$a[$record->id]['status']] ?? 0)))
                     {
@@ -382,6 +383,15 @@ class Precuration extends Model
 
                         //dd($gene->curation_status);
 
+                        $gene->save();
+                    }
+                }
+                else
+                {
+                    if (isset($a[$record->id]))
+                    {
+                        unset($a[$record->id]);
+                        $gene->curation_status = $a;
                         $gene->save();
                     }
                 }
@@ -440,6 +450,9 @@ class Precuration extends Model
         {
             // if published and not deleted and not retired...
         }*/
+
+        if ($current->status == self::STATUS_DELETED)
+            $current->delete();
 
         // Check if the group exists, if not, add
         if (!empty($record->group->affiliation_id))
