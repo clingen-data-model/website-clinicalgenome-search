@@ -982,7 +982,7 @@ class Mysql
 
         if (!isset($parts[1]))
         {
-            $records = Term::where('name', 'like', '%' . $search . '%')
+            $records = Term::whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', [$search])
                         ->whereIn('type', [11, 12, 13, 14])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
@@ -1337,7 +1337,7 @@ class Mysql
 
         if (!isset($parts[1]))
         {
-            $records = Term::where('name', 'like', '%' . $search . '%')
+            $records = Term::whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', [$search])
                         ->whereIn('type', [11, 12, 13, 14])
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
