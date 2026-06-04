@@ -12,6 +12,9 @@ use Uuid;
 use Carbon\Carbon;
 
 use App\Gene;
+use App\Term;
+use App\Omim;
+use App\Disease;
 
 /**
  *
@@ -248,6 +251,64 @@ class Precuration extends Model
      * Map a gt precuration record to a model
      *
      */
+    /**
+     * Materialize this precuration's *included* OMIM phenotypes as searchable
+     * condition synonym terms.
+     *
+     * The condition autocomplete (Mysql::conditionLook2) searches terms.name
+     * via a FULLTEXT index.  Included OMIM phenotypes are stored in the
+     * omim_phenotypes JSON as bare MIM numbers, so on their own they're only
+     * findable by typing "OMIM:<id>".  This copies each included phenotype's
+     * OMIM title into the terms table (name = title, value = the MONDO curie
+     * the OMIM id resolves to) so users can find the condition by disease name.
+     *
+     * Idempotent: keyed on (name, value) via updateOrCreate; safe to re-run.
+     *
+     * @return int  number of synonym terms written
+     */
+    public function syncOmimPhenotypeTerms()
+    {
+        $included = $this->omim_phenotypes['included'] ?? [];
+
+        if (empty($included))
+            return 0;
+
+        $count = 0;
+
+        foreach ($included as $mim)
+        {
+            $mim = trim((string) $mim);
+
+            if ($mim === '')
+                continue;
+
+            // human-readable OMIM phenotype name
+            $omim = Omim::where('omimid', $mim)->first();
+
+            if ($omim === null || empty($omim->titles))
+                continue;
+
+            // resolve to the same condition page an "OMIM:<id>" search lands on
+            $disease = Disease::where('omim', 'like', $mim . '%')
+                            ->orderByRaw('CHAR_LENGTH(curie)')
+                            ->first();
+
+            if ($disease === null)
+                continue;
+
+            // 14 = OMIM match (see Mysql::conditionLook2 type switch)
+            Term::updateOrCreate(
+                ['name' => $omim->titles, 'value' => $disease->curie],
+                ['type' => 14, 'alias' => $disease->label, 'status' => 0]
+            );
+
+            $count++;
+        }
+
+        return $count;
+    }
+
+
     public static function parser($data)
     {
         //dd($data);
@@ -330,6 +391,10 @@ class Precuration extends Model
         }
 
         $current->save();
+
+        // keep included OMIM phenotype names searchable as condition synonyms
+        if ($current->status !== self::STATUS_DELETED)
+            $current->syncOmimPhenotypeTerms();
 
         // regardless of status, add to the pmids list
         if (isset($current->rationale['pmids']))
