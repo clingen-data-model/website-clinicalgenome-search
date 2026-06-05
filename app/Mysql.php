@@ -980,14 +980,17 @@ class Mysql
      */
     private static function conditionMatchExpression($search)
     {
-        $tokens = preg_split('/\s+/', trim($search), -1, PREG_SPLIT_NO_EMPTY);
+        // Split on any run of non-alphanumeric characters so punctuation
+        // (hyphens, commas, and the boolean operators + - * " ~ etc.) becomes a
+        // token boundary instead of being glued into the word — the word parser
+        // indexes "Ehlers-Danlos" as "Ehlers" + "Danlos", so "Ehlers-Danl" must
+        // become "+Ehlers* +Danl*", not "+EhlersDanl*" (which matches nothing).
+        $tokens = preg_split('/[^\p{L}\p{N}]+/u', trim($search), -1, PREG_SPLIT_NO_EMPTY);
 
         $parts = [];
         foreach ($tokens as $token)
         {
-            $token = preg_replace('/[+\-><()~*"@]+/', '', $token);
-
-            if (strlen($token) >= self::FT_MIN_TOKEN)
+            if (mb_strlen($token) >= self::FT_MIN_TOKEN)
                 $parts[] = '+' . $token . '*';
         }
 
