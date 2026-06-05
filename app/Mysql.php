@@ -959,8 +959,45 @@ class Mysql
 
 
     /**
+     * Minimum token length InnoDB's default FULLTEXT parser will index
+     * (innodb_ft_min_token_size).  Searches shorter than this can't use the
+     * index, so we fall back to a prefix LIKE for them.
+     */
+    const FT_MIN_TOKEN = 3;
+
+    /**
+     * Build a word-prefix boolean FULLTEXT expression for the condition
+     * suggester, e.g. "ehlers danlos" => "+ehlers* +danlos*".
+     *
+     * Each word becomes a required prefix term, so multi-word searches narrow
+     * (AND) and a word matches anywhere in the name ("danlos" -> "Ehlers-Danlos
+     * syndrome").  Boolean operator characters are stripped, and tokens shorter
+     * than the index minimum are skipped (a required short term the index can't
+     * satisfy would return nothing).
+     *
+     * @param  string  $search
+     * @return string  '' when no usable token (caller should prefix-LIKE)
+     */
+    private static function conditionMatchExpression($search)
+    {
+        $tokens = preg_split('/\s+/', trim($search), -1, PREG_SPLIT_NO_EMPTY);
+
+        $parts = [];
+        foreach ($tokens as $token)
+        {
+            $token = preg_replace('/[+\-><()~*"@]+/', '', $token);
+
+            if (strlen($token) >= self::FT_MIN_TOKEN)
+                $parts[] = '+' . $token . '*';
+        }
+
+        return implode(' ', $parts);
+    }
+
+
+    /**
      * Suggester for Condition names
-     * 
+     *
      * NOTE:  We are overriding MONDO:0006283 to account for the Actionability Variant Curation that
      *        isn't supported by the current curation table.  PLW 2/19/2025.  When we introduce the
      *        next evolution of the search system, we can remove this static handling.
@@ -982,8 +1019,13 @@ class Mysql
 
         if (!isset($parts[1]))
         {
-            $records = Term::whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', ['"' . str_replace('"', '', $search) . '"'])
+            $expression = self::conditionMatchExpression($search);
+
+            $records = Term::query()
                         ->whereIn('type', [11, 12, 13, 14])
+                        ->when($expression !== '',
+                            fn ($query) => $query->whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', [$expression]),
+                            fn ($query) => $query->where('name', 'like', $search . '%'))
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
                         ->orderBy('weight', 'desc')
@@ -1337,8 +1379,13 @@ class Mysql
 
         if (!isset($parts[1]))
         {
-            $records = Term::whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', ['"' . str_replace('"', '', $search) . '"'])
+            $expression = self::conditionMatchExpression($search);
+
+            $records = Term::query()
                         ->whereIn('type', [11, 12, 13, 14])
+                        ->when($expression !== '',
+                            fn ($query) => $query->whereRaw('MATCH(name) AGAINST(? IN BOOLEAN MODE)', [$expression]),
+                            fn ($query) => $query->where('name', 'like', $search . '%'))
                         ->orderByRaw('CHAR_LENGTH(name)')
                         ->orderBy('alias')
                         ->orderBy('weight', 'desc')
