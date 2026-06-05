@@ -2668,6 +2668,53 @@ class Graphql
 
 		$node->dosage_curation_map = $dosage_curation_map;
 
+		// Lumping: if this disease was lumped as an *included* OMIM phenotype of
+		// one or more curated diseases, surface those diseases' curation here so
+		// the standalone disease page carries the curation of the disease it was
+		// determined to be the same as.  The page keeps its own identity; a
+		// banner (rendered from $node->lumped_into) notes the source.  Reached
+		// the same way whether the user arrives by disease name or OMIM:<id>,
+		// since both resolve to this disease via rosetta().
+		$node->lumped_into = [];
+
+		if (empty($nolump) && $localdisease !== null && !empty($localdisease->omim))
+		{
+			$seen = [$mondo => true];
+
+			foreach (Precuration::lumpedInto($localdisease->omim) as $precuration)
+			{
+				$main = $precuration->mondo_id;
+
+				if (isset($seen[$main]))
+					continue;
+
+				$seen[$main] = true;
+
+				// nolump => true stops the merged disease from re-lumping (no recursion)
+				$mainnode = self::conditionDetail(array_merge($args, [
+								'condition' => $main,
+								'nolump' => true,
+							]));
+
+				if (empty($mainnode) || empty($mainnode->genetic_conditions))
+					continue;
+
+				$node->genetic_conditions = array_merge(
+					(array) $node->genetic_conditions,
+					(array) $mainnode->genetic_conditions
+				);
+
+				$node->nvalid  += $mainnode->nvalid ?? 0;
+				$node->naction += $mainnode->naction ?? 0;
+				$node->ndosage += $mainnode->ndosage ?? 0;
+
+				$node->lumped_into[] = [
+					'curie' => $mainnode->iri ?? $main,
+					'label' => $mainnode->label ?? $main,
+				];
+			}
+		}
+
 		return $node;
 	}
 

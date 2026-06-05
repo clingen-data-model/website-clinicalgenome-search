@@ -65,6 +65,16 @@
 	<div class="row justify-content-center">
 		<div class="col-md-12">
 
+			@if(!empty($record->lumped_into))
+			<div class="alert alert-info mt-2" role="alert">
+				The curation below is shown because this disease has been lumped with
+				@foreach($record->lumped_into as $lumped)
+					<a href="{{ route('condition-show', \App\Disease::normal_base($lumped['curie'])) }}">{{ displayMondoLabel($lumped['label']) }}</a>@if(!$loop->last), @endif
+				@endforeach
+				and is curated as part of {{ count($record->lumped_into) > 1 ? 'those diseases' : 'that disease' }}.
+			</div>
+			@endif
+
 			@if((!empty($record->dosage_curation ) && !empty($record->dosage_curation_map)) OR !empty($record->genetic_conditions))
 <div class="btn-group  btn-group-xs float-right" role="group" aria-label="...">
   <a  href="{{ route('condition-show', $record->getMondoString($record->iri, true)) }}" class="btn btn-primary active">Group By Activity</a>

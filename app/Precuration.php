@@ -252,6 +252,33 @@ class Precuration extends Model
      *
      */
     /**
+     * Precurations that have lumped the given OMIM phenotype id into their
+     * disease entity, i.e. the id appears in omim_phenotypes.included.
+     *
+     * Used by the condition page to surface the curation of the disease a
+     * standalone phenotype was lumped into.  mim_number is stored as either a
+     * JSON string or number depending on source, so match both.
+     *
+     * @param  string|int  $omim  a bare OMIM/MIM number
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function lumpedInto($omim)
+    {
+        $omim = trim((string) $omim);
+
+        if ($omim === '' || !is_numeric($omim))
+            return collect();
+
+        return self::whereNotNull('mondo_id')
+                    ->where(function ($query) use ($omim) {
+                        $query->whereJsonContains('omim_phenotypes->included', $omim)
+                              ->orWhereJsonContains('omim_phenotypes->included', (int) $omim);
+                    })
+                    ->get();
+    }
+
+
+    /**
      * Materialize this precuration's *included* OMIM phenotypes as searchable
      * synonyms of the disease they were lumped into.
      *
