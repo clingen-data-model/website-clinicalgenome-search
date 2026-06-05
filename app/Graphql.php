@@ -2675,11 +2675,18 @@ class Graphql
 		// banner (rendered from $node->lumped_into) notes the source.  Reached
 		// the same way whether the user arrives by disease name or OMIM:<id>,
 		// since both resolve to this disease via rosetta().
-		$node->lumped_into = [];
+		$lumped_into = [];
 
 		if (empty($nolump) && $localdisease !== null && !empty($localdisease->omim))
 		{
 			$seen = [$mondo => true];
+
+			// Nodal uses overloaded properties, so accumulate in locals and
+			// assign once (an in-place $node->prop[] would silently no-op).
+			$conditions = (array) $node->genetic_conditions;
+			$nvalid  = $node->nvalid;
+			$naction = $node->naction;
+			$ndosage = $node->ndosage;
 
 			foreach (Precuration::lumpedInto($localdisease->omim) as $precuration)
 			{
@@ -2699,21 +2706,28 @@ class Graphql
 				if (empty($mainnode) || empty($mainnode->genetic_conditions))
 					continue;
 
-				$node->genetic_conditions = array_merge(
-					(array) $node->genetic_conditions,
-					(array) $mainnode->genetic_conditions
-				);
+				$conditions = array_merge($conditions, (array) $mainnode->genetic_conditions);
 
-				$node->nvalid  += $mainnode->nvalid ?? 0;
-				$node->naction += $mainnode->naction ?? 0;
-				$node->ndosage += $mainnode->ndosage ?? 0;
+				$nvalid  += $mainnode->nvalid ?? 0;
+				$naction += $mainnode->naction ?? 0;
+				$ndosage += $mainnode->ndosage ?? 0;
 
-				$node->lumped_into[] = [
+				$lumped_into[] = [
 					'curie' => $mainnode->iri ?? $main,
 					'label' => $mainnode->label ?? $main,
 				];
 			}
+
+			if (!empty($lumped_into))
+			{
+				$node->genetic_conditions = $conditions;
+				$node->nvalid  = $nvalid;
+				$node->naction = $naction;
+				$node->ndosage = $ndosage;
+			}
 		}
+
+		$node->lumped_into = $lumped_into;
 
 		return $node;
 	}
