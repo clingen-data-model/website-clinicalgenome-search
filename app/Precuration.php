@@ -253,14 +253,15 @@ class Precuration extends Model
      */
     /**
      * Materialize this precuration's *included* OMIM phenotypes as searchable
-     * condition synonym terms.
+     * synonyms of the disease they were lumped into.
      *
-     * The condition autocomplete (Mysql::conditionLook2) searches terms.name
-     * via a FULLTEXT index.  Included OMIM phenotypes are stored in the
-     * omim_phenotypes JSON as bare MIM numbers, so on their own they're only
-     * findable by typing "OMIM:<id>".  This copies each included phenotype's
-     * OMIM title into the terms table (name = title, value = the MONDO curie
-     * the OMIM id resolves to) so users can find the condition by disease name.
+     * An included phenotype is part of this precuration's disease entity
+     * (mondo_id), so searching that phenotype's name should return the lumped
+     * disease — letting the user see the full complement of the disease, not
+     * the phenotype's own standalone entry.  We therefore write each included
+     * phenotype's OMIM title into terms with value = this precuration's
+     * mondo_id, so the FULLTEXT-backed condition autocomplete resolves it to
+     * the main disease.
      *
      * Idempotent: keyed on (name, value) via updateOrCreate; safe to re-run.
      *
@@ -268,10 +269,18 @@ class Precuration extends Model
      */
     public function syncOmimPhenotypeTerms()
     {
+        // without a lumped disease there's nothing for the synonym to point to
+        if (empty($this->mondo_id))
+            return 0;
+
         $included = $this->omim_phenotypes['included'] ?? [];
 
         if (empty($included))
             return 0;
+
+        // canonical label of the lumped (main) disease, used as the alias
+        $disease = Disease::where('curie', $this->mondo_id)->first();
+        $label = $disease->label ?? null;
 
         $count = 0;
 
@@ -282,24 +291,17 @@ class Precuration extends Model
             if ($mim === '')
                 continue;
 
-            // human-readable OMIM phenotype name
+            // human-readable name of the included OMIM phenotype
             $omim = Omim::where('omimid', $mim)->first();
 
             if ($omim === null || empty($omim->titles))
                 continue;
 
-            // resolve to the same condition page an "OMIM:<id>" search lands on
-            $disease = Disease::where('omim', 'like', $mim . '%')
-                            ->orderByRaw('CHAR_LENGTH(curie)')
-                            ->first();
-
-            if ($disease === null)
-                continue;
-
-            // 14 = OMIM match (see Mysql::conditionLook2 type switch)
+            // 14 = OMIM match (see Mysql::conditionLook2 type switch).
+            // value is the lumped disease curie so a hit returns that disease.
             Term::updateOrCreate(
-                ['name' => $omim->titles, 'value' => $disease->curie],
-                ['type' => 14, 'alias' => $disease->label, 'status' => 0]
+                ['name' => $omim->titles, 'value' => $this->mondo_id],
+                ['type' => 14, 'alias' => $label, 'status' => 0]
             );
 
             $count++;
