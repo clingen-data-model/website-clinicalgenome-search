@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Precuration;
+use App\Term;
 
 class UpdateOmimTerms extends Command
 {
@@ -43,6 +44,12 @@ class UpdateOmimTerms extends Command
      */
     public function handle()
     {
+        // type 14 (OMIM match) terms are written only by this feature, so a
+        // full purge-and-rebuild keeps the backfill idempotent even when the
+        // (name, value) mapping changes — no stale rows left behind.
+        $purged = Term::where('type', 14)->forceDelete();
+        $this->info($purged . ' existing OMIM phenotype terms cleared');
+
         $precurations = Precuration::whereNotNull('omim_phenotypes')->get();
 
         $this->info($precurations->count() . ' precurations to process');
