@@ -27,7 +27,7 @@ class PanelExporter
 
     public function pushToProcessWire()
     {
-        if ($this->panel->affiliate_type === 'cdwg') {
+        if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
             $data = $this->cdwgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
@@ -35,7 +35,7 @@ class PanelExporter
             $data = $this->wgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
-        } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep') {
+        } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep' || $this->panel->affiliate_type === 'scvcep') {
             $data = $this->getProcessWireData();
             $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
             return $response->body();
@@ -57,17 +57,27 @@ class PanelExporter
 
         if ($type == 'gcep') {
             $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affiliate_id;
-        } else if ($type == 'vcep') {
+        } else if ($type == 'vcep' || $type == 'scvcep') {
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
+            $type = $panel->affiliate_type === 'scvcep' ? ' SC-VCEP' : ' VCEP';
             $params = array(
                 'matchMode' => 'exact',
-                'expertpanel' =>  $panel->name . ' VCEP'
+                'expertpanel' =>  $panel->name . $type
             );
             $panel->url_erepo = $base_url . '?' . http_build_query($params);
 
-            if ($panel->group_clinvar_org_id && $panel->affiliate_type === 'vcep') {
+            if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
+
+            if ($panel->affiliate_type === 'gcep') {
+                $expertPanelType = [1];
+            } else if ($panel->affiliate_type === 'vcep') {
+               $expertPanelType = [2];
+            } else if ($panel->affiliate_type === 'scvcep') {
+                $expertPanelType = [5];
+            }
+
         }
 
         //map process wire fields
@@ -80,7 +90,7 @@ class PanelExporter
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,
             'type' => $panel->affiliate_type,
-            'expert_panel_type' => $panel->affiliate_type === 'gcep' ? [1] : [2] ,
+            'expert_panel_type' => $expertPanelType,
             'affiliate_status_gene' => $panel->getProcessWirePanelStatus(),
             'affiliate_status_variant' => $panel->getProcessWirePanelStatus(),
             'ep_status_inactive' => $panel->is_inactive ? 1 : 0,
@@ -125,10 +135,11 @@ class PanelExporter
     {
         $panel = $this->panel;
         $name = !empty($panel->title) ? $panel->title : $panel->name;
+        $type = $panel->affiliate_type === 'cdwg' ?  ' CDWG' : ' SC-CDWG';
 
         return [
-            'name' => $name . ' CDWG',
-            'title' => $name . ' CDWG',
+            'name' => $name . $type,
+            'title' => $name . $type,
             'title_short' => $panel->title_short,
             'title_abbreviated' => $panel->title_abbreviated,
             'summary' => $panel->description,

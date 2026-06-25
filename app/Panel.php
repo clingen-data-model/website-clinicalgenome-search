@@ -90,6 +90,7 @@ class Panel extends Model
     public const TYPE_GCEP = 1;
     public const TYPE_VCEP = 2;
     public const TYPE_WG = 3;
+    public const TYPE_SCVCEP = 5;
 
     /*
     * Type strings for display methods
@@ -100,6 +101,7 @@ class Panel extends Model
         1 => 'GCEP',
         2 => 'VCEP',
         3 => 'WG',
+        5 => 'SCVCEP'
     ];
 
     public const STATUS_INITIALIZED = 0;

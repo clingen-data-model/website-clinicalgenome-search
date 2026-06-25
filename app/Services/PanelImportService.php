@@ -70,8 +70,16 @@ class PanelImportService
             if ($type == 'gcep') {
                 $titleSuffix = ' Gene Curation Expert Panel';
                 $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $affiliateId;
-            } else if ($type == 'vcep') {
+            } if ($type == 'vcep') {
                 $titleSuffix = ' Variant Curation Expert Panel';
+                $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
+                $params = array(
+                   'matchMode' => 'exact',
+                   'expertpanel' =>  data_get($expertPanel, 'name')
+                );
+                $panel->url_erepo = $base_url . '?' . http_build_query($params);
+            } else if ($type == 'scvcep') {
+                $titleSuffix = ' Somatic Cancer (SC) Variant Curation Expert Panel';
                 $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
                 $params = array(
                    'matchMode' => 'exact',
@@ -175,7 +183,7 @@ class PanelImportService
     protected function createActivities(Panel $panel, $data)
     {
         if ($type = data_get($data, 'type')) {
-            if ($type == 'vcep') {
+            if ($type == 'vcep' || $type == 'scvcep') {
                 $this->createVCEPActivities($panel, $data);
             } else if ($type == 'gcep') {
                 $this->createGCEPActivities($panel, $data);

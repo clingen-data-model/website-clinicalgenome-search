@@ -356,10 +356,25 @@
 
     </script>
     <script src="/js/typeahead.js"></script>
+    @php
+        // Derive the active search tab from the current URL + request params, so the
+        // search bar reflects what was actually searched. (sessionStorage isn't shared
+        // across origins, so it can't be relied on when arriving from the main site.)
+        $searchTab = 'gene';
+        if (request()->is('kb/regions*')) {
+            $searchTab = request('type') === 'GRCh38' ? 'region-38' : 'region-37';
+        } elseif (request()->is('kb/conditions*')) {
+            $searchTab = 'condition';
+        } elseif (request()->is('kb/drugs*')) {
+            $searchTab = 'drug';
+        } elseif (request()->is('kb/genes*')) {
+            $searchTab = request('byName') == 1 ? 'gene-name' : 'gene';
+        }
+    @endphp
     <script>
         var tabRequests = {};
         $(document).ready( () => {
-            const savedTab = sessionStorage.getItem('activeTab') || 'gene';
+            const savedTab = @json($searchTab);
 
             tabRequests = @json($display_tabs ?? []);
                 if (savedTab === 'condition') {
