@@ -173,6 +173,7 @@ class ValidityController extends Controller
             $extrecord = null;
 
         $exp_count = null;
+        
         // do not count the reviews
         if ($extrecord && $extrecord->experimental_evidence) {
             $scorable = [];
@@ -419,9 +420,12 @@ class ValidityController extends Controller
         // the segregation statements are strangly formatted in that they are an array within an array and the scores are mixed
         $cls_count = 0;
         $clfs_count = 0;
+        $cls_pt_count = 0;
 
         if ($extrecord && !empty($extrecord->segregation)) {
             $exomeflag = false;
+            $cls_pt_count = $extrecord->segregation[0]->score;
+
             foreach ($extrecord->segregation[0]->evidence as $evidence) {
                 if (isset($evidence->meets_inclusion_criteria) && $evidence->meets_inclusion_criteria == true) {
                     if ($evidence->proband !== null && $evidence->proband->label !== null && ($evidence->estimated_lod_score !== null || $evidence->published_lod_score !== null)) {
@@ -438,8 +442,9 @@ class ValidityController extends Controller
         $cls_count = number_format($cls_count, 2);
         $clfs_count = number_format($clfs_count, 2);
 
-        $cls_pt_count = 0;
+        //$cls_pt_count = 0;
         $cls_sum = $cls_count + $clfs_count;
+        /*
         if ($cls_sum >= 2 && $cls_sum < 3)
             $cls_pt_count += ($exomeflag ? 1 : .5);
         else if ($cls_sum >= 3 && $cls_sum < 5)
@@ -448,6 +453,7 @@ class ValidityController extends Controller
             $cls_pt_count += ($exomeflag ? 3 : 1.5);
         $cls_sum = number_format($cls_sum, 2);
         $cls_pt_count = number_format($cls_pt_count, 2);
+        */
 
         // temporary way to allow a link to the corresponding GCI page.
         $gdm_uuid = $record->report_id;
@@ -485,7 +491,7 @@ class ValidityController extends Controller
         $slug = Slug::target($t)->first();
 
         // get history
-        $activities = Activity::sid($t)->published()->displayable()->orderBy('id','desc')->get();
+        $activities = Activity::aid($record->report_id)->published()->displayable()->orderBy('id','desc')->get();
 
         // dd($extrecord->genetic_evidence);
         return view(
