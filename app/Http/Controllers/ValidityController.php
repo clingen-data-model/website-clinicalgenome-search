@@ -491,7 +491,8 @@ class ValidityController extends Controller
         $slug = Slug::target($t)->first();
 
         // get history
-        $activities = Activity::aid($record->report_id)->published()->displayable()->orderBy('id','desc')->get();
+        $activities = Activity::sid($t)->published()->displayable()->orderBy('id','desc')->get();
+        //$activities = Activity::aid($record->report_id)->published()->displayable()->orderBy('id','desc')->get();
 
         // dd($extrecord->genetic_evidence);
         return view(
