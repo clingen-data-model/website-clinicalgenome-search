@@ -54,6 +54,7 @@ class PanelExporter
         $panel->load('activities');
 
         $type = $panel->affiliate_type;
+        $expertPanelType = [];
 
         if ($type == 'gcep') {
             $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affiliate_id;
@@ -70,7 +71,7 @@ class PanelExporter
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
 
-            $expertPanelType = [];
+
 
             if ($panel->affiliate_type === 'gcep') {
                 $expertPanelType = [1];
