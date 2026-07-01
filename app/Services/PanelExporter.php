@@ -70,6 +70,8 @@ class PanelExporter
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
 
+            $expertPanelType = [];
+
             if ($panel->affiliate_type === 'gcep') {
                 $expertPanelType = [1];
             } else if ($panel->affiliate_type === 'vcep') {
