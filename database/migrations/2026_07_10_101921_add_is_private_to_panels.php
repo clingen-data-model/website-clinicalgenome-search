@@ -15,6 +15,7 @@ class AddIsPrivateToPanels extends Migration
     {
         Schema::table('panels', function (Blueprint $table) {
             //
+            $table->boolean('is_private')->nullable()->default(false);
         });
     }
 

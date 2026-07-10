@@ -97,6 +97,10 @@ class PanelImportService
             $panel->group_clinvar_org_id = data_get($expertPanel, 'clinvar_org_id');
             $panel->gpm_id = $expertPanel['uuid'];
 
+            if (isset($expertPanel['visibility'])) {
+                $panel->is_private = !($expertPanel['visibility'] === 'public');;
+            }
+
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d');
                 $panel->is_inactive = true;
@@ -154,6 +158,10 @@ class PanelImportService
         $panel->icon_url = data_get($data, 'icon_url');
         $panel->caption = data_get($data, 'caption');
         $panel->description = data_get($data, 'description');
+
+        if (isset($data['visibility'])) {
+            $panel->is_private = !($data['visibility'] === 'public');;
+        }
 
         $panel->save();
 

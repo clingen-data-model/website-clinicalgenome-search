@@ -27,6 +27,10 @@ class PanelExporter
 
     public function pushToProcessWire()
     {
+        if ($this->panel->isPrivate()) {
+            return false;
+        }
+
         if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
             $data = $this->cdwgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
@@ -170,6 +174,7 @@ class PanelExporter
             'title' => $panel->title,
             'type' => 'wg',
             'title_short' => $panel->title_short,
+            'has_parent' => $panel->hasParent(),
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,
