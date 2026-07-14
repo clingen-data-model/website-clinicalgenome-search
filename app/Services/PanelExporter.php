@@ -177,6 +177,7 @@ class PanelExporter
             'title' => $panel->title,
             'type' => 'wg',
             'is_private' => $panel->isPrivate(),
+            'parent_id' => optional($panel->parent)->gpm_id,
             'title_short' => $panel->title_short,
             'has_parent' => $panel->hasParent(),
             'summary' => $panel->description,
