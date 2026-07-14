@@ -14,7 +14,8 @@ class PanelImportService
     $expertPanel = data_get($data, 'expert_panel');
 
     if ($expertPanel) {
-        if (!data_get($expertPanel, 'affiliation_id')) {
+        // affiliation_id lives on the group for some events, the expert_panel for others.
+        if (!data_get($data, 'affiliation_id') && !data_get($expertPanel, 'affiliation_id')) {
             return null;
         }
 
@@ -27,7 +28,9 @@ class PanelImportService
     if ($panel) {
         $this->assignMembers($panel, $members);
 
-        $parent = data_get($data, 'data.parent');
+        // $data is already the group object (checkpoint passes data.*, other events
+        // pass data.group.*), so the parent is at $data['parent'] — NOT 'data.parent'.
+        $parent = data_get($data, 'parent');
         if (!is_null($parent)) {
             $this->assignParent($panel, $parent);
         }
