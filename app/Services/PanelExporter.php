@@ -27,18 +27,27 @@ class PanelExporter
 
     public function pushToProcessWire()
     {
+        $data = $this->dataToSend();
         if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
-            $data = $this->cdwgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
         } else if ($this->panel->affiliate_type === 'wg') {
-            $data = $this->wgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
         } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep' || $this->panel->affiliate_type === 'scvcep') {
-            $data = $this->getProcessWireData();
             $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
             return $response->body();
+        }
+    }
+
+    public function dataToSend()
+    {
+        if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
+            return $this->cdwgData();
+        } else if ($this->panel->affiliate_type === 'wg') {
+            return $this->wgData();
+        } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep' || $this->panel->affiliate_type === 'scvcep') {
+            return $this->getProcessWireData();
         }
     }
 
