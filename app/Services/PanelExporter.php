@@ -27,10 +27,6 @@ class PanelExporter
 
     public function pushToProcessWire()
     {
-        if ($this->panel->isPrivate()) {
-            return false;
-        }
-
         if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
             $data = $this->cdwgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
@@ -74,8 +70,6 @@ class PanelExporter
             if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
             }
-
-
 
             if ($panel->affiliate_type === 'gcep') {
                 $expertPanelType = [1];
@@ -173,6 +167,7 @@ class PanelExporter
             'name' => $panel->title,
             'title' => $panel->title,
             'type' => 'wg',
+            'is_private' => $panel->isPrivate(),
             'title_short' => $panel->title_short,
             'has_parent' => $panel->hasParent(),
             'summary' => $panel->description,

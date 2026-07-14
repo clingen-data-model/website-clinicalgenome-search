@@ -57,7 +57,9 @@ class PanelImportService
     public function findOrCreatePanel($data)
     {
         $expertPanel = data_get($data, 'expert_panel');
-        if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
+        // affiliation_id lives on the group for some events and on the expert_panel
+        // for others, so check both before giving up.
+        if ($affiliateId = data_get($data, 'affiliation_id') ?? data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
                 'gpm_id' => $expertPanel['uuid'],
                 //'affiliate_id' => $expertPanel['affiliation_id']
@@ -88,6 +90,7 @@ class PanelImportService
                 $panel->url_erepo = $base_url . '?' . http_build_query($params);
             }
 
+            $panel->affiliate_id = $affiliateId;
             $panel->affiliate_type = $type;
             $panel->name = data_get($expertPanel, 'name');
             $panel->title_short = data_get($expertPanel, 'short_name') ?? ' ';

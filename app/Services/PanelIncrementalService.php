@@ -26,8 +26,10 @@ class PanelIncrementalService
         $schema    = data_get($data, 'schema_version');
         $eventType = data_get($data, 'event_type');
 
-        // Only handle schema 2.0.0
-        if ($schema !== '2.0.1') {
+        // Only handle the 2.0.x schema family (2.0.0, 2.0.1, 2.0.2, ...).
+        // Pinning to a single exact patch version silently drops events when
+        // the producer bumps the patch, so match on the major.minor prefix.
+        if (! is_string($schema) || strpos($schema, '2.0.') !== 0) {
             return null;
         }
 
@@ -41,7 +43,6 @@ class PanelIncrementalService
             || $eventType === 'vcep_final_approval'
             || $eventType === 'vcep_draft_specification_approval'
             || $eventType === 'scvcep_draft_specification_approval'
-            || $eventType === 'group_status_updated'
             || $eventType === 'scvcep_pilot_approval'
             || $eventType === 'scvcep_definition_approval'
             || $eventType === 'scvcep_final_approval'
@@ -143,7 +144,11 @@ class PanelIncrementalService
                 break;
 
             case 'member_role_removed':
-                $this->handleMemberRoleAdded($panel, $data);
+                // member.roles is the member's authoritative CURRENT role set
+                // (the removed role only appears in data.roles), so re-sync the
+                // pivot to member.roles. Routing to the add-handler here would
+                // re-add the removed role.
+                $this->handleMemberAddedOrRoleAssigned($panel, $data);
                 break;
 
             case 'member_permission_granted':
@@ -168,16 +173,19 @@ class PanelIncrementalService
      */
     protected function resolvePanelFromKafka(array $data)
     {
-        // Expert panel shape (gcep/vcep etc) under data.group.expert_panel or data.expert_panel
-        if ($expertPanel = data_get($data, 'data.group.expert_panel') ?: data_get($data, 'data.expert_panel')) {
+        // Group-level fields (affiliation_id, description, visibility, status) live on
+        // `data.group`; expert-panel-specific fields (name, short_name, type) live on
+        // `data.group.expert_panel`. Older top-level `data.expert_panel` shape is a fallback.
+        $group       = data_get($data, 'data.group');
+        $expertPanel = data_get($data, 'data.group.expert_panel') ?: data_get($data, 'data.expert_panel');
+
+        // Expert panel shape (gcep/vcep etc)
+        if ($expertPanel) {
+            // The panel is keyed on uuid; that alone resolves it. Do NOT require
+            // affiliation_id here — incremental events (e.g. group_description_updated)
+            // carry it on the group, and demanding it would drop those events.
             $gpmId = data_get($expertPanel, 'uuid');
             if (! $gpmId) {
-                return null;
-            }
-
-            $affiliateId = data_get($expertPanel, 'affiliation_id');
-
-            if (! $affiliateId) {
                 return null;
             }
 
@@ -185,29 +193,35 @@ class PanelIncrementalService
                 'gpm_id' => $gpmId,
             ]);
 
-            //if (! $panel->exists) {
-                $panel->affiliate_id    = data_get($expertPanel, 'affiliation_id');
-                $panel->affiliate_type  = data_get($expertPanel, 'type') ?? '';
-                $panel->name            = data_get($expertPanel, 'name') ?? '';
-                $panel->title_short     = data_get($expertPanel, 'short_name') ?? ' ';
-                $panel->title           = data_get($expertPanel, 'name') ?? '';
-                //$panel->summary         = data_get($expertPanel, 'scope_description') ?? '';
-
-            if ($description = data_get($data, 'description')) {
-                $panel->summary =         $description;
+            // Only overwrite when a value is present, so incremental events never
+            // clobber existing fields with nulls. affiliation_id is on the group.
+            if ($affiliateId = data_get($group, 'affiliation_id') ?? data_get($expertPanel, 'affiliation_id')) {
+                $panel->affiliate_id = $affiliateId;
             }
 
+            $panel->affiliate_type = data_get($expertPanel, 'type') ?? data_get($group, 'type') ?? $panel->affiliate_type ?? '';
+            $panel->name           = data_get($expertPanel, 'name') ?? data_get($group, 'name') ?? $panel->name;
+            $panel->title_short    = data_get($expertPanel, 'short_name') ?? $panel->title_short ?? ' ';
+            $panel->title          = data_get($expertPanel, 'name') ?? $panel->title;
+
+            if ($description = data_get($group, 'description') ?? data_get($data, 'description')) {
+                $panel->summary = $description;
+            }
+
+            if (! is_null($visibility = data_get($group, 'visibility'))) {
+                $panel->is_private = $visibility !== 'public';
+            }
 
                 if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                     $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
                     $panel->is_inactive   = true;
                 }
 
-                if ($iconUrl = data_get($expertPanel, 'icon_url')) {
+                if ($iconUrl = data_get($group, 'icon_url') ?? data_get($expertPanel, 'icon_url')) {
                     $panel->icon_url = $iconUrl;
                 }
 
-                if ($caption = data_get($expertPanel, 'caption')) {
+                if ($caption = data_get($group, 'caption') ?? data_get($expertPanel, 'caption')) {
                     $panel->caption = $caption;
                 }
 
