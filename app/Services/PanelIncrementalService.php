@@ -92,6 +92,10 @@ class PanelIncrementalService
                 $this->applyGroupNameUpdated($panel, $data);
                 break;
 
+            case 'group_visibility_updated':
+                $this->applyGroupVisibilityUpdated($panel, $data);
+                break;
+
             case 'parent_updated':
                 $this->handleParentUpdated($panel, $data);
                 break;
@@ -272,6 +276,16 @@ class PanelIncrementalService
                 $panel->wg_status      = data_get($group, 'status');
                 $panel->affiliate_type = data_get($group, 'type');
                 //$panel->coi_url        = data_get($group, 'coi');
+            }
+
+            // visibility is authoritative on every group-shaped event, so keep
+            // is_private in sync for existing panels too (the block above only
+            // runs for brand-new ones).
+            if (! is_null($visibility = data_get($group, 'visibility'))) {
+                $panel->is_private = $visibility !== 'public';
+            }
+
+            if (! $panel->exists || $panel->isDirty()) {
                 $panel->save();
             }
 
@@ -375,6 +389,23 @@ class PanelIncrementalService
             $panel->summary = $newDescription;
             $panel->save();
             //Do we want to update the activities?
+        }
+    }
+
+    /**
+     * Group visibility updated – a private group must not surface on the site.
+     * Downstream: is_private is exported to ProcessWire, which unpublishes/hides
+     * the page (and re-publishes it when the group goes public again).
+     */
+    protected function applyGroupVisibilityUpdated(Panel $panel, array $data): void
+    {
+        $newVisibility = data_get($data, 'data.new_visibility')
+            ?? data_get($data, 'data.group.visibility')
+            ?? data_get($data, 'data.visibility');
+
+        if ($newVisibility) {
+            $panel->is_private = $newVisibility !== 'public';
+            $panel->save();
         }
     }
 
