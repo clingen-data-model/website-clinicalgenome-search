@@ -164,7 +164,12 @@ class PanelImportService
         $panel->icon_url = data_get($data, 'icon_url');
         $panel->caption = data_get($data, 'caption');
         $panel->description = data_get($data, 'description');
-        $panel->affiliation_id = data_get($data, 'affiliation_id');
+
+        // GPM's affiliation_id maps to the panels.affiliate_id column. Only set it
+        // when present — some wg checkpoints omit it and must not wipe an existing value.
+        if ($affiliateId = data_get($data, 'affiliation_id')) {
+            $panel->affiliate_id = $affiliateId;
+        }
 
         if (isset($data['visibility'])) {
             $panel->is_private = !($data['visibility'] === 'public');;

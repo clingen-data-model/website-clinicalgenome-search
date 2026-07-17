@@ -278,6 +278,12 @@ class PanelIncrementalService
                 //$panel->coi_url        = data_get($group, 'coi');
             }
 
+            // GPM's affiliation_id maps to the panels.affiliate_id column. Only set
+            // when present so we never wipe an existing value.
+            if ($affiliateId = data_get($group, 'affiliation_id')) {
+                $panel->affiliate_id = $affiliateId;
+            }
+
             // visibility is authoritative on every group-shaped event, so keep
             // is_private in sync for existing panels too (the block above only
             // runs for brand-new ones).
