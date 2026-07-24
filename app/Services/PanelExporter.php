@@ -67,7 +67,14 @@ class PanelExporter
 
         if ($type == 'gcep') {
             $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affiliate_id;
+            $expertPanelType = [1];
         } else if ($type == 'vcep' || $type == 'scvcep') {
+            if ($type === 'vcep') {
+               $expertPanelType = [2];
+            } else if ($type === 'scvcep') {
+                $expertPanelType = [5];
+            }
+
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
             $type = $panel->affiliate_type === 'scvcep' ? ' SC-VCEP' : ' VCEP';
             $params = array(
@@ -78,14 +85,6 @@ class PanelExporter
 
             if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
-            }
-
-            if ($panel->affiliate_type === 'gcep') {
-                $expertPanelType = [1];
-            } else if ($panel->affiliate_type === 'vcep') {
-               $expertPanelType = [2];
-            } else if ($panel->affiliate_type === 'scvcep') {
-                $expertPanelType = [5];
             }
 
         }

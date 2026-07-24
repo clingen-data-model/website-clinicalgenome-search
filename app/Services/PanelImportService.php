@@ -159,7 +159,7 @@ class PanelImportService
         $panel->wg_status = $data['status'];
         $panel->name = $data['name'];
         $panel->title = $data['name'];
-        $panel->summary = $data['description'];
+        $panel->summary = $data['excerpt'];
         $panel->affiliate_type = $data['type'];
         $panel->icon_url = data_get($data, 'icon_url');
         $panel->caption = data_get($data, 'caption');
