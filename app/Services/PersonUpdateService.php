@@ -18,8 +18,10 @@ class PersonUpdateService
         $schema    = data_get($data, 'schema_version');
         $eventType = data_get($data, 'event_type');
 
-        // Only process schema 2.0.0
-        if ($schema !== '2.0.1') {
+        // Only process the 2.0.x schema family (2.0.0, 2.0.1, 2.0.2, ...).
+        // Pinning to a single exact patch version silently drops events when
+        // the producer bumps the patch, so match on the major.minor prefix.
+        if (! is_string($schema) || strpos($schema, '2.0.') !== 0) {
             return null;
         }
 

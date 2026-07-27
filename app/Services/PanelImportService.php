@@ -14,7 +14,8 @@ class PanelImportService
     $expertPanel = data_get($data, 'expert_panel');
 
     if ($expertPanel) {
-        if (!data_get($expertPanel, 'affiliation_id')) {
+        // affiliation_id lives on the group for some events, the expert_panel for others.
+        if (!data_get($data, 'affiliation_id') && !data_get($expertPanel, 'affiliation_id')) {
             return null;
         }
 
@@ -27,7 +28,9 @@ class PanelImportService
     if ($panel) {
         $this->assignMembers($panel, $members);
 
-        $parent = data_get($data, 'data.parent');
+        // $data is already the group object (checkpoint passes data.*, other events
+        // pass data.group.*), so the parent is at $data['parent'] — NOT 'data.parent'.
+        $parent = data_get($data, 'parent');
         if (!is_null($parent)) {
             $this->assignParent($panel, $parent);
         }
@@ -57,7 +60,9 @@ class PanelImportService
     public function findOrCreatePanel($data)
     {
         $expertPanel = data_get($data, 'expert_panel');
-        if ($affiliateId = data_get($expertPanel, 'affiliation_id')) {
+        // affiliation_id lives on the group for some events and on the expert_panel
+        // for others, so check both before giving up.
+        if ($affiliateId = data_get($data, 'affiliation_id') ?? data_get($expertPanel, 'affiliation_id')) {
             $panel = Panel::firstOrNew([
                 'gpm_id' => $expertPanel['uuid'],
                 //'affiliate_id' => $expertPanel['affiliation_id']
@@ -88,6 +93,7 @@ class PanelImportService
                 $panel->url_erepo = $base_url . '?' . http_build_query($params);
             }
 
+            $panel->affiliate_id = $affiliateId;
             $panel->affiliate_type = $type;
             $panel->name = data_get($expertPanel, 'name');
             $panel->title_short = data_get($expertPanel, 'short_name') ?? ' ';
@@ -96,6 +102,10 @@ class PanelImportService
             $panel->url_cspec = 'https://cspec.genome.network/cspec/ui/svi/affiliation/' . $affiliateId;
             $panel->group_clinvar_org_id = data_get($expertPanel, 'clinvar_org_id');
             $panel->gpm_id = $expertPanel['uuid'];
+
+            if (isset($expertPanel['visibility'])) {
+                $panel->is_private = !($expertPanel['visibility'] === 'public');;
+            }
 
             if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
                 $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d');
@@ -149,11 +159,21 @@ class PanelImportService
         $panel->wg_status = $data['status'];
         $panel->name = $data['name'];
         $panel->title = $data['name'];
-        $panel->summary = $data['description'];
+        $panel->summary = $data['excerpt'];
         $panel->affiliate_type = $data['type'];
         $panel->icon_url = data_get($data, 'icon_url');
         $panel->caption = data_get($data, 'caption');
         $panel->description = data_get($data, 'description');
+
+        // GPM's affiliation_id maps to the panels.affiliate_id column. Only set it
+        // when present — some wg checkpoints omit it and must not wipe an existing value.
+        if ($affiliateId = data_get($data, 'affiliation_id')) {
+            $panel->affiliate_id = $affiliateId;
+        }
+
+        if (isset($data['visibility'])) {
+            $panel->is_private = !($data['visibility'] === 'public');;
+        }
 
         $panel->save();
 

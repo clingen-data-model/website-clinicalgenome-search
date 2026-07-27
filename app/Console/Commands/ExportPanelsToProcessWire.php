@@ -58,7 +58,7 @@ class ExportPanelsToProcessWire extends Command
             $data = [];
 
             if ($debug) {
-                $data  = $exporter->getProcessWireData();
+                $data  = $exporter->dataToSend();
             }
             $result   = $exporter->pushToProcessWire();
 

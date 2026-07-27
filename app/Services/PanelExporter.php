@@ -27,18 +27,27 @@ class PanelExporter
 
     public function pushToProcessWire()
     {
+        $data = $this->dataToSend();
         if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
-            $data = $this->cdwgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
         } else if ($this->panel->affiliate_type === 'wg') {
-            $data = $this->wgData();
             $response = $this->HttpRequest()->post($this->processWireUrl() . '/', $data);
             return $response->body();
         } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep' || $this->panel->affiliate_type === 'scvcep') {
-            $data = $this->getProcessWireData();
             $response = $this->HttpRequest()->post($this->processWireUrl().'/', $data);
             return $response->body();
+        }
+    }
+
+    public function dataToSend()
+    {
+        if ($this->panel->affiliate_type === 'cdwg' || $this->panel->affiliate_type === 'sccdwg') {
+            return $this->cdwgData();
+        } else if ($this->panel->affiliate_type === 'wg') {
+            return $this->wgData();
+        } else if ($this->panel->affiliate_type === 'vcep' || $this->panel->affiliate_type === 'gcep' || $this->panel->affiliate_type === 'scvcep') {
+            return $this->getProcessWireData();
         }
     }
 
@@ -54,10 +63,18 @@ class PanelExporter
         $panel->load('activities');
 
         $type = $panel->affiliate_type;
+        $expertPanelType = [];
 
         if ($type == 'gcep') {
             $panel->url_curations = 'https://search.clinicalgenome.org/kb/affiliate/' . $panel->affiliate_id;
+            $expertPanelType = [1];
         } else if ($type == 'vcep' || $type == 'scvcep') {
+            if ($type === 'vcep') {
+               $expertPanelType = [2];
+            } else if ($type === 'scvcep') {
+                $expertPanelType = [5];
+            }
+
             $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
             $type = $panel->affiliate_type === 'scvcep' ? ' SC-VCEP' : ' VCEP';
             $params = array(
@@ -68,14 +85,6 @@ class PanelExporter
 
             if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
-            }
-
-            if ($panel->affiliate_type === 'gcep') {
-                $expertPanelType = [1];
-            } else if ($panel->affiliate_type === 'vcep') {
-               $expertPanelType = [2];
-            } else if ($panel->affiliate_type === 'scvcep') {
-                $expertPanelType = [5];
             }
 
         }
@@ -90,6 +99,8 @@ class PanelExporter
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,
             'type' => $panel->affiliate_type,
+            'is_private' => $panel->isPrivate(),
+            'affiliation_id' => $panel->affiliate_id,
             'expert_panel_type' => $expertPanelType,
             'affiliate_status_gene' => $panel->getProcessWirePanelStatus(),
             'affiliate_status_variant' => $panel->getProcessWirePanelStatus(),
@@ -146,6 +157,8 @@ class PanelExporter
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,
             'type' => $panel->affiliate_type,
+            'is_private' => $panel->isPrivate(),
+            'affiliation_id' => $panel->affiliate_id,
             'images_1' => [],
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
@@ -166,7 +179,11 @@ class PanelExporter
             'name' => $panel->title,
             'title' => $panel->title,
             'type' => 'wg',
+            'is_private' => $panel->isPrivate(),
+            'affiliation_id' => $panel->affiliate_id,
+            'parent_id' => optional($panel->parent)->gpm_id,
             'title_short' => $panel->title_short,
+            'has_parent' => $panel->hasParent(),
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
             'body_1' => $panel->summary,
