@@ -110,7 +110,7 @@ class UpdateCpic extends Command
 
         try {
                     
-            $results = file_get_contents("https://api.pharmgkb.org/v1/collaborator/clingen/pair");
+            $results = file_get_contents("https://api.clinpgx.org/v1/collaborator/clingen/pair");
 
         } catch (\Exception $e) {
         
