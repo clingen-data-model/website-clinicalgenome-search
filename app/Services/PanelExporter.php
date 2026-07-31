@@ -81,6 +81,7 @@ class PanelExporter
                 'matchMode' => 'exact',
                 'expertpanel' =>  $panel->name . $type
             );
+
             $panel->url_erepo = $base_url . '?' . http_build_query($params);
 
             if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
@@ -144,14 +145,22 @@ class PanelExporter
 
     private function cdwgData()
     {
+        $cdwgType = [];
         $panel = $this->panel;
         $name = !empty($panel->title) ? $panel->title : $panel->name;
-        $type = $panel->affiliate_type === 'cdwg' ?  ' CDWG' : ' SC-CDWG';
+        if ($panel->affiliate_type === 'cdwg') {
+            $type = ' CDWG';
+            $cdwgType = [7];
+        } else {
+            $type = ' SC CDWG';
+            $cdwgType = [6];
+        }
 
         return [
             'name' => $name . $type,
             'title' => $name . $type,
             'title_short' => $panel->title_short,
+            'cdwg_type' => $cdwgType,
             'title_abbreviated' => $panel->title_abbreviated,
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
