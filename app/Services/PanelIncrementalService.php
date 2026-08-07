@@ -407,7 +407,12 @@ class PanelIncrementalService
     protected function applyGroupDescriptionUpdated(Panel $panel, array $data): void
     {
         if ($newDescription = data_get($data, 'data.new_description')) {
-            $panel->summary = $newDescription;
+
+            if ($panel->affiliate_type === 'wg') {
+                $panel->description = $newDescription;
+            } else {
+                $panel->summary = $newDescription;
+            }
             $panel->save();
             //Do we want to update the activities?
         }
