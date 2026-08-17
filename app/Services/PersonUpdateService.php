@@ -90,6 +90,8 @@ class PersonUpdateService
             $institution = $person['institution'];
             // For casts, you can just assign the array/object directly
             $member->institution = $institution;
+        } else {
+            $member->institution = [];
         }
 
         // Credentials:
