@@ -46,6 +46,7 @@ class PanelIncrementalService
             || $eventType === 'scvcep_pilot_approval'
             || $eventType === 'scvcep_definition_approval'
             || $eventType === 'scvcep_final_approval'
+            || $eventType === 'group_created'
         ) {
             if ($eventType !== 'group_checkpoint_event') {
                 $groupData = data_get($data, 'data.group');
