@@ -87,7 +87,7 @@ class PersonUpdateService
         // Institution (Member::casts['institution' => 'array'])
         // person.institution can be null or an object/array
         if (array_key_exists('institution', $person)) {
-            $institution = $person['institution'];
+            $institution = $person['institution'] ?? [];
             // For casts, you can just assign the array/object directly
             $member->institution = $institution;
         } else {
