@@ -147,7 +147,7 @@ class PanelIncrementalService
                 $this->handleMemberRetired($panel, $data);
                 break;
 
-            case 'website_extracted_updated':
+            case 'website_excerpt_updated':
                 $this->applyWebsiteExtractedUpdated($panel, $data);
                 break;
 
