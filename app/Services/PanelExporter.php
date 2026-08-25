@@ -156,11 +156,19 @@ class PanelExporter
             $cdwgType = [6];
         }
 
+        // CDWGs/SC-CDWGs have no explicit parent_id in GPM: they all hang off the
+        // "Clinical Domain Working Group" WG. Resolve that WG's gpm_id here so
+        // ProcessWire can attach the page under the right parent by gpm_id
+        // rather than relying on a hardcoded page name.
+        $parentGpmId = $this->clinicalDomainParentGpmId();
+
         return [
             'name' => $name . $type,
             'title' => $name . $type,
             'title_short' => $panel->title_short,
             'cdwg_type' => $cdwgType,
+            'parent_id' => $parentGpmId,
+            'has_parent' => !empty($parentGpmId),
             'title_abbreviated' => $panel->title_abbreviated,
             'summary' => $panel->description,
             'markdown_summary' => $panel->summary,
@@ -179,6 +187,38 @@ class PanelExporter
             'metadata_search_terms' => $panel->metadata_search_terms,
             'gpm_id' => $panel->gpm_id
         ];
+    }
+
+    /**
+     * gpm_id of the "Clinical Domain Working Group" WG, which is the implicit
+     * parent of every CDWG / SC-CDWG.
+     *
+     * The relationship is not modelled in GPM (cdwg rows carry no parent_id),
+     * so it is resolved by matching a wg-type panel whose title/name contains
+     * "Clinical Domain Working".
+     *
+     * @return string|null
+     */
+    private function clinicalDomainParentGpmId()
+    {
+        static $gpmId = false; // false = not looked up yet, null = looked up, not found
+
+        if ($gpmId !== false) {
+            return $gpmId;
+        }
+
+        $parent = Panel::query()
+            ->where('affiliate_type', 'wg')
+            ->whereNotNull('gpm_id')
+            ->where(function ($query) {
+                $query->where('title', 'like', '%Clinical Domain Working%')
+                      ->orWhere('name', 'like', '%Clinical Domain Working%');
+            })
+            ->first();
+
+        $gpmId = optional($parent)->gpm_id;
+
+        return $gpmId;
     }
 
     private function wgData()
