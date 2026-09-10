@@ -163,7 +163,12 @@ class PanelExporter
         $parentGpmId = $this->clinicalDomainParentGpmId();
 
         return [
-            'name' => $name . $type,
+            // 'name' becomes the ProcessWire page slug. Expert panels have always
+            // used the affiliate id (giving /affiliation/50140/); WGs and CDWGs
+            // now do the same, so a group renamed in GPM keeps a stable URL.
+            // The human-readable value stays in 'title'.
+            // PagePathHistory (installed) records the old path and 301s it.
+            'name' => $panel->affiliate_id ? $panel->affiliate_id : ($name . $type),
             'title' => $name . $type,
             'title_short' => $panel->title_short,
             'cdwg_type' => $cdwgType,
@@ -225,7 +230,8 @@ class PanelExporter
     {
         $panel = $this->panel;
         return [
-            'name' => $panel->title,
+            // See cdwgData(): the slug is the affiliate id, the label is 'title'.
+            'name' => $panel->affiliate_id ? $panel->affiliate_id : $panel->title,
             'title' => $panel->title,
             'type' => 'wg',
             'is_private' => $panel->isPrivate(),

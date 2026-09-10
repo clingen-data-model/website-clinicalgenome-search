@@ -1080,18 +1080,46 @@ protected function getEffectiveBaseName(): string
 {
     $name = trim((string) $this->name);
 
+    // Order matters: LONGEST / most specific first. " Somatic Variant Curation
+    // Expert Panel" has to be tested before " Variant Curation Expert Panel",
+    // and " SC VCEP" before " VCEP", or the shorter suffix matches first and
+    // leaves an orphaned "Somatic" / "SC" on the end of the base name.
+    //
+    // The legacy SC spellings (SCVCEP, SC VCEP, SC-CDWG variants) are listed so
+    // that badly-named existing records get normalised: whatever spelling comes
+    // in is stripped, and the canonical suffix is re-appended by the accessors.
     $suffixes = [
+        ' Somatic Cancer (SC) Variant Curation Expert Panel',
+        ' Somatic Cancer Variant Curation Expert Panel',
+        ' Somatic Variant Curation Expert Panel',
         ' Variant Curation Expert Panel',
         ' Gene Curation Expert Panel',
+        ' SC-VCEP',
+        ' SC VCEP',
+        ' SCVCEP',
+        ' SC-CDWG',
+        ' SC CDWG',
+        ' SCCDWG',
         ' VCEP',
         ' GCEP',
+        ' CDWG',
     ];
 
-    foreach ($suffixes as $suffix) {
-        if ($this->endsWithIgnoreCase($name, $suffix)) {
-            $name = trim(substr($name, 0, -strlen($suffix)));
-            break;
+    // Loop rather than strip once: legacy records can carry BOTH an abbreviation
+    // and a long form (e.g. "NTRK Fusions SC-VCEP Somatic Variant Curation
+    // Expert Panel"). Bounded so a pathological name cannot spin.
+    for ($pass = 0; $pass < 5; $pass++) {
+        $stripped = false;
+
+        foreach ($suffixes as $suffix) {
+            if ($this->endsWithIgnoreCase($name, $suffix)) {
+                $name     = trim(substr($name, 0, -strlen($suffix)));
+                $stripped = true;
+                break;
+            }
         }
+
+        if (!$stripped) break;
     }
 
     return $name;
@@ -1110,6 +1138,15 @@ protected function getEffectiveTitleSuffix(): string
         return ' Gene Curation Expert Panel';
     }
 
+    // Canonical, confirmed 2026-09-10: "Somatic Cancer Variant Curation Expert
+    // Panel". Two other spellings were in circulation -- "Somatic Variant ..."
+    // and "Somatic Cancer (SC) Variant ..." (PanelImportService.php:87) -- both
+    // are stripped by getEffectiveBaseName() so old records normalise onto this.
+    // Single source of truth; change it here only.
+    if ($this->affiliate_type === 'scvcep') {
+        return ' Somatic Cancer Variant Curation Expert Panel';
+    }
+
     return '';
 }
 
@@ -1124,6 +1161,11 @@ protected function getEffectiveAbbreviatedTitleSuffix(): string
 
     if ($this->affiliate_type === 'gcep') {
         return ' GCEP';
+    }
+
+    // Canonical abbreviation is SC-VCEP -- never SCVCEP or "SC VCEP".
+    if ($this->affiliate_type === 'scvcep') {
+        return ' SC-VCEP';
     }
 
     return '';
