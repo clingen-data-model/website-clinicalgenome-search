@@ -123,6 +123,11 @@ class PanelExporter
             'url_curations' => $panel->url_curations,
             'url_erepo' => $panel->url_erepo,
             'url_clinvar' => $panel->url_clinvar,
+            // Parent is decided here, not guessed in ProcessWire. Expert panels
+            // hang off the static /affiliation/ container, which is not a GPM
+            // panel and so has no gpm_id -- hence parent_name rather than
+            // parent_id. See parentKeys() below.
+            'parent_name' => 'affiliation',
             'relate_cdwg' => optional($panel->parent)->gpm_id,
             'relate_user_leaderships' => $panel->getMembersByType(Member::LEADER),
             'relate_user_coordinators' => $panel->getMembersByType(Member::COORDINATOR),
@@ -185,6 +190,9 @@ class PanelExporter
             // PagePathHistory (installed) records the old path and 301s it.
             'name' => $panel->affiliate_id ? $panel->affiliate_id : ($name . $type),
             'title' => $name . $type,
+            // Falls back to the legacy container page only if the parent group
+            // could not be resolved at all.
+            'parent_name' => 'clinical-domain',
             'title_short' => $panel->title_short,
             'cdwg_type' => $cdwgType,
             'parent_id' => $parentGpmId,
@@ -227,13 +235,40 @@ class PanelExporter
             return $gpmId;
         }
 
+        // Optional override: an explicit affiliate id in config. Deterministic,
+        // and it survives the group being renamed. Unset by default, since the
+        // id is assigned by GPM and is not known ahead of time.
+        $configured = config('processwire.cdwg_parent_affiliate_id');
+
+        if (!empty($configured)) {
+            $parent = Panel::query()
+                ->where('affiliate_id', $configured)
+                ->whereNotNull('gpm_id')
+                ->first();
+
+            if ($parent) {
+                $gpmId = $parent->gpm_id;
+                return $gpmId;
+            }
+        }
+
+        // By convention the CDWG parent group always carries "Clinical Domain
+        // Working Group" in its name -- currently "Clinical Domain Working Group
+        // Oversight Committee". Matching the full phrase rather than a shorter
+        // prefix keeps it from catching unrelated groups.
+        //
+        // orderBy('id') so that if the convention is ever broken and two groups
+        // match, the choice is at least stable between runs rather than whatever
+        // MySQL returns first. Set cdwg_parent_affiliate_id to remove the guess
+        // entirely.
         $parent = Panel::query()
             ->where('affiliate_type', 'wg')
             ->whereNotNull('gpm_id')
             ->where(function ($query) {
-                $query->where('title', 'like', '%Clinical Domain Working%')
-                      ->orWhere('name', 'like', '%Clinical Domain Working%');
+                $query->where('title', 'like', '%Clinical Domain Working Group%')
+                      ->orWhere('name', 'like', '%Clinical Domain Working Group%');
             })
+            ->orderBy('id')
             ->first();
 
         $gpmId = optional($parent)->gpm_id;
@@ -252,6 +287,9 @@ class PanelExporter
             'is_private' => $panel->isPrivate(),
             'affiliation_id' => $panel->affiliate_id,
             'parent_id' => optional($panel->parent)->gpm_id,
+            // A top-level working group hangs off the static /working-groups/
+            // container; a subgroup is parented by parent_id above.
+            'parent_name' => $panel->hasParent() ? null : 'working-groups',
             'title_short' => $panel->title_short,
             'has_parent' => $panel->hasParent(),
             'summary' => $panel->summary,
