@@ -75,14 +75,25 @@ class PanelExporter
                 $expertPanelType = [5];
             }
 
-            $base_url = "https://erepo.genome.network/evrepo/ui/classifications";
-            $type = $panel->affiliate_type === 'scvcep' ? ' SC-VCEP' : ' VCEP';
-            $params = array(
-                'matchMode' => 'exact',
-                'expertpanel' =>  $panel->name . $type
-            );
-
-            $panel->url_erepo = $base_url . '?' . http_build_query($params);
+            // CGWM-443: ERepo is addressed by affiliation id, not by matching the
+            // panel's name. The old form built
+            //   /ui/classifications?matchMode=exact&expertpanel=<name> VCEP
+            // which broke whenever a panel was renamed, or whenever the VCEP /
+            // SC-VCEP suffix on our side drifted from ERepo's spelling.
+            //
+            //   https://erepo.genome.network/evrepo/ui/summary/affiliation/50091?pgSize=25&matchMode=and
+            if ($panel->affiliate_id) {
+                $panel->url_erepo = 'https://erepo.genome.network/evrepo/ui/summary/affiliation/'
+                    . rawurlencode($panel->affiliate_id)
+                    . '?' . http_build_query(array(
+                        'pgSize'    => 25,
+                        'matchMode' => 'and',
+                    ));
+            } else {
+                // No affiliate id means no addressable ERepo page; emit nothing
+                // rather than a URL that resolves to someone else's panel.
+                $panel->url_erepo = null;
+            }
 
             if ($panel->group_clinvar_org_id && ($panel->affiliate_type === 'vcep' || $panel->affiliate_type === 'scvcep')) {
                 $panel->url_clinvar = 'https://www.ncbi.nlm.nih.gov/clinvar/submitters/' . $panel->group_clinvar_org_id;
