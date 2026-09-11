@@ -159,11 +159,15 @@ class PanelExporter
         $cdwgType = [];
         $panel = $this->panel;
         $name = !empty($panel->title) ? $panel->title : $panel->name;
+        // Canonical abbreviations: "CDWG" and "SC-CDWG". Never SCCDWG or "SC CDWG".
+        // getEffectiveBaseName() strips every legacy spelling before this is
+        // appended, so re-syncing an existing "... SC CDWG" page corrects it in
+        // place and is idempotent.
         if ($panel->affiliate_type === 'cdwg') {
             $type = ' CDWG';
             $cdwgType = [7];
         } else {
-            $type = ' SC CDWG';
+            $type = ' SC-CDWG';
             $cdwgType = [6];
         }
 
