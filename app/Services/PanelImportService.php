@@ -34,6 +34,8 @@ class PanelImportService
         if (!is_null($parent)) {
             $this->assignParent($panel, $parent);
         }
+
+        $this->syncAlwaysFields($panel, $data);
     }
 
     return $panel;
@@ -178,6 +180,38 @@ class PanelImportService
         $panel->save();
 
         return $panel;
+    }
+
+    /**
+     * Fields that must be re-saved on EVERY gpm-general-event, because the
+     * payload always carries them and we do not want them to drift.
+     *
+     * Add to this list rather than scattering the assignments around.
+     */
+    protected function syncAlwaysFields(Panel $panel, $data)
+    {
+        // visibility is on the group, not on expert_panel
+        if (isset($data['visibility'])) {
+            $panel->is_private = !($data['visibility'] === 'public');
+        }
+
+        if ($status = data_get($data, 'status')) {
+            $panel->wg_status = $status;
+        }
+
+        // SC-VCEPs publish through CIViC rather than ClinVar; GPM sends that link
+        // as the group's website_url and it occupies the url_clinvar slot.
+        if (data_get($data, 'type') === 'scvcep') {
+            if ($websiteUrl = data_get($data, 'website_url')) {
+                $panel->url_clinvar = $websiteUrl;
+            }
+        }
+
+        if ($scope = data_get($data, 'expert_panel.scope_description')) {
+            $panel->description = $scope;
+        }
+
+        $panel->save();
     }
 
     public function createMeta($panel, $data)

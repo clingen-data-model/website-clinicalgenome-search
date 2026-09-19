@@ -1042,7 +1042,7 @@ class Panel extends Model
 
     public function getProcessWirePanelStatus()
 {
-    if (! in_array($this->affiliate_type, ['vcep', 'gcep'], true)) {
+    if (! in_array($this->affiliate_type, ['vcep', 'scvcep', 'gcep'], true)) {
         return null;
     }
 
@@ -1052,6 +1052,14 @@ class Panel extends Model
             2 => 'ep_final_approval',
         ],
         'vcep' => [
+            1 => 'ep_definition_approved',
+            2 => 'vcep_draft_specifications_approved',
+            3 => 'vcep_pilot_approved',
+            4 => 'ep_final_approval',
+        ],
+        // SC-VCEPs run the same four steps as VCEPs and GPM sends them on the
+        // same vcep_* keys, so the activities are already imported.
+        'scvcep' => [
             1 => 'ep_definition_approved',
             2 => 'vcep_draft_specifications_approved',
             3 => 'vcep_pilot_approved',
