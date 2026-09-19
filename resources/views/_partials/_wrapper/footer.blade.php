@@ -122,7 +122,7 @@
 
       <ul class='list-unstyled row'>
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/actionability/'><span class='d-inline-block text-truncate'>Actionability</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60001/'><span class='d-inline-block text-truncate'>Actionability</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
@@ -130,15 +130,15 @@
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/biocurators/'><span class='d-inline-block text-truncate'>Biocurator</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60023/'><span class='d-inline-block text-truncate'>Biocurator</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/cancer-variant-interpretation/'><span class='d-inline-block text-truncate'>Cancer Variant Interpretation</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60045/'><span class='d-inline-block text-truncate'>Cancer Variant Interpretation</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/clingen-community-curation-c3/'><span class='d-inline-block text-truncate'>ClinGen Community Curation (C3)</span></a>
+          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/60024/'><span class='d-inline-block text-truncate'>ClinGen Community Curation (C3)</span></a>
         </li>
 
         <!--<li class='col-md-6 text-truncate'>
@@ -146,11 +146,11 @@
         </li>-->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/clingen-curation-of-clinvar/'><span class='d-inline-block text-truncate'>ClinGen Curation of ClinVar</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60064/'><span class='d-inline-block text-truncate'>ClinGen Curation of ClinVar</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/clinical-domain/'><span class='d-inline-block text-truncate'>Clinical Domain Working Groups</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60025/'><span class='d-inline-block text-truncate'>Clinical Domain Working Groups</span></a>
         </li>
 
         <!-- <li class='col-md-6 text-truncate'>
@@ -158,31 +158,31 @@
         </li> -->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/copy-number-variant-interpretation-guidelines/'><span class='d-inline-block text-truncate'>Copy Number Variant Interpretation Guidelines</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60029/'><span class='d-inline-block text-truncate'>Copy Number Variant Interpretation Guidelines</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/curated-disease-entity/'><span class='d-inline-block text-truncate'>Curated Disease Entity</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60062/'><span class='d-inline-block text-truncate'>Curated Disease Entity</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/data-access-protection-and-confidentiality/'><span class='d-inline-block text-truncate'>Data Access, Protection, and Confidentiality</span></a>
+          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/60028/'><span class='d-inline-block text-truncate'>Data Access, Protection, and Confidentiality</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/data-platform/'><span class='d-inline-block text-truncate'>Data Platform</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60030/'><span class='d-inline-block text-truncate'>Data Platform</span></a>
         </li>
 
         <!--<li class='col-md-6 text-truncate '>
-            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/disease-naming-advisory-committee/'><span class=' d-inline-block text-truncate'> Disease Naming Advisory Committee</span></a>
+            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60020/'><span class=' d-inline-block text-truncate'> Disease Naming Advisory Committee</span></a>
           </li>-->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/dosage-sensitivity-curation/'><span class='d-inline-block text-truncate'>Dosage Sensitivity Curation</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60031/'><span class='d-inline-block text-truncate'>Dosage Sensitivity Curation</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/education-engagement-and-counseling/'><span class='d-inline-block text-truncate'>Education, Coordination and Training</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60032/'><span class='d-inline-block text-truncate'>Education, Coordination and Training</span></a>
         </li>
 
         <!--<li class='col-md-6 text-truncate'>
@@ -190,11 +190,11 @@
         </li>-->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/external-scientific-panel/'><span class='d-inline-block text-truncate'>External Scientific Panel</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60048/'><span class='d-inline-block text-truncate'>External Scientific Panel</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/gene-curation/'><span class='d-inline-block text-truncate'>Gene Curation</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60018/'><span class='d-inline-block text-truncate'>Gene Curation</span></a>
         </li>
 
         <!-- <li class='col-md-6 text-truncate'>
@@ -202,19 +202,19 @@
         </li>  -->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/low-penetrance-risk-allele-working-group/'><span class='d-inline-block text-truncate'>Low Penetrance/Risk Allele Working Group</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60033/'><span class='d-inline-block text-truncate'>Low Penetrance/Risk Allele Working Group</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/partnership/'><span class='d-inline-block text-truncate'>Partnership</span></a>
+          <a class='text-dark small' href='https://clinicalgenome.org/working-groups/60026/'><span class='d-inline-block text-truncate'>Partnership</span></a>
         </li>
 
         <!-- <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/lumping-and-splitting/'><span class='d-inline-block text-truncate'>Lumping and Splitting</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60019/'><span class='d-inline-block text-truncate'>Lumping and Splitting</span></a>
         </li> -->
 
         <li class='col-md-6 text-truncate '>
-            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/pharmacogenomics/'><span class=' d-inline-block text-truncate'> Pharmacogenomics Intrepretation Committee</span></a>
+            <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60036/'><span class=' d-inline-block text-truncate'> Pharmacogenomics Intrepretation Committee</span></a>
           </li>
 
           <li class='col-md-6 text-truncate '>
@@ -226,7 +226,7 @@
         </li> -->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/sequence-variant-interpretation/'><span class='d-inline-block text-truncate'>Sequence Variant Interpretation</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60034/'><span class='d-inline-block text-truncate'>Sequence Variant Interpretation</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
@@ -238,11 +238,11 @@
         </li> -->
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/steering-committee/'><span class='d-inline-block text-truncate'>Steering Committee</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60046/'><span class='d-inline-block text-truncate'>Steering Committee</span></a>
         </li>
 
         <li class='col-md-6 text-truncate'>
-          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/variant-curation-workgroup/'><span class='d-inline-block text-truncate'>Variant Curation</span></a>
+          <a class='text-dark small' href='https://www.clinicalgenome.org/working-groups/60022/'><span class='d-inline-block text-truncate'>Variant Curation</span></a>
         </li>
       </ul>
 
