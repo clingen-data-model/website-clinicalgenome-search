@@ -199,7 +199,7 @@ class PanelExporter
             'has_parent' => !empty($parentGpmId),
             'title_abbreviated' => $panel->title_abbreviated,
             'summary' => $panel->description,
-            'markdown_summary' => $panel->summary,
+            'markdown_summary' => $panel->description,
             'body_1' => $panel->summary,
             'type' => $panel->affiliate_type,
             'is_private' => $panel->isPrivate(),
