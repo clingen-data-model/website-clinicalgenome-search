@@ -308,10 +308,33 @@ class PanelImportService
         }
     }
 
+    /**
+     * GPM roles that must never appear in a panel's membership on the website.
+     * Compared case-insensitively after trimming.
+     */
+    protected $excludedGroupRoles = [
+        'NIH Extramural Rep',
+    ];
+
     public function assignMembers(Panel $panel, $members = null)
     {
         if (null !== $members && count($members)) {
             foreach ($members as $member) {
+
+                if ($this->hasExcludedRole($member)) {
+                    // Detach as well as skip: members ingested before this rule
+                    // existed are already attached, and syncWithoutDetaching()
+                    // below never removes anyone. Without this they would stay on
+                    // the page forever.
+                    $existing = Member::where('gpm_id', data_get($member, 'uuid'))->first();
+
+                    if ($existing) {
+                        $panel->members()->detach($existing->id);
+                    }
+
+                    continue;
+                }
+
                 $memberObj = Member::firstOrNew([
                     'gpm_id' => data_get($member, 'uuid')
                 ]);
@@ -359,5 +382,27 @@ class PanelImportService
                 //$member->
             }
         }
+    }
+
+    /**
+     * Does this GPM member carry a role we exclude from the website?
+     */
+    protected function hasExcludedRole($member)
+    {
+        $roles = data_get($member, 'roles');
+
+        if (!is_array($roles) || !count($roles)) {
+            return false;
+        }
+
+        foreach ($roles as $role) {
+            foreach ($this->excludedGroupRoles as $excluded) {
+                if (strcasecmp(trim((string) $role), $excluded) === 0) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
