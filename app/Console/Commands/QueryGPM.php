@@ -10,14 +10,24 @@ class QueryGPM extends Command
 {
     /**
      * Usage examples:
-     *  php artisan query:kafka gpm-general-events --assign
-     *  php artisan query:kafka gpm-general-events --assign --from-offset=100
-     *  php artisan query:kafka gpm-general-events --assign --partition=0
+     *  php artisan query:gpm gpm-general-events --assign
+     *  php artisan query:gpm gpm-general-events --assign --from-offset=100
+     *  php artisan query:gpm gpm-general-events --assign --partition=0
+     *
+     *  Replay a single offset, or a range (both inclusive):
+     *  php artisan query:gpm gpm-general-events --assign --range-offset=23026
+     *  php artisan query:gpm gpm-general-events --assign --range-offset=23026-23027
+     *  php artisan query:gpm gpm-general-events --assign --from-offset=23026 --to-offset=23027
+     *
+     *  A bounded run is a replay: it does NOT move streams.offset, so re-reading
+     *  old messages cannot rewind the live consumer position.
      */
     protected $signature = 'query:gpm
         {topic}
         {--assign : Use manual partition assignment (no consumer-group commits)}
         {--from-offset= : Absolute offset to start from (overrides DB offset)}
+        {--to-offset= : Last offset to process, inclusive. Makes this a replay: the stored offset is left alone}
+        {--range-offset= : Shorthand for --from-offset/--to-offset, as "A-B" or a single "A"}
         {--partition= : Partition to read in assign mode (defaults to 0)}';
 
     protected $description = 'Consume a Kafka topic and persist packets';
@@ -51,7 +61,33 @@ class QueryGPM extends Command
         $dbOffset = (int) ($stream->offset ?? 0);
 
         $fromOffsetOpt = $this->option('from-offset');
+        $toOffsetOpt   = $this->option('to-offset');
+
+        // --range-offset=A-B (or a single A) is shorthand for the two above.
+        $rangeOpt = $this->option('range-offset');
+        if ($rangeOpt !== null && trim($rangeOpt) !== '') {
+            if (!preg_match('/^\s*(\d+)\s*(?:[-:]\s*(\d+)\s*)?$/', $rangeOpt, $m)) {
+                $this->error("Invalid --range-offset='{$rangeOpt}'. Expected \"A\" or \"A-B\" (e.g. 23026 or 23026-23027).");
+                return 1;
+            }
+            $fromOffsetOpt = $m[1];
+            $toOffsetOpt   = (isset($m[2]) && $m[2] !== '') ? $m[2] : $m[1];
+        }
+
         $startOffset = ($fromOffsetOpt !== null) ? (int) $fromOffsetOpt : $dbOffset;
+
+        // A bounded run replays a known window. Persisting streams.offset here
+        // would rewind the live position to the end of the window, causing
+        // everything after it to be re-consumed on the next normal run.
+        $stopAtOffset = ($toOffsetOpt !== null && trim((string) $toOffsetOpt) !== '')
+            ? (int) $toOffsetOpt
+            : null;
+        $isReplay = ($stopAtOffset !== null);
+
+        if ($isReplay && $stopAtOffset < $startOffset) {
+            $this->error("--to-offset={$stopAtOffset} is before --from-offset={$startOffset}.");
+            return 1;
+        }
 
         // Default to partition 0 unless specified
         $partition = $this->option('partition');
@@ -121,9 +157,11 @@ class QueryGPM extends Command
         // If start offset is already beyond the end, nothing to do
         if ($startOffset >= $high) {
             $this->line("StartOffset={$startOffset} is >= high watermark={$high}. Nothing to read. Exiting.");
-            // Still set DB offset so next run doesn’t keep trying the same invalid value
-            $stream->offset = $high; // next offset boundary
-            $stream->save();
+            if (!$isReplay) {
+                // Still set DB offset so next run doesn’t keep trying the same invalid value
+                $stream->offset = $high; // next offset boundary
+                $stream->save();
+            }
             return 0;
         }
 
@@ -133,6 +171,9 @@ class QueryGPM extends Command
         $this->line("Partition: {$partition}");
         $this->line("Watermarks: low={$low}, high={$high} (last message offset at start={$lastOffsetAtStart})");
         $this->line("Starting from offset: {$startOffset}");
+        if ($isReplay) {
+            $this->line("Stopping after offset: {$stopAtOffset}  (REPLAY -- streams.offset will not be updated)");
+        }
 
         // -----------------------------
         // Assign partition + starting offset (absolute)
@@ -186,14 +227,21 @@ class QueryGPM extends Command
                         $a($payload);
                     }
 
-                    // ✅ Update DB offset so next run continues after this message
-                    // Store NEXT offset to resume cleanly.
-                    $stream->offset = (int) $message->offset + 1;
-                    $stream->save();
+                    // Update DB offset so next run continues after this message.
+                    // Skipped on a replay -- see $isReplay above.
+                    if (!$isReplay) {
+                        $stream->offset = (int) $message->offset + 1;
+                        $stream->save();
+                    }
 
-                    // ✅ Exit when we processed the last message that existed at the start of this run
-                    if ((int) $message->offset >= (int) $lastOffsetAtStart) {
-                        $this->line("Reached last offset at start ({$lastOffsetAtStart}). Exiting.");
+                    // Stop at the requested bound, or at the last message that
+                    // existed when this run started, whichever comes first.
+                    $stopHere = $isReplay
+                        ? min($stopAtOffset, (int) $lastOffsetAtStart)
+                        : (int) $lastOffsetAtStart;
+
+                    if ((int) $message->offset >= $stopHere) {
+                        $this->line("Reached offset {$stopHere}. Exiting.");
                         return 0;
                     }
 
