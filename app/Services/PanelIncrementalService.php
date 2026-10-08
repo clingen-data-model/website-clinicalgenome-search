@@ -48,6 +48,14 @@ class PanelIncrementalService
 //            || $eventType === 'scvcep_final_approval'
 //            || $eventType === 'group_created'
 //        ) {
+            // funding_* events (funding_source_created, funding_award_created, ...)
+            // are not about a group at all -- their data payload is a funding
+            // source, with no data.group. They used to fall through to
+            // findOrCreateWorkingGroup(null) and fatal on $data['uuid'].
+            if (strpos((string) $eventType, 'funding_') === 0) {
+                return null;
+            }
+
             if ($eventType !== 'group_checkpoint_event') {
                 $groupData = data_get($data, 'data.group');
                 $members = data_get($data, 'data.members');
@@ -55,6 +63,14 @@ class PanelIncrementalService
                 $groupData = data_get($data, 'data');
                 $members = data_get($data, 'data.members');
             }
+
+            // Backstop for any other event type that carries no group: both
+            // findOrCreatePanel() and findOrCreateWorkingGroup() index into
+            // uuid unconditionally, so without a group there is nothing to sync.
+            if (!is_array($groupData) || !data_get($groupData, 'uuid')) {
+                return null;
+            }
+
             return $this->panelImportService->create($groupData, $members);
         //}
 
