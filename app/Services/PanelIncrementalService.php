@@ -58,10 +58,22 @@ class PanelIncrementalService
 
             if ($eventType !== 'group_checkpoint_event') {
                 $groupData = data_get($data, 'data.group');
+
+                // Partial event: an absent members key carries no membership
+                // information, so null tells assignMembers() to leave the
+                // existing roster alone.
                 $members = data_get($data, 'data.members');
             } else {
                 $groupData = data_get($data, 'data');
                 $members = data_get($data, 'data.members');
+
+                // A checkpoint is a FULL SNAPSHOT of the group. No members key
+                // means the group has no members, not "no information" -- so
+                // coerce to an empty array, which assignMembers() treats as an
+                // authoritative empty roster and detaches everyone.
+                if (!is_array($members)) {
+                    $members = array();
+                }
             }
 
             // Backstop for any other event type that carries no group: both

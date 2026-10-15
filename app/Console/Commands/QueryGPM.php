@@ -198,17 +198,36 @@ class QueryGPM extends Command
             switch ($message->err) {
                 case RD_KAFKA_RESP_ERR_NO_ERROR:
                 case 0:
-                    // Persist packet
-                    $packet = new Packet([
-                        'topic'     => $stream->topic,
-                        'type'      => Packet::TYPE_KAFKA,
-                        'uuid'      => $message->key,
-                        'offset'    => $message->offset,
-                        'timestamp' => $message->timestamp,
-                        'payload'   => $message->payload,
-                        'status'    => Packet::STATUS_ACTIVE,
-                    ]);
-                    $packet->save();
+                    // Persist packet.
+                    //
+                    // On a replay the row already exists from the original run, so
+                    // reuse it instead of inserting a duplicate. It is reused
+                    // rather than skipped because some parsers are handed $packet
+                    // (see the dosage/actionability branch below) and would break
+                    // on a null.
+                    //
+                    // If a replayed offset has no row -- it was never consumed --
+                    // inserting is correct, since that is not a duplicate.
+                    $packet = null;
+
+                    if ($isReplay) {
+                        $packet = Packet::where('topic', $stream->topic)
+                            ->where('offset', (int) $message->offset)
+                            ->first();
+                    }
+
+                    if (!$packet) {
+                        $packet = new Packet([
+                            'topic'     => $stream->topic,
+                            'type'      => Packet::TYPE_KAFKA,
+                            'uuid'      => $message->key,
+                            'offset'    => $message->offset,
+                            'timestamp' => $message->timestamp,
+                            'payload'   => $message->payload,
+                            'status'    => Packet::STATUS_ACTIVE,
+                        ]);
+                        $packet->save();
+                    }
 
                     // Run parser (keeping your existing behavior)
                     if ($topicName === "dosage" || $topicName === "actionability" || $topicName === 'gene-validity' || $topicName === 'variant_interpretation') {

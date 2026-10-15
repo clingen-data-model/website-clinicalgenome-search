@@ -8,7 +8,7 @@ use Carbon\Carbon;
 class PanelImportService
 {
 
- public function create($data, $members = [])
+ public function create($data, $members = null)
 {
     $panel = null;
     $expertPanel = data_get($data, 'expert_panel');
@@ -318,70 +318,76 @@ class PanelImportService
 
     public function assignMembers(Panel $panel, $members = null)
     {
-        if (null !== $members && count($members)) {
-            foreach ($members as $member) {
-
-                if ($this->hasExcludedRole($member)) {
-                    // Detach as well as skip: members ingested before this rule
-                    // existed are already attached, and syncWithoutDetaching()
-                    // below never removes anyone. Without this they would stay on
-                    // the page forever.
-                    $existing = Member::where('gpm_id', data_get($member, 'uuid'))->first();
-
-                    if ($existing) {
-                        $panel->members()->detach($existing->id);
-                    }
-
-                    continue;
-                }
-
-                $memberObj = Member::firstOrNew([
-                    'gpm_id' => data_get($member, 'uuid')
-                ]);
-
-                if ($name = data_get($member, 'name')) {
-                    $names = explode(' ', $name, 2);
-                    $memberObj->first_name = $names[0];
-                    if (isset($names[1])) {
-                        $memberObj->last_name = $names[1];
-                    }
-                }
-
-                if ($firstName = data_get($member, 'first_name')) {
-                    $memberObj->first_name = $firstName;
-                }
-
-                 if ($email = data_get($member, 'email')) {
-                    $memberObj->email = $email;
-                }
-
-                if ($lastName = data_get($member, 'last_name')) {
-                    $memberObj->last_name = $lastName;
-                }
-
-                if ($credentials = data_get($member, 'credentials')) {
-                    $memberObj->credentials = is_array($credentials) ? implode(', ', $credentials) : $credentials;
-                }
-
-                if ($institution = data_get($member, 'institution')) {
-                    $memberObj->institution = is_array($credentials) ? json_encode($institution) : json_encode([$credentials]);
-                }
-
-                //$memberObj->email = $member['email'];
-
-                $memberObj->profile_photo = data_get($member, 'profile_photo');
-                $memberObj->save();
-
-                $role = [
-                    'role' => $memberObj->panelPosition($member['roles']),
-                    'group_roles' => json_encode($member['roles'])
-                ];
-
-                $panel->members()->syncWithoutDetaching([$memberObj->id => $role]);
-
-                //$member->
-            }
+        // A null members list means the event carried no membership at all, so
+        // the existing attachments are left alone. An ARRAY -- including an empty
+        // one -- is the authoritative roster for this group.
+        if (!is_array($members)) {
+            return;
         }
+
+        // Collected rather than attached one at a time, so the sync() at the end
+        // can DETACH anyone no longer on the roster. syncWithoutDetaching() only
+        // ever added, which is why members removed in GPM stayed on the website:
+        // they remained in the pivot, so getMembersByType() kept returning them
+        // and they were still sent to ProcessWire.
+        $roster = array();
+
+        foreach ($members as $member) {
+
+            // Excluded roles simply never enter the roster, so sync() removes
+            // them if they were attached by an earlier run.
+            if ($this->hasExcludedRole($member)) {
+                continue;
+            }
+
+            $memberObj = Member::firstOrNew([
+                'gpm_id' => data_get($member, 'uuid')
+            ]);
+
+            if ($name = data_get($member, 'name')) {
+                $names = explode(' ', $name, 2);
+                $memberObj->first_name = $names[0];
+                if (isset($names[1])) {
+                    $memberObj->last_name = $names[1];
+                }
+            }
+
+            if ($firstName = data_get($member, 'first_name')) {
+                $memberObj->first_name = $firstName;
+            }
+
+             if ($email = data_get($member, 'email')) {
+                $memberObj->email = $email;
+            }
+
+            if ($lastName = data_get($member, 'last_name')) {
+                $memberObj->last_name = $lastName;
+            }
+
+            if ($credentials = data_get($member, 'credentials')) {
+                $memberObj->credentials = is_array($credentials) ? implode(', ', $credentials) : $credentials;
+            }
+
+            if ($institution = data_get($member, 'institution')) {
+                $memberObj->institution = is_array($credentials) ? json_encode($institution) : json_encode([$credentials]);
+            }
+
+            //$memberObj->email = $member['email'];
+
+            $memberObj->profile_photo = data_get($member, 'profile_photo');
+            $memberObj->save();
+
+            $roles = data_get($member, 'roles', array());
+
+            $roster[$memberObj->id] = [
+                'role' => $memberObj->panelPosition($roles),
+                'group_roles' => json_encode($roles)
+            ];
+        }
+
+        // sync() attaches/updates everyone on the roster and detaches everyone
+        // else -- the removal half that was missing.
+        $panel->members()->sync($roster);
     }
 
     /**
