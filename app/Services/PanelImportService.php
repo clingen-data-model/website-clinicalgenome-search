@@ -161,11 +161,23 @@ class PanelImportService
         $panel->wg_status = $data['status'];
         $panel->name = $data['name'];
         $panel->title = $data['name'];
-        $panel->summary = data_get($data, 'excerpt');
         $panel->affiliate_type = $data['type'];
-        $panel->icon_url = data_get($data, 'icon_url');
-        $panel->caption = data_get($data, 'caption');
-        $panel->description = data_get($data, 'description');
+
+        // Only overwrite fields the payload actually carries. gpm-general-events
+        // send the group without icon_url/caption (those come from checkpoints),
+        // and data_get() would otherwise null them out on every event.
+        $optional = [
+            'excerpt' => 'summary',
+            'description' => 'description',
+            'icon_url' => 'icon_url',
+            'caption' => 'caption',
+        ];
+
+        foreach ($optional as $key => $column) {
+            if (array_key_exists($key, $data)) {
+                $panel->{$column} = $data[$key];
+            }
+        }
 
         // GPM's affiliation_id maps to the panels.affiliate_id column. Only set it
         // when present — some wg checkpoints omit it and must not wipe an existing value.
@@ -199,6 +211,21 @@ class PanelImportService
             $panel->wg_status = $status;
         }
 
+        // Inactive state follows the snapshot both ways, so a reactivated group
+        // is cleared rather than staying inactive forever. inactive_date only
+        // exists on expert panels; working groups go by status alone.
+        $expertPanel = data_get($data, 'expert_panel');
+        $hasInactiveDate = is_array($expertPanel) && array_key_exists('inactive_date', $expertPanel);
+
+        if ($hasInactiveDate) {
+            $inactiveDate = $expertPanel['inactive_date'];
+            $panel->inactive_date = $inactiveDate ? Carbon::parse($inactiveDate)->format('Y-m-d H:i:s') : null;
+        }
+
+        if ($status || $hasInactiveDate) {
+            $panel->is_inactive = static::isInactiveStatus($panel->wg_status) || !empty($panel->inactive_date);
+        }
+
         // SC-VCEPs publish through CIViC rather than ClinVar; GPM sends that link
         // as the group's website_url and it occupies the url_clinvar slot.
         if (data_get($data, 'type') === 'scvcep') {
@@ -212,6 +239,15 @@ class PanelImportService
         }
 
         $panel->save();
+    }
+
+    /**
+     * GPM group statuses that mean the group is no longer active.
+     * "applying" is NOT inactive -- the group is still in progress.
+     */
+    public static function isInactiveStatus($status)
+    {
+        return in_array(strtolower(trim((string) $status)), ['inactive', 'retired', 'removed'], true);
     }
 
     public function createMeta($panel, $data)
@@ -393,7 +429,7 @@ class PanelImportService
     /**
      * Does this GPM member carry a role we exclude from the website?
      */
-    protected function hasExcludedRole($member)
+    public function hasExcludedRole($member)
     {
         $roles = data_get($member, 'roles');
 

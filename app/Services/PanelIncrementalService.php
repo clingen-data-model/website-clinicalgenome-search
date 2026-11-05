@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Panel;
 use App\Member;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PanelIncrementalService
 {
@@ -19,12 +20,25 @@ class PanelIncrementalService
     }
 
     /**
-     * Handle a single Kafka event for panels.
+     * Handle a single gpm-general-events message.
+     *
+     * Every general event -- whatever its event_type -- carries the FULL group
+     * (data.group, with expert_panel and parent nested inside). So each event is
+     * processed in two passes:
+     *
+     *   1. Snapshot: refresh every panel field, approval activity and parent link
+     *      from data.group via PanelImportService::create(). Members are NOT
+     *      passed, so the roster is left alone -- only a checkpoint carries the
+     *      authoritative full roster.
+     *   2. Delta: apply the event-specific payload (new_status, members, ...) on
+     *      top. The snapshot can predate the change it announces (e.g. a
+     *      group_status_updated whose data.group.status is still the OLD status),
+     *      so the delta must run after, and win over, the snapshot.
      */
     public function syncFromKafka(array $data, ?string $timestamp = null): ?Panel
     {
         $schema = data_get($data, 'schema_version');
-        $eventType = data_get($data, 'event_type');
+        $eventType = (string) data_get($data, 'event_type');
 
         // Only handle the 2.0.x schema family (2.0.0, 2.0.1, 2.0.2, ...).
         // Pinning to a single exact patch version silently drops events when
@@ -33,79 +47,51 @@ class PanelIncrementalService
             return null;
         }
 
-        // Full snapshot import – delegate to original importer
-//        if ($eventType === 'group_checkpoint_event'
-//            || $eventType === 'vcep_definition_approval'
-//            || $eventType === 'ep_definition_approved'
-//            || $eventType === 'gcep_final_approval'
-//            || $eventType === 'step_date_approved_updated'
-//            || $eventType === 'vcep_pilot_approval'
-//            || $eventType === 'vcep_final_approval'
-//            || $eventType === 'vcep_draft_specification_approval'
-//            || $eventType === 'scvcep_draft_specification_approval'
-//            || $eventType === 'scvcep_pilot_approval'
-//            || $eventType === 'scvcep_definition_approval'
-//            || $eventType === 'scvcep_final_approval'
-//            || $eventType === 'group_created'
-//        ) {
-            // funding_* events (funding_source_created, funding_award_created, ...)
-            // are not about a group at all -- their data payload is a funding
-            // source, with no data.group. They used to fall through to
-            // findOrCreateWorkingGroup(null) and fatal on $data['uuid'].
-            if (strpos((string) $eventType, 'funding_') === 0) {
-                return null;
+        // funding_* events (funding_source_created, funding_award_created, ...)
+        // are not about a group at all -- their data payload is a funding source.
+        if (strpos($eventType, 'funding_') === 0) {
+            return null;
+        }
+
+        if ($eventType === 'group_checkpoint_event') {
+            $groupData = data_get($data, 'data');
+            $members = data_get($data, 'data.members');
+
+            // A checkpoint is a FULL SNAPSHOT of the group. No members key
+            // means the group has no members, not "no information" -- so
+            // coerce to an empty array, which assignMembers() treats as an
+            // authoritative empty roster and detaches everyone.
+            if (!is_array($members)) {
+                $members = array();
             }
 
-            if ($eventType !== 'group_checkpoint_event') {
-                $groupData = data_get($data, 'data.group');
-
-                // Partial event: an absent members key carries no membership
-                // information, so null tells assignMembers() to leave the
-                // existing roster alone.
-                $members = data_get($data, 'data.members');
-            } else {
-                $groupData = data_get($data, 'data');
-                $members = data_get($data, 'data.members');
-
-                // A checkpoint is a FULL SNAPSHOT of the group. No members key
-                // means the group has no members, not "no information" -- so
-                // coerce to an empty array, which assignMembers() treats as an
-                // authoritative empty roster and detaches everyone.
-                if (!is_array($members)) {
-                    $members = array();
-                }
-            }
-
-            // Backstop for any other event type that carries no group: both
-            // findOrCreatePanel() and findOrCreateWorkingGroup() index into
-            // uuid unconditionally, so without a group there is nothing to sync.
             if (!is_array($groupData) || !data_get($groupData, 'uuid')) {
                 return null;
             }
 
             return $this->panelImportService->create($groupData, $members);
-        //}
+        }
 
-        $panel = $this->resolvePanelFromKafka($data);
+        $groupData = data_get($data, 'data.group');
 
-        if (!$panel) {
-            // No panel => nothing to update incrementally
-
+        // Without a group there is nothing to sync.
+        if (!is_array($groupData) || !data_get($groupData, 'uuid')) {
             return null;
         }
 
-        switch ($eventType) {
-            // ---- meta / COI / status / descriptions / parent ----
-            case 'coi_completed':
-                $this->applyCoiCompleted($panel, $data);
-                break;
+        // Pass 1: full snapshot of every field. null members = leave the roster
+        // alone. (Passing data.members here used to sync() a member_added
+        // event's single member as the whole roster, detaching everyone else.)
+        $panel = $this->panelImportService->create($groupData, null);
 
+        if (!$panel || !$panel->exists) {
+            return null;
+        }
+
+        // Pass 2: event-specific delta.
+        switch ($eventType) {
             case 'group_status_updated':
                 $this->applyGroupStatusUpdated($panel, $data);
-                break;
-
-            case 'membership_description_updated':
-                $this->applyMembershipDescriptionUpdated($panel, $data);
                 break;
 
             case 'scope_description_updated':
@@ -124,6 +110,10 @@ class PanelIncrementalService
                 $this->applyGroupVisibilityUpdated($panel, $data);
                 break;
 
+            case 'website_excerpt_updated':
+                $this->applyWebsiteExtractedUpdated($panel, $data);
+                break;
+
             case 'parent_updated':
                 $this->handleParentUpdated($panel, $data);
                 break;
@@ -132,71 +122,57 @@ class PanelIncrementalService
                 $this->applyEpInfoUpdated($panel, $data);
                 break;
 
+            // Approval dates are also in the snapshot (expert_panel.*_approval);
+            // the event's own date is applied in case the snapshot lags.
             case 'vcep_definition_approval':
-                $this->recordActivity($panel, 'ep_definition_approved', data_get($data, 'date_approved'));
-                break;
-
-            case 'vcep_final_approval':
-            case 'gcep_final_approval':
-                $this->recordActivity($panel, 'ep_final_approval', data_get($data, 'date_approved'));
+            case 'scvcep_definition_approval':
+                $this->recordActivity($panel, 'ep_definition_approved', $this->eventDate($data));
                 break;
 
             case 'vcep_draft_specification_approval':
-                $this->recordActivity($panel, 'vcep_draft_specifications_approved', data_get($data, 'date'));
+            case 'scvcep_draft_specification_approval':
+                $this->recordActivity($panel, 'vcep_draft_specifications_approved', $this->eventDate($data));
                 break;
 
             case 'vcep_pilot_approval':
-                $this->recordActivity($panel, 'vcep_pilot_approved', data_get($data, 'date'));
+            case 'scvcep_pilot_approval':
+                $this->recordActivity($panel, 'vcep_pilot_approved', $this->eventDate($data));
+                break;
+
+            case 'vcep_final_approval':
+            case 'scvcep_final_approval':
+            case 'gcep_final_approval':
+                $this->recordActivity($panel, 'ep_final_approval', $this->eventDate($data));
                 break;
 
             case 'sustained_curation_review_completed':
-                $this->recordActivity($panel, 'sustained_curation_review_completed', data_get($data, 'date'));
+                $this->recordActivity($panel, 'sustained_curation_review_completed', $this->eventDate($data));
                 break;
 
-            case 'step_date_approved_updated':
-                $this->handleStepDateApprovedUpdated($panel, $data);
-                break;
-
-            // ---- membership / members ----
+            // ---- membership ----
+            // member.roles is the member's authoritative CURRENT role set on all
+            // of these (on member_role_removed the removed role only appears in
+            // data.roles), so each one re-syncs that member's pivot to it.
             case 'member_added':
             case 'member_unretired':
+            case 'member_role_assigned':
+            case 'member_role_removed':
                 $this->handleMemberAddedOrRoleAssigned($panel, $data);
-                break;
-
-            case 'member_role_assigned': // role added
-                $this->handleMemberRoleAdded($panel, $data);
                 break;
 
             case 'member_removed':
+            case 'member_retired':
                 $this->handleMemberRemoved($panel, $data);
                 break;
 
-            case 'member_retired':
-                $this->handleMemberRetired($panel, $data);
-                break;
-
-            case 'website_excerpt_updated':
-                $this->applyWebsiteExtractedUpdated($panel, $data);
-                break;
-
-            case 'member_role_removed':
-                // member.roles is the member's authoritative CURRENT role set
-                // (the removed role only appears in data.roles), so re-sync the
-                // pivot to member.roles. Routing to the add-handler here would
-                // re-add the removed role.
-                $this->handleMemberAddedOrRoleAssigned($panel, $data);
-                break;
-
             case 'member_permission_granted':
-                $this->handleMemberPermissionGranted($panel, $data);
-                break;
-
             case 'member_updated':
                 $this->handleMemberUpdated($panel, $data);
                 break;
 
             default:
-                // unhandled event, ignore
+                // Everything else (coi_completed, membership_description_updated,
+                // step_date_approved_updated, ...) is fully covered by the snapshot.
                 break;
         }
 
@@ -204,225 +180,62 @@ class PanelIncrementalService
     }
 
     /**
-     * Resolve the Panel for this event.
-     * uuid from Kafka always maps to Panel.gpm_id.
+     * Pull a scalar out of a GPM "new_*" value, which may be a plain string or
+     * an {id, name} object (e.g. new_status).
      */
-    protected function resolvePanelFromKafka(array $data)
+    protected function scalarValue($value, string $key = 'name')
     {
-        // Group-level fields (affiliation_id, description, visibility, status) live on
-        // `data.group`; expert-panel-specific fields (name, short_name, type) live on
-        // `data.group.expert_panel`. Older top-level `data.expert_panel` shape is a fallback.
-        $group = data_get($data, 'data.group');
-        $expertPanel = data_get($data, 'data.group.expert_panel') ?: data_get($data, 'data.expert_panel');
-
-        // Expert panel shape (gcep/vcep etc)
-        if ($expertPanel) {
-            // The panel is keyed on uuid; that alone resolves it. Do NOT require
-            // affiliation_id here — incremental events (e.g. group_description_updated)
-            // carry it on the group, and demanding it would drop those events.
-            $gpmId = data_get($expertPanel, 'uuid');
-            if (!$gpmId) {
-                return null;
-            }
-
-            $panel = Panel::firstOrNew([
-                'gpm_id' => $gpmId,
-            ]);
-
-            // Only overwrite when a value is present, so incremental events never
-            // clobber existing fields with nulls. affiliation_id is on the group.
-            if ($affiliateId = data_get($group, 'affiliation_id') ?? data_get($expertPanel, 'affiliation_id')) {
-                $panel->affiliate_id = $affiliateId;
-            }
-
-            $panel->affiliate_type = data_get($expertPanel, 'type') ?? data_get($group, 'type') ?? $panel->affiliate_type ?? '';
-            $panel->name = data_get($expertPanel, 'name') ?? data_get($group, 'name') ?? $panel->name;
-            $panel->title_short = data_get($expertPanel, 'short_name') ?? $panel->title_short ?? ' ';
-            $panel->title = data_get($expertPanel, 'name') ?? $panel->title;
-
-            if ($description = data_get($group, 'description') ?? data_get($data, 'description')) {
-                $panel->summary = $description;
-            }
-
-            if (!is_null($visibility = data_get($group, 'visibility'))) {
-                $panel->is_private = $visibility !== 'public';
-            }
-
-            if ($inactiveDate = data_get($expertPanel, 'inactive_date')) {
-                $panel->inactive_date = Carbon::parse($inactiveDate)->format('Y-m-d H:i:s');
-                $panel->is_inactive = true;
-            }
-
-            if ($iconUrl = data_get($group, 'icon_url') ?? data_get($expertPanel, 'icon_url')) {
-                $panel->icon_url = $iconUrl;
-            }
-
-            if ($caption = data_get($group, 'caption') ?? data_get($expertPanel, 'caption')) {
-                $panel->caption = $caption;
-            }
-
-            if ($clinvarId = data_get($expertPanel, 'clinvar_org_id')) {
-                $panel->group_clinvar_org_id = $clinvarId;
-            }
-
-            $panel->save();
-
-            if ($gcepDefineGroup = data_get($expertPanel, 'gcep_define_group')) {
-                $this->recordActivity($panel, 'ep_definition_approved', Carbon::parse($gcepDefineGroup)->format('Y-m-d H:i:s'));
-            }
-
-            if ($gcepApproval = data_get($expertPanel, 'gcep_approval')) {
-                $this->recordActivity($panel, 'ep_final_approval', Carbon::parse($gcepApproval)->format('Y-m-d H:i:s'));
-            }
-
-            if ($vcepDefineGroup = data_get($expertPanel, 'vcep_define_group')) {
-                $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepDefineGroup)->format('Y-m-d H:i:s'));
-            }
-
-            if ($vcepClassify = data_get($expertPanel, 'vcep_classification_rules')) {
-                $this->recordActivity($panel, 'vcep_draft_specifications_approved', Carbon::parse($vcepClassify)->format('Y-m-d H:i:s'));
-            }
-
-            //WE'LL UPDATE THE PARENT HERE AS WELL
-
-
-            return $panel;
+        if (is_array($value)) {
+            return data_get($value, $key);
         }
 
-        // Working group / generic group shape under data.group
-        if ($group = data_get($data, 'data.group')) {
-            $gpmId = data_get($group, 'uuid');
-            if (!$gpmId) {
-                return null;
-            }
-
-            $panel = Panel::firstOrNew([
-                'gpm_id' => $gpmId,
-            ]);
-
-            if (!$panel->exists) {
-                $panel->name = data_get($group, 'name');
-                $panel->title = data_get($group, 'name');
-                $panel->title_short = data_get($group, 'name') ?? ' ';
-                $panel->summary = data_get($group, 'description');
-                $panel->wg_status = data_get($group, 'status');
-                $panel->affiliate_type = data_get($group, 'type');
-                //$panel->coi_url        = data_get($group, 'coi');
-            }
-
-            // GPM's affiliation_id maps to the panels.affiliate_id column. Only set
-            // when present so we never wipe an existing value.
-            if ($affiliateId = data_get($group, 'affiliation_id')) {
-                $panel->affiliate_id = $affiliateId;
-            }
-
-            // visibility is authoritative on every group-shaped event, so keep
-            // is_private in sync for existing panels too (the block above only
-            // runs for brand-new ones).
-            if (!is_null($visibility = data_get($group, 'visibility'))) {
-                $panel->is_private = $visibility !== 'public';
-            }
-
-            if (!$panel->exists || $panel->isDirty()) {
-                $panel->save();
-            }
-
-            return $panel;
-        }
-
-        return null;
+        return $value;
     }
 
     /**
-     * COI completed event.
+     * The date an approval event refers to. GPM puts it in data.date_approved;
+     * fall back to the envelope date.
      */
-    protected function applyCoiCompleted(Panel $panel, array $data): void
+    protected function eventDate(array $data): ?string
     {
-        $coi = data_get($data, 'data.group.coi')
-            ?? data_get($data, 'data.expert_panel.coi')
-            ?? data_get($data, 'data.coi');
-
-        if ($coi) {
-            $panel->coi_url = $coi;
-        }
-
-        if ($date = data_get($data, 'date')) {
-            //$panel->coi_completed_at = $this->safeCarbon($date);
-        }
-
-        //$panel->save();
+        return data_get($data, 'data.date_approved')
+            ?? data_get($data, 'data.date')
+            ?? data_get($data, 'date');
     }
 
-
     /**
-     * Group status updated – keep wg_status and is_inactive in sync.
+     * Group status updated. data.new_status is {id, name}; the snapshot's
+     * group.status can still hold the OLD status, so this overrides it.
      */
     protected function applyGroupStatusUpdated(Panel $panel, array $data): void
     {
-        $newStatus = data_get($data, 'data.new_status')
-            ?? data_get($data, 'data.group.status');
+        $newStatus = $this->scalarValue(data_get($data, 'data.new_status'));
 
         if ($newStatus) {
             $panel->wg_status = $newStatus;
-            $panel->is_inactive = $newStatus !== 'active';
+            $panel->is_inactive = PanelImportService::isInactiveStatus($newStatus)
+                || !empty($panel->inactive_date);
+            $panel->save();
         }
-
-        $panel->save();
     }
 
     protected function applyWebsiteExtractedUpdated(Panel $panel, array $data): void
     {
-        $newExcerpt = data_get($data, 'data.new_excerpt')
-            ?? data_get($data, 'data.group.excerpt');
+        $newExcerpt = $this->scalarValue(data_get($data, 'data.new_excerpt'));
 
         if ($newExcerpt) {
             $panel->summary = $newExcerpt;
-        }
-
-        $panel->save();
-    }
-
-    /**
-     * Parent Updated – swtich the parentage of an expert panel
-     */
-    protected function applyParentUpdate(Panel $panel, array $data): void
-    {
-        $newParent = data_get($data, 'data.new_parent');
-
-        if ($newParent) {
-            $parent = Panel::where('gpm_id', $newParent['uuid'])->first();
-
-            if (null !== $parent) {
-                $panel->parent_id = $parent->id;
-                $panel->save();
-            }
-        }
-
-    }
-
-    /**
-     * Membership description updated.
-     */
-    protected function applyMembershipDescriptionUpdated(Panel $panel, array $data): void
-    {
-        $membershipDescription = data_get($data, 'data.membership_description')
-            ?? data_get($data, 'data.group.membership_description')
-            ?? data_get($data, 'data.expert_panel.membership_description');
-
-        if ($membershipDescription) {
-            $panel->membership_description = $membershipDescription;
             $panel->save();
         }
     }
 
     /**
-     * Scope description updated – typically maps to summary.
+     * Scope description updated.
      */
     protected function applyScopeDescriptionUpdated(Panel $panel, array $data): void
     {
-        $scope = data_get($data, 'data.scope_description')
-            ?? data_get($data, 'data.group.scope_description')
-            ?? data_get($data, 'data.expert_panel.scope_description');
+        $scope = $this->scalarValue(data_get($data, 'data.new_scope_description'))
+            ?? $this->scalarValue(data_get($data, 'data.scope_description'));
 
         if ($scope) {
             $panel->description = $scope;
@@ -431,19 +244,18 @@ class PanelIncrementalService
     }
 
     /**
-     * Group description updated (new_description field).
+     * Group description updated. Mirrors where the snapshot stores the group
+     * description: description for working groups, summary for expert panels.
      */
     protected function applyGroupDescriptionUpdated(Panel $panel, array $data): void
     {
-        if ($newDescription = data_get($data, 'data.new_description')) {
-
-            if ($panel->affiliate_type === 'wg') {
-                $panel->description = $newDescription;
-            } else {
+        if ($newDescription = $this->scalarValue(data_get($data, 'data.new_description'))) {
+            if (data_get($data, 'data.group.expert_panel')) {
                 $panel->summary = $newDescription;
+            } else {
+                $panel->description = $newDescription;
             }
             $panel->save();
-            //Do we want to update the activities?
         }
     }
 
@@ -454,9 +266,7 @@ class PanelIncrementalService
      */
     protected function applyGroupVisibilityUpdated(Panel $panel, array $data): void
     {
-        $newVisibility = data_get($data, 'data.new_visibility')
-            ?? data_get($data, 'data.group.visibility')
-            ?? data_get($data, 'data.visibility');
+        $newVisibility = $this->scalarValue(data_get($data, 'data.new_visibility'));
 
         if ($newVisibility) {
             $panel->is_private = $newVisibility !== 'public';
@@ -465,15 +275,14 @@ class PanelIncrementalService
     }
 
     /**
-     * Group name updated (new_description field).
+     * Group name updated.
      */
     protected function applyGroupNameUpdated(Panel $panel, array $data): void
     {
-        if ($newName = data_get($data, 'data.new_name')) {
+        if ($newName = $this->scalarValue(data_get($data, 'data.new_name'))) {
             $panel->name = $newName;
             $panel->title = $newName;
             $panel->save();
-            //Do we want to update the activities?
         }
     }
 
@@ -483,34 +292,20 @@ class PanelIncrementalService
     protected function applyEpInfoUpdated(Panel $panel, array $data): void
     {
         if ($shortName = data_get($data, 'data.expert_panel.short_name')) {
-            $panel->title_short = $shortName ?? ' ';
+            $panel->title_short = $shortName;
         }
 
         if ($longName = data_get($data, 'data.expert_panel.long_name')) {
             $panel->title = $longName;
         }
 
-        if ($cspecUrl = data_get($data, 'data.expert_panel.cspec_url')) {
-            $panel->url_cspec = $cspecUrl;
-        }
-
-//        if ($clinvarUrl = data_get($data, 'data.expert_panel.clinvar_url')) {
-//            $panel->url_clinvar = $clinvarUrl;
-//        }
-
         if ($clinvarId = data_get($data, 'data.expert_panel.clinvar_org_id')) {
             $panel->group_clinvar_org_id = $clinvarId;
         }
 
-        if ($scope = data_get($data, 'data.scope_description')) {
-            $panel->summary = $scope;
+        if ($panel->isDirty()) {
+            $panel->save();
         }
-
-        if ($status = data_get($data, 'data.group.status')) {
-            $panel->is_inactive = $status !== 'active';
-        }
-
-        $panel->save();
     }
 
     /**
@@ -520,28 +315,23 @@ class PanelIncrementalService
     {
         $parentData = data_get($data, 'data.new_parent');
 
-        if (!$parentData) {
+        if (!$parentData || !($gpmId = data_get($parentData, 'uuid'))) {
             return;
         }
 
-        if ($gpmId = data_get($parentData, 'uuid')) {
-            $parentPanel = Panel::firstOrNew([
-                'gpm_id' => $gpmId
-            ]);
+        $parentPanel = Panel::firstOrNew([
+            'gpm_id' => $gpmId
+        ]);
 
-            if ($parentPanel->exists) {
-                $panel->parent_id = $parentPanel->id;
-                $panel->save();
-            } else {
-                //create a new parent
-                $parentPanel->name = data_get($parentData, 'name', $parentPanel->name);
-                $parentPanel->affiliate_type = data_get($parentData, 'type', $parentPanel->affiliate_type);
-                $parentPanel->wg_status = data_get($parentData, 'status', $parentPanel->wg_status);
-                $parentPanel->save();
-                $panel->parent_id = $parentPanel->id;
-                $panel->save();
-            }
+        if (!$parentPanel->exists) {
+            $parentPanel->name = data_get($parentData, 'name');
+            $parentPanel->affiliate_type = data_get($parentData, 'type');
+            $parentPanel->wg_status = data_get($parentData, 'status');
+            $parentPanel->save();
         }
+
+        $panel->parent_id = $parentPanel->id;
+        $panel->save();
     }
 
     /**
@@ -561,121 +351,70 @@ class PanelIncrementalService
     }
 
     /**
-     * step_date_approved_updated – treat as step-specific activity.
-     */
-    protected function handleStepDateApprovedUpdated(Panel $panel, array $data): void
-    {
-        $stepName = data_get($data, 'data.step') ?? 'step_date_approved_updated';
-        $date = data_get($data, 'data.date') ?? data_get($data, 'date');
-
-        $activityKey = 'step_' . $stepName . '_approved';
-
-        $this->recordActivity($panel, $activityKey, $date);
-    }
-
-    /**
-     * Member added / unretired – create membership from roles.
+     * Member added / unretired / role assigned / role removed – set the
+     * member's pivot to their current role set (member.roles).
      */
     protected function handleMemberAddedOrRoleAssigned(Panel $panel, array $data): void
     {
         $members = data_get($data, 'data.members', []);
 
+        if (!is_array($members)) {
+            return;
+        }
+
         foreach ($members as $member) {
+            // Members holding an excluded role (e.g. NIH Extramural Rep) never
+            // appear on the website: don't create/update a Member record for
+            // them, just detach in case an earlier event attached them.
+            if ($this->panelImportService->hasExcludedRole($member)) {
+                if ($gpmId = data_get($member, 'uuid')) {
+                    $existing = Member::where('gpm_id', $gpmId)->first();
+                    if ($existing) {
+                        $panel->members()->detach($existing->id);
+                    }
+                }
+                continue;
+            }
+
             $memberObj = $this->validateMemberFromKafka($member);
 
             if (!$memberObj) {
                 continue;
             }
 
+            // member.roles is the member's FULL current role set in this group.
+            // Any role not in it -- whatever was stored before -- must go, so
+            // the existing pivot row(s) are dropped and one fresh row written
+            // with exactly these roles. Detaching first (rather than
+            // syncWithoutDetaching) also collapses legacy duplicate rows:
+            // member_panel has no unique (panel_id, member_id) index and older
+            // code attach()ed per role.
             $roles = data_get($member, 'roles', []);
-            // roles is guaranteed an array in schema 2.0.0
+            if (!is_array($roles)) {
+                $roles = [];
+            }
+            $roles = array_values(array_unique($roles));
 
-            $panel->members()->syncWithoutDetaching([
-                $memberObj->id => [
+            DB::transaction(function () use ($panel, $memberObj, $roles) {
+                $panel->members()->detach($memberObj->id);
+                $panel->members()->attach($memberObj->id, [
                     'role' => $memberObj->panelPosition($roles),
                     'group_roles' => json_encode($roles),
-                ],
-            ]);
+                ]);
+            });
         }
     }
 
     /**
-     * Member role added / assigned – merge new roles into pivot.
-     * Reverse of handleMemberRoleRemoved.
-     */
-    protected function handleMemberRoleAdded(Panel $panel, array $data): void
-    {
-        $members = data_get($data, 'data.members', []);
-        $globalRoles = data_get($data, 'data.roles'); // optional top-level roles
-
-        foreach ($members as $member) {
-            $memberObj = $this->validateMemberFromKafka($member);
-
-            if (!$memberObj) {
-                continue;
-            }
-
-            // Existing membership (if any)
-            $existing = $panel->members()->find($memberObj->id);
-
-            $currentRoles = [];
-            if ($existing) {
-                $currentRoles = json_decode($existing->pivot->group_roles ?? '[]', true);
-                if (!is_array($currentRoles)) {
-                    $currentRoles = [];
-                }
-            }
-
-            // Roles to add – prefer member.roles, fallback to global data.roles
-            $rolesToAdd = data_get($member, 'roles');
-            if (!is_array($rolesToAdd)) {
-                $rolesToAdd = [$rolesToAdd];
-            }
-
-            $updatedRoles = array_values(array_unique(array_merge($currentRoles, $rolesToAdd)));
-
-            if (empty($updatedRoles)) {
-                continue;
-            }
-
-            if ($existing) {
-                // Update pivot
-                $panel->members()->updateExistingPivot($memberObj->id, [
-                    'role' => $memberObj->panelPosition($rolesToAdd),
-                    'group_roles' => json_encode($rolesToAdd),
-                ]);
-            } else {
-                // Attach new
-                $panel->members()->attach($memberObj->id, [
-                    'role' => $memberObj->panelPosition($rolesToAdd),
-                    'group_roles' => json_encode($rolesToAdd),
-                ]);
-            }
-        }
-    }
-
-    /**
-     * Member removed – detach entirely.
+     * Member removed / retired – detach entirely.
      */
     protected function handleMemberRemoved(Panel $panel, array $data): void
     {
         $members = data_get($data, 'data.members', []);
 
-        foreach ($members as $member) {
-            $memberObj = $this->validateMemberFromKafka($member);
-
-            if ($memberObj) {
-                $panel->members()->detach($memberObj->id);
-            }
+        if (!is_array($members)) {
+            return;
         }
-    }
-
-    /**
-     * Member retired – detach entirely.
-     */
-    protected function handleMemberRetired(Panel $panel, array $data): void
-    {
-        $members = data_get($data, 'data.members', []);
 
         foreach ($members as $member) {
             $memberObj = $this->validateMemberFromKafka($member);
@@ -687,86 +426,15 @@ class PanelIncrementalService
     }
 
     /**
-     * Member role removed – subtract roles from pivot, detach if none left.
-     */
-    protected function handleMemberRoleRemoved(Panel $panel, array $data): void
-    {
-        $members = data_get($data, 'data.members', []);
-        $globalRoles = data_get($data, 'data.role'); // optional
-
-        foreach ($members as $member) {
-            $memberObj = $this->validateMemberFromKafka($member);
-
-            if (!$memberObj) {
-                continue;
-            }
-
-            $existing = $panel->members()->find($memberObj->id);
-
-            if (!$existing) {
-                continue;
-            }
-
-            $roles = data_get($member, 'roles');
-
-            $currentRoles = json_decode($existing->pivot->group_roles ?? '[]', true);
-            if (!is_array($currentRoles)) {
-                $currentRoles = [];
-            }
-
-            // Roles to remove – prefer member.roles, fallback to global data.roles
-            //$rolesToRemove = data_get($member, 'roles', $globalRoles ?? []);
-            $rolesToRemove = $globalRoles ?? [];
-            if (!is_array($rolesToRemove)) {
-                $rolesToRemove = [$rolesToRemove];
-            }
-
-            // Normalize roles for case-insensitive comparison
-            $normalizedCurrent = array_map('strtolower', $currentRoles);
-            $normalizedRemove = array_map('strtolower', $rolesToRemove);
-
-            // Build updated roles while preserving original casing
-            $updatedRoles = [];
-            foreach ($currentRoles as $index => $role) {
-                if (!in_array(strtolower($role), $normalizedRemove, true)) {
-                    $updatedRoles[] = $role;
-                }
-            }
-
-            if (empty($updatedRoles)) {
-                // No roles left => detach membership
-                $panel->members()->detach($memberObj->id);
-                continue;
-            }
-
-            $panel->members()->syncWithoutDetaching([
-                $memberObj->id => [
-                    'role' => $memberObj->panelPosition($roles),
-                    'group_roles' => json_encode($roles),
-                ],
-            ]);
-        }
-    }
-
-    /**
-     * Member permission granted – ensure members exist.
-     * (Extend later if you add permissions storage.)
-     */
-    protected function handleMemberPermissionGranted(Panel $panel, array $data): void
-    {
-        $members = data_get($data, 'data.members', []);
-
-        foreach ($members as $member) {
-            $this->validateMemberFromKafka($member);
-        }
-    }
-
-    /**
-     * Member updated – refresh basic profile fields.
+     * Member updated / permission granted – refresh basic profile fields.
      */
     protected function handleMemberUpdated(Panel $panel, array $data): void
     {
         $members = data_get($data, 'data.members', []);
+
+        if (!is_array($members)) {
+            return;
+        }
 
         foreach ($members as $member) {
             $this->validateMemberFromKafka($member);
