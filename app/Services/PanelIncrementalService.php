@@ -150,9 +150,14 @@ class PanelIncrementalService
                 break;
 
             // ---- membership ----
-            // member.roles is the member's authoritative CURRENT role set on all
-            // of these (on member_role_removed the removed role only appears in
-            // data.roles), so each one re-syncs that member's pivot to it.
+            // data.members on a general event is ONLY the member(s) the event is
+            // about -- never the full roster. So every handler below acts on the
+            // listed members alone and must never sync()/detach anyone not in
+            // the list. (Only group_checkpoint_event carries the full roster.)
+            //
+            // For each listed member, member.roles is that member's full CURRENT
+            // role set (on member_role_removed the removed role only appears in
+            // data.roles), so their pivot is replaced with exactly those roles.
             case 'member_added':
             case 'member_unretired':
             case 'member_role_assigned':
