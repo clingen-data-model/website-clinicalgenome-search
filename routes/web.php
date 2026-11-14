@@ -58,6 +58,12 @@ Route::post('/members/sync', 'MembersController@sync')->name('members.sync');
 Route::get('/panels', 'PanelsController@index')->name('panels.index');
 Route::post('/panels/sync-gpm', 'PanelsController@syncGpm')->name('panels.syncGpm');
 
+// Rebuild a group from its latest GPM checkpoint + general events since.
+// Must stay above /panels/{panel} so "rebuild" isn't taken as a panel id.
+Route::get('/panels/rebuild', 'GpmRebuildController@index')->name('gpm-rebuild.index');
+Route::post('/panels/{panel}/rebuild/preview', 'GpmRebuildController@preview')->name('gpm-rebuild.preview');
+Route::post('/panels/{panel}/rebuild', 'GpmRebuildController@rebuild')->name('gpm-rebuild.rebuild');
+
 Route::get('/panels/{panel}', 'PanelsController@show')->name('panels.show');
 Route::post('/panels/{affiliate_id}/sync', 'PanelsController@sync')->name('panels.sync');
 
