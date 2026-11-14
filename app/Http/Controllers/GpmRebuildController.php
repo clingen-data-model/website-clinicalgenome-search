@@ -7,21 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 /**
- * Simple page: list every panel / working group / CDWG and rebuild one from its
- * latest GPM checkpoint plus the general events since (gpm:rebuild-panel).
+ * Preview / Rebuild buttons on /panels: rebuild one group from its latest GPM
+ * checkpoint plus the general events since (gpm:rebuild-panel).
  */
 class GpmRebuildController extends Controller
 {
-    public function index()
-    {
-        $panels = Panel::withCount('members')
-            ->orderBy('affiliate_type')
-            ->orderBy('name')
-            ->get();
-
-        return view('panels.rebuild', compact('panels'));
-    }
-
     /**
      * Dry run: show the checkpoint and the events that would be replayed.
      */
@@ -38,7 +28,7 @@ class GpmRebuildController extends Controller
     protected function run(Panel $panel, bool $dryRun)
     {
         if (empty($panel->gpm_id)) {
-            return redirect()->route('gpm-rebuild.index')
+            return redirect()->route('panels.index')
                 ->with('rebuild_error', "{$panel->name} has no GPM uuid, so it cannot be rebuilt.");
         }
 
@@ -59,7 +49,7 @@ class GpmRebuildController extends Controller
             $output = get_class($e) . ': ' . $e->getMessage();
         }
 
-        return redirect()->route('gpm-rebuild.index')->with('rebuild_result', [
+        return redirect()->route('panels.index')->with('rebuild_result', [
             'panel_id' => $panel->id,
             'name'     => $panel->name,
             'dry_run'  => $dryRun,
