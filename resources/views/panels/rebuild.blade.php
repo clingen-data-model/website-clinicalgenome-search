@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="col-12">
     <h1>Rebuild Panels from GPM</h1>
     <p class="text-muted">
         Applies the group's latest GPM checkpoint, then replays every general event since that checkpoint,
@@ -31,6 +31,8 @@
         </div>
     @endif
 
+    <p><strong>{{ $panels->count() }}</strong> panels and groups found in the panels table.</p>
+
     <div class="form-inline" style="margin-bottom:15px;">
         <input type="text" id="rebuild-filter" class="form-control" placeholder="Filter by name, affiliate ID or type" style="width:350px;">
     </div>
@@ -48,7 +50,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach ($panels as $panel)
+        @forelse ($panels as $panel)
             <tr>
                 <td><a href="{{ route('panels.show', $panel->id) }}">{{ $panel->name }}</a></td>
                 <td>{{ strtoupper($panel->affiliate_type) }}</td>
@@ -73,7 +75,11 @@
                     @endif
                 </td>
             </tr>
-        @endforeach
+        @empty
+            <tr>
+                <td colspan="7" class="text-center text-muted">No panels or groups found.</td>
+            </tr>
+        @endforelse
         </tbody>
     </table>
 </div>
