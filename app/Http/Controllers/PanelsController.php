@@ -11,7 +11,7 @@ class PanelsController extends Controller
     //
     public function index()
     {
-	    $panels = Panel::get();
+	    $panels = Panel::withCount('members')->get();
         return view('panels', compact('panels'));
     }
 

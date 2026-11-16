@@ -15,9 +15,9 @@
     </div>
 
     <p class="text-muted">
-        <strong>Rebuild</strong> applies the group's latest GPM checkpoint, replays every general event since that
-        checkpoint, then pushes the result to ProcessWire. <strong>Preview</strong> shows what would be applied without
-        changing anything.
+        <strong>Rebuild</strong> re-reads <code>gpm-general-events</code> from Kafka starting at the offset you enter,
+        and processes only that panel's / group's messages &mdash; every other group is ignored, and the live consumer
+        position is not moved. <strong>Preview</strong> lists the matching messages without applying anything.
     </p>
 
     @if (session('status'))
@@ -33,7 +33,7 @@
     @if ($result = session('rebuild_result'))
         <div class="alert {{ $result['ok'] ? ($result['dry_run'] ? 'alert-info' : 'alert-success') : 'alert-danger' }}">
             <strong>
-                {{ $result['dry_run'] ? 'Preview' : 'Rebuild' }} of {{ $result['name'] }}:
+                {{ $result['dry_run'] ? 'Preview' : 'Rebuild' }} of {{ $result['name'] }} from offset {{ $result['from_offset'] }}:
                 {{ $result['ok'] ? ($result['dry_run'] ? 'nothing was changed' : 'done') : 'failed' }}
             </strong>
             <pre style="margin-top:10px; max-height:400px; overflow:auto; white-space:pre;">{{ $result['output'] }}</pre>
@@ -42,6 +42,7 @@
                 <form action="{{ route('gpm-rebuild.rebuild', $result['panel_id']) }}" method="POST"
                       onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').innerText = 'Rebuilding...';">
                     @csrf
+                    <input type="hidden" name="from_offset" value="{{ $result['from_offset'] }}">
                     <button type="submit" class="btn btn-sm btn-danger">Rebuild {{ $result['name'] }} now</button>
                 </form>
             @endif
@@ -61,8 +62,9 @@
             <th>Type</th>
             <th>Affiliate ID</th>
             <th>Status</th>
+            <th>Members</th>
             <th>Last updated</th>
-            <th style="width:230px;">Actions</th>
+            <th style="width:330px;">Rebuild from offset</th>
         </tr>
         </thead>
         <tbody>
@@ -76,21 +78,22 @@
                 <td>{{ strtoupper((string) $panel->affiliate_type) }}</td>
                 <td>{{ $panel->affiliate_id }}</td>
                 <td>{{ $panel->wg_status }}</td>
+                <td>{{ $panel->members_count }}</td>
                 <td>{{ optional($panel->updated_at)->format('Y-m-d H:i') }}</td>
                 <td>
-                    @if ($panel->gpm_id)
-                        <form action="{{ route('gpm-rebuild.preview', $panel->id) }}" method="POST" style="display:inline;"
-                              onsubmit="this.querySelector('button').disabled = true;">
+                    @if ($panel->affiliate_id)
+                        <form action="{{ route('gpm-rebuild.rebuild', $panel->id) }}" method="POST" class="form-inline"
+                              onsubmit="this.querySelectorAll('button').forEach(function (b) { b.disabled = true; });">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-secondary">Preview</button>
-                        </form>
-                        <form action="{{ route('gpm-rebuild.rebuild', $panel->id) }}" method="POST" style="display:inline;"
-                              onsubmit="this.querySelector('button').disabled = true; this.querySelector('button').innerText = 'Rebuilding...';">
-                            @csrf
+                            <input type="number" name="from_offset" min="0" required class="form-control form-control-sm mr-1"
+                                   style="width:110px;" placeholder="offset"
+                                   value="{{ data_get(session('rebuild_result'), 'panel_id') == $panel->id ? data_get(session('rebuild_result'), 'from_offset') : '' }}">
+                            <button type="submit" formaction="{{ route('gpm-rebuild.preview', $panel->id) }}"
+                                    class="btn btn-sm btn-secondary mr-1">Preview</button>
                             <button type="submit" class="btn btn-sm btn-primary">Rebuild</button>
                         </form>
                     @else
-                        <span class="text-muted">No GPM uuid</span>
+                        <span class="text-muted">No affiliation ID</span>
                     @endif
                 </td>
             </tr>
